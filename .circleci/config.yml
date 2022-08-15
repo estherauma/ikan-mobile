@@ -97,7 +97,9 @@ jobs:
           command: |
             cd android/app
             echo $GOOGLE_APPLICATION_CREDENTIALS_CONTENT | base64 -d > google-application-credentials.json
+            pwd
             cd ../
+            pwd
             ./gradlew assembleDebug appDistributionUploadDebug
 
 workflows:
