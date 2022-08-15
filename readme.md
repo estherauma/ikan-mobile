@@ -15,4 +15,6 @@ This will start the application in the browser
 ## ENV Variables
 
 
-## Continuous integration
+## Testing
+
+## Continuous Deployment
