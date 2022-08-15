@@ -95,11 +95,10 @@ jobs:
       - run:
           name: Publish debug apk to Firebase Distribution
           command: |
-            cd android/app
+            cd android/
             echo $GOOGLE_APPLICATION_CREDENTIALS_CONTENT | base64 -d > google-application-credentials.json
             pwd
-            cd ../
-            pwd
+            ls
             ./gradlew assembleDebug appDistributionUploadDebug
 
 workflows:
