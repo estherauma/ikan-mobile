@@ -105,7 +105,8 @@ workflows:
           filters:
             branches:
               ignore:
-                - dev
+                - staging
+                - main
 
   build-test-generate-release-firebase-apk:
     jobs:
@@ -114,3 +115,6 @@ workflows:
             branches:
               only:
                 - staging
+                - main
+              ignore:
+                - dev
