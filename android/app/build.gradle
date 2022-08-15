@@ -26,6 +26,7 @@ android {
           debuggable true
           firebaseAppDistribution {
               releaseNotes=""
+              serviceCredentialsFile="google-application-credentials.json"
           }
         }
     }
