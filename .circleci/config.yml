@@ -76,7 +76,6 @@ jobs:
           command: |
             cd android/app
             echo $GOOGLE_SERVICES_ACCOUNT | base64 -d > google-services.json
-            cat google-application-credentials.json
       - run:
           name: Download Dependencies
           command: |
