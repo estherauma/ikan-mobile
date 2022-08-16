@@ -76,7 +76,7 @@ jobs:
           command: |
             cd android/app
             echo $GOOGLE_SERVICES_ACCOUNT | base64 -d > google-services.json
-            echo $GOOGLE_APPLICATION_CREDENTIALS_CONTENT | base64 -d > google-application-credentials.json
+            cat google-application-credentials.json
       - run:
           name: Download Dependencies
           command: |
@@ -94,6 +94,7 @@ jobs:
           name: Publish debug apk to Firebase Distribution
           command: |
             cd android/
+            echo $GOOGLE_APPLICATION_CREDENTIALS_CONTENT | base64 -d > google-application-credentials.json
             ./gradlew assembleDebug appDistributionUploadDebug
 
 workflows:
