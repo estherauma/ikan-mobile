@@ -33,3 +33,4 @@ npm-debug.log*
 
 # Google services
 **google-services.json
+**google-application-credentials.json
