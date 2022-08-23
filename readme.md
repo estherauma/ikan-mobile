@@ -10,8 +10,9 @@ There are three ways to run and test the application.
 To see the application in the browswer run `npm run start `   
 This will start the application in the browser
 ### iOS
+To build with live reload on ios, run `npm run ios-livereload`
 ### Android
-
+To build with live reload on Android, run `npm run android-livereload`
 ## ENV Variables
 
 

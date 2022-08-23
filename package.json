@@ -1,7 +1,7 @@
 {
   "name": "tuna-mobile",
   "version": "0.0.1",
-  "author": "50  Eight ",
+  "author": "50Eight ",
   "homepage": "https://50eight.com/",
   "scripts": {
     "ng": "ng",
@@ -9,7 +9,9 @@
     "build": "ng build",
     "test": "ng test",
     "lint": "ng lint",
-    "e2e": "ng e2e"
+    "e2e": "ng e2e",
+    "android-livereload": "ionic cap run android -l --external --consolelogs",
+    "ios-livereload": "ionic cap run ios -l --external --consolelogs"
   },
   "private": true,
   "dependencies": {
@@ -26,6 +28,7 @@
     "@capacitor/ios": "^4.0.1",
     "@capacitor/keyboard": "4.0.1",
     "@capacitor/status-bar": "4.0.1",
+    "@capacitor/toast": "^4.0.1",
     "@ionic/angular": "^6.1.9",
     "rxjs": "~6.6.0",
     "tslib": "^2.2.0",
