@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { API_URL } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root'
@@ -10,19 +11,19 @@ export class ApiService {
     public http: HttpClient
   ) { }
 
-  get() {}
+  get(resourceUrl) {}
 
-  post() {}
+  post(resourceUrl) {}
 
   /**
    * Replace entire resource
    */
-  put() {}
+  put(resourceUrl) {}
 
   /**
    * Updates only parts of the entire resource
    */
-  patch() {}
+  patch(resourceUrl) {}
 
-  delete() {}
+  delete(resourceUrl) {}
 }
