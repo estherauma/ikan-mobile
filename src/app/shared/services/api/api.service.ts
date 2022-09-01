@@ -1,29 +1,69 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { API_URL } from 'src/environments/environment';
+import { env } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ApiService {
+  headers: HttpHeaders;
 
   constructor(
     public http: HttpClient
   ) { }
 
-  get(resourceUrl) {}
+  async setApiRequestHeaders() {
+    const accessToken = '';
 
-  post(resourceUrl) {}
+    this.headers = new HttpHeaders({
+      // eslint-disable-next-line @typescript-eslint/naming-convention
+      Authorization: `Bearer ${accessToken}`
+    });
+  }
+  /**
+   *
+   * @param resourceUrl
+   */
+  get(resourceUrl) {
+    this.http.get(`${env.apiUrl}/${resourceUrl}`)
+    .subscribe((response) => response);
+  }
+
 
   /**
-   * Replace entire resource
+   *
+   * @param resourceUrl
+   * @param requestData
+   * Return the data from a post request
    */
-  put(resourceUrl) {}
+  post(resourceUrl, requestData) {
+    //ToDo: Consider checking status of the request from here and also passing interface for the expected data
+    this.http.post(`${env.apiUrl}/${resourceUrl}`, requestData, {headers: this.headers})
+    .subscribe((response) => response);
+  }
 
   /**
-   * Updates only parts of the entire resource
+   *
+   * @param resourceUrl
+   * @param resourceId
+   * @param requestData
    */
-  patch(resourceUrl) {}
+  put(resourceUrl, resourceId, requestData): void {
+    this.http.put(`${env.apiUrl}/${resourceUrl}/${resourceId}/`, requestData, {headers: this.headers})
+    .subscribe((response) => response);
+  }
 
-  delete(resourceUrl) {}
+  /**
+   * @param resourceUrl
+   * @param resourceId
+   * @param requestData
+   */
+  patch(resourceUrl, resourceId, requestData) {
+    this.http.patch(`${env.apiUrl}/${resourceUrl}/${resourceId}/`, requestData, {headers: this.headers})
+    .subscribe((response) => response);
+  }
+
+  delete(resourceUrl, resourceId) {
+    // ToDo: Implement later when we want to start deleting records.
+  }
 }
