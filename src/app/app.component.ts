@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { ContentService } from './shared/services/content/content.service';
 @Component({
   selector: 'app-root',
   templateUrl: 'app.component.html',
@@ -10,5 +11,9 @@ export class AppComponent {
     { title: 'Outbox', url: '/folder/Outbox', icon: 'paper-plane' }
   ];
 
-  constructor() {}
+  constructor(
+    public contentService: ContentService
+  ) {
+    this.contentService.fetchContent();
+  }
 }

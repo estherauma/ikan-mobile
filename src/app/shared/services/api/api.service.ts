@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { env } from 'src/environments/environment';
+import { Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -24,9 +25,8 @@ export class ApiService {
    *
    * @param resourceUrl
    */
-  get(resourceUrl) {
-    this.http.get(`${env.apiUrl}/${resourceUrl}`)
-    .subscribe((response) => response);
+  get(resourceUrl): Observable<any> {
+    return this.http.get(`${env.apiUrl}/${resourceUrl}`, {observe: 'response'});
   }
 
 
