@@ -7,8 +7,7 @@ import { ContentService } from './shared/services/content/content.service';
 })
 export class AppComponent {
   public appPages = [
-    { title: 'Inbox', url: '/folder/Inbox', icon: 'mail' },
-    { title: 'Outbox', url: '/folder/Outbox', icon: 'paper-plane' }
+    { title: 'Work Orders', url: '/workorders-home', icon: 'bag-handle' },
   ];
 
   constructor(

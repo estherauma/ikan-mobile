@@ -22,6 +22,10 @@ export class SharedmethodsService {
     await loading.present();
   }
 
+  async hideLoader() {
+    await this.loadingCtrl.dismiss();
+  }
+
   async showToast(text= 'Something went wrong, please try again!') {
     await Toast.show({
       text

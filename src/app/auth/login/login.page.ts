@@ -49,16 +49,19 @@ export class LoginPage extends BaseformPage implements OnInit {
   setUpForm(): void {}
 
   async onSubmit(formData) {
+    this.sharedMethods.showLoader('Logging in, please wait...');
     const response = await this.apiServices.post('accounts/login/', formData);
     response.subscribe(
       async (res: LoginSuccessReponse) => {
         if (res.status === 'OK') {
           this.pageFormGroup.reset();
           await this.sharedMethods.saveDataToStorage(StorageKeys.apiToken, res.data.token);
+          this.sharedMethods.hideLoader();
           this.handleRedirection();
         }
       },
       (err: HttpErrorResponse) => {
+        this.sharedMethods.hideLoader();
         this.sharedMethods.showToast(err.error?.detail);
       }
     );
