@@ -53,7 +53,11 @@ export class ContentService {
     });
   }
 
-  getLoginPageData(appContnent: Content) {
-    console.log(this.appContent);
+  getLoginPageData(language='en-us') {
+    // setting default language to english.
+    // ToDo. Add logic to pass different languages;
+    const content = this.appContent?.['en-us'];
+    const  { loginform } = content;
+    return loginform;
   }
 }

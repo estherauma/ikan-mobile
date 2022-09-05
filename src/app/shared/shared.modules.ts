@@ -9,7 +9,9 @@ import { FormComponent } from './components/form/form.component';
 @NgModule({
   imports: [
     ReactiveFormsModule,
-    FormsModule
+    FormsModule,
+    IonicModule,
+    CommonModule
   ],
   declarations: [
     FormComponent,

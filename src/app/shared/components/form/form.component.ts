@@ -9,12 +9,13 @@ import { FormGroup } from '@angular/forms';
 })
 export class FormComponent implements OnInit {
   // ToDo: See after prismic integration if we can change this type to something more meaningful
-  @Input() formQuestions: any;
+  @Input() tunaFormquestions: any;
   @Input() tunaFormGroup: FormGroup;
 
 
   @Output() formValues = new EventEmitter<any>();
   @Output() cancel = new EventEmitter<any>();
+
   constructor() { }
 
   ngOnInit() {}
