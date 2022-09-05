@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { LoadingController, AlertController } from '@ionic/angular';
 import { Toast } from '@capacitor/toast';
+import { Preferences } from '@capacitor/preferences';
 
 
 
@@ -25,5 +26,17 @@ export class SharedmethodsService {
     await Toast.show({
       text
     });
+  }
+
+  async saveDataToStorage(key, data) {
+    Preferences.set({
+      key,
+      value: JSON.stringify(data)
+    });
+  }
+
+  async readDataFromStorage(key) {
+    const { value } = await Preferences.get({ key });
+    return JSON.parse(value);
   }
 }

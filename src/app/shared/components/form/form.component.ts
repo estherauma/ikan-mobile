@@ -11,17 +11,18 @@ export class FormComponent implements OnInit {
   // ToDo: See after prismic integration if we can change this type to something more meaningful
   @Input() tunaFormquestions: any;
   @Input() tunaFormGroup: FormGroup;
-
+  @Input() submitButtonText: string;
 
   @Output() formValues = new EventEmitter<any>();
   @Output() cancel = new EventEmitter<any>();
+  @Output() formValue = new EventEmitter<any>();
 
   constructor() { }
 
   ngOnInit() {}
 
   onSubmit(event) {
-
+    this.formValue.emit(this.tunaFormGroup.value);
   }
 
 }

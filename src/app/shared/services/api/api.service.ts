@@ -38,8 +38,7 @@ export class ApiService {
    */
   post(resourceUrl, requestData) {
     //ToDo: Consider checking status of the request from here and also passing interface for the expected data
-    this.http.post(`${env.apiUrl}/${resourceUrl}`, requestData, {headers: this.headers})
-    .subscribe((response) => response);
+    return this.http.post(`${env.apiUrl}/${resourceUrl}`, requestData, {headers: this.headers});
   }
 
   /**

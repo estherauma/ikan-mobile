@@ -22,6 +22,10 @@ const routes: Routes = [
   {
     path: 'baseform',
     loadChildren: () => import('./shared/components/baseform/baseform.module').then( m => m.BaseformPageModule)
+  },
+  {
+    path: 'workorders/home',
+    loadChildren: () => import('./workorders/home/home.module').then( m => m.HomePageModule)
   }
 ];
 

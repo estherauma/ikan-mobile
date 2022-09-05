@@ -41,11 +41,13 @@ export class ContentService {
     });
   }
 
+  // ToDo: Refactor to use shared method function
   async readLocalContent() {
     const { value } = await Preferences.get({ key: StorageKeys.appContent });
     return JSON.parse(value);
   }
 
+  // ToDo: Refactor to use shared method
   async writeLocalContent(key, content) {
     Preferences.set({
       key,
@@ -60,4 +62,5 @@ export class ContentService {
     const  { loginform } = content;
     return loginform;
   }
+
 }

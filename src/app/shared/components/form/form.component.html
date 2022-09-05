@@ -23,6 +23,8 @@
   </div>
 
   <ion-grid class="buttons">
-
+    <ion-col size="5">
+      <ion-button expand="block" type="submit" class="submit-button" [disabled]="!tunaFormGroup.valid "> {{submitButtonText | uppercase}} </ion-button>
+    </ion-col>
   </ion-grid>
 </form>
