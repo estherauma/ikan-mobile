@@ -44,8 +44,6 @@ export class LoginPage extends BaseformPage implements OnInit {
     this.menuCtrl.enable(false);
   }
 
-  checkUserLoginStatus() {}
-
   setUpForm(): void {}
 
   async onSubmit(formData) {

@@ -4,11 +4,11 @@ import { Toast } from '@capacitor/toast';
 import { Preferences } from '@capacitor/preferences';
 
 
-
 @Injectable({
   providedIn: 'root'
 })
 export class SharedmethodsService {
+
 
   constructor(
     public loadingCtrl: LoadingController,

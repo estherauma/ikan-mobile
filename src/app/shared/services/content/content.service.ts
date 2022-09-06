@@ -22,7 +22,6 @@ export class ContentService {
   async setUpAppData() {
     const appContent = await this.readLocalContent();
     if (appContent == null || appContent === undefined) {
-      console.log('No content');
       await this.fetchContent();
     } else {
       const result = await this.readLocalContent();
