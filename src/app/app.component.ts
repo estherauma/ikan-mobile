@@ -12,7 +12,8 @@ import { StorageKeys } from './shared/types/api-types';
 })
 export class AppComponent {
   public appPages = [
-    { title: 'Work Orders', url: '/workorders-home', icon: 'bag-handle' },
+    { title: 'Work Orders', url: '/workorders/home', icon: 'bag-handle-outline' },
+    { title: 'Logout', url: '/logout', icon: 'log-out-outline' },
   ];
 
   constructor(
@@ -27,7 +28,6 @@ export class AppComponent {
   checkLoginStatus() {
     this.sharedMethods.readDataFromStorage(StorageKeys.apiToken)
     .then((value) => {
-      console.log(value);
       if (value != null) {
         this.router.navigate(['workorders/home']);
 
@@ -49,6 +49,15 @@ export class AppComponent {
       this.logOut();
       // ToDo: Use translated text from prismic
       this.sharedMethods.showLoader('Please login to proceed!');
+    }
+  }
+
+  onClick(index) {
+    if (this.appPages[index].url === '/logout') {
+      Preferences.remove({ key: StorageKeys.apiToken });
+      this.router.navigate(['']);
+    } else {
+      this.router.navigate([this.appPages[index].url], { replaceUrl: true });
     }
   }
 }
