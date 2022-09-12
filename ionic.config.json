@@ -3,5 +3,9 @@
   "integrations": {
     "capacitor": {}
   },
-  "type": "angular"
+  "type": "angular",
+  "hooks": {
+    "build:before": "./scripts/config.js",
+    "serve:before": "./scripts/config.js"
+  }
 }
