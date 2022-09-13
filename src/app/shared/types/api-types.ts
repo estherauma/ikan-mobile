@@ -27,6 +27,19 @@ export interface EnUs {
   loginform:         Form;
   commonText:        CommonText;
   passwordresetform: Form;
+  languages: Languages;
+}
+
+export interface Languages {
+  data:        LanguagesDatum[];
+  pageName:    string;
+  lastUpdated: string;
+}
+
+export interface LanguagesDatum {
+  key:        string;
+  label:      string;
+  localeCode: string;
 }
 
 export interface CommonText {

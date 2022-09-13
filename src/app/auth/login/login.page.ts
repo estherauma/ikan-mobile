@@ -67,7 +67,7 @@ export class LoginPage extends BaseformPage implements OnInit {
 
   async handleRedirection(){
     const helpScreens = await this.sharedMethods.readDataFromStorage(StorageKeys.isFirstLogin);
-    // ToDo: Once we have helpscrens, handle this logic well
+    // TODO: Once we have helpscrens, handle this logic well
     if (!helpScreens){
       this.router.navigate(['workorders/home']);
     } else {

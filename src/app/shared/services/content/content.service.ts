@@ -40,13 +40,13 @@ export class ContentService {
     });
   }
 
-  // ToDo: Refactor to use shared method function
+  // TODO: Refactor to use shared method function
   async readLocalContent() {
     const { value } = await Preferences.get({ key: StorageKeys.appContent });
     return JSON.parse(value);
   }
 
-  // ToDo: Refactor to use shared method
+  // TODO: Refactor to use shared method
   async writeLocalContent(key, content) {
     Preferences.set({
       key,
@@ -56,10 +56,15 @@ export class ContentService {
 
   getLoginPageData(language='en-us') {
     // setting default language to english.
-    // ToDo. Add logic to pass different languages;
+    // TODO. Add logic to pass different languages;
     const content = this.appContent?.['en-us'];
     const  { loginform } = content;
     return loginform;
   }
 
+  getAvailableLanguages(language='en-us') {
+    const content = this.appContent?.['en-us'];
+    const { languages } = content;
+    return languages.data;
+  }
 }
