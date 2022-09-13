@@ -10,7 +10,7 @@ import { HttpResponse } from '@angular/common/http';
 })
 export class ContentService {
   appContent: Content;
-  defaultLangauge: string;
+  currentLanguage: string;
 
   constructor(
     public apiService: ApiService,
@@ -26,6 +26,7 @@ export class ContentService {
     } else {
       const result = await this.readLocalContent();
       this.appContent = result?.content;
+      this.updateCurrentLanguage();
     }
   }
 
@@ -36,6 +37,17 @@ export class ContentService {
       if (content?.status === 'OK') {
         this.writeLocalContent(StorageKeys.appContent, content.data[0]);
         this.appContent = content.data[0].content;
+      }
+    });
+  }
+
+  updateCurrentLanguage() {
+    this.sharedMethods.readDataFromStorage(StorageKeys.currentLanguage)
+    .then((data) => {
+      if (data != null) {
+        this.currentLanguage = data;
+      } else {
+        this.currentLanguage = 'en-us';
       }
     });
   }
@@ -54,16 +66,16 @@ export class ContentService {
     });
   }
 
-  getLoginPageData(language='en-us') {
+  getLoginPageData(language=this.currentLanguage) {
     // setting default language to english.
     // TODO. Add logic to pass different languages;
-    const content = this.appContent?.['en-us'];
+    const content = this.appContent?.[`${this.currentLanguage}`];
     const  { loginform } = content;
     return loginform;
   }
 
   getAvailableLanguages(language='en-us') {
-    const content = this.appContent?.['en-us'];
+    const content = this.appContent?.[`${this.currentLanguage}`];
     const { languages } = content;
     return languages.data;
   }

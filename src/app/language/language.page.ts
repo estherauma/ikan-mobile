@@ -36,5 +36,6 @@ export class LanguagePage implements OnInit {
 
   changeLanguage(selectedLanguage) {
     this.sharedMethods.saveDataToStorage(StorageKeys.currentLanguage,selectedLanguage?.detail?.value);
+    this.cotentServ.updateCurrentLanguage();
   }
 }
