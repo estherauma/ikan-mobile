@@ -28,7 +28,7 @@ export class LoginPage extends BaseformPage implements OnInit {
   ) {
     super();
     const language = 'en-en';
-    const pageData = this.contentService.getLoginPageData(language);
+    const pageData = this.contentService.getLoginPageData();
     this.formQuestions = pageData.formQuestions;
     this.formQuestions.forEach((entry) => {
       this.group[entry.key] = new FormControl('', [Validators.required]);
@@ -37,7 +37,7 @@ export class LoginPage extends BaseformPage implements OnInit {
   }
 
   ngOnInit() {
-    this.submitButtonText = 'Login';
+    this.submitButtonText = this.contentService.commonText?.login;
   }
 
   ionViewWillEnter() {
@@ -47,7 +47,7 @@ export class LoginPage extends BaseformPage implements OnInit {
   setUpForm(): void {}
 
   async onSubmit(formData) {
-    this.sharedMethods.showLoader('Logging in, please wait...');
+    this.sharedMethods.showLoader(this.contentService.commonText?.loadingText);
     const response = await this.apiServices.post('accounts/login/', formData);
     response.subscribe(
       async (res: LoginSuccessReponse) => {
