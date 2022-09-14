@@ -4,6 +4,7 @@ import { ApiService } from '../api/api.service';
 import { SharedmethodsService } from '../sharedmethods/sharedmethods.service';
 import { Preferences } from '@capacitor/preferences';
 import { HttpResponse } from '@angular/common/http';
+import { constants } from 'perf_hooks';
 
 @Injectable({
   providedIn: 'root',
@@ -11,6 +12,7 @@ import { HttpResponse } from '@angular/common/http';
 export class ContentService {
   appContent: Content;
   currentLanguage: string;
+  commonText: any;
 
   constructor(
     public apiService: ApiService,
@@ -49,7 +51,12 @@ export class ContentService {
       } else {
         this.currentLanguage = 'en-us';
       }
+      this.updateCommonText();
     });
+  }
+
+  updateCommonText() {
+    this.commonText = this.getCommonText();
   }
 
   // TODO: Refactor to use shared method function
@@ -66,17 +73,25 @@ export class ContentService {
     });
   }
 
-  getLoginPageData(language=this.currentLanguage) {
-    // setting default language to english.
-    // TODO. Add logic to pass different languages;
+  getLoginPageData() {
     const content = this.appContent?.[`${this.currentLanguage}`];
     const  { loginform } = content;
     return loginform;
   }
 
-  getAvailableLanguages(language='en-us') {
+  getAvailableLanguages() {
     const content = this.appContent?.[`${this.currentLanguage}`];
     const { languages } = content;
     return languages.data;
+  }
+
+  getCommonText() {
+    const content = this.appContent?.[`${this.currentLanguage}`];
+    const { commonText } = content;
+    const commonTextOject = {};
+    for (const item of commonText.data) {
+      commonTextOject[item.label] = item.value;
+    }
+    return commonTextOject;
   }
 }
