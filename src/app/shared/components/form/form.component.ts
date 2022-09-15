@@ -24,5 +24,4 @@ export class FormComponent implements OnInit {
   onSubmit(event) {
     this.formValue.emit(this.tunaFormGroup.value);
   }
-
 }

@@ -7,6 +7,8 @@ import { MenuController } from '@ionic/angular';
   styleUrls: ['./home.page.scss'],
 })
 export class HomePage implements OnInit {
+  pageTitle = 'Work Orders';
+
 
   constructor(public menuCtrl: MenuController) { }
 

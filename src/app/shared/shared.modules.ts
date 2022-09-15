@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { IonicModule } from '@ionic/angular';
 import { FormComponent } from './components/form/form.component';
+import { HeaderComponent } from './components/header/header.component';
 
 
 
@@ -15,9 +16,11 @@ import { FormComponent } from './components/form/form.component';
   ],
   declarations: [
     FormComponent,
+    HeaderComponent
   ],
   exports: [
-    FormComponent
+    FormComponent,
+    HeaderComponent
   ]
 })
 
