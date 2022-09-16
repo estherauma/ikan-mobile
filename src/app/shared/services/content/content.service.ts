@@ -4,7 +4,6 @@ import { ApiService } from '../api/api.service';
 import { SharedmethodsService } from '../sharedmethods/sharedmethods.service';
 import { Preferences } from '@capacitor/preferences';
 import { HttpResponse } from '@angular/common/http';
-import { constants } from 'perf_hooks';
 
 @Injectable({
   providedIn: 'root',

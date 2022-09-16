@@ -11,6 +11,8 @@ import { StorageKeys } from '../shared/types/api-types';
 export class LanguagePage implements OnInit {
   currentLanguage = 'en-us';
   availableLanguages = [];
+  // TODO: Read from prismic data
+  pageTitle = 'Change Language';
 
   constructor(
     public cotentServ: ContentService,
