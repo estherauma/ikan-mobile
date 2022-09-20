@@ -1,10 +1,8 @@
-import { HttpErrorResponse, HttpResponse } from '@angular/common/http';
+import { HttpErrorResponse } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { MenuController } from '@ionic/angular';
-import { Console } from 'console';
-import { element } from 'protractor';
 import { BaseformPage } from 'src/app/shared/components/baseform/baseform.page';
 import { ApiService } from 'src/app/shared/services/api/api.service';
 import { ContentService } from 'src/app/shared/services/content/content.service';
@@ -28,7 +26,7 @@ export class LoginPage extends BaseformPage implements OnInit {
   ) {
     super();
     const language = 'en-en';
-    const pageData = this.contentService.getLoginPageData(language);
+    const pageData = this.contentService.getLoginPageData();
     this.formQuestions = pageData.formQuestions;
     this.formQuestions.forEach((entry) => {
       this.group[entry.key] = new FormControl('', [Validators.required]);
@@ -37,19 +35,17 @@ export class LoginPage extends BaseformPage implements OnInit {
   }
 
   ngOnInit() {
-    this.submitButtonText = 'Login';
+    this.submitButtonText = this.contentService.commonText?.login;
   }
 
   ionViewWillEnter() {
     this.menuCtrl.enable(false);
   }
 
-  checkUserLoginStatus() {}
-
   setUpForm(): void {}
 
   async onSubmit(formData) {
-    this.sharedMethods.showLoader('Logging in, please wait...');
+    this.sharedMethods.showLoader(this.contentService.commonText?.loadingText);
     const response = await this.apiServices.post('accounts/login/', formData);
     response.subscribe(
       async (res: LoginSuccessReponse) => {
@@ -69,7 +65,7 @@ export class LoginPage extends BaseformPage implements OnInit {
 
   async handleRedirection(){
     const helpScreens = await this.sharedMethods.readDataFromStorage(StorageKeys.isFirstLogin);
-    // ToDo: Once we have helpscrens, handle this logic well
+    // TODO: Once we have helpscrens, handle this logic well
     if (!helpScreens){
       this.router.navigate(['workorders/home']);
     } else {

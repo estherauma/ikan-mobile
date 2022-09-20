@@ -1,0 +1,21 @@
+<app-header [pageTitle] = "pageTitle"></app-header>
+
+<ion-content>
+  <div id="list_wrapper">
+    <ion-grid>
+      <ion-radio-group (ionChange)="changeLanguage($event)" value="{{currentLanguage}}">
+        <ion-row *ngFor="let item of availableLanguages">
+          <ion-col size="12">
+            <ion-item *ngIf="item.key" fill="clear">
+              <div id="middle_section">
+                <h2 class="secondary" text-wrap>{{ item?.label }}</h2>
+              </div>
+              <ion-radio slot="end" value="{{item?.localeCode}}"></ion-radio>
+            </ion-item>
+          </ion-col>
+        </ion-row>
+      </ion-radio-group>
+    </ion-grid>
+  </div>
+
+</ion-content>

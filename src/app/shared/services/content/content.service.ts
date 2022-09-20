@@ -10,7 +10,8 @@ import { HttpResponse } from '@angular/common/http';
 })
 export class ContentService {
   appContent: Content;
-  defaultLangauge: string;
+  currentLanguage: string;
+  commonText: any;
 
   constructor(
     public apiService: ApiService,
@@ -22,11 +23,11 @@ export class ContentService {
   async setUpAppData() {
     const appContent = await this.readLocalContent();
     if (appContent == null || appContent === undefined) {
-      console.log('No content');
       await this.fetchContent();
     } else {
       const result = await this.readLocalContent();
       this.appContent = result?.content;
+      this.updateCurrentLanguage();
     }
   }
 
@@ -41,13 +42,29 @@ export class ContentService {
     });
   }
 
-  // ToDo: Refactor to use shared method function
+  updateCurrentLanguage() {
+    this.sharedMethods.readDataFromStorage(StorageKeys.currentLanguage)
+    .then((data) => {
+      if (data != null) {
+        this.currentLanguage = data;
+      } else {
+        this.currentLanguage = 'en-us';
+      }
+      this.updateCommonText();
+    });
+  }
+
+  updateCommonText() {
+    this.commonText = this.getCommonText();
+  }
+
+  // TODO: Refactor to use shared method function
   async readLocalContent() {
     const { value } = await Preferences.get({ key: StorageKeys.appContent });
     return JSON.parse(value);
   }
 
-  // ToDo: Refactor to use shared method
+  // TODO: Refactor to use shared method
   async writeLocalContent(key, content) {
     Preferences.set({
       key,
@@ -55,12 +72,25 @@ export class ContentService {
     });
   }
 
-  getLoginPageData(language='en-us') {
-    // setting default language to english.
-    // ToDo. Add logic to pass different languages;
-    const content = this.appContent?.['en-us'];
+  getLoginPageData() {
+    const content = this.appContent?.[`${this.currentLanguage}`];
     const  { loginform } = content;
     return loginform;
   }
 
+  getAvailableLanguages() {
+    const content = this.appContent?.[`${this.currentLanguage}`];
+    const { languages } = content;
+    return languages.data;
+  }
+
+  getCommonText() {
+    const content = this.appContent?.[`${this.currentLanguage}`];
+    const { commonText } = content;
+    const commonTextOject = {};
+    for (const item of commonText.data) {
+      commonTextOject[item.label] = item.value;
+    }
+    return commonTextOject;
+  }
 }

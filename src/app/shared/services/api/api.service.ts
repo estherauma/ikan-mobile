@@ -37,7 +37,7 @@ export class ApiService {
    * Return the data from a post request
    */
   post(resourceUrl, requestData) {
-    //ToDo: Consider checking status of the request from here and also passing interface for the expected data
+    //TODO: Consider checking status of the request from here and also passing interface for the expected data
     return this.http.post(`${env.apiUrl}/${resourceUrl}`, requestData, {headers: this.headers});
   }
 
@@ -63,6 +63,6 @@ export class ApiService {
   }
 
   delete(resourceUrl, resourceId) {
-    // ToDo: Implement later when we want to start deleting records.
+    // TODO: Implement later when we want to start deleting records.
   }
 }
