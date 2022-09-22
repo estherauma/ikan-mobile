@@ -4,6 +4,7 @@ import { ApiService } from '../api/api.service';
 import { SharedmethodsService } from '../sharedmethods/sharedmethods.service';
 import { Preferences } from '@capacitor/preferences';
 import { HttpResponse } from '@angular/common/http';
+import { Subject } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
@@ -12,6 +13,7 @@ export class ContentService {
   appContent: Content;
   currentLanguage: string;
   commonText: any;
+  menuContent = new Subject<any>();
 
   constructor(
     public apiService: ApiService,
@@ -51,11 +53,17 @@ export class ContentService {
         this.currentLanguage = 'en-us';
       }
       this.updateCommonText();
+      this.updateSideMenu();
     });
   }
 
   updateCommonText() {
     this.commonText = this.getCommonText();
+  }
+
+  updateSideMenu() {
+    const updatedContent = this.getMenuContent();
+    this.menuContent.next(updatedContent);
   }
 
   // TODO: Refactor to use shared method function
@@ -92,5 +100,15 @@ export class ContentService {
       commonTextOject[item.label] = item.value;
     }
     return commonTextOject;
+  }
+
+  getMenuContent(){
+    const content = this.appContent?.[`${this.currentLanguage}`];
+    const { sidemenu } = content;
+    const menu = [];
+    for (const menuItem of sidemenu?.data ) {
+      menu.push(menuItem);
+    }
+    return menu;
   }
 }
