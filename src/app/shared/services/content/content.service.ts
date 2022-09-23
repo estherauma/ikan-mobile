@@ -89,7 +89,7 @@ export class ContentService {
   getAvailableLanguages() {
     const content = this.appContent?.[`${this.currentLanguage}`];
     const { languages } = content;
-    return languages.data;
+    return {languages: languages.data, pageTitle: languages.pageTitle};
   }
 
   getCommonText() {

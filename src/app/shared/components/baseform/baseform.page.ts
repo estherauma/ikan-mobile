@@ -10,10 +10,14 @@ export class BaseformPage implements OnInit {
   pageFormGroup: FormGroup;
   formQuestions = [ ];
   group =  { };
+  pageTitle: string;
 
   constructor() { }
 
   ngOnInit() {
   }
+
+  //TODO: Set the pageTitle using this function for the different pages
+  getPageTitle(pageData) { }
 
 }
