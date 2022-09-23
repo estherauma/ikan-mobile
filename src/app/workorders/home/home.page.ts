@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { MenuController } from '@ionic/angular';
+import { MenuController, ModalController } from '@ionic/angular';
+import { ModalComponent } from 'src/app/shared/components/modal/modal.component';
 
 @Component({
   selector: 'app-home',
@@ -7,10 +8,13 @@ import { MenuController } from '@ionic/angular';
   styleUrls: ['./home.page.scss'],
 })
 export class HomePage implements OnInit {
+  //TODO: Use translated text from prismic
   pageTitle = 'Work Orders';
 
 
-  constructor(public menuCtrl: MenuController) { }
+  constructor(
+    public menuCtrl: MenuController,
+    public modalCtrl: ModalController) { }
 
   ngOnInit() {
   }
@@ -19,4 +23,14 @@ export class HomePage implements OnInit {
     this.menuCtrl.enable(true);
   }
 
+  async createWorkOrder() {
+    const modal = await this.modalCtrl.create({
+      component: ModalComponent,
+      cssClass: 'tuna-modal',
+
+    });
+    modal.present();
+
+    modal.onDidDismiss().then((data) => {});
+  }
 }

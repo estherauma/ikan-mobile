@@ -4,7 +4,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { IonicModule } from '@ionic/angular';
 import { FormComponent } from './components/form/form.component';
 import { HeaderComponent } from './components/header/header.component';
-
+import { ModalComponent } from './components/modal/modal.component';
 
 
 @NgModule({
@@ -16,11 +16,13 @@ import { HeaderComponent } from './components/header/header.component';
   ],
   declarations: [
     FormComponent,
-    HeaderComponent
+    HeaderComponent,
+    ModalComponent
   ],
   exports: [
     FormComponent,
-    HeaderComponent
+    HeaderComponent,
+    ModalComponent
   ]
 })
 
