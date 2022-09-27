@@ -81,9 +81,39 @@ export class ContentService {
   }
 
   getLoginPageData() {
-    const content = this.appContent?.[`${this.currentLanguage}`];
-    const  { loginform } = content;
-    return loginform;
+    if (this.appContent != null) {
+      const content = this.appContent?.[`${this.currentLanguage}`];
+      const  { loginform } = content;
+      return loginform;
+    } else {
+      // When app content isn't available, default to this.
+      // This happens only the first time when the app is opened
+      // TODO: Find a better way to resolve this. Consider using observables
+      return {
+        pageName: 'loginform',
+        pageTitle: 'Login',
+        lastUpdated: '2022-09-23T07:55:22+0000',
+        formQuestions: [
+            {
+                key: 'email',
+                label: 'Email',
+                options: null,
+                helptext: null,
+                questionType: 'textBox',
+                displayquestion: true
+            },
+            {
+                key: 'password',
+                label: 'Password',
+                options: null,
+                helptext: null,
+                questionType: 'password',
+                displayquestion: true
+            }
+        ]
+      };
+    }
+
   }
 
   getAvailableLanguages() {
