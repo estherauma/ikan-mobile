@@ -24,7 +24,7 @@ export class LoginPage extends BaseformPage implements OnInit {
     public sharedMethods: SharedmethodsService,
     public router: Router
   ) {
-    super();
+    super(contentService);
     const pageData = this.contentService.getLoginPageData();
     this.formQuestions = pageData.formQuestions;
     this.pageTitle = pageData?.pageTitle;
@@ -35,7 +35,7 @@ export class LoginPage extends BaseformPage implements OnInit {
   }
 
   ngOnInit() {
-    this.submitButtonText = this.contentService.commonText?.login;
+
   }
 
   ionViewWillEnter() {

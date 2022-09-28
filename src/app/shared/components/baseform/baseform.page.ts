@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup } from '@angular/forms';
+import { ContentService } from '../../services/content/content.service';
 
 @Component({
   selector: 'app-baseform',
@@ -11,10 +12,12 @@ export class BaseformPage implements OnInit {
   formQuestions = [ ];
   group =  { };
   pageTitle: string;
+  submitButtonText: string;
 
-  constructor() { }
+  constructor( public contentService: ContentService) { }
 
   ngOnInit() {
+    this.submitButtonText = this.contentService.commonText?.login;
   }
 
   //TODO: Set the pageTitle using this function for the different pages

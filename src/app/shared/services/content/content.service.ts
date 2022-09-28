@@ -141,4 +141,10 @@ export class ContentService {
     }
     return menu;
   }
+
+  getContentByPropertyName(propertyName) {
+    const content = this.appContent?.[`${this.currentLanguage}`];
+    return content[propertyName];
+  }
+
 }

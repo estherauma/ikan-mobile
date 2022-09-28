@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { MenuController, ModalController } from '@ionic/angular';
 import { ModalComponent } from 'src/app/shared/components/modal/modal.component';
+import { CreatePage } from '../create/create.page';
 
 @Component({
   selector: 'app-home',
@@ -25,7 +26,7 @@ export class HomePage implements OnInit {
 
   async createWorkOrder() {
     const modal = await this.modalCtrl.create({
-      component: ModalComponent,
+      component: CreatePage,
       cssClass: 'tuna-modal',
 
     });
