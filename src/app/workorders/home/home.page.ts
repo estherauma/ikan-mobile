@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { MenuController, ModalController } from '@ionic/angular';
-import { ModalComponent } from 'src/app/shared/components/modal/modal.component';
 import { CreatePage } from '../create/create.page';
 
 @Component({

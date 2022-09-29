@@ -23,11 +23,10 @@ export class CreatePage extends BaseformPage implements OnInit {
       this.group[entry.key] = new FormControl('', [Validators.required]);
     });
     this.pageFormGroup = new FormGroup(this.group);
-    console.log(pageData);
   }
 
   ngOnInit() {
-
+    this.submitButtonText = this.contentService.commonText?.create;
   }
 
   async onSubmit(formData) {

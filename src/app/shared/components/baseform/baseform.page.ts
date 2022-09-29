@@ -16,9 +16,7 @@ export class BaseformPage implements OnInit {
 
   constructor( public contentService: ContentService) { }
 
-  ngOnInit() {
-    this.submitButtonText = this.contentService.commonText?.login;
-  }
+  ngOnInit() {}
 
   //TODO: Set the pageTitle using this function for the different pages
   getPageTitle(pageData) { }
