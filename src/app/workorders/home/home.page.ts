@@ -10,6 +10,29 @@ import { CreatePage } from '../create/create.page';
 export class HomePage implements OnInit {
   //TODO: Use translated text from prismic
   pageTitle = 'Work Orders';
+  workOrders = [
+    {
+      name: 'Work order 1',
+      internalRef: 'IWXDWER8234',
+      dateOpened: '2022-10-23',
+      status: 'Open',
+      appRef: 'XXX-XXX-XXX'
+    },
+    {
+      name: 'Work order 2',
+      internalRef: 'IJSWERWXDWER',
+      dateOpened: '2022-10-15',
+      status: 'Open',
+      appRef: 'XXX-XXX-XXX'
+    },
+    {
+      name: 'Work order 3',
+      internalRef: 'IJSWERWXDWER8234',
+      dateOpened: '2022-10-10',
+      status: 'Open',
+      appRef: 'XXX-XXX-XXX'
+    }
+];
 
 
   constructor(
