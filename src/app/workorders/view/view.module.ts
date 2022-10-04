@@ -7,13 +7,15 @@ import { IonicModule } from '@ionic/angular';
 import { ViewPageRoutingModule } from './view-routing.module';
 
 import { ViewPage } from './view.page';
+import { SharedModule } from 'src/app/shared/shared.modules';
 
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
     IonicModule,
-    ViewPageRoutingModule
+    ViewPageRoutingModule,
+    SharedModule
   ],
   declarations: [ViewPage]
 })

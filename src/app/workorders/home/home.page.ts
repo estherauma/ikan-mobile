@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { MenuController, ModalController } from '@ionic/angular';
 import { CreatePage } from '../create/create.page';
 
@@ -16,7 +17,7 @@ export class HomePage implements OnInit {
       internalRef: 'IWXDWER8234',
       dateOpened: '2022-10-23',
       status: 'Open',
-      appRef: 'XXX-XXX-XXX'
+      appRef: 'XXX-XXX-XXX',
     },
     {
       name: 'Work order 2',
@@ -37,6 +38,7 @@ export class HomePage implements OnInit {
 
   constructor(
     public menuCtrl: MenuController,
+    public router: Router,
     public modalCtrl: ModalController) { }
 
   ngOnInit() {
@@ -55,5 +57,9 @@ export class HomePage implements OnInit {
     modal.present();
 
     modal.onDidDismiss().then((data) => {});
+  }
+
+  viewDetails(workOrder) {
+    this.router.navigate(['/workorders/view', workOrder]);
   }
 }

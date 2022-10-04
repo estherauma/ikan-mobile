@@ -36,7 +36,7 @@ const routes: Routes = [
     loadChildren: () => import('./workorders/create/create.module').then( m => m.CreatePageModule)
   },
   {
-    path: 'view',
+    path: 'workorders/view',
     loadChildren: () => import('./workorders/view/view.module').then( m => m.ViewPageModule)
   }
 ];

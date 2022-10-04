@@ -20,7 +20,7 @@
             <ion-label><strong>Date Created:</strong> {{wo.dateOpened}}</ion-label> <br>
             <ion-label><strong>Status:</strong> {{wo.status}}</ion-label>
           </ion-col>
-          <ion-col size="1" style="text-align: center; padding-top: 15%">
+          <ion-col size="1" style="text-align: center; padding-top: 15%" (click)="viewDetails(wo)">
             <ion-icon name="chevron-forward-outline" size="large"></ion-icon>
           </ion-col>
         </ion-row>
