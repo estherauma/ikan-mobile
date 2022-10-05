@@ -38,6 +38,10 @@ const routes: Routes = [
   {
     path: 'workorders/view',
     loadChildren: () => import('./workorders/view/view.module').then( m => m.ViewPageModule)
+  },
+  {
+    path: 'profile',
+    loadChildren: () => import('./accounts/profile/profile.module').then( m => m.ProfilePageModule)
   }
 ];
 
