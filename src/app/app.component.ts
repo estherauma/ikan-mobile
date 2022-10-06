@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { Preferences } from '@capacitor/preferences';
 import { Network } from '@capacitor/network';
@@ -6,20 +6,22 @@ import { Network } from '@capacitor/network';
 import { ContentService } from './shared/services/content/content.service';
 import { SharedmethodsService } from './shared/services/sharedmethods/sharedmethods.service';
 import { StorageKeys } from './shared/types/api-types';
+import { PluginListenerHandle } from '@capacitor/core';
 
 @Component({
   selector: 'app-root',
   templateUrl: 'app.component.html',
   styleUrls: ['app.component.scss'],
 })
-export class AppComponent implements OnInit {
+export class AppComponent implements OnInit, OnDestroy {
   public appPages = [];
+
+  networkListener: PluginListenerHandle
 
   constructor(
     public contentService: ContentService,
     public sharedMethods: SharedmethodsService,
     public router: Router,
-    // private network: Network
   ) {
     this.contentService.setUpAppData();
     this.checkLoginStatus();
@@ -29,12 +31,16 @@ export class AppComponent implements OnInit {
   }
 
   async ngOnInit() {
-    await Network.addListener('networkStatusChange', status => {
+    this.networkListener = await Network.addListener('networkStatusChange', status => {
       this.compareAppWithServerContents(status.connected)
     });
 
       const status = await Network.getStatus();
       this.compareAppWithServerContents(status.connected)
+  }
+
+  ngOnDestroy() {
+    if(this.networkListener) this.networkListener.remove();
   }
 
   checkLoginStatus() {
@@ -51,12 +57,10 @@ export class AppComponent implements OnInit {
   compareAppWithServerContents(status:boolean){
     console.log("connected::", status)
     if(status){
-      console.log("compare contents app::vs::server")
-      console.log("==============================")
+      this.contentService.compareContent()
       return
     }
     console.log("no need to compare contents")
-    console.log("==============================")
   }
 
   logOut() {

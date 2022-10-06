@@ -44,6 +44,21 @@ export class ContentService {
     });
   }
 
+  async compareContent() {
+    const appContent = await this.readLocalContent();
+    if(!appContent) return;
+    
+    const current_content_created_at =  appContent.createdAt
+    const response = this.apiService.get(`content/compare?app_content_created_at=${current_content_created_at}`)
+    response.subscribe((res: HttpResponse<any>) => {
+      const content = res.body;
+      if (content?.status === 'OK' && content.new) {
+        this.writeLocalContent(StorageKeys.appContent, content.data[0]);
+        this.appContent = content.data[0].content;
+      }
+    })
+  }
+
   updateCurrentLanguage() {
     this.sharedMethods.readDataFromStorage(StorageKeys.currentLanguage)
     .then((data) => {
