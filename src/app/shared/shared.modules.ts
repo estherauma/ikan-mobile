@@ -6,7 +6,6 @@ import { FormComponent } from './components/form/form.component';
 import { HeaderComponent } from './components/header/header.component';
 
 
-
 @NgModule({
   imports: [
     ReactiveFormsModule,
@@ -16,7 +15,7 @@ import { HeaderComponent } from './components/header/header.component';
   ],
   declarations: [
     FormComponent,
-    HeaderComponent
+    HeaderComponent,
   ],
   exports: [
     FormComponent,
