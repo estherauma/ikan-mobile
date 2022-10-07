@@ -1,7 +1,9 @@
 import { Injectable } from '@angular/core';
-import { LoadingController, AlertController } from '@ionic/angular';
+import { LoadingController } from '@ionic/angular';
+import { Network } from '@capacitor/network';
 import { Toast } from '@capacitor/toast';
 import { Preferences } from '@capacitor/preferences';
+import { PluginListenerHandle } from '@capacitor/core';
 
 
 @Injectable({
@@ -9,12 +11,13 @@ import { Preferences } from '@capacitor/preferences';
 })
 export class SharedmethodsService {
 
+  networkListener: PluginListenerHandle
 
   constructor(
     public loadingCtrl: LoadingController,
   ) { }
 
-  async showLoader(message: string, duration= 5000) {
+  async showLoader(message: string, duration = 5000) {
     const loading = await this.loadingCtrl.create({
       message,
       duration
@@ -26,7 +29,7 @@ export class SharedmethodsService {
     await this.loadingCtrl.dismiss();
   }
 
-  async showToast(text= 'Something went wrong, please try again!') {
+  async showToast(text = 'Something went wrong, please try again!') {
     await Toast.show({
       text
     });
@@ -42,5 +45,20 @@ export class SharedmethodsService {
   async readDataFromStorage(key) {
     const { value } = await Preferences.get({ key });
     return JSON.parse(value);
+  }
+
+  async addNetworkEventListener(customCallbackFunc: (
+    params: { networkListener: any, connected: boolean }
+  ) => any) {
+    this.networkListener = await Network.addListener('networkStatusChange',
+      status => customCallbackFunc(
+        { networkListener: this.networkListener, connected: status.connected }
+      ));
+    const status = await Network.getStatus();
+    customCallbackFunc({ networkListener: this.networkListener, connected: status.connected })
+  }
+
+  removeNetworkEventListener(listener: PluginListenerHandle) {
+    if (listener) listener.remove();
   }
 }

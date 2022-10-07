@@ -52,9 +52,11 @@ export class ContentService {
     const response = this.apiService.get(`content/compare?app_content_created_at=${current_content_created_at}`)
     response.subscribe((res: HttpResponse<any>) => {
       const content = res.body;
+      
       if (content?.status === 'OK' && content.new) {
+        console.log("new data")
         this.writeLocalContent(StorageKeys.appContent, content.data[0]);
-        this.appContent = content.data[0].content;
+        return this.appContent = content.data[0].content;
       }
     })
   }

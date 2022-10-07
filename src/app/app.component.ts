@@ -31,16 +31,16 @@ export class AppComponent implements OnInit, OnDestroy {
   }
 
   async ngOnInit() {
-    this.networkListener = await Network.addListener('networkStatusChange', status => {
-      this.compareAppWithServerContents(status.connected)
-    });
-
-      const status = await Network.getStatus();
-      this.compareAppWithServerContents(status.connected)
+    await this.sharedMethods.addNetworkEventListener((network => {
+        this.networkListener = network.networkListener
+        if(network.connected){
+          return this.contentService.compareContent()
+        }
+    }))
   }
 
   ngOnDestroy() {
-    if(this.networkListener) this.networkListener.remove();
+    this.sharedMethods.removeNetworkEventListener(this.networkListener)
   }
 
   checkLoginStatus() {
@@ -52,15 +52,6 @@ export class AppComponent implements OnInit, OnDestroy {
         }
       });
 
-  }
-
-  compareAppWithServerContents(status:boolean){
-    console.log("connected::", status)
-    if(status){
-      this.contentService.compareContent()
-      return
-    }
-    console.log("no need to compare contents")
   }
 
   logOut() {
