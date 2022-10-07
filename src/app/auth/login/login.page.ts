@@ -25,9 +25,9 @@ export class LoginPage extends BaseformPage implements OnInit {
     public router: Router
   ) {
     super();
-    const language = 'en-en';
     const pageData = this.contentService.getLoginPageData();
     this.formQuestions = pageData.formQuestions;
+    this.pageTitle = pageData?.pageTitle;
     this.formQuestions.forEach((entry) => {
       this.group[entry.key] = new FormControl('', [Validators.required]);
     });

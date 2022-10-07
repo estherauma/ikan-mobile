@@ -11,12 +11,7 @@ import { StorageKeys } from './shared/types/api-types';
   styleUrls: ['app.component.scss'],
 })
 export class AppComponent {
-  // TODO: Generate this from primisc to integrate localization
-  public appPages = [
-    { title: 'Work Orders', url: '/workorders/home', icon: 'bag-handle-outline' },
-    { title: 'Logout', url: '/logout', icon: 'log-out-outline' },
-    { title: 'Change Language', url: '/change-language', icon: 'language-outline' },
-  ];
+  public appPages = [];
 
   constructor(
     public contentService: ContentService,
@@ -25,6 +20,9 @@ export class AppComponent {
   ) {
     this.contentService.setUpAppData();
     this.checkLoginStatus();
+    this.contentService.menuContent.subscribe((data) => {
+      this.appPages = data;
+    });
   }
 
   checkLoginStatus() {
@@ -49,8 +47,7 @@ export class AppComponent {
     tokenExpiryDateTime.setUTCSeconds(tokenExpiryDateInUTCSeconds);
     if (tokenExpiryDateTime < new Date(now)) {
       this.logOut();
-      //TODO: Use translated text from prismic
-      this.sharedMethods.showLoader('Please login to proceed!');
+      this.sharedMethods.showLoader(this.contentService.commonText?.loginToProceed);
     }
   }
 
