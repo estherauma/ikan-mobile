@@ -30,6 +30,18 @@ const routes: Routes = [
   {
     path: 'change-language',
     loadChildren: () => import('./language/language.module').then( m => m.LanguagePageModule)
+  },
+  {
+    path: 'workorders/create',
+    loadChildren: () => import('./workorders/create/create.module').then( m => m.CreatePageModule)
+  },
+  {
+    path: 'workorders/view',
+    loadChildren: () => import('./workorders/view/view.module').then( m => m.ViewPageModule)
+  },
+  {
+    path: 'profile',
+    loadChildren: () => import('./accounts/profile/profile.module').then( m => m.ProfilePageModule)
   }
 ];
 
