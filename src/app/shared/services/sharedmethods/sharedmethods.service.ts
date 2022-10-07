@@ -48,7 +48,7 @@ export class SharedmethodsService {
   }
 
   async addNetworkEventListener(customCallbackFunc: (
-    params: { networkListener: any, connected: boolean }
+    params: { networkListener: PluginListenerHandle, connected: boolean }
   ) => any) {
     this.networkListener = await Network.addListener('networkStatusChange',
       status => customCallbackFunc(
