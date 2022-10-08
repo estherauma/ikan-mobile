@@ -42,6 +42,22 @@ const routes: Routes = [
   {
     path: 'profile',
     loadChildren: () => import('./accounts/profile/profile.module').then( m => m.ProfilePageModule)
+  },
+  {
+    path: 'vessels/home',
+    loadChildren: () => import('./vessels/home/home.module').then( m => m.HomePageModule)
+  },
+  {
+    path: 'vessels/create',
+    loadChildren: () => import('./vessels/create/create.module').then( m => m.CreatePageModule)
+  },
+  {
+    path: 'vessels/detail',
+    loadChildren: () => import('./vessels/detail/detail.module').then( m => m.DetailPageModule)
+  },
+  {
+    path: 'view',
+    loadChildren: () => import('./vessels/view/view.module').then( m => m.ViewPageModule)
   }
 ];
 
