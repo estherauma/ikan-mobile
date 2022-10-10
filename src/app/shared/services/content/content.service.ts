@@ -57,7 +57,6 @@ export class ContentService {
       const content = res.body;
       
       if (content?.status === 'OK' && content.new) {
-        console.log("new data")
         this.writeLocalContent(StorageKeys.appContent, content.data[0]);
         return this.appContent = content.data[0].content;
       }
