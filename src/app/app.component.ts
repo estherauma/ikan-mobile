@@ -1,8 +1,6 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { Preferences } from '@capacitor/preferences';
-import { Network } from '@capacitor/network';
-// import { Network } from '@awesome-cordova-plugins/network/ngx';
 import { ContentService } from './shared/services/content/content.service';
 import { SharedmethodsService } from './shared/services/sharedmethods/sharedmethods.service';
 import { StorageKeys } from './shared/types/api-types';
