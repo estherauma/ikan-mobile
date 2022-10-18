@@ -42,6 +42,14 @@ const routes: Routes = [
   {
     path: 'profile',
     loadChildren: () => import('./accounts/profile/profile.module').then( m => m.ProfilePageModule)
+  },
+  {
+    path: 'demandletters/home',
+    loadChildren: () => import('./demandletters/home/home.module').then( m => m.HomePageModule)
+  },
+  {
+    path: 'demandletters/create',
+    loadChildren: () => import('./demandletters/create/create.module').then( m => m.CreatePageModule)
   }
 ];
 
