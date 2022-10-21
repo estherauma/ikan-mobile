@@ -1,0 +1,42 @@
+.upload-button{
+    background-color: white;
+    padding: 1rem;
+    border-radius: 8px;
+    border: 1px solid black;
+    display: flex;
+    justify-items: center;
+    margin-top: 8px;
+    margin-left: 16px;
+    margin-top: 1rem;
+
+    .text{
+        padding-left: 8px;
+    }
+}
+
+.letter-details{
+    padding-top:16px;
+    padding-bottom: 16px;
+}
+
+.work-orders{
+    display: flex;
+    flex-direction: column;
+    .add-work-order{
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background-color: #3880ff;
+        width: 200px;
+        color: white;
+        align-self: flex-end;
+        margin-top: 16px !important;
+        margin-bottom: 16px !important;
+        border-radius: 1rem;
+    }
+}
+
+.display-block{
+    display: block; 
+}
+

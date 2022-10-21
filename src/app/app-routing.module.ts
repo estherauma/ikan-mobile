@@ -50,6 +50,14 @@ const routes: Routes = [
   {
     path: 'demandletters/create',
     loadChildren: () => import('./demandletters/create/create.module').then( m => m.CreatePageModule)
+  },
+  {
+    path: 'demandletters/view',
+    loadChildren: () => import('./demandletters/view/view.module').then( m => m.ViewPageModule)
+  },
+  {
+    path: 'workorders/select',
+    loadChildren: () => import('./workorders/select/select.module').then( m => m.SelectPageModule)
   }
 ];
 

@@ -1,7 +1,17 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { ModalController } from '@ionic/angular';
 import { CreatePage } from '../create/create.page';
 
+
+export interface DemandLetter {
+  name: string
+  internalRef: string
+  appRef: string
+  dateOpened: string
+  status: string
+  image: string
+}
 @Component({
   selector: 'app-home',
   templateUrl: './home.page.html',
@@ -31,7 +41,8 @@ export class HomePage implements OnInit {
   ]
 
   constructor(
-    public modalCtrl: ModalController
+    public modalCtrl: ModalController,
+    private router: Router
   ) { }
 
   ngOnInit() {
@@ -46,6 +57,11 @@ export class HomePage implements OnInit {
     modal.present();
 
     modal.onDidDismiss().then((data) => {});
+  }
+
+  viewDeatils(demantLetter:DemandLetter) {
+    console.log("demantLetter", demantLetter)
+    this.router.navigate(['/demandletters/view', demantLetter])
   }
 
 }
