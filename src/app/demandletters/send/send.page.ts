@@ -45,6 +45,7 @@ export class SendPage implements OnInit {
           role: "confirm",
           handler: async () => {
             await successAlert.dismiss()
+            this.router.navigate(['/demandletters/home'])
           }
         }
       ]
