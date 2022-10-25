@@ -58,6 +58,14 @@ const routes: Routes = [
   {
     path: 'workorders/select',
     loadChildren: () => import('./workorders/select/select.module').then( m => m.SelectPageModule)
+  },
+  {
+    path: 'demandletters/send',
+    loadChildren: () => import('./demandletters/send/send.module').then( m => m.SendPageModule)
+  },
+  {
+    path: 'optionselect',
+    loadChildren: () => import('./shared/components/optionselect/optionselect.module').then( m => m.OptionselectPageModule)
   }
 ];
 

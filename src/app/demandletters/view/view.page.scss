@@ -1,13 +1,14 @@
 .upload-button{
-    background-color: white;
-    padding: 1rem;
+    --background: white !important;
+    color: black;
+    // padding: 1rem;
     border-radius: 8px;
     border: 1px solid black;
     display: flex;
     justify-items: center;
     margin-top: 8px;
     margin-left: 16px;
-    margin-top: 1rem;
+    margin-top: 1re m;
 
     .text{
         padding-left: 8px;

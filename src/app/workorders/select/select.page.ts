@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'app-select',
@@ -6,6 +7,8 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./select.page.scss'],
 })
 export class SelectPage implements OnInit {
+
+  pageTitle = "Select Work Orders"
 
   workOrders = [
     {
@@ -24,9 +27,33 @@ export class SelectPage implements OnInit {
     }
   ]
 
-  constructor() { }
+  demandLetter:any
+  selectedWorkOrders = []
+
+  constructor(
+    public activatedRoute: ActivatedRoute,
+    public router: Router 
+  ) { }
 
   ngOnInit() {
+      this.demandLetter = JSON.parse(this.activatedRoute.snapshot.paramMap.get('demandLetter'));
+  }
+
+  selectedWorkOrder(e){
+    if(e.detail.checked){
+        this.selectedWorkOrders.push(e.detail.value)
+    }else{
+      this.selectedWorkOrders = this.selectedWorkOrders.filter(function(item) {
+        return item.internalRef != e.detail.value.internalRef;
+    });
+    }
+  }
+
+  onConfirm(){
+    this.router.navigate(['/demandletters/view', { demandLetter: JSON.stringify({
+      ...this.demandLetter,
+      workOrders: this.selectedWorkOrders
+    }) }])
   }
 
 }

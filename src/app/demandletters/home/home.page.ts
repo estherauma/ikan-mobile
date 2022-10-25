@@ -59,9 +59,8 @@ export class HomePage implements OnInit {
     modal.onDidDismiss().then((data) => {});
   }
 
-  viewDeatils(demantLetter:DemandLetter) {
-    console.log("demantLetter", demantLetter)
-    this.router.navigate(['/demandletters/view', demantLetter])
+  viewDeatils(demandLetter:DemandLetter) {
+    this.router.navigate(['/demandletters/view', { demandLetter: JSON.stringify(demandLetter) }])
   }
 
 }

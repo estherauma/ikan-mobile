@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import { File } from '@capawesome/capacitor-file-picker';
 import { ModalController } from '@ionic/angular';
-import { SelectPage } from 'src/app/workorders/select/select.page';
+import { UploadService } from 'src/app/services/upload/upload.service';
 import { DemandLetter } from '../home/home.page';
 
 @Component({
@@ -12,48 +13,47 @@ import { DemandLetter } from '../home/home.page';
 export class ViewPage implements OnInit {
   pageTitle = "View Demand Letter"
   demandLetter: DemandLetter
+  ifReviewDemandLetter: boolean = false;
+  cooperationAgreementFile: File | null = null
 
-  workOrders = [
-    {
-      name: 'Work order 1',
-      internalRef: 'IWXDWER8234',
-      dateOpened: '2022-10-23',
-      status: 'Open',
-      appRef: 'XXX-XXX-XXX',
-    },
-    {
-      name: 'Work order 2',
-      internalRef: 'IJSWERWXDWER',
-      dateOpened: '2022-10-15',
-      status: 'Open',
-      appRef: 'XXX-XXX-XXX'
-    }
-  ]
+  workOrders = []
 
   constructor(
     private activatedRoute: ActivatedRoute,
     public modalCtrl: ModalController,
-    public router: Router
+    public router: Router,
+    public chooser: UploadService
   ) { }
 
   ngOnInit() {
-    this.activatedRoute.params.subscribe((params) => {
-      this.pageTitle = params.name
-      this.demandLetter = params as DemandLetter
-    })
+    const demandLetter = JSON.parse(this.activatedRoute.snapshot.paramMap.get('demandLetter'));
+    this.pageTitle = demandLetter.name
+    this.demandLetter = demandLetter
+
+    if(demandLetter.workOrders){
+      this.workOrders = demandLetter.workOrders
+    }
   }
 
-  async addWorkOrder(){
-      // this.router.navigate(["workorders/select"])
+  async addWorkOrder() {
+    this.router.navigate(["workorders/select", { demandLetter: JSON.stringify(this.demandLetter) }])
+  }
 
-      const modal = await this.modalCtrl.create({
-        component: SelectPage,
-        cssClass: 'tuna-modal',
-  
-      });
-      modal.present();
-  
-      modal.onDidDismiss().then((data) => {});
+  onReviewDemandLetter() {
+    this.ifReviewDemandLetter = true
+  }
+
+  onSendDemandLetter() {
+    this.router.navigate(["demandletters/send", this.demandLetter])
+  }
+
+  async uploadCopAgreement() {
+    const chosencooperationAgreement = await this.chooser.choseFile();
+    this.cooperationAgreementFile = chosencooperationAgreement
+  }
+
+  showReviewButton() {
+    return !this.ifReviewDemandLetter && this.workOrders.length && this.cooperationAgreementFile
   }
 
 }
