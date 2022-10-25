@@ -56,4 +56,8 @@ export class SelectPage implements OnInit {
     }) }])
   }
 
+  showConfirmBtn(){
+    return this.selectedWorkOrders.length > 0
+  }
+
 }
