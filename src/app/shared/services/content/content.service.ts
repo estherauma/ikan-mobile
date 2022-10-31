@@ -166,4 +166,30 @@ export class ContentService {
     return content[propertyName];
   }
 
+  getUsernameLoginPageData() {
+    const content = this.appContent?.[`${this.currentLanguage}`];
+    const { loginwithusername } = content;
+
+    return loginwithusername
+  }
+
+  getHowToSignUpData(): any {
+    const content = this.appContent?.[`${this.currentLanguage}`];
+    const { howtosignup } = content;
+    return howtosignup;
+  }
+
+  getResetPasswordData(): any {
+    const content = this.appContent?.[`${this.currentLanguage}`];
+    const { passwordresetform } = content;
+    return passwordresetform;
+  }
+
+  getCreatePasswordData(): any {
+    const content = this.appContent?.[`${this.currentLanguage}`];
+    const {  createpassword } = content;
+    return createpassword
+    ;
+  }
+
 }

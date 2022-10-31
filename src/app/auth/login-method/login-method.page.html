@@ -1,0 +1,16 @@
+
+<ion-content class="ion-padding">
+  <div class="logo-container">
+    <ion-thumbnail class="logo">
+      <ion-img [src]=""></ion-img>
+    </ion-thumbnail>
+  </div>
+
+  <ion-button (click)="toInviteCodeScreen()" expand="full">
+    I have an invite code
+  </ion-button>
+  <ion-button (click)="loginWithUsername()" class="ion-margin-top" expand="full">
+    Login with username
+  </ion-button>
+  <a routerLink="/auth/how-to-signup">Create account</a>
+</ion-content>

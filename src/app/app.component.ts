@@ -5,6 +5,7 @@ import { ContentService } from './shared/services/content/content.service';
 import { SharedmethodsService } from './shared/services/sharedmethods/sharedmethods.service';
 import { StorageKeys } from './shared/types/api-types';
 import { PluginListenerHandle } from '@capacitor/core';
+import { SplashScreen } from '@capacitor/splash-screen';
 
 @Component({
   selector: 'app-root',
@@ -29,6 +30,8 @@ export class AppComponent implements OnInit, OnDestroy {
   }
 
   async ngOnInit() {
+    // await SplashScreen.hide();
+
     await this.sharedMethods.addNetworkEventListener((network => {
         this.networkListener = network.networkListener
         if(network.connected){
@@ -46,7 +49,6 @@ export class AppComponent implements OnInit, OnDestroy {
       .then((value) => {
         if (value != null) {
           this.router.navigate(['workorders/home']);
-
         }
       });
 
