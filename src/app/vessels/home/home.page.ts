@@ -1,4 +1,7 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
+import { MenuController, ModalController } from '@ionic/angular';
+import { CreatePage } from '../create/create.page';
 
 @Component({
   selector: 'app-home',
@@ -6,10 +9,57 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./home.page.scss'],
 })
 export class HomePage implements OnInit {
+  //TODO: Use translated text from prisimic
+  pageTitle = 'Vessels';
 
-  constructor() { }
+  vessels = [
+    {
+      name: 'Vessel 1',
+      regNo: 'XWERS-WWER',
+      status: 'Active Duty',
+      type: 'Type 2',
+      imgUrl: '/assets/imgs/vessel.jpeg'
+    },
+    {
+      name: 'Vessel 2',
+      regNo: 'XWERS-WWER',
+      status: 'Active Duty',
+      type: 'Type 1',
+      imgUrl: '/assets/imgs/vessel.jpeg'
+    },
+    {
+      name: 'Vessel 3',
+      regNo: 'XWERS-WWER',
+      status: 'Active Duty',
+      type: 'Type 1',
+      imgUrl: '/assets/imgs/vessel.jpeg'
+    }
+  ];
+
+  constructor(
+    public menuCtrl: MenuController,
+    public router: Router,
+    public modalController: ModalController
+  ) { }
 
   ngOnInit() {
   }
 
+  ionViewWillEnter() {
+    this.menuCtrl.enable(true);
+  }
+
+  async createVessel() {
+    const modal = await this.modalController.create({
+      component: CreatePage,
+      cssClass: 'tuna-modal'
+    });
+
+    modal.present();
+
+    modal.onDidDismiss().then((data) => {
+    });
+  }
+
+  viewDetails(vessel) {}
 }

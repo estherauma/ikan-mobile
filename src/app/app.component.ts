@@ -30,22 +30,22 @@ export class AppComponent implements OnInit, OnDestroy {
 
   async ngOnInit() {
     await this.sharedMethods.addNetworkEventListener((network => {
-        this.networkListener = network.networkListener
+        this.networkListener = network.networkListener;
         if(network.connected){
-          return this.contentService.compareContent()
+          return this.contentService.compareContent();
         }
-    }))
+    }));
   }
 
   ngOnDestroy() {
-    this.sharedMethods.removeNetworkEventListener(this.networkListener)
+    this.sharedMethods.removeNetworkEventListener(this.networkListener);
   }
 
   checkLoginStatus() {
     this.sharedMethods.readDataFromStorage(StorageKeys.apiToken)
       .then((value) => {
         if (value != null) {
-          this.router.navigate(['workorders/home']);
+          this.router.navigate(['vessels/home']);
 
         }
       });
