@@ -33,6 +33,11 @@ export class ContentService {
     }
   }
 
+  async currentContentCreateAt() {
+    const appContent = await this.readLocalContent();
+    return appContent.createdAt
+  }
+
   async fetchContent() {
     const response = this.apiService.get('content/aggregated');
     response.subscribe((res: HttpResponse<any>) => {
@@ -42,6 +47,20 @@ export class ContentService {
         this.appContent = content.data[0].content;
       }
     });
+  }
+
+  async compareContent() {    
+    const currentContentCreateAt = await this.currentContentCreateAt();
+    
+    const response = this.apiService.get(`content/compare?app_content_created_at=${currentContentCreateAt}`)
+    response.subscribe((res: HttpResponse<any>) => {
+      const content = res.body;
+      
+      if (content?.status === 'OK' && content.new) {
+        this.writeLocalContent(StorageKeys.appContent, content.data[0]);
+        return this.appContent = content.data[0].content;
+      }
+    })
   }
 
   updateCurrentLanguage() {
