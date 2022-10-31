@@ -9,7 +9,6 @@ import { ContentService } from 'src/app/shared/services/content/content.service'
   styleUrls: ['./create.page.scss'],
 })
 export class CreatePage extends BaseformPage implements OnInit {
-  pageTitle="Create Demand Letters"
   constructor(
     public contentService: ContentService,
   ) {
