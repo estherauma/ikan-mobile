@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { MenuController, ModalController } from '@ionic/angular';
-import { CreatePage } from '../create/create.page';
+import { SteponePage } from '../create/stepone/stepone.page';
 
 @Component({
   selector: 'app-home',
@@ -51,7 +51,7 @@ export class HomePage implements OnInit {
 
   async createVessel() {
     const modal = await this.modalController.create({
-      component: CreatePage,
+      component: SteponePage,
       cssClass: 'tuna-modal'
     });
 

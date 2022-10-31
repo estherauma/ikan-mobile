@@ -4,17 +4,17 @@ import { FormsModule } from '@angular/forms';
 
 import { IonicModule } from '@ionic/angular';
 
-import { CreatePageRoutingModule } from './create-routing.module';
+import { SteptwoPageRoutingModule } from './steptwo-routing.module';
 
-import { CreatePage } from './create.page';
+import { SteptwoPage } from './steptwo.page';
 
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
     IonicModule,
-    CreatePageRoutingModule
+    SteptwoPageRoutingModule
   ],
-  declarations: [CreatePage]
+  declarations: [SteptwoPage]
 })
-export class CreatePageModule {}
+export class SteptwoPageModule {}
