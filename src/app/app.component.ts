@@ -46,7 +46,6 @@ export class AppComponent implements OnInit, OnDestroy {
       .then((value) => {
         if (value != null) {
           this.router.navigate(['workorders/home']);
-
         }
       });
 
