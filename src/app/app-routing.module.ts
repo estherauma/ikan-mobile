@@ -66,6 +66,30 @@ const routes: Routes = [
   {
     path: 'auth/create-password',
     loadChildren: () => import('./auth/create-password/create-password.module').then( m => m.CreatePasswordPageModule)
+  },
+  {
+    path: 'demandletters/home',
+    loadChildren: () => import('./demandletters/home/home.module').then( m => m.HomePageModule)
+  },
+  {
+    path: 'demandletters/create',
+    loadChildren: () => import('./demandletters/create/create.module').then( m => m.CreatePageModule)
+  },
+  {
+    path: 'demandletters/view',
+    loadChildren: () => import('./demandletters/view/view.module').then( m => m.ViewPageModule)
+  },
+  {
+    path: 'workorders/select',
+    loadChildren: () => import('./workorders/select/select.module').then( m => m.SelectPageModule)
+  },
+  {
+    path: 'demandletters/send',
+    loadChildren: () => import('./demandletters/send/send.module').then( m => m.SendPageModule)
+  },
+  {
+    path: 'optionselect',
+    loadChildren: () => import('./shared/components/optionselect/optionselect.module').then( m => m.OptionselectPageModule)
   }
 ];
 
