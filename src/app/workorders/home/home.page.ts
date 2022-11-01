@@ -64,6 +64,5 @@ export class HomePage implements OnInit {
   }
 
   searchResult(result) {
-    console.log("home:result-->",result)
   }
 }
