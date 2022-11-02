@@ -34,6 +34,6 @@ export class SteponePage extends BaseformPage implements OnInit {
 
   async onSubmit(formData) {
     this.modalCtrl.dismiss();
-    this.router.navigate(['vessels/create/steptwo'], formData );
+    this.router.navigate(['vessels/create/steptwo', formData] );
   }
 }

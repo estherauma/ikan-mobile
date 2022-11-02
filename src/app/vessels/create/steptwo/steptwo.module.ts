@@ -7,13 +7,15 @@ import { IonicModule } from '@ionic/angular';
 import { SteptwoPageRoutingModule } from './steptwo-routing.module';
 
 import { SteptwoPage } from './steptwo.page';
+import { SharedModule } from 'src/app/shared/shared.modules';
 
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
     IonicModule,
-    SteptwoPageRoutingModule
+    SteptwoPageRoutingModule,
+    SharedModule
   ],
   declarations: [SteptwoPage]
 })
