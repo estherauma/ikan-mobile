@@ -4,6 +4,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { IonicModule } from '@ionic/angular';
 import { FormComponent } from './components/form/form.component';
 import { HeaderComponent } from './components/header/header.component';
+import { SearchComponent } from './components/search/search.component';
 
 
 @NgModule({
@@ -16,10 +17,12 @@ import { HeaderComponent } from './components/header/header.component';
   declarations: [
     FormComponent,
     HeaderComponent,
+    SearchComponent
   ],
   exports: [
     FormComponent,
-    HeaderComponent
+    HeaderComponent,
+    SearchComponent
   ]
 })
 

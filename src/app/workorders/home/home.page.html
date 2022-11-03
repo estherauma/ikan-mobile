@@ -5,6 +5,7 @@
 </app-header>
 
 <ion-content>
+  <app-search [searchDataSet]="workOrders" (searchResult)="searchResult($event)"></app-search>
   <ion-card *ngFor="let wo of workOrders">
     <ion-card-content>
       <ion-grid>
