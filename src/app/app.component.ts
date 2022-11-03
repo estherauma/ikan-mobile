@@ -45,8 +45,7 @@ export class AppComponent implements OnInit, OnDestroy {
     this.sharedMethods.readDataFromStorage(StorageKeys.apiToken)
       .then((value) => {
         if (value != null) {
-          this.router.navigate(['vessels/home']);
-
+          this.router.navigate(['workorders/home']);
         }
       });
 
