@@ -11,6 +11,19 @@ import { SharedmethodsService } from 'src/app/shared/services/sharedmethods/shar
   styleUrls: ['./steptwo.page.scss'],
 })
 export class SteptwoPage extends BaseformPage implements OnInit {
+  tempOptions = [
+    {
+      name: 'Option One',
+      value: 'Option One',
+      label: 'Option One'
+    },
+    {
+      name: 'Option Two',
+      value: 'Option Two',
+      label: 'Option Two'
+    }
+  ];
+  submitButtonText = 'Save';
 
   constructor(
     public sharedMethods: SharedmethodsService,
@@ -26,8 +39,13 @@ export class SteptwoPage extends BaseformPage implements OnInit {
     this.pageTitle = pageData?.pageTitle;
     this.formQuestions = pageData?.formQuestions;
     this.formQuestions.forEach((entry) => {
+      //TODO: Add dynamic options from prismic
+      if (entry.questionType === 'select') {
+        entry.options = this.tempOptions;
+      }
       this.group[entry.key] = new FormControl('', [Validators.required]);
     });
+
     this.pageFormGroup = new FormGroup(this.group);
   }
 

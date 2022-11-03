@@ -12,6 +12,7 @@ import { SharedmethodsService } from 'src/app/shared/services/sharedmethods/shar
   styleUrls: ['./stepone.page.scss'],
 })
 export class SteponePage extends BaseformPage implements OnInit {
+  submitButtonText = 'Create';
 
   constructor(
     public contentService: ContentService,
