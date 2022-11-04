@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { BaseformPage } from 'src/app/shared/components/baseform/baseform.page';
 import { ContentService } from 'src/app/shared/services/content/content.service';
 import { SharedmethodsService } from 'src/app/shared/services/sharedmethods/sharedmethods.service';
@@ -30,7 +30,8 @@ export class SteptwoPage extends BaseformPage implements OnInit {
   constructor(
     public sharedMethods: SharedmethodsService,
     public contentService: ContentService,
-    public activatedRoute: ActivatedRoute
+    public activatedRoute: ActivatedRoute,
+    public router: Router
   ) {
     super(contentService);
   }
@@ -68,6 +69,6 @@ export class SteptwoPage extends BaseformPage implements OnInit {
   }
 
   onSubmit(formData) {
-    console.log(formData);
+    this.router.navigate(['vessels/view', formData]);
   }
 }

@@ -18,21 +18,27 @@ export class HomePage implements OnInit {
       regNo: 'XWERS-WWER',
       status: 'Active Duty',
       type: 'Type 2',
-      imgUrl: '/assets/imgs/vessel.jpeg'
+      imgUrl: '/assets/imgs/vessel.jpeg',
+      capacity: 30,
+      age: 10
     },
     {
       name: 'Vessel 2',
       regNo: 'XWERS-WWER',
       status: 'Active Duty',
       type: 'Type 1',
-      imgUrl: '/assets/imgs/vessel.jpeg'
+      imgUrl: '/assets/imgs/vessel.jpeg',
+      capacity: 40,
+      age: 11
     },
     {
       name: 'Vessel 3',
       regNo: 'XWERS-WWER',
       status: 'Active Duty',
       type: 'Type 1',
-      imgUrl: '/assets/imgs/vessel.jpeg'
+      imgUrl: '/assets/imgs/vessel.jpeg',
+      capacity: 30,
+      age: 16
     }
   ];
 
@@ -61,5 +67,7 @@ export class HomePage implements OnInit {
     });
   }
 
-  viewDetails(vessel) {}
+  viewDetails(vessel) {
+    this.router.navigate(['vessels/view', vessel]);
+  }
 }

@@ -48,11 +48,7 @@ const routes: Routes = [
     loadChildren: () => import('./vessels/home/home.module').then( m => m.HomePageModule)
   },
   {
-    path: 'vessels/detail',
-    loadChildren: () => import('./vessels/detail/detail.module').then( m => m.DetailPageModule)
-  },
-  {
-    path: 'vessess/view',
+    path: 'vessels/view',
     loadChildren: () => import('./vessels/view/view.module').then( m => m.ViewPageModule)
   },
   {
