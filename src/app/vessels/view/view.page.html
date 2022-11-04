@@ -33,8 +33,8 @@
   </ion-card>
 
   <ion-text>
-    <h2 id="statusText">Status: {{vessel.status}} </h2>
-    <h5 id="statusText">Active Work Orders </h5>
+    <h2 class="pushRight">Status: {{vessel.status}} </h2>
+    <h5 class="pushRight">Active Work Orders </h5>
   </ion-text>
 
   <ion-card *ngFor="let wo of workOrders">
@@ -60,5 +60,10 @@
     </ion-card-content>
   </ion-card>
 
+  <ion-text>
+    <h5 (click)="viewArchieved()" class="pushRight">
+      <u>Archived</u>
+    </h5>
+  </ion-text>
 
 </ion-content>

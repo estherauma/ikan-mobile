@@ -60,6 +60,10 @@ const routes: Routes = [
     loadChildren: () => import('./vessels/create/steptwo/steptwo.module').then( m => m.SteptwoPageModule)
   },
   {
+    path: 'vessels/archived-wo',
+    loadChildren: () => import('./vessels/archived-wo/archived-wo.module').then( m => m.ArchivedWoPageModule)
+  },
+  {
     path: 'demandletters/home',
     loadChildren: () => import('./demandletters/home/home.module').then( m => m.HomePageModule)
   },

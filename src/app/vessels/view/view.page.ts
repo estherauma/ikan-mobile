@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import { ModalController } from '@ionic/angular';
+import { ArchivedWoPage } from '../archived-wo/archived-wo.page';
 
 @Component({
   selector: 'app-view',
@@ -20,7 +22,8 @@ export class ViewPage implements OnInit {
     }
 ];
   constructor(
-    public activatedRoute: ActivatedRoute
+    public activatedRoute: ActivatedRoute,
+    public modalCtrl: ModalController
   ) { }
 
   async ngOnInit() {
@@ -30,6 +33,21 @@ export class ViewPage implements OnInit {
   getParams() {
     this.activatedRoute.params.subscribe((params) => {
       this.vessel = params;
+    });
+  }
+
+  async viewArchieved(){
+    const modal = await this.modalCtrl.create({
+      component: ArchivedWoPage,
+      cssClass: 'tuna-modal',
+      componentProps: {
+        vessel: this.vessel,
+        workOrders: this.workOrders
+      }
+    });
+    modal.present();
+    modal.onDidDismiss().then(() => {
+
     });
   }
 
