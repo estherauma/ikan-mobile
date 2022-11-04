@@ -51,13 +51,17 @@ export class SteptwoPage extends BaseformPage implements OnInit {
     );
     this.pageTitle = pageData?.pageTitle;
     this.formQuestions = this.prevQuestions.concat(pageData?.formQuestions);
-
     this.formQuestions.forEach((entry) => {
       //TODO: Add dynamic options from prismic
       if (entry.questionType === 'select') {
         entry.options = this.tempOptions;
       }
-      this.group[entry.key] = new FormControl('', [Validators.required]);
+      if (entry.key in this.prevData) {
+        this.group[entry.key] = new FormControl(this.prevData[entry.key], [Validators.required]);
+      } else {
+        this.group[entry.key] = new FormControl('', [Validators.required]);
+      }
+
     });
 
     this.pageFormGroup = new FormGroup(this.group);
