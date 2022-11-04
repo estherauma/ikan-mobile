@@ -66,6 +66,14 @@ const routes: Routes = [
   {
     path: 'optionselect',
     loadChildren: () => import('./shared/components/optionselect/optionselect.module').then( m => m.OptionselectPageModule)
+  },
+  {
+    path: 'contracts/view',
+    loadChildren: () => import('./contracts/view/view.module').then( m => m.ViewPageModule)
+  },
+  {
+    path: 'contracts/home',
+    loadChildren: () => import('./contracts/home/home.module').then( m => m.HomePageModule)
   }
 ];
 
