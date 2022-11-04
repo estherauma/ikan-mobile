@@ -8,6 +8,7 @@ import { ActivatedRoute } from '@angular/router';
 })
 export class ViewPage implements OnInit {
   pageTitle: string;
+  contract
 
   wo = {
       name: 'Work order 2',
@@ -44,8 +45,9 @@ export class ViewPage implements OnInit {
 
   ngOnInit() {
     this.activatedRoute.params.subscribe(params => {
-      console.log("params --->", params)
       this.pageTitle = params.name
+      this.contract = params
+      console.log(params)
     })
   }
 
