@@ -47,7 +47,6 @@ export class ViewPage implements OnInit {
     this.activatedRoute.params.subscribe(params => {
       this.pageTitle = params.name
       this.contract = params
-      console.log(params)
     })
   }
 
