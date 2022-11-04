@@ -2,7 +2,7 @@
   <ion-title>{{pageTitle}}</ion-title>
 </ion-toolbar>
 
-<ion-content>
+<div class="inner-content">
   <app-form
     [tunaFormGroup]="pageFormGroup"
     [tunaFormquestions]="formQuestions"
@@ -10,4 +10,4 @@
     (formValue)="onSubmit($event)"
   >
   </app-form>
-</ion-content>
+</div>

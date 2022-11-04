@@ -15,15 +15,17 @@ export class SteptwoPage extends BaseformPage implements OnInit {
     {
       name: 'Option One',
       value: 'Option One',
-      label: 'Option One'
+      label: 'Option One',
     },
     {
       name: 'Option Two',
       value: 'Option Two',
-      label: 'Option Two'
-    }
+      label: 'Option Two',
+    },
   ];
   submitButtonText = 'Save';
+  prevQuestions: any;
+  prevData: any;
 
   constructor(
     public sharedMethods: SharedmethodsService,
@@ -31,13 +33,25 @@ export class SteptwoPage extends BaseformPage implements OnInit {
     public activatedRoute: ActivatedRoute
   ) {
     super(contentService);
-    this.activatedRoute.params.subscribe((data) => {
-      console.log(data);
-    });
+  }
 
-    const pageData = this.contentService.getContentByPropertyName('vessels-createsteptwo');
+  async getPageParams() {
+    this.activatedRoute.params.subscribe((params) => {
+      const { data, questions } = params;
+      this.prevQuestions = JSON.parse(questions);
+      this.prevData = JSON.parse(data);
+    });
+  }
+
+  async ngOnInit() {
+    super.ngOnInit();
+    await this.getPageParams();
+    const pageData = this.contentService.getContentByPropertyName(
+      'vessels-createsteptwo'
+    );
     this.pageTitle = pageData?.pageTitle;
-    this.formQuestions = pageData?.formQuestions;
+    this.formQuestions = this.prevQuestions.concat(pageData?.formQuestions);
+
     this.formQuestions.forEach((entry) => {
       //TODO: Add dynamic options from prismic
       if (entry.questionType === 'select') {
@@ -49,11 +63,7 @@ export class SteptwoPage extends BaseformPage implements OnInit {
     this.pageFormGroup = new FormGroup(this.group);
   }
 
-  ngOnInit() {
-  }
-
   onSubmit(formData) {
     console.log(formData);
   }
-
 }
