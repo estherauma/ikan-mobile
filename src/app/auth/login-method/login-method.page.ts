@@ -21,7 +21,7 @@ export class LoginMethodPage implements OnInit {
   }
 
   loginWithUsername(){
-    this.router.navigate(["auth/username-login"])
+    this.router.navigate(["login"])
   }
 
 }

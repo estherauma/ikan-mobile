@@ -1,4 +1,5 @@
-<ion-content>
+<app-header [pageTitle] = "" [isBackButton]="true" [isMenuButton]="false"></app-header>
+<ion-content class="ion-padding">
   <app-form
     [tunaFormGroup]="pageFormGroup"
     [tunaFormquestions]="formQuestions"
@@ -6,6 +7,5 @@
     (formValue)="onSubmit($event)"
   >
   </app-form>
-
-
+  <a routerLink="/auth/password-reset">Reset password</a>
 </ion-content>

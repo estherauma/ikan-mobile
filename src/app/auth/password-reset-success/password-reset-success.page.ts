@@ -17,7 +17,7 @@ export class PasswordResetSuccessPage implements OnInit {
   }
 
   toLogin(){
-    this.router.navigate(["auth/username-login"])
+    this.router.navigate(["login"])
   }
 
 }

@@ -52,10 +52,6 @@ const routes: Routes = [
     loadChildren: () => import('./auth/invite-code/invite-code.module').then( m => m.InviteCodePageModule)
   },
   {
-    path: 'auth/username-login',
-    loadChildren: () => import('./auth/username-login/username-login.module').then( m => m.UsernameLoginPageModule)
-  },
-  {
     path: 'auth/how-to-signup',
     loadChildren: () => import('./auth/how-to-signup/how-to-signup.module').then( m => m.HowToSignupPageModule)
   },
