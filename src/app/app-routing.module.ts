@@ -119,6 +119,18 @@ const routes: Routes = [
     path: 'payments/home',
     loadChildren: () => import('./payments/home/home.module').then( m => m.HomePageModule)
   },
+  {
+    path: 'company',
+    loadChildren: () => import('./payments/view/company/company.module').then( m => m.CompanyPageModule)
+  },
+  {
+    path: 'details',
+    loadChildren: () => import('./payments/view/details/details.module').then( m => m.DetailsPageModule)
+  },
+  {
+    path: 'create',
+    loadChildren: () => import('./payments/create/create.module').then( m => m.CreatePageModule)
+  },
 ];
 
 @NgModule({
