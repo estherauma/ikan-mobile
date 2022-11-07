@@ -28,10 +28,6 @@
 
 // See https://stackoverflow.com/questions/46972950/ionic-make-modal-page-fit-content-height
 ion-modal.tuna-modal {
-  // --border-radius: 10px;
-  // --max-height: 80%;
-  // --max-width: 80%
-
   &.bottom {
     align-items: flex-end;
   }
