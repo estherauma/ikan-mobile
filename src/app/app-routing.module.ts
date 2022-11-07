@@ -94,6 +94,10 @@ const routes: Routes = [
   {
     path: 'contracts/home',
     loadChildren: () => import('./contracts/home/home.module').then( m => m.HomePageModule)
+  },
+  {
+    path: 'feedbackdashboard/home',
+    loadChildren: () => import('./feedbackdashboard/home/home.module').then( m => m.HomePageModule)
   }
 ];
 
