@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-company',
@@ -55,7 +56,9 @@ export class CompanyPage implements OnInit {
     }
   ];
 
-  constructor() { }
+  constructor(
+    public router: Router
+  ) { }
 
   ngOnInit() {
   }
@@ -64,6 +67,6 @@ export class CompanyPage implements OnInit {
   }
 
   viewDetails(payment){
-    console.log(payment);
+    this.router.navigate(['payments/view/details', payment]);
   }
 }
