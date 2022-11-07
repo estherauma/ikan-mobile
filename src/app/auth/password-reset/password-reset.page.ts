@@ -20,7 +20,7 @@ export class PasswordResetPage extends BaseformPage implements OnInit {
     public router: Router
   ) { 
     super(contentService)
-    const pageData = this.contentService.getResetPasswordData();
+    const pageData = this.contentService.getContentByPropertyName("passwordresetform");
     this.formQuestions = pageData.formQuestions;
     this.pageTitle = pageData?.pageTitle;
     this.formQuestions.forEach((entry) => {

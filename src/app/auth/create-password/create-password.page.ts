@@ -19,7 +19,7 @@ export class CreatePasswordPage extends BaseformPage implements OnInit {
     public router: Router
   ) {
     super(contentService)
-    const pageData = this.contentService.getCreatePasswordData();
+    const pageData = this.contentService.getContentByPropertyName("createpassword");
     this.formQuestions = pageData.formQuestions;
     this.pageTitle = pageData?.pageTitle;
     this.formQuestions.forEach((entry) => {

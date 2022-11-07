@@ -16,7 +16,7 @@ export class HowToSignupPage implements OnInit {
   constructor(
     public contentService: ContentService,
   ) { 
-    const pageData = this.contentService.getHowToSignUpData();
+    const pageData = this.contentService.getContentByPropertyName("howtosignup");
     this.description = pageData?.data[0].value
     this.title = pageData?.pageTitle
   }
