@@ -1,9 +1,9 @@
 <app-header [pageTitle]="pageTitle"></app-header>
 
 <ion-content>
-  <app-search [searchDataSet]="payments" (searchResult)="searchResult($event)"></app-search>
+  <app-search [searchDataSet]="organizations" (searchResult)="searchResult($event)"></app-search>
 
-  <ion-card *ngFor="let p of payments">
+  <ion-card *ngFor="let org of organizations">
     <ion-grid>
       <ion-row>
         <ion-col size="2" class="center-in-card">
@@ -11,11 +11,11 @@
         </ion-col>
 
         <ion-col size="8">
-          <ion-text> <h5>{{p.name}} </h5></ion-text>
+          <ion-text> <h5>{{org.name}} </h5></ion-text>
           <ion-text><p>Additional information required</p></ion-text>
         </ion-col>
 
-        <ion-col size="2" class="center-in-card" (click)="viewDetails(p)">
+        <ion-col size="2" class="center-in-card" (click)="viewDetails(org)">
           <ion-icon name="chevron-forward-outline" size="large"></ion-icon>
         </ion-col>
       </ion-row>

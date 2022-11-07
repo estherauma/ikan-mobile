@@ -7,7 +7,7 @@ import { Router } from '@angular/router';
   styleUrls: ['./home.page.scss'],
 })
 export class HomePage implements OnInit {
-  payments =  [
+  organizations =  [
     {
       name: 'Name of Vessel Company'
     },
@@ -32,11 +32,11 @@ export class HomePage implements OnInit {
 
   searchResult(data) {
     // TODO: Fix this so that when search string is cleared, full result of thigns is displayed.
-    this.payments = data;
+    this.organizations = data;
   }
 
-  viewDetails(payment) {
-    this.router.navigate(['payments/view/company-payments', payment]);
+  viewDetails(organization) {
+    this.router.navigate(['payments/view/company', organization]);
   }
 
 }

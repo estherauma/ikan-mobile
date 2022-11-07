@@ -120,15 +120,15 @@ const routes: Routes = [
     loadChildren: () => import('./payments/home/home.module').then( m => m.HomePageModule)
   },
   {
-    path: 'company',
+    path: 'payments/view/company',
     loadChildren: () => import('./payments/view/company/company.module').then( m => m.CompanyPageModule)
   },
   {
-    path: 'details',
+    path: 'payments/view/details',
     loadChildren: () => import('./payments/view/details/details.module').then( m => m.DetailsPageModule)
   },
   {
-    path: 'create',
+    path: 'payments/create',
     loadChildren: () => import('./payments/create/create.module').then( m => m.CreatePageModule)
   },
 ];
