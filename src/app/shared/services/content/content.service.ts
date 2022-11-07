@@ -165,5 +165,4 @@ export class ContentService {
     const content = this.appContent?.[`${this.currentLanguage}`];
     return content[propertyName];
   }
-
 }

@@ -4,7 +4,7 @@ import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
 const routes: Routes = [
   {
     path: '',
-    redirectTo: 'login',
+    redirectTo: 'auth/login-method',
     pathMatch: 'full'
   },
   {
@@ -12,7 +12,7 @@ const routes: Routes = [
     loadChildren: () => import('./folder/folder.module').then( m => m.FolderPageModule)
   },
   {
-    path: 'password-reset',
+    path: 'auth/password-reset',
     loadChildren: () => import('./auth/password-reset/password-reset.module').then( m => m.PasswordResetPageModule)
   },
   {
@@ -42,6 +42,26 @@ const routes: Routes = [
   {
     path: 'profile',
     loadChildren: () => import('./accounts/profile/profile.module').then( m => m.ProfilePageModule)
+  },
+  {
+    path: 'auth/login-method',
+    loadChildren: () => import('./auth/login-method/login-method.module').then( m => m.LoginMethodPageModule)
+  },
+  {
+    path: 'auth/invite-code',
+    loadChildren: () => import('./auth/invite-code/invite-code.module').then( m => m.InviteCodePageModule)
+  },
+  {
+    path: 'auth/how-to-signup',
+    loadChildren: () => import('./auth/how-to-signup/how-to-signup.module').then( m => m.HowToSignupPageModule)
+  },
+  {
+    path: 'auth/password-reset-success',
+    loadChildren: () => import('./auth/password-reset-success/password-reset-success.module').then( m => m.PasswordResetSuccessPageModule)
+  },
+  {
+    path: 'auth/create-password',
+    loadChildren: () => import('./auth/create-password/create-password.module').then( m => m.CreatePasswordPageModule)
   },
   {
     path: 'demandletters/home',
