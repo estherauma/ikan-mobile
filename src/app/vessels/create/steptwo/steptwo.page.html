@@ -1,0 +1,9 @@
+<app-header [pageTitle]="pageTitle">
+
+</app-header>
+
+<ion-content>
+  <app-form [tunaFormGroup]="pageFormGroup" [tunaFormquestions]="formQuestions" [submitButtonText]="submitButtonText"
+    (formValue)="onSubmit($event)">
+  </app-form>
+</ion-content>

@@ -8,12 +8,13 @@
 
           <ion-menu-toggle auto-hide="false" *ngFor="let p of appPages; let i = index">
             <ion-item
+              *ngIf="p.enabled"
               routerDirection="root"
               (click)="onClick(i)"
               lines="none"
               detail="false"
               routerLinkActive="selected">
-              <ion-icon slot="start" [md]="p.icon"></ion-icon>
+              <ion-icon slot="start" [name]="p.icon"></ion-icon>
               <ion-label>{{ p.label }}</ion-label>
             </ion-item>
           </ion-menu-toggle>

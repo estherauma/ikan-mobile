@@ -44,6 +44,26 @@ const routes: Routes = [
     loadChildren: () => import('./accounts/profile/profile.module').then( m => m.ProfilePageModule)
   },
   {
+    path: 'vessels/home',
+    loadChildren: () => import('./vessels/home/home.module').then( m => m.HomePageModule)
+  },
+  {
+    path: 'vessels/view',
+    loadChildren: () => import('./vessels/view/view.module').then( m => m.ViewPageModule)
+  },
+  {
+    path: 'vessels/create/stepone',
+    loadChildren: () => import('./vessels/create/stepone/stepone.module').then( m => m.SteponePageModule)
+  },
+  {
+    path: 'vessels/create/steptwo',
+    loadChildren: () => import('./vessels/create/steptwo/steptwo.module').then( m => m.SteptwoPageModule)
+  },
+  {
+    path: 'vessels/archived-wo',
+    loadChildren: () => import('./vessels/archived-wo/archived-wo.module').then( m => m.ArchivedWoPageModule)
+  },
+  {
     path: 'auth/login-method',
     loadChildren: () => import('./auth/login-method/login-method.module').then( m => m.LoginMethodPageModule)
   },
