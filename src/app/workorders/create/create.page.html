@@ -1,13 +1,9 @@
 <ion-toolbar>
   <ion-title>{{pageTitle}}</ion-title>
 </ion-toolbar>
-<ion-content>
-  <ion-content>
-    <app-form
-      [tunaFormGroup]="pageFormGroup"
-      [tunaFormquestions]="formQuestions"
-      [submitButtonText]="submitButtonText"
-      (formValue)="onSubmit($event)"
-    >
-    </app-form>
-</ion-content>
+
+<div class="inner-content">
+  <app-form [tunaFormGroup]="pageFormGroup" [tunaFormquestions]="formQuestions" [submitButtonText]="submitButtonText"
+    (formValue)="onSubmit($event)">
+  </app-form>
+</div>

@@ -30,15 +30,15 @@ export class AppComponent implements OnInit, OnDestroy {
 
   async ngOnInit() {
     await this.sharedMethods.addNetworkEventListener((network => {
-        this.networkListener = network.networkListener
+        this.networkListener = network.networkListener;
         if(network.connected){
-          return this.contentService.compareContent()
+          return this.contentService.compareContent();
         }
-    }))
+    }));
   }
 
   ngOnDestroy() {
-    this.sharedMethods.removeNetworkEventListener(this.networkListener)
+    this.sharedMethods.removeNetworkEventListener(this.networkListener);
   }
 
   checkLoginStatus() {

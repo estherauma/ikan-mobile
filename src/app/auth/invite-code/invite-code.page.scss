@@ -1,0 +1,10 @@
+.logo-container{
+    display: flex !important;
+    justify-content: center !important;
+    .logo{
+        height: 150px; 
+        width: 150px;
+        margin-bottom: 64px;
+        margin-top: 64px;
+    }
+}

@@ -23,7 +23,7 @@ export class HomePage implements OnInit {
       name: 'Work order 2',
       internalRef: 'IJSWERWXDWER',
       dateOpened: '2022-10-15',
-      status: 'Open',
+      status: 'Close',
       appRef: 'XXX-XXX-XXX'
     },
     {
@@ -61,5 +61,8 @@ export class HomePage implements OnInit {
 
   viewDetails(workOrder) {
     this.router.navigate(['/workorders/view', workOrder]);
+  }
+
+  searchResult(result) {
   }
 }
