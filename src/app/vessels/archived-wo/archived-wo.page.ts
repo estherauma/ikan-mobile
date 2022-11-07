@@ -10,14 +10,13 @@ export class ArchivedWoPage implements OnInit {
   @Input() vessel: any;
   @Input() workOrders: any;
 
-  pageTitle = 'Vessel Work Orders';
+  pageTitle = 'Archived Work Orders';
 
   constructor(
     public sharedMethods: SharedmethodsService
   ) { }
 
   async ngOnInit() {
-    console.log(this.vessel);
     console.log(this.workOrders);
   }
 
