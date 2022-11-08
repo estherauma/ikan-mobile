@@ -18,14 +18,14 @@ export class SearchComponent implements OnInit {
   @Output()
   searchResult: EventEmitter<any> = new EventEmitter<any>();
 
-  ngOnInit() {}
+  ngOnInit() { }
 
-  onSearchTextChanged(data){
+  onSearchTextChanged(data) {
     const value = data.detail.value.trim();
-    
+
     const filtered = this.searchDataSet.filter(data => {
       const currentProperty = this.searchProperty ? this.searchProperty : "name";
-      return data[currentProperty].toString().toLowerCase() === value.toString().toLowerCase()
+      return data[currentProperty].toString().toLowerCase().indexOf(value.toString().toLowerCase()) > -1
     });
 
     this.searchResult.emit(filtered)
