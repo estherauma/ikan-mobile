@@ -69,4 +69,8 @@ export class CompanyPage implements OnInit {
   viewDetails(payment){
     this.router.navigate(['payments/view/details', payment]);
   }
+
+  newPayment() {
+    this.router.navigate(['payments/create']);
+  }
 }

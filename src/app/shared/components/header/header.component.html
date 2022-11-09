@@ -2,8 +2,14 @@
   <ion-toolbar>
     <ion-buttons slot="start">
       <ion-back-button *ngIf="isBackButton" defaultHref="" color="primary" text="" icon="arrow-back-outline"></ion-back-button>
-      <ion-menu-button *ngIf="isMenuButton"></ion-menu-button>
     </ion-buttons>
+    
     <ion-title>{{pageTitle}}</ion-title>
+
+    <ion-buttons slot="end">
+      <ion-menu-button *ngIf="isMenuButton" slot="end"></ion-menu-button>
+    </ion-buttons>
   </ion-toolbar>
 </ion-header>
+
+
