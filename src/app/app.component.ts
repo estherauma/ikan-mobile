@@ -14,7 +14,7 @@ import { PluginListenerHandle } from '@capacitor/core';
 export class AppComponent implements OnInit, OnDestroy {
   public appPages = [];
 
-  networkListener: PluginListenerHandle
+  networkListener: PluginListenerHandle;
 
   constructor(
     public contentService: ContentService,
