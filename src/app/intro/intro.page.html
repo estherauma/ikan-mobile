@@ -1,0 +1,29 @@
+<swiper 
+[slidesPerView]="1" 
+[spaceBetween]="10" 
+[navigation]="true"
+[pagination]="{ clickable: true }"
+#intro
+  >
+  <ng-template class="slide-content" *ngFor="let slide of slides, let i = index" swiperSlide>
+    <div class="back-skip-btns">
+      <button *ngIf="i !== 0" (click)="onBack()">BACK</button>
+      <button *ngIf="i !== 3" (click)="onSkip()">SKIP</button>
+    </div>
+    <div class="logo-container">
+      <ion-thumbnail class="logo">
+        <ion-img [src]=""></ion-img>
+      </ion-thumbnail>
+    </div>
+    <ion-text>
+      <h1 class="title">{{slide.title}}</h1>
+    </ion-text>
+    <ion-text>
+      <p class="description">{{slide.description}}</p>
+    </ion-text>
+    <div class="next-finish-btns">
+      <button *ngIf="i !== 3" (click)="onNext()" >Next</button>
+      <button *ngIf="i === 3" (click)="onFinished()" >Finished</button>
+    </div>
+  </ng-template>
+</swiper>
