@@ -4,8 +4,7 @@ import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
 const routes: Routes = [
   {
     path: '',
-    // redirectTo: 'auth/login-method',
-    redirectTo:'dashbaord/worker',
+    redirectTo: 'auth/login-method',
     pathMatch: 'full'
   },
   {
@@ -117,20 +116,24 @@ const routes: Routes = [
     loadChildren: () => import('./contracts/home/home.module').then( m => m.HomePageModule)
   },
   {
-    path: 'dashbaord/indonesianagent',
+    path: 'dashboard/indonesianagent',
     loadChildren: () => import('./dashboard/indonesianagent/indonesianagent.module').then( m => m.IndonesianagentPageModule)
   },
   {
-    path: 'dashbaord/vesselowner',
+    path: 'dashboard/vesselowner',
     loadChildren: () => import('./dashboard/vesselowner/vesselowner.module').then( m => m.VesselownerPageModule)
   },
   {
-    path: 'dashbaord/worker',
+    path: 'dashboard/worker',
     loadChildren: () => import('./dashboard/worker/worker.module').then( m => m.WorkerPageModule)
   },
   {
-    path: 'dashbaord/taiwaneseagent',
+    path: 'dashboard/taiwaneseagent',
     loadChildren: () => import('./dashboard/taiwaneseagent/taiwaneseagent.module').then( m => m.TaiwaneseagentPageModule)
+  },
+  {
+    path: 'dashboard/buyer',
+    loadChildren: () => import('./dashboard/buyer/buyer.module').then( m => m.BuyerPageModule)
   }
 ];
 

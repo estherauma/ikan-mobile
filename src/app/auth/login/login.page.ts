@@ -3,6 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { MenuController } from '@ionic/angular';
+import { AuthService } from 'src/app/services/auth/auth.service';
 import { BaseformPage } from 'src/app/shared/components/baseform/baseform.page';
 import { ApiService } from 'src/app/shared/services/api/api.service';
 import { ContentService } from 'src/app/shared/services/content/content.service';
@@ -22,7 +23,8 @@ export class LoginPage extends BaseformPage implements OnInit {
     public menuCtrl: MenuController,
     public apiServices: ApiService,
     public sharedMethods: SharedmethodsService,
-    public router: Router
+    public router: Router,
+    public authService: AuthService
   ) {
     super(contentService);
     const pageData = this.contentService.getLoginPageData();
@@ -67,9 +69,9 @@ export class LoginPage extends BaseformPage implements OnInit {
     const helpScreens = await this.sharedMethods.readDataFromStorage(StorageKeys.isFirstLogin);
     // TODO: Once we have helpscrens, handle this logic well
     if (!helpScreens){
-      this.router.navigate(['workorders/home']);
+      this.router.navigate([this.authService.getCurrentUserBaseUrlFromRole('')]);
     } else {
-      this.router.navigate(['workorders/home']);
+      this.router.navigate([this.authService.getCurrentUserBaseUrlFromRole('tony')]);
     }
   }
 }
