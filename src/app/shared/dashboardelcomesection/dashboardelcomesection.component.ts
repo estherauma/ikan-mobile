@@ -7,9 +7,9 @@ import { Component, Input, OnInit } from '@angular/core';
 })
 export class DashboardelcomesectionComponent implements OnInit {
 
-  @Input() name: string
-  @Input() message: string
-  @Input() link: string
+  @Input() name: string;
+  @Input() message: string;
+  @Input() link: string;
 
   constructor() { }
 
