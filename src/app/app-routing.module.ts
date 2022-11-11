@@ -134,6 +134,10 @@ const routes: Routes = [
   {
     path: 'dashboard/buyer',
     loadChildren: () => import('./dashboard/buyer/buyer.module').then( m => m.BuyerPageModule)
+  },
+  {
+    path: 'feedbackdashboard/home',
+    loadChildren: () => import('./feedbackdashboard/home/home.module').then( m => m.HomePageModule)
   }
 ];
 
