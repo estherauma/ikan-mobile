@@ -16,9 +16,9 @@ export class IntroPage implements OnInit {
   @ViewChild('intro', { static: false }) intro: SwiperComponent | undefined;
 
   slides = Array(4).fill({
-    title: "Slide title",
-    description: "Next screen feugiat id volutpat eu, laoreet ac orci. Phasellus sodales feugiat luctus. "
-  })
+    title: 'Slide title',
+    description: 'Next screen feugiat id volutpat eu, laoreet ac orci. Phasellus sodales feugiat luctus. '
+  });
 
   constructor(
     public router: Router
@@ -37,11 +37,11 @@ export class IntroPage implements OnInit {
   }
 
   onSkip() {
-    this.router.navigate(['/workorders/home'])
+    this.router.navigate(['/workorders/home']);
   }
 
   onFinished() {
-    this.router.navigate(['/workorders/home'])
+    this.router.navigate(['/workorders/home']);
   }
 
 }
