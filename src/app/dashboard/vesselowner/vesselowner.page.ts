@@ -1,0 +1,25 @@
+import { Component, OnInit } from '@angular/core';
+
+@Component({
+  selector: 'app-vesselowner',
+  templateUrl: './vesselowner.page.html',
+  styleUrls: ['./vesselowner.page.scss'],
+})
+export class VesselownerPage implements OnInit {
+
+  sLists = [
+    {title: 'Work Orders'},
+    {title: 'Vessels'},
+    {title: 'Agents'},
+    {title: 'Recruits'},
+    {title: 'Contracts'},
+    {title: 'Payments'}
+  ];
+
+  constructor() { }
+
+  ngOnInit() {
+  }
+
+
+}

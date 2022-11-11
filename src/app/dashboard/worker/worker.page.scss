@@ -1,0 +1,42 @@
+
+ion-content{
+    --ion-background-color:#F5F5F5;
+}
+ion-card{
+    --ion-background-color:#ffffff;
+}
+.user-notification {
+    padding: 16px;
+    display: flex;
+    justify-content: space-between;
+    padding-top: 16px;
+    padding-bottom: 16px;
+
+    h1 {
+        line-height: 1.5;
+    }
+
+    .notification-icon {
+        zoom: 2;
+        margin-top: 8px;
+    }
+
+    .user-section {
+        display: flex;
+        flex: 1;
+        align-items: center;
+
+        .user-icon {
+            zoom: 5;
+        }
+
+        div p {
+            margin-top: 4px !important;
+        }
+
+        div h1 {
+            margin-bottom: 4px !important;
+            font-weight: bold;
+        }
+    }
+}
