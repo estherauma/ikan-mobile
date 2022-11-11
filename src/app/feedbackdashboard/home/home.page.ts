@@ -6,14 +6,12 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./home.page.scss'],
 })
 export class HomePage implements OnInit {
-  pageTitle = "Feedback Dashboard"
-  constructor() { }
-
+  pageTitle = 'Feedback Dashboard';
   dataset = {
-    chartType: "doughnut",
-    title: "Vessels",
+    chartType: 'doughnut',
+    title: 'Vessels',
     datasets: [{
-      label: "Bar chart",
+      label: 'Bar chart',
       data: [65, 59, 80],
       backgroundColor: [
         'rgba(255, 99, 132, 0.5)',
@@ -21,14 +19,14 @@ export class HomePage implements OnInit {
         'rgba(255, 206, 86, 0.2)',
       ],
     }]
-  }
+  };
 
-  vercelStats = this.dataset
-  recrutersData = this.dataset
-  paymentsData = this.dataset
+  vercelStats = this.dataset;
+  recrutersData = this.dataset;
+  paymentsData = this.dataset;
   trainingData = {
-    chartType: "bar",
-    title: "Training",
+    chartType: 'bar',
+    title: 'Training',
     datasets: [{
       label: 'My First Dataset',
       data: [65, 59, 80],
@@ -45,9 +43,11 @@ export class HomePage implements OnInit {
       ],
       borderWidth: 1
     }],
-    labels: ["one", "two", "three"],
+    labels: ['one', 'two', 'three'],
     chartHeight: 400
-  }
+  };
+
+  constructor() { }
 
 
   ngOnInit() {

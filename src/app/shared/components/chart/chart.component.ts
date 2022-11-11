@@ -1,32 +1,28 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { AfterViewInit, Component, Input, OnInit } from '@angular/core';
 import { v4 as uuidv4 } from 'uuid';
 import { Chart, registerables } from 'chart.js';
 Chart.register(...registerables);
 
-interface IDataset {
-  label: string, 
-  data: string|number[], 
-  backgroundColor: string []
-}
 
 @Component({
   selector: 'app-chart',
   templateUrl: './chart.component.html',
   styleUrls: ['./chart.component.scss'],
 })
-export class ChartComponent implements OnInit {
-  chartId = uuidv4();
+export class ChartComponent implements OnInit, AfterViewInit {
+
   @Input() chartType;
-  @Input() chartLabels: string[] = []
-  @Input() chartDatasets: any[] = []
-  @Input() chartOptions = {}
-  @Input() chartHeight: number|string = "100%"
+  @Input() chartLabels: string[] = [];
+  @Input() chartDatasets: any[] = [];
+  @Input() chartOptions = {};
+  @Input() chartHeight: number|string = '100%';
+  chartId = uuidv4();
 
   public chart: any;
 
   constructor() { }
 
-  ngOnInit() { 
+  ngOnInit() {
   }
 
   ngAfterViewInit(){
@@ -40,15 +36,15 @@ export class ChartComponent implements OnInit {
 
   createChart({ id, type, labels, datasets }){
     this.chart = new Chart(id, {
-      type: type,
+      type,
 
       data: {
         labels,
 	       datasets
-      }, 
+      },
       options: {
         ...this.chartOptions
-      }     
+      }
     });
   }
 }
