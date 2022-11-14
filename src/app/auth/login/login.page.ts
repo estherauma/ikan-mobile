@@ -8,7 +8,7 @@ import { BaseformPage } from 'src/app/shared/components/baseform/baseform.page';
 import { ApiService } from 'src/app/shared/services/api/api.service';
 import { ContentService } from 'src/app/shared/services/content/content.service';
 import { SharedmethodsService } from 'src/app/shared/services/sharedmethods/sharedmethods.service';
-import { LoginSuccessReponse, StorageKeys } from 'src/app/shared/types/api-types';
+import { LoginSuccessReponse, StorageKeys, UserRole } from 'src/app/shared/types/api-types';
 
 @Component({
   selector: 'app-login',
@@ -71,7 +71,8 @@ export class LoginPage extends BaseformPage implements OnInit {
     if (!helpScreens){
       this.router.navigate([this.authService.getCurrentUserBaseUrlFromRole('')]);
     } else {
-      this.router.navigate([this.authService.getCurrentUserBaseUrlFromRole('tony')]);
+      // TODO: user role from backend
+      this.router.navigate([this.authService.getCurrentUserBaseUrlFromRole(UserRole.buyer)]);
     }
   }
 }

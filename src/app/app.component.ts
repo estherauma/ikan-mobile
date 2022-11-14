@@ -47,7 +47,8 @@ export class AppComponent implements OnInit, OnDestroy {
     this.sharedMethods.readDataFromStorage(StorageKeys.apiToken)
       .then((value) => {
         if (value != null) {
-          this.router.navigate([this.authService.getCurrentUserBaseUrlFromRole(UserRole.buyer)]);
+          // TODO: user role from backend
+          this.router.navigate([this.authService.getCurrentUserBaseUrlFromRole(UserRole.worker)]);
         }
       });
   }

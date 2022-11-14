@@ -2,8 +2,8 @@
 </app-header>
 
 <ion-content>
-  <app-dashboardelcomesection message="Welcome back. See notifications for latest updates."
-    name="Tony" link=""></app-dashboardelcomesection>
+  <app-dashboardelcomesection message="Welcome back. See notifications for latest updates." name="Tony" link="">
+  </app-dashboardelcomesection>
   <div>
     <ion-card>
       <ion-card-content>
@@ -41,7 +41,7 @@
       </ion-card-content>
     </ion-card>
   </div>
-  <div style="background-color: #F5F5F5;" class="ion-padding-top">
+  <div style="background-color: #F5F5F5;" class="ion-padding-top ion-padding-bottom">
     <ion-card *ngFor="let dashboardStat of dashboardStats">
       <ion-card-content>
         <ion-card-title>{{dashboardStat.title}}</ion-card-title>
@@ -77,6 +77,72 @@
         </ion-grid>
       </ion-card-content>
     </ion-card>
+    <ion-card>
+      <ion-card-content>
+        <ion-grid class="ion-margin-bottom">
+          <ion-row>
+            <ion-col size="3">
+              <ion-thumbnail class="reports-image">
+                <ion-img [src]=""></ion-img>
+              </ion-thumbnail>
+            </ion-col>
+            <ion-col size="9" class="ion-align-self-end">
+              <ion-card-title>Reports</ion-card-title>
+            </ion-col>
+          </ion-row>
+        </ion-grid>
+        <ion-grid>
+          <ion-row class="ion-align-items-center reports-card-item">
+            <ion-col size="2">
+              <ion-thumbnail>
+                <ion-img [src]=""></ion-img>
+              </ion-thumbnail>
+            </ion-col>
+            <ion-col class="10">
+              <ion-card-subtitle>Recent Report Name 1</ion-card-subtitle>
+              <ion-text>
+                <p>xx/xx/xxxx 14:07</p>
+              </ion-text>
+            </ion-col>
+          </ion-row>
+          <ion-row class="ion-align-items-center reports-card-item">
+            <ion-col size="2">
+              <ion-thumbnail>
+                <ion-img [src]=""></ion-img>
+              </ion-thumbnail>
+            </ion-col>
+            <ion-col class="10">
+              <ion-card-subtitle>Recent Report Name 1</ion-card-subtitle>
+              <ion-text>
+                <p>xx/xx/xxxx 14:07</p>
+              </ion-text>
+            </ion-col>
+          </ion-row>
+          <ion-row class="ion-align-items-center reports-card-item">
+            <ion-col size="2">
+              <ion-thumbnail>
+                <ion-img [src]=""></ion-img>
+              </ion-thumbnail>
+            </ion-col>
+            <ion-col class="10">
+              <ion-card-subtitle>Recent Report Name 1</ion-card-subtitle>
+              <ion-text>
+                <p>xx/xx/xxxx 14:07</p>
+              </ion-text>
+            </ion-col>
+          </ion-row>
+          <ion-row>
+            <ion-col size="12">
+              <a routerLink="">All Reports</a>
+            </ion-col>
+            <ion-col size="12">
+              <ion-button (click)="generateNewReport()">
+                Generate New Report
+              </ion-button>
+            </ion-col>
+          </ion-row>
+        </ion-grid>
+      </ion-card-content>
+    </ion-card>
   </div>
-
 </ion-content>

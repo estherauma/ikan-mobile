@@ -40,4 +40,6 @@ export class BuyerPage implements OnInit {
   ngOnInit() {
   }
 
+  generateNewReport(){}
+
 }
