@@ -59,8 +59,8 @@ export class HomePage implements OnInit {
   demandLetters = [...this.filterDataSet];
 
   filterOptions = [
-    {name:'Demand letter two', value:'demand letter one'},
-    {name:'Demand letter one', value:'demand letter two'}
+    {title:'closed', value:'closed'},
+    {title:'open', value:'open'}
   ];
 
   constructor(

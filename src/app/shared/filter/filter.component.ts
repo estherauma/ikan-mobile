@@ -32,9 +32,4 @@ export class FilterComponent implements OnInit {
 
     this.filterResult.emit(filtered);
   }
-
-  // options = [
-  //   {name:'One', value:'one'},
-  //   {name:'Two', value:'two'}
-  // ];
 }
