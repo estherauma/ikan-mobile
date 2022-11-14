@@ -1,0 +1,45 @@
+<app-header></app-header>
+
+<ion-content>
+  <ion-card>
+    <ion-card-content>
+      <ion-grid>
+        <ion-row>
+          <ion-col size="12" class="" style="margin-left: 10px;">
+            <ion-icon size="large" name="expand-outline"></ion-icon>
+            <ion-card-title>{{agent.name}}</ion-card-title>
+            <ion-text> Contact Name: {{agent.contact}} </ion-text>
+            <ion-text> {{agent.email}} </ion-text> <br>
+            <ion-text> {{agent.tel}} </ion-text>
+          </ion-col>
+
+          <br>
+
+          <ion-col style="margin-top: 10px;">
+            <ion-text>
+              <h5 class="addr">{{agent.addrBuilding}} </h5>
+              <h5 class="addr">{{agent.addrRoad}} </h5>
+              <h5 class="addr">{{agent.addrTown}} </h5>
+              <h5 class="addr">{{agent.addrCounty}} </h5>
+              <h5 class="addr">{{agent.addrZip}} </h5>
+              <h5 class="addr">{{agent.addrCountry}} </h5>
+            </ion-text>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+    </ion-card-content>
+
+  </ion-card>
+
+  <ion-card>
+    <ion-card-header>
+      <ion-card-subtitle>Contract</ion-card-subtitle>
+    </ion-card-header>
+    <ion-card-content>
+      <ion-button  ion-button class="upload-button" (click)="uploadContract()">
+        <ion-icon name="expand-outline"></ion-icon>
+        <ion-label class="text">Upload contract/agreement</ion-label>
+      </ion-button>
+    </ion-card-content>
+  </ion-card>
+</ion-content>

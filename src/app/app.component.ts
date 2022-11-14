@@ -13,7 +13,6 @@ import { PluginListenerHandle } from '@capacitor/core';
 })
 export class AppComponent implements OnInit, OnDestroy {
   public appPages = [];
-
   networkListener: PluginListenerHandle;
 
   constructor(
@@ -45,11 +44,9 @@ export class AppComponent implements OnInit, OnDestroy {
     this.sharedMethods.readDataFromStorage(StorageKeys.apiToken)
       .then((value) => {
         if (value != null) {
-          this.router.navigate(['/payments/view/details']);
-
+          this.router.navigate(['workorders/home']);
         }
       });
-
   }
 
   logOut() {
