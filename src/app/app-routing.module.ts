@@ -131,6 +131,10 @@ const routes: Routes = [
     path: 'payments/create',
     loadChildren: () => import('./payments/create/create.module').then( m => m.CreatePageModule)
   },
+  {
+    path: 'feedbackdashboard/home',
+    loadChildren: () => import('./feedbackdashboard/home/home.module').then( m => m.HomePageModule)
+  }
 ];
 
 @NgModule({
