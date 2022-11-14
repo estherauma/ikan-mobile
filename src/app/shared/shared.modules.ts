@@ -8,6 +8,7 @@ import { InviteCodeInputComponent } from './components/invite-code-input/invite-
 import { SearchComponent } from './components/search/search.component';
 import { DashboardelcomesectionComponent } from './dashboardelcomesection/dashboardelcomesection.component';
 import { ChartComponent } from './components/chart/chart.component';
+import { FilterComponent } from './filter/filter.component';
 
 
 @NgModule({
@@ -23,7 +24,8 @@ import { ChartComponent } from './components/chart/chart.component';
     InviteCodeInputComponent,
     SearchComponent,
     DashboardelcomesectionComponent,
-    ChartComponent
+    ChartComponent,
+    FilterComponent
   ],
   exports: [
     FormComponent,
@@ -31,7 +33,8 @@ import { ChartComponent } from './components/chart/chart.component';
     InviteCodeInputComponent,
     SearchComponent,
     DashboardelcomesectionComponent,
-    ChartComponent
+    ChartComponent,
+    FilterComponent
   ]
 })
 
