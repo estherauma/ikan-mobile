@@ -7,6 +7,7 @@ import { HeaderComponent } from './components/header/header.component';
 import { InviteCodeInputComponent } from './components/invite-code-input/invite-code-input.component';
 import { SearchComponent } from './components/search/search.component';
 import { ChartComponent } from './components/chart/chart.component';
+import { FilterComponent } from './filter/filter.component';
 
 
 @NgModule({
@@ -21,14 +22,16 @@ import { ChartComponent } from './components/chart/chart.component';
     HeaderComponent,
     InviteCodeInputComponent,
     SearchComponent,
-    ChartComponent
+    ChartComponent,
+    FilterComponent
   ],
   exports: [
     FormComponent,
     HeaderComponent,
     InviteCodeInputComponent,
     SearchComponent,
-    ChartComponent
+    ChartComponent,
+    FilterComponent
   ]
 })
 
