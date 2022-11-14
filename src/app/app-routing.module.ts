@@ -40,10 +40,6 @@ const routes: Routes = [
     loadChildren: () => import('./workorders/view/view.module').then( m => m.ViewPageModule)
   },
   {
-    path: 'profile',
-    loadChildren: () => import('./accounts/profile/profile.module').then( m => m.ProfilePageModule)
-  },
-  {
     path: 'vessels/home',
     loadChildren: () => import('./vessels/home/home.module').then( m => m.HomePageModule)
   },
@@ -116,8 +112,32 @@ const routes: Routes = [
     loadChildren: () => import('./contracts/home/home.module').then( m => m.HomePageModule)
   },
   {
+    path: 'profile',
+    loadChildren: () => import('./accounts/profile/profile.module').then( m => m.ProfilePageModule)
+  },
+  {
+    path: 'payments/home',
+    loadChildren: () => import('./payments/home/home.module').then( m => m.HomePageModule)
+  },
+  {
+    path: 'payments/view/company',
+    loadChildren: () => import('./payments/view/company/company.module').then( m => m.CompanyPageModule)
+  },
+  {
+    path: 'payments/view/details',
+    loadChildren: () => import('./payments/view/details/details.module').then( m => m.DetailsPageModule)
+  },
+  {
+    path: 'payments/create',
+    loadChildren: () => import('./payments/create/create.module').then( m => m.CreatePageModule)
+  },
+  {
     path: 'feedbackdashboard/home',
     loadChildren: () => import('./feedbackdashboard/home/home.module').then( m => m.HomePageModule)
+  },
+  {
+    path: 'notifications/home',
+    loadChildren: () => import('./notifications/home/home.module').then( m => m.HomePageModule)
   }
 ];
 

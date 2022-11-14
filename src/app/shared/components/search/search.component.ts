@@ -6,15 +6,9 @@ import { Component, Input, OnInit, Output, EventEmitter } from '@angular/core';
   styleUrls: ['./search.component.scss'],
 })
 export class SearchComponent implements OnInit {
-
-  @Input()
-  searchDataSet: any[] = [];
-
-  @Input()
-  searchProperty = '';
-
-  @Output()
-  searchResult: EventEmitter<any> = new EventEmitter<any>();
+  @Input() searchDataSet: any[] = [];
+  @Input() searchProperty: string;
+  @Output() searchResult: EventEmitter<any> = new EventEmitter<any>();
 
   constructor() { }
 

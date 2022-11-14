@@ -3,7 +3,10 @@
 </ion-toolbar>
 
 <div class="inner-content">
-  <app-form [tunaFormGroup]="pageFormGroup" [tunaFormquestions]="formQuestions" [submitButtonText]="submitButtonText"
+  <app-form
+    [tunaFormGroup]="pageFormGroup"
+    [tunaFormquestions]="formQuestions"
+    [submitButtonText]="submitButtonText"
     (formValue)="onSubmit($event)">
   </app-form>
 </div>

@@ -14,7 +14,7 @@ import { PluginListenerHandle } from '@capacitor/core';
 export class AppComponent implements OnInit, OnDestroy {
   public appPages = [];
 
-  networkListener: PluginListenerHandle
+  networkListener: PluginListenerHandle;
 
   constructor(
     public contentService: ContentService,
@@ -45,7 +45,7 @@ export class AppComponent implements OnInit, OnDestroy {
     this.sharedMethods.readDataFromStorage(StorageKeys.apiToken)
       .then((value) => {
         if (value != null) {
-          this.router.navigate(['workorders/home']);
+          this.router.navigate(['/payments/view/details']);
 
         }
       });
