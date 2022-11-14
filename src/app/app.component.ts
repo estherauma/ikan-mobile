@@ -14,7 +14,6 @@ import { AuthService } from './services/auth/auth.service';
 })
 export class AppComponent implements OnInit, OnDestroy {
   public appPages = [];
-
   networkListener: PluginListenerHandle;
 
   constructor(

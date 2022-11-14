@@ -156,6 +156,14 @@ const routes: Routes = [
     loadChildren: () => import('./feedbackdashboard/home/home.module').then( m => m.HomePageModule)
   },
   {
+    path: 'agents/home',
+    loadChildren: () => import('./agents/home/home.module').then( m => m.HomePageModule)
+  },
+  {
+    path: 'agents/details',
+    loadChildren: () => import('./agents/details/details.module').then( m => m.DetailsPageModule)
+  },
+  {
     path: 'notifications/home',
     loadChildren: () => import('./notifications/home/home.module').then( m => m.HomePageModule)
   }
