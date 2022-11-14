@@ -7,8 +7,8 @@ import { Component, Input, OnInit } from '@angular/core';
 })
 export class HeaderComponent implements OnInit {
   @Input() pageTitle: string;
-  @Input() isBackButton: boolean = false;
-  @Input() isMenuButton: boolean = true;
+  @Input() isBackButton = false;
+  @Input() isMenuButton = true;
 
   constructor() { }
 
