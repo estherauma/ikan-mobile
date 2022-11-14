@@ -47,8 +47,6 @@ export class ViewPage implements OnInit {
     });
     modal.present();
     modal.onDidDismiss().then(() => {
-
     });
   }
-
 }

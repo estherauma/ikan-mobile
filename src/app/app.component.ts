@@ -13,8 +13,7 @@ import { PluginListenerHandle } from '@capacitor/core';
 })
 export class AppComponent implements OnInit, OnDestroy {
   public appPages = [];
-
-  networkListener: PluginListenerHandle
+  networkListener: PluginListenerHandle;
 
   constructor(
     public contentService: ContentService,
@@ -46,10 +45,8 @@ export class AppComponent implements OnInit, OnDestroy {
       .then((value) => {
         if (value != null) {
           this.router.navigate(['workorders/home']);
-
         }
       });
-
   }
 
   logOut() {

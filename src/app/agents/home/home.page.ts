@@ -15,42 +15,36 @@ export class HomePage implements OnInit {
       contact: 'Cici Surname',
       email: 'surname@emailaddress.com',
       tel: '+44 789 123 123',
-      address: {
-        country: 'Uganda',
-        zipCode: '256',
-        county: 'County',
-        town: 'Name of town',
-        building: 'Building name',
-        road: '123 name of the road'
-      }
+      addrCountry: 'Uganda',
+      addrZip: '256',
+      addrCounty: 'County',
+      addrTown: 'Name of town',
+      addrBuilding: 'Building name',
+      addrRoad: '123 name of the road'
     },
     {
       name: 'Company Name',
       contact: 'Cici Surname',
       email: 'surname@emailaddress.com',
       tel: '+44 789 123 123',
-      address: {
-        country: 'Uganda',
-        zipCode: '256',
-        county: 'County',
-        town: 'Name of town',
-        building: 'Building name',
-        road: '123 name of the road'
-      }
+      addrCountry: 'Uganda',
+      addrZip: '256',
+      addrCounty: 'County',
+      addrTown: 'Name of town',
+      addrBuilding: 'Building name',
+      addrRoad: '123 name of the road'
     },
     {
       name: 'Company Name',
       contact: 'Cici Surname',
       email: 'surname@emailaddress.com',
       tel: '+44 789 123 123',
-      address: {
-        country: 'Uganda',
-        zipCode: '256',
-        county: 'County',
-        town: 'Name of town',
-        building: 'Building name',
-        road: '123 name of the road'
-      }
+      addrCountry: 'Uganda',
+      addrZip: '256',
+      addrCounty: 'County',
+      addrTown: 'Name of town',
+      addrBuilding: 'Building name',
+      addrRoad: '123 name of the road'
     }
   ];
   constructor(
@@ -66,4 +60,5 @@ export class HomePage implements OnInit {
   viewDetails(company) {
     this.router.navigate((['agents/details', company]));
   }
+
 }
