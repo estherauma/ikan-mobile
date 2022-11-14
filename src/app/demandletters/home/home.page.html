@@ -14,17 +14,12 @@
           <ion-row>
 
             <ion-col>
-              <ion-select style="border: 2px solid gray; border-radius:10px;" placeholder="All">
-                <ion-select-option value="apples">One</ion-select-option>
-                <ion-select-option value="oranges">Two</ion-select-option>
-              </ion-select>
+              <app-filter [options]="filterOptions" [filterDataSet]="filterDataSet" (filterResult)="filterResult($event)"></app-filter>
+
             </ion-col>
 
             <ion-col>
-              <ion-select style="border: 2px solid gray; border-radius:10px;" placeholder="All">
-                <ion-select-option value="apples">one</ion-select-option>
-                <ion-select-option value="oranges">two</ion-select-option>
-              </ion-select>
+              <app-filter [options]="filterOptions" [filterDataSet]="filterDataSet" (filterResult)="filterResult($event)"></app-filter>
             </ion-col>
 
           </ion-row>
