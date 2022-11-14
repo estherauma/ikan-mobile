@@ -134,6 +134,10 @@ const routes: Routes = [
   {
     path: 'feedbackdashboard/home',
     loadChildren: () => import('./feedbackdashboard/home/home.module').then( m => m.HomePageModule)
+  },
+  {
+    path: 'notifications/home',
+    loadChildren: () => import('./notifications/home/home.module').then( m => m.HomePageModule)
   }
 ];
 
