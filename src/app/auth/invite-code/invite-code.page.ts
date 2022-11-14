@@ -8,7 +8,7 @@ import { Router } from '@angular/router';
 })
 export class InviteCodePage implements OnInit {
 
-  pageTitle = "Invite Code"
+  pageTitle = 'Invite Code';
 
   constructor(
     public router: Router
@@ -18,7 +18,7 @@ export class InviteCodePage implements OnInit {
   }
 
   onLogin(){
-    this.router.navigate(["/intro"])
+    this.router.navigate(['/intro']);
   }
 
   onSubmit() {
