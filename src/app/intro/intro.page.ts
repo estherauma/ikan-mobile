@@ -2,6 +2,7 @@ import { Component, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
 import { Router } from '@angular/router';
 import SwiperCore, { Navigation, Pagination, Scrollbar, A11y } from 'swiper';
 import { SwiperComponent } from 'swiper/angular';
+import { ContentService } from '../shared/services/content/content.service';
 
 SwiperCore.use([Navigation, Pagination, Scrollbar, A11y]);
 
@@ -15,14 +16,17 @@ export class IntroPage implements OnInit {
 
   @ViewChild('intro', { static: false }) intro: SwiperComponent | undefined;
 
-  slides = Array(4).fill({
-    title: 'Slide title',
-    description: 'Next screen feugiat id volutpat eu, laoreet ac orci. Phasellus sodales feugiat luctus. '
-  });
+  slides;
 
   constructor(
-    public router: Router
-  ) { }
+    public router: Router,
+    public contentService: ContentService
+  ) {
+
+    const pageData = this.contentService.getContentByPropertyName('introcontent');
+    this.slides = pageData?.data;
+
+  }
 
   ngOnInit() {
   }
