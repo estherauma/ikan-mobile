@@ -23,6 +23,7 @@ export class AppComponent implements OnInit, OnDestroy {
     this.contentService.setUpAppData();
     this.checkLoginStatus();
     this.contentService.menuContent.subscribe((data) => {
+      data.sort((a, b) => a.position - b.position);
       this.appPages = data;
     });
   }
