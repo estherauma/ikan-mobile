@@ -13,7 +13,6 @@ import { PluginListenerHandle } from '@capacitor/core';
 })
 export class AppComponent implements OnInit, OnDestroy {
   public appPages = [];
-
   networkListener: PluginListenerHandle;
 
   constructor(
@@ -49,7 +48,6 @@ export class AppComponent implements OnInit, OnDestroy {
 
         }
       });
-
   }
 
   logOut() {

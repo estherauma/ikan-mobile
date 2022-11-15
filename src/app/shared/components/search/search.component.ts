@@ -12,14 +12,12 @@ export class SearchComponent implements OnInit {
 
   constructor() { }
 
-
-
   ngOnInit() { }
 
-  onSearchTextChanged(data) {
-    const value = data.detail.value.trim();
+  onSearchTextChanged(eventData) {
+    const value = eventData.detail.value.trim();
 
-    const filtered = this.searchDataSet.filter(() => {
+    const filtered = this.searchDataSet.filter(data => {
       const currentProperty = this.searchProperty ? this.searchProperty : 'name';
       return data[currentProperty].toString().toLowerCase().indexOf(value.toString().toLowerCase()) > -1;
     });
