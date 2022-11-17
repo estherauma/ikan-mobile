@@ -112,6 +112,10 @@ const routes: Routes = [
     loadChildren: () => import('./contracts/home/home.module').then( m => m.HomePageModule)
   },
   {
+    path: 'intro',
+    loadChildren: () => import('./intro/intro.module').then( m => m.IntroPageModule)
+  },
+  {
     path: 'profile',
     loadChildren: () => import('./accounts/profile/profile.module').then( m => m.ProfilePageModule)
   },
