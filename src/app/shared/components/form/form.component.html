@@ -1,10 +1,8 @@
 <form [formGroup]="tunaFormGroup" (ngSubmit)="onSubmit($event)">
   <div *ngFor="let question of tunaFormquestions">
 
-
     <div [ngSwitch]="question.questionType">
       <div *ngSwitchCase="'textBox'">
-
         <ion-item *ngIf="question.displayquestion" lines="none">
           <ion-grid>
             <ion-row>
@@ -21,7 +19,6 @@
       </div>
 
       <div *ngSwitchCase="'password'">
-
         <ion-item *ngIf="question.displayquestion" lines="none">
           <ion-grid>
             <ion-row>
@@ -36,6 +33,59 @@
           </ion-grid>
         </ion-item>
       </div>
+
+      <div *ngSwitchCase="'number'">
+        <ion-item *ngIf="question.displayquestion" lines="none">
+          <ion-grid>
+            <ion-row>
+              <ion-col size="12">
+                <ion-label text-wrap> {{question.label}} </ion-label>
+              </ion-col>
+              <ion-col size="12">
+                <ion-input type="number" placeholder="Type here" formControlName="{{question.key}}"></ion-input>
+              </ion-col>
+
+            </ion-row>
+          </ion-grid>
+        </ion-item>
+      </div>
+
+      <div *ngSwitchCase="'select'">
+        <ion-item *ngIf="question.displayquestion" lines="none">
+          <ion-grid>
+            <ion-row>
+              <ion-col size="12">
+                <ion-label text-wrap> {{question.label}} </ion-label>
+              </ion-col>
+              <ion-col size="12">
+                <ion-select  formControlName="{{question.key }}" textWrap interface="action-sheet" placeholder="Please Select">
+                  <ion-select-option text-wrap *ngFor="let opt of question.options" value="{{opt.value}}">
+                    {{opt.name}}
+                  </ion-select-option>
+                </ion-select>
+              </ion-col>
+
+            </ion-row>
+          </ion-grid>
+        </ion-item>
+      </div>
+
+      <div *ngSwitchCase="'date'">
+        <ion-item *ngIf="question.displayquestion" lines="none">
+          <ion-grid >
+            <ion-row >
+              <ion-col size="12">
+                <ion-label text-wrap> {{question.label}} </ion-label>
+              </ion-col>
+              <ion-col size="12">
+                <ion-datetime  displayFormat="DDDD MMM D, YYYY" min="2015" max="2060" formControlName="{{question.key}}"
+                  value="" preferWheel="true" presentation="date"></ion-datetime>
+              </ion-col>
+            </ion-row>
+          </ion-grid>
+        </ion-item>
+      </div>
+
     </div>
   </div>
 

@@ -1,0 +1,17 @@
+<app-header [pageTitle] = "" [isBackButton]="true" [isMenuButton]="false"></app-header>
+
+<ion-content class="ion-padding">
+  <div class="logo-container ion-margin-bottom">
+    <ion-thumbnail class="logo">
+      <ion-img [src]=""></ion-img>
+    </ion-thumbnail>
+  </div>
+  <app-invite-code-input
+  (InputValue) = "inputValue($event)"
+  >   
+  </app-invite-code-input>
+  <ion-button class="ion-margin-top" (click)="onLogin()" expand="full">
+    Login
+  </ion-button>
+
+</ion-content>

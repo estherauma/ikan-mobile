@@ -16,7 +16,9 @@ export class BaseformPage implements OnInit {
 
   constructor( public contentService: ContentService) { }
 
-  ngOnInit() {}
+  ngOnInit() {
+    this.pageFormGroup = new FormGroup(this.group);
+  }
 
   //TODO: Set the pageTitle using this function for the different pages
   getPageTitle(pageData) { }

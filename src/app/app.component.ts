@@ -1,22 +1,24 @@
-import { Component } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { Preferences } from '@capacitor/preferences';
 import { ContentService } from './shared/services/content/content.service';
 import { SharedmethodsService } from './shared/services/sharedmethods/sharedmethods.service';
 import { StorageKeys } from './shared/types/api-types';
+import { PluginListenerHandle } from '@capacitor/core';
 
 @Component({
   selector: 'app-root',
   templateUrl: 'app.component.html',
   styleUrls: ['app.component.scss'],
 })
-export class AppComponent {
+export class AppComponent implements OnInit, OnDestroy {
   public appPages = [];
+  networkListener: PluginListenerHandle;
 
   constructor(
     public contentService: ContentService,
     public sharedMethods: SharedmethodsService,
-    public router: Router
+    public router: Router,
   ) {
     this.contentService.setUpAppData();
     this.checkLoginStatus();
@@ -25,15 +27,26 @@ export class AppComponent {
     });
   }
 
+  async ngOnInit() {
+    await this.sharedMethods.addNetworkEventListener((network => {
+        this.networkListener = network.networkListener;
+        if(network.connected){
+          return this.contentService.compareContent();
+        }
+    }));
+  }
+
+  ngOnDestroy() {
+    this.sharedMethods.removeNetworkEventListener(this.networkListener);
+  }
+
   checkLoginStatus() {
     this.sharedMethods.readDataFromStorage(StorageKeys.apiToken)
-    .then((value) => {
-      if (value != null) {
-        this.router.navigate(['workorders/home']);
-
-      }
-    });
-
+      .then((value) => {
+        if (value != null) {
+          this.router.navigate(['workorders/home']);
+        }
+      });
   }
 
   logOut() {
