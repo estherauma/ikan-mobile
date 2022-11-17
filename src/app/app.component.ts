@@ -3,8 +3,9 @@ import { Router } from '@angular/router';
 import { Preferences } from '@capacitor/preferences';
 import { ContentService } from './shared/services/content/content.service';
 import { SharedmethodsService } from './shared/services/sharedmethods/sharedmethods.service';
-import { StorageKeys } from './shared/types/api-types';
+import { StorageKeys, UserRole } from './shared/types/api-types';
 import { PluginListenerHandle } from '@capacitor/core';
+import { AuthService } from './services/auth/auth.service';
 
 @Component({
   selector: 'app-root',
@@ -19,6 +20,7 @@ export class AppComponent implements OnInit, OnDestroy {
     public contentService: ContentService,
     public sharedMethods: SharedmethodsService,
     public router: Router,
+    public authService: AuthService
   ) {
     this.contentService.setUpAppData();
     this.checkLoginStatus();
@@ -45,8 +47,8 @@ export class AppComponent implements OnInit, OnDestroy {
     this.sharedMethods.readDataFromStorage(StorageKeys.apiToken)
       .then((value) => {
         if (value != null) {
-          this.router.navigate(['']);
-
+          // TODO: user role from backend
+          this.router.navigate([this.authService.getCurrentUserBaseUrlFromRole(UserRole.worker)]);
         }
       });
   }
