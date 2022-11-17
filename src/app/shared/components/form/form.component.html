@@ -59,8 +59,8 @@
               </ion-col>
               <ion-col size="12">
                 <ion-select  formControlName="{{question.key }}" textWrap interface="action-sheet" placeholder="Please Select">
-                  <ion-select-option text-wrap *ngFor="let opt of question.options" value="{{opt.value}}">
-                    {{opt.name}}
+                  <ion-select-option text-wrap *ngFor="let opt of question.options.split(',')" value="{{opt.toLowerCase()}}">
+                    {{opt}}
                   </ion-select-option>
                 </ion-select>
               </ion-col>
@@ -86,12 +86,39 @@
         </ion-item>
       </div>
 
+      <div *ngSwitchCase="'pdfDocument'">
+        <ion-button (click)="takePicture()"><p>select image</p></ion-button>
+        <ion-item *ngIf="question.displayquestion" lines="none">
+          <ion-grid >
+            <ion-row>
+              <ion-col size="12">
+                <ion-label text-wrap> {{question.label}} </ion-label>
+              </ion-col>
+            </ion-row>
+            <ion-row *ngIf="selectedImages[question.key]" class="upload-wrapper">
+              <div>
+                <ion-icon style="color: red;" (click)="removeDocument(question.key)" name="trash-outline"></ion-icon>
+                <p>{{selectedImages[question.key].name}}</p>
+              </div>
+            </ion-row>
+            <ion-row *ngIf="!selectedImages[question.key]" class="upload-wrapper">
+              <div (click)="onUpload(question.key)">
+                <ion-icon name="document-text-outline"></ion-icon>
+                <p>Upload</p>
+              </div>
+            </ion-row>
+        
+          </ion-grid>
+        </ion-item>
+      </div>
+
     </div>
   </div>
 
   <ion-grid class="buttons">
     <ion-col size="5">
-      <ion-button expand="block" type="submit" class="submit-button" [disabled]="!tunaFormGroup.valid "> {{submitButtonText | uppercase}} </ion-button>
+      <ion-button expand="block" type="submit" class="submit-button"> {{submitButtonText | uppercase}} </ion-button>
+      <!-- [disabled]="!tunaFormGroup.valid" -->
     </ion-col>
   </ion-grid>
 </form>

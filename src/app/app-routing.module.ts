@@ -146,6 +146,10 @@ const routes: Routes = [
   {
     path: 'notifications/home',
     loadChildren: () => import('./notifications/home/home.module').then( m => m.HomePageModule)
+  },
+  {
+    path: 'profiles/taiwanese',
+    loadChildren: () => import('./profiles/taiwanese/taiwanese.module').then( m => m.TwaiwanesePageModule)
   }
 ];
 

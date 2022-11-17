@@ -11,12 +11,12 @@ import { DemandLetter } from '../home/home.page';
   styleUrls: ['./view.page.scss'],
 })
 export class ViewPage implements OnInit {
-  pageTitle = "View Demand Letter"
-  demandLetter: DemandLetter
-  ifReviewDemandLetter: boolean = false;
-  cooperationAgreementFile: File | null = null
+  pageTitle = 'View Demand Letter';
+  demandLetter: DemandLetter;
+  ifReviewDemandLetter = false;
+  cooperationAgreementFile: File | null = null;
 
-  workOrders = []
+  workOrders = [];
 
   constructor(
     private activatedRoute: ActivatedRoute,
@@ -27,33 +27,33 @@ export class ViewPage implements OnInit {
 
   ngOnInit() {
     const demandLetter = JSON.parse(this.activatedRoute.snapshot.paramMap.get('demandLetter'));
-    this.pageTitle = demandLetter.name
-    this.demandLetter = demandLetter
+    this.pageTitle = demandLetter.name;
+    this.demandLetter = demandLetter;
 
     if(demandLetter.workOrders){
-      this.workOrders = demandLetter.workOrders
+      this.workOrders = demandLetter.workOrders;
     }
   }
 
   async addWorkOrder() {
-    this.router.navigate(["workorders/select", { demandLetter: JSON.stringify(this.demandLetter) }])
+    this.router.navigate(['workorders/select', { demandLetter: JSON.stringify(this.demandLetter) }]);
   }
 
   onReviewDemandLetter() {
-    this.ifReviewDemandLetter = true
+    this.ifReviewDemandLetter = true;
   }
 
   onSendDemandLetter() {
-    this.router.navigate(["demandletters/send", this.demandLetter])
+    this.router.navigate(['demandletters/send', this.demandLetter]);
   }
 
   async uploadCopAgreement() {
     const chosencooperationAgreement = await this.chooser.choseFile();
-    this.cooperationAgreementFile = chosencooperationAgreement
+    this.cooperationAgreementFile = chosencooperationAgreement;
   }
 
   showReviewButton() {
-    return !this.ifReviewDemandLetter && this.workOrders.length && this.cooperationAgreementFile
+    return !this.ifReviewDemandLetter && this.workOrders.length && this.cooperationAgreementFile;
   }
 
 }

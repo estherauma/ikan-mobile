@@ -1,0 +1,23 @@
+.upload-wrapper {
+    margin-top: 15px;
+    margin-bottom: 20px;
+    justify-content: space-between;
+  
+    div {
+      width: 48%;
+      text-align: center;
+      background-color: #ecebe6;
+      border-radius: 40px;
+  
+      ion-icon {
+        font-size: 2rem;
+        margin-top: 25px;
+        margin-bottom: 0px;
+      }
+      p {
+        font-size: 0.8rem;
+        margin-top: 5px;
+        color: var(--ion-color-text-black);
+      }
+    }
+  }
