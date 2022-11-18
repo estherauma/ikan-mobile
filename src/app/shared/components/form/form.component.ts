@@ -1,7 +1,6 @@
 import { Component, OnInit, Output, EventEmitter, Input } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { UploadService } from 'src/app/services/upload/upload.service';
-import { Camera, CameraResultType } from '@capacitor/camera';
 
 @Component({
   selector: 'app-form',
@@ -19,9 +18,10 @@ export class FormComponent implements OnInit {
   @Output() formValue = new EventEmitter<any>();
 
   selectedImages = {};
+  selectedDocuments = {};
 
   constructor(
-    public chooser: UploadService,
+    public uploadService: UploadService,
   ) { }
 
   ngOnInit() {}
@@ -31,24 +31,25 @@ export class FormComponent implements OnInit {
   }
 
   async onUpload(key){
-    const file = await this.chooser.choseFile();
+    const file = await this.uploadService.choseFile();
 
     this.tunaFormGroup.patchValue({
       [key]: file
     });
 
-    this.selectedImages = {...this.selectedImages, [key]:file };
-
+    this.selectedDocuments = {...this.selectedDocuments, [key]:file };
   }
 
-  async takePicture() {
-    const image = await Camera.getPhoto({
-      allowEditing: true,
-      resultType: CameraResultType.DataUrl,
-    });
+  async takePicture(key){
+    const picture = await this.uploadService.takePicture();
+    this.selectedImages = {...this.selectedImages, [key]:picture };
   }
 
   removeDocument(key){
+    delete this.selectedDocuments[key];
+  }
+
+  removePicture(key){
     delete this.selectedImages[key];
   }
 }

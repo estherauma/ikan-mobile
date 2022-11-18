@@ -1,4 +1,6 @@
 import { Injectable } from '@angular/core';
+import { Camera, CameraSource, CameraResultType } from '@capacitor/camera';
+import { Capacitor } from '@capacitor/core';
 import { FilePicker, File } from '@capawesome/capacitor-file-picker';
 
 
@@ -15,14 +17,29 @@ export class UploadService {
       types
     });
     const file = result.files[0];
-    console.log(file.blob);
-    // if(file.blob){
-    //   const rFile = new File(file.blob, file.name, {
-    //     type: file.mimeType
-    //   });
-    // }
     return file;
 
+  }
+
+  isPlatformWeb(){
+    if(Capacitor.getPlatform() === 'web') {return true;};
+    return false;
+  }
+
+  async takePicture() {
+    const image = await Camera.getPhoto({
+      quality: 90,
+      source: CameraSource.Prompt,
+      allowEditing: true,
+      width: 600,
+      resultType: this.isPlatformWeb() ? CameraResultType.DataUrl : CameraResultType.Uri,
+    });
+
+    if(this.isPlatformWeb()){
+      return {...image, path:image.dataUrl};
+    }
+
+    return {...image, path:image.webPath};
   }
 
 }

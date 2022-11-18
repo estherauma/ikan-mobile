@@ -18,8 +18,8 @@ export class TaiwanesePage extends BaseformPage implements OnInit {
   ) {
     super(contentService);
     const profileFormData = this.contentService.getContentByPropertyName('taiwaneseagentprofileform');
-    console.log('profileFormData', profileFormData);
     this.formQuestions = profileFormData.formQuestions;
+    this.submitButtonText = 'Submit';
     this.formQuestions.forEach((entry) => {
       this.group[entry.key] = new FormControl('', [Validators.required]);
     });
