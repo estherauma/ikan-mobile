@@ -48,8 +48,7 @@ export class AppComponent implements OnInit, OnDestroy {
       .then((value) => {
         if (value != null) {
           // TODO: user role from backend
-          // this.router.navigate([this.authService.getCurrentUserBaseUrlFromRole(UserRole.worker)]);
-          this.router.navigate(['learninghub/home']);
+          this.router.navigate([this.authService.getCurrentUserBaseUrlFromRole(UserRole.worker)]);
         }
       });
   }
