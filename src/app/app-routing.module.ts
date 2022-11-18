@@ -170,6 +170,14 @@ const routes: Routes = [
   {
     path: 'notifications/home',
     loadChildren: () => import('./notifications/home/home.module').then( m => m.HomePageModule)
+  },
+  {
+    path: 'learninghub/home',
+    loadChildren: () => import('./learninghub/home/home.module').then( m => m.HomePageModule)
+  },
+  {
+    path: 'learninghub/detail',
+    loadChildren: () => import('./learninghub/detail/detail.module').then( m => m.DetailPageModule)
   }
 ];
 
