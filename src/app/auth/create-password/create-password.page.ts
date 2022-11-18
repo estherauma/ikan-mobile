@@ -10,16 +10,16 @@ import { ContentService } from 'src/app/shared/services/content/content.service'
   styleUrls: ['./create-password.page.scss'],
 })
 export class CreatePasswordPage extends BaseformPage implements OnInit {
-  title="Create Password"
-  description = "feugiat id volutpat eu, laoreet ac orci. Phasellus sodales feugiat luctus. Sed hendrerit neque ut ante imperdiet"
-  submitButtonText = "Create Password"
+  title='Create Password';
+  description = 'feugiat id volutpat eu, laoreet ac orci. Phasellus sodales feugiat luctus. Sed hendrerit neque ut ante imperdiet';
+  submitButtonText = 'Create Password';
 
   constructor(
     public contentService: ContentService,
     public router: Router
   ) {
-    super(contentService)
-    const pageData = this.contentService.getContentByPropertyName("createpassword");
+    super(contentService);
+    const pageData = this.contentService.getContentByPropertyName('createpassword');
     this.formQuestions = pageData.formQuestions;
     this.pageTitle = pageData?.pageTitle;
     this.formQuestions.forEach((entry) => {
@@ -32,7 +32,7 @@ export class CreatePasswordPage extends BaseformPage implements OnInit {
   }
 
   onSubmit(data){
-    this.router.navigate(["/auth/password-reset-success"])
+    this.router.navigate(['/auth/password-reset-success']);
   }
 
 }

@@ -1,0 +1,38 @@
+.welcome-section{
+    background-color:  #F5F5F5;
+    padding: 16px;
+
+    .user-notification{
+        display: flex;
+        justify-content: space-between;
+        margin-top: 16px;
+        margin-bottom: 16px;
+    }
+
+    h1{
+        line-height: 1.5;
+    }
+
+    .notification-icon{
+        zoom: 2;
+        margin-top: 8px;
+    }
+
+    .user-section{
+        display: flex;
+        flex: 1;
+        align-items: center;
+
+        .user-icon{
+            zoom: 5;
+        }
+
+        div p{
+            margin-top: 4px !important;
+        }
+        div h1{
+            margin-bottom: 4px !important;
+            font-weight: bold;
+        }
+    }
+}

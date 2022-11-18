@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-invite-code',
@@ -7,15 +8,17 @@ import { Component, OnInit } from '@angular/core';
 })
 export class InviteCodePage implements OnInit {
 
-  pageTitle = "Invite Code"
-  // inputValue = null
+  pageTitle = 'Invite Code';
 
-  constructor() { }
+  constructor(
+    public router: Router
+    ) { }
 
   ngOnInit() {
   }
 
   onLogin(){
+    this.router.navigate(['/intro']);
   }
 
   onSubmit() {

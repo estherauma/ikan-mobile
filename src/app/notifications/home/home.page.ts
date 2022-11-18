@@ -36,6 +36,13 @@ export class HomePage implements OnInit {
           hasAttachment: true,
           attachmentType: 'pdf',
         },
+        {
+          title: 'Title goes here',
+          daysAgo: '1 day ago',
+          text: 'Accompanying message or information goes here. Lorem ipsum dolor sit amet, soi',
+          hasAttachment: true,
+          attachmentType: 'audio',
+        },
       ],
     },
     {
