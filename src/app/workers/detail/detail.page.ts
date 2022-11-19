@@ -6,10 +6,13 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./detail.page.scss'],
 })
 export class DetailPage implements OnInit {
+  pageTitle = 'Budi Surname';
 
   constructor() { }
 
   ngOnInit() {
   }
+
+  getParams(){}
 
 }

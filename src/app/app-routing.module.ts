@@ -178,7 +178,7 @@ const routes: Routes = [
   {
     path: 'workers/details',
     loadChildren: () => import('./workers/detail/detail.module').then( m => m.DetailPageModule)
-  }
+  },
 ];
 
 @NgModule({
