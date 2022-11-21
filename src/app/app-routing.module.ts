@@ -178,7 +178,15 @@ const routes: Routes = [
   {
     path: 'learninghub/detail',
     loadChildren: () => import('./learninghub/detail/detail.module').then( m => m.DetailPageModule)
-  }
+  },
+  {
+    path: 'workers/home',
+    loadChildren: () => import('./workers/home/home.module').then( m => m.HomePageModule)
+  },
+  {
+    path: 'workers/details',
+    loadChildren: () => import('./workers/detail/detail.module').then( m => m.DetailPageModule)
+  },
 ];
 
 @NgModule({
