@@ -22,7 +22,6 @@ export class FilterComponent implements OnInit {
   constructor() { }
 
   ngOnInit() {
-    console.log(this.options);
   }
 
   onChange(eventData) {
