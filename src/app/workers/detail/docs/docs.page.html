@@ -1,3 +1,31 @@
 <ion-content>
+  <ion-text>
+    <h3>Documentation</h3>
+  </ion-text>
 
+  <ion-card>
+    <ion-card-content>
+        <ion-grid *ngFor = "let item of documentation">
+          <ion-item text-wrap>
+            <ion-checkbox slot="start" [checked]="item.checked"></ion-checkbox>
+            <ion-label>{{item.label}}</ion-label>
+          </ion-item>
+          <ion-button color="medium" *ngIf="item.showReminderButton">Set reminder</ion-button>
+        </ion-grid>
+    </ion-card-content>
+  </ion-card>
+
+  <!-- Additional documentation -->
+  <ion-text>
+    <h3>Additional documentation</h3>
+  </ion-text>
+  <ion-card>
+    <ion-card-content>
+      <div>
+        <strong>Additional document.pdf</strong>
+        <p>More information. Functionality her is click panel to view</p>
+      </div>
+      <ion-button color="medium">Add new document</ion-button>
+    </ion-card-content>
+  </ion-card>
 </ion-content>
