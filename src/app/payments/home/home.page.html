@@ -2,7 +2,31 @@
 
 <ion-content>
   <app-search [searchDataSet]="organizations" (searchResult)="searchResult($event)"></app-search>
+  <ion-grid>
+    <ion-row style="align-items: center;">
+      <ion-col>Filter</ion-col>
 
+      <ion-col size="auto">
+
+        <ion-grid>
+          <ion-row>
+
+            <ion-col>
+              <app-filter filterProperty="status" [options]="filterOptions" [filterDataSet]="filterDataSet" (filterResult)="filterResult($event)"></app-filter>
+
+            </ion-col>
+
+            <ion-col>
+              <app-filter filterProperty="status" [options]="filterOptions" [filterDataSet]="filterDataSet" (filterResult)="filterResult($event)"></app-filter>
+            </ion-col>
+
+          </ion-row>
+        </ion-grid>
+
+      </ion-col>
+
+    </ion-row>
+  </ion-grid>
   <ion-card *ngFor="let org of organizations">
     <ion-grid>
       <ion-row>
