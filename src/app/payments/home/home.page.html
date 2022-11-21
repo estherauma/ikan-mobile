@@ -1,7 +1,7 @@
 <app-header [pageTitle]="pageTitle"></app-header>
 
 <ion-content>
-  <app-search [searchDataSet]="organizations" (searchResult)="searchResult($event)"></app-search>
+  <app-search [searchDataSet]="filterDataSet" (searchResult)="searchResult($event)"></app-search>
   <ion-grid>
     <ion-row style="align-items: center;">
       <ion-col>Filter</ion-col>

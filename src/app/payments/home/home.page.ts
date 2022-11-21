@@ -44,7 +44,6 @@ export class HomePage implements OnInit {
   }
 
   searchResult(data) {
-    // TODO: Fix this so that when search string is cleared, full result of thigns is displayed.
     this.organizations = data;
   }
 
