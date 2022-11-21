@@ -174,7 +174,15 @@ const routes: Routes = [
   {
     path: 'profiles/taiwanese',
     loadChildren: () => import('./profiles/taiwanese/taiwanese.module').then( m => m.TwaiwanesePageModule)
-  }
+  },
+  {
+    path: 'workers/home',
+    loadChildren: () => import('./workers/home/home.module').then( m => m.HomePageModule)
+  },
+  {
+    path: 'workers/details',
+    loadChildren: () => import('./workers/detail/detail.module').then( m => m.DetailPageModule)
+  },
 ];
 
 @NgModule({

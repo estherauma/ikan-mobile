@@ -1,0 +1,125 @@
+<!-- UI  and css are adapted from the contract page. There's a similarity.
+TODO: Investigate if there's a chance we could use the same component for this. -->
+<ion-content>
+  <div class="navmenu">
+    <ul>
+      <li>
+        <div class="list-item">
+          <div class="icon">
+            <ion-icon name="checkmark-outline"></ion-icon>
+          </div>
+          <div class="list-content">
+            <h3>Placement Opportunity</h3>
+            <ion-text>
+              <p>Status: Accepted</p>
+            </ion-text>
+            <ion-text>
+              <h6>Associated Work Order/Demand Letter</h6>
+            </ion-text>
+            <ion-card>
+              <ion-card-content>
+                <ion-grid>
+                  <ion-row>
+                    <ion-col size="3" style="padding-top: 15%">
+                      <ion-icon name="expand-outline" size="large"></ion-icon>
+                    </ion-col>
+                    <ion-col size="8">
+                      <ion-card-title>{{wo.name}}</ion-card-title>
+                      <ion-card-subtitle>Internal Ref: {{wo.internalRef}}</ion-card-subtitle>
+                      <br>
+                      <ion-label><strong>App Ref:</strong> {{wo.appRef}}</ion-label> <br>
+                      <ion-label><strong>Date Created:</strong> {{wo.dateOpened}}</ion-label> <br>
+                      <ion-label><strong>Status:</strong> {{wo.status}}</ion-label>
+                    </ion-col>
+                    <ion-col size="1" style="text-align: center; padding-top: 15%" (click)="viewDetails(wo)">
+                      <ion-icon name="chevron-forward-outline" size="large"></ion-icon>
+                    </ion-col>
+                  </ion-row>
+                </ion-grid>
+              </ion-card-content>
+            </ion-card>
+          </div>
+        </div>
+      </li>
+      <li>
+        <div class="icon">
+          <ion-icon name="checkmark-outline"></ion-icon>
+        </div>
+        <div class="list-content">
+          <h3>Placement Agreement</h3>
+
+          <ion-card>
+            <ion-card-content>
+              <ion-grid>
+                <ion-row class="ion-align-items-center">
+                  <ion-col size="3">
+                    <ion-thumbnail>
+                      <ion-img [src]=""></ion-img>
+                    </ion-thumbnail>
+                  </ion-col>
+                  <ion-col size="8">
+                    <ion-card-title>{{placementAgreement.name}}</ion-card-title>
+                    <ion-label>{{placementAgreement.info}}</ion-label>
+                  </ion-col>
+                </ion-row>
+              </ion-grid>
+            </ion-card-content>
+          </ion-card>
+        </div>
+      </li>
+      <li>
+        <div class="icon">
+          <ion-icon name="checkmark-outline"></ion-icon>
+        </div>
+        <div class="list-content">
+          <h3>Job Order & Service Agreement</h3>
+          <ion-text>Status: Confirmed (2/2)</ion-text>
+          <ion-text>Recipient: Cici Surname | Company name</ion-text>
+          <ion-card *ngFor="let osa of orderAndServiceAgreement">
+            <ion-card-content>
+              <ion-grid>
+                <ion-row class="ion-align-items-center">
+                  <ion-col size="3">
+                    <ion-thumbnail>
+                      <ion-img [src]=""></ion-img>
+                    </ion-thumbnail>
+                  </ion-col>
+                  <ion-col size="8">
+                    <ion-card-title>{{osa.name}}</ion-card-title>
+                    <ion-label>{{osa.info}}</ion-label>
+                  </ion-col>
+                </ion-row>
+              </ion-grid>
+            </ion-card-content>
+          </ion-card>
+        </div>
+      </li>
+      <li>
+        <div class="icon">
+          <ion-icon name="checkmark-outline"></ion-icon>
+        </div>
+        <div class="list-content">
+          <h3>Employment agreement</h3>
+          <ion-text>Status: Complete</ion-text>
+          <ion-card>
+            <ion-card-content>
+              <ion-grid>
+                <ion-row class="ion-align-items-center">
+                  <ion-col size="3">
+                    <ion-thumbnail>
+                      <ion-img [src]=""></ion-img>
+                    </ion-thumbnail>
+                  </ion-col>
+                  <ion-col size="8">
+                    <ion-card-title>{{employmentAgreement.name}}</ion-card-title>
+                    <ion-label>{{employmentAgreement.info}}</ion-label>
+                  </ion-col>
+                </ion-row>
+              </ion-grid>
+            </ion-card-content>
+          </ion-card>
+        </div>
+      </li>
+    </ul>
+  </div>
+</ion-content>
