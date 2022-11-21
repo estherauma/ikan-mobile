@@ -177,7 +177,11 @@ const routes: Routes = [
   },
   {
     path: 'learninghub/detail',
-    loadChildren: () => import('./learninghub/detail/detail.module').then( m => m.DetailPageModule)
+    loadChildren: () => import('./learninghub/detail/detail.module').then( m => m.DetailPageModule),
+  },
+  {
+    path: 'profiles/taiwanese',
+    loadChildren: () => import('./profiles/taiwanese/taiwanese.module').then( m => m.TwaiwanesePageModule)
   },
   {
     path: 'workers/home',

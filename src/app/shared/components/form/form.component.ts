@@ -1,6 +1,6 @@
 import { Component, OnInit, Output, EventEmitter, Input } from '@angular/core';
 import { FormGroup } from '@angular/forms';
-
+import { UploadService } from 'src/app/services/upload/upload.service';
 
 @Component({
   selector: 'app-form',
@@ -17,11 +17,39 @@ export class FormComponent implements OnInit {
   @Output() cancel = new EventEmitter<any>();
   @Output() formValue = new EventEmitter<any>();
 
-  constructor() { }
+  selectedImages = {};
+  selectedDocuments = {};
+
+  constructor(
+    public uploadService: UploadService,
+  ) { }
 
   ngOnInit() {}
 
   onSubmit(event) {
     this.formValue.emit(this.tunaFormGroup.value);
+  }
+
+  async onUpload(key){
+    const file = await this.uploadService.choseFile();
+
+    this.tunaFormGroup.patchValue({
+      [key]: file
+    });
+
+    this.selectedDocuments = {...this.selectedDocuments, [key]:file };
+  }
+
+  async takePicture(key){
+    const picture = await this.uploadService.takePicture();
+    this.selectedImages = {...this.selectedImages, [key]:picture };
+  }
+
+  removeDocument(key){
+    delete this.selectedDocuments[key];
+  }
+
+  removePicture(key){
+    delete this.selectedImages[key];
   }
 }
