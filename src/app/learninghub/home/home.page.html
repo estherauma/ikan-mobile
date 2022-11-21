@@ -1,0 +1,29 @@
+<app-header [pageTitle]="pageTitle"></app-header>
+
+<ion-content>
+  <div class="gray-bg">
+    <ion-thumbnail class="white-bg" style="width: 100%; height:250px;">
+      <ion-img src=""></ion-img>
+    </ion-thumbnail>
+    <ion-card class="white-bg" *ngFor="let lh of learningHub">
+      <ion-card-content>
+        <ion-grid>
+          <ion-row class="ion-align-items-center">
+            <ion-col size="3">
+              <ion-thumbnail>
+                <ion-img [src]="lh.image"></ion-img>
+              </ion-thumbnail>
+            </ion-col>
+            <ion-col size="8">
+              <ion-card-title>{{lh.name}}</ion-card-title>
+              <ion-text><p>{{lh.description}}</p></ion-text>
+            </ion-col>
+            <ion-col size="1" (click)="viewDeatils(lh)">
+              <ion-icon name="chevron-forward-outline" size="large"></ion-icon>
+            </ion-col>
+          </ion-row>
+        </ion-grid>
+      </ion-card-content>
+    </ion-card>
+  </div>
+</ion-content>

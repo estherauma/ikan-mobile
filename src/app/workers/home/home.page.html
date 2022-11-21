@@ -1,0 +1,29 @@
+<app-header [pageTitle]=""></app-header>
+
+<ion-content>
+  <app-search></app-search>
+  <app-filter></app-filter>
+
+  <ion-card *ngFor="let worker of workers">
+    <ion-card-content>
+      <ion-grid>
+        <ion-row class="ion-align-items-center">
+          <ion-col size="3">
+            <ion-thumbnail>
+              <ion-img [src]="worker.image"></ion-img>
+            </ion-thumbnail>
+          </ion-col>
+          <ion-col size="8">
+            <ion-text><strong><h2>{{worker.name}}</h2></strong></ion-text>
+            <ion-text><p>Nationality: {{worker.nationality}}</p></ion-text>
+            <ion-text><p>DOB: {{worker.dob}}</p></ion-text>
+            <ion-text><p>Training: {{worker.trainingStatus}}</p></ion-text>
+          </ion-col>
+          <ion-col size="1" style="text-align: center" (click)="viewDetails(worker)">
+            <ion-icon name="chevron-forward-outline" size="large"></ion-icon>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+    </ion-card-content>
+  </ion-card>
+</ion-content>

@@ -7,21 +7,34 @@ import { Router } from '@angular/router';
   styleUrls: ['./home.page.scss'],
 })
 export class HomePage implements OnInit {
-  organizations =  [
+  filterDataSet =  [
     {
-      name: 'Name of Vessel Company'
+      name: 'Name of Vessel Company',
+      status: 'Opened',
+
     },
     {
-      name: 'Name2 of Vessel Company'
+      name: 'Name2 of Vessel Company',
+      status: 'Closed',
     },
     {
-      name: 'Name3 of Vessel Company'
+      name: 'Name3 of Vessel Company',
+      status: 'Opened',
     },
     {
-      name: 'Name4 of Vessel Company'
+      name: 'Name4 of Vessel Company',
+      status: 'Closed',
     }
   ];
   pageTitle = 'Payments';
+
+  organizations = [...this.filterDataSet];
+
+  filterOptions = [
+    {title:'closed', value:'closed'},
+    {title:'opened', value:'opened'}
+  ];
+
 
   constructor(
     public router: Router
@@ -31,9 +44,13 @@ export class HomePage implements OnInit {
   }
 
   searchResult(data) {
-    // TODO: Fix this so that when search string is cleared, full result of thigns is displayed.
     this.organizations = data;
   }
+
+  filterResult(result){
+    this.organizations = result;
+  }
+
 
   viewDetails(organization) {
     this.router.navigate(['payments/view/company', organization]);

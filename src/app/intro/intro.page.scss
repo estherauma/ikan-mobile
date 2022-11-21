@@ -1,0 +1,65 @@
+.ion-slides {
+    height: 100vh;
+}
+
+.logo-container {
+    display: flex !important;
+    justify-content: center !important;
+
+    .logo {
+        height: 400px;
+        width: 100vw;
+        padding: 16px !important;
+    }
+}
+
+@import "~swiper/scss";
+@import "~swiper/scss/navigation";
+@import "~swiper/scss/pagination";
+
+.swiper {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+
+    .swiper-button-next, .swiper-button-prev {
+        display:none;   
+    }
+}
+
+.slide-content{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    .title{
+        text-align: center;
+    }
+
+    .description{
+        text-align: center;
+    }
+}
+
+.next-finish-btns{
+    display: flex;
+    justify-content: center;
+
+    button {
+        padding: 16px;
+        width: 100px;
+    }
+}
+
+.back-skip-btns{
+    padding: 16px !important;
+    display: flex;
+    justify-content: space-between;
+
+    button {
+        background-color: transparent;
+        border: none;
+        text-decoration: underline;
+    }
+}

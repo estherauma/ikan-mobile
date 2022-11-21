@@ -8,50 +8,45 @@ import { ActivatedRoute } from '@angular/router';
 })
 export class ViewPage implements OnInit {
   pageTitle: string;
-  contract
+  contract;
 
   wo = {
-      name: 'Work order 2',
-      internalRef: 'IJSWERWXDWER',
-      dateOpened: '2022-10-15',
-      status: 'Close',
-      appRef: 'XXX-XXX-XXX'
-  }
+    name: 'Work order 2',
+    internalRef: 'IJSWERWXDWER',
+    dateOpened: '2022-10-15',
+    status: 'Close',
+    appRef: 'XXX-XXX-XXX',
+  };
 
   placementAgreement = {
     name: 'Placement_Agreement.pdf',
-    info:"More info. Functionality here is click panel to view."
-  }
+    info: 'More info. Functionality here is click panel to view.',
+  };
 
   employmentAgreement = {
     name: 'Employment Agreement.pdf',
-    info:"More info. Functionality here is click panel to view."
-  }
+    info: 'More info. Functionality here is click panel to view.',
+  };
 
   orderAndServiceAgreement = [
     {
       name: 'Job Order.pdf',
-      info:"More info. Functionality here is click panel to view."
+      info: 'More info. Functionality here is click panel to view.',
     },
     {
       name: 'Service Agreement.pdf',
-      info:"More info. Functionality here is click panel to view."
-    }
-  ]
+      info: 'More info. Functionality here is click panel to view.',
+    },
+  ];
 
-  constructor(
-    public activatedRoute: ActivatedRoute
-  ) { }
+  constructor(public activatedRoute: ActivatedRoute) {}
 
   ngOnInit() {
-    this.activatedRoute.params.subscribe(params => {
-      this.pageTitle = params.name
-      this.contract = params
-    })
+    this.activatedRoute.params.subscribe((params) => {
+      this.pageTitle = params.name;
+      this.contract = params;
+    });
   }
 
-  viewDetails(wo){
-
-  }
-
+  viewDetails(wo) {}
 }

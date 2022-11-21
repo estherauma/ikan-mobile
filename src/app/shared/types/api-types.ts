@@ -85,3 +85,11 @@ export interface Data {
   token:        string;
   isFirstLogin: boolean;
 }
+
+export enum UserRole {
+  vesselOwner = 'taien',
+  taiwaneseAgent = 'cici',
+  indonesianAgent = 'farah',
+  worker = 'budi',
+  buyer = 'tony'
+}

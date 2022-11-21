@@ -112,6 +112,30 @@ const routes: Routes = [
     loadChildren: () => import('./contracts/home/home.module').then( m => m.HomePageModule)
   },
   {
+    path: 'dashboard/indonesianagent',
+    loadChildren: () => import('./dashboard/indonesianagent/indonesianagent.module').then( m => m.IndonesianagentPageModule)
+  },
+  {
+    path: 'dashboard/vesselowner',
+    loadChildren: () => import('./dashboard/vesselowner/vesselowner.module').then( m => m.VesselownerPageModule)
+  },
+  {
+    path: 'dashboard/worker',
+    loadChildren: () => import('./dashboard/worker/worker.module').then( m => m.WorkerPageModule)
+  },
+  {
+    path: 'dashboard/taiwaneseagent',
+    loadChildren: () => import('./dashboard/taiwaneseagent/taiwaneseagent.module').then( m => m.TaiwaneseagentPageModule)
+  },
+  {
+    path: 'dashboard/buyer',
+    loadChildren: () => import('./dashboard/buyer/buyer.module').then( m => m.BuyerPageModule)
+  },
+  {
+    path: 'intro',
+    loadChildren: () => import('./intro/intro.module').then( m => m.IntroPageModule)
+  },
+  {
     path: 'profile',
     loadChildren: () => import('./accounts/profile/profile.module').then( m => m.ProfilePageModule)
   },
@@ -146,7 +170,27 @@ const routes: Routes = [
   {
     path: 'notifications/home',
     loadChildren: () => import('./notifications/home/home.module').then( m => m.HomePageModule)
-  }
+  },
+  {
+    path: 'learninghub/home',
+    loadChildren: () => import('./learninghub/home/home.module').then( m => m.HomePageModule)
+  },
+  {
+    path: 'learninghub/detail',
+    loadChildren: () => import('./learninghub/detail/detail.module').then( m => m.DetailPageModule),
+  },
+  {
+    path: 'profiles/taiwanese',
+    loadChildren: () => import('./profiles/taiwanese/taiwanese.module').then( m => m.TwaiwanesePageModule)
+  },
+  {
+    path: 'workers/home',
+    loadChildren: () => import('./workers/home/home.module').then( m => m.HomePageModule)
+  },
+  {
+    path: 'workers/details',
+    loadChildren: () => import('./workers/detail/detail.module').then( m => m.DetailPageModule)
+  },
 ];
 
 @NgModule({
