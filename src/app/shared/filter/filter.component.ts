@@ -21,7 +21,9 @@ export class FilterComponent implements OnInit {
 
   constructor() { }
 
-  ngOnInit() {}
+  ngOnInit() {
+    console.log(this.options);
+  }
 
   onChange(eventData) {
     const selectedValue = eventData.detail.value.trim();
