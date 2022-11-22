@@ -8,7 +8,7 @@ import { BaseformPage } from 'src/app/shared/components/baseform/baseform.page';
 import { ApiService } from 'src/app/shared/services/api/api.service';
 import { ContentService } from 'src/app/shared/services/content/content.service';
 import { SharedmethodsService } from 'src/app/shared/services/sharedmethods/sharedmethods.service';
-import { LoginSuccessReponse, StorageKeys, UserRole } from 'src/app/shared/types/api-types';
+import { LoginSuccessReponse, StorageKeys, UserData, UserRole } from 'src/app/shared/types/api-types';
 
 @Component({
   selector: 'app-login',
@@ -54,6 +54,7 @@ export class LoginPage extends BaseformPage implements OnInit {
         if (res.status === 'OK') {
           this.pageFormGroup.reset();
           await this.sharedMethods.saveDataToStorage(StorageKeys.apiToken, res.data.token);
+          await this.sharedMethods.saveDataToStorage(StorageKeys.userData, res.data.userData);
           this.sharedMethods.hideLoader();
           this.handleRedirection();
         }
@@ -67,12 +68,12 @@ export class LoginPage extends BaseformPage implements OnInit {
 
   async handleRedirection(){
     const helpScreens = await this.sharedMethods.readDataFromStorage(StorageKeys.isFirstLogin);
+    const user: UserData = await this.sharedMethods.readDataFromStorage(StorageKeys.userData);
     // TODO: Once we have helpscrens, handle this logic well
     if (!helpScreens){
-      this.router.navigate([this.authService.getCurrentUserBaseUrlFromRole(UserRole.worker)]);
+      this.router.navigate([this.authService.getCurrentUserBaseUrlFromRole(user.roles)]);
     } else {
-      // TODO: user role from backend
-      this.router.navigate([this.authService.getCurrentUserBaseUrlFromRole(UserRole.buyer)]);
+      this.router.navigate([this.authService.getCurrentUserBaseUrlFromRole(user.roles)]);
     }
   }
 }

@@ -73,9 +73,18 @@ export enum StorageKeys {
   currentLanguage = 'currentLanguage',
   apiToken = 'apiToken',
   isFirstLogin = 'isFirstLogin',
-  authData = 'authData'
+  authData = 'authData',
+  userData = 'userData',
 }
 
+export interface UserData{
+  email: string;
+  id: string;
+  firstName: string;
+  lastName: string;
+  isAdmin: string;
+  roles: UserRole[];
+}
 export interface LoginSuccessReponse {
   status: string;
   data:   Data;
@@ -84,12 +93,13 @@ export interface LoginSuccessReponse {
 export interface Data {
   token:        string;
   isFirstLogin: boolean;
+  userData: UserData;
 }
 
 export enum UserRole {
-  vesselOwner = 'taien',
-  taiwaneseAgent = 'cici',
-  indonesianAgent = 'farah',
-  worker = 'budi',
-  buyer = 'tony'
+  vesselOwner = 'vessel_owner',
+  taiwaneseAgent = 'taiwanese_agent',
+  indonesianAgent = 'indonesian_agent',
+  worker = 'worker',
+  buyer = 'buyer'
 }
