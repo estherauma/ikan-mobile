@@ -7,6 +7,10 @@ const routes: Routes = [
   {
     path: '',
     component: CreatePage
+  },
+  {
+    path: 'deductions',
+    loadChildren: () => import('./deductions/deductions.module').then( m => m.DeductionsPageModule)
   }
 ];
 

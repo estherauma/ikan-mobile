@@ -56,7 +56,9 @@ export class HomePage implements OnInit {
     });
     modal.present();
 
-    modal.onDidDismiss().then((data) => {});
+    modal.onDidDismiss().then((data) => {
+      // TODO: Form data is here for processing and saving.
+    });
   }
 
   viewDetails(workOrder) {
