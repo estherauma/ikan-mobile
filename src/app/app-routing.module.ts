@@ -192,8 +192,8 @@ const routes: Routes = [
     loadChildren: () => import('./workers/detail/detail.module').then( m => m.DetailPageModule)
   },
   {
-    path: 'workers/create',
-    loadChildren: () => import('./workers/create/create.module').then( m => m.CreatePageModule)
+    path: 'workers/createdetail',
+    loadChildren: () => import('./workers/createdetail/createdetail.module').then( m => m.CreatePageModule)
   },
 ];
 

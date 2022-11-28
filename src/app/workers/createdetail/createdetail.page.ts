@@ -5,10 +5,10 @@ import { ContentService } from 'src/app/shared/services/content/content.service'
 
 @Component({
   selector: 'app-create',
-  templateUrl: './create.page.html',
-  styleUrls: ['./create.page.scss'],
+  templateUrl: './createdetail.page.html',
+  styleUrls: ['./createdetail.page.scss'],
 })
-export class CreatePage extends BaseformPage implements OnInit {
+export class CreateDetailPage extends BaseformPage implements OnInit {
 
   submitButtonText='Save&Close';
   createWorkerFormGroup;

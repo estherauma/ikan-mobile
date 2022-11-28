@@ -4,9 +4,9 @@ import { FormsModule } from '@angular/forms';
 
 import { IonicModule } from '@ionic/angular';
 
-import { CreatePageRoutingModule } from './create-routing.module';
+import { CreatePageRoutingModule } from './createdetail-routing.module';
 
-import { CreatePage } from './create.page';
+import { CreateDetailPage } from './createdetail.page';
 import { SharedModule } from 'src/app/shared/shared.modules';
 
 @NgModule({
@@ -17,6 +17,6 @@ import { SharedModule } from 'src/app/shared/shared.modules';
     CreatePageRoutingModule,
     SharedModule
   ],
-  declarations: [CreatePage]
+  declarations: [CreateDetailPage]
 })
 export class CreatePageModule {}
