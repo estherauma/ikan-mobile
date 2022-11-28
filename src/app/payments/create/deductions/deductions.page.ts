@@ -3,6 +3,7 @@ import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { ModalController } from '@ionic/angular';
 import { BaseformPage } from 'src/app/shared/components/baseform/baseform.page';
 import { ContentService } from 'src/app/shared/services/content/content.service';
+import { SharedmethodsService } from 'src/app/shared/services/sharedmethods/sharedmethods.service';
 
 @Component({
   selector: 'app-deductions',
@@ -13,7 +14,9 @@ export class DeductionsPage extends BaseformPage  implements OnInit {
   submitButtonText = 'Add Deduction';
   constructor(
     public contentServ: ContentService,
-    public modalCtrl: ModalController
+    public modalCtrl: ModalController,
+    public sharedMethods: SharedmethodsService,
+
   ) {
     super(contentServ);
     const deductionsData = this.contentServ.getContentByPropertyName('payment-deductions');
@@ -29,7 +32,9 @@ export class DeductionsPage extends BaseformPage  implements OnInit {
   }
 
   onSubmit(formData) {
-
+    //TODO: Add localization
+    this.sharedMethods.showLoader('Saving deduction');
+    this.modalCtrl.dismiss(formData);
   }
 
 }
