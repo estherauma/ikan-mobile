@@ -83,7 +83,7 @@ export interface UserData{
   firstName: string;
   lastName: string;
   isAdmin: string;
-  roles: UserRole[];
+  role: UserRole;
 }
 export interface LoginSuccessReponse {
   status: string;

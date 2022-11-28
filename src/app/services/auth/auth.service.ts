@@ -8,8 +8,8 @@ export class AuthService {
 
   constructor() { }
 
-  getCurrentUserBaseUrlFromRole(userRoles: string[]){
-    switch(userRoles[0]){
+  getCurrentUserBaseUrlFromRole(userRole: string){
+    switch(userRole){
       case UserRole.taiwaneseAgent:
         return 'dashboard/taiwaneseagent';
       case UserRole.worker:

@@ -48,7 +48,7 @@ export class AppComponent implements OnInit, OnDestroy {
       .then(async (value) => {
         if (value != null) {
           const user: UserData = await this.sharedMethods.readDataFromStorage(StorageKeys.userData);
-          this.router.navigate([this.authService.getCurrentUserBaseUrlFromRole(user.roles)]);
+          this.router.navigate([this.authService.getCurrentUserBaseUrlFromRole(user.role)]);
         }
       });
   }
