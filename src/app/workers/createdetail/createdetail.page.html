@@ -1,0 +1,14 @@
+<app-header [pageTitle]=""></app-header>
+
+<ion-content>
+  <app-form
+    [tunaFormGroup]="createWorkerFormGroup"
+    [tunaFormquestions]="formQuestions"
+    [submitButtonText]="submitButtonText"
+    (formValue)="onSubmit($event)"
+  >
+  </app-form>
+  <div class="ion-padding">
+    <ion-button expand="block">SEND INVITE</ion-button>
+  </div>
+</ion-content>
