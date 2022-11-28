@@ -1,0 +1,15 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Add Deductions</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<div class="inner-content">
+  <app-form
+    [tunaFormGroup]="pageFormGroup"
+    [tunaFormquestions]="formQuestions"
+    [submitButtonText]="submitButtonText"
+    (formValue)="onSubmit($event)"
+  >
+  </app-form>
+</div>
