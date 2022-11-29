@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { ModalController } from '@ionic/angular';
+import { CreatePage } from '../create/create.page';
 
 @Component({
   selector: 'app-home',
@@ -33,12 +35,24 @@ export class HomePage implements OnInit {
   ];
 
   constructor(
-    public router: Router
+    public router: Router,
+    public modalCtrl: ModalController
   ) {}
 
   ngOnInit() {}
 
   viewDetails(worker) {
     this.router.navigate(['workers/details', worker]);
+  }
+
+  async createWorker(){
+    const modal = await this.modalCtrl.create({
+      component: CreatePage,
+      cssClass: 'tuna-modal',
+
+    });
+    modal.present();
+
+    modal.onDidDismiss().then((data) => {});
   }
 }
