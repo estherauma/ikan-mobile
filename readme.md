@@ -1,6 +1,7 @@
 # Tuna Mobile
 
 ## Requirements
+> node v18.12.1^
 
 ## How to set up
 

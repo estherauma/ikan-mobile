@@ -25,7 +25,7 @@ import { FilterComponent } from './filter/filter.component';
     SearchComponent,
     DashboardelcomesectionComponent,
     ChartComponent,
-    FilterComponent
+    FilterComponent,
   ],
   exports: [
     FormComponent,

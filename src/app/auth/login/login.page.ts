@@ -9,6 +9,7 @@ import { ApiService } from 'src/app/shared/services/api/api.service';
 import { ContentService } from 'src/app/shared/services/content/content.service';
 import { SharedmethodsService } from 'src/app/shared/services/sharedmethods/sharedmethods.service';
 import { LoginSuccessReponse, StorageKeys, UserData, UserRole } from 'src/app/shared/types/api-types';
+import { DBService } from 'src/app/shared/services/database/db.service';
 
 @Component({
   selector: 'app-login',
@@ -24,7 +25,8 @@ export class LoginPage extends BaseformPage implements OnInit {
     public apiServices: ApiService,
     public sharedMethods: SharedmethodsService,
     public router: Router,
-    public authService: AuthService
+    public authService: AuthService,
+    public dbService: DBService
   ) {
     super(contentService);
     const pageData = this.contentService.getLoginPageData();
