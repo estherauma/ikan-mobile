@@ -1,10 +1,10 @@
 version: 2.1
-
+orbs:
+  node: circleci/node@5.0.3
 jobs:
   build-apk:
     docker:
       - image: circleci/android:api-28-node
-      - image: cimg/node:18.12.1
     environment:
         JVM_OPTS: -Xmx3200m
     steps:
@@ -20,6 +20,7 @@ jobs:
       - run:
           name: Install dependencies
           command: |
+            node -v
             npm install
             sudo npm i -g @ionic/cli
             sudo npm install -g codecov
