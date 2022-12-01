@@ -4,6 +4,7 @@ jobs:
   build-apk:
     docker:
       - image: circleci/android:api-28-node
+      - image: cimg/node:18.12.1
     environment:
         JVM_OPTS: -Xmx3200m
     steps:
