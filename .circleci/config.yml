@@ -3,7 +3,7 @@ version: 2.1
 jobs:
   build-apk:
     docker:
-      - image: circleci/android:api-31-node
+      - image: circleci/android:api-30-node
     environment:
         JVM_OPTS: -Xmx3200m
     steps:
@@ -48,7 +48,7 @@ jobs:
 
   build-and-release-apk:
     docker:
-      - image: circleci/android:api-31-node
+      - image: circleci/android:api-30-node
     environment:
         JVM_OPTS: -Xmx3200m
     steps:
