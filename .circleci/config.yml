@@ -3,7 +3,8 @@ version: 2.1
 jobs:
   build-apk:
     docker:
-      - image: cimg/node:18.12.1
+      # - image: cimg/node:18.12.1 has the correct versio of node
+      - image: circleci/android:2022.09
     environment:
         JVM_OPTS: -Xmx3200m
     steps:
@@ -48,7 +49,7 @@ jobs:
 
   build-and-release-apk:
     docker:
-      - image: cimg/node:18.12.1
+      - image: circleci/android:2022.09-node
     environment:
         JVM_OPTS: -Xmx3200m
     steps:
