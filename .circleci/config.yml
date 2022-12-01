@@ -19,6 +19,9 @@ jobs:
       - run:
           name: Install dependencies
           command: |
+            npm install nvm
+            nvm install v18.12.1
+            nvm use 18.12.1
             node -v
             npm install
             sudo npm i -g @ionic/cli
