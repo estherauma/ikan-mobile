@@ -9,6 +9,8 @@ import { SearchComponent } from './components/search/search.component';
 import { DashboardelcomesectionComponent } from './dashboardelcomesection/dashboardelcomesection.component';
 import { ChartComponent } from './components/chart/chart.component';
 import { FilterComponent } from './filter/filter.component';
+import { ConfirmmodalComponent } from './components/confirmmodal/confirmmodal.component';
+import { ConfirmedmodalComponent } from './components/confirmedmodal/confirmedmodal.component';
 
 
 @NgModule({
@@ -25,7 +27,9 @@ import { FilterComponent } from './filter/filter.component';
     SearchComponent,
     DashboardelcomesectionComponent,
     ChartComponent,
-    FilterComponent
+    FilterComponent,
+    ConfirmmodalComponent,
+    ConfirmedmodalComponent
   ],
   exports: [
     FormComponent,
@@ -34,7 +38,9 @@ import { FilterComponent } from './filter/filter.component';
     SearchComponent,
     DashboardelcomesectionComponent,
     ChartComponent,
-    FilterComponent
+    FilterComponent,
+    ConfirmmodalComponent,
+    ConfirmedmodalComponent
   ]
 })
 
