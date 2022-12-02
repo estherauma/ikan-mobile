@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Camera, CameraSource, CameraResultType } from '@capacitor/camera';
 import { Capacitor } from '@capacitor/core';
-import { FilePicker, File } from '@capawesome/capacitor-file-picker';
+import { FilePicker } from '@capawesome/capacitor-file-picker';
 
 
 type UploadType = 'application/pdf' | 'image/png';
