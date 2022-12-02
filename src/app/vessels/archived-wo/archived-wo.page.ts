@@ -16,9 +16,7 @@ export class ArchivedWoPage implements OnInit {
     public sharedMethods: SharedmethodsService
   ) { }
 
-  async ngOnInit() {
-    console.log(this.workOrders);
-  }
+  async ngOnInit() {}
 
 
 
