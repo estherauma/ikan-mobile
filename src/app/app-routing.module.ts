@@ -199,6 +199,14 @@ const routes: Routes = [
     path: 'workers/createdetail',
     loadChildren: () => import('./workers/createdetail/createdetail.module').then( m => m.CreatePageModule)
   },
+  {
+    path: 'buyers/home',
+    loadChildren: () => import('./buyers/reporting/home/home.module').then( m => m.HomePageModule)
+  },
+  {
+    path: 'buyers/create',
+    loadChildren: () => import('./buyers/reporting/create/create.module').then( m => m.CreatePageModule)
+  },
 ];
 
 @NgModule({

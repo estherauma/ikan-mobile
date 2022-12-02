@@ -1,0 +1,49 @@
+<app-header [pageTitle]="">
+</app-header>
+
+<ion-content>
+  <ion-grid>
+    <ion-row class="ion-align-items-center justify-content-between">
+      <ion-col size="8">
+        <ion-text><h1>Reports</h1></ion-text>
+      </ion-col>
+      <ion-col size="4">
+        <ion-button (click)="onNewReport()">New Report</ion-button>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+  <app-search></app-search>
+  <ion-grid>
+    <ion-row style="align-items: center;">
+      <ion-col>Filter</ion-col>
+      <ion-col size="auto">
+        <ion-grid>
+          <ion-row>
+            <ion-col>
+              <app-filter filterProperty="status" [options]="filterOptions" [filterDataSet]="reports" (filterResult)="filterResult($event)"></app-filter>
+            </ion-col>
+
+            <ion-col>
+              <app-filter filterProperty="status" [options]="filterOptions" [filterDataSet]="reports" (filterResult)="filterResult($event)"></app-filter>
+            </ion-col>
+          </ion-row>
+        </ion-grid>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+  <div style="background-color: #ffffff;" class="ion-margin">
+    <ion-grid>
+      <ion-row *ngFor="let report of reports" class="ion-align-items-center ion-padding" style="border-bottom: 1px dotted black;">
+        <ion-col size="3">
+          <ion-thumbnail>
+            <ion-img [src]=""></ion-img>
+          </ion-thumbnail>
+        </ion-col>
+        <ion-col size="9">
+          <ion-text><h1 style="margin-top: 0px; padding-top:0px;">{{report.name}}</h1></ion-text>
+          <ion-label>{{report.date}}  {{report.time}}</ion-label>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </div>
+</ion-content>
