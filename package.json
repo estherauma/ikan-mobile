@@ -37,6 +37,7 @@
     "@capawesome/capacitor-file-picker": "^0.5.2",
     "@ionic/angular": "^6.1.9",
     "@ionic/pwa-elements": "^3.1.1",
+    "capacitor-voice-recorder": "^4.0.0",
     "chart.js": "^3.9.1",
     "cordova-sqlite-storage": "^6.0.0",
     "rxjs": "~6.6.0",
