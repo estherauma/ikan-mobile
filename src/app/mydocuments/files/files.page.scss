@@ -1,0 +1,41 @@
+.toggle-nav-buttons{
+    display: flex;
+    background-color: #d2cece;
+    height: 60px;
+
+    .active-btn{
+        width: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background-color: #F5F5F5;
+    }
+
+    .inactive-btn{
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 100%;
+        color: #B4B4B4;
+    }
+}
+
+.image-text{
+    display: block;
+    text-align: center;
+    color: #B4B4B4;
+}
+
+.image-title{
+    display: block;
+    text-align: center;
+}
+
+.image-text-list{
+    display: block;
+    color: #B4B4B4;
+}
+
+.image-title-list{
+    display: block;
+}

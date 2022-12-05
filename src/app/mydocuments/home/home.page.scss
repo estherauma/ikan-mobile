@@ -1,0 +1,33 @@
+ion-content{
+    --background: #F5F5F5;
+}
+
+.toggle-nav-buttons{
+    display: flex;
+    background-color: #d2cece;
+    height: 60px;
+
+    .active-btn{
+        width: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background-color: #F5F5F5;
+    }
+
+    .inactive-btn{
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 100%;
+        color: #B4B4B4;
+    }
+}
+
+.image-upload{
+    display: flex;
+    border: 1px dashed gray;
+    align-items: center;
+    padding: 16px;
+    background-color: #ffffff;
+}
