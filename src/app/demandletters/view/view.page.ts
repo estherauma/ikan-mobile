@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { File } from '@capawesome/capacitor-file-picker';
 import { ModalController } from '@ionic/angular';
-import { UploadService } from 'src/app/services/upload/upload.service';
+import { UploadService } from 'src/app/shared/services/upload/upload.service';
 import { DemandLetter } from '../home/home.page';
 
 @Component({

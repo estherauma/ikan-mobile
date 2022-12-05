@@ -29,7 +29,7 @@ import { ConfirmedmodalComponent } from './components/confirmedmodal/confirmedmo
     ChartComponent,
     FilterComponent,
     ConfirmmodalComponent,
-    ConfirmedmodalComponent
+    ConfirmedmodalComponent,
   ],
   exports: [
     FormComponent,

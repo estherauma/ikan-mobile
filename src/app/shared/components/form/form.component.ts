@@ -1,6 +1,6 @@
 import { Component, OnInit, Output, EventEmitter, Input } from '@angular/core';
 import { FormGroup } from '@angular/forms';
-import { UploadService } from 'src/app/services/upload/upload.service';
+import { UploadService } from 'src/app/shared/services/upload/upload.service';
 
 @Component({
   selector: 'app-form',
