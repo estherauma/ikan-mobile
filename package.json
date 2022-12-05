@@ -11,7 +11,8 @@
     "lint": "ng lint",
     "e2e": "ng e2e",
     "android-livereload": "ionic cap run android -l --external --consolelogs",
-    "ios-livereload": "ionic cap run ios -l --external --consolelogs"
+    "ios-livereload": "ionic cap run ios -l --external --consolelogs",
+    "create-migration": "node scripts/migrations.js"
   },
   "private": true,
   "dependencies": {
