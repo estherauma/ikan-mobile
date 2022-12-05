@@ -48,3 +48,16 @@
     </div>
   </div>
 </ion-content>
+<div>
+  <ion-toolbar>
+    <div *ngIf="!select" slot="start" (click)="onSelect()">
+      Select
+    </div>
+    <div *ngIf="select" slot="start" (click)="onCancel()">
+      Cancel
+    </div>
+    <div slot="end" (click)="onClick()">
+        <ion-icon name="ellipsis-vertical-outline" size="large"></ion-icon>
+    </div>
+  </ion-toolbar>
+</div>

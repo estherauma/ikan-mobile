@@ -51,3 +51,19 @@ ion-modal.tuna-modal {
   text-align: center;
   padding-top: 10%;
 }
+
+
+ion-modal.my-own-class {
+  &.bottom {
+    align-items: flex-end;
+  }
+
+  --height: auto;
+  --width: 250px;
+  --border-radius: 20px;
+  align-items: flex-end;
+  justify-content: end;
+  margin-bottom: 59px;
+  padding-right: 10px;
+  padding-bottom: 15px;
+}

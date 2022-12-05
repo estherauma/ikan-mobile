@@ -6,7 +6,7 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./files.page.scss'],
 })
 export class FilesPage implements OnInit {
-  select = true;
+  select = false;
   display: 'list' | 'icon' = 'list';
   files = new Array(20).fill({
     name:'FileName.jpg',
@@ -18,5 +18,13 @@ export class FilesPage implements OnInit {
   ngOnInit() {
   }
   searchResult(data){}
+
+  onSelect(){
+    this.select = true;
+  }
+  onClick(){}
+  onCancel(){
+    this.select = false;
+  }
 
 }
