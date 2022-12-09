@@ -35,4 +35,16 @@ export class DBService {
       .catch(e => console.log(e));
   }
 
+  getPendingMigrations() {}
+
+  runMigration() {}
+
+  dropDatabase() {
+    this.sqlite.deleteDatabase({
+      name: 'tunalocal.db',
+      location: 'default'
+    }).then(() => console.log('Database deleted'))
+      .catch(e => console.log(e));
+  }
+
 }
