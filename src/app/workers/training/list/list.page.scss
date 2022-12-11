@@ -1,0 +1,30 @@
+.training-title-container {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.training-progress-container {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    width: 50%;
+}
+
+.training-progress-bar {
+    width: 50%;
+    margin-right: 5px;
+}
+
+.logo {
+    height: 100px;
+    width: 100px;
+}
+
+.logo-chart-wrapper{
+    display: flex;
+    justify-content: space-between;
+    flex-direction: row;
+}

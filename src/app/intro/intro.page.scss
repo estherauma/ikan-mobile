@@ -13,9 +13,9 @@
     }
 }
 
-@import "~swiper/scss";
-@import "~swiper/scss/navigation";
-@import "~swiper/scss/pagination";
+// @import "~swiper/scss";
+// @import "~swiper/scss/navigation";
+// @import "~swiper/scss/pagination";
 
 .swiper {
     width: 100%;
@@ -25,7 +25,7 @@
     justify-content: center;
 
     .swiper-button-next, .swiper-button-prev {
-        display:none;   
+        display:none;
     }
 }
 

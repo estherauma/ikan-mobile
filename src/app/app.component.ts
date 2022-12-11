@@ -5,7 +5,7 @@ import { ContentService } from './shared/services/content/content.service';
 import { SharedmethodsService } from './shared/services/sharedmethods/sharedmethods.service';
 import { StorageKeys, UserData, UserRole } from './shared/types/api-types';
 import { PluginListenerHandle } from '@capacitor/core';
-import { AuthService } from './services/auth/auth.service';
+import { AuthService } from './shared/services/auth/auth.service';
 
 @Component({
   selector: 'app-root',

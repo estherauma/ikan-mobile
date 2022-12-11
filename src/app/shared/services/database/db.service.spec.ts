@@ -1,13 +1,13 @@
 import { TestBed } from '@angular/core/testing';
 
-import { PrismicService } from './prismic.service';
+import { DBService } from './db.service';
 
-describe('PrismicService', () => {
-  let service: PrismicService;
+describe('DBService', () => {
+  let service: DBService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({});
-    service = TestBed.inject(PrismicService);
+    service = TestBed.inject(DBService);
   });
 
   it('should be created', () => {
