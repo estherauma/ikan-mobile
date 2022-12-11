@@ -10,6 +10,7 @@ import { DashboardelcomesectionComponent } from './dashboardelcomesection/dashbo
 import { ChartComponent } from './components/chart/chart.component';
 import { FilterComponent } from './filter/filter.component';
 import { DocumentactionsComponent } from './components/documentactions/documentactions.component';
+import { DocumentselectedactionComponent } from './components/documentselectedaction/documentselectedaction.component';
 
 
 @NgModule({
@@ -27,7 +28,8 @@ import { DocumentactionsComponent } from './components/documentactions/documenta
     DashboardelcomesectionComponent,
     ChartComponent,
     FilterComponent,
-    DocumentactionsComponent
+    DocumentactionsComponent,
+    DocumentselectedactionComponent,
   ],
   exports: [
     FormComponent,
@@ -37,7 +39,8 @@ import { DocumentactionsComponent } from './components/documentactions/documenta
     DashboardelcomesectionComponent,
     ChartComponent,
     FilterComponent,
-    DocumentactionsComponent
+    DocumentactionsComponent,
+    DocumentselectedactionComponent,
   ]
 })
 

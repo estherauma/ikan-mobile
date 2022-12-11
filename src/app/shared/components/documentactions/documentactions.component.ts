@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { ModalController } from '@ionic/angular';
 
 @Component({
   selector: 'app-documentactions',
@@ -7,8 +8,20 @@ import { Component, OnInit } from '@angular/core';
 })
 export class DocumentactionsComponent implements OnInit {
 
-  constructor() { }
+  settingListThree = [
+    {name:'Name'},
+    {name:'Kind'},
+    {name:'Date'},
+    {name:'Size'}
+  ];
+  constructor(
+    public modalCtrl: ModalController,
+  ) { }
 
   ngOnInit() {}
+
+  onChangeView(action){
+    this.modalCtrl.dismiss({view: action});
+  }
 
 }

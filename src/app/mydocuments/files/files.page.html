@@ -48,7 +48,7 @@
     </div>
   </div>
 </ion-content>
-<div>
+<div style="height: 44px;">
   <ion-toolbar>
     <div *ngIf="!select" slot="start" (click)="onSelect()">
       Select
@@ -56,7 +56,7 @@
     <div *ngIf="select" slot="start" (click)="onCancel()">
       Cancel
     </div>
-    <div slot="end" (click)="onClick()">
+    <div slot="end" (click)="actionClicked ? onDismiss() : onClick()">
         <ion-icon name="ellipsis-vertical-outline" size="large"></ion-icon>
     </div>
   </ion-toolbar>
