@@ -1,12 +1,9 @@
-<ion-header>
-  <ion-toolbar>
-    <ion-title>badgeinfo</ion-title>
-  </ion-toolbar>
-</ion-header>
-
-<ion-content>
-  <h1 class="ion-padding">To Do Title</h1>
-  <p>
+<div class="ion-padding">
+  <h1 style="text-align: center;">To Do Title</h1>
+  <p style="text-align: center;" *ngIf="completed">Complete xx/xx/xxxx</p>
+  <p style="text-align: center;">
     Quisque odio libero, feugiat id volutpat eu, laoreet ac orci. Phasellus sodales feugiat luctus. Sed hendrerit neque ut ante imperdiet, sed tincidunt arcu eleifend. Cras rhoncus, lorem vitae luctus dapibus, ipsum turpis volutpat risus, vitae porta augue nisi a urna. Praesent eu scelerisque eros. In ultricies nunc at velit vehicula interdum. Maecenas luctus ut lorem eget facilisis. Curabitur quis est pharetra, viverra nibh a, viverra ante. Cras iaculis, tellus vitae iaculis scelerisque, justo enim ultricies sem, eu sollicitudin lectus est vel eros.
   </p>
-</ion-content>
+  <ion-button *ngIf="!completed" expand="block">Complete badge now</ion-button>
+  <p *ngIf="completed" style="text-decoration:underline; text-align: center;">Read content again</p>
+</div>

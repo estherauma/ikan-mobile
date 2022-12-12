@@ -23,6 +23,9 @@ export class NewPage implements OnInit {
   async onDetails(){
     const modal = await this.modalCtrl.create({
       component: BadgeinfoPage,
+      componentProps: {
+        completed: false
+      },
       cssClass: 'tuna-modal'
     });
 
