@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { ModalController } from '@ionic/angular';
 
 @Component({
   selector: 'app-badgeinfo',
@@ -7,9 +8,15 @@ import { Component, OnInit } from '@angular/core';
 })
 export class BadgeinfoPage implements OnInit {
   completed;
-  constructor() { }
+  constructor(
+    public modalCtrl: ModalController
+  ) { }
 
   ngOnInit() {
+  }
+
+  onComplete(){
+    this.modalCtrl.dismiss({});
   }
 
 }

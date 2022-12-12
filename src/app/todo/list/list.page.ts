@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { ModalController } from '@ionic/angular';
+import { BadgeinfoPage } from '../badgeinfo/badgeinfo.page';
 
 @Component({
   selector: 'app-list',
@@ -7,13 +9,36 @@ import { Router } from '@angular/router';
   styleUrls: ['./list.page.scss'],
 })
 export class ListPage implements OnInit {
-  todos = new Array(15).fill(
+  badges = [
     {
-      name: 'Todo title',
-      detail: 'Sed hendrerit neque ut ante imperdiet...'
-    });
+      name: 'Badge name',
+      date: 'xx/xx/xxxx',
+      completed: true
+    },
+    {
+      name: 'Badge name',
+      date: 'xx/xx/xxxx',
+      completed: false
+    },
+    {
+      name: 'Badge name',
+      date: 'xx/xx/xxxx',
+      completed: true
+    },
+    {
+      name: 'Badge name',
+      date: 'xx/xx/xxxx',
+      completed: false
+    },
+    {
+      name: 'Badge name',
+      date: 'xx/xx/xxxx',
+      completed: true
+    },
+  ];
   constructor(
-    public router: Router
+    public router: Router,
+    public modalCtrl: ModalController
   ) { }
 
   ngOnInit() {
@@ -21,6 +46,21 @@ export class ListPage implements OnInit {
 
   createTodo(){
     this.router.navigate(['/todo/create']);
+  }
+
+  async onDetails(completed) {
+    const modal = await this.modalCtrl.create({
+      component: BadgeinfoPage,
+      componentProps: {
+        completed
+      },
+      cssClass: 'tuna-modal'
+    });
+
+    modal.present();
+    modal.onDidDismiss().then((data) => {
+      // TODO: handle action from badge info
+    });
   }
 
 }

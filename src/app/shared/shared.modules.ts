@@ -11,6 +11,7 @@ import { ChartComponent } from './components/chart/chart.component';
 import { FilterComponent } from './filter/filter.component';
 import { ConfirmmodalComponent } from './components/confirmmodal/confirmmodal.component';
 import { ConfirmedmodalComponent } from './components/confirmedmodal/confirmedmodal.component';
+import { RecordoptionmodalComponent } from './components/recordoptionmodal/recordoptionmodal.component';
 
 
 @NgModule({
@@ -30,6 +31,7 @@ import { ConfirmedmodalComponent } from './components/confirmedmodal/confirmedmo
     FilterComponent,
     ConfirmmodalComponent,
     ConfirmedmodalComponent,
+    RecordoptionmodalComponent
   ],
   exports: [
     FormComponent,
@@ -40,7 +42,8 @@ import { ConfirmedmodalComponent } from './components/confirmedmodal/confirmedmo
     ChartComponent,
     FilterComponent,
     ConfirmmodalComponent,
-    ConfirmedmodalComponent
+    ConfirmedmodalComponent,
+    RecordoptionmodalComponent
   ]
 })
 

@@ -1,6 +1,8 @@
 import { Component, OnInit, Output, EventEmitter, Input } from '@angular/core';
 import { FormGroup } from '@angular/forms';
+import { ModalController } from '@ionic/angular';
 import { UploadService } from 'src/app/shared/services/upload/upload.service';
+import { RecordoptionmodalComponent } from '../recordoptionmodal/recordoptionmodal.component';
 
 @Component({
   selector: 'app-form',
@@ -22,6 +24,7 @@ export class FormComponent implements OnInit {
 
   constructor(
     public uploadService: UploadService,
+    public modalCtrl: ModalController,
   ) { }
 
   ngOnInit() {}
@@ -51,5 +54,25 @@ export class FormComponent implements OnInit {
 
   removePicture(key){
     delete this.selectedImages[key];
+  }
+
+  async onRecord(question){
+    const recordOptionsModal  = await this.modalCtrl.create({
+      component: RecordoptionmodalComponent,
+      componentProps:{
+        title: question.label
+      },
+      cssClass: 'tuna-modal'
+    });
+
+    recordOptionsModal.present();
+    recordOptionsModal.onDidDismiss().then((data: any) => {
+      // TODO: handle real audio recording and audio file picking
+      if(data && data.location){
+        this.tunaFormGroup.patchValue({
+          [question.key]: data.location
+        });
+      };
+    });
   }
 }
