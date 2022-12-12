@@ -1,0 +1,15 @@
+<app-header [pageTitle]=""></app-header>
+<ion-content>
+  <div class="ion-padding">
+    <ion-label>App Ref: XXX_XXXXX_XXX</ion-label>
+    <ion-text><h1>New Report</h1></ion-text>
+  </div>
+  <div>
+    <app-form 
+    [tunaFormGroup]="pageFormGroup" 
+    [tunaFormquestions]="formQuestions" 
+    [submitButtonText]="submitButtonText"
+    (formValue)="onSubmit($event)">
+  </app-form>
+  </div>
+</ion-content>
