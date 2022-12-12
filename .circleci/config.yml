@@ -3,7 +3,8 @@ version: 2.1
 jobs:
   build-apk:
     docker:
-      - image: circleci/android:api-28-node
+      # - image: cimg/node:18.12.1 has the correct versio of node
+      - image: cimg/android:2022.09-node
     environment:
         JVM_OPTS: -Xmx3200m
     steps:
@@ -19,6 +20,7 @@ jobs:
       - run:
           name: Install dependencies
           command: |
+            node -v
             npm install
             sudo npm i -g @ionic/cli
             sudo npm install -g codecov
@@ -47,7 +49,7 @@ jobs:
 
   build-and-release-apk:
     docker:
-      - image: circleci/android:api-28-node
+      - image: cimg/android:2022.09-node
     environment:
         JVM_OPTS: -Xmx3200m
     steps:

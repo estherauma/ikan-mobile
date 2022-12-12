@@ -5,7 +5,7 @@ import { ContentService } from './shared/services/content/content.service';
 import { SharedmethodsService } from './shared/services/sharedmethods/sharedmethods.service';
 import { StorageKeys, UserData, UserRole } from './shared/types/api-types';
 import { PluginListenerHandle } from '@capacitor/core';
-import { AuthService } from './services/auth/auth.service';
+import { AuthService } from './shared/services/auth/auth.service';
 
 @Component({
   selector: 'app-root',
@@ -48,7 +48,8 @@ export class AppComponent implements OnInit, OnDestroy {
       .then(async (value) => {
         if (value != null) {
           const user: UserData = await this.sharedMethods.readDataFromStorage(StorageKeys.userData);
-          this.router.navigate([this.authService.getCurrentUserBaseUrlFromRole(user.role)]);
+          // this.router.navigate([this.authService.getCurrentUserBaseUrlFromRole(user.role)]);
+          this.router.navigate(['/workers/training']);
         }
       });
   }
