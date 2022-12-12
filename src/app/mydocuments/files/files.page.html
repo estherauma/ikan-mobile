@@ -2,8 +2,8 @@
 
 <ion-content>
   <div class="toggle-nav-buttons ion-padding">
-    <div class="inactive-btn">Essentials</div>
-    <div class="active-btn">My Files</div>
+    <div class="active-btn" (click)="onGoToEssentials()">Essentials</div>
+    <div class="inactive-btn" (click)="onGoToFiles()">My Files</div>
   </div>
   <app-search [searchDataSet]="[]" (searchResult)="searchResult($event)"></app-search>
   <div>

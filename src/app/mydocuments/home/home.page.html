@@ -2,11 +2,11 @@
 
 <ion-content>
   <div class="toggle-nav-buttons ion-padding">
-    <div class="active-btn">Essentials</div>
-    <div class="inactive-btn">My Files</div>
+    <div class="active-btn" (click)="onGoToEssentials()">Essentials</div>
+    <div class="inactive-btn" (click)="onGoToFiles()">My Files</div>
   </div>
   <div class="ion-padding-vertical">
-    <div class="image-upload ion-margin-horizontal">
+    <div class="image-upload ion-margin-horizontal" (click)="onCreateVisa()">
       <ion-thumbnail class="image">
         <ion-img [src]=""></ion-img>
       </ion-thumbnail>
@@ -18,7 +18,7 @@
     <ion-card>
       <ion-card-content>
         <ion-grid>
-          <ion-row class="ion-align-items-center">
+          <ion-row class="ion-align-items-center" (click)="onViewDocument('documentUrl')">
             <ion-col size="2">
               <ion-thumbnail>
                 <ion-img [src]=""></ion-img>

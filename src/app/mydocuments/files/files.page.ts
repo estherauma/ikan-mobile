@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { ModalController } from '@ionic/angular';
+import { ConfirmmodalComponent } from 'src/app/shared/components/confirmmodal/confirmmodal.component';
 import { DocumentactionsComponent } from 'src/app/shared/components/documentactions/documentactions.component';
 import { DocumentselectedactionComponent } from 'src/app/shared/components/documentselectedaction/documentselectedaction.component';
 
@@ -12,14 +14,17 @@ export class FilesPage implements OnInit {
   select = false;
   actionClicked = false;
   display: 'list' | 'icon' = 'list';
-  modal;
+  allActionModal;
+  documentSelectedModal;
+  confirmModal;
   files = new Array(20).fill({
     name:'FileName.jpg',
     date: 'xx/xx/xxx',
     size:'412kb'
   });
   constructor(
-    public modalCtrl: ModalController
+    public modalCtrl: ModalController,
+    public router: Router
   ) { }
 
   ngOnInit() {
@@ -31,15 +36,15 @@ export class FilesPage implements OnInit {
   }
   async onClick(){
     this.actionClicked = true;
-    if(this.select){
-      this.modal = await this.modalCtrl.create({
+    if(!this.select){
+      this.allActionModal = await this.modalCtrl.create({
         component: DocumentactionsComponent,
         cssClass: 'my-own-class',
       });
 
-      this.modal.present();
+      this.allActionModal.present();
 
-      this.modal.onDidDismiss().then((data) => {
+      this.allActionModal.onDidDismiss().then((data) => {
         const view = data.data.view;
 
         if(view === 'icons'){
@@ -54,15 +59,31 @@ export class FilesPage implements OnInit {
       return;
     }
 
-    this.modal = await this.modalCtrl.create({
+    this.documentSelectedModal = await this.modalCtrl.create({
       component: DocumentselectedactionComponent,
       cssClass: 'my-own-class',
     });
 
-    this.modal.present();
+    this.documentSelectedModal.present();
 
-    this.modal.onDidDismiss().then((data) => {
-      console.log('data--->', data);
+    this.documentSelectedModal.onDidDismiss().then( async (data) => {
+      const action = data.data.action;
+
+      if (action === 'delete'){
+        this.confirmModal = await this.modalCtrl.create({
+          component: ConfirmmodalComponent,
+          componentProps: {
+            title: 'Permanently delete?',
+            description: 'Lorem ipsum',
+          },
+          cssClass: 'tuna-modal'
+        });
+        this.confirmModal.present();
+
+        this.confirmModal.onDidDismiss().then(async (confirmModalData) => {
+          //TODO: handle action on confirm deletion
+        });
+      };
     });
   }
 
@@ -71,8 +92,20 @@ export class FilesPage implements OnInit {
   }
 
   onDismiss(){
-    this.modal.dismiss();
     this.actionClicked = false;
+    if(!this.select){
+      this.allActionModal.dismiss();
+    }else{
+      this.documentSelectedModal.dismiss();
+    }
+  }
+
+  onGoToEssentials(){
+    this.router.navigate(['mydocuments/home']);
+  }
+
+  onGoToFiles(){
+    this.router.navigate(['mydocuments/files']);
   }
 
 }
