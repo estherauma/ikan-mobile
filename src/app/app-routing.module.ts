@@ -252,7 +252,7 @@ const routes: Routes = [
     loadChildren: () => import('./todo/create/create.module').then( m => m.CreatePageModule)
   },
   {
-    path: 'badgeinfo',
+    path: 'todo/badgeinfo',
     loadChildren: () => import('./todo/badgeinfo/badgeinfo.module').then( m => m.BadgeinfoPageModule)
   },
 ];
