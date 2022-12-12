@@ -219,6 +219,34 @@ const routes: Routes = [
     path: 'workers/notecreate',
     loadChildren: () => import('./workers/training/notecreate/notecreate.module').then( m => m.NotecreatePageModule)
   },
+  {
+    path: 'todo/home',
+    loadChildren: () => import('./todo/home/home.module').then( m => m.HomePageModule)
+  },
+  {
+    path: 'todo/placement',
+    loadChildren: () => import('./todo/placement/placement.module').then( m => m.PlacementPageModule)
+  },
+  {
+    path: 'todo/new',
+    loadChildren: () => import('./todo/new/new.module').then( m => m.NewPageModule)
+  },
+  {
+    path: 'todo/list',
+    loadChildren: () => import('./todo/list/list.module').then( m => m.ListPageModule)
+  },
+  {
+    path: 'todo/badges',
+    loadChildren: () => import('./todo/badges/badges.module').then( m => m.BadgesPageModule)
+  },
+  {
+    path: 'todo/create',
+    loadChildren: () => import('./todo/create/create.module').then( m => m.CreatePageModule)
+  },
+  {
+    path: 'badgeinfo',
+    loadChildren: () => import('./todo/badgeinfo/badgeinfo.module').then( m => m.BadgeinfoPageModule)
+  },
 ];
 
 @NgModule({
