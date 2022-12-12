@@ -203,6 +203,26 @@ const routes: Routes = [
     path: 'worker/profiles',
     loadChildren: () => import('./workers/profiles/worker/worker.module').then( m => m.WorkerPageModule)
   },
+  {
+    path: 'workers/training',
+    loadChildren: () => import('./workers/training/list/list.module').then( m => m.ListPageModule)
+  },
+  {
+    path: 'workers/status',
+    loadChildren: () => import('./workers/training/status/status.module').then( m => m.StatusPageModule)
+  },
+  {
+    path: 'workers/recordnote',
+    loadChildren: () => import('./workers/training/recordnote/recordnote.module').then( m => m.RecordnotePageModule)
+  },
+  {
+    path: 'workers/noteplayback',
+    loadChildren: () => import('./workers/training/noteplayback/noteplayback.module').then( m => m.NoteplaybackPageModule)
+  },
+  {
+    path: 'workers/notecreate',
+    loadChildren: () => import('./workers/training/notecreate/notecreate.module').then( m => m.NotecreatePageModule)
+  },
 ];
 
 @NgModule({
