@@ -68,9 +68,9 @@ export class FormComponent implements OnInit {
     recordOptionsModal.present();
     recordOptionsModal.onDidDismiss().then((data: any) => {
       // TODO: handle real audio recording and audio file picking
-      if(data && data.location){
+      if(data && data.data && data.data.location){
         this.tunaFormGroup.patchValue({
-          [question.key]: data.location
+          [question.key]: data.data.location
         });
       };
     });
