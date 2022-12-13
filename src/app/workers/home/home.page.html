@@ -2,7 +2,9 @@
 
 <ion-content>
   <app-search></app-search>
-  <app-filter></app-filter>
+  <div class="ion-padding-horizontal">
+    <app-filter></app-filter>
+  </div>
 
   <ion-card *ngFor="let worker of workers">
     <ion-card-content>

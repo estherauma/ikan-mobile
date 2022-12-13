@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { ModalController } from '@ionic/angular';
+import { UserRole } from 'src/app/shared/types/api-types';
 import { CreatePage } from '../create/create.page';
 
 @Component({
@@ -16,21 +17,24 @@ export class HomePage implements OnInit {
       nationality: 'Indonesian',
       dob: 'xx.xx.xxxx',
       trainingStatus: 'started',
-      image: ''
+      image: '',
+      role: UserRole.worker
     },
     {
       name: 'Name Surname',
       nationality: 'Indonesian',
       dob: 'xx.xx.xxxx',
       trainingStatus: 'started',
-      image: ''
+      image: '',
+      role: UserRole.taiwaneseAgent
     },
     {
       name: 'Name Surname',
       nationality: 'Indonesian',
       dob: 'xx.xx.xxxx',
       trainingStatus: 'started',
-      image: ''
+      image: '',
+      role: UserRole.indonesianAgent
     }
   ];
 
@@ -42,7 +46,15 @@ export class HomePage implements OnInit {
   ngOnInit() {}
 
   viewDetails(worker) {
-    this.router.navigate(['workers/details', worker]);
+    const workerRole = worker.role;
+    switch(workerRole){
+      case UserRole.worker:
+        return this.router.navigate(['worker/profiles']);
+      case UserRole.taiwaneseAgent:
+          return this.router.navigate(['workers/details']);
+      default:
+        return this.router.navigate(['']);
+    }
   }
 
   async createWorker(){

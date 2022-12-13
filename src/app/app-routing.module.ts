@@ -208,6 +208,10 @@ const routes: Routes = [
     loadChildren: () => import('./mydocuments/files/files.module').then( m => m.FilesPageModule)
   },
   {
+    path: 'worker/profiles',
+    loadChildren: () => import('./workers/profiles/worker/worker.module').then( m => m.WorkerPageModule)
+  },
+  {
     path: 'buyers/home',
     loadChildren: () => import('./buyers/reporting/home/home.module').then( m => m.HomePageModule)
   },
