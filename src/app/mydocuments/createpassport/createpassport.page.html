@@ -1,0 +1,13 @@
+<app-header [pageTitle]=""></app-header>
+<ion-content>
+  <div>
+    <h1 class="ion-padding">Passport</h1>
+
+    <app-form
+    [tunaFormGroup]="pageFormGroup"
+    [tunaFormquestions]="formQuestions"
+    [submitButtonText]="submitButtonText"
+    (formValue)="onSubmit($event)">
+  </app-form>
+  </div>
+</ion-content>
