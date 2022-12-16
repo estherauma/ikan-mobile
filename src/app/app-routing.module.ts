@@ -200,6 +200,18 @@ const routes: Routes = [
     loadChildren: () => import('./workers/createdetail/createdetail.module').then( m => m.CreatePageModule)
   },
   {
+    path: 'mydocuments/home',
+    loadChildren: () => import('./mydocuments/home/home.module').then( m => m.HomePageModule)
+  },
+  {
+    path: 'mydocuments/files',
+    loadChildren: () => import('./mydocuments/files/files.module').then( m => m.FilesPageModule)
+  },
+  {
+    path: 'worker/profiles',
+    loadChildren: () => import('./workers/profiles/worker/worker.module').then( m => m.WorkerPageModule)
+  },
+  {
     path: 'buyers/home',
     loadChildren: () => import('./buyers/reporting/home/home.module').then( m => m.HomePageModule)
   },
@@ -254,6 +266,14 @@ const routes: Routes = [
   {
     path: 'todo/badgeinfo',
     loadChildren: () => import('./todo/badgeinfo/badgeinfo.module').then( m => m.BadgeinfoPageModule)
+  },
+  {
+    path: 'mydocuments/createpassport',
+    loadChildren: () => import('./mydocuments/createpassport/createpassport.module').then( m => m.CreatepassportPageModule)
+  },
+  {
+    path: 'mydocuments/details',
+    loadChildren: () => import('./mydocuments/details/details.module').then( m => m.DetailsPageModule)
   },
 ];
 

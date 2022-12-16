@@ -29,8 +29,6 @@ export class TaiwanesePage extends BaseformPage implements OnInit {
   ngOnInit() {
   }
 
-  async onSubmit(formData) {
-    console.log('submit data ---->', formData);
-  }
+  async onSubmit(formData) {}
 
 }
