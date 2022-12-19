@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 // Uncomment this when building for native device
-import { SQLite } from '@awesome-cordova-plugins/sqlite/ngx';
-import { SQLiteObject } from './sqlite.mock';
+import { SQLite,SQLiteObject } from '@awesome-cordova-plugins/sqlite/ngx';
+// import { SQLiteObject } from './sqlite.mock';
 import { Platform } from '@ionic/angular';
 @Injectable({
   providedIn: 'root'
