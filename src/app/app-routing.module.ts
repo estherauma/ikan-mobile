@@ -275,6 +275,10 @@ const routes: Routes = [
     path: 'mydocuments/details',
     loadChildren: () => import('./mydocuments/details/details.module').then( m => m.DetailsPageModule)
   },
+  {
+    path: 'workorders/send/signatureview',
+    loadChildren: () => import('./workorders/send/signatureview/signatureview.module').then( m => m.SignatureviewPageModule)
+  },
 ];
 
 @NgModule({

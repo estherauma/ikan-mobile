@@ -77,4 +77,8 @@ export class ViewPage implements OnInit {
     });
   }
 
+  onSubWorkOrder(){
+    this.router.navigate(['/workorders/send/signatureview']);
+  }
+
 }
