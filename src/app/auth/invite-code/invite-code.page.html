@@ -1,17 +1,20 @@
 <app-header [pageTitle] = "" [isBackButton]="true" [isMenuButton]="false"></app-header>
 
-<ion-content class="ion-padding">
-  <div class="logo-container ion-margin-bottom">
-    <ion-thumbnail class="logo">
-      <ion-img [src]=""></ion-img>
-    </ion-thumbnail>
-  </div>
-  <app-invite-code-input
-  (InputValue) = "inputValue($event)"
-  >   
-  </app-invite-code-input>
-  <ion-button class="ion-margin-top" (click)="onLogin()" expand="full">
-    Login
-  </ion-button>
+<ion-content>
+  <app-authbgpaper></app-authbgpaper>
+
+  <div class="ion-padding center-content">
+    <div>
+      <ion-row class="ion-justify-content-center">
+        <ion-img style="height:42.26px; width:175px; margin-bottom: 70px;" src="/assets/imgs/logo_svg.svg"></ion-img>
+      </ion-row>
+    </div>
+    <ion-label style="color: #ffffff;">Title for field goes here</ion-label>
+    <app-invite-code-input
+    (InputValue) = "inputValue($event)"
+    >   
+    </app-invite-code-input>
+    <app-buttonoutline title="Go" (click)="onLogin()"></app-buttonoutline>
+    </div>
 
 </ion-content>

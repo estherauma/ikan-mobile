@@ -8,3 +8,10 @@
         margin-top: 64px;
     }
 }
+
+.center-content{
+    display: flex; 
+    flex-direction: column; 
+    justify-content: center; 
+    height: 100vh;
+}
