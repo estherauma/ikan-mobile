@@ -200,6 +200,26 @@ const routes: Routes = [
     loadChildren: () => import('./workers/createdetail/createdetail.module').then( m => m.CreatePageModule)
   },
   {
+    path: 'mydocuments/home',
+    loadChildren: () => import('./mydocuments/home/home.module').then( m => m.HomePageModule)
+  },
+  {
+    path: 'mydocuments/files',
+    loadChildren: () => import('./mydocuments/files/files.module').then( m => m.FilesPageModule)
+  },
+  {
+    path: 'worker/profiles',
+    loadChildren: () => import('./workers/profiles/worker/worker.module').then( m => m.WorkerPageModule)
+  },
+  {
+    path: 'buyers/home',
+    loadChildren: () => import('./buyers/reporting/home/home.module').then( m => m.HomePageModule)
+  },
+  {
+    path: 'buyers/create',
+    loadChildren: () => import('./buyers/reporting/create/create.module').then( m => m.CreatePageModule)
+  },
+  {
     path: 'workers/training',
     loadChildren: () => import('./workers/training/list/list.module').then( m => m.ListPageModule)
   },
@@ -218,6 +238,46 @@ const routes: Routes = [
   {
     path: 'workers/notecreate',
     loadChildren: () => import('./workers/training/notecreate/notecreate.module').then( m => m.NotecreatePageModule)
+  },
+  {
+    path: 'todo/home',
+    loadChildren: () => import('./todo/home/home.module').then( m => m.HomePageModule)
+  },
+  {
+    path: 'todo/placement',
+    loadChildren: () => import('./todo/placement/placement.module').then( m => m.PlacementPageModule)
+  },
+  {
+    path: 'todo/new',
+    loadChildren: () => import('./todo/new/new.module').then( m => m.NewPageModule)
+  },
+  {
+    path: 'todo/list',
+    loadChildren: () => import('./todo/list/list.module').then( m => m.ListPageModule)
+  },
+  {
+    path: 'todo/badges',
+    loadChildren: () => import('./todo/badges/badges.module').then( m => m.BadgesPageModule)
+  },
+  {
+    path: 'todo/create',
+    loadChildren: () => import('./todo/create/create.module').then( m => m.CreatePageModule)
+  },
+  {
+    path: 'todo/badgeinfo',
+    loadChildren: () => import('./todo/badgeinfo/badgeinfo.module').then( m => m.BadgeinfoPageModule)
+  },
+  {
+    path: 'mydocuments/createpassport',
+    loadChildren: () => import('./mydocuments/createpassport/createpassport.module').then( m => m.CreatepassportPageModule)
+  },
+  {
+    path: 'mydocuments/details',
+    loadChildren: () => import('./mydocuments/details/details.module').then( m => m.DetailsPageModule)
+  },
+  {
+    path: 'workorders/send/signatureview',
+    loadChildren: () => import('./workorders/send/signatureview/signatureview.module').then( m => m.SignatureviewPageModule)
   },
 ];
 

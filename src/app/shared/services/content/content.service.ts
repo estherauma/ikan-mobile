@@ -43,7 +43,6 @@ export class ContentService {
     response.subscribe((res: HttpResponse<any>) => {
       const content = res.body;
       if (content?.status === 'OK') {
-        console.log('res.bodyres.body', res.body);
         this.writeLocalContent(StorageKeys.appContent, content.data[0]);
         this.appContent = content.data[0].content;
       }

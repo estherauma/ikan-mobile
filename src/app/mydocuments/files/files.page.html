@@ -1,0 +1,63 @@
+<app-header [pageTitle]=""></app-header>
+
+<ion-content>
+  <div class="toggle-nav-buttons ion-padding">
+    <div class="active-btn" (click)="onGoToEssentials()">Essentials</div>
+    <div class="inactive-btn" (click)="onGoToFiles()">My Files</div>
+  </div>
+  <app-search [searchDataSet]="[]" (searchResult)="searchResult($event)"></app-search>
+  <div>
+    <div class="ion-padding-vertical">
+      <ion-grid *ngIf="display==='icon'">
+        <ion-row class="ion-justify-content-center ion-margin-bottom">
+          <ion-col *ngFor="let file of files" size="4" class="ion-justify-content-center">
+            <div style="height: 150px; position: relative;" class="ion-margin-bottom">
+              <div *ngIf="select"  style="position:absolute; right: 5px; top:5px;">
+              <ion-checkbox></ion-checkbox>
+            </div>
+              <ion-thumbnail style="width: 100%; height: 100%;">
+                <ion-img [src]=""></ion-img>
+              </ion-thumbnail>
+            </div>
+              <ion-label class="image-title-list">{{file.name}}</ion-label>
+              <small class="image-text-list">{{file.date}}</small>
+              <small class="image-text-list">{{file.size}}</small>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+
+      <div *ngIf="display==='list'" class="ion-padding-horizontal">
+        <ion-col>
+          <ion-row *ngFor="let file of files">
+            <ion-col *ngIf="select" size="1">
+              <ion-checkbox></ion-checkbox>
+            </ion-col>
+            <ion-col size="2">
+              <ion-thumbnail>
+                <ion-img [src]=""></ion-img>
+              </ion-thumbnail>
+            </ion-col>
+            <ion-col size="9">
+              <ion-label class="image-title-list">{{file.name}}</ion-label>
+              <small class="image-text-list">{{file.date}}</small>
+              <small class="image-text-list">{{file.size}}</small>
+            </ion-col>
+          </ion-row>
+        </ion-col>
+      </div>
+    </div>
+  </div>
+</ion-content>
+<div style="height: 44px;">
+  <ion-toolbar>
+    <div *ngIf="!select" slot="start" (click)="onSelect()">
+      Select
+    </div>
+    <div *ngIf="select" slot="start" (click)="onCancel()">
+      Cancel
+    </div>
+    <div slot="end" (click)="actionClicked ? onDismiss() : onClick()">
+        <ion-icon name="ellipsis-vertical-outline" size="large"></ion-icon>
+    </div>
+  </ion-toolbar>
+</div>

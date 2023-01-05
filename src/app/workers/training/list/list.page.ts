@@ -69,6 +69,7 @@ export class ListPage implements OnInit {
       component: ConfirmmodalComponent,
       componentProps: {
         title: 'Question?',
+        actionByRadio: true,
         description: 'If user is not sure of the answer we can go to the section containing the relevant information',
         link: '/'
       },

@@ -1,0 +1,13 @@
+<div class="ion-padding">
+  <h1 style="text-align: center;" class="ion-padding-horizontal">{{title}}</h1>
+  <ion-grid>
+    <ion-row (click)="onRecord()" class="ion-align-items-center ion-justify-content-center ion-margin-bottom">
+      <ion-icon size="large" name="play-outline"></ion-icon>
+      <ion-label>record audio</ion-label>
+    </ion-row>
+    <ion-row (click)="onChoseAudio()" class="ion-align-items-center ion-justify-content-center">
+      <ion-icon size="large" name="cloud-upload-outline"></ion-icon>
+      <ion-label>chose from file</ion-label>
+    </ion-row>
+  </ion-grid>
+</div>
