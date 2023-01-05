@@ -7,7 +7,7 @@ import { Component, OnInit } from '@angular/core';
 })
 export class AuthbgpaperComponent implements OnInit {
   topHeight=10;
-  bottomHeight=90;
+  bottomHeight=50;
   constructor() { }
 
   ngOnInit() {}
