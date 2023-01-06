@@ -13,17 +13,18 @@ export class ViewPage implements OnInit {
     {
       img: '',
       title: 'Parties requirement',
-      description: 'Neque porro quisquam est qui dolorem ipsum quia dolor sit amet, consectetur'
+      description: '<i>Neque porro quisquam est qui dolorem ipsum quia dolor sit amet, consectetur</i>'
     },
     {
       img: '',
       title: 'Place of work',
-      description: 'Neque porro quisquam est qui dolorem ipsum quia dolor sit amet, consectetur'
+      description: '<p>Neque porro quisquam est qui dolorem</p> <b>ipsum quia dolor sit amet, consectetur</b>'
     },
     {
       img: '',
       title: 'Provisions',
-      description: 'Neque porro quisquam est qui dolorem ipsum quia dolor sit amet, consectetur'
+      description: `<img src="https://source.unsplash.com/random" alt="A random image from Unsplash"/> 
+      Neque porro quisquam est qui dolorem ipsum quia dolor sit amet, consectetur`
     },
     {
       img: '',
@@ -75,6 +76,11 @@ export class ViewPage implements OnInit {
       this.workOrder = params;
       this.pageTitle = `View ${this.workOrder.name}`;
     });
+  }
+
+  goToClauses(clause) {
+    const objectParams = { ...clause };
+    this.router.navigate(['/workorders/clauses'], { queryParams: objectParams });
   }
 
 }

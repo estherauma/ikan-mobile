@@ -1,0 +1,24 @@
+<app-header [pageTitle]=""></app-header>
+
+<ion-content>
+    <div class="ion-padding">
+        <p>App Ref: xxx_xxxxx_xx</p>
+        <ion-thumbnail class="thumbnail">
+            <ion-img [src]="clause.img"></ion-img>
+        </ion-thumbnail>
+        <h1>{{clause.title}}</h1>
+    </div>
+    <ion-card>
+        <ion-card-content>
+            <div [innerHtml]="htmlContent"></div>
+        </ion-card-content>
+    </ion-card>
+    <ion-row class="ion-justify-content-between">
+        <ion-col>
+            <ion-button>Previous</ion-button>
+        </ion-col>
+        <ion-col>
+            <ion-button class="next-btn">Next</ion-button>
+        </ion-col>
+    </ion-row>
+</ion-content>

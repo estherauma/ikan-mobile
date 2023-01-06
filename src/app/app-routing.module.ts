@@ -275,6 +275,10 @@ const routes: Routes = [
     path: 'mydocuments/details',
     loadChildren: () => import('./mydocuments/details/details.module').then( m => m.DetailsPageModule)
   },
+  {
+    path: 'workorders/clauses',
+    loadChildren: () => import('./workorders/clauses/clauses.module').then( m => m.ClausesPageModule)
+  },
 ];
 
 @NgModule({

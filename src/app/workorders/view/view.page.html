@@ -30,7 +30,10 @@
 
           </ion-col>
           <ion-col size="1" style="text-align: center; padding-top: 15%">
-            <ion-icon name="chevron-forward-outline" size="large"></ion-icon>
+            <ion-icon 
+            name="chevron-forward-outline" size="large"
+            (click)="goToClauses(clause)"
+            ></ion-icon>
           </ion-col>
         </ion-row>
       </ion-grid>
