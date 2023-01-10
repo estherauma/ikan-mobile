@@ -18,27 +18,25 @@
   <app-search [searchDataSet]="agents" (searchResult)="searchResult($event)"></app-search>
 
   <!-- TODO: Add filter shared component -->
-
-  <ion-card *ngFor="let agent of agents">
-    <ion-card-content>
-      <ion-grid>
-        <ion-row>
-          <ion-col size="3" style="padding-top: 10%">
-            <ion-icon name="expand-outline" size="large"></ion-icon>
-          </ion-col>
-
-          <ion-col size="8">
-            <ion-text>
-              <strong> <h2>{{agent.name}} </h2> </strong>
-            </ion-text>
-            <ion-text>Contact: {{agent.contact}}</ion-text>
-          </ion-col>
-
-          <ion-col size="1" style="text-align: center; padding-top: 10%" (click)="viewDetails(agent)">
-            <ion-icon name="chevron-forward-outline" size="large"></ion-icon>
-          </ion-col>
-        </ion-row>
-      </ion-grid>
-    </ion-card-content>
+  <ion-card *ngFor="let agent of agents" class="card-body">
+    <div  class="card-content">
+      <div
+        class="card-image-section">
+        <img class="image" src="/assets/icon/ellipse_profile.svg" />
+      </div>
+      <div class="card-section">
+        <div style="position: relative;">
+          <div class="status-container">
+            <div class="status-wrapper">
+              <span >status</span>
+            </div>
+          </div>
+        </div>
+        <div class="ion-padding ion-margin-vertical">
+          <ion-card-title class="blue-text">{{agent.name}}</ion-card-title>
+          <ion-label><span class="gray-text">Contact: {{agent.contact}}</span></ion-label> <br>
+        </div>
+      </div>
+    </div>
   </ion-card>
 </ion-content>
