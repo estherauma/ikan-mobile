@@ -1,12 +1,56 @@
-<app-header
-  [pageTitle]="pageTitle"
->
+<app-header [pageTitle]="pageTitle">
 
 </app-header>
 
 <ion-content>
   <app-search [searchDataSet]="workOrders" (searchResult)="searchResult($event)"></app-search>
-  <ion-card *ngFor="let wo of workOrders">
+
+  <ion-card *ngFor="let wo of workOrders" style="border-radius: 20px;">
+    <div style="display: flex; 
+    justify-content: space-between;
+    align-items: stretch;
+    ">
+      <div
+        style="
+        background: #3565FF; 
+        width: 80px; 
+        padding: 16px; 
+        display: flex; 
+        justify-content: center; 
+        align-items: center;
+        height: auto;
+        ">
+        <img src="/assets/icon/workorders.svg" />
+      </div>
+      <div style="
+      flex: 1; height: auto;
+      display: flex; 
+      flex-direction: column;
+      ">
+        <div style="position: relative;">
+          <div style="
+          background: #74F080; position: absolute; top: 0px; right: 0px;  
+          height: 20px; width: 65px;
+          overflow: hidden;
+          border-bottom-left-radius: 20px;
+          ">
+            <div style="position: relative; display: flex; align-items: center; justify-content: center;">
+              <span style="color: #000000;">status</span>
+            </div>
+          </div>
+        </div>
+        <div class="ion-padding ion-margin-vertical">
+          <ion-card-title style="color: #191970;">{{wo.name}}</ion-card-title>
+          <ion-card-subtitle>Internal Ref: {{wo.internalRef}}</ion-card-subtitle>
+          <br>
+          <ion-label><span style="color: #A0ABCC;">App Ref: </span> <span style="color: #3565FF;">{{wo.appRef}}</span></ion-label> <br>
+          <ion-label><strong>Date Created:</strong> {{wo.dateOpened}}</ion-label> <br>
+          <ion-label><strong>Status:</strong> {{wo.status}}</ion-label>
+        </div>
+      </div>
+    </div>
+  </ion-card>
+  <!-- <ion-card *ngFor="let wo of workOrders">
     <ion-card-content>
       <ion-grid>
         <ion-row>
@@ -27,11 +71,25 @@
         </ion-row>
       </ion-grid>
     </ion-card-content>
-  </ion-card>
+  </ion-card> -->
+  <!-- <ion-card style="border-radius: 20px;">
+      <div style="display: flex; justify-content: space-between; align-items: center;">
+        <div style="background: #3565FF; width: 80px; padding: 16px; display: flex; justify-content: center; align-items: center;">
+          <img src="/assets/icon/workorders.svg" />
+        </div>
+        <div style="flex: 1;">
+          <div style="position: absolute; top: 0; right: 0; border-bottom-left-radius: 20px; height: 20px; width: 65px; background: #74F080;">
+            <p>corner</p>
+          </div>
+          <div style="background-color: blue;" class="ion-padding-horizontal">
+            <p>right</p>
+          </div>
+        </div>
+      </div>
+  </ion-card> -->
   <ion-fab vertical="bottom" horizontal="end" slot="fixed">
     <ion-fab-button (click)="createWorkOrder()">
       <ion-icon name="add-circle-outline"></ion-icon>
     </ion-fab-button>
   </ion-fab>
 </ion-content>
-
