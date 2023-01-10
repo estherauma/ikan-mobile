@@ -1,7 +1,7 @@
 <ion-header [translucent]="true">
   <ion-toolbar>
     <ion-buttons slot="start">
-      <ion-back-button *ngIf="isBackButton" defaultHref="" color="primary" text="" icon="arrow-back-outline"></ion-back-button>
+      <ion-back-button *ngIf="isBackButton" defaultHref="" color="primary" [text]="backBtnText" icon="arrow-back-outline"></ion-back-button>
     </ion-buttons>
     
     <ion-title>{{pageTitle}}</ion-title>

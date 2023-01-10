@@ -9,6 +9,7 @@ export class HeaderComponent implements OnInit {
   @Input() pageTitle: string;
   @Input() isBackButton = false;
   @Input() isMenuButton = true;
+  @Input() backBtnText = '';
 
   constructor() { }
 
