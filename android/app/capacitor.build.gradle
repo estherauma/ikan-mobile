@@ -20,7 +20,7 @@ dependencies {
     implementation project(':capacitor-toast')
     implementation project(':capawesome-capacitor-file-picker')
     implementation project(':capacitor-voice-recorder')
-    implementation "androidx.webkit:webkit:1.4.0"
+
 }
 
 

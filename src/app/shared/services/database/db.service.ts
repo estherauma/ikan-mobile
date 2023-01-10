@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
 // Uncomment this when building for native device
-import { SQLite,SQLiteObject } from '@awesome-cordova-plugins/sqlite/ngx';
-// import { SQLiteObject } from './sqlite.mock';
+// import { SQLite,SQLiteObject } from '@awesome-cordova-plugins/sqlite/ngx';
+import { SQLite } from '@awesome-cordova-plugins/sqlite/ngx';
+import { SQLiteObject } from './sqlite.mock';
 import { Platform } from '@ionic/angular';
-import { File } from '@awesome-cordova-plugins/file/ngx';
 @Injectable({
   providedIn: 'root'
 })
@@ -16,10 +16,11 @@ export class DBService {
   constructor(
     private sqlite: SQLite,
     public platform: Platform,
-    public file: File
+    private file: File
   ) {
     this.platform.ready().then(() => {
       this.createDB();
+      this.readMigrationsFiles();
     });
   }
 
@@ -40,6 +41,7 @@ export class DBService {
   }
 
   readMigrationsTable() {
+    console.log('Reading migrations table');
     this.db.executeSql('SELECT * FROM migrations ORDER BY id ASC', [])
     .then((data) => {
       if (data.rows.length > 0) {
@@ -55,11 +57,7 @@ export class DBService {
     });
   }
 
-  readMigrationsFiles() {
-    // read files from migrations folder
-
-
-  }
+  readMigrationsFiles() {}
 
   getPendingMigrations() {}
 
