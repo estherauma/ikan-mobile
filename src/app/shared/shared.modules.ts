@@ -14,6 +14,7 @@ import { DocumentselectedactionComponent } from './components/documentselectedac
 import { ConfirmmodalComponent } from './components/confirmmodal/confirmmodal.component';
 import { ConfirmedmodalComponent } from './components/confirmedmodal/confirmedmodal.component';
 import { RecordoptionmodalComponent } from './components/recordoptionmodal/recordoptionmodal.component';
+import { TitleComponent } from './components/title/title.component';
 
 
 @NgModule({
@@ -35,7 +36,8 @@ import { RecordoptionmodalComponent } from './components/recordoptionmodal/recor
     DocumentselectedactionComponent,
     ConfirmmodalComponent,
     ConfirmedmodalComponent,
-    RecordoptionmodalComponent
+    RecordoptionmodalComponent,
+    TitleComponent
   ],
   exports: [
     FormComponent,
@@ -49,7 +51,8 @@ import { RecordoptionmodalComponent } from './components/recordoptionmodal/recor
     DocumentselectedactionComponent,
     ConfirmmodalComponent,
     ConfirmedmodalComponent,
-    RecordoptionmodalComponent
+    RecordoptionmodalComponent,
+    TitleComponent
   ]
 })
 
