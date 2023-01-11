@@ -14,8 +14,8 @@ The migrations are automatically run everytime the DB service is instantiated. S
 
 I haven't thought that far yet but we'll get there eventually
 
-
 ## How the migrations work
+
 # Migration notes
 
 Initially wanted to store migrations and sql files for migrations inside `src/app/shared/services/database/migrations` but it turns out I can't read that file at run time with the [filesystem plugin](https://capacitorjs.com/docs/apis/filesystem) at run time to be able to run the migrations and update the database.
