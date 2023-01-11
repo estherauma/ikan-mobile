@@ -1,37 +1,37 @@
-<form [formGroup]="tunaFormGroup" (ngSubmit)="onSubmit($event)">
+<form [formGroup]="tunaFormGroup" (ngSubmit)="onSubmit($event)" style="background: transparent;">
   <div *ngFor="let question of tunaFormquestions">
 
     <div [ngSwitch]="question.questionType">
       <div *ngSwitchCase="'textBox'">
-        <ion-item *ngIf="question.displayquestion" lines="none">
+        <div *ngIf="question.displayquestion" lines="none" style="background-color: transparent;">
           <ion-grid>
             <ion-row>
               <ion-col size="12">
                 <ion-label text-wrap> {{question.label}} </ion-label>
               </ion-col>
               <ion-col size="12">
-                <ion-input type="text" placeholder="Type here" formControlName="{{question.key}}"></ion-input>
+                <ion-input class="ion-padding-start" style="background-color: white; border-radius: 10px;" type="text" placeholder="Type here" formControlName="{{question.key}}"></ion-input>
               </ion-col>
 
             </ion-row>
           </ion-grid>
-        </ion-item>
+        </div>
       </div>
 
       <div *ngSwitchCase="'password'">
-        <ion-item *ngIf="question.displayquestion" lines="none">
+        <div *ngIf="question.displayquestion" lines="none">
           <ion-grid>
             <ion-row>
               <ion-col size="12">
                 <ion-label text-wrap> {{question.label}} </ion-label>
               </ion-col>
               <ion-col size="12">
-                <ion-input type="password" placeholder="Type here" formControlName="{{question.key}}"></ion-input>
+                <ion-input class="ion-padding-start" style="background-color: white; border-radius: 10px;" type="password" placeholder="Type here" formControlName="{{question.key}}"></ion-input>
               </ion-col>
 
             </ion-row>
           </ion-grid>
-        </ion-item>
+        </div>
       </div>
 
       <div *ngSwitchCase="'number'">
@@ -42,7 +42,7 @@
                 <ion-label text-wrap> {{question.label}} </ion-label>
               </ion-col>
               <ion-col size="12">
-                <ion-input type="number" placeholder="Type here" formControlName="{{question.key}}"></ion-input>
+                <ion-input class="ion-padding-start" type="number" placeholder="Type here" formControlName="{{question.key}}"></ion-input>
               </ion-col>
 
             </ion-row>
@@ -157,7 +157,7 @@
 
   <ion-grid class="buttons">
     <ion-col size="5">
-      <ion-button expand="block" type="submit" class="submit-button" [disabled]="!tunaFormGroup.valid"> {{submitButtonText | uppercase}} </ion-button>
+      <app-buttonoutline expand="block" type="submit" class="submit-button" [disabled]="!tunaFormGroup.valid" title={{submitButtonText.toUpperCase()}}></app-buttonoutline>
     </ion-col>
   </ion-grid>
 </form>
