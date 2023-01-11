@@ -18,6 +18,8 @@ import { TitleComponent } from './components/title/title.component';
 import { ButtonoutlineComponent } from './components/buttonoutline/buttonoutline.component';
 import { ButtonsolidComponent } from './components/buttonsolid/buttonsolid.component';
 import { AuthbgpaperComponent } from './components/authbgpaper/authbgpaper.component';
+import { WorkordercardComponent } from './components/workordercard/workordercard.component';
+import { AgentcardComponent } from './components/agentcard/agentcard.component';
 
 
 @NgModule({
@@ -43,7 +45,9 @@ import { AuthbgpaperComponent } from './components/authbgpaper/authbgpaper.compo
     TitleComponent,
     ButtonoutlineComponent,
     ButtonsolidComponent,
-    AuthbgpaperComponent
+    AuthbgpaperComponent,
+    WorkordercardComponent,
+    AgentcardComponent
   ],
   exports: [
     FormComponent,
@@ -61,7 +65,9 @@ import { AuthbgpaperComponent } from './components/authbgpaper/authbgpaper.compo
     TitleComponent,
     ButtonoutlineComponent,
     ButtonsolidComponent,
-    AuthbgpaperComponent
+    AuthbgpaperComponent,
+    WorkordercardComponent,
+    AgentcardComponent
   ]
 })
 
