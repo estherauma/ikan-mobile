@@ -14,6 +14,7 @@ import { DocumentselectedactionComponent } from './components/documentselectedac
 import { ConfirmmodalComponent } from './components/confirmmodal/confirmmodal.component';
 import { ConfirmedmodalComponent } from './components/confirmedmodal/confirmedmodal.component';
 import { RecordoptionmodalComponent } from './components/recordoptionmodal/recordoptionmodal.component';
+import { TitleComponent } from './components/title/title.component';
 import { ButtonoutlineComponent } from './components/buttonoutline/buttonoutline.component';
 import { ButtonsolidComponent } from './components/buttonsolid/buttonsolid.component';
 import { AuthbgpaperComponent } from './components/authbgpaper/authbgpaper.component';
@@ -39,6 +40,7 @@ import { AuthbgpaperComponent } from './components/authbgpaper/authbgpaper.compo
     ConfirmmodalComponent,
     ConfirmedmodalComponent,
     RecordoptionmodalComponent,
+    TitleComponent,
     ButtonoutlineComponent,
     ButtonsolidComponent,
     AuthbgpaperComponent
@@ -56,6 +58,7 @@ import { AuthbgpaperComponent } from './components/authbgpaper/authbgpaper.compo
     ConfirmmodalComponent,
     ConfirmedmodalComponent,
     RecordoptionmodalComponent,
+    TitleComponent,
     ButtonoutlineComponent,
     ButtonsolidComponent,
     AuthbgpaperComponent
