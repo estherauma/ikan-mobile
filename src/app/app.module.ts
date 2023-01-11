@@ -31,7 +31,8 @@ import { SQLiteMock } from './shared/services/database/sqlite.mock';
   ],
   providers: [
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
-    {provide: SQLite, useClass: SQLiteMock},],
+    { provide: SQLite, useClass: SQLiteMock },
+  ],
   bootstrap: [AppComponent],
 })
 
