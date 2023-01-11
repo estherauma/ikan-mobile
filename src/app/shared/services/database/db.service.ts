@@ -4,6 +4,7 @@ import { Injectable } from '@angular/core';
 import { SQLite } from '@awesome-cordova-plugins/sqlite/ngx';
 import { SQLiteObject } from './sqlite.mock';
 import { Platform } from '@ionic/angular';
+import { Filesystem, Directory, Encoding } from '@capacitor/filesystem';
 @Injectable({
   providedIn: 'root'
 })
@@ -16,7 +17,6 @@ export class DBService {
   constructor(
     private sqlite: SQLite,
     public platform: Platform,
-    private file: File
   ) {
     this.platform.ready().then(() => {
       this.createDB();
@@ -57,7 +57,22 @@ export class DBService {
     });
   }
 
-  readMigrationsFiles() {}
+  async readMigrationsFiles() {
+    const migrations = await Filesystem.readdir({
+      path: '',
+      directory: Directory.Documents,
+    });
+    console.log('migrations', migrations);
+  }
+
+  async readMigrationFile() {
+    const contents = await Filesystem.readFile({
+      path: 'secrets/text.txt',
+      directory: Directory.Documents,
+      encoding: Encoding.UTF8,
+    });
+    console.log('Read', contents);
+  }
 
   getPendingMigrations() {}
 

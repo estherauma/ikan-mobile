@@ -4,7 +4,7 @@ The purpose of migration is to keep the DB in sync with the code
 
 ## Creating migrations
 
-Run `npm run create-migration --nameOfChange`
+Run `npm run create-migration <nameOfChangeInMigration>`
 
 ## Running migrations
 

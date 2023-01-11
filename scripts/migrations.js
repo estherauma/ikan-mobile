@@ -6,5 +6,11 @@ const { argv } = require('process');
 const now = Date.now();
 // create empty file
 const fs = require('fs');
-fs.writeFileSync(`./src/app/shared/services/database/migrations/${now + '_' + argv[2]}.sql`, '');
- console.log('Migration file created at src/app/shared/services/database/migrations/' + now + '_' + argv[2] +'.sql');
+const fileName = now + '_' + `${argv[2]}.sql`;
+fs.writeFileSync(`./src/assets/migrations/${fileName}`, '');
+console.log('Migration file created at src/assets/migrations/' + fileName);
+
+// write to list of migrations
+fs.appendFileSync(`./src/assets/migrations/migrations-list.txt`, fileName);
+// Add a new line
+fs.appendFileSync(`./src/assets/migrations/migrations-list.txt`, '\n');
