@@ -8,12 +8,12 @@ import { FormControl, FormGroup } from '@angular/forms';
 })
 export class InviteCodeInputComponent implements OnInit {
 
-  inputOne = ""
-  inputTwo = ""
-  inputThree = ""
-  inputFour = ""
+  @Output() inputValue: EventEmitter<any> = new EventEmitter();
 
-  @Output() InputValue: EventEmitter<any> = new EventEmitter();
+  inputOne = '';
+  inputTwo = '';
+  inputThree = '';
+  inputFour = '';
 
   constructor() { }
 
@@ -21,7 +21,7 @@ export class InviteCodeInputComponent implements OnInit {
 
 
   onDigitInput(event) {
-    this.InputValue.emit({
+    this.inputValue.emit({
       value: `${this.inputOne}${this.inputTwo}${this.inputThree}${this.inputFour}`,
     });
   }

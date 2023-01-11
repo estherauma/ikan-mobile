@@ -1,12 +1,18 @@
-<app-header [pageTitle] = "" [isBackButton]="true" [isMenuButton]="false"></app-header>
-<ion-content class="ion-padding">
-  <app-form
-    [tunaFormGroup]="pageFormGroup"
-    [tunaFormquestions]="formQuestions"
-    [submitButtonText]="submitButtonText"
-    (formValue)="onSubmit($event)"
-  >
-  </app-form>
-  <a routerLink="/auth/password-reset">Reset password</a>
-</ion-content>
+<app-header [pageTitle]="" [isBackButton]="true" [isMenuButton]="false"></app-header>
+<ion-content>
+  <app-authbgpaper></app-authbgpaper>
 
+  <div class="ion-padding center-content">
+    <div>
+      <ion-row class="ion-justify-content-center">
+        <ion-img class="icon" src="/assets/imgs/logo_svg.svg"></ion-img>
+      </ion-row>
+    </div>
+    <app-form 
+    [tunaFormGroup]="pageFormGroup" 
+    [tunaFormquestions]="formQuestions" [submitButtonText]="submitButtonText"
+    (formValue)="onSubmit($event)">
+    </app-form>
+    <a style="color: 80D8FE;" routerLink="/auth/password-reset">Reset password</a>
+  </div>
+</ion-content>

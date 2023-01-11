@@ -15,6 +15,9 @@ import { ConfirmmodalComponent } from './components/confirmmodal/confirmmodal.co
 import { ConfirmedmodalComponent } from './components/confirmedmodal/confirmedmodal.component';
 import { RecordoptionmodalComponent } from './components/recordoptionmodal/recordoptionmodal.component';
 import { TitleComponent } from './components/title/title.component';
+import { ButtonoutlineComponent } from './components/buttonoutline/buttonoutline.component';
+import { ButtonsolidComponent } from './components/buttonsolid/buttonsolid.component';
+import { AuthbgpaperComponent } from './components/authbgpaper/authbgpaper.component';
 
 
 @NgModule({
@@ -37,7 +40,10 @@ import { TitleComponent } from './components/title/title.component';
     ConfirmmodalComponent,
     ConfirmedmodalComponent,
     RecordoptionmodalComponent,
-    TitleComponent
+    TitleComponent,
+    ButtonoutlineComponent,
+    ButtonsolidComponent,
+    AuthbgpaperComponent
   ],
   exports: [
     FormComponent,
@@ -52,7 +58,10 @@ import { TitleComponent } from './components/title/title.component';
     ConfirmmodalComponent,
     ConfirmedmodalComponent,
     RecordoptionmodalComponent,
-    TitleComponent
+    TitleComponent,
+    ButtonoutlineComponent,
+    ButtonsolidComponent,
+    AuthbgpaperComponent
   ]
 })
 
