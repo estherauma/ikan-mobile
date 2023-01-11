@@ -1,10 +1,9 @@
 import { Injectable } from '@angular/core';
 // Uncomment this when building for native device
-// import { SQLite,SQLiteObject } from '@awesome-cordova-plugins/sqlite/ngx';
-import { SQLite } from '@awesome-cordova-plugins/sqlite/ngx';
-import { SQLiteObject } from './sqlite.mock';
+import { SQLite, SQLiteObject } from '@awesome-cordova-plugins/sqlite/ngx';
+// import { SQLite } from '@awesome-cordova-plugins/sqlite/ngx';
+// import { SQLiteObject } from './sqlite.mock';
 import { Platform } from '@ionic/angular';
-import { Filesystem, Directory } from '@capacitor/filesystem';
 import { HttpClient } from '@angular/common/http';
 @Injectable({
   providedIn: 'root'
@@ -21,22 +20,19 @@ export class DBService {
     public http: HttpClient
   ) {
     this.platform.ready().then(async () => {
-      await this.createDB();
-      await this.createMigrationsTable();
-      await this.readMigrationsTable();
-      await this.getAndRunPendingMigrations();
-    });
-  }
-
-  createDB() {
-    this.sqlite.create({
-      name: 'tunalocal.db',
-      location: 'default'
-    }).then((_db: SQLiteObject) => {
-        this.db = _db;
-        console.log('Database created');
-        })
+      this.sqlite.create({
+        name: 'tunalocal.db',
+        location: 'default'
+      }).then(async (_db: SQLiteObject) => {
+          this.db = _db;
+          await this.createMigrationsTable();
+          this.executedMigrations = await this.readMigrationsTable();
+          // TODO: remove this line. Left for testing purposes
+          console.log('Migrations already executed: ' + this.executedMigrations);
+          await this.getAndRunPendingMigrations();
+          })
       .catch(e => console.log(e));
+    });
   }
 
   checkDBStatus() {
@@ -47,21 +43,21 @@ export class DBService {
 
   createMigrationsTable() {
     this.db.executeSql('CREATE TABLE IF NOT EXISTS migrations (id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT, executed_at DATETIME)', [])
-      .then(() => console.log('Created migrations table'))
+      .then(() => {})
       .catch(e => console.log('Migrations table already exists'));
   }
 
   readMigrationsTable() {
     console.log('Reading migrations table');
-    this.db.executeSql('SELECT * FROM migrations', [])
+    return this.db.executeSql('SELECT * FROM migrations', [])
     .then((data) => {
       if (data.rows.length < 1) { console.log ('No migrations found'); }
       if (data.rows.length > 0) {
         for (let i = 0; i < data.rows.length; i++) {
-          console.log('Migrations: ', data.rows.item(i));
           this.executedMigrations.push(data.rows.item(i).name);
         }
       }
+      return this.executedMigrations;
     });
   }
 
@@ -71,39 +67,39 @@ export class DBService {
         this.allMigrationFiles = data.split('\n');
         // remove empty array elements
         delete this.allMigrationFiles[this.allMigrationFiles.length - 1];
+
         this.pendingMigrations = this.allMigrationFiles.filter(x => !this.executedMigrations.includes(x));
         this.pendingMigrations.join('').split('');
+        // TODO: remove this line. Left for testing purposes
+        console.log('Pending migrations: ' + this.pendingMigrations);
         await this.runPendingMigrations(this.pendingMigrations);
-        // remove empty array elements
-
     });
   }
 
   async runPendingMigrations(pendingMigrations) {
     pendingMigrations.forEach((migration) => {
-      this.runSingleMigration(migration);
+      this.runSingleMigrationFile(migration);
     });
   }
 
-  async runSingleMigration(migrationFileName) {
-    console.log('Processing migrations file: ' + migrationFileName);
-    this.http.get('assets/migrations/' + migrationFileName, { responseType: 'text' as 'json'})
+  async runSingleMigrationFile(migrationFileName) {
+    this.http.get('assets/migrations/' + migrationFileName, { responseType: 'text' as 'text'})
     .subscribe((data: any) => {
         const migrationQueries = data.split(';');
-        console.log('Migration queries: ', migrationQueries);
         migrationQueries.forEach((query) => {
-          this.db.executeSql(query, [])
+          query = query.replace(/\r?\n|\r/g, '');
+          this.db.executeSql(query)
           .then(() => {
-            console.log('Migration ' + migrationFileName + ' executed');
-            this.db.executeSql('INSERT INTO migrations (name, executed_at) VALUES (?, ?)', [migrationFileName, new Date()])
-            .then(() => console.log('Migration ' + migrationFileName + ' added to migrations table'))
-            .catch(e => console.log(e));
+            // TODO: remove this line. Left for testing purposes
+            console.log(`Query " ${query} " executed`);
           })
           .catch(e => console.log(e));
         });
+        this.db.executeSql('INSERT INTO migrations (name, executed_at) VALUES (?, ?)', [migrationFileName, new Date()])
+        .then(() => console.log('Migration ' + migrationFileName + ' marked as completed'))
+        .catch(e => console.log(e));
     });
   }
-
 
   dropDatabase() {
     this.sqlite.deleteDatabase({
