@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 
 @Component({
   selector: 'app-agentcard',
@@ -6,7 +6,7 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./agentcard.component.scss'],
 })
 export class AgentcardComponent implements OnInit {
-
+  @Input() agent;
   constructor() { }
 
   ngOnInit() {}
