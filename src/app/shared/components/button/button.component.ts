@@ -11,29 +11,29 @@ export class ButtonComponent implements OnInit {
   @Input() disabled = false;
   @Input() fill: 'solid' | 'clear' | 'outline' = 'solid';
   @Input() size: 'small' | 'default' | 'large' = 'default';
-  @Input() shape: 'round' | 'default'  = 'round';
+  @Input() shape: 'round' | 'default' = 'round';
   @Input() config: 'ikan-light' | 'ikan-deepblue' | 'ikan-light-outline' | '' = '';
   @Input() class = '';
   @Input() color = 'transparent';
   @Input() iconPosition = 'left';
   @Input() iconName = 'add-outline';
 
-  customClasses='';
-  finalCss='';
-  height='';
+  customClasses = '';
+  finalCss = '';
+  height = '';
   constructor() { }
 
   ngOnInit() {
-    if(this.config === 'ikan-light'){
+    if (this.config === 'ikan-light') {
       this.finalCss = this.shape === 'round' ? 'ikan-light-btn rounded' : 'ikan-light-btn';
       this.customClasses = this.finalCss;
-    }else if(this.config === 'ikan-deepblue'){
-        this.finalCss = this.shape === 'round' ? 'ikan-deepblue-btn rounded' : 'ikan-light-btn';
-        this.customClasses = this.finalCss;
-    }else if(this.config === 'ikan-light-outline'){
+    } else if (this.config === 'ikan-deepblue') {
+      this.finalCss = this.shape === 'round' ? 'ikan-deepblue-btn rounded' : 'ikan-light-btn';
+      this.customClasses = this.finalCss;
+    } else if (this.config === 'ikan-light-outline') {
       this.fill = 'outline';
       this.color = 'light';
-    }else{
+    } else {
       this.color = 'primary';
     }
   }
