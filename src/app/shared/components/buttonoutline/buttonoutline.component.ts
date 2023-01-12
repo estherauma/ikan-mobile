@@ -9,6 +9,7 @@ export class ButtonoutlineComponent implements OnInit {
   @Input() onClick;
   @Input() title;
   @Input() disabled = false;
+  @Input() type;
   constructor() { }
 
   ngOnInit() {}
