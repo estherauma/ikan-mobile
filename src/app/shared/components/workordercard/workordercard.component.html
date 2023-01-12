@@ -1,0 +1,25 @@
+<ion-card class="wo-card-body">
+  <div  class="wo-card-content">
+    <div
+      class="wo-card-image-section">
+      <img src="/assets/icon/workorders.svg" />
+    </div>
+    <div class="wo-card-section">
+      <div style="position: relative;">
+        <div class="wo-status-container">
+          <div class="status-wrapper">
+            <span >status</span>
+          </div>
+        </div>
+      </div>
+      <div class="ion-padding ion-margin-vertical">
+        <ion-card-title class="blue-text">{{wo.name}}</ion-card-title>
+        <ion-card-subtitle>Internal Ref: {{wo.internalRef}}</ion-card-subtitle>
+        <br>
+        <ion-label><span class="gray-text">App Ref: </span> <span class="blue-text">{{wo.appRef}}</span></ion-label> <br>
+        <ion-label><strong>Date Created:</strong> {{wo.dateOpened}}</ion-label> <br>
+        <ion-label><strong>Status:</strong> {{wo.status}}</ion-label>
+      </div>
+    </div>
+  </div>
+</ion-card>
