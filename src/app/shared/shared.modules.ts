@@ -15,7 +15,6 @@ import { ConfirmmodalComponent } from './components/confirmmodal/confirmmodal.co
 import { ConfirmedmodalComponent } from './components/confirmedmodal/confirmedmodal.component';
 import { RecordoptionmodalComponent } from './components/recordoptionmodal/recordoptionmodal.component';
 import { TitleComponent } from './components/title/title.component';
-import { ButtonoutlineComponent } from './components/buttonoutline/buttonoutline.component';
 import { AuthbgpaperComponent } from './components/authbgpaper/authbgpaper.component';
 import { ButtonComponent } from './components/button/button.component';
 
@@ -41,7 +40,6 @@ import { ButtonComponent } from './components/button/button.component';
     ConfirmedmodalComponent,
     RecordoptionmodalComponent,
     TitleComponent,
-    ButtonoutlineComponent,
     ButtonComponent,
     AuthbgpaperComponent
   ],
@@ -59,7 +57,6 @@ import { ButtonComponent } from './components/button/button.component';
     ConfirmedmodalComponent,
     RecordoptionmodalComponent,
     TitleComponent,
-    ButtonoutlineComponent,
     ButtonComponent,
     AuthbgpaperComponent
   ]

@@ -10,7 +10,7 @@ export class ButtonComponent implements OnInit {
   @Input() title;
   @Input() disabled = false;
   @Input() fill: 'solid' | 'clear' | 'outline' = 'solid';
-  @Input() size: 'small' | 'xs' | 'large' = 'large';
+  @Input() size: 'small' | 'default' | 'large' = 'default';
   @Input() shape: 'round' | 'default'  = 'round';
   @Input() config: 'ikan-light' | 'ikan-deepblue' | 'ikan-light-outline' | '' = '';
   @Input() class = '';
@@ -22,14 +22,6 @@ export class ButtonComponent implements OnInit {
   constructor() { }
 
   ngOnInit() {
-    if(this.size === 'xs'){
-      this.height = '60px';
-    }else if(this.size === 'small'){
-      this.height = '39px';
-    }else{
-      this.height = '60px';
-    }
-
     if(this.config === 'ikan-light'){
       this.finalCss = this.shape === 'round' ? 'ikan-light-btn rounded' : 'ikan-light-btn';
       this.customClasses = this.finalCss;

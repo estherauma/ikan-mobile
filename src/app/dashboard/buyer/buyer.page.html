@@ -135,12 +135,8 @@
             <ion-col size="12">
               <a routerLink="">All Reports</a>
             </ion-col>
-            <ion-col size="12" style="background: black;">
-              <app-button config="ikan-light-outline" size="small" title="Button Text" type=""></app-button>
-              <app-buttonoutline title="outline"></app-buttonoutline>
-              <ion-button (click)="generateNewReport()">
-                Generate New Report
-              </ion-button>
+            <ion-col size="12">
+              <app-button title="Generate New Report" (click)="generateNewReport()"></app-button>
             </ion-col>
           </ion-row>
         </ion-grid>
