@@ -15,6 +15,8 @@ export class ButtonComponent implements OnInit {
   @Input() config: 'ikan-light' | 'ikan-deepblue' | 'ikan-light-outline' | '' = '';
   @Input() class = '';
   @Input() color = 'transparent';
+  @Input() iconPosition = 'left';
+  @Input() iconName = 'add-outline';
 
   customClasses='';
   finalCss='';

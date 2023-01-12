@@ -8,4 +8,8 @@
   [class]="customClasses"
   [color]="color"
   disabled="true"
->{{title}}</ion-button>
+>
+<ion-icon *ngIf="iconPosition === 'left'" [name]="iconName"></ion-icon>
+{{title}}
+<ion-icon *ngIf="iconPosition === 'right'" [name]="iconName"></ion-icon>
+</ion-button>
