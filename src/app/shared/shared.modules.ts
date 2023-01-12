@@ -16,8 +16,8 @@ import { ConfirmedmodalComponent } from './components/confirmedmodal/confirmedmo
 import { RecordoptionmodalComponent } from './components/recordoptionmodal/recordoptionmodal.component';
 import { TitleComponent } from './components/title/title.component';
 import { ButtonoutlineComponent } from './components/buttonoutline/buttonoutline.component';
-import { ButtonsolidComponent } from './components/buttonsolid/buttonsolid.component';
 import { AuthbgpaperComponent } from './components/authbgpaper/authbgpaper.component';
+import { ButtonComponent } from './components/button/button.component';
 
 
 @NgModule({
@@ -42,7 +42,7 @@ import { AuthbgpaperComponent } from './components/authbgpaper/authbgpaper.compo
     RecordoptionmodalComponent,
     TitleComponent,
     ButtonoutlineComponent,
-    ButtonsolidComponent,
+    ButtonComponent,
     AuthbgpaperComponent
   ],
   exports: [
@@ -60,7 +60,7 @@ import { AuthbgpaperComponent } from './components/authbgpaper/authbgpaper.compo
     RecordoptionmodalComponent,
     TitleComponent,
     ButtonoutlineComponent,
-    ButtonsolidComponent,
+    ButtonComponent,
     AuthbgpaperComponent
   ]
 })
