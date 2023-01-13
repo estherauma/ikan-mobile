@@ -17,6 +17,8 @@ import { RecordoptionmodalComponent } from './components/recordoptionmodal/recor
 import { TitleComponent } from './components/title/title.component';
 import { AuthbgpaperComponent } from './components/authbgpaper/authbgpaper.component';
 import { ButtonComponent } from './components/button/button.component';
+import { WorkordercardComponent } from './components/workordercard/workordercard.component';
+import { AgentcardComponent } from './components/agentcard/agentcard.component';
 
 
 @NgModule({
@@ -41,7 +43,10 @@ import { ButtonComponent } from './components/button/button.component';
     RecordoptionmodalComponent,
     TitleComponent,
     ButtonComponent,
-    AuthbgpaperComponent
+    AuthbgpaperComponent,
+    AuthbgpaperComponent,
+    WorkordercardComponent,
+    AgentcardComponent
   ],
   exports: [
     FormComponent,
@@ -58,7 +63,10 @@ import { ButtonComponent } from './components/button/button.component';
     RecordoptionmodalComponent,
     TitleComponent,
     ButtonComponent,
-    AuthbgpaperComponent
+    AuthbgpaperComponent,
+    AuthbgpaperComponent,
+    WorkordercardComponent,
+    AgentcardComponent
   ]
 })
 

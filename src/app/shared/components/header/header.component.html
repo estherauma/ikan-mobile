@@ -1,15 +1,16 @@
 <ion-header [translucent]="true">
-  <ion-toolbar>
-    <ion-buttons slot="start">
-      <ion-back-button *ngIf="isBackButton" defaultHref="" color="primary" [text]="backBtnText" icon="arrow-back-outline"></ion-back-button>
-    </ion-buttons>
-    
-    <ion-title>{{pageTitle}}</ion-title>
-
-    <ion-buttons slot="end">
-      <ion-menu-button *ngIf="isMenuButton" slot="end"></ion-menu-button>
-    </ion-buttons>
+  <ion-toolbar class="header-toolbar ion-no-border" color="transparent" no-border>
+    <div class="header-content-container">
+      <div class="section-one">
+        <ion-back-button *ngIf="isBackButton" defaultHref="" text="" icon="arrow-back-outline">
+        </ion-back-button>
+        <ion-title>{{pageTitle}}</ion-title>
+      </div>
+      <div class="section-two">
+        <ion-menu-button  *ngIf="isMenuButton">
+          <img src='/assets/icon/menu-icon.svg'>
+        </ion-menu-button>
+      </div>
+    </div>
   </ion-toolbar>
 </ion-header>
-
-
