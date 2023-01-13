@@ -8,6 +8,7 @@ import { IonicModule } from '@ionic/angular';
 import { IntroPageRoutingModule } from './intro-routing.module';
 
 import { IntroPage } from './intro.page';
+import { SharedModule } from '../shared/shared.modules';
 
 @NgModule({
   imports: [
@@ -15,7 +16,8 @@ import { IntroPage } from './intro.page';
     FormsModule,
     IonicModule,
     IntroPageRoutingModule,
-    SwiperModule
+    SwiperModule,
+    SharedModule
   ],
   declarations: [IntroPage]
 })

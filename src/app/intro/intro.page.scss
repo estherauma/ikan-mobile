@@ -2,21 +2,6 @@
     height: 100vh;
 }
 
-.logo-container {
-    display: flex !important;
-    justify-content: center !important;
-
-    .logo {
-        height: 400px;
-        width: 100vw;
-        padding: 16px !important;
-    }
-}
-
-// @import "~swiper/scss";
-// @import "~swiper/scss/navigation";
-// @import "~swiper/scss/pagination";
-
 .swiper {
     width: 100%;
     height: 100%;
@@ -27,39 +12,79 @@
     .swiper-button-next, .swiper-button-prev {
         display:none;
     }
+
+    .swiper-slide {
+        display: flex;
+        position: relative;
+        flex-shrink: 0;
+        align-items: center;
+        justify-content: space-between;
+        width: 100%;
+        height: 100%;
+        font-size: 18px;
+        text-align: center;
+        box-sizing: border-box;
+    }
 }
 
 .slide-content{
     display: flex;
+    height: 100%;
     flex-direction: column;
-    justify-content: center;
+    justify-content: space-between;
+    background-color: var(--ikan_blue_100);
+
     .title{
         text-align: center;
+        color: var(--ikan_lightblue_100);
     }
 
     .description{
         text-align: center;
+    }
+
+    .bottom-section{
+        margin-bottom: 48px;
+
+        p {
+            color: #ffffff;
+        }
     }
 }
 
 .next-finish-btns{
     display: flex;
     justify-content: center;
-
-    button {
-        padding: 16px;
-        width: 100px;
-    }
 }
 
 .back-skip-btns{
     padding: 16px !important;
     display: flex;
     justify-content: space-between;
+    width: 100%;
 
     button {
         background-color: transparent;
         border: none;
-        text-decoration: underline;
+        display: flex;
+        align-items: center;
+        color: #ffffff;
+
+        ion-label{
+            font-size: 16px;
+            font-weight: 600;
+        }
+    }
+
+    .skip{        
+        ion-label{
+            padding-right: 8px;
+        }
+    }
+
+    .back{
+        ion-label{
+            padding-left: 8px;
+        }
     }
 }

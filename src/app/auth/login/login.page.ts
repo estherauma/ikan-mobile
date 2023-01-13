@@ -74,9 +74,11 @@ export class LoginPage extends BaseformPage implements OnInit {
     const user: UserData = await this.sharedMethods.readDataFromStorage(StorageKeys.userData);
     // TODO: Once we have helpscrens, handle this logic well
     if (!helpScreens){
-      this.router.navigate([this.authService.getCurrentUserBaseUrlFromRole(user.role)]);
+      window.location.reload();
+      // this.router.navigate([this.authService.getCurrentUserBaseUrlFromRole(user.role)]);
     } else {
-      this.router.navigate([this.authService.getCurrentUserBaseUrlFromRole(user.role)]);
+      // this.router.navigate([this.authService.getCurrentUserBaseUrlFromRole(user.role)]);
+      window.location.reload();
     }
   }
 }
