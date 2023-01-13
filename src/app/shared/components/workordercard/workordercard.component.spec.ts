@@ -1,19 +1,19 @@
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { IonicModule } from '@ionic/angular';
 
-import { ButtonoutlineComponent } from './buttonoutline.component';
+import { WorkordercardComponent } from './workordercard.component';
 
-describe('ButtonoutlineComponent', () => {
-  let component: ButtonoutlineComponent;
-  let fixture: ComponentFixture<ButtonoutlineComponent>;
+describe('WorkordercardComponent', () => {
+  let component: WorkordercardComponent;
+  let fixture: ComponentFixture<WorkordercardComponent>;
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      declarations: [ ButtonoutlineComponent ],
+      declarations: [ WorkordercardComponent ],
       imports: [IonicModule.forRoot()]
     }).compileComponents();
 
-    fixture = TestBed.createComponent(ButtonoutlineComponent);
+    fixture = TestBed.createComponent(WorkordercardComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   }));

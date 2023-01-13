@@ -18,27 +18,5 @@
   <app-search [searchDataSet]="agents" (searchResult)="searchResult($event)"></app-search>
 
   <!-- TODO: Add filter shared component -->
-
-  <ion-card *ngFor="let agent of agents">
-    <ion-card-content>
-      <ion-grid>
-        <ion-row>
-          <ion-col size="3" style="padding-top: 10%">
-            <ion-icon name="expand-outline" size="large"></ion-icon>
-          </ion-col>
-
-          <ion-col size="8">
-            <ion-text>
-              <strong> <h2>{{agent.name}} </h2> </strong>
-            </ion-text>
-            <ion-text>Contact: {{agent.contact}}</ion-text>
-          </ion-col>
-
-          <ion-col size="1" style="text-align: center; padding-top: 10%" (click)="viewDetails(agent)">
-            <ion-icon name="chevron-forward-outline" size="large"></ion-icon>
-          </ion-col>
-        </ion-row>
-      </ion-grid>
-    </ion-card-content>
-  </ion-card>
+  <app-agentcard *ngFor="let agent of agents" [agent]="agent"></app-agentcard>
 </ion-content>
