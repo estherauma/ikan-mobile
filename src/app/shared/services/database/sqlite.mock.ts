@@ -1,3 +1,5 @@
+/* eslint-disable object-shorthand */
+/* eslint-disable prefer-arrow/prefer-arrow-functions */
 import { SQLiteDatabaseConfig } from '@awesome-cordova-plugins/sqlite/ngx';
 
 /* eslint-disable no-underscore-dangle */
@@ -10,25 +12,25 @@ class SQLiteObject {
     this._objectInstance = _objectInstance;
   }
 
-  executeSql(statement: string, params: any): Promise<any> {
-    return new Promise((resolve, reject) => {
+  executeSql(statement: string, params: any): Promise<any>{
+
+    return new Promise((resolve,reject)=>{
       try {
-        const st = this._objectInstance.prepare(statement, params);
-        const rows: Array<any> = [];
-        while (st.step()) {
-          const row = st.getAsObject();
-          rows.push(row);
+        const st = this._objectInstance.prepare(statement,params);
+        const rows: Array<any> = [] ;
+        while(st.step()) {
+            const row = st.getAsObject();
+            rows.push(row);
         }
         const payload = {
           rows: {
-            // eslint-disable-next-line prefer-arrow/prefer-arrow-functions
-            item(i) {
+            item: function(i) {
               return rows[i];
             },
-            length: rows.length,
+            length: rows.length
           },
           rowsAffected: this._objectInstance.getRowsModified() || 0,
-          insertId: this._objectInstance.insertId || void 0,
+          insertId: this._objectInstance.insertId || void 0
         };
 
         //save database after each sql query
@@ -36,11 +38,11 @@ class SQLiteObject {
         const arr: ArrayBuffer = this._objectInstance.export();
         localStorage.setItem('database', String(arr));
         resolve(payload);
-      } catch (e) {
+      } catch(e){
         reject(e);
       }
     });
-  }
+  };
 }
 
 class SQLiteMock {

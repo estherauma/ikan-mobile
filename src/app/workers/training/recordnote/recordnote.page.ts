@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { AudioService } from 'src/app/services/audio/audio.service';
+import { AudioService } from 'src/app/shared/services/audio/audio.service';
 
 @Component({
   selector: 'app-recordnote',
