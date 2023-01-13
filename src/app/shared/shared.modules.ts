@@ -8,16 +8,15 @@ import { InviteCodeInputComponent } from './components/invite-code-input/invite-
 import { SearchComponent } from './components/search/search.component';
 import { DashboardelcomesectionComponent } from './dashboardelcomesection/dashboardelcomesection.component';
 import { ChartComponent } from './components/chart/chart.component';
-import { FilterComponent } from './filter/filter.component';
+import { FilterComponent } from './components/filter/filter.component';
 import { DocumentactionsComponent } from './components/documentactions/documentactions.component';
 import { DocumentselectedactionComponent } from './components/documentselectedaction/documentselectedaction.component';
 import { ConfirmmodalComponent } from './components/confirmmodal/confirmmodal.component';
 import { ConfirmedmodalComponent } from './components/confirmedmodal/confirmedmodal.component';
 import { RecordoptionmodalComponent } from './components/recordoptionmodal/recordoptionmodal.component';
 import { TitleComponent } from './components/title/title.component';
-import { ButtonoutlineComponent } from './components/buttonoutline/buttonoutline.component';
-import { ButtonsolidComponent } from './components/buttonsolid/buttonsolid.component';
 import { AuthbgpaperComponent } from './components/authbgpaper/authbgpaper.component';
+import { ButtonComponent } from './components/button/button.component';
 import { WorkordercardComponent } from './components/workordercard/workordercard.component';
 import { AgentcardComponent } from './components/agentcard/agentcard.component';
 
@@ -43,8 +42,8 @@ import { AgentcardComponent } from './components/agentcard/agentcard.component';
     ConfirmedmodalComponent,
     RecordoptionmodalComponent,
     TitleComponent,
-    ButtonoutlineComponent,
-    ButtonsolidComponent,
+    ButtonComponent,
+    AuthbgpaperComponent,
     AuthbgpaperComponent,
     WorkordercardComponent,
     AgentcardComponent
@@ -63,8 +62,8 @@ import { AgentcardComponent } from './components/agentcard/agentcard.component';
     ConfirmedmodalComponent,
     RecordoptionmodalComponent,
     TitleComponent,
-    ButtonoutlineComponent,
-    ButtonsolidComponent,
+    ButtonComponent,
+    AuthbgpaperComponent,
     AuthbgpaperComponent,
     WorkordercardComponent,
     AgentcardComponent
