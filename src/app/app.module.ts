@@ -14,7 +14,6 @@ import { SQLite } from '@awesome-cordova-plugins/sqlite/ngx';
 // This is used to make sqlite work with the browser. REMOVE THIS WHEN BUILDING FOR NATIVE
 import { SQLiteMock } from './shared/services/database/sqlite.mock';
 
-
 @NgModule({
   declarations: [ AppComponent ],
   imports: [
@@ -32,7 +31,8 @@ import { SQLiteMock } from './shared/services/database/sqlite.mock';
   ],
   providers: [
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
-    {provide: SQLite, useClass: SQLiteMock},],
+    { provide: SQLite },
+  ],
   bootstrap: [AppComponent],
 })
 
