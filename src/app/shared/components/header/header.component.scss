@@ -1,14 +1,11 @@
 ion-toolbar {
     --background: transparent;
     --ion-color-base: transparent !important;
-    --ion-safe-area-top: 0px;
-    --ion-safe-area-right: 0px;
-    --ion-safe-area-bottom: 0px;
-    --ion-safe-area-left: 0px;
     --padding-bottom: 0px;
     --padding-top: 0px;
     --padding-start: 0px;
     --padding-end: 0px;
+    --border: none;
 }
 
 .header-ios ion-toolbar:last-of-type {
@@ -24,14 +21,13 @@ ion-toolbar {
     flex: 1; 
     flex-grow: 1;
     border-bottom-right-radius: 20px;
-    margin: 0px;
 }
 
 .section-two{
     background-color: #3565FF; 
     border-bottom-left-radius: 20px;
     width: 74px;
-    margin: 0px;
+    margin: 0 -1px;
 }
 
 .header-content-container{

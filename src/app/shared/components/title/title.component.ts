@@ -7,8 +7,16 @@ import { Component, Input, OnInit } from '@angular/core';
 })
 export class TitleComponent implements OnInit {
  @Input() title = '';
+ @Input() subScript: string | number  = '';
+ @Input() color = '';
+ @Input() type: 'blue' | '' = '';
+ @Input() customCss = '';
   constructor() { }
 
-  ngOnInit() {}
+  ngOnInit() {
+    if(this.type === 'blue'){
+      this.customCss = 'blue';
+    }
+  }
 
 }
