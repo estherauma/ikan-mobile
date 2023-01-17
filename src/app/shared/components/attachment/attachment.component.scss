@@ -1,0 +1,10 @@
+.attachment{
+    background: var(--ikan_gray_100);
+    border-radius: 10px;
+    padding: 10px;
+
+    .title{
+        font-size: 18px !important;
+        color: var(--ikan_darkblue_100);
+    }
+}

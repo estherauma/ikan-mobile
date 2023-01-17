@@ -1,0 +1,63 @@
+.notification-card-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: stretch;
+}
+
+.blue-text {
+    color: #191970;
+}
+
+.gray-text {
+    color: #A0ABCC;
+}
+
+.status-container {
+    position: absolute;
+    top: 0px;
+    right: 0px;
+    height: 20px;
+    width: 65px;
+    overflow: hidden;
+    border-bottom-left-radius: 20px;
+    color: #191970 !important;
+
+    .status-wrapper {
+        position: relative;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+}
+
+.wo-card-section {
+    flex: 1;
+    height: auto;
+    display: flex;
+    flex-direction: column;
+}
+
+.notification-card-body {
+    border-radius: 20px;
+}
+
+.skyblue-status-container{
+    background: var(--ikan_lightblue_100);
+}
+
+.gray-status-container{
+    background: var(--ikan_gray_100);
+}
+
+.title-section{
+    padding-top: 8px;
+}
+
+.link{
+    font-size: 18px;
+    color: #000000 !important;
+    a {
+        color: #000000 !important;
+        text-decoration: underline;
+    }
+}
