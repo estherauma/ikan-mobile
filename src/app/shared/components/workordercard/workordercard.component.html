@@ -12,12 +12,16 @@
           </div>
         </div>
       </div>
-      <div class="ion-padding ion-margin-vertical">
-        <ion-card-title class="blue-text">{{wo.name}}</ion-card-title>
-        <ion-label><span class="gray-text">Vessel Owner ref: </span> <span class="blue-text">{{wo.internalRef}}</span></ion-label> <br><br/>
-        <ion-label><span class="gray-text">App Ref: </span> <span class="blue-text">{{wo.appRef}}</span></ion-label> <br>
-        <ion-label><span class="gray-text">Date Created:: </span> <span class="blue-text">{{wo.dateOpened}}</span></ion-label> <br>
-        <ion-label><span class="gray-text">Status: </span> <span class="blue-text">{{wo.status}}</span></ion-label> <br>
+      <div class="ion-padding ion-margin-vertical wo-card-details">
+        <ion-card-title class="blue-text truncate-text">{{wo.name}}</ion-card-title>
+        <div class="truncate-text">
+          <ion-label><ion-text class="gray-text">Vessel Owner ref: </ion-text> <ion-text  class="blue-text"> {{wo.internalRef}}</ion-text></ion-label> <br><br/>
+        </div>
+        <div class="truncate-text">
+          <ion-label><ion-text class="gray-text">App Ref: </ion-text> <ion-text class="blue-text">{{wo.appRef}}</ion-text></ion-label> <br>
+        </div>
+        <ion-label><ion-text class="gray-text">Date Created:: </ion-text> <ion-text class="blue-text">{{wo.dateOpened}}</ion-text></ion-label> <br>
+        <ion-label><ion-text class="gray-text">Status: </ion-text> <ion-text class="blue-text">{{wo.status}}</ion-text></ion-label> <br>
       </div>
     </div>
   </div>

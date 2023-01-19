@@ -6,7 +6,7 @@
 
 .wo-card-image-section {
     background: #3565FF; 
-    width: 80px; 
+    min-width: 25%; 
     padding: 16px; 
     display: flex; 
     justify-content: center; 
@@ -45,6 +45,10 @@
     height: auto;
     display: flex; 
     flex-direction: column;
+}
+
+.wo-card-details{
+    max-width: 234px;  
 }
 
 .wo-card-body{

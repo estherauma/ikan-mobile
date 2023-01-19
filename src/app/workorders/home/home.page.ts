@@ -14,17 +14,31 @@ export class HomePage implements OnInit {
   pageTitle = 'Work Orders';
   workOrders = [
     {
-      name: 'Work order 1',
-      internalRef: 'IWXDWF',
+      name: 'Work order 1 Work order 1',
+      internalRef: 'IWXDWFIWXDWFIWXDWF',
       dateOpened: '2022-10-23',
       status: 'Open',
       appRef: 'XXX-XXX-XXX',
     },
     {
-      name: 'Work order 2',
+      name: 'Work order one days',
       internalRef: 'IJSWER',
       dateOpened: '2022-10-15',
       status: 'Close',
+      appRef: 'XXX-XXX-XXX'
+    },
+    {
+      name: 'Work order 3',
+      internalRef: 'IJSWER',
+      dateOpened: '2022-10-10',
+      status: 'Open',
+      appRef: 'XXX-XXX-XXX'
+    },
+    {
+      name: 'Work order 3',
+      internalRef: 'IJSWER',
+      dateOpened: '2022-10-10',
+      status: 'Open',
       appRef: 'XXX-XXX-XXX'
     },
     {

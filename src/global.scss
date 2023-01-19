@@ -76,3 +76,9 @@ ion-modal.my-own-class {
 .content-skyblue-bg{
   --background: var(--ikan_gray_100);
 }
+
+.truncate-text {
+  white-space: nowrap; 
+  overflow: hidden;
+  text-overflow: ellipsis; 
+}
