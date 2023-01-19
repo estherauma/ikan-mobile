@@ -287,6 +287,10 @@ const routes: Routes = [
     path: 'auth/signup',
     loadChildren: () => import('./auth/signup/signup.module').then( m => m.SignupPageModule)
   },
+  {
+    path: 'sandbox',
+    loadChildren: () => import('./sandbox/sandbox.module').then( m => m.SandboxPageModule)
+  },
 ];
 
 @NgModule({

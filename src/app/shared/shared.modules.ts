@@ -20,6 +20,8 @@ import { ButtonComponent } from './components/button/button.component';
 import { WorkordercardComponent } from './components/workordercard/workordercard.component';
 import { AgentcardComponent } from './components/agentcard/agentcard.component';
 import { BadgeComponent } from './components/badge/badge.component';
+import { MaincardComponent } from './components/maincard/maincard.component';
+import { ProgressbarComponent } from './components/progressbar/progressbar.component';
 
 
 @NgModule({
@@ -48,7 +50,9 @@ import { BadgeComponent } from './components/badge/badge.component';
     AuthbgpaperComponent,
     WorkordercardComponent,
     AgentcardComponent,
-    BadgeComponent
+    BadgeComponent,
+    MaincardComponent,
+    ProgressbarComponent,
   ],
   exports: [
     FormComponent,
@@ -69,7 +73,9 @@ import { BadgeComponent } from './components/badge/badge.component';
     AuthbgpaperComponent,
     WorkordercardComponent,
     AgentcardComponent,
-    BadgeComponent
+    BadgeComponent,
+    MaincardComponent,
+    ProgressbarComponent,
   ]
 })
 
