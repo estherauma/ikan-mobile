@@ -25,9 +25,9 @@ export class HomePage implements OnInit {
   ngOnInit() {
   }
 
-  filterResult(data){}
+  filterResult(data) {}
 
-  onNewReport(){
+  onNewReport() {
     this.router.navigate(['/buyers/create']);
   }
 

@@ -16,7 +16,7 @@ export class PasswordResetSuccessPage implements OnInit {
   ngOnInit() {
   }
 
-  toLogin(){
+  toLogin() {
     this.router.navigate(['login']);
   }
 

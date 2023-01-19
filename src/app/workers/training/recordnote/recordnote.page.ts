@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { AudioService } from 'src/app/shared/services/audio/audio.service';
 
@@ -19,18 +19,18 @@ export class RecordnotePage implements OnInit {
   ngOnInit() {
   }
 
-  startRecording(){
+  startRecording() {
     this.audioService.startRecording();
     this.recordingStarted = true;
   }
 
-  async stopRecording(){
+  async stopRecording() {
     this.recordingStarted = false;
     const recordedData = await this.audioService.stopRecording();
     this.recordedNote = {...recordedData};
   }
 
-  onSave(){
+  onSave() {
     this.router.navigate(['/workers/noteplayback', this.recordedNote]);
   }
 

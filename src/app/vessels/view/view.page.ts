@@ -36,7 +36,7 @@ export class ViewPage implements OnInit {
     });
   }
 
-  async viewArchieved(){
+  async viewArchieved() {
     const modal = await this.modalCtrl.create({
       component: ArchivedWoPage,
       cssClass: 'tuna-modal',

@@ -34,7 +34,7 @@ export class CreatePage extends BaseformPage implements OnInit  {
   onSubmit(formValue) {
   }
 
-  async addDeduction(){
+  async addDeduction() {
     const modal = await this.modalCtrl.create({
       component: DeductionsPage,
       cssClass: 'tuna-modal'

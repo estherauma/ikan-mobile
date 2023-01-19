@@ -23,7 +23,7 @@ export class ViewPage implements OnInit {
     {
       img: '',
       title: 'Provisions',
-      description: `<img src="https://source.unsplash.com/random" alt="A random image from Unsplash"/> 
+      description: `<img src="https://source.unsplash.com/random" alt="A random image from Unsplash"/>
       Neque porro quisquam est qui dolorem ipsum quia dolor sit amet, consectetur`
     },
     {
@@ -82,7 +82,7 @@ export class ViewPage implements OnInit {
     const objectParams = { ...clause };
     this.router.navigate(['/workorders/clauses'], { queryParams: objectParams });
   }
-  onSubWorkOrder(){
+  onSubWorkOrder() {
     this.router.navigate(['/workorders/send/signatureview']);
   }
 

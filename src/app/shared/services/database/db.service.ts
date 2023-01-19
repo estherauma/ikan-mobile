@@ -19,11 +19,11 @@ export class DBService {
     public platform: Platform,
     public http: HttpClient
   ) {
-    this.platform.ready().then(async () => {
+    this.platform.ready().then(async() => {
       this.sqlite.create({
         name: 'tunalocal.db',
         location: 'default'
-      }).then(async (_db: SQLiteObject) => {
+      }).then(async(_db: SQLiteObject) => {
           this.db = _db;
           await this.createMigrationsTable();
           this.executedMigrations = await this.readMigrationsTable();
@@ -63,7 +63,7 @@ export class DBService {
 
   async getAndRunPendingMigrations() {
     this.http.get('assets/migrations/migrations-list.txt', { responseType: 'text' as 'json'})
-    .subscribe(async (data: any) => {
+    .subscribe(async(data: any) => {
         this.allMigrationFiles = data.split('\n');
         // remove empty array elements
         delete this.allMigrationFiles[this.allMigrationFiles.length - 1];

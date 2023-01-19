@@ -18,15 +18,15 @@ export class HomePage implements OnInit {
   ngOnInit() {
   }
 
-  goToPlacement(){
+  goToPlacement() {
     this.router.navigate(['todo/placement']);
   }
 
-  onNew(){
+  onNew() {
     this.router.navigate(['todo/new']);
   }
 
-  onList(){
+  onList() {
     this.router.navigate(['todo/list']);
   }
 

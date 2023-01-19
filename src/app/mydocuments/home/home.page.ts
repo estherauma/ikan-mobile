@@ -15,19 +15,19 @@ export class HomePage implements OnInit {
   ngOnInit() {
   }
 
-  onCreateVisa(){
+  onCreateVisa() {
     this.router.navigate(['/mydocuments/createpassport']);
   }
 
-  onGoToEssentials(){
+  onGoToEssentials() {
     this.router.navigate(['mydocuments/home']);
   }
 
-  onGoToFiles(){
+  onGoToFiles() {
     this.router.navigate(['mydocuments/files']);
   }
 
-  onViewDocument(url){
+  onViewDocument(url) {
     console.log(url);
     this.router.navigate(['mydocuments/details']);
   }

@@ -27,7 +27,7 @@ export class NoteplaybackPage implements OnInit {
     });
   }
 
-  async onSave(){
+  async onSave() {
     const modal = await this.modalCtrl.create({
       component: NotecreatePage,
       cssClass: 'tuna-modal'
@@ -39,7 +39,7 @@ export class NoteplaybackPage implements OnInit {
     });
   }
 
-  onDelete(){
+  onDelete() {
     this.router.navigate(['/workers/recordnote']);
   }
 

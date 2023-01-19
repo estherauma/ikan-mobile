@@ -56,6 +56,6 @@ export class PlacementPage extends BaseformPage implements OnInit {
   ngOnInit() {
   }
 
-  onSubmit(data){}
+  onSubmit(data) {}
 
 }

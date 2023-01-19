@@ -31,6 +31,6 @@ export class SignupPage extends BaseformPage implements OnInit {
 
   ngOnInit() {
   }
-  onSubmit(data){}
+  onSubmit(data) {}
 
 }
