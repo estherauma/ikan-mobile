@@ -1,4 +1,3 @@
-<app-header [pageTitle]="" [isBackButton]="true" [isMenuButton]="false"></app-header>
 <ion-content>
   <app-authbgpaper></app-authbgpaper>
 
@@ -11,7 +10,8 @@
     <app-form 
     [tunaFormGroup]="pageFormGroup" 
     [tunaFormquestions]="formQuestions" [submitButtonText]="submitButtonText"
-    (formValue)="onSubmit($event)">
+    (formValue)="onSubmit($event)"
+    btnConfig="ikan-light-outline">
     </app-form>
     <a style="color: 80D8FE;" routerLink="/auth/password-reset">Reset password</a>
   </div>
