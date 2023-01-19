@@ -21,8 +21,8 @@ export class UploadService {
 
   }
 
-  isPlatformWeb(){
-    if(Capacitor.getPlatform() === 'web') {return true;};
+  isPlatformWeb() {
+    if (Capacitor.getPlatform() === 'web') {return true;};
     return false;
   }
 
@@ -35,7 +35,7 @@ export class UploadService {
       resultType: this.isPlatformWeb() ? CameraResultType.DataUrl : CameraResultType.Uri,
     });
 
-    if(this.isPlatformWeb()){
+    if (this.isPlatformWeb()) {
       return {...image, path:image.dataUrl};
     }
 

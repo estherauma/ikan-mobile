@@ -25,7 +25,8 @@ export class PaymentsPage extends BaseformPage implements OnInit {
 
   ngOnInit() {}
 
-  onSubmit(data){}
-  viewAll(){}
+  onSubmit(data) {}
+
+  viewAll() {}
 
 }

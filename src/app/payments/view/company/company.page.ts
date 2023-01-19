@@ -66,7 +66,7 @@ export class CompanyPage implements OnInit {
   searchResult(result) {
   }
 
-  viewDetails(payment){
+  viewDetails(payment) {
     this.router.navigate(['payments/view/details', payment]);
   }
 

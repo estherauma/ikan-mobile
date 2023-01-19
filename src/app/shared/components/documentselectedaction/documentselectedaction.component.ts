@@ -14,7 +14,7 @@ export class DocumentselectedactionComponent implements OnInit {
 
   ngOnInit() {}
 
-  onDelete(){
+  onDelete() {
     this.modalCtrl.dismiss({action: 'delete'});
   }
 
