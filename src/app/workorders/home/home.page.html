@@ -1,4 +1,4 @@
-<app-header backgroundColor="#EAEDF6" [pageTitle]="">
+<app-header [isLightBlueBg]="true" [pageTitle]="">
 
 </app-header>
 
@@ -18,7 +18,7 @@
         </ion-col>
       </ion-row>
       <ion-row class="ion-padding-bottom title">
-        <app-title type="blue" [title]="pageTitle" [subScript]="'(' + workOrders.length + ')'"></app-title>
+        <app-title [isBlue]="true" [title]="pageTitle" [subScript]="'(' + workOrders.length + ')'"></app-title>
       </ion-row>
     </ion-grid>
     <div class="ion-margin-top">
