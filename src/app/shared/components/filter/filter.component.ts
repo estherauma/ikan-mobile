@@ -29,9 +29,9 @@ export class FilterComponent implements OnInit {
       this.customCss = 'deep-blue';
     } else if (this.type === 'light-blue-filter') {
       this.customCss = 'light-blue';
-    } else if(this.type === 'deep-blue-90'){
+    } else if (this.type === 'deep-blue-90') {
       this.customCss = 'deep_blue_90';
-    }else {
+    } else {
       this.customCss = 'default';
     }
   }

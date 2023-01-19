@@ -39,22 +39,22 @@ export class SelectPage implements OnInit {
       this.demandLetter = JSON.parse(this.activatedRoute.snapshot.paramMap.get('demandLetter'));
   }
 
-  selectedWorkOrder(e){
-    if(e.detail.checked){
+  selectedWorkOrder(e) {
+    if (e.detail.checked) {
         this.selectedWorkOrders.push(e.detail.value);
-    }else{
+    } else {
       this.selectedWorkOrders = this.selectedWorkOrders.filter( item => item.internalRef !== e.detail.value.internalRef);
     }
   }
 
-  onConfirm(){
+  onConfirm() {
     this.router.navigate(['/demandletters/view', { demandLetter: JSON.stringify({
       ...this.demandLetter,
       workOrders: this.selectedWorkOrders
     }) }]);
   }
 
-  showConfirmBtn(){
+  showConfirmBtn() {
     return this.selectedWorkOrders.length > 0;
   }
 
