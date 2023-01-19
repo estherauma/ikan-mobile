@@ -96,13 +96,13 @@ filterOptions = [
   searchResult(result) {
   }
 
-  filterResult(result){}
+  filterResult(result) {}
 
-  onSelect(){
+  onSelect() {
     this.select = true;
   }
 
-  onCancel(){
+  onCancel() {
     this.select = false;
   }
 }
