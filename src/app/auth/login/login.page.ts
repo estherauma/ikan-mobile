@@ -26,14 +26,14 @@ export class LoginPage extends BaseformPage implements OnInit {
     public sharedMethods: SharedmethodsService,
     public router: Router,
     public authService: AuthService,
-    public dbService: DBService
+    // public dbService: DBService
   ) {
     super(contentService);
     const pageData = this.contentService.getLoginPageData();
     this.formQuestions = pageData.formQuestions;
     this.pageTitle = pageData?.pageTitle;
     this.formQuestions.forEach((entry) => {
-      this.group[entry.key] = new FormControl('', [Validators.required]);
+      this.group[entry.key] = new FormControl('asdfasldfjlasdjfsad', [Validators.required]);
     });
     this.pageFormGroup = new FormGroup(this.group);
   }
@@ -50,35 +50,37 @@ export class LoginPage extends BaseformPage implements OnInit {
   setUpForm(): void {}
 
   async onSubmit(formData) {
+    formData = {
+      email: 'samsonkapeyi@50eight.com',
+      password: 'Admin@!23'
+    };
     this.sharedMethods.showLoader(this.contentService.commonText?.loadingText);
     const response = await this.apiServices.post('accounts/login/', formData);
     response.subscribe(
-      async (res: LoginSuccessReponse) => {
+      async(res: LoginSuccessReponse) => {
         if (res.status === 'OK') {
           this.pageFormGroup.reset();
           await this.sharedMethods.saveDataToStorage(StorageKeys.apiToken, res.data.token);
           await this.sharedMethods.saveDataToStorage(StorageKeys.userData, res.data.userData);
+          await this.sharedMethods.saveDataToStorage(StorageKeys.apiTokenExpiry, res.data.userData.tokenExpiry);
           this.sharedMethods.hideLoader();
           this.handleRedirection();
         }
-      },
-      (err: HttpErrorResponse) => {
+      }, (err: HttpErrorResponse) => {
         this.sharedMethods.hideLoader();
         this.sharedMethods.showToast(err.error?.detail);
       }
     );
   }
 
-  async handleRedirection(){
+  async handleRedirection() {
     const helpScreens = await this.sharedMethods.readDataFromStorage(StorageKeys.isFirstLogin);
     const user: UserData = await this.sharedMethods.readDataFromStorage(StorageKeys.userData);
     // TODO: Once we have helpscrens, handle this logic well
-    if (!helpScreens){
-      window.location.reload();
-      // this.router.navigate([this.authService.getCurrentUserBaseUrlFromRole(user.role)]);
+    if (!helpScreens) {
+      this.router.navigate([this.authService.getCurrentUserBaseUrlFromRole(user.role)]);
     } else {
-      // this.router.navigate([this.authService.getCurrentUserBaseUrlFromRole(user.role)]);
-      window.location.reload();
+      this.router.navigate([this.authService.getCurrentUserBaseUrlFromRole(user.role)]);
     }
   }
 }

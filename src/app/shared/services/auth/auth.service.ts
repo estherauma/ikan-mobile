@@ -8,8 +8,8 @@ export class AuthService {
 
   constructor() { }
 
-  getCurrentUserBaseUrlFromRole(userRole: string){
-    switch(userRole){
+  getCurrentUserBaseUrlFromRole(userRole: string) {
+    switch (userRole) {
       case UserRole.taiwaneseAgent:
         return 'dashboard/taiwaneseagent';
       case UserRole.worker:
@@ -24,4 +24,8 @@ export class AuthService {
         return '';
     }
   }
+
+  checkTokenExpiry() { }
+
+  logoutWithExpiredToken() { }
 }
