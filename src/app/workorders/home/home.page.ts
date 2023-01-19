@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { MenuController, ModalController } from '@ionic/angular';
+import { ContentService } from 'src/app/shared/services/content/content.service';
 import { CreatePage } from '../create/create.page';
 
 @Component({
@@ -50,6 +51,9 @@ export class HomePage implements OnInit {
     }
 ];
 
+selectText = '';
+cancelText = '';
+
 filterOptions = [
   {title:'closed', value:'closed'},
   {title:'opened', value:'opened'}
@@ -60,9 +64,12 @@ filterOptions = [
   constructor(
     public menuCtrl: MenuController,
     public router: Router,
+    public contentService: ContentService,
     public modalCtrl: ModalController) { }
 
   ngOnInit() {
+    this.cancelText = this.contentService.commonText?.cancel;
+    this.selectText = this.contentService.commonText?.select;
   }
 
   ionViewWillEnter() {

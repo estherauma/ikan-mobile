@@ -47,7 +47,7 @@
         <app-workordercard [wo]="wo"></app-workordercard>
       </ion-row>
     </div>
-    <div #elseBlock>
+    <div *ngIf="!select">
       <app-workordercard *ngFor="let wo of workOrders" [wo]="wo"></app-workordercard>
     </div>
 
@@ -55,10 +55,10 @@
 </ion-content>
 <div class="bottom-element">
   <div *ngIf="!select" (click)="onSelect()">
-    Select
+    {{selectText}}
   </div>
   <div *ngIf="select" (click)="onCancel()">
-    Cancel
+    {{cancelText}}
   </div>
   <div>
     <ion-icon name="ellipsis-vertical-outline" size="large"></ion-icon>
