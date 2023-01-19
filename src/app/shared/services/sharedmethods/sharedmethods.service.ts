@@ -11,7 +11,7 @@ import { PluginListenerHandle } from '@capacitor/core';
 })
 export class SharedmethodsService {
 
-  networkListener: PluginListenerHandle
+  networkListener: PluginListenerHandle;
 
   constructor(
     public loadingCtrl: LoadingController,
@@ -48,17 +48,17 @@ export class SharedmethodsService {
   }
 
   async addNetworkEventListener(customCallbackFunc: (
-    params: { networkListener: PluginListenerHandle, connected: boolean }
+    params: { networkListener: PluginListenerHandle; connected: boolean }
   ) => any) {
     this.networkListener = await Network.addListener('networkStatusChange',
       status => customCallbackFunc(
         { networkListener: this.networkListener, connected: status.connected }
       ));
-    const status = await Network.getStatus();
-    customCallbackFunc({ networkListener: this.networkListener, connected: status.connected })
+    const currentStatus = await Network.getStatus();
+    customCallbackFunc({ networkListener: this.networkListener, connected: currentStatus.connected });
   }
 
   removeNetworkEventListener(listener: PluginListenerHandle) {
-    if (listener) listener.remove();
+    if (listener) {listener.remove();}
   }
 }

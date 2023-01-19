@@ -26,7 +26,7 @@ export class HowToSignupPage implements OnInit {
   ngOnInit() {
   }
 
-  onCreateLogin(){
+  onCreateLogin() {
     this.router.navigate(['/auth/signup']);
   }
 

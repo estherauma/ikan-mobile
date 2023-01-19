@@ -27,6 +27,6 @@ export class CreateDetailPage extends BaseformPage implements OnInit {
   ngOnInit() {
   }
 
-  onSubmit(data){}
+  onSubmit(data) {}
 
 }

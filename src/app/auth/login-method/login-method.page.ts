@@ -7,8 +7,8 @@ import { Router } from '@angular/router';
   styleUrls: ['./login-method.page.scss'],
 })
 export class LoginMethodPage implements OnInit {
-  pageTitle = "Login Method"
-  
+  pageTitle = 'Login Method';
+
   constructor(
     public router: Router,
   ) { }
@@ -16,12 +16,12 @@ export class LoginMethodPage implements OnInit {
   ngOnInit() {
   }
 
-  toInviteCodeScreen(){
-    this.router.navigate(['auth/invite-code'])
+  toInviteCodeScreen() {
+    this.router.navigate(['auth/invite-code']);
   }
 
-  loginWithUsername(){
-    this.router.navigate(["login"])
+  loginWithUsername() {
+    this.router.navigate(['login']);
   }
 
 }

@@ -44,7 +44,7 @@ export class ListPage implements OnInit {
   ngOnInit() {
   }
 
-  createTodo(){
+  createTodo() {
     this.router.navigate(['/todo/create']);
   }
 

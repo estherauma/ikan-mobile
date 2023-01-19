@@ -18,7 +18,7 @@ export class ConfirmedmodalComponent implements OnInit {
 
   ngOnInit() {}
 
-  onModalClose(){
+  onModalClose() {
     this.modalCtrl.dismiss();
   }
 

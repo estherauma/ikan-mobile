@@ -54,7 +54,7 @@ export class StatusPage implements OnInit {
 
   ngOnInit() {
     this.activatedRoute.params.subscribe((params: any) => {
-      if(Object.keys(params).length === 0){
+      if (Object.keys(params).length === 0) {
         return;
       }
       this.audioRecordings.unshift({
@@ -64,11 +64,11 @@ export class StatusPage implements OnInit {
     });
   }
 
-  onRecord(){
+  onRecord() {
     this.router.navigate(['/workers/recordnote']);
   }
 
-  onDelete(fileToDelete){
+  onDelete(fileToDelete) {
     const newAudioRecordings = this.audioRecordings.filter((el) => el.uniqueName !== fileToDelete);
     this.audioRecordings = newAudioRecordings;
   }
