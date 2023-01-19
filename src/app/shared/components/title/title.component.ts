@@ -10,13 +10,9 @@ export class TitleComponent implements OnInit {
  @Input() subScript: string | number  = '';
  @Input() color = '';
  @Input() type: 'blue' | '' = '';
- @Input() customCss = '';
+ @Input() isBlue = false;
   constructor() { }
 
-  ngOnInit() {
-    if(this.type === 'blue'){
-      this.customCss = 'blue';
-    }
-  }
+  ngOnInit() {}
 
 }

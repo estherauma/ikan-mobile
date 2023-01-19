@@ -1,1 +1,1 @@
-<h1 [class]="customCss + ' title' "> {{title}} <sub *ngIf="subScript"><small>{{subScript}}</small></sub> </h1>
+<h1 [class]=" title" [ngClass]="{'is-blue': isBlue}"> {{title}} <sub *ngIf="subScript"><small>{{subScript}}</small></sub> </h1>

@@ -25,7 +25,8 @@
 @import "~@ionic/angular/css/text-transformation.css";
 @import "~@ionic/angular/css/flex-utils.css";
 
-
+@import 'swiper/css';
+@import '@ionic/angular/css/ionic-swiper';
 // See https://stackoverflow.com/questions/46972950/ionic-make-modal-page-fit-content-height
 ion-modal.tuna-modal {
   &.bottom {
@@ -81,4 +82,16 @@ ion-modal.my-own-class {
   white-space: nowrap; 
   overflow: hidden;
   text-overflow: ellipsis; 
+}
+
+.sky-blue-bg{
+  background-color: var(--ikan_skyblue_100);
+}
+
+.content-skyblue-bg{
+  --background: var(--ikan_skyblue_100);
+}
+
+.blue-color{
+  color: var(--ikan_blue_100);
 }

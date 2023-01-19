@@ -14,6 +14,8 @@ export class FormComponent implements OnInit {
   @Input() tunaFormquestions: any;
   @Input() tunaFormGroup: FormGroup;
   @Input() submitButtonText: string;
+  @Input() btnConfig: any = '';
+  @Input() btnFill: any = 'outline';
 
   @Output() formValues = new EventEmitter<any>();
   @Output() cancel = new EventEmitter<any>();

@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, EventEmitter, Output } from '@angular/core';
 
 @Component({
   selector: 'app-button',
@@ -6,7 +6,7 @@ import { Component, OnInit, Input } from '@angular/core';
   styleUrls: ['./button.component.scss'],
 })
 export class ButtonComponent implements OnInit {
-  @Input() onClick;
+
   @Input() title;
   @Input() disabled = false;
   @Input() fill: 'solid' | 'clear' | 'outline' = 'solid';
@@ -16,7 +16,10 @@ export class ButtonComponent implements OnInit {
   @Input() class = '';
   @Input() color = 'transparent';
   @Input() iconPosition = 'left';
-  @Input() iconName = 'add-outline';
+  @Input() iconName = '';
+  @Input() type = '';
+
+  @Output() onClick = new EventEmitter<any>();
 
   customClasses = '';
   finalCss = '';
@@ -36,6 +39,10 @@ export class ButtonComponent implements OnInit {
     } else {
       this.color = 'primary';
     }
+  }
+
+  onButtonClick() {
+    this.onClick.emit();
   }
 
 }

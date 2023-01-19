@@ -1,9 +1,9 @@
 
 .title{
-  font-family: GatwickBold
+  font-family: GatwickBold;
+  font-size: 36px;
 }
 
-.blue{
-  color: var(--ikan_blue_100);
-  font-size: 36px;
+.is-blue{
+  color: var(--ikan_blue_100) !important;
 }
