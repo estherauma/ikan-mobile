@@ -25,7 +25,7 @@ export class ChartComponent implements OnInit, AfterViewInit {
   ngOnInit() {
   }
 
-  ngAfterViewInit(){
+  ngAfterViewInit() {
     this.createChart({
       id: this.chartId,
       type: this.chartType,
@@ -34,7 +34,7 @@ export class ChartComponent implements OnInit, AfterViewInit {
     });
   }
 
-  createChart({ id, type, labels, datasets }){
+  createChart({ id, type, labels, datasets }) {
     this.chart = new Chart(id, {
       type,
 

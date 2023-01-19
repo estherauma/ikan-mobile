@@ -9,9 +9,9 @@ import { DemandLetter } from '../home/home.page';
   styleUrls: ['./send.page.scss'],
 })
 export class SendPage implements OnInit {
-  pageTitle="Send Demand Letter"
-  demandLetter: DemandLetter
-  selectedRecipient: string
+  pageTitle='Send Demand Letter';
+  demandLetter: DemandLetter;
+  selectedRecipient: string;
 
   constructor(
     public activatedRoute: ActivatedRoute,
@@ -21,35 +21,35 @@ export class SendPage implements OnInit {
 
   ngOnInit() {
     this.activatedRoute.params.subscribe((params) => {
-      this.pageTitle = params.name
-      this.demandLetter = params as DemandLetter
-    })
+      this.pageTitle = params.name;
+      this.demandLetter = params as DemandLetter;
+    });
   }
 
-  viewDeatils(demantLetter: DemandLetter){
-    this.router.navigate(['/demandletters/view', demantLetter])
+  viewDeatils(demantLetter: DemandLetter) {
+    this.router.navigate(['/demandletters/view', demantLetter]);
   }
 
-  onRecipientSelect(e){
-    this.selectedRecipient = e.detail.value
+  onRecipientSelect(e) {
+    this.selectedRecipient = e.detail.value;
   }
 
-  async onSendDemandLetter(){
+  async onSendDemandLetter() {
     const successAlert = await this.alertController.create({
       header: 'Success Message',
       backdropDismiss: true,
       message:`Your Demand Letter has been sent to ${this.selectedRecipient}`,
       buttons:[
         {
-          text: "ok",
-          role: "confirm",
-          handler: async () => {
-            await successAlert.dismiss()
-            this.router.navigate(['/demandletters/home'])
+          text: 'ok',
+          role: 'confirm',
+          handler: async() => {
+            await successAlert.dismiss();
+            this.router.navigate(['/demandletters/home']);
           }
         }
       ]
-    })
+    });
 
     await successAlert.present();
   }

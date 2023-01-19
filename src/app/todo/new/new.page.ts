@@ -20,7 +20,7 @@ export class NewPage implements OnInit {
   ngOnInit() {
   }
 
-  async onDetails(){
+  async onDetails() {
     const modal = await this.modalCtrl.create({
       component: BadgeinfoPage,
       componentProps: {

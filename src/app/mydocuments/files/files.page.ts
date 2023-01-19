@@ -29,14 +29,14 @@ export class FilesPage implements OnInit {
 
   ngOnInit() {
   }
-  searchResult(data){}
+  searchResult(data) {}
 
-  onSelect(){
+  onSelect() {
     this.select = true;
   }
-  async onClick(){
+  async onClick() {
     this.actionClicked = true;
-    if(!this.select){
+    if (!this.select) {
       this.allActionModal = await this.modalCtrl.create({
         component: DocumentactionsComponent,
         cssClass: 'my-own-class',
@@ -47,11 +47,11 @@ export class FilesPage implements OnInit {
       this.allActionModal.onDidDismiss().then((data) => {
         const view = data.data.view;
 
-        if(view === 'icons'){
+        if (view === 'icons') {
           this.display = 'icon';
           return;
         }
-        if(view === 'list'){
+        if (view === 'list') {
           this.display = 'list';
           return;
         }
@@ -66,10 +66,10 @@ export class FilesPage implements OnInit {
 
     this.documentSelectedModal.present();
 
-    this.documentSelectedModal.onDidDismiss().then( async (data) => {
+    this.documentSelectedModal.onDidDismiss().then( async(data) => {
       const action = data.data.action;
 
-      if (action === 'delete'){
+      if (action === 'delete') {
         this.confirmModal = await this.modalCtrl.create({
           component: ConfirmmodalComponent,
           componentProps: {
@@ -80,31 +80,31 @@ export class FilesPage implements OnInit {
         });
         this.confirmModal.present();
 
-        this.confirmModal.onDidDismiss().then(async (confirmModalData) => {
+        this.confirmModal.onDidDismiss().then(async(confirmModalData) => {
           //TODO: handle action on confirm deletion
         });
       };
     });
   }
 
-  onCancel(){
+  onCancel() {
     this.select = false;
   }
 
-  onDismiss(){
+  onDismiss() {
     this.actionClicked = false;
-    if(!this.select){
+    if (!this.select) {
       this.allActionModal.dismiss();
-    }else{
+    } else {
       this.documentSelectedModal.dismiss();
     }
   }
 
-  onGoToEssentials(){
+  onGoToEssentials() {
     this.router.navigate(['mydocuments/home']);
   }
 
-  onGoToFiles(){
+  onGoToFiles() {
     this.router.navigate(['mydocuments/files']);
   }
 

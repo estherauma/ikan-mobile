@@ -44,7 +44,7 @@ export class HomePage implements OnInit {
   ngOnInit() {
   }
 
-  viewDeatils(lh){
+  viewDeatils(lh) {
     this.router.navigate(['/learninghub/detail', lh]);
   }
 

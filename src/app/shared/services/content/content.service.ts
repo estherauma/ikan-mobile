@@ -151,7 +151,7 @@ export class ContentService {
     return commonTextOject;
   }
 
-  getMenuContent(){
+  getMenuContent() {
     const content = this.appContent?.[`${this.currentLanguage}`];
     const { sidemenu } = content;
     const menu = [];

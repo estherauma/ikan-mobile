@@ -45,7 +45,7 @@ export class AppComponent implements OnInit, OnDestroy {
 
   checkLoginStatus() {
     this.sharedMethods.readDataFromStorage(StorageKeys.apiToken)
-      .then(async (value) => {
+      .then(async(value) => {
         if (value != null) {
           const user: UserData = await this.sharedMethods.readDataFromStorage(StorageKeys.userData);
           this.router.navigate([this.authService.getCurrentUserBaseUrlFromRole(user.role)]);

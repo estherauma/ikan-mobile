@@ -30,7 +30,7 @@ export class ViewPage implements OnInit {
     this.pageTitle = demandLetter.name;
     this.demandLetter = demandLetter;
 
-    if(demandLetter.workOrders){
+    if (demandLetter.workOrders) {
       this.workOrders = demandLetter.workOrders;
     }
   }

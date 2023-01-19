@@ -32,7 +32,7 @@ export class PasswordResetPage extends BaseformPage implements OnInit {
   ngOnInit() {
   }
 
-  onSubmit(data){
+  onSubmit(data) {
     this.router.navigate(['auth/create-password']);
   }
 

@@ -10,20 +10,20 @@ export class AudioService {
     VoiceRecorder.requestAudioRecordingPermission();
   }
 
-  startRecording(){
-    if(this.recording){
+  startRecording() {
+    if (this.recording) {
       return;
     }
     this.recording = true;
     VoiceRecorder.startRecording();
   }
-  async stopRecording(){
-    if(!this.recording){
+  async stopRecording() {
+    if (!this.recording) {
       return;
     }
     this.recording = false;
-    return VoiceRecorder.stopRecording().then(async (result: RecordingData) => {
-      if(result.value && result.value.recordDataBase64){
+    return VoiceRecorder.stopRecording().then(async(result: RecordingData) => {
+      if (result.value && result.value.recordDataBase64) {
         const file = `data:audio/aac;base64,${result.value.recordDataBase64}`;
         return {
           file,

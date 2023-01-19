@@ -47,7 +47,7 @@ export class HomePage implements OnInit {
 
   viewDetails(worker) {
     const workerRole = worker.role;
-    switch(workerRole){
+    switch (workerRole) {
       case UserRole.worker:
         return this.router.navigate(['worker/profiles']);
       case UserRole.taiwaneseAgent:
@@ -57,7 +57,7 @@ export class HomePage implements OnInit {
     }
   }
 
-  async createWorker(){
+  async createWorker() {
     const modal = await this.modalCtrl.create({
       component: CreatePage,
       cssClass: 'tuna-modal',
