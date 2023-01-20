@@ -5,6 +5,7 @@ ion-toolbar {
     --padding-top: 0px;
     --padding-start: 0px;
     --padding-end: 0px;
+    --border: none;
 }
 
 .header-ios ion-toolbar:last-of-type {
@@ -20,16 +21,13 @@ ion-toolbar {
     flex: 1; 
     flex-grow: 1;
     border-bottom-right-radius: 20px;
-    margin: 0px;
-    box-shadow: none;
 }
 
 .section-two{
     background-color: #3565FF; 
     border-bottom-left-radius: 20px;
     width: 74px;
-    margin: 0px;
-    box-shadow: none;
+    margin: 0 -1px;
 }
 
 .header-content-container{
@@ -40,4 +38,8 @@ ion-toolbar {
 
 ion-title{
     --color: #ffffff;
+}
+
+.light-blue{
+    background-color: #EAEDF6 !important;
 }
