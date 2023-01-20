@@ -46,7 +46,7 @@
 }
 
 .gray-status-container{
-    background: var(--ikan_gray_100);
+    background: var(--ikan_skyblue_100);
 }
 
 .title-section{
@@ -60,4 +60,13 @@
         color: #000000 !important;
         text-decoration: underline;
     }
+}
+
+.image{
+    height: 24px;
+    width: 23px;
+}
+
+.status-container-parent {
+    position: relative;
 }

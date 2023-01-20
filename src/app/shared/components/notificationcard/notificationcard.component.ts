@@ -14,7 +14,7 @@ export class NotificationcardComponent implements OnInit {
   ngOnInit() {
     if (this.notification.read) {
       this.statusContainer = 'skyblue-status-container';
-    } else{
+    } else {
       this.statusContainer = 'gray-status-container';
     }
   }
