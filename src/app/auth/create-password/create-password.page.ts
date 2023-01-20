@@ -31,7 +31,7 @@ export class CreatePasswordPage extends BaseformPage implements OnInit {
   ngOnInit() {
   }
 
-  onSubmit(data){
+  onSubmit(data) {
     this.router.navigate(['/auth/password-reset-success']);
   }
 

@@ -18,19 +18,19 @@ export class ConfirmmodalComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    if(this.actionByRadio){
+    if (this.actionByRadio) {
       this.actionByRadio = true;
-    }else{
+    } else {
       this.actionByButton = true;
     }
   }
 
-  radioChangeHandler(data){
+  radioChangeHandler(data) {
     const result =  data.detail.value === 'yes' ? 'yes' : 'no';
     this.modalCtrl.dismiss(result);
   }
 
-  btnClickHandler(data){
+  btnClickHandler(data) {
     const result =  data === 'yes' ? 'yes' : 'no';
     this.modalCtrl.dismiss(result);
   }

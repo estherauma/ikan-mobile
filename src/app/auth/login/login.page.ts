@@ -53,7 +53,7 @@ export class LoginPage extends BaseformPage implements OnInit {
     this.sharedMethods.showLoader(this.contentService.commonText?.loadingText);
     const response = await this.apiServices.post('accounts/login/', formData);
     response.subscribe(
-      async (res: LoginSuccessReponse) => {
+      async(res: LoginSuccessReponse) => {
         if (res.status === 'OK') {
           this.pageFormGroup.reset();
           await this.sharedMethods.saveDataToStorage(StorageKeys.apiToken, res.data.token);
@@ -69,14 +69,16 @@ export class LoginPage extends BaseformPage implements OnInit {
     );
   }
 
-  async handleRedirection(){
+  async handleRedirection() {
     const helpScreens = await this.sharedMethods.readDataFromStorage(StorageKeys.isFirstLogin);
     const user: UserData = await this.sharedMethods.readDataFromStorage(StorageKeys.userData);
     // TODO: Once we have helpscrens, handle this logic well
-    if (!helpScreens){
-      this.router.navigate([this.authService.getCurrentUserBaseUrlFromRole(user.role)]);
+    if (!helpScreens) {
+      window.location.reload();
+      // this.router.navigate([this.authService.getCurrentUserBaseUrlFromRole(user.role)]);
     } else {
-      this.router.navigate([this.authService.getCurrentUserBaseUrlFromRole(user.role)]);
+      // this.router.navigate([this.authService.getCurrentUserBaseUrlFromRole(user.role)]);
+      window.location.reload();
     }
   }
 }

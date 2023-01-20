@@ -77,7 +77,7 @@ export class ListPage implements OnInit {
     });
 
     confirmModal.present();
-    confirmModal.onDidDismiss().then(async ({ data }) => {
+    confirmModal.onDidDismiss().then(async({ data }) => {
       let componentProps;
 
       if (data === 'yes') {

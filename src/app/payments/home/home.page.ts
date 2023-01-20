@@ -47,7 +47,7 @@ export class HomePage implements OnInit {
     this.organizations = data;
   }
 
-  filterResult(result){
+  filterResult(result) {
     this.organizations = result;
   }
 

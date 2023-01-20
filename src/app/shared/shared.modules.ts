@@ -20,6 +20,7 @@ import { ButtonComponent } from './components/button/button.component';
 import { WorkordercardComponent } from './components/workordercard/workordercard.component';
 import { AgentcardComponent } from './components/agentcard/agentcard.component';
 import { QuestiontitlecardComponent } from './components/questiontitlecard/questiontitlecard.component';
+import { BadgeComponent } from './components/badge/badge.component';
 
 
 @NgModule({
@@ -48,6 +49,7 @@ import { QuestiontitlecardComponent } from './components/questiontitlecard/quest
     WorkordercardComponent,
     AgentcardComponent,
     QuestiontitlecardComponent,
+    BadgeComponent,
   ],
   exports: [
     FormComponent,
@@ -68,6 +70,7 @@ import { QuestiontitlecardComponent } from './components/questiontitlecard/quest
     WorkordercardComponent,
     AgentcardComponent,
     QuestiontitlecardComponent,
+    BadgeComponent,
   ]
 })
 

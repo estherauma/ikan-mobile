@@ -15,7 +15,7 @@ export class BadgeinfoPage implements OnInit {
   ngOnInit() {
   }
 
-  onComplete(){
+  onComplete() {
     this.modalCtrl.dismiss({});
   }
 

@@ -17,7 +17,7 @@ export class InviteCodePage implements OnInit {
   ngOnInit() {
   }
 
-  onLogin(){
+  onLogin() {
     this.router.navigate(['/intro']);
   }
 
@@ -25,7 +25,7 @@ export class InviteCodePage implements OnInit {
 
   }
 
-  inputValue(data){
+  inputValue(data) {
   }
 
 }

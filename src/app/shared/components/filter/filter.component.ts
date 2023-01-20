@@ -19,7 +19,7 @@ export class FilterComponent implements OnInit {
   @Output()
   filterResult: EventEmitter<any> = new EventEmitter<any>();
 
-  @Input() type: 'deep-blue-filter' | 'light-blue-filter' | '' = '';
+  @Input() type: 'deep-blue-filter' | 'light-blue-filter' | 'deep-blue-90' | '' = '';
   @Input() customCss='';
 
   constructor() { }
@@ -29,6 +29,8 @@ export class FilterComponent implements OnInit {
       this.customCss = 'deep-blue';
     } else if (this.type === 'light-blue-filter') {
       this.customCss = 'light-blue';
+    } else if (this.type === 'deep-blue-90') {
+      this.customCss = 'deep_blue_90';
     } else {
       this.customCss = 'default';
     }
