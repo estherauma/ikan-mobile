@@ -3,12 +3,12 @@ import { Router } from '@angular/router';
 
 
 export interface IContracts {
-  name: string
-  companyName: string
-  date: string
-  vesselName: string
-  image: string
-  ref: string
+  name: string;
+  companyName: string;
+  date: string;
+  vesselName: string;
+  image: string;
+  ref: string;
 }
 
 @Component({
@@ -27,7 +27,7 @@ export class HomePage implements OnInit {
       vesselName: 'Vessel Name',
       date: '2022-10-23',
       ref: 'Contract1234567',
-      image: "https://cdn.pixabay.com/photo/2015/07/17/22/43/student-849825_1280.jpg",
+      image: 'https://cdn.pixabay.com/photo/2015/07/17/22/43/student-849825_1280.jpg',
     },
     {
       name: 'Budi Surname',
@@ -35,7 +35,7 @@ export class HomePage implements OnInit {
       vesselName: 'Vessel Name',
       date: '2022-10-23',
       ref: 'Contract1234567',
-      image: "https://cdn.pixabay.com/photo/2015/07/17/22/43/student-849825_1280.jpg",
+      image: 'https://cdn.pixabay.com/photo/2015/07/17/22/43/student-849825_1280.jpg',
     },
     {
       name: 'Budi Surname',
@@ -43,7 +43,7 @@ export class HomePage implements OnInit {
       vesselName: 'Vessel Name',
       date: '2022-10-23',
       ref: 'Contract1234567',
-      image: "https://cdn.pixabay.com/photo/2015/07/17/22/43/student-849825_1280.jpg",
+      image: 'https://cdn.pixabay.com/photo/2015/07/17/22/43/student-849825_1280.jpg',
     },
     {
       name: 'Budi Surname',
@@ -51,7 +51,7 @@ export class HomePage implements OnInit {
       vesselName: 'Vessel Name',
       date: '2022-10-23',
       ref: 'Contract1234567',
-      image: "https://cdn.pixabay.com/photo/2015/07/17/22/43/student-849825_1280.jpg",
+      image: 'https://cdn.pixabay.com/photo/2015/07/17/22/43/student-849825_1280.jpg',
     },
     {
       name: 'Budi Surname',
@@ -59,7 +59,7 @@ export class HomePage implements OnInit {
       vesselName: 'Vessel Name',
       date: '2022-10-23',
       ref: 'Contract1234567',
-      image: "https://cdn.pixabay.com/photo/2015/07/17/22/43/student-849825_1280.jpg",
+      image: 'https://cdn.pixabay.com/photo/2015/07/17/22/43/student-849825_1280.jpg',
     },
     {
       name: 'Budi Surname',
@@ -67,9 +67,9 @@ export class HomePage implements OnInit {
       vesselName: 'Vessel Name',
       date: '2022-10-23',
       ref: 'Contract1234567',
-      image: "https://cdn.pixabay.com/photo/2015/07/17/22/43/student-849825_1280.jpg",
+      image: 'https://cdn.pixabay.com/photo/2015/07/17/22/43/student-849825_1280.jpg',
     }
-  ]
+  ];
 
   constructor(
     public router: Router
@@ -79,8 +79,8 @@ export class HomePage implements OnInit {
   }
 
 
-  viewDeatils(demandLetter:IContracts) {
-    this.router.navigate(["/contracts/view", demandLetter])
+  viewDeatils(demandLetter: IContracts) {
+    this.router.navigate(['/contracts/view', demandLetter]);
   }
 
   searchResult(searchResultData) {

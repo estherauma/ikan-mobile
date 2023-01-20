@@ -13,6 +13,6 @@ export class DetailPage implements OnInit {
   ngOnInit() {
   }
 
-  getParams(){}
+  getParams() {}
 
 }

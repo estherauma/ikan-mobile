@@ -10,17 +10,17 @@ import { ContentService } from 'src/app/shared/services/content/content.service'
   styleUrls: ['./password-reset.page.scss'],
 })
 export class PasswordResetPage extends BaseformPage implements OnInit {
-  
-  title="Forgot Password"
-  description = "feugiat id volutpat eu, laoreet ac orci. Phasellus sodales feugiat luctus. Sed hendrerit neque ut ante imperdiet"
-  submitButtonText = "Reset Password"
+
+  title='Forgot Password';
+  description = 'feugiat id volutpat eu, laoreet ac orci. Phasellus sodales feugiat luctus. Sed hendrerit neque ut ante imperdiet';
+  submitButtonText = 'Reset Password';
 
   constructor(
     public contentService: ContentService,
     public router: Router
-  ) { 
-    super(contentService)
-    const pageData = this.contentService.getContentByPropertyName("passwordresetform");
+  ) {
+    super(contentService);
+    const pageData = this.contentService.getContentByPropertyName('passwordresetform');
     this.formQuestions = pageData.formQuestions;
     this.pageTitle = pageData?.pageTitle;
     this.formQuestions.forEach((entry) => {
@@ -32,8 +32,8 @@ export class PasswordResetPage extends BaseformPage implements OnInit {
   ngOnInit() {
   }
 
-  onSubmit(data){
-    this.router.navigate(["auth/create-password"])
+  onSubmit(data) {
+    this.router.navigate(['auth/create-password']);
   }
 
 }

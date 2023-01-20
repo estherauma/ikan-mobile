@@ -20,7 +20,7 @@ export class DocumentactionsComponent implements OnInit {
 
   ngOnInit() {}
 
-  onChangeView(action){
+  onChangeView(action) {
     this.modalCtrl.dismiss({view: action});
   }
 

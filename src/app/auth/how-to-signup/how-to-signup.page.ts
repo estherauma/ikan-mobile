@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { BaseformPage } from 'src/app/shared/components/baseform/baseform.page';
 import { ContentService } from 'src/app/shared/services/content/content.service';
 
@@ -9,19 +10,24 @@ import { ContentService } from 'src/app/shared/services/content/content.service'
 })
 export class HowToSignupPage implements OnInit {
 
-  pageTitle = "How to sign up"
-  title = ""
-  description = ""
+  pageTitle = 'How to sign up';
+  title = '';
+  description = '';
 
   constructor(
     public contentService: ContentService,
-  ) { 
-    const pageData = this.contentService.getContentByPropertyName("howtosignup");
-    this.description = pageData?.data[0].value
-    this.title = pageData?.pageTitle
+    public router: Router
+  ) {
+    const pageData = this.contentService.getContentByPropertyName('howtosignup');
+    this.description = pageData?.data[0].value;
+    this.title = pageData?.pageTitle;
   }
 
   ngOnInit() {
+  }
+
+  onCreateLogin() {
+    this.router.navigate(['/auth/signup']);
   }
 
 }

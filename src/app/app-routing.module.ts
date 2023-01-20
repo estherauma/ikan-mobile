@@ -283,6 +283,10 @@ const routes: Routes = [
     path: 'workorders/send/signatureview',
     loadChildren: () => import('./workorders/send/signatureview/signatureview.module').then( m => m.SignatureviewPageModule)
   },
+  {
+    path: 'auth/signup',
+    loadChildren: () => import('./auth/signup/signup.module').then( m => m.SignupPageModule)
+  },
 ];
 
 @NgModule({

@@ -10,6 +10,7 @@ export class HeaderComponent implements OnInit {
   @Input() isBackButton = false;
   @Input() isMenuButton = true;
   @Input() backBtnText = '';
+  @Input() isLightBlueBg = false;
 
   constructor() { }
 

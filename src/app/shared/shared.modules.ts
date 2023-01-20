@@ -21,6 +21,7 @@ import { WorkordercardComponent } from './components/workordercard/workordercard
 import { AgentcardComponent } from './components/agentcard/agentcard.component';
 import { NotificationcardComponent } from './components/notificationcard/notificationcard.component';
 import { AttachmentComponent } from './components/attachment/attachment.component';
+import { BadgeComponent } from './components/badge/badge.component';
 
 
 @NgModule({
@@ -50,7 +51,8 @@ import { AttachmentComponent } from './components/attachment/attachment.componen
     WorkordercardComponent,
     AgentcardComponent,
     NotificationcardComponent,
-    AttachmentComponent
+    AttachmentComponent,
+    BadgeComponent,
   ],
   exports: [
     FormComponent,
@@ -73,6 +75,7 @@ import { AttachmentComponent } from './components/attachment/attachment.componen
     AgentcardComponent,
     NotificationcardComponent,
     AttachmentComponent,
+    BadgeComponent,
   ]
 })
 

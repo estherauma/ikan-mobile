@@ -86,7 +86,7 @@ export class HomePage implements OnInit {
     this.router.navigate(['/demandletters/view', { demandLetter: JSON.stringify(demandLetter) }]);
   }
 
-  filterResult(result){
+  filterResult(result) {
     this.demandLetters = result;
   }
 

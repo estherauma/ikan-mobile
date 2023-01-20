@@ -1,15 +1,16 @@
 <ion-button 
   [shape]="shape" 
   [fill]="fill" 
-  (click)="onClick()" 
+  (click)="onClick ? onButtonClick() :  null" 
   expand="full" 
   [size]="size"
   disabled={{disabled}}
   [class]="customClasses"
   [color]="color"
   disabled="true"
+  [type]="type"
 >
-<ion-icon *ngIf="iconPosition === 'left'" [name]="iconName"></ion-icon>
+<ion-icon *ngIf="iconPosition === 'left' && iconName" [name]="iconName"></ion-icon>
 {{title}}
-<ion-icon *ngIf="iconPosition === 'right'" [name]="iconName"></ion-icon>
+<ion-icon *ngIf="iconPosition === 'right' && iconName" [name]="iconName"></ion-icon>
 </ion-button>

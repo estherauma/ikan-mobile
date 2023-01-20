@@ -23,5 +23,5 @@ export class CreatePage extends BaseformPage implements OnInit {
     this.pageFormGroup = new FormGroup(this.group);
   }
 
-  onSubmit(data){}
+  onSubmit(data) {}
 }
