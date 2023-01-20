@@ -149,23 +149,12 @@
           imperdiet, sed tincidunt arcu eleifend. Cras rhoncus, lorem vitae luctus dapibus, ipsum turpis volutpat risus,
           vitae porta augue nisi a urna. </p>
       </ion-text>
-      <ion-card class="white-bg">
-        <ion-card-content>
-          <ion-grid>
-            <ion-row class="ion-align-items-center">
-              <ion-col size="3">
-                <ion-thumbnail>
-                  <ion-img src=""></ion-img>
-                </ion-thumbnail>
-              </ion-col>
-              <ion-col size="8">
-                <ion-card-title>QUESTION TIME!</ion-card-title>
-                <ion-icon name="checkmark-circle-outline"></ion-icon>
-              </ion-col>
-            </ion-row>
-          </ion-grid>
-        </ion-card-content>
-      </ion-card>
+      <div>
+        <app-questiontitlecard></app-questiontitlecard>
+        <app-questiontitlecard type="warning"></app-questiontitlecard>
+        <app-questiontitlecard type="success"></app-questiontitlecard>
+        <app-questiontitlecard type="error"></app-questiontitlecard>
+      </div>
       <div class="ion-padding-top ion-padding-bottom">
         <ion-text>
           <h5>Up Next ...</h5>

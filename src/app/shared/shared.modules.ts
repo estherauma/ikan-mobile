@@ -19,6 +19,7 @@ import { AuthbgpaperComponent } from './components/authbgpaper/authbgpaper.compo
 import { ButtonComponent } from './components/button/button.component';
 import { WorkordercardComponent } from './components/workordercard/workordercard.component';
 import { AgentcardComponent } from './components/agentcard/agentcard.component';
+import { QuestiontitlecardComponent } from './components/questiontitlecard/questiontitlecard.component';
 import { NotificationcardComponent } from './components/notificationcard/notificationcard.component';
 import { AttachmentComponent } from './components/attachment/attachment.component';
 import { BadgeComponent } from './components/badge/badge.component';
@@ -47,9 +48,9 @@ import { BadgeComponent } from './components/badge/badge.component';
     TitleComponent,
     ButtonComponent,
     AuthbgpaperComponent,
-    AuthbgpaperComponent,
     WorkordercardComponent,
     AgentcardComponent,
+    QuestiontitlecardComponent,
     NotificationcardComponent,
     AttachmentComponent,
     BadgeComponent,
@@ -70,9 +71,9 @@ import { BadgeComponent } from './components/badge/badge.component';
     TitleComponent,
     ButtonComponent,
     AuthbgpaperComponent,
-    AuthbgpaperComponent,
     WorkordercardComponent,
     AgentcardComponent,
+    QuestiontitlecardComponent,
     NotificationcardComponent,
     AttachmentComponent,
     BadgeComponent,
