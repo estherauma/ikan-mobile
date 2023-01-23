@@ -12,12 +12,7 @@ export class HomePage implements OnInit {
     title: 'Vessels',
     datasets: [{
       label: 'Bar chart',
-      data: [65, 59, 80],
-      backgroundColor: [
-        'rgba(255, 99, 132, 0.5)',
-        'rgba(54, 162, 235, 0.2)',
-        'rgba(255, 206, 86, 0.2)',
-      ],
+      data: [65, 59, 80]
     }]
   };
 
@@ -29,22 +24,25 @@ export class HomePage implements OnInit {
     title: 'Training',
     datasets: [{
       label: 'My First Dataset',
-      data: [65, 59, 80],
-      backgroundColor: [
-        'rgba(255, 99, 132, 0.2)',
-        'rgba(255, 159, 64, 0.2)',
-        'rgba(255, 205, 86, 0.2)',
-      ],
-      borderColor: [
-        'rgb(255, 99, 132)',
-        'rgb(255, 159, 64)',
-        'rgb(255, 205, 86)',
-        'rgb(75, 192, 192)',
-      ],
-      borderWidth: 1
+      data: [20, 50, 80]
     }],
     labels: ['one', 'two', 'three'],
     chartHeight: 400
+  };
+
+  paymentsDataMix = {
+    chartType: 'doughnut',
+    title: 'Vessels',
+    datasets: [{
+      label: 'Bar chart',
+      data: [20, 40, 60, 80],
+      backgroundColor: [
+        '#F4992D',
+        '#F0525C',
+        '#D3DAEE',
+        '#74F080'
+      ]
+    }]
   };
 
   constructor() { }

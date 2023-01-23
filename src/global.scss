@@ -74,6 +74,16 @@ ion-modal.my-own-class {
   src: url('./assets/fonts/PPGatwick-Bold.otf');
 }
 
+.content-skyblue-bg{
+  --background: var(--ikan_skyblue_100);
+}
+
+.truncate-text {
+  white-space: nowrap; 
+  overflow: hidden;
+  text-overflow: ellipsis; 
+}
+
 .sky-blue-bg{
   background-color: var(--ikan_skyblue_100);
 }

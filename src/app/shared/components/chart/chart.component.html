@@ -1,3 +1,14 @@
-<div>
-  <canvas [height]="chartHeight"  [id]="chartId" >{{ chart }}</canvas>
+<div class="chart"> 
+  <canvas [height]="chartHeight"  [id]="chartId" >{{ chart }}</canvas>  
+  <div 
+  *ngIf="centerText || centerIcon" 
+  [ngClass]="{
+    'blue': centerValueColor === 'blue',
+    'white': centerValueColor === 'white'
+  }" 
+  class="center-container"
+  >
+    <p *ngIf="centerText">{{centerText}}</p>
+    <ion-icon *ngIf="centerIcon" [name]="centerIcon"></ion-icon>
+  </div>
 </div>

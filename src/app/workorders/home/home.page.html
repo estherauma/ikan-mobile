@@ -1,13 +1,66 @@
-<app-header [pageTitle]="pageTitle">
+<app-header [isLightBlueBg]="true" [pageTitle]="">
 
 </app-header>
 
-<ion-content>
-  <app-search [searchDataSet]="workOrders" (searchResult)="searchResult($event)"></app-search>
-  <app-workordercard *ngFor="let wo of workOrders" [wo]="wo" ></app-workordercard>
-  <ion-fab vertical="bottom" horizontal="end" slot="fixed">
-    <ion-fab-button (click)="createWorkOrder()">
-      <ion-icon name="add-circle-outline"></ion-icon>
-    </ion-fab-button>
-  </ion-fab>
+<ion-content class="content-skyblue-bg">
+  <div class="ion-padding">
+    <ion-grid class="ion-margin-bottom">
+      <ion-row class="ion-justify-content-between ion-align-items-baseline">
+        <ion-col>
+          <img src="/assets/icon/workorders_blue.svg" width="20" height="40" />
+        </ion-col>
+        <ion-col>
+          <ion-row class="ion-justify-content-end">
+            <div>
+              <app-button (onClick)="createWorkOrder()" iconName="add-outline" title="New"></app-button>
+            </div>
+          </ion-row>
+        </ion-col>
+      </ion-row>
+      <ion-row class="ion-padding-bottom title">
+        <app-title [isBlue]="true" [title]="pageTitle" [subScript]="'(' + workOrders.length + ')'"></app-title>
+      </ion-row>
+    </ion-grid>
+    <div class="ion-margin-top">
+      <app-search [searchDataSet]="workOrders" (searchResult)="searchResult($event)"></app-search>
+      <ion-grid>
+        <ion-row>
+          <ion-text class="filter-title">Filter</ion-text>
+        </ion-row>
+        <ion-row>
+          <ion-col>
+            <app-filter type="deep-blue-90" filterProperty="status" [options]="filterOptions"
+              [filterDataSet]="workOrders" (filterResult)="filterResult($event)"></app-filter>
+          </ion-col>
+
+          <ion-col>
+            <app-filter type="deep-blue-90" filterProperty="status" [options]="filterOptions"
+              [filterDataSet]="workOrders" (filterResult)="filterResult($event)"></app-filter>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+    </div>
+
+    <div *ngIf="select">
+      <ion-row *ngFor="let wo of workOrders" class="ion-align-items-center">
+        <ion-checkbox></ion-checkbox>
+        <app-workordercard [wo]="wo"></app-workordercard>
+      </ion-row>
+    </div>
+    <div *ngIf="!select">
+      <app-workordercard *ngFor="let wo of workOrders" [wo]="wo"></app-workordercard>
+    </div>
+
+  </div>
 </ion-content>
+<div class="bottom-element">
+  <div *ngIf="!select" (click)="onSelect()">
+    {{selectText}}
+  </div>
+  <div *ngIf="select" (click)="onCancel()">
+    {{cancelText}}
+  </div>
+  <div>
+    <ion-icon name="ellipsis-vertical-outline" size="large"></ion-icon>
+  </div>
+</div>
