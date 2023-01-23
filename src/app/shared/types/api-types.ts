@@ -75,6 +75,7 @@ export enum StorageKeys {
   isFirstLogin = 'isFirstLogin',
   authData = 'authData',
   userData = 'userData',
+  apiTokenExpiry = 'apiTokenExpiry'
 }
 
 export interface UserData{
@@ -84,6 +85,7 @@ export interface UserData{
   lastName: string;
   isAdmin: string;
   role: UserRole;
+  tokenExpiry: string;
 }
 export interface LoginSuccessReponse {
   status: string;

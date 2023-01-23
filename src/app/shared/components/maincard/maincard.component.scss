@@ -1,0 +1,41 @@
+ion-card{
+    border-radius: 20px;
+}
+
+.circle{
+    border-radius: 50px;
+}
+
+.content{
+    display: flex;
+}
+
+.flex-row{
+    flex-direction: row !important;
+}
+
+.flex-col{
+    flex-direction: column !important;
+}
+
+.ml{
+    margin-left: 8px;
+}
+
+.mr{
+    margin-right: 8px;
+}
+
+.mb{
+    margin-bottom: 8px;
+}
+
+.image{
+    height: 60px;
+    width: 60px;
+}
+
+.small-image{
+    height: 32px;
+    width: 32px;;
+}

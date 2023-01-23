@@ -286,6 +286,10 @@ const routes: Routes = [
     path: 'todo/badgeinfo',
     loadChildren: () => import('./todo/badgeinfo/badgeinfo.module').then( m => m.BadgeinfoPageModule)
   },
+  {
+    path: 'sandbox',
+    loadChildren: () => import('./sandbox/sandbox.module').then( m => m.SandboxPageModule)
+  },
 ];
 
 @NgModule({
