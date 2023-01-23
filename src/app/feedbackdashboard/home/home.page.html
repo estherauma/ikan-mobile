@@ -7,7 +7,7 @@
       <ion-grid>
         <ion-row class="ion-align-items-center">
           <ion-col size="4">
-            <app-chart chartType="doughnut" [chartDatasets]="vercelStats.datasets"></app-chart>
+            <app-chart centerText="55%" chartType="doughnut" [chartDatasets]="vercelStats.datasets"></app-chart>
           </ion-col>
           <ion-col size="8">
             <ion-text>
@@ -42,7 +42,112 @@
       <ion-grid>
         <ion-row class="ion-align-items-center">
           <ion-col size="4">
-            <app-chart chartType="doughnut" [chartDatasets]="recrutersData.datasets"></app-chart>
+            <app-chart centerIcon="thumbs-up-outline" chartType="doughnut" [chartDatasets]="recrutersData.datasets"></app-chart>
+          </ion-col>
+          <ion-col size="8">
+            <ion-text>
+              <h5>Recruiter performance 41%</h5>
+            </ion-text>
+            <br />
+            <ion-text>
+              <p>
+                <ion-icon name="square"></ion-icon> 77%: Core training
+              </p>
+            </ion-text>
+            <ion-text>
+              <p>
+                <ion-icon name="square"></ion-icon> 20%: Additional learning
+              </p>
+            </ion-text>
+            <ion-text>
+              <p>
+                <ion-icon name="square"></ion-icon> 3%: Not completed
+              </p>
+            </ion-text>
+            <br />
+            <ion-text class="ion-center"><a href="">All Payment Info</a></ion-text>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+    </ion-card-content>
+  </ion-card>
+  <ion-card>
+    <ion-card-content>
+      <ion-card-title>Payments</ion-card-title>
+      <ion-grid>
+        <ion-row class="ion-align-items-center">
+          <ion-col size="4">
+            <app-chart chartType="doughnut" [chartDatasets]="paymentsData.datasets"></app-chart>
+          </ion-col>
+          <ion-col size="8">
+            <ion-text>
+              <h5>Recruiter performance 41%</h5>
+            </ion-text>
+            <br />
+            <ion-text>
+              <p>
+                <ion-icon name="square"></ion-icon> 77%: Core training
+              </p>
+            </ion-text>
+            <ion-text>
+              <p>
+                <ion-icon name="square"></ion-icon> 20%: Additional learning
+              </p>
+            </ion-text>
+            <ion-text>
+              <p>
+                <ion-icon name="square"></ion-icon> 3%: Not completed
+              </p>
+            </ion-text>
+            <br />
+            <ion-text class="ion-center"><a href="">All Payment Info</a></ion-text>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+    </ion-card-content>
+  </ion-card>
+  <ion-card class="light">
+    <ion-card-content>
+      <ion-card-title>Payments</ion-card-title>
+      <ion-grid>
+        <ion-row class="ion-align-items-center">
+          <ion-col size="4">
+            <app-chart chartVariant="white" chartType="doughnut" [chartDatasets]="paymentsData.datasets"></app-chart>
+          </ion-col>
+          <ion-col size="8">
+            <ion-text>
+              <h5>Recruiter performance 41%</h5>
+            </ion-text>
+            <br />
+            <ion-text>
+              <p>
+                <ion-icon name="square"></ion-icon> 77%: Core training
+              </p>
+            </ion-text>
+            <ion-text>
+              <p>
+                <ion-icon name="square"></ion-icon> 20%: Additional learning
+              </p>
+            </ion-text>
+            <ion-text>
+              <p>
+                <ion-icon name="square"></ion-icon> 3%: Not completed
+              </p>
+            </ion-text>
+            <br />
+            <ion-text class="ion-center"><a href="">All Payment Info</a></ion-text>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+    </ion-card-content>
+  </ion-card>
+  <ion-card>
+    <ion-card-content>
+      <ion-card-title>Payments</ion-card-title>
+      <ion-grid>
+        <ion-row class="ion-align-items-center">
+          <ion-col size="4">
+            <app-chart [isCustomBgColors]="true" chartType="doughnut" [chartDatasets]="paymentsDataMix.datasets"></app-chart>
           </ion-col>
           <ion-col size="8">
             <ion-text>
@@ -108,15 +213,50 @@
   </ion-card>
   <ion-card>
     <ion-card-content>
-      <ion-card-title>Payments</ion-card-title>
+      <ion-card-title>Training</ion-card-title>
       <ion-grid>
         <ion-row class="ion-align-items-center">
-          <ion-col size="4">
-            <app-chart chartType="doughnut" [chartDatasets]="paymentsData.datasets"></app-chart>
+          <ion-col size="6">
+            <app-chart chartType="bar" [chartHeight]="trainingData.chartHeight" [chartDatasets]="trainingData.datasets" [chartLabels]="trainingData.labels"></app-chart>
           </ion-col>
-          <ion-col size="8">
+          <ion-col size="6">
             <ion-text>
-              <h5>Recruiter performance 41%</h5>
+              <h5>Training completion 62%</h5>
+            </ion-text>
+            <br />
+            <ion-text>
+              <p>
+                <ion-icon name="square"></ion-icon> 77%: Core training
+              </p>
+            </ion-text>
+            <ion-text>
+              <p>
+                <ion-icon name="square"></ion-icon> 20%: Additional learning
+              </p>
+            </ion-text>
+            <ion-text>
+              <p>
+                <ion-icon name="square"></ion-icon> 3%: Not completed
+              </p>
+            </ion-text>
+            <br />
+            <ion-text class="ion-center"><a href="">All Payment Info</a></ion-text>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+    </ion-card-content>
+  </ion-card>
+  <ion-card>
+    <ion-card-content>
+      <ion-card-title>Training</ion-card-title>
+      <ion-grid>
+        <ion-row class="ion-align-items-center">
+          <ion-col size="6">
+            <app-chart indexAxis="y" chartType="bar" [chartHeight]="trainingData.chartHeight" [chartDatasets]="trainingData.datasets" [chartLabels]="trainingData.labels"></app-chart>
+          </ion-col>
+          <ion-col size="6">
+            <ion-text>
+              <h5>Training completion 62%</h5>
             </ion-text>
             <br />
             <ion-text>
