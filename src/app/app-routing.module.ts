@@ -4,60 +4,12 @@ import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
 const routes: Routes = [
   {
     path: '',
-    redirectTo: 'auth/login-method',
+    redirectTo: 'workorders/view',
     pathMatch: 'full'
-  },
-  {
-    path: 'folder/:id',
-    loadChildren: () => import('./folder/folder.module').then( m => m.FolderPageModule)
   },
   {
     path: 'auth/password-reset',
     loadChildren: () => import('./auth/password-reset/password-reset.module').then( m => m.PasswordResetPageModule)
-  },
-  {
-    path: 'login',
-    loadChildren: () => import('./auth/login/login.module').then( m => m.LoginPageModule)
-  },
-  {
-    path: 'baseform',
-    loadChildren: () => import('./shared/components/baseform/baseform.module').then( m => m.BaseformPageModule)
-  },
-  {
-    path: 'workorders/home',
-    loadChildren: () => import('./workorders/home/home.module').then( m => m.HomePageModule)
-  },
-  {
-    path: 'change-language',
-    loadChildren: () => import('./language/language.module').then( m => m.LanguagePageModule)
-  },
-  {
-    path: 'workorders/create',
-    loadChildren: () => import('./workorders/create/create.module').then( m => m.CreatePageModule)
-  },
-  {
-    path: 'workorders/view',
-    loadChildren: () => import('./workorders/view/view.module').then( m => m.ViewPageModule)
-  },
-  {
-    path: 'vessels/home',
-    loadChildren: () => import('./vessels/home/home.module').then( m => m.HomePageModule)
-  },
-  {
-    path: 'vessels/view',
-    loadChildren: () => import('./vessels/view/view.module').then( m => m.ViewPageModule)
-  },
-  {
-    path: 'vessels/create/stepone',
-    loadChildren: () => import('./vessels/create/stepone/stepone.module').then( m => m.SteponePageModule)
-  },
-  {
-    path: 'vessels/create/steptwo',
-    loadChildren: () => import('./vessels/create/steptwo/steptwo.module').then( m => m.SteptwoPageModule)
-  },
-  {
-    path: 'vessels/archived-wo',
-    loadChildren: () => import('./vessels/archived-wo/archived-wo.module').then( m => m.ArchivedWoPageModule)
   },
   {
     path: 'auth/login-method',
@@ -80,6 +32,68 @@ const routes: Routes = [
     loadChildren: () => import('./auth/create-password/create-password.module').then( m => m.CreatePasswordPageModule)
   },
   {
+    path: 'auth/signup',
+    loadChildren: () => import('./auth/signup/signup.module').then( m => m.SignupPageModule)
+  },
+  {
+    path: 'login',
+    loadChildren: () => import('./auth/login/login.module').then( m => m.LoginPageModule)
+  },
+  {
+    path: 'baseform',
+    loadChildren: () => import('./shared/components/baseform/baseform.module').then( m => m.BaseformPageModule)
+  },
+  {
+    path: 'workorders/home',
+    loadChildren: () => import('./workorders/home/home.module').then( m => m.HomePageModule)
+  },
+  {
+    path: 'workorders/create',
+    loadChildren: () => import('./workorders/create/create.module').then( m => m.CreatePageModule)
+  },
+  {
+    path: 'workorders/view',
+    loadChildren: () => import('./workorders/view/view.module').then( m => m.ViewPageModule)
+  },
+  {
+    path: 'workorders/select',
+    loadChildren: () => import('./workorders/select/select.module').then( m => m.SelectPageModule)
+  },
+  {
+    path: 'workorders/clauses',
+    loadChildren: () => import('./workorders/clauses/clauses.module').then( m => m.ClausesPageModule)
+  },
+  {
+    path: 'workorders/send/signatureview',
+    loadChildren: () => import('./workorders/send/signatureview/signatureview.module').then( m => m.SignatureviewPageModule)
+  },
+  {
+    path: 'change-language',
+    loadChildren: () => import('./language/language.module').then( m => m.LanguagePageModule)
+  },
+
+  {
+    path: 'vessels/home',
+    loadChildren: () => import('./vessels/home/home.module').then( m => m.HomePageModule)
+  },
+  {
+    path: 'vessels/view',
+    loadChildren: () => import('./vessels/view/view.module').then( m => m.ViewPageModule)
+  },
+  {
+    path: 'vessels/create/stepone',
+    loadChildren: () => import('./vessels/create/stepone/stepone.module').then( m => m.SteponePageModule)
+  },
+  {
+    path: 'vessels/create/steptwo',
+    loadChildren: () => import('./vessels/create/steptwo/steptwo.module').then( m => m.SteptwoPageModule)
+  },
+  {
+    path: 'vessels/archived-wo',
+    loadChildren: () => import('./vessels/archived-wo/archived-wo.module').then( m => m.ArchivedWoPageModule)
+  },
+
+  {
     path: 'demandletters/home',
     loadChildren: () => import('./demandletters/home/home.module').then( m => m.HomePageModule)
   },
@@ -91,10 +105,7 @@ const routes: Routes = [
     path: 'demandletters/view',
     loadChildren: () => import('./demandletters/view/view.module').then( m => m.ViewPageModule)
   },
-  {
-    path: 'workorders/select',
-    loadChildren: () => import('./workorders/select/select.module').then( m => m.SelectPageModule)
-  },
+
   {
     path: 'demandletters/send',
     loadChildren: () => import('./demandletters/send/send.module').then( m => m.SendPageModule)
@@ -200,24 +211,8 @@ const routes: Routes = [
     loadChildren: () => import('./workers/createdetail/createdetail.module').then( m => m.CreatePageModule)
   },
   {
-    path: 'mydocuments/home',
-    loadChildren: () => import('./mydocuments/home/home.module').then( m => m.HomePageModule)
-  },
-  {
-    path: 'mydocuments/files',
-    loadChildren: () => import('./mydocuments/files/files.module').then( m => m.FilesPageModule)
-  },
-  {
     path: 'worker/profiles',
     loadChildren: () => import('./workers/profiles/worker/worker.module').then( m => m.WorkerPageModule)
-  },
-  {
-    path: 'buyers/home',
-    loadChildren: () => import('./buyers/reporting/home/home.module').then( m => m.HomePageModule)
-  },
-  {
-    path: 'buyers/create',
-    loadChildren: () => import('./buyers/reporting/create/create.module').then( m => m.CreatePageModule)
   },
   {
     path: 'workers/training',
@@ -238,6 +233,30 @@ const routes: Routes = [
   {
     path: 'workers/notecreate',
     loadChildren: () => import('./workers/training/notecreate/notecreate.module').then( m => m.NotecreatePageModule)
+  },
+  {
+    path: 'buyers/home',
+    loadChildren: () => import('./buyers/reporting/home/home.module').then( m => m.HomePageModule)
+  },
+  {
+    path: 'buyers/create',
+    loadChildren: () => import('./buyers/reporting/create/create.module').then( m => m.CreatePageModule)
+  },
+  {
+    path: 'mydocuments/home',
+    loadChildren: () => import('./mydocuments/home/home.module').then( m => m.HomePageModule)
+  },
+  {
+    path: 'mydocuments/files',
+    loadChildren: () => import('./mydocuments/files/files.module').then( m => m.FilesPageModule)
+  },
+  {
+    path: 'mydocuments/createpassport',
+    loadChildren: () => import('./mydocuments/createpassport/createpassport.module').then( m => m.CreatepassportPageModule)
+  },
+  {
+    path: 'mydocuments/details',
+    loadChildren: () => import('./mydocuments/details/details.module').then( m => m.DetailsPageModule)
   },
   {
     path: 'todo/home',
@@ -266,26 +285,6 @@ const routes: Routes = [
   {
     path: 'todo/badgeinfo',
     loadChildren: () => import('./todo/badgeinfo/badgeinfo.module').then( m => m.BadgeinfoPageModule)
-  },
-  {
-    path: 'mydocuments/createpassport',
-    loadChildren: () => import('./mydocuments/createpassport/createpassport.module').then( m => m.CreatepassportPageModule)
-  },
-  {
-    path: 'mydocuments/details',
-    loadChildren: () => import('./mydocuments/details/details.module').then( m => m.DetailsPageModule)
-  },
-  {
-    path: 'workorders/clauses',
-    loadChildren: () => import('./workorders/clauses/clauses.module').then( m => m.ClausesPageModule)
-  },
-  {
-    path: 'workorders/send/signatureview',
-    loadChildren: () => import('./workorders/send/signatureview/signatureview.module').then( m => m.SignatureviewPageModule)
-  },
-  {
-    path: 'auth/signup',
-    loadChildren: () => import('./auth/signup/signup.module').then( m => m.SignupPageModule)
   },
 ];
 
