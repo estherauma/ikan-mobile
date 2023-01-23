@@ -11,6 +11,8 @@ export class TitleComponent implements OnInit {
  @Input() color = '';
  @Input() type: 'blue' | '' = '';
  @Input() isBlue = false;
+ @Input() isSmall = false;
+ @Input() isBig = false;
   constructor() { }
 
   ngOnInit() {}

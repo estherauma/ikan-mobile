@@ -24,6 +24,8 @@ import { NotificationcardComponent } from './components/notificationcard/notific
 import { AttachmentComponent } from './components/attachment/attachment.component';
 import { BadgeComponent } from './components/badge/badge.component';
 import { GenericmodalComponent } from './components/genericmodal/genericmodal.component';
+import { MaincardComponent } from './components/maincard/maincard.component';
+import { ProgressbarComponent } from './components/progressbar/progressbar.component';
 
 
 @NgModule({
@@ -51,6 +53,8 @@ import { GenericmodalComponent } from './components/genericmodal/genericmodal.co
     AuthbgpaperComponent,
     WorkordercardComponent,
     AgentcardComponent,
+    MaincardComponent,
+    ProgressbarComponent,
     QuestiontitlecardComponent,
     NotificationcardComponent,
     AttachmentComponent,
@@ -75,6 +79,8 @@ import { GenericmodalComponent } from './components/genericmodal/genericmodal.co
     AuthbgpaperComponent,
     WorkordercardComponent,
     AgentcardComponent,
+    MaincardComponent,
+    ProgressbarComponent,
     QuestiontitlecardComponent,
     NotificationcardComponent,
     AttachmentComponent,
