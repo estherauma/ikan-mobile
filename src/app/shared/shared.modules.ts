@@ -23,6 +23,7 @@ import { QuestiontitlecardComponent } from './components/questiontitlecard/quest
 import { NotificationcardComponent } from './components/notificationcard/notificationcard.component';
 import { AttachmentComponent } from './components/attachment/attachment.component';
 import { BadgeComponent } from './components/badge/badge.component';
+import { GenericmodalComponent } from './components/genericmodal/genericmodal.component';
 
 
 @NgModule({
@@ -54,6 +55,7 @@ import { BadgeComponent } from './components/badge/badge.component';
     NotificationcardComponent,
     AttachmentComponent,
     BadgeComponent,
+    GenericmodalComponent,
   ],
   exports: [
     FormComponent,
@@ -77,6 +79,7 @@ import { BadgeComponent } from './components/badge/badge.component';
     NotificationcardComponent,
     AttachmentComponent,
     BadgeComponent,
+    GenericmodalComponent,
   ]
 })
 
