@@ -23,6 +23,8 @@ import { QuestiontitlecardComponent } from './components/questiontitlecard/quest
 import { NotificationcardComponent } from './components/notificationcard/notificationcard.component';
 import { AttachmentComponent } from './components/attachment/attachment.component';
 import { BadgeComponent } from './components/badge/badge.component';
+import { MaincardComponent } from './components/maincard/maincard.component';
+import { ProgressbarComponent } from './components/progressbar/progressbar.component';
 
 
 @NgModule({
@@ -50,6 +52,8 @@ import { BadgeComponent } from './components/badge/badge.component';
     AuthbgpaperComponent,
     WorkordercardComponent,
     AgentcardComponent,
+    MaincardComponent,
+    ProgressbarComponent,
     QuestiontitlecardComponent,
     NotificationcardComponent,
     AttachmentComponent,
@@ -73,6 +77,8 @@ import { BadgeComponent } from './components/badge/badge.component';
     AuthbgpaperComponent,
     WorkordercardComponent,
     AgentcardComponent,
+    MaincardComponent,
+    ProgressbarComponent,
     QuestiontitlecardComponent,
     NotificationcardComponent,
     AttachmentComponent,
