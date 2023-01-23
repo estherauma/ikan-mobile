@@ -26,14 +26,14 @@ export class LoginPage extends BaseformPage implements OnInit {
     public sharedMethods: SharedmethodsService,
     public router: Router,
     public authService: AuthService,
-    // public dbService: DBService
+    public dbService: DBService
   ) {
     super(contentService);
     const pageData = this.contentService.getLoginPageData();
     this.formQuestions = pageData.formQuestions;
     this.pageTitle = pageData?.pageTitle;
     this.formQuestions.forEach((entry) => {
-      this.group[entry.key] = new FormControl('asdfasldfjlasdjfsad', [Validators.required]);
+      this.group[entry.key] = new FormControl('', [Validators.required]);
     });
     this.pageFormGroup = new FormGroup(this.group);
   }
