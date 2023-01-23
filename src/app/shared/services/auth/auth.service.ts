@@ -25,7 +25,7 @@ export class AuthService {
     }
   }
 
-  checkTokenExpiry() { }
-
-  logoutWithExpiredToken() { }
+  decodeAccessToken(accessToken) {
+    return JSON.parse(window.atob(accessToken.split('.')[1]));
+  }
 }

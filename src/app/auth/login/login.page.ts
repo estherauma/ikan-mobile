@@ -50,10 +50,6 @@ export class LoginPage extends BaseformPage implements OnInit {
   setUpForm(): void {}
 
   async onSubmit(formData) {
-    formData = {
-      email: 'samsonkapeyi@50eight.com',
-      password: 'Admin@!23'
-    };
     this.sharedMethods.showLoader(this.contentService.commonText?.loadingText);
     const response = await this.apiServices.post('accounts/login/', formData);
     response.subscribe(
@@ -62,7 +58,8 @@ export class LoginPage extends BaseformPage implements OnInit {
           this.pageFormGroup.reset();
           await this.sharedMethods.saveDataToStorage(StorageKeys.apiToken, res.data.token);
           await this.sharedMethods.saveDataToStorage(StorageKeys.userData, res.data.userData);
-          await this.sharedMethods.saveDataToStorage(StorageKeys.apiTokenExpiry, res.data.userData.tokenExpiry);
+          const decodedToken = this.authService.decodeAccessToken(res.data.token);
+          await this.sharedMethods.saveDataToStorage(StorageKeys.apiTokenExpiry, decodedToken.exp);
           this.sharedMethods.hideLoader();
           this.handleRedirection();
         }
@@ -76,7 +73,6 @@ export class LoginPage extends BaseformPage implements OnInit {
   async handleRedirection() {
     const helpScreens = await this.sharedMethods.readDataFromStorage(StorageKeys.isFirstLogin);
     const user: UserData = await this.sharedMethods.readDataFromStorage(StorageKeys.userData);
-    // TODO: Once we have helpscrens, handle this logic well
     if (!helpScreens) {
       this.router.navigate([this.authService.getCurrentUserBaseUrlFromRole(user.role)]);
     } else {
