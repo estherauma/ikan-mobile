@@ -24,4 +24,8 @@ export class AuthService {
         return '';
     }
   }
+
+  decodeAccessToken(accessToken) {
+    return JSON.parse(window.atob(accessToken.split('.')[1]));
+  }
 }

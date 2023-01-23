@@ -58,11 +58,12 @@ export class LoginPage extends BaseformPage implements OnInit {
           this.pageFormGroup.reset();
           await this.sharedMethods.saveDataToStorage(StorageKeys.apiToken, res.data.token);
           await this.sharedMethods.saveDataToStorage(StorageKeys.userData, res.data.userData);
+          const decodedToken = this.authService.decodeAccessToken(res.data.token);
+          await this.sharedMethods.saveDataToStorage(StorageKeys.apiTokenExpiry, decodedToken.exp);
           this.sharedMethods.hideLoader();
           this.handleRedirection();
         }
-      },
-      (err: HttpErrorResponse) => {
+      }, (err: HttpErrorResponse) => {
         this.sharedMethods.hideLoader();
         this.sharedMethods.showToast(err.error?.detail);
       }
@@ -72,13 +73,10 @@ export class LoginPage extends BaseformPage implements OnInit {
   async handleRedirection() {
     const helpScreens = await this.sharedMethods.readDataFromStorage(StorageKeys.isFirstLogin);
     const user: UserData = await this.sharedMethods.readDataFromStorage(StorageKeys.userData);
-    // TODO: Once we have helpscrens, handle this logic well
     if (!helpScreens) {
-      window.location.reload();
-      // this.router.navigate([this.authService.getCurrentUserBaseUrlFromRole(user.role)]);
+      this.router.navigate([this.authService.getCurrentUserBaseUrlFromRole(user.role)]);
     } else {
-      // this.router.navigate([this.authService.getCurrentUserBaseUrlFromRole(user.role)]);
-      window.location.reload();
+      this.router.navigate([this.authService.getCurrentUserBaseUrlFromRole(user.role)]);
     }
   }
 }

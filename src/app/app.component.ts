@@ -48,14 +48,25 @@ export class AppComponent implements OnInit, OnDestroy {
       .then(async(value) => {
         if (value != null) {
           const user: UserData = await this.sharedMethods.readDataFromStorage(StorageKeys.userData);
-          this.router.navigate([this.authService.getCurrentUserBaseUrlFromRole(user.role)]);
+          const now = new Date().toUTCString();
+          const tokenExpiry = await this.sharedMethods.readDataFromStorage(StorageKeys.apiTokenExpiry);
+          // For testing. Manually set token expiry date to 1st Jan 2021
+          // const tokenExpiry = 1609459200;
+          const tokenExpiryDateTime = new Date(0);
+          tokenExpiryDateTime.setUTCSeconds(tokenExpiry);
+          if ( tokenExpiryDateTime < new Date(now)) {
+            this.logOut();
+          } else {
+            this.router.navigate([this.authService.getCurrentUserBaseUrlFromRole(user.role)]);
+          }
         }
       });
   }
 
   logOut() {
     Preferences.remove({ key: StorageKeys.apiToken });
-    this.checkLoginStatus();
+    Preferences.remove({ key: StorageKeys.apiTokenExpiry });
+    this.router.navigate(['/login']);
   }
 
   async logOutWithExpiredToken(tokenExpiryDateInUTCSeconds) {
@@ -71,6 +82,7 @@ export class AppComponent implements OnInit, OnDestroy {
   onClick(index) {
     if (this.appPages[index].url === '/logout') {
       Preferences.remove({ key: StorageKeys.apiToken });
+      Preferences.remove({ key: StorageKeys.apiTokenExpiry });
       this.router.navigate(['']);
     } else {
       this.router.navigate([this.appPages[index].url], { replaceUrl: true });
