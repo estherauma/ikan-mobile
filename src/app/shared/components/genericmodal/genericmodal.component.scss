@@ -33,7 +33,8 @@
 .header{
     width: 100%;
     display: flex;
-    justify-content: space-around;
+    justify-content: space-between;
+    align-items: center;
     .title-container{
         flex: 1;
     }
