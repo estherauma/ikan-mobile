@@ -25,6 +25,7 @@ import { AttachmentComponent } from './components/attachment/attachment.componen
 import { BadgeComponent } from './components/badge/badge.component';
 import { MaincardComponent } from './components/maincard/maincard.component';
 import { ProgressbarComponent } from './components/progressbar/progressbar.component';
+import { PaymentssummarycardComponent } from './components/paymentssummarycard/paymentssummarycard.component';
 
 
 @NgModule({
@@ -58,6 +59,7 @@ import { ProgressbarComponent } from './components/progressbar/progressbar.compo
     NotificationcardComponent,
     AttachmentComponent,
     BadgeComponent,
+    PaymentssummarycardComponent
   ],
   exports: [
     FormComponent,
@@ -83,6 +85,7 @@ import { ProgressbarComponent } from './components/progressbar/progressbar.compo
     NotificationcardComponent,
     AttachmentComponent,
     BadgeComponent,
+    PaymentssummarycardComponent,
   ]
 })
 
