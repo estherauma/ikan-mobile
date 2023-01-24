@@ -27,6 +27,7 @@ android {
           firebaseAppDistribution {
               releaseNotes="Adds more UI screens to the application"
               serviceCredentialsFile="google-application-credentials.json"
+              groups="scrum"
           }
         }
     }
