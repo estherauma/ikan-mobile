@@ -1,5 +1,6 @@
 .title{
     color: var(--ikan_blue_100);
+    text-align: center;
 }
 
 .modal-container{
@@ -27,4 +28,18 @@
     display: flex;
     align-items: center;
     justify-content: center;
+}
+
+.header{
+    width: 100%;
+    display: flex;
+    justify-content: space-around;
+    .title-container{
+        flex: 1;
+    }
+}
+
+.cancel-img{
+    width: 18px;
+    height: 18px;
 }
