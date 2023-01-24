@@ -2,5 +2,12 @@
   <h4 class="title">{{title}}</h4>
   <p *ngIf="textContent" class="text-center">{{textContent}}</p>
   <ng-content></ng-content>
-  <app-button *ngIf="isConfirm" (onClick)="onOk()" title="ok"></app-button>
+  <div class="modal-buttons-cancel-ok" [ngClass]="{'modal-buttons-confirm': isConfirm}">
+    <div class="button" *ngIf="isConfirm || isOk">
+      <app-button (onClick)="onOk()" title="ok"></app-button>
+    </div>
+    <div class="button" *ngIf="isConfirm || isCancel">
+      <app-button (onClick)="onCanceled()" title="cancel"></app-button>
+    </div>
+  </div>
 </div>
