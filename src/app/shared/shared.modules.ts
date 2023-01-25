@@ -26,6 +26,7 @@ import { BadgeComponent } from './components/badge/badge.component';
 import { GenericmodalComponent } from './components/genericmodal/genericmodal.component';
 import { MaincardComponent } from './components/maincard/maincard.component';
 import { ProgressbarComponent } from './components/progressbar/progressbar.component';
+import { UsercontractcardComponent } from './components/usercontractcard/usercontractcard.component';
 
 
 @NgModule({
@@ -60,6 +61,7 @@ import { ProgressbarComponent } from './components/progressbar/progressbar.compo
     AttachmentComponent,
     BadgeComponent,
     GenericmodalComponent,
+    UsercontractcardComponent,
   ],
   exports: [
     FormComponent,
@@ -86,6 +88,7 @@ import { ProgressbarComponent } from './components/progressbar/progressbar.compo
     AttachmentComponent,
     BadgeComponent,
     GenericmodalComponent,
+    UsercontractcardComponent,
   ]
 })
 

@@ -1,0 +1,23 @@
+<ion-card class="card-body">
+  <div  class="card-content">
+    <div class="card-image-section">
+      <div>
+        <img class="icon" src="/assets/icon/Contract.svg" />
+      </div>
+      <div 
+      class="avatar"
+      [ngStyle]="{'background': 'url(' + imgUrl + ') no-repeat 0 0 / cover'}"
+      ></div>
+    </div>
+    <div class="card-section" [ngClass]="{'light-bg': isLight}">
+      <div class="ion-padding ion-margin-vertical content-wrapper">
+        <ion-card-title class="blue-dark">{{title}}</ion-card-title>
+        <div>
+          <ion-label><ion-text class="gray-text">App Ref: </ion-text> <ion-text class="blue-text">{{appRef}}</ion-text></ion-label> <br>
+        </div>
+        <ion-label><ion-text class="gray-text">Created:: </ion-text> <ion-text class="blue-text">{{dateOpened}}</ion-text></ion-label> <br>
+        <ion-label><ion-text class="gray-text">Status: </ion-text> <ion-text class="blue-text">{{status}}</ion-text></ion-label> <br>
+      </div>
+    </div>
+  </div>
+</ion-card>
