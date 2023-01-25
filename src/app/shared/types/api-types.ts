@@ -105,3 +105,13 @@ export enum UserRole {
   worker = 'worker',
   buyer = 'buyer'
 }
+
+export interface Blameable {
+  id: number;
+  onlineRef: string;
+  createdAt: string;
+  updatedAt: string;
+  createdBy: number;
+  updatedBy: number;
+  lastSyncedAt: string;
+}
