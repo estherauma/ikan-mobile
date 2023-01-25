@@ -23,6 +23,7 @@ import { QuestiontitlecardComponent } from './components/questiontitlecard/quest
 import { NotificationcardComponent } from './components/notificationcard/notificationcard.component';
 import { AttachmentComponent } from './components/attachment/attachment.component';
 import { BadgeComponent } from './components/badge/badge.component';
+import { GenericmodalComponent } from './components/genericmodal/genericmodal.component';
 import { MaincardComponent } from './components/maincard/maincard.component';
 import { ProgressbarComponent } from './components/progressbar/progressbar.component';
 
@@ -58,6 +59,7 @@ import { ProgressbarComponent } from './components/progressbar/progressbar.compo
     NotificationcardComponent,
     AttachmentComponent,
     BadgeComponent,
+    GenericmodalComponent,
   ],
   exports: [
     FormComponent,
@@ -83,6 +85,7 @@ import { ProgressbarComponent } from './components/progressbar/progressbar.compo
     NotificationcardComponent,
     AttachmentComponent,
     BadgeComponent,
+    GenericmodalComponent,
   ]
 })
 
