@@ -7,8 +7,8 @@ android {
         applicationId "com.fiftyeight.tuna.dev"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 1
-        versionName "0.0.4"
+        versionCode 005
+        versionName "0.0.5"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         aaptOptions {
              // Files and dirs to omit from the packaged assets dir, modified to accommodate modern web apps.
@@ -25,8 +25,9 @@ android {
           minifyEnabled false
           debuggable true
           firebaseAppDistribution {
-              releaseNotes="Adds more UI screens to the application"
+              releaseNotes="Change branches to publish to firebase"
               serviceCredentialsFile="google-application-credentials.json"
+              groups="scrum"
           }
         }
     }

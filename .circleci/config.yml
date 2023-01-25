@@ -106,16 +106,22 @@ workflows:
           filters:
             branches:
               ignore:
+                - dev
                 - staging
                 - main
 
+  # All pushes to any branch are going to result into apks being pushed to firebase for testing.
+  # Ignoring staging and main because we'd have already tested on the feature branches and on dev
+  # TODO: Revert this later when we don't need a lot of testing to happen
   build-test-generate-release-firebase-apk:
     jobs:
       - build-and-release-apk:
           filters:
             branches:
               only:
+                - dev
                 - staging
                 - main
-              ignore:
-                - dev
+              # ignore:
+              #   - staging
+              #   - main
