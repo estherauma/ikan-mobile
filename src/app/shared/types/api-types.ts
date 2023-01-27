@@ -105,3 +105,10 @@ export enum UserRole {
   worker = 'worker',
   buyer = 'buyer'
 }
+
+export type TPaymentStatus = 'default' | 'warning' | 'success' | 'failed';
+export interface IPaymentsSummary {
+  amount: string;
+  status: TPaymentStatus;
+  text: string;
+}
