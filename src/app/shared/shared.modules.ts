@@ -26,6 +26,7 @@ import { BadgeComponent } from './components/badge/badge.component';
 import { GenericmodalComponent } from './components/genericmodal/genericmodal.component';
 import { MaincardComponent } from './components/maincard/maincard.component';
 import { ProgressbarComponent } from './components/progressbar/progressbar.component';
+import { VesselownercardComponent } from './components/vesselownercard/vesselownercard.component';
 import { PaymentssummarycardComponent } from './components/paymentssummarycard/paymentssummarycard.component';
 
 
@@ -60,6 +61,7 @@ import { PaymentssummarycardComponent } from './components/paymentssummarycard/p
     NotificationcardComponent,
     AttachmentComponent,
     BadgeComponent,
+    VesselownercardComponent,
     PaymentssummarycardComponent,
     GenericmodalComponent,
   ],
@@ -87,6 +89,7 @@ import { PaymentssummarycardComponent } from './components/paymentssummarycard/p
     NotificationcardComponent,
     AttachmentComponent,
     BadgeComponent,
+    VesselownercardComponent,
     PaymentssummarycardComponent,
     GenericmodalComponent,
   ]
