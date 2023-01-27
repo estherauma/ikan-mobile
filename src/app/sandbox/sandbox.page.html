@@ -1,6 +1,26 @@
 <app-header></app-header>
 
 <ion-content>
+  <div class="ion-padding">
+    <p>document card</p>
+    <app-documentupload
+    imgUrl="/assets/imgs/auth_background.png"
+    type="upload"
+    ></app-documentupload>
+    <app-documentupload
+    [isTransparent]="true"
+    imgUrl="/assets/imgs/auth_background.png"
+    ></app-documentupload>
+    <app-documentupload
+    [isTransparent]="true"
+    imgUrl="/assets/imgs/auth_background.png"
+    variant="solid"
+    ></app-documentupload>
+    <app-documentupload
+    type="upload"
+    [isTransparent]="true"
+    ></app-documentupload>
+  </div>
 <div class="ion-padding">
   <app-maincard imagePosition="left" imageShape="circle" imageUrl="/assets/icon/image_placeholder.svg" title="small" text="small line of supporting text" cardTitleSize="small"></app-maincard>
   <app-maincard imagePosition="top" imageUrl="/assets/icon/image_placeholder.svg" title="medium" text="medium line of supporting text" ></app-maincard>
