@@ -113,5 +113,4 @@ export interface Blameable {
   updatedAt: string;
   createdBy: number;
   updatedBy: number;
-  lastSyncedAt: string;
 }
