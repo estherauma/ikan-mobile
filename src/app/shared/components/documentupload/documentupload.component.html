@@ -7,12 +7,12 @@
         [ngStyle]="{'background': 'url(' + imgUrl + ') no-repeat 0 0 / cover'}"
         ></div></ion-col>
       <ion-col size="9" *ngIf="type === 'upload'">
-        <div class="icon-name-container"><ion-text><ion-icon name="add"></ion-icon>Add(Document Name)</ion-text></div>
+        <div class="icon-name-container"><ion-text><ion-icon name="add"></ion-icon>Add({{name}})</ion-text></div>
       </ion-col>
       <ion-col *ngIf="type === 'display'">
         <div>
-          <ion-text [ngClass]="{'blue-color': variant === 'solid'}">(Document Name)</ion-text><br/>
-          <ion-text><small class="date">Uploaded xx/xx/xxxx</small></ion-text>
+          <ion-text [ngClass]="{'blue-color': variant === 'solid'}">({{name}})</ion-text><br/>
+          <ion-text><small class="date">Uploaded {{uploadedDate}}</small></ion-text>
         </div>
       </ion-col>
     </ion-row>
