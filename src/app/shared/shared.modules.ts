@@ -27,6 +27,7 @@ import { GenericmodalComponent } from './components/genericmodal/genericmodal.co
 import { MaincardComponent } from './components/maincard/maincard.component';
 import { ProgressbarComponent } from './components/progressbar/progressbar.component';
 import { VesselownercardComponent } from './components/vesselownercard/vesselownercard.component';
+import { PaymentssummarycardComponent } from './components/paymentssummarycard/paymentssummarycard.component';
 
 
 @NgModule({
@@ -61,6 +62,7 @@ import { VesselownercardComponent } from './components/vesselownercard/vesselown
     AttachmentComponent,
     BadgeComponent,
     VesselownercardComponent,
+    PaymentssummarycardComponent,
     GenericmodalComponent,
   ],
   exports: [
@@ -88,6 +90,7 @@ import { VesselownercardComponent } from './components/vesselownercard/vesselown
     AttachmentComponent,
     BadgeComponent,
     VesselownercardComponent,
+    PaymentssummarycardComponent,
     GenericmodalComponent,
   ]
 })
