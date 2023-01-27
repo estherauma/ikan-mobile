@@ -1,0 +1,40 @@
+<ion-card class="card-body">
+  <div class="card-content">
+    <div class="card-section">
+      <div *ngIf="status" class="status-section">
+        <div class="status-container">
+          <div class="status-wrapper">
+            <span>status</span>
+          </div>
+        </div>
+      </div>
+      <div class="ion-padding ion-margin-vertical card-details">
+        <div class="card-icon-section">
+          <img [src]="iconUrl" />
+        </div>
+        <div>
+          <ion-card-title *ngIf="!isListing" class="blue-text">{{type}}</ion-card-title>
+          <div>
+            <ion-card-title  class="deep-blue-text amount" [ngClass]="{'non-listing-amount': !isListing}">{{amount}}</ion-card-title>
+          </div>
+          <div *ngIf="madeOn">
+            <ion-label><ion-text class="gray-text">Payment made: </ion-text> <ion-text
+                class="deep-blue-text"></ion-text>{{madeOn}}</ion-label> <br>
+          </div>
+          <div *ngIf="confirmedOn">
+            <ion-label><ion-text class="gray-text">Payment confirmed: </ion-text> <ion-text
+                class="deep-blue-text">{{confirmedOn}}</ion-text></ion-label> <br>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="footer gray-text" *ngIf="isConfirmable">
+      <div>
+        <span>Confirm</span>
+      </div>
+      <div>
+        <span>Report</span>
+      </div>
+    </div>
+  </div>
+</ion-card>

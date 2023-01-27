@@ -1,6 +1,29 @@
 <app-header></app-header>
 
 <ion-content>
+  <div class="ion-padding">
+    <p>paymentListings</p>
+    <app-paymentbreakdowncard 
+    *ngFor="let paymentListing of paymentListings"
+    [madeOn]="paymentListing.madeOn"
+    [confirmedOn]="paymentListing.confirmedOn"
+    [amount]="paymentListing.amount"
+    [status]="paymentListing.status"
+  ></app-paymentbreakdowncard>
+  </div>
+
+<div class="ion-padding">
+  <p>payment breakdown</p>
+  <app-paymentbreakdowncard 
+    *ngFor="let paymentBreakdown of paymentBreakdowns"
+    [type]="paymentBreakdown.type"
+    [isConfirmable]="paymentBreakdown.confirmed"
+    [madeOn]="paymentBreakdown.madeOn"
+    [confirmedOn]="paymentBreakdown.confirmedOn"
+    [amount]="paymentBreakdown.amount"
+    [status]="paymentBreakdown.status"
+  ></app-paymentbreakdowncard>
+</div>
 <div class="ion-padding">
   <app-maincard imagePosition="left" imageShape="circle" imageUrl="/assets/icon/image_placeholder.svg" title="small" text="small line of supporting text" cardTitleSize="small"></app-maincard>
   <app-maincard imagePosition="top" imageUrl="/assets/icon/image_placeholder.svg" title="medium" text="medium line of supporting text" ></app-maincard>
