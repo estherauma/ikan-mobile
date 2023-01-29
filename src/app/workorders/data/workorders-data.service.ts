@@ -1,5 +1,9 @@
 import { Injectable } from '@angular/core';
-import { SQLite, SQLiteObject } from '@awesome-cordova-plugins/sqlite';
+// Uncomment when building for native device
+import { SQLite, SQLiteObject } from '@awesome-cordova-plugins/sqlite/ngx';
+
+// import { SQLite } from '@awesome-cordova-plugins/sqlite/ngx';
+// import { SQLiteObject } from 'src/app/shared/services/database/sqlite.mock';
 import { Platform } from '@ionic/angular';
 import { BehaviorSubject } from 'rxjs';
 
@@ -12,7 +16,7 @@ export class WorkordersDataService {
 
   constructor(
     public platform: Platform,
-    public sqlite: SQLite
+    public sqlite: SQLite,
   ) {
     this.platform.ready().then(async() => {
       this.sqlite.create({
@@ -48,7 +52,14 @@ export class WorkordersDataService {
     return this.workOrders.asObservable();
   }
 
-  create(data) {}
+  create(data) {
+    const query = 'INSERT INTO workorders (name, internal_ref, app_ref, created_at,\
+       updated_at, created_by, updated_by) VALUES (?, ?, ?, ?, ?, ?, ?)';
+    const params = [data.name, data.internal_ref, data.app_ref, data.created_at, data.updated_at, data.created_by,data.updated_by];
+    return this.db.executeSql(query, params).then((result) => {
+      this.retriveWorkOrders();
+    }).catch(e => console.log(e));
+  }
 
   async getOne(id) {
     const allWo = await this.getAll().toPromise();
