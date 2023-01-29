@@ -37,6 +37,10 @@ export class CreatePage extends BaseformPage implements OnInit {
 
   async onSubmit(formData) {
     console.log('Form data', formData);
+    const userData = await this.sharedMethods.getUserData();
+    const now = this.sharedMethods.getCurrentDateTime();
+    console.log(userData);
+    // this.workOrdersService.create(formData);
     // TODO: When we set up the datastore, navigate to the WO details page
     // TODO: Localise loading screen.
     this.sharedMethods.showLoader('Saving workorder');
