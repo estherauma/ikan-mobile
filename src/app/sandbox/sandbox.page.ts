@@ -7,24 +7,53 @@ import { IPaymentsSummary } from '../shared/types/api-types';
   styleUrls: ['./sandbox.page.scss'],
 })
 export class SandboxPage implements OnInit {
-  contracts = [
+  paymentBreakdowns: any = [
     {
-      imgUrl: 'assets/imgs/vessel.jpeg',
-      title: 'Budi Surname',
-      contract: 'Taien Company',
-      vessel: 'Vessel Name',
-      dates: 'XX/XX/XXXX',
-      isLight: false,
+      type: 'Bank transfer',
+      madeOn: '30/09/2022',
+      confirmedOn: '',
+      confirmed: true,
+      status: 'confirmed',
+      amount: '$999.0'
     },
     {
-      imgUrl: 'assets/imgs/vessel.jpeg',
-      title: 'Budi Surname',
-      contract: 'Taien Company',
-      vessel: 'Vessel Name',
-      dates: 'XX/XX/XXXX',
-      isLight: true,
+      type: 'Cash',
+      madeOn: '30/09/2022',
+      confirmedOn: '30/09/2022',
+      confirmed: false,
+      status: '',
+      amount: '$999.0',
+    },
+    {
+      type: 'Beneficiary',
+      madeOn: '30/09/2022',
+      confirmedOn: '30/09/2022',
+      confirmed: false,
+      status: '',
+      amount: '$999.0',
+    },
+    {
+      type: 'Bank transfer',
+      madeOn: '30/09/2022',
+      confirmedOn: '',
+      confirmed: false,
+      status: '',
+      amount: '$999.0',
     }
   ];
+  paymentListings: any = [
+    {
+      madeOn: '30/09/2022',
+      confirmedOn: '',
+      status: 'confirmed',
+      amount: '$999.0'
+    },
+    {
+      madeOn: '30/09/2022',
+      confirmedOn: '30/09/2022',
+      status: 'confirmed',
+      amount: '$999.0',
+    }];
   payments: IPaymentsSummary[] = [
     {
       amount: '$123.9',
@@ -48,8 +77,26 @@ export class SandboxPage implements OnInit {
     }
   ];
 
-  constructor() { }
+  contracts = [
+    {
+      imgUrl: 'assets/imgs/vessel.jpeg',
+      title: 'Budi Surname',
+      contract: 'Taien Company',
+      vessel: 'Vessel Name',
+      dates: 'XX/XX/XXXX',
+      isLight: false,
+    },
+    {
+      imgUrl: 'assets/imgs/vessel.jpeg',
+      title: 'Budi Surname',
+      contract: 'Taien Company',
+      vessel: 'Vessel Name',
+      dates: 'XX/XX/XXXX',
+      isLight: true,
+    }
+  ];
 
+  constructor() { }
   ngOnInit() {
   }
 
