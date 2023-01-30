@@ -1,6 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { ModalController } from '@ionic/angular';
 import { SharedmethodsService } from 'src/app/shared/services/sharedmethods/sharedmethods.service';
+import { CreatePage } from '../create/create.page';
+import { AgentsDataService } from '../data/agents-data.service';
 
 @Component({
   selector: 'app-home',
@@ -9,48 +12,16 @@ import { SharedmethodsService } from 'src/app/shared/services/sharedmethods/shar
 })
 export class HomePage implements OnInit {
   pageTitle = 'Manning Agents';
-  agents = [
-    {
-      name: 'Company Name',
-      contact: 'Cici Surname',
-      email: 'surname@emailaddress.com',
-      tel: '+44 789 123 123',
-      addrCountry: 'Uganda',
-      addrZip: '256',
-      addrCounty: 'County',
-      addrTown: 'Name of town',
-      addrBuilding: 'Building name',
-      addrRoad: '123 name of the road'
-    },
-    {
-      name: 'Company Name',
-      contact: 'Cici Surname',
-      email: 'surname@emailaddress.com',
-      tel: '+44 789 123 123',
-      addrCountry: 'Uganda',
-      addrZip: '256',
-      addrCounty: 'County',
-      addrTown: 'Name of town',
-      addrBuilding: 'Building name',
-      addrRoad: '123 name of the road'
-    },
-    {
-      name: 'Company Name',
-      contact: 'Cici Surname',
-      email: 'surname@emailaddress.com',
-      tel: '+44 789 123 123',
-      addrCountry: 'Uganda',
-      addrZip: '256',
-      addrCounty: 'County',
-      addrTown: 'Name of town',
-      addrBuilding: 'Building name',
-      addrRoad: '123 name of the road'
-    }
-  ];
+  agents = [];
   constructor(
     public router: Router,
-    public sharedMethods: SharedmethodsService
-  ) { }
+    public modalCtrl: ModalController,
+    public agentsDataService: AgentsDataService,
+  ) {
+    this.agentsDataService.getAll().subscribe((data) => {
+      this.agents = data;
+    });
+  }
 
   ngOnInit() {
   }
@@ -59,6 +30,15 @@ export class HomePage implements OnInit {
 
   viewDetails(company) {
     this.router.navigate((['agents/details', company]));
+  }
+
+  async createAgent() {
+    const modal = await this.modalCtrl.create({
+      component: CreatePage,
+      cssClass: 'notification-modal'
+    });
+    modal.present();
+    modal.onDidDismiss().then((data) => {});
   }
 
 }

@@ -1,6 +1,22 @@
 <app-header [pageTitle]="pageTitle"></app-header>
 
 <ion-content>
+
+  <ion-grid class="ion-margin-bottom">
+    <ion-row class="ion-justify-content-between ion-align-items-baseline">
+      <ion-col>
+        
+      </ion-col>
+      <ion-col>
+        <ion-row class="ion-justify-content-end">
+          <div>
+            <app-button (onClick)="createAgent()" iconName="add-outline" title="New"></app-button>
+          </div>
+        </ion-row>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+
   <ion-grid class="ion-padding">
     <ion-row class="ion-align-items-center">
       <ion-col size="4">
