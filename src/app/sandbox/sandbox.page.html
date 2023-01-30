@@ -48,4 +48,32 @@
       [contract]="contract.contract" [vessel]="contract.vessel" [dates]="contract.dates" [isLight]="contract.isLight">
     </app-usercontractcard>
   </div>
+
+  <div class="ion-padding">
+    <p>placement offer</p>
+
+    <div>
+      <app-placementoffercard
+      [isFirst]="true"
+      ></app-placementoffercard>
+      <app-placementoffercard></app-placementoffercard>
+      <app-placementoffercard
+      [isLast]="true"
+      ></app-placementoffercard>
+    </div>
+
+    <div>
+      <app-placementoffercard
+      [isFirst]="true"
+      [noMargin]="true"
+      ></app-placementoffercard>
+      <app-placementoffercard
+      [noMargin]="true"></app-placementoffercard>
+      <app-placementoffercard
+      [isLast]="true"
+      [noMargin]="true"
+      ></app-placementoffercard>
+    </div>
+
+  </div>
 </ion-content>
