@@ -106,6 +106,14 @@ export enum UserRole {
   buyer = 'buyer'
 }
 
+export interface Blameable {
+  id: number;
+  onlineRef: string;
+  createdAt: string;
+  updatedAt: string;
+  createdBy: number;
+  updatedBy: number;
+}
 export type TPaymentStatus = 'default' | 'warning' | 'success' | 'failed';
 export interface IPaymentsSummary {
   amount: string;

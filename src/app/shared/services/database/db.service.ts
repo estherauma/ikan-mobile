@@ -88,7 +88,7 @@ export class DBService {
         const migrationQueries = data.split(';');
         migrationQueries.forEach((query) => {
           query = query.replace(/\r?\n|\r/g, '');
-          this.db.executeSql(query)
+          this.db.executeSql(query, [])
           .then(() => {
             // TODO: remove this line. Left for testing purposes
             console.log(`Query " ${query} " executed`);

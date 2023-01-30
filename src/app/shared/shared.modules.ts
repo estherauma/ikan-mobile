@@ -27,6 +27,7 @@ import { GenericmodalComponent } from './components/genericmodal/genericmodal.co
 import { MaincardComponent } from './components/maincard/maincard.component';
 import { ProgressbarComponent } from './components/progressbar/progressbar.component';
 import { ImageselectComponent } from './components/imageselect/imageselect.component';
+import { UsercontractcardComponent } from './components/usercontractcard/usercontractcard.component';
 import { DocumentuploadComponent } from './components/documentupload/documentupload.component';
 import { VesselownercardComponent } from './components/vesselownercard/vesselownercard.component';
 import { PaymentssummarycardComponent } from './components/paymentssummarycard/paymentssummarycard.component';
@@ -67,6 +68,7 @@ import { PaymentssummarycardComponent } from './components/paymentssummarycard/p
     PaymentssummarycardComponent,
     GenericmodalComponent,
     ImageselectComponent,
+    UsercontractcardComponent,
     DocumentuploadComponent,
   ],
   exports: [
@@ -97,6 +99,7 @@ import { PaymentssummarycardComponent } from './components/paymentssummarycard/p
     PaymentssummarycardComponent,
     GenericmodalComponent,
     ImageselectComponent,
+    UsercontractcardComponent,
     DocumentuploadComponent,
   ]
 })
