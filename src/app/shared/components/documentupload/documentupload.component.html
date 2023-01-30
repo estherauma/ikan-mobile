@@ -1,0 +1,20 @@
+<ion-card [ngClass]="{'transparent': isTransparent, 'dotted': variant === 'dotted', 'blue': variant === 'solid'}">
+  <ion-card-content>
+    <ion-row class="ion-align-items-center">
+      <ion-col *ngIf="imgUrl" size="3">
+        <div 
+        class="image-container"
+        [ngStyle]="{'background': 'url(' + imgUrl + ') no-repeat 0 0 / cover'}"
+        ></div></ion-col>
+      <ion-col size="9" *ngIf="type === 'upload'">
+        <div class="icon-name-container"><ion-text><ion-icon name="add"></ion-icon>Add({{name}})</ion-text></div>
+      </ion-col>
+      <ion-col *ngIf="type === 'display'">
+        <div>
+          <ion-text [ngClass]="{'blue-color': variant === 'solid'}">({{name}})</ion-text><br/>
+          <ion-text><small class="date">Uploaded {{uploadedDate}}</small></ion-text>
+        </div>
+      </ion-col>
+    </ion-row>
+  </ion-card-content>
+</ion-card>
