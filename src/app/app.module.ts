@@ -11,8 +11,8 @@ import { SharedModule } from './shared/shared.modules';
 import { HttpClientModule } from '@angular/common/http';
 import { CommonModule } from '@angular/common';
 import { SQLite } from '@awesome-cordova-plugins/sqlite/ngx';
-// This is used to make sqlite work with the browser. REMOVE THIS WHEN BUILDING FOR NATIVE
-// import { SQLiteMock } from './shared/services/database/sqlite.mock';
+// This is used to make sqlite work with the browser.
+import { SQLiteMock } from './shared/services/database/sqlite.mock';
 
 @NgModule({
   declarations: [ AppComponent ],

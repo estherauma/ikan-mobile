@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 // Uncomment when building for native device
 import { SQLite, SQLiteObject } from '@awesome-cordova-plugins/sqlite/ngx';
-
+// Uncomment if you want to test in the browser
 // import { SQLite } from '@awesome-cordova-plugins/sqlite/ngx';
 // import { SQLiteObject } from 'src/app/shared/services/database/sqlite.mock';
 import { Platform } from '@ionic/angular';
@@ -38,8 +38,12 @@ export class WorkordersDataService {
           workOrders.push({
             id: data.rows.item(i).id,
             name: data.rows.item(i).name,
-            description: data.rows.item(i).description,
-            date: data.rows.item(i).date,
+            appRef: data.rows.item(i).app_ref,
+            internalRef: data.rows.item(i).internal_ref,
+            createdAt: data.rows.item(i).created_at,
+            updatedAt: data.rows.item(i).updated_at,
+            createdBy: data.rows.item(i).created_by,
+            updatedBy: data.rows.item(i).updated_by,
             status: data.rows.item(i).status
           });
         }
@@ -52,12 +56,13 @@ export class WorkordersDataService {
     return this.workOrders.asObservable();
   }
 
-  create(data) {
-    const query = 'INSERT INTO workorders (name, internal_ref, app_ref, created_at,\
-       updated_at, created_by, updated_by) VALUES (?, ?, ?, ?, ?, ?, ?)';
-    const params = [data.name, data.internal_ref, data.app_ref, data.created_at, data.updated_at, data.created_by,data.updated_by];
+  async create(data) {
+    const query = 'INSERT INTO workorders (name, internal_ref, app_ref, status, created_at,\
+       updated_at, created_by, updated_by) VALUES (?, ?, ?, ?, ?, ?, ?, ?)';
+    const params = [data.wo_name, data.wo_ref, data.wo_ref, 'Open', data.created_at, data.updated_at, data.created_by,data.updated_by];
     return this.db.executeSql(query, params).then((result) => {
       this.retriveWorkOrders();
+      return result.insertId;
     }).catch(e => console.log(e));
   }
 

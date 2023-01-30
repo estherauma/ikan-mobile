@@ -8,20 +8,33 @@
       <div style="position: relative;">
         <div class="wo-status-container">
           <div class="status-wrapper">
-            <span >status</span>
+            <span >{{wo.status}}</span>
           </div>
         </div>
       </div>
       <div class="ion-padding ion-margin-vertical wo-card-details">
         <ion-card-title class="blue-text truncate-text">{{wo.name}}</ion-card-title>
         <div class="truncate-text">
-          <ion-label><ion-text class="gray-text">Vessel Owner ref: </ion-text> <ion-text  class="blue-text"> {{wo.internalRef}}</ion-text></ion-label> <br><br/>
+          <ion-label>
+            <!-- TODo: Add this after adding vessels -->
+            <!-- <ion-text class="gray-text">Vessel Owner ref: </ion-text> -->
+            <ion-text  class="blue-text"> {{wo.appRef}}</ion-text>
+          </ion-label> <br><br/>
         </div>
         <div class="truncate-text">
-          <ion-label><ion-text class="gray-text">App Ref: </ion-text> <ion-text class="blue-text">{{wo.appRef}}</ion-text></ion-label> <br>
+          <ion-label>
+            <ion-text class="gray-text">App Ref:</ion-text>
+            <ion-text class="blue-text">{{wo.appRef}}</ion-text>
+          </ion-label> <br>
         </div>
-        <ion-label><ion-text class="gray-text">Date Created:: </ion-text> <ion-text class="blue-text">{{wo.dateOpened}}</ion-text></ion-label> <br>
-        <ion-label><ion-text class="gray-text">Status: </ion-text> <ion-text class="blue-text">{{wo.status}}</ion-text></ion-label> <br>
+        <ion-label>
+          <ion-text class="gray-text">Date Created:: </ion-text>
+          <ion-text class="blue-text">{{wo.createdAt}}</ion-text>
+        </ion-label> <br>
+        <ion-label>
+          <ion-text class="gray-text">Status: </ion-text>
+          <ion-text class="blue-text">{{wo.status}}</ion-text>
+        </ion-label> <br>
       </div>
     </div>
   </div>
