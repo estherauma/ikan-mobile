@@ -1,0 +1,42 @@
+ion-card {
+    border-radius: 20px;
+    box-shadow: none !important;
+    font-weight: 600;
+}
+
+.image-container{
+    height: 60px;
+    width: 60px;
+    border-radius: 10px;
+}
+
+.icon-name-container{
+    p {
+        display: flex;
+        align-items: center;
+    }
+}
+
+.transparent{
+    background: transparent;
+}
+
+.dotted {
+    border: 1px dashed #A0ABCC;
+}
+
+.blue{
+    border: 1px solid #3565FF;
+}
+
+.blue-color{
+    border: #3565FF;
+}
+
+h3{
+    font-weight: 600;
+}
+
+.date{
+    color: #191970 !important;
+}

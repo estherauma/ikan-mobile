@@ -27,6 +27,9 @@ import { GenericmodalComponent } from './components/genericmodal/genericmodal.co
 import { MaincardComponent } from './components/maincard/maincard.component';
 import { ProgressbarComponent } from './components/progressbar/progressbar.component';
 import { ImageselectComponent } from './components/imageselect/imageselect.component';
+import { DocumentuploadComponent } from './components/documentupload/documentupload.component';
+import { VesselownercardComponent } from './components/vesselownercard/vesselownercard.component';
+import { PaymentssummarycardComponent } from './components/paymentssummarycard/paymentssummarycard.component';
 
 
 @NgModule({
@@ -60,8 +63,11 @@ import { ImageselectComponent } from './components/imageselect/imageselect.compo
     NotificationcardComponent,
     AttachmentComponent,
     BadgeComponent,
+    VesselownercardComponent,
+    PaymentssummarycardComponent,
     GenericmodalComponent,
     ImageselectComponent,
+    DocumentuploadComponent,
   ],
   exports: [
     FormComponent,
@@ -87,8 +93,11 @@ import { ImageselectComponent } from './components/imageselect/imageselect.compo
     NotificationcardComponent,
     AttachmentComponent,
     BadgeComponent,
+    VesselownercardComponent,
+    PaymentssummarycardComponent,
     GenericmodalComponent,
     ImageselectComponent,
+    DocumentuploadComponent,
   ]
 })
 
