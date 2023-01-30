@@ -53,8 +53,7 @@ export class SandboxPage implements OnInit {
       confirmedOn: '30/09/2022',
       status: 'confirmed',
       amount: '$999.0',
-    }
-  ];
+    }];
   payments: IPaymentsSummary[] = [
     {
       amount: '$123.9',
@@ -75,6 +74,25 @@ export class SandboxPage implements OnInit {
       amount: '$123.9',
       text: 'Name of company paying in',
       status: 'default',
+    }
+  ];
+
+  contracts = [
+    {
+      imgUrl: 'assets/imgs/vessel.jpeg',
+      title: 'Budi Surname',
+      contract: 'Taien Company',
+      vessel: 'Vessel Name',
+      dates: 'XX/XX/XXXX',
+      isLight: false,
+    },
+    {
+      imgUrl: 'assets/imgs/vessel.jpeg',
+      title: 'Budi Surname',
+      contract: 'Taien Company',
+      vessel: 'Vessel Name',
+      dates: 'XX/XX/XXXX',
+      isLight: true,
     }
   ];
 

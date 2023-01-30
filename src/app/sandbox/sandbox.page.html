@@ -42,4 +42,10 @@
         title="medium" text="medium line of supporting text"></app-maincard>
     </div>
   </div>
+  <div>
+    <p>contract cards</p>
+    <app-usercontractcard *ngFor="let contract of contracts" [imgUrl]="contract.imgUrl" [title]="contract.title"
+      [contract]="contract.contract" [vessel]="contract.vessel" [dates]="contract.dates" [isLight]="contract.isLight">
+    </app-usercontractcard>
+  </div>
 </ion-content>

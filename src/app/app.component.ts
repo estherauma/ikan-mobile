@@ -6,6 +6,7 @@ import { SharedmethodsService } from './shared/services/sharedmethods/sharedmeth
 import { StorageKeys, UserData, UserRole } from './shared/types/api-types';
 import { PluginListenerHandle } from '@capacitor/core';
 import { AuthService } from './shared/services/auth/auth.service';
+import { DBService } from './shared/services/database/db.service';
 
 @Component({
   selector: 'app-root',
@@ -20,7 +21,8 @@ export class AppComponent implements OnInit, OnDestroy {
     public contentService: ContentService,
     public sharedMethods: SharedmethodsService,
     public router: Router,
-    public authService: AuthService
+    public authService: AuthService,
+    public dbService: DBService
   ) {
     this.contentService.setUpAppData();
     this.checkLoginStatus();
@@ -58,6 +60,7 @@ export class AppComponent implements OnInit, OnDestroy {
             this.logOut();
           } else {
             this.router.navigate([this.authService.getCurrentUserBaseUrlFromRole(user.role)]);
+            this.router.navigate(['/workers/createdetail']);
           }
         }
       });

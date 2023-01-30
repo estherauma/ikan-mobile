@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { MenuController, ModalController } from '@ionic/angular';
 import { ContentService } from 'src/app/shared/services/content/content.service';
 import { CreatePage } from '../create/create.page';
+import { WorkordersDataService } from '../data/workorders-data.service';
 
 @Component({
   selector: 'app-home',
@@ -13,43 +14,7 @@ export class HomePage implements OnInit {
   select = false;
   //TODO: Use translated text from prismic
   pageTitle = 'Work Orders';
-  workOrders = [
-    {
-      name: 'Work order 1 Work order 1',
-      internalRef: 'IWXDWFIWXDWFIWXDWF',
-      dateOpened: '2022-10-23',
-      status: 'Open',
-      appRef: 'XXX-XXX-XXX',
-    },
-    {
-      name: 'Work order one days',
-      internalRef: 'IJSWER',
-      dateOpened: '2022-10-15',
-      status: 'Close',
-      appRef: 'XXX-XXX-XXX'
-    },
-    {
-      name: 'Work order 3',
-      internalRef: 'IJSWER',
-      dateOpened: '2022-10-10',
-      status: 'Open',
-      appRef: 'XXX-XXX-XXX'
-    },
-    {
-      name: 'Work order 3',
-      internalRef: 'IJSWER',
-      dateOpened: '2022-10-10',
-      status: 'Open',
-      appRef: 'XXX-XXX-XXX'
-    },
-    {
-      name: 'Work order 3',
-      internalRef: 'IJSWER',
-      dateOpened: '2022-10-10',
-      status: 'Open',
-      appRef: 'XXX-XXX-XXX'
-    }
-];
+  workOrders = [];
 
 selectText = '';
 cancelText = '';
@@ -65,7 +30,12 @@ filterOptions = [
     public menuCtrl: MenuController,
     public router: Router,
     public contentService: ContentService,
-    public modalCtrl: ModalController) { }
+    private workOrderService: WorkordersDataService,
+    public modalCtrl: ModalController) {
+      this.workOrderService.getAll().subscribe((data) => {
+        this.workOrders = data;
+      });
+    }
 
   ngOnInit() {
     this.cancelText = this.contentService.commonText?.cancel;

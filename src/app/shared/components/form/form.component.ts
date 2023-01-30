@@ -2,6 +2,8 @@ import { Component, OnInit, Output, EventEmitter, Input } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { ModalController } from '@ionic/angular';
 import { UploadService } from 'src/app/shared/services/upload/upload.service';
+import { CreatePage } from 'src/app/workorders/create/create.page';
+import { ImageselectComponent } from '../imageselect/imageselect.component';
 import { RecordoptionmodalComponent } from '../recordoptionmodal/recordoptionmodal.component';
 
 @Component({
@@ -46,8 +48,20 @@ export class FormComponent implements OnInit {
   }
 
   async takePicture(key) {
-    const picture = await this.uploadService.takePicture();
-    this.selectedImages = {...this.selectedImages, [key]:picture };
+      const modal = await this.modalCtrl.create({
+        component: ImageselectComponent,
+        cssClass: 'notification-modal'
+      });
+      modal.present();
+
+      modal.onDidDismiss().then((data) => {
+        // TODO: Form data is here for processing and saving.
+      });
+
+      // TODO: Add logic for take photo and update form values list
+      // const picture = await this.uploadService.takePicture();
+      // this.selectedImages = {...this.selectedImages, [key]:picture };
+
   }
 
   removeDocument(key) {
