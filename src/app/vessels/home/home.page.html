@@ -1,30 +1,10 @@
-<app-header [pageTitle]="pageTitle"></app-header>
+<app-header [pageTitle]=""></app-header>
 
 <ion-content>
-  <ion-card *ngFor="let vessel of vessels">
-    <img alt="vessel image" src="assets/imgs/vessel.jpeg" />
 
-    <ion-card-content>
-      <ion-grid>
-        <ion-row>
-          <ion-col size="4">
-            <ion-icon name="expand-outline" size="large"></ion-icon>
-            <ion-card-subtitle>{{vessel.type}}</ion-card-subtitle>
-          </ion-col>
-
-          <ion-col size="7">
-            <ion-card-title> {{vessel.name}}</ion-card-title>
-            <ion-card-subtitle><strong>Registration Number: {{vessel.regNo}}</strong></ion-card-subtitle>
-            <ion-card-subtitle><strong>Status: {{vessel.status}}</strong></ion-card-subtitle>
-          </ion-col>
-
-          <ion-col size="1" style="text-align: center; padding-top: 15%" (click)="viewDetails(vessel)">
-            <ion-icon name="chevron-forward-outline" size="large"></ion-icon>
-          </ion-col>
-        </ion-row>
-      </ion-grid>
-    </ion-card-content>
-  </ion-card>
+  <div *ngFor="let vessel of vessels">
+    <app-vesselownercard [vessel]="vessel"></app-vesselownercard>
+  </div>
 
   <ion-fab vertical="bottom" horizontal="end" slot="fixed">
     <ion-fab-button (click)="createVessel()">

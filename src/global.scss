@@ -48,6 +48,32 @@ ion-modal.tuna-modal {
   }
 }
 
+ion-modal.notification-modal {
+  --background: transparent !important;
+  &.bottom {
+    align-items: flex-end;
+  }
+
+  --height: auto;
+
+  .ion-page {
+    position: relative;
+    display: block;
+    contain: content;
+    width: 90%;
+    border-radius: 20px;
+    background-color: #ffffff;
+    left: 50%;
+    transform: translateX(-50%);
+
+    .inner-content {
+      max-height: 80vh;
+      overflow: auto;
+      padding: 10px;
+    }
+  }
+}
+
 .center-in-card {
   text-align: center;
   padding-top: 10%;

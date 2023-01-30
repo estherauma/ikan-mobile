@@ -49,7 +49,7 @@ filterOptions = [
   async createWorkOrder() {
     const modal = await this.modalCtrl.create({
       component: CreatePage,
-      cssClass: 'tuna-modal',
+      cssClass: 'notification-modal'
 
     });
     modal.present();

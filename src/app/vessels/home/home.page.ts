@@ -66,8 +66,4 @@ export class HomePage implements OnInit {
     modal.onDidDismiss().then((data) => {
     });
   }
-
-  viewDetails(vessel) {
-    this.router.navigate(['vessels/view', vessel]);
-  }
 }

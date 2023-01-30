@@ -48,4 +48,8 @@ export class CreatePage extends BaseformPage implements OnInit {
     this.modalCtrl.dismiss();
   }
 
+  async onConfirm() {
+    this.modalCtrl.dismiss();
+  };
+
 }
