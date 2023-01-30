@@ -11,7 +11,7 @@
         <ion-card-subtitle><strong>Internal reference:</strong> {{workOrder.internalRef}}</ion-card-subtitle>
         <ion-card-subtitle>
           <strong>App Ref:</strong> {{workOrder?.appRef}} |
-          <strong>Date Opened</strong> {{workOrder?.dateOpened}} | {{workOrder?.status}}
+          <strong>Date Opened</strong> {{workOrder?.createdAt}} | {{workOrder?.status}}
         </ion-card-subtitle>
       </ion-col>
     </ion-row>
@@ -30,7 +30,7 @@
 
           </ion-col>
           <ion-col size="1" style="text-align: center; padding-top: 15%">
-            <ion-icon 
+            <ion-icon
             name="chevron-forward-outline" size="large"
             (click)="goToClauses(clause)"
             ></ion-icon>

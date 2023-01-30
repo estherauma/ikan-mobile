@@ -82,6 +82,7 @@ export class ViewPage implements OnInit {
     const objectParams = { ...clause };
     this.router.navigate(['/workorders/clauses'], { queryParams: objectParams });
   }
+
   onSubWorkOrder() {
     this.router.navigate(['/workorders/send/signatureview']);
   }

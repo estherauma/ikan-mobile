@@ -114,7 +114,9 @@ export interface Blameable {
   createdBy: number;
   updatedBy: number;
 }
+
 export type TPaymentStatus = 'default' | 'warning' | 'success' | 'failed';
+
 export interface IPaymentsSummary {
   amount: string;
   status: TPaymentStatus;
