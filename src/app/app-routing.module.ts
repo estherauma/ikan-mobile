@@ -175,6 +175,10 @@ const routes: Routes = [
     loadChildren: () => import('./agents/home/home.module').then( m => m.HomePageModule)
   },
   {
+    path: 'agents/create',
+    loadChildren: () => import('./agents/create/create.module').then( m => m.CreatePageModule)
+  },
+  {
     path: 'agents/details',
     loadChildren: () => import('./agents/details/details.module').then( m => m.DetailsPageModule)
   },
