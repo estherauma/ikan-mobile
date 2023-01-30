@@ -44,4 +44,32 @@
     <app-maincard progressBarValue="75" imagePosition="left" imageUrl="/assets/icon/image_placeholder.svg"
       title="medium" text="medium line of supporting text"></app-maincard>
   </div>
+
+  <div class="ion-padding">
+    <p>placement offer</p>
+
+    <div>
+      <app-placementoffercard
+      [isFirst]="true"
+      ></app-placementoffercard>
+      <app-placementoffercard></app-placementoffercard>
+      <app-placementoffercard
+      [isLast]="true"
+      ></app-placementoffercard>
+    </div>
+
+    <div>
+      <app-placementoffercard
+      [isFirst]="true"
+      [noMargin]="true"
+      ></app-placementoffercard>
+      <app-placementoffercard
+      [noMargin]="true"></app-placementoffercard>
+      <app-placementoffercard
+      [isLast]="true"
+      [noMargin]="true"
+      ></app-placementoffercard>
+    </div>
+
+  </div>
 </ion-content>

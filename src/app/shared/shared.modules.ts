@@ -31,6 +31,7 @@ import { UsercontractcardComponent } from './components/usercontractcard/usercon
 import { DocumentuploadComponent } from './components/documentupload/documentupload.component';
 import { VesselownercardComponent } from './components/vesselownercard/vesselownercard.component';
 import { PaymentssummarycardComponent } from './components/paymentssummarycard/paymentssummarycard.component';
+import { PlacementoffercardComponent } from './components/placementoffercard/placementoffercard.component';
 
 
 @NgModule({
@@ -70,6 +71,7 @@ import { PaymentssummarycardComponent } from './components/paymentssummarycard/p
     ImageselectComponent,
     UsercontractcardComponent,
     DocumentuploadComponent,
+    PlacementoffercardComponent,
   ],
   exports: [
     FormComponent,
@@ -101,6 +103,7 @@ import { PaymentssummarycardComponent } from './components/paymentssummarycard/p
     ImageselectComponent,
     UsercontractcardComponent,
     DocumentuploadComponent,
+    PlacementoffercardComponent,
   ]
 })
 
