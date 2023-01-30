@@ -6,10 +6,10 @@
 
 .card-image-section {
     background: #C0EFFF; 
-    width: 32%; 
-    padding: 16px; 
+    width: 25%; 
+    padding-left: 8px !important; 
     display: flex; 
-    justify-content: center; 
+    justify-content: space-around;
     align-items: center;
     height: auto;
 }
@@ -40,10 +40,11 @@
 
 .avatar {
     position: absolute;
-    left: 25%;
-    top: 32%;
-    height: 50px;
-    width: 50px;
+    left: 11%;
+    top: 28.5%;
+    transform: translateX(1rem);
+    height: 53px;
+    width: 53px;
     border-radius: 50px;
     border: 3px solid #80D8FE;
 }
@@ -53,10 +54,19 @@
 }
 
 .icon{
-    width: 32px;
-    height: 36px;
+    padding-right: 16px;
+}
+
+ion-img{
+    --width: 32px;
+    --height: 36px;
+    margin-right: 12px !important;
 }
 
 .light-bg{
     background-color: #EAEDF6; 
+}
+
+.title{
+    font-size: 18px !important;
 }

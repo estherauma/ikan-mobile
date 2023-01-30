@@ -58,7 +58,6 @@ export class AppComponent implements OnInit, OnDestroy {
             this.logOut();
           } else {
             this.router.navigate([this.authService.getCurrentUserBaseUrlFromRole(user.role)]);
-            this.router.navigate(['/sandbox']);
           }
         }
       });

@@ -7,11 +7,11 @@ import { truncateChar } from 'src/app/utils';
   styleUrls: ['./usercontractcard.component.scss'],
 })
 export class UsercontractcardComponent implements OnInit {
-  @Input() imgUrl = 'assets/imgs/vessel.jpeg';
-  @Input() title = truncateChar('title');
-  @Input() appRef = truncateChar('appRef');
-  @Input() dateOpened = truncateChar('dateOpened dateOpened');
-  @Input() status = 'status';
+  @Input() imgUrl = '';
+  @Input() title = '';
+  @Input() contract = '';
+  @Input() vessel = '';
+  @Input() dates = '';
   @Input() isLight = false;
 
   constructor() { }

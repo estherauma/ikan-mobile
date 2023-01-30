@@ -4,9 +4,15 @@
 <div class="ion-padding">
   <div>
     <p>contract cards</p>
-    <app-usercontractcard [isLight]="true">
+    <app-usercontractcard 
+      *ngFor="let contract of contracts"
+      [imgUrl]="contract.imgUrl"
+      [title]="contract.title"
+      [contract]="contract.contract"
+      [vessel]="contract.vessel"
+      [dates]="contract.dates"
+      [isLight]="contract.isLight">
     </app-usercontractcard>
-    <app-usercontractcard></app-usercontractcard>
   </div>
 
   <app-maincard imagePosition="left" imageShape="circle" imageUrl="/assets/icon/image_placeholder.svg" title="small" text="small line of supporting text" cardTitleSize="small"></app-maincard>
