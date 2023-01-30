@@ -26,6 +26,7 @@ import { BadgeComponent } from './components/badge/badge.component';
 import { GenericmodalComponent } from './components/genericmodal/genericmodal.component';
 import { MaincardComponent } from './components/maincard/maincard.component';
 import { ProgressbarComponent } from './components/progressbar/progressbar.component';
+import { ImageselectComponent } from './components/imageselect/imageselect.component';
 import { UsercontractcardComponent } from './components/usercontractcard/usercontractcard.component';
 import { DocumentuploadComponent } from './components/documentupload/documentupload.component';
 import { VesselownercardComponent } from './components/vesselownercard/vesselownercard.component';
@@ -66,6 +67,7 @@ import { PaymentssummarycardComponent } from './components/paymentssummarycard/p
     VesselownercardComponent,
     PaymentssummarycardComponent,
     GenericmodalComponent,
+    ImageselectComponent,
     UsercontractcardComponent,
     DocumentuploadComponent,
   ],
@@ -96,6 +98,7 @@ import { PaymentssummarycardComponent } from './components/paymentssummarycard/p
     VesselownercardComponent,
     PaymentssummarycardComponent,
     GenericmodalComponent,
+    ImageselectComponent,
     UsercontractcardComponent,
     DocumentuploadComponent,
   ]
