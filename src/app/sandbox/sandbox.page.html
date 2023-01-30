@@ -3,32 +3,43 @@
 <ion-content>
   <div class="ion-padding">
     <p>paymentListings</p>
-    <app-paymentbreakdowncard 
-    *ngFor="let paymentListing of paymentListings"
-    [madeOn]="paymentListing.madeOn"
-    [confirmedOn]="paymentListing.confirmedOn"
-    [amount]="paymentListing.amount"
-    [status]="paymentListing.status"
-  ></app-paymentbreakdowncard>
+    <app-paymentbreakdowncard *ngFor="let paymentListing of paymentListings" [madeOn]="paymentListing.madeOn"
+      [confirmedOn]="paymentListing.confirmedOn" [amount]="paymentListing.amount"
+      [status]="paymentListing.status"></app-paymentbreakdowncard>
   </div>
 
-<div class="ion-padding">
-  <p>payment breakdown</p>
-  <app-paymentbreakdowncard 
-    *ngFor="let paymentBreakdown of paymentBreakdowns"
-    [type]="paymentBreakdown.type"
-    [isConfirmable]="paymentBreakdown.confirmed"
-    [madeOn]="paymentBreakdown.madeOn"
-    [confirmedOn]="paymentBreakdown.confirmedOn"
-    [amount]="paymentBreakdown.amount"
-    [status]="paymentBreakdown.status"
-  ></app-paymentbreakdowncard>
-</div>
-<div class="ion-padding">
-  <app-maincard imagePosition="left" imageShape="circle" imageUrl="/assets/icon/image_placeholder.svg" title="small" text="small line of supporting text" cardTitleSize="small"></app-maincard>
-  <app-maincard imagePosition="top" imageUrl="/assets/icon/image_placeholder.svg" title="medium" text="medium line of supporting text" ></app-maincard>
-  <app-maincard  title="big" text="big line of supporting text" cardTitleSize="big"></app-maincard>
-  <app-maincard imageSize="small" imageUrl="/assets/icon/image_placeholder.svg" title="medium" text="small image and medium title" ></app-maincard>
-  <app-maincard progressBarValue="75" imagePosition="left" imageUrl="/assets/icon/image_placeholder.svg" title="medium" text="medium line of supporting text" ></app-maincard>
-</div>
+  <div class="ion-padding">
+    <p>payment breakdown</p>
+    <app-paymentbreakdowncard *ngFor="let paymentBreakdown of paymentBreakdowns" [type]="paymentBreakdown.type"
+      [isConfirmable]="paymentBreakdown.confirmed" [madeOn]="paymentBreakdown.madeOn"
+      [confirmedOn]="paymentBreakdown.confirmedOn" [amount]="paymentBreakdown.amount"
+      [status]="paymentBreakdown.status"></app-paymentbreakdowncard>
+  </div>
+  <p>document card</p>
+  <app-documentupload imgUrl="/assets/imgs/auth_background.png" type="upload"></app-documentupload>
+  <app-documentupload [isTransparent]="true" imgUrl="/assets/imgs/auth_background.png"></app-documentupload>
+  <app-documentupload [isTransparent]="true" imgUrl="/assets/imgs/auth_background.png"
+    variant="solid"></app-documentupload>
+  <app-documentupload type="upload" [isTransparent]="true"></app-documentupload>
+  <div class="ion-padding">
+    <div>
+      <p>payments summary cards</p>
+      <app-paymentssummarycard *ngFor="let payment of payments" [status]="payment.status" [title]="payment.amount"
+        [text]="payment.text">
+      </app-paymentssummarycard>
+    </div>
+
+    <div>
+      <p>app main card</p>
+      <app-maincard imagePosition="left" imageShape="circle" imageUrl="/assets/icon/image_placeholder.svg" title="small"
+        text="small line of supporting text" cardTitleSize="small"></app-maincard>
+      <app-maincard imagePosition="top" imageUrl="/assets/icon/image_placeholder.svg" title="medium"
+        text="medium line of supporting text"></app-maincard>
+      <app-maincard title="big" text="big line of supporting text" cardTitleSize="big"></app-maincard>
+      <app-maincard imageSize="small" imageUrl="/assets/icon/image_placeholder.svg" title="medium"
+        text="small image and medium title"></app-maincard>
+      <app-maincard progressBarValue="75" imagePosition="left" imageUrl="/assets/icon/image_placeholder.svg"
+        title="medium" text="medium line of supporting text"></app-maincard>
+    </div>
+  </div>
 </ion-content>
