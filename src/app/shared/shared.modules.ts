@@ -26,8 +26,13 @@ import { BadgeComponent } from './components/badge/badge.component';
 import { GenericmodalComponent } from './components/genericmodal/genericmodal.component';
 import { MaincardComponent } from './components/maincard/maincard.component';
 import { ProgressbarComponent } from './components/progressbar/progressbar.component';
+import { PaymentbreakdowncardComponent } from './components/paymentbreakdowncard/paymentbreakdowncard.component';
+import { ImageselectComponent } from './components/imageselect/imageselect.component';
+import { UsercontractcardComponent } from './components/usercontractcard/usercontractcard.component';
+import { DocumentuploadComponent } from './components/documentupload/documentupload.component';
 import { VesselownercardComponent } from './components/vesselownercard/vesselownercard.component';
 import { PaymentssummarycardComponent } from './components/paymentssummarycard/paymentssummarycard.component';
+import { PlacementoffercardComponent } from './components/placementoffercard/placementoffercard.component';
 
 
 @NgModule({
@@ -64,6 +69,11 @@ import { PaymentssummarycardComponent } from './components/paymentssummarycard/p
     VesselownercardComponent,
     PaymentssummarycardComponent,
     GenericmodalComponent,
+    PaymentbreakdowncardComponent,
+    ImageselectComponent,
+    UsercontractcardComponent,
+    DocumentuploadComponent,
+    PlacementoffercardComponent,
   ],
   exports: [
     FormComponent,
@@ -92,6 +102,11 @@ import { PaymentssummarycardComponent } from './components/paymentssummarycard/p
     VesselownercardComponent,
     PaymentssummarycardComponent,
     GenericmodalComponent,
+    PaymentbreakdowncardComponent,
+    ImageselectComponent,
+    UsercontractcardComponent,
+    DocumentuploadComponent,
+    PlacementoffercardComponent,
   ]
 })
 
