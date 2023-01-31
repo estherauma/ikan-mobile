@@ -1,0 +1,48 @@
+.workorders-wrapper{
+    background-color: #D3DAEE;
+    border-top-right-radius: 30px;
+    border-top-left-radius: 30px;
+}
+
+.clause-sub-title{
+    padding-left: 20px;
+}
+
+.action-buttons{
+    display: flex;
+    justify-content: space-around;
+}
+
+.sub-title{
+    text-transform: capitalize;
+    color: var(--ikan_darkblue_100);
+    padding-top: 8px;
+    padding-bottom: 8px;
+}
+
+.meta-data{
+    padding: 0px !important;
+    margin: 0px !important;
+    color: var(--ikan_blue_100);
+    span{
+        color: var(--ikan_darkblue_100) !important;
+    }
+}
+
+.done{
+    margin-left: 16px;
+    width: 100px;
+}
+
+.check-section{
+    display: flex;
+    justify-content: space-around;
+    margin-top: 16px;
+    margin-bottom: 16px;
+    ion-checkbox{
+        width: 50px;
+    }
+    ion-label{
+        padding-left: 4px;
+    }
+}
