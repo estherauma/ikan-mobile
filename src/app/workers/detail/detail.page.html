@@ -1,34 +1,25 @@
 <app-header [pageTitle]="pageTitle"></app-header>
 
 <ion-content>
-  <div class="tabContent">
-    <ion-tabs>
-      <ion-tab-bar slot="bottom">
-        <ion-tab-button tab="info">
-          <ion-icon name="person-circle-outline"></ion-icon>
-          <ion-label>info</ion-label>
-        </ion-tab-button>
+  <app-pagetabnavigator 
+  (clickedMenuItem)="onClickedMenu($event)"
+  [active]="activeNavItem"
+  [navItems]="navItems"
+  ></app-pagetabnavigator>
 
-        <ion-tab-button tab="payment">
-          <ion-icon name="wallet-outline"></ion-icon>
-          <ion-label>Payment Info</ion-label>
-        </ion-tab-button>
-
-        <ion-tab-button tab="placement">
-          <ion-icon name="file-tray-stacked-outline"></ion-icon>
-          <ion-label>Placements</ion-label>
-        </ion-tab-button>
-
-        <ion-tab-button tab="docs">
-          <ion-icon name="document-text-outline"></ion-icon>
-          <ion-label>Docs</ion-label>
-        </ion-tab-button>
-
-        <ion-tab-button tab="training">
-          <ion-icon name="stats-chart-outline"></ion-icon>
-          <ion-label>Training Status</ion-label>
-        </ion-tab-button>
-      </ion-tab-bar>
-    </ion-tabs>
+  <div *ngIf="activeNavItem.id === 1">
+    <p>info contents</p>
+  </div>
+  <div *ngIf="activeNavItem.id === 2">
+    <p>payment contents</p>
+  </div>
+  <div *ngIf="activeNavItem.id === 3">
+    <p>placement contents</p>
+  </div>
+  <div *ngIf="activeNavItem.id === 4">
+    <p>documents contents</p>
+  </div>
+  <div *ngIf="activeNavItem.id === 5">
+    <p>training contents</p>
   </div>
 </ion-content>
