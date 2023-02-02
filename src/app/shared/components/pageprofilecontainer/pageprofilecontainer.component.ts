@@ -8,12 +8,13 @@ export type StatusType = 'pending' | 'active';
   styleUrls: ['./pageprofilecontainer.component.scss'],
 })
 export class PageprofilecontainerComponent implements OnInit {
-  @Input() imageUrl = 'https://cdn.pixabay.com/photo/2016/11/30/20/44/computer-1873831_1280.png';
+  @Input() imageUrl = '';
   @Input() navItems = [];
   @Input() active = this.navItems.length && this.navItems[0];
   @Input() status: StatusType = 'pending';
   @Input() title = '';
   @Input() isResendInviteBtn = false;
+  @Input() withinNav = true;
 
   reSendInviteBtnTitle = 'Re-send invite';
 
