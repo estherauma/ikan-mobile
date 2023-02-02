@@ -7,7 +7,7 @@ import { Router } from '@angular/router';
   styleUrls: ['./pagetabnavigator.component.scss'],
 })
 export class PagetabnavigatorComponent implements OnInit {
-  @Input() navItems = [];
+  @Input() navItems: any[] = [];
   @Input() active = this.navItems.length && this.navItems[0];
   @Input() bgType: 'darkblue-bg' | 'transparent' = 'transparent';
   @Input() isLinkNavMethod = false;

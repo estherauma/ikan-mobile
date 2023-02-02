@@ -5,14 +5,40 @@
   (clickedMenuItem)="onClickedMenu($event)"
   [active]="activeNavItem"
   [navItems]="navItems"
-  [status]="profile.status"
-  [title]="profile.name"
+  [status]="workerInfo.status"
+  [title]="workerInfo.name"
   [isResendInviteBtn]="isResendInviteBtn"
   ></app-pageprofilecontainer>
 
-<div class="ion-padding">
+<div class="ion-padding contents">
   <div *ngIf="activeNavItem.id === 1">
-    <p>info contents</p>
+    <div>
+      <div class="text-icon">
+        <div class="icon">
+          <ion-img src="assets/icon/email_blue.svg"></ion-img>
+        </div>
+        <p>{{workerInfo.email}}</p>
+      </div>
+      <div class="text-icon">
+        <div class="icon">
+          <ion-img src="assets/icon/phone_blue.svg"></ion-img>
+        </div>
+        <p>{{workerInfo.phone}}</p>
+      </div>
+      <div class="liner">
+        <div class="icon">
+          <ion-img src="assets/icon/office_blue.svg"></ion-img>
+        </div>
+        <div>
+          <p>{{workerInfo.building}}</p>
+          <p>{{workerInfo.street}}</p>
+          <p>{{workerInfo.county}}</p>
+          <p>{{workerInfo.town}}</p>
+          <p>{{workerInfo.zipCode}}</p>
+          <p>{{workerInfo.country}}</p>
+        </div>
+      </div>
+    </div>
   </div>
   <div *ngIf="activeNavItem.id === 2">
     <p>payment contents</p>

@@ -7,13 +7,10 @@ class="nav-container"
   class="nav-item"
   [ngClass]="{'active' : active.id === navItem.id, 'first-neighbor': firstNeighborId === navItem.id, 'last-neighbor': lastNeighborId === navItem.id, 'left-middle-neighbor': leftMiddleNeighborId === navItem.id, 'right-middle-neighbor': rightMiddleNeighborId === navItem.id}"
   (click)="isLinkNavMethod ? onClickLink(navItem) : onClickedMenuItem(navItem)"
-  style="z-index: 2;"
   >
-    <div>
-      <small class="white-text" [ngClass]="{'blue-text' : active.id === navItem.id}">{{navItem.name}}</small>
-    </div>
+    <ion-img [src]="active.id === navItem.id ? navItem?.activeIcon : navItem?.inActiveIcon"></ion-img>
+    <small class="white-text" [ngClass]="{'blue-text' : active.id === navItem.id}">{{navItem.name}}</small>
   </div>
-  <div style="height: 30px; background-color: #EAEDF6; width: 100vw; z-index: 1; margin-top: -30px; position: relative;">
-    <p>cool days</p>
+  <div class="virtual-bg-holder">
   </div>
 </div>

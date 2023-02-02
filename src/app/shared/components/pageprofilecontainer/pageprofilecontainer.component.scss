@@ -1,9 +1,10 @@
 .main-container{
     background-color: #191970; 
-    height: 380px; 
+    height: 330px; 
     display: flex; 
     flex-direction: column; 
     justify-content:space-between;
+    --border: 0;
 }
 
 .image-container {

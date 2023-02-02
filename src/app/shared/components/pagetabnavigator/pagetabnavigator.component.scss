@@ -6,11 +6,14 @@
     display: flex; 
     justify-content: center; 
     background-color: #3565FF; 
-    height: 70px; border-top-left-radius: 20px; 
+    height: 70px; 
+    border-top-left-radius: 20px; 
     border-top-right-radius: 20px;
     justify-content: center;
     align-items: center;
     padding: 8px;
+    z-index: 2;
+    flex-direction: column;
 }
 
 .nav-container{
@@ -44,6 +47,16 @@
 .last-neighbor{
     border-bottom-right-radius: 20px;
 }
+
 .first-neighbor {
     border-bottom-left-radius: 20px;
+}
+
+.virtual-bg-holder{
+    height: 30px; 
+    background-color: #EAEDF6; 
+    width: 100vw; 
+    z-index: 1; 
+    margin-top: -30px; 
+    position: relative;
 }

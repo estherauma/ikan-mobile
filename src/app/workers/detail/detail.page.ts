@@ -7,17 +7,55 @@ import { StatusType } from 'src/app/shared/components/pageprofilecontainer/pagep
   styleUrls: ['./detail.page.scss'],
 })
 export class DetailPage implements OnInit {
+  iconBase = 'assets/icon';
   navItems = [
-    { name: 'Info', url: 'workers/info', id: 1 },
-    { name: 'Payment', url: 'workers/payment', id: 2  },
-    { name: 'Placement', url: 'workers/placement', id: 3  },
-    { name: 'Documents', url: 'workers/documents', id: 4  },
-    { name: 'Training', url: 'workers/training', id: 5  }
+    {
+      name: 'Info',
+      url: 'workers/info',
+      id: 1,
+      activeIcon:`${this.iconBase}/profile_info_blue.svg` ,
+      inActiveIcon:`${this.iconBase}/profile_info_white.svg`
+    },
+    {
+      name: 'Payment',
+      url: 'workers/payment',
+      id: 2,
+      activeIcon:`${this.iconBase}/single_payment_blue.svg` ,
+      inActiveIcon: `${this.iconBase}/single_payment_white.svg`
+    },
+    {
+      name: 'Placement',
+      url: 'workers/placement',
+      id: 3,
+      activeIcon:`${this.iconBase}/placements_blue.svg` ,
+      inActiveIcon:`${this.iconBase}/placements_white.svg`
+    },
+    {
+      name: 'Documents',
+      url: 'workers/documents',
+      id: 4, activeIcon:`${this.iconBase}/documents_blue.svg` ,
+      inActiveIcon:`${this.iconBase}/documents_white.svg`
+    },
+    {
+      name: 'Training',
+      url: 'workers/training',
+      id: 5,
+      activeIcon:`${this.iconBase}/training_blue.svg` ,
+      inActiveIcon:`${this.iconBase}/training_white.svg`
+    }
   ];
   activeNavItem = this.navItems[0];
   isResendInviteBtn = this.activeNavItem.id === 1;
 
-  profile = {
+  workerInfo = {
+    email:'okumujustine01@gmail.com',
+    phone:'+256781459239',
+    building: 'Building Name',
+    street: '123 Name of Road',
+    town: 'Name of Town',
+    county: 'County',
+    zipCode: 'Zip Code',
+    country: 'Country',
     name: 'Budi Surname',
     status: 'pending' as StatusType
   };
