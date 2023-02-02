@@ -13,6 +13,7 @@ export class TitleComponent implements OnInit {
  @Input() isBlue = false;
  @Input() isSmall = false;
  @Input() isBig = false;
+ @Input() isLightBlue = false;
   constructor() { }
 
   ngOnInit() {}

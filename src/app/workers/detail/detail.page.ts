@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { StatusType } from 'src/app/shared/components/pageprofilecontainer/pageprofilecontainer.component';
 
 @Component({
   selector: 'app-detail',
@@ -13,8 +14,13 @@ export class DetailPage implements OnInit {
     { name: 'Documents', url: 'workers/documents', id: 4  },
     { name: 'Training', url: 'workers/training', id: 5  }
   ];
-  pageTitle = 'Budi Surname';
   activeNavItem = this.navItems[0];
+  isResendInviteBtn = this.activeNavItem.id === 1;
+
+  profile = {
+    name: 'Budi Surname',
+    status: 'pending' as StatusType
+  };
 
   constructor() { }
 
@@ -25,6 +31,11 @@ export class DetailPage implements OnInit {
 
   onClickedMenu(menuItem) {
     this.activeNavItem = menuItem;
+    if (menuItem.id === 1) {
+      this.isResendInviteBtn = true;
+    } else {
+      this.isResendInviteBtn = false;
+    }
   }
 
 }

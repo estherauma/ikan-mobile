@@ -100,6 +100,11 @@ ion-modal.my-own-class {
   src: url('./assets/fonts/PPGatwick-Bold.otf');
 }
 
+@font-face {   
+  font-family: 'interRegular';
+  src: url('./assets/fonts/inter/Inter-Regular.ttf');
+}
+
 .content-skyblue-bg{
   --background: var(--ikan_skyblue_100);
 }
@@ -120,4 +125,8 @@ ion-modal.my-own-class {
 
 .blue-color{
   color: var(--ikan_blue_100);
+}
+
+* {
+  font-family: interRegular;
 }

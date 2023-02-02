@@ -33,3 +33,17 @@
 .transparent-bg{
     background-color: transparent !important;
 }
+
+.left-middle-neighbor{
+    border-bottom-right-radius: 20px;
+}
+.right-middle-neighbor {
+    border-bottom-left-radius: 20px;
+}
+
+.last-neighbor{
+    border-bottom-right-radius: 20px;
+}
+.first-neighbor {
+    border-bottom-left-radius: 20px;
+}

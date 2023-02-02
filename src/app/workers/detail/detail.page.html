@@ -1,12 +1,16 @@
-<app-header [pageTitle]="pageTitle"></app-header>
+<app-header [pageTitle]=""></app-header>
 
 <ion-content>
-  <app-pagetabnavigator 
+  <app-pageprofilecontainer
   (clickedMenuItem)="onClickedMenu($event)"
   [active]="activeNavItem"
   [navItems]="navItems"
-  ></app-pagetabnavigator>
+  [status]="profile.status"
+  [title]="profile.name"
+  [isResendInviteBtn]="isResendInviteBtn"
+  ></app-pageprofilecontainer>
 
+<div class="ion-padding">
   <div *ngIf="activeNavItem.id === 1">
     <p>info contents</p>
   </div>
@@ -22,4 +26,5 @@
   <div *ngIf="activeNavItem.id === 5">
     <p>training contents</p>
   </div>
+</div>
 </ion-content>

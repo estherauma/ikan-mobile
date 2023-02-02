@@ -34,6 +34,7 @@ import { VesselownercardComponent } from './components/vesselownercard/vesselown
 import { PaymentssummarycardComponent } from './components/paymentssummarycard/paymentssummarycard.component';
 import { PlacementoffercardComponent } from './components/placementoffercard/placementoffercard.component';
 import { PagetabnavigatorComponent } from './components/pagetabnavigator/pagetabnavigator.component';
+import { PageprofilecontainerComponent } from './components/pageprofilecontainer/pageprofilecontainer.component';
 
 
 @NgModule({
@@ -76,6 +77,7 @@ import { PagetabnavigatorComponent } from './components/pagetabnavigator/pagetab
     DocumentuploadComponent,
     PlacementoffercardComponent,
     PagetabnavigatorComponent,
+    PageprofilecontainerComponent,
   ],
   exports: [
     FormComponent,
@@ -110,6 +112,7 @@ import { PagetabnavigatorComponent } from './components/pagetabnavigator/pagetab
     DocumentuploadComponent,
     PlacementoffercardComponent,
     PagetabnavigatorComponent,
+    PageprofilecontainerComponent,
   ]
 })
 
