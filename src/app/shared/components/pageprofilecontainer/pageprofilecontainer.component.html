@@ -3,7 +3,7 @@
     <div>
       <div 
       class="profile-image"
-      [ngStyle]="{'background':'url('+ imageUrl +')'}"
+      [ngStyle]="{'background': 'url(' + imageUrl + ') no-repeat 0 0 / cover'}"
       ></div>
       <div class="status-container" [ngClass]="{'pending': status === 'pending', 'active': status === 'active'}">
         <small>{{status}}</small>
