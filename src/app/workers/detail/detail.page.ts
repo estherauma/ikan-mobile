@@ -1,12 +1,16 @@
 import { Component, OnInit } from '@angular/core';
+import { FormControl, Validators, FormGroup } from '@angular/forms';
 import { StatusType } from 'src/app/shared/components/pageprofilecontainer/pageprofilecontainer.component';
+import { ContentService } from 'src/app/shared/services/content/content.service';
+import { BaseformPage } from 'src/app/shared/components/baseform/baseform.page';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-detail',
   templateUrl: './detail.page.html',
   styleUrls: ['./detail.page.scss'],
 })
-export class DetailPage implements OnInit {
+export class DetailPage extends BaseformPage implements OnInit {
   iconBase = 'assets/icon';
   navItems = [
     {
@@ -60,7 +64,21 @@ export class DetailPage implements OnInit {
     status: 'pending' as StatusType
   };
 
-  constructor() { }
+  submitButtonText = 'submit';
+
+  constructor(
+    public contentService: ContentService,
+    public router: Router,
+  ) {
+    super(contentService);
+    const pageData = this.contentService.getContentByPropertyName('createplacementinfo');
+    this.pageTitle = pageData?.pageTitle;
+    this.formQuestions = pageData?.formQuestions;
+    this.formQuestions.forEach((entry) => {
+      this.group[entry.key] = new FormControl('', [Validators.required]);
+    });
+    this.pageFormGroup = new FormGroup(this.group);
+  }
 
   ngOnInit() {
   }
@@ -74,6 +92,13 @@ export class DetailPage implements OnInit {
     } else {
       this.isResendInviteBtn = false;
     }
+  }
+
+  onSubmit(data) {}
+
+  onEdit() {
+    console.log('go to edit');
+    this.router.navigate(['/workers/createdetail']);
   }
 
 }

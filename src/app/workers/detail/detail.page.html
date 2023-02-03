@@ -39,10 +39,27 @@
           <p>{{workerInfo.country}}</p>
         </div>
       </div>
+      <div class="edit-btn-container">
+        <app-button (onClick)="onEdit()" title="Edit" size="small"></app-button>
+      </div>
     </div>
   </div>
   <div *ngIf="activeNavItem.id === 2">
-    <p>payment contents</p>
+    <div class="title-wrapper">
+      <app-title title="Account information" variant="h5"></app-title>
+      <app-button title="Save" size="small"></app-button>
+    </div>
+    <app-form
+    [tunaFormGroup]="pageFormGroup"
+    [tunaFormquestions]="formQuestions"
+    [submitButtonText]="submitButtonText"
+    (formValue)="onSubmit($event)"
+    [isTextBlue]="true"
+    [isOtherDarkBlue]="true"
+    [isTitleDarkBlue]="true"
+    btnFill="solid"
+    >
+</app-form>      
   </div>
   <div *ngIf="activeNavItem.id === 3">
     <p>placement contents</p>

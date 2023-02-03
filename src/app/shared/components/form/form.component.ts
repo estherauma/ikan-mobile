@@ -17,7 +17,11 @@ export class FormComponent implements OnInit {
   @Input() tunaFormGroup: FormGroup;
   @Input() submitButtonText: string;
   @Input() btnConfig: any = '';
-  @Input() btnFill: any = 'outline';
+  @Input() btnFill: 'solid' | 'clear' | 'outline' = 'outline';
+  @Input() useCustomSubmitButton = false;
+  @Input() isTextBlue = false;
+  @Input()  isTitleDarkBlue = false;
+  @Input()  isOtherDarkBlue = false;
 
   @Output() formValues = new EventEmitter<any>();
   @Output() cancel = new EventEmitter<any>();
@@ -26,15 +30,36 @@ export class FormComponent implements OnInit {
   selectedImages = {};
   selectedDocuments = {};
 
+  formKeysToRemove = [];
+  typesToExclude = ['h1','h2','h3','h4','h5','h6','p'];
+
   constructor(
     public uploadService: UploadService,
     public modalCtrl: ModalController,
   ) { }
 
-  ngOnInit() {}
+  ngOnInit() {
+    this.tunaFormquestions.map(question => {
+      if ([...this.typesToExclude].includes(question.questionType)) {
+        this.tunaFormGroup.patchValue({
+          [question.key]: question.key
+        });
+        this.formKeysToRemove.push(question.key);
+      }
+    });
+  }
 
   onSubmit(event) {
-    this.formValue.emit(this.tunaFormGroup.value);
+    const finalValues = this.removeUnwantedObjectKey(this.tunaFormGroup.value);
+    this.formValue.emit(finalValues);
+  }
+
+  removeUnwantedObjectKey(obj) {
+    this.formKeysToRemove.forEach(key => {
+      delete obj[key];
+    });
+
+    return obj;
   }
 
   async onUpload(key) {

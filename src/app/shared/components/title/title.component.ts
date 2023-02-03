@@ -14,6 +14,7 @@ export class TitleComponent implements OnInit {
  @Input() isSmall = false;
  @Input() isBig = false;
  @Input() isLightBlue = false;
+ @Input() variant: 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6' | 'generic' = 'generic';
   constructor() { }
 
   ngOnInit() {}
