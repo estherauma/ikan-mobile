@@ -10,8 +10,8 @@ export class DocumentuploadComponent implements OnInit {
   @Input() isTransparent = false;
   @Input() type: 'display' | 'upload' = 'display';
   @Input() variant: 'dotted' | 'solid' = 'dotted';
-  @Input() name = 'Document Name';
-  @Input() uploadedDate = 'xx/xx/xxxx';
+  @Input() name = '';
+  @Input() uploadedDate = '';
   constructor() { }
 
   ngOnInit() {}

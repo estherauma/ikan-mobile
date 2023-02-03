@@ -7,7 +7,7 @@
         [ngStyle]="{'background': 'url(' + imgUrl + ') no-repeat 0 0 / cover'}"
         ></div></ion-col>
       <ion-col size="9" *ngIf="type === 'upload'">
-        <div class="icon-name-container"><ion-text><ion-icon name="add"></ion-icon>Add({{name}})</ion-text></div>
+        <div class="icon-name-container"><ion-text><ion-icon name="add"></ion-icon>{{name}}</ion-text></div>
       </ion-col>
       <ion-col *ngIf="type === 'display'">
         <div>

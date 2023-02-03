@@ -35,6 +35,7 @@ import { PaymentssummarycardComponent } from './components/paymentssummarycard/p
 import { PlacementoffercardComponent } from './components/placementoffercard/placementoffercard.component';
 import { PagetabnavigatorComponent } from './components/pagetabnavigator/pagetabnavigator.component';
 import { PageprofilecontainerComponent } from './components/pageprofilecontainer/pageprofilecontainer.component';
+import { TitleblockComponent } from './components/titleblock/titleblock.component';
 
 
 @NgModule({
@@ -78,6 +79,7 @@ import { PageprofilecontainerComponent } from './components/pageprofilecontainer
     PlacementoffercardComponent,
     PagetabnavigatorComponent,
     PageprofilecontainerComponent,
+    TitleblockComponent,
   ],
   exports: [
     FormComponent,
@@ -113,6 +115,7 @@ import { PageprofilecontainerComponent } from './components/pageprofilecontainer
     PlacementoffercardComponent,
     PagetabnavigatorComponent,
     PageprofilecontainerComponent,
+    TitleblockComponent,
   ]
 })
 

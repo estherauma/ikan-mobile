@@ -6,9 +6,10 @@ import { Component, Input, OnInit } from '@angular/core';
   styleUrls: ['./attachment.component.scss'],
 })
 export class AttachmentComponent implements OnInit {
-  @Input() pdfInfo = 'More info. Functionality here is click panel to view.';
+  @Input() pdfInfo = '';
   @Input() pdfLink = '/assets/icon/pdf.svg';
-  @Input() pdfName = 'Name.pdf';
+  @Input() pdfName = '';
+  @Input() variant: 'white' | 'transparent' = 'white';
   constructor() { }
 
   ngOnInit() {}

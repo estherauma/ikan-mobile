@@ -65,6 +65,13 @@ export class DetailPage extends BaseformPage implements OnInit {
   };
 
   submitButtonText = 'submit';
+  wo = {
+    name: 'Work order 2',
+    internalRef: 'IJSWERWXDWER',
+    dateOpened: '2022-10-15',
+    status: 'Close',
+    appRef: 'XXX-XXX-XXX',
+  };
 
   constructor(
     public contentService: ContentService,

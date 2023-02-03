@@ -39,3 +39,22 @@ ion-content {
     width: 60px;
     margin-top: 32px;
 }
+
+.list-content {
+    background: content-box;
+    border-left: 2px solid #A0ABCC;
+    margin-left: 16px;
+}
+
+.placement-link{
+    text-decoration: underline;
+    padding-left: 8px;
+}
+
+.placement-title {
+    color: #3565FF;
+}
+
+.send-reminder-btn {
+    width: 150px;
+}

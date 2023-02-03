@@ -62,10 +62,92 @@
 </app-form>      
   </div>
   <div *ngIf="activeNavItem.id === 3">
-    <p>placement contents</p>
+    <div>
+      <div class="ion-margin-top">
+
+        <div>
+          <app-titleblock variant="pending" title="Placement Opportunity"></app-titleblock>
+          <div class="ion-padding list-content">
+            <div>
+              <p>Status:<span> Sent</span> <a class="placement-link">View Placement Offer</a></p>
+              <h5 class="placement-title">Associated Work Order</h5>
+            </div>
+            <div>
+              <app-workordercard 
+              [wo]="wo"
+              >
+              </app-workordercard>
+              <div class="send-reminder-btn">
+                <app-button size="small" title="send reminder"></app-button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div>
+          <app-titleblock title="Placement Opportunity"></app-titleblock>
+          <div class="ion-padding list-content">
+            <div>
+              <p>Status:<span> Not started</span></p>
+            </div>
+            <div>
+              <p>Placement Opportunities can be sent by adding a Worker to a Demand Letter. </p>
+              <a routerLink="">Click here to see your Demand Letters.</a>
+            </div>
+          </div>
+        </div>
+
+        <div>
+          <app-titleblock title="Placement Agreement"></app-titleblock>
+          <div class="ion-padding list-content">
+          </div>
+        </div>
+      
+        <div>
+          <app-titleblock title="Job Order & Service opportunity"></app-titleblock>
+          <div class="ion-padding list-content">
+          </div>
+        </div>
+
+        <div>
+          <app-titleblock title="Departure"></app-titleblock>
+          <div class="ion-padding">
+          </div>
+        </div>
+
+      </div>
+    </div>
   </div>
   <div *ngIf="activeNavItem.id === 4">
-    <p>documents contents</p>
+    <div class="ion-margin-top">
+      <div class="ion-margin">
+        <app-title title="Account information" variant="h5"></app-title>
+      </div>
+      
+      <div>
+        <app-titleblock variant="completed" title="Passport"></app-titleblock>
+        <div class="ion-padding ion-margin-bottom">
+          <app-attachment
+            pdfName="Passport"
+            pdfInfo="Click to view and edit uploaded passport picture"
+          ></app-attachment>
+        </div>
+      </div>
+      <div>
+        <app-titleblock variant="pending" title="Visa"></app-titleblock>
+        <div class="ion-margin-bottom">
+          <app-documentupload type="upload" name="Upload Visa" [isTransparent]="true"></app-documentupload>
+        </div>
+      </div>
+      <div>
+        <app-titleblock variant="pending" title="Signed Employment Agreement"></app-titleblock>
+        <div class="ion-padding">
+          <div class="send-reminder-btn">
+            <app-button size="small" title="send reminder"></app-button>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
   <div *ngIf="activeNavItem.id === 5">
     <p>training contents</p>
