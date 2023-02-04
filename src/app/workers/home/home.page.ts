@@ -10,7 +10,8 @@ import { CreatePage } from '../create/create.page';
   styleUrls: ['./home.page.scss'],
 })
 export class HomePage implements OnInit {
-  pageTitle = 'Workers';
+  pageTitle = 'Recruits';
+  workerCount = 0;
   workers = [
     {
       name: 'Name Surname',
@@ -18,7 +19,8 @@ export class HomePage implements OnInit {
       dob: 'xx.xx.xxxx',
       trainingStatus: 'started',
       image: '',
-      role: UserRole.worker
+      role: UserRole.worker,
+      status: 'Active'
     },
     {
       name: 'Name Surname',
@@ -26,7 +28,8 @@ export class HomePage implements OnInit {
       dob: 'xx.xx.xxxx',
       trainingStatus: 'started',
       image: '',
-      role: UserRole.taiwaneseAgent
+      role: UserRole.taiwaneseAgent,
+      status: 'InActive'
     },
     {
       name: 'Name Surname',
@@ -34,9 +37,11 @@ export class HomePage implements OnInit {
       dob: 'xx.xx.xxxx',
       trainingStatus: 'started',
       image: '',
-      role: UserRole.indonesianAgent
+      role: UserRole.indonesianAgent,
+      status: 'Active'
     }
   ];
+  filterOptions = [];
 
   constructor(
     public router: Router,
@@ -67,4 +72,8 @@ export class HomePage implements OnInit {
 
     modal.onDidDismiss().then((data) => {});
   }
+
+  searchResult(result) {}
+
+  filterResult(result) {}
 }
