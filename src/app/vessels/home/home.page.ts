@@ -12,8 +12,11 @@ import { VesselsDataService } from '../data/vessels-data.service';
 export class HomePage implements OnInit {
   //TODO: Use translated text from prisimic
   pageTitle = 'Vessels';
-
   vessels = [];
+  filterOptions = [
+    {title:'Active Duty', value:'Active Duty'},
+    {title:'', value:'opened'}
+  ];
 
   constructor(
     public menuCtrl: MenuController,
@@ -44,4 +47,8 @@ export class HomePage implements OnInit {
     modal.onDidDismiss().then((data) => {
     });
   }
+
+  searchResult(result) {}
+
+  filterResult(result) {}
 }

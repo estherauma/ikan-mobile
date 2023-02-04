@@ -43,6 +43,7 @@ export class VesselsDataService {
             updatedAt: data.rows.item(i).updated_at,
             createdBy: data.rows.item(i).created_by,
             updatedBy: data.rows.item(i).updated_by,
+            imgUrl: 'assets/imgs/vessel.jpeg' // TODO: Update this to actualy vessel image once vessel image logic is done
           });
         }
       }
