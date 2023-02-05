@@ -110,7 +110,6 @@ export class DetailPage extends BaseformPage implements OnInit {
   onSubmit(data) {}
 
   onEdit() {
-    console.log('go to edit');
     this.router.navigate(['/workers/createdetail']);
   }
 

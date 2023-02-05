@@ -12,6 +12,7 @@ export class AttachmentComponent implements OnInit {
   @Input() pdfName = '';
   @Input() variant: 'white' | 'transparent' = 'white';
   @Input() docLink = '/assets/icon/pdf.svg';
+  @Input() backUrl = '';
   constructor(
     public router: Router
   ) { }
@@ -19,7 +20,12 @@ export class AttachmentComponent implements OnInit {
   ngOnInit() {}
 
   goToDoc() {
-    this.router.navigate(['mydocuments/details'], { queryParams: { docLink: this.docLink }});
+    this.router.navigate(['mydocuments/details'], {
+      queryParams: {
+        docLink: this.docLink,
+        backUrl: this.backUrl
+      }
+    });
   }
 
 }
