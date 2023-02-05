@@ -40,14 +40,14 @@
         </div>
       </div>
       <div class="edit-btn-container">
-        <app-button (onClick)="onEdit()" title="Edit" size="small"></app-button>
+        <app-button (onClick)="onEdit()" [title]="editText" size="small"></app-button>
       </div>
     </div>
   </div>
   <div *ngIf="activeNavItem.id === 2">
     <div class="title-wrapper">
       <app-title title="Account information" variant="h5"></app-title>
-      <app-button title="Save" size="small"></app-button>
+      <app-button [title]="saveText" size="small"></app-button>
     </div>
     <app-form
     [tunaFormGroup]="pageFormGroup"
@@ -78,7 +78,7 @@
               >
               </app-workordercard>
               <div class="send-reminder-btn">
-                <app-button size="small" title="send reminder"></app-button>
+                <app-button size="small" [title]="sendReminderText"></app-button>
               </div>
             </div>
           </div>
@@ -130,12 +130,13 @@
           <app-attachment
             pdfName="Passport"
             pdfInfo="Click to view and edit uploaded passport picture"
+            docLink="/assets/imgs/zila1.jpeg"
           ></app-attachment>
         </div>
       </div>
       <div>
         <app-titleblock variant="pending" title="Visa"></app-titleblock>
-        <div class="ion-margin-bottom">
+        <div class="ion-margin-vertical">
           <app-documentupload type="upload" name="Upload Visa" [isTransparent]="true"></app-documentupload>
         </div>
       </div>
@@ -143,14 +144,47 @@
         <app-titleblock variant="pending" title="Signed Employment Agreement"></app-titleblock>
         <div class="ion-padding">
           <div class="send-reminder-btn">
-            <app-button size="small" title="send reminder"></app-button>
+            <app-button size="small" [title]="sendReminderText"></app-button>
           </div>
         </div>
       </div>
     </div>
   </div>
   <div *ngIf="activeNavItem.id === 5">
-    <p>training contents</p>
+    <div>
+      <app-title title="Training status" variant="h5"></app-title>
+      <div>
+        <div class="ion-padding-bottom">
+          <app-progressbar title="Title of completion bar" value="76"></app-progressbar>
+          <app-progressbar title="Title of completion bar"></app-progressbar>
+          <app-progressbar title="Title of completion bar"></app-progressbar>
+          <div class="send-reminder-btn">
+            <app-button size="small" [title]="sendReminderText"></app-button>
+          </div>
+          <app-progressbar title="Title of completion bar" value="76"></app-progressbar>
+        </div>
+
+        <div class="ion-padding-bottom">
+          <app-title title="BP2mi Training document" variant="h5"></app-title>
+          <app-documentupload iconUrl="/assets/icon/documents_blue_lg.svg" type="upload" name="Upload signed BP2mi"></app-documentupload>
+        </div>
+
+        <div class="ion-padding-bottom">
+          <app-title title="Knowledge base" variant="h5"></app-title>
+          <app-progressbar title="Title of completion bar" value="76"></app-progressbar>
+          <app-progressbar title="During Employment"></app-progressbar>
+          <div class="send-reminder-btn">
+            <app-button size="small" [title]="sendReminderText"></app-button>
+          </div>
+
+          <app-progressbar title="Post Employment" value="76"></app-progressbar>
+          <div class="send-reminder-btn">
+            <app-button size="small" [title]="sendReminderText"></app-button>
+          </div>
+        </div>
+
+      </div>
+    </div>
   </div>
 </div>
 </ion-content>

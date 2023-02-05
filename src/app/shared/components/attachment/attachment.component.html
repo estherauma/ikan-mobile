@@ -1,4 +1,4 @@
-<div class="attachment" [ngClass]="{'white-bg': variant === 'white'}">
+<div (click)="goToDoc()" class="attachment" [ngClass]="{'white-bg': variant === 'white'}">
   <ion-row>
     <ion-col size="1">
       <img class="image" [src]="pdfLink" />

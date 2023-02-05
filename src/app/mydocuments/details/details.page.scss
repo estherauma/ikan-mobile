@@ -1,0 +1,34 @@
+ion-content {
+    --background: #EAEDF6;
+    position: absolute;
+    padding-top: 70px;
+} 
+
+.bottom-element {
+    height: 60px;
+    border-top-left-radius: 20px;
+    border-top-right-radius: 20px;
+    background-color: #ffffff;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 16px;
+    z-index: 4;
+}
+
+.wrapper {
+    display: flex; 
+    flex-direction: row; 
+    justify-content: center; 
+    align-items: center; 
+    // height: 85vh; 
+    // width: 85vw;
+}
+
+.image {
+    // height: 100%; 
+    // width: 100%;
+    
+    height: 85vh; 
+    width: 85vw;
+}

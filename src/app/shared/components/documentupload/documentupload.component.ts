@@ -7,6 +7,7 @@ import { Component, Input, OnInit } from '@angular/core';
 })
 export class DocumentuploadComponent implements OnInit {
   @Input() imgUrl = '';
+  @Input() iconUrl = '';
   @Input() isTransparent = false;
   @Input() type: 'display' | 'upload' = 'display';
   @Input() variant: 'dotted' | 'solid' = 'dotted';

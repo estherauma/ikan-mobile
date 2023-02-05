@@ -73,6 +73,9 @@ export class DetailPage extends BaseformPage implements OnInit {
     appRef: 'XXX-XXX-XXX',
   };
 
+  saveText = '';
+  editText = '';
+  sendReminderText = '';
   constructor(
     public contentService: ContentService,
     public router: Router,
@@ -88,6 +91,9 @@ export class DetailPage extends BaseformPage implements OnInit {
   }
 
   ngOnInit() {
+    this.editText = this.contentService.commonText?.edit;
+    this.saveText = this.contentService.commonText?.save;
+    this.sendReminderText = this.contentService.commonText?.sendreminder;
   }
 
   getParams() {}

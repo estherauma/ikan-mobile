@@ -1,3 +1,4 @@
+<h5 [ngClass]="{'blue': titleColor === 'blue', 'dark-blue': titleColor === 'dark-blue'}">{{title}}</h5>
 <ion-progress-bar 
  [value]="progressValue" 
  [ngClass]="{'warning': type === 'warning'}"

@@ -1,4 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-attachment',
@@ -10,8 +11,15 @@ export class AttachmentComponent implements OnInit {
   @Input() pdfLink = '/assets/icon/pdf.svg';
   @Input() pdfName = '';
   @Input() variant: 'white' | 'transparent' = 'white';
-  constructor() { }
+  @Input() docLink = '/assets/icon/pdf.svg';
+  constructor(
+    public router: Router
+  ) { }
 
   ngOnInit() {}
+
+  goToDoc() {
+    this.router.navigate(['mydocuments/details'], { queryParams: { docLink: this.docLink }});
+  }
 
 }
