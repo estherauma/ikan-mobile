@@ -1,36 +1,48 @@
 <app-header [pageTitle]=""></app-header>
 
-<ion-content>
-  <app-search></app-search>
-  <div class="ion-padding-horizontal">
-    <app-filter></app-filter>
-  </div>
+<ion-content class="content-skyblue-bg">
 
-  <ion-card *ngFor="let worker of workers">
-    <ion-card-content>
+  <div class="ion-padding">
+    <ion-grid class="ion-margin-bottom">
+      <ion-row class="ion-justify-content-between ion-align-items-baseline">
+        <ion-col>
+          <img src="/assets/icon/workorders_blue.svg" width="20" height="40" />
+        </ion-col>
+        <ion-col>
+          <ion-row class="ion-justify-content-end">
+            <div>
+              <app-button (onClick)="createWorker()" iconName="add-outline" title="New Worker"></app-button>
+            </div>
+          </ion-row>
+        </ion-col>
+      </ion-row>
+      <ion-row class="ion-padding-bottom title">
+        <app-title [isBlue]="true" [title]="pageTitle"></app-title>
+      </ion-row>
+    </ion-grid>
+
+    <!-- search and filters -->
+    <div class="ion-margin-top">
+      <app-search [searchDataSet]="workers" (searchResult)="searchResult($event)"></app-search>
       <ion-grid>
-        <ion-row class="ion-align-items-center">
-          <ion-col size="3">
-            <ion-thumbnail>
-              <ion-img [src]="worker.image"></ion-img>
-            </ion-thumbnail>
+        <ion-row>
+          <ion-text class="filter-title">Filter</ion-text>
+        </ion-row>
+        <ion-row>
+          <ion-col>
+            <app-filter type="deep-blue-90" filterProperty="status" [options]="filterOptions"
+              [filterDataSet]="workers" (filterResult)="filterResult($event)"></app-filter>
           </ion-col>
-          <ion-col size="8">
-            <ion-text><strong><h2>{{worker.name}}</h2></strong></ion-text>
-            <ion-text><p>Nationality: {{worker.nationality}}</p></ion-text>
-            <ion-text><p>DOB: {{worker.dob}}</p></ion-text>
-            <ion-text><p>Training: {{worker.trainingStatus}}</p></ion-text>
-          </ion-col>
-          <ion-col size="1" style="text-align: center" (click)="viewDetails(worker)">
-            <ion-icon name="chevron-forward-outline" size="large"></ion-icon>
+
+          <ion-col>
+            <app-filter type="deep-blue-90" filterProperty="status" [options]="filterOptions"
+              [filterDataSet]="workers" (filterResult)="filterResult($event)"></app-filter>
           </ion-col>
         </ion-row>
       </ion-grid>
-    </ion-card-content>
-  </ion-card>
-  <ion-fab vertical="bottom" horizontal="end" slot="fixed">
-    <ion-fab-button (click)="createWorker()">
-      <ion-icon name="add-circle-outline"></ion-icon>
-    </ion-fab-button>
-  </ion-fab>
+    </div>
+  </div>
+
+  <app-workercard *ngFor="let worker of workers" [worker]="worker"></app-workercard>
+
 </ion-content>
