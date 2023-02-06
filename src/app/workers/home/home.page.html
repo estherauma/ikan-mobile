@@ -43,6 +43,8 @@
     </div>
   </div>
 
-  <app-workercard *ngFor="let worker of workers" [worker]="worker"></app-workercard>
+  <div>
+    <app-workercard (click)="viewDetails(worker)" *ngFor="let worker of workers" [worker]="worker"></app-workercard>
+  </div>
 
 </ion-content>

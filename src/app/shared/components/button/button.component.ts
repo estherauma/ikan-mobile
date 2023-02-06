@@ -12,7 +12,7 @@ export class ButtonComponent implements OnInit {
   @Input() fill: 'solid' | 'clear' | 'outline' = 'solid';
   @Input() size: 'small' | 'default' | 'large' = 'default';
   @Input() shape: 'round' | 'default' = 'round';
-  @Input() config: 'ikan-light' | 'ikan-deepblue' | 'ikan-light-outline' | '' = '';
+  @Input() config: 'ikan-light' | 'ikan-deepblue' | 'ikan-light-outline' | 'yellow' | '' = '';
   @Input() class = '';
   @Input() color = 'transparent';
   @Input() iconPosition = 'left';
@@ -36,7 +36,11 @@ export class ButtonComponent implements OnInit {
     } else if (this.config === 'ikan-light-outline') {
       this.fill = 'outline';
       this.color = 'light';
-    } else {
+    } else if (this.config === 'yellow') {
+      this.finalCss = this.shape === 'round' ? 'ikan-yellow-btn rounded' : 'ikan-light-btn';
+      this.customClasses = this.finalCss;
+    }
+    else {
       this.color = 'primary';
     }
   }

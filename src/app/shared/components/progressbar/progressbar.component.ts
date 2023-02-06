@@ -10,6 +10,8 @@ export type ProgressBarType = 'warning' | 'success';
 export class ProgressbarComponent implements OnInit {
   @Input() value = '100';
   @Input() type: ProgressBarType = 'success';
+  @Input() title = '';
+  @Input() titleColor: 'blue' | 'dark-blue' = 'blue';
   progressValue = 0;
   constructor() { }
 

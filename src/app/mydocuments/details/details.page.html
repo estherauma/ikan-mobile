@@ -1,7 +1,15 @@
 <app-header [pageTitle]=""></app-header>
 
-<ion-content>
-  <ion-thumbnail>
-    <ion-img style="height: 100vh; width: 100vh;" [src]="imageUrl"></ion-img>
-  </ion-thumbnail>
+<ion-content class="content-skyblue-bg ion-content-custom-position">
+  <div class="wrapper">
+    <ion-img class="image" [src]="imageUrl"></ion-img>
+  </div>
 </ion-content>
+<div class="bottom-element">
+  <div *ngIf="backUrl" (click)="onClose()">
+    {{closeText}}
+  </div>
+  <div>
+    <ion-icon name="ellipsis-vertical-outline" size="large"></ion-icon>
+  </div>
+</div>

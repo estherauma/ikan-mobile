@@ -1,0 +1,16 @@
+<div 
+class="nav-container" 
+[ngClass]="{'darkblue-bg': bgType === 'darkblue-bg', 'transparent-bg': bgType === 'transparent'}"
+>
+  <div 
+  *ngFor="let navItem of navItems" 
+  class="nav-item"
+  [ngClass]="{'active' : active.id === navItem.id, 'first-neighbor': firstNeighborId === navItem.id, 'last-neighbor': lastNeighborId === navItem.id, 'left-middle-neighbor': leftMiddleNeighborId === navItem.id, 'right-middle-neighbor': rightMiddleNeighborId === navItem.id}"
+  (click)="isLinkNavMethod ? onClickLink(navItem) : onClickedMenuItem(navItem)"
+  >
+    <ion-img [src]="active.id === navItem.id ? navItem?.activeIcon : navItem?.inActiveIcon"></ion-img>
+    <small class="white-text" [ngClass]="{'blue-text' : active.id === navItem.id}">{{navItem.name}}</small>
+  </div>
+  <div class="virtual-bg-holder">
+  </div>
+</div>

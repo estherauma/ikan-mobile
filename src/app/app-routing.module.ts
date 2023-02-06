@@ -294,6 +294,26 @@ const routes: Routes = [
     path: 'sandbox',
     loadChildren: () => import('./sandbox/sandbox.module').then( m => m.SandboxPageModule)
   },
+  {
+    path: 'workers/info',
+    loadChildren: () => import('./workers/detail/info/info.module').then( m => m.InfoPageModule)
+  },
+  {
+    path: 'workers/payment',
+    loadChildren: () => import('./workers/detail/payment/payment.module').then( m => m.PaymentPageModule)
+  },
+  {
+    path: 'workers/placement',
+    loadChildren: () => import('./workers/detail/placement/placement.module').then( m => m.PlacementPageModule)
+  },
+  {
+    path: 'workers/documents',
+    loadChildren: () => import('./workers/detail/docs/docs.module').then( m => m.DocsPageModule)
+  },
+  {
+    path: 'workers/training',
+    loadChildren: () => import('./workers/detail/training/training.module').then( m => m.TrainingPageModule)
+  },
 ];
 
 @NgModule({

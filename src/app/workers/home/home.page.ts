@@ -38,7 +38,8 @@ export class HomePage implements OnInit {
       case UserRole.taiwaneseAgent:
           return this.router.navigate(['workers/details']);
       default:
-        return this.router.navigate(['']);
+        // TODO: Mak it go to default route
+        return this.router.navigate(['workers/details']);
     }
   }
 

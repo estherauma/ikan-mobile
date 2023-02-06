@@ -1,4 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-attachment',
@@ -6,11 +7,25 @@ import { Component, Input, OnInit } from '@angular/core';
   styleUrls: ['./attachment.component.scss'],
 })
 export class AttachmentComponent implements OnInit {
-  @Input() pdfInfo = 'More info. Functionality here is click panel to view.';
+  @Input() pdfInfo = '';
   @Input() pdfLink = '/assets/icon/pdf.svg';
-  @Input() pdfName = 'Name.pdf';
-  constructor() { }
+  @Input() pdfName = '';
+  @Input() variant: 'white' | 'transparent' = 'white';
+  @Input() docLink = '/assets/icon/pdf.svg';
+  @Input() backUrl = '';
+  constructor(
+    public router: Router
+  ) { }
 
   ngOnInit() {}
+
+  goToDoc() {
+    this.router.navigate(['mydocuments/details'], {
+      queryParams: {
+        docLink: this.docLink,
+        backUrl: this.backUrl
+      }
+    });
+  }
 
 }

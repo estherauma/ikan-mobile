@@ -33,6 +33,9 @@ import { DocumentuploadComponent } from './components/documentupload/documentupl
 import { VesselownercardComponent } from './components/vesselownercard/vesselownercard.component';
 import { PaymentssummarycardComponent } from './components/paymentssummarycard/paymentssummarycard.component';
 import { PlacementoffercardComponent } from './components/placementoffercard/placementoffercard.component';
+import { PagetabnavigatorComponent } from './components/pagetabnavigator/pagetabnavigator.component';
+import { PageprofilecontainerComponent } from './components/pageprofilecontainer/pageprofilecontainer.component';
+import { TitleblockComponent } from './components/titleblock/titleblock.component';
 import { WorkercardComponent } from './components/workercard/workercard.component';
 
 
@@ -75,7 +78,10 @@ import { WorkercardComponent } from './components/workercard/workercard.componen
     UsercontractcardComponent,
     DocumentuploadComponent,
     PlacementoffercardComponent,
-    WorkercardComponent
+    PagetabnavigatorComponent,
+    PageprofilecontainerComponent,
+    TitleblockComponent,
+    WorkercardComponent,
   ],
   exports: [
     FormComponent,
@@ -109,7 +115,10 @@ import { WorkercardComponent } from './components/workercard/workercard.componen
     UsercontractcardComponent,
     DocumentuploadComponent,
     PlacementoffercardComponent,
-    WorkercardComponent
+    PagetabnavigatorComponent,
+    PageprofilecontainerComponent,
+    TitleblockComponent,
+    WorkercardComponent,
   ]
 })
 

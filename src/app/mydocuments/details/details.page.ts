@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
+import { ContentService } from 'src/app/shared/services/content/content.service';
 
 @Component({
   selector: 'app-details',
@@ -6,9 +8,26 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./details.page.scss'],
 })
 export class DetailsPage implements OnInit {
-  imageUrl = 'https://cdn.pixabay.com/photo/2016/11/30/20/44/computer-1873831_1280.png';
-  constructor() { }
+  imageUrl = '';
+  closeText = '';
+  backUrl = '';
 
-  ngOnInit() {}
+  constructor(
+    private activatedRoute: ActivatedRoute,
+    public contentService: ContentService,
+    public router: Router
+  ) { }
 
+  ngOnInit() {
+    this.closeText = this.contentService.commonText?.close;
+
+    this.activatedRoute.queryParams.subscribe(params => {
+      this.imageUrl = params?.docLink;
+      this.backUrl = params?.backUrl;
+    });
+  }
+
+  onClose() {
+    this.router.navigate([this.backUrl]);
+  }
 }

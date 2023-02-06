@@ -1,34 +1,191 @@
-<app-header [pageTitle]="pageTitle"></app-header>
+<app-header [pageTitle]=""></app-header>
 
-<ion-content>
-  <div class="tabContent">
-    <ion-tabs>
-      <ion-tab-bar slot="bottom">
-        <ion-tab-button tab="info">
-          <ion-icon name="person-circle-outline"></ion-icon>
-          <ion-label>info</ion-label>
-        </ion-tab-button>
+<ion-content class="content-skyblue-bg ion-content-custom-position">
+  <app-pageprofilecontainer
+  (clickedMenuItem)="onClickedMenu($event)"
+  [active]="activeNavItem"
+  [navItems]="navItems"
+  [status]="workerInfo.status"
+  [title]="workerInfo.name"
+  [isResendInviteBtn]="isResendInviteBtn"
+  imageUrl="/assets/imgs/zila1.jpeg"
+  ></app-pageprofilecontainer>
 
-        <ion-tab-button tab="payment">
-          <ion-icon name="wallet-outline"></ion-icon>
-          <ion-label>Payment Info</ion-label>
-        </ion-tab-button>
-
-        <ion-tab-button tab="placement">
-          <ion-icon name="file-tray-stacked-outline"></ion-icon>
-          <ion-label>Placements</ion-label>
-        </ion-tab-button>
-
-        <ion-tab-button tab="docs">
-          <ion-icon name="document-text-outline"></ion-icon>
-          <ion-label>Docs</ion-label>
-        </ion-tab-button>
-
-        <ion-tab-button tab="training">
-          <ion-icon name="stats-chart-outline"></ion-icon>
-          <ion-label>Training Status</ion-label>
-        </ion-tab-button>
-      </ion-tab-bar>
-    </ion-tabs>
+<div class="ion-padding contents">
+  <div *ngIf="activeNavItem.id === 1">
+    <div>
+      <div class="text-icon">
+        <div class="icon">
+          <ion-img src="assets/icon/email_blue.svg"></ion-img>
+        </div>
+        <p>{{workerInfo.email}}</p>
+      </div>
+      <div class="text-icon">
+        <div class="icon">
+          <ion-img src="assets/icon/phone_blue.svg"></ion-img>
+        </div>
+        <p>{{workerInfo.phone}}</p>
+      </div>
+      <div class="liner">
+        <div class="icon">
+          <ion-img src="assets/icon/office_blue.svg"></ion-img>
+        </div>
+        <div>
+          <p>{{workerInfo.building}}</p>
+          <p>{{workerInfo.street}}</p>
+          <p>{{workerInfo.county}}</p>
+          <p>{{workerInfo.town}}</p>
+          <p>{{workerInfo.zipCode}}</p>
+          <p>{{workerInfo.country}}</p>
+        </div>
+      </div>
+      <div class="edit-btn-container">
+        <app-button (onClick)="onEdit()" [title]="editText" size="small"></app-button>
+      </div>
+    </div>
   </div>
+  <div *ngIf="activeNavItem.id === 2">
+    <div class="title-wrapper">
+      <app-title title="Account information" variant="h5"></app-title>
+      <app-button [title]="saveText" size="small"></app-button>
+    </div>
+    <app-form
+    [tunaFormGroup]="pageFormGroup"
+    [tunaFormquestions]="formQuestions"
+    [submitButtonText]="submitButtonText"
+    (formValue)="onSubmit($event)"
+    [isTextBlue]="true"
+    [isOtherDarkBlue]="true"
+    [isTitleDarkBlue]="true"
+    btnFill="solid"
+    >
+</app-form>      
+  </div>
+  <div *ngIf="activeNavItem.id === 3">
+    <div>
+      <div class="ion-margin-top">
+
+        <div>
+          <app-titleblock variant="pending" title="Placement Opportunity"></app-titleblock>
+          <div class="ion-padding list-content">
+            <div>
+              <p>Status:<span> Sent</span> <a class="placement-link">View Placement Offer</a></p>
+              <h5 class="placement-title">Associated Work Order</h5>
+            </div>
+            <div>
+              <app-workordercard 
+              [wo]="wo"
+              >
+              </app-workordercard>
+              <div class="send-reminder-btn">
+                <app-button size="small" [title]="sendReminderText"></app-button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div>
+          <app-titleblock title="Placement Opportunity"></app-titleblock>
+          <div class="ion-padding list-content">
+            <div>
+              <p>Status:<span> Not started</span></p>
+            </div>
+            <div>
+              <p>Placement Opportunities can be sent by adding a Worker to a Demand Letter. </p>
+              <a routerLink="">Click here to see your Demand Letters.</a>
+            </div>
+          </div>
+        </div>
+
+        <div>
+          <app-titleblock title="Placement Agreement"></app-titleblock>
+          <div class="ion-padding list-content">
+          </div>
+        </div>
+      
+        <div>
+          <app-titleblock title="Job Order & Service opportunity"></app-titleblock>
+          <div class="ion-padding list-content">
+          </div>
+        </div>
+
+        <div>
+          <app-titleblock title="Departure"></app-titleblock>
+          <div class="ion-padding">
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+  <div *ngIf="activeNavItem.id === 4">
+    <div class="ion-margin-top">
+      <div class="ion-margin">
+        <app-title title="Account information" variant="h5"></app-title>
+      </div>
+      
+      <div>
+        <app-titleblock variant="completed" title="Passport"></app-titleblock>
+        <div class="ion-padding ion-margin-bottom">
+          <app-attachment
+            pdfName="Passport"
+            pdfInfo="Click to view and edit uploaded passport picture"
+            docLink="/assets/imgs/zila1.jpeg"
+            backUrl="/workers/details/info"
+          ></app-attachment>
+        </div>
+      </div>
+      <div>
+        <app-titleblock variant="pending" title="Visa"></app-titleblock>
+        <div class="ion-margin-vertical">
+          <app-documentupload type="upload" name="Upload Visa" [isTransparent]="true"></app-documentupload>
+        </div>
+      </div>
+      <div>
+        <app-titleblock variant="pending" title="Signed Employment Agreement"></app-titleblock>
+        <div class="ion-padding">
+          <div class="send-reminder-btn">
+            <app-button size="small" [title]="sendReminderText"></app-button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div *ngIf="activeNavItem.id === 5">
+    <div>
+      <app-title title="Training status" variant="h5"></app-title>
+      <div>
+        <div class="ion-padding-bottom">
+          <app-progressbar title="Title of completion bar" value="76"></app-progressbar>
+          <app-progressbar title="Title of completion bar"></app-progressbar>
+          <app-progressbar title="Title of completion bar"></app-progressbar>
+          <div class="send-reminder-btn">
+            <app-button size="small" [title]="sendReminderText"></app-button>
+          </div>
+          <app-progressbar title="Title of completion bar" value="76"></app-progressbar>
+        </div>
+
+        <div class="ion-padding-bottom">
+          <app-title title="BP2mi Training document" variant="h5"></app-title>
+          <app-documentupload iconUrl="/assets/icon/documents_blue_lg.svg" type="upload" name="Upload signed BP2mi"></app-documentupload>
+        </div>
+
+        <div class="ion-padding-bottom">
+          <app-title title="Knowledge base" variant="h5"></app-title>
+          <app-progressbar title="Title of completion bar" value="76"></app-progressbar>
+          <app-progressbar title="During Employment"></app-progressbar>
+          <div class="send-reminder-btn">
+            <app-button size="small" [title]="sendReminderText"></app-button>
+          </div>
+
+          <app-progressbar title="Post Employment" value="76"></app-progressbar>
+          <div class="send-reminder-btn">
+            <app-button size="small" [title]="sendReminderText"></app-button>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>
 </ion-content>
