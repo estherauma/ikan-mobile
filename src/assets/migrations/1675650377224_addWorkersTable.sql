@@ -1,0 +1,22 @@
+CREATE TABLE IF NOT EXISTS workers (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  f_name VARCHAR(255) NOT NULL,
+  l_name VARCHAR(255) NOT NULL,
+  email VARCHAR(255),
+  phone VARCHAR(255),
+  address_line_1 VARCHAR(255),
+  address_line_2 VARCHAR(255),
+  address_line_3 VARCHAR(255),
+  city VARCHAR(255),
+  country VARCHAR(255),
+  zip_code VARCHAR(255),
+  invite_sent BOOLEAN NOT NULL DEFAULT 0,
+  invite_accepted BOOLEAN NOT NULL DEFAULT 0,
+  profile_img_url VARCHAR(255),
+  status VARCHAR(255),
+  online_ref VARCHAR(255),
+  created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  created_by VARCHAR(255) NOT NULL,
+  updated_by VARCHAR(255) NOT NULL
+);

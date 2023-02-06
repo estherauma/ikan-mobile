@@ -1,8 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { ModalController } from '@ionic/angular';
+import { SharedmethodsService } from 'src/app/shared/services/sharedmethods/sharedmethods.service';
 import { UserRole } from 'src/app/shared/types/api-types';
 import { CreatePage } from '../create/create.page';
+import { WorkersDataService } from '../data/workers-data.service';
 
 @Component({
   selector: 'app-home',
@@ -12,41 +14,19 @@ import { CreatePage } from '../create/create.page';
 export class HomePage implements OnInit {
   pageTitle = 'Recruits';
   workerCount = 0;
-  workers = [
-    {
-      name: 'Name Surname',
-      nationality: 'Indonesian',
-      dob: 'xx.xx.xxxx',
-      trainingStatus: 'started',
-      image: '',
-      role: UserRole.worker,
-      status: 'Active'
-    },
-    {
-      name: 'Name Surname',
-      nationality: 'Indonesian',
-      dob: 'xx.xx.xxxx',
-      trainingStatus: 'started',
-      image: '',
-      role: UserRole.taiwaneseAgent,
-      status: 'InActive'
-    },
-    {
-      name: 'Name Surname',
-      nationality: 'Indonesian',
-      dob: 'xx.xx.xxxx',
-      trainingStatus: 'started',
-      image: '',
-      role: UserRole.indonesianAgent,
-      status: 'Active'
-    }
-  ];
+  workers = [];
   filterOptions = [];
 
   constructor(
     public router: Router,
-    public modalCtrl: ModalController
-  ) {}
+    public modalCtrl: ModalController,
+    public workersDataService: WorkersDataService,
+    public sharedMethods: SharedmethodsService
+  ) {
+    this.workersDataService.getAll().subscribe((data) => {
+      this.workers = data;
+    });
+  }
 
   ngOnInit() {}
 
