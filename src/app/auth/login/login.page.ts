@@ -61,6 +61,8 @@ export class LoginPage extends BaseformPage implements OnInit {
           const decodedToken = this.authService.decodeAccessToken(res.data.token);
           await this.sharedMethods.saveDataToStorage(StorageKeys.apiTokenExpiry, decodedToken.exp);
           this.sharedMethods.hideLoader();
+          // enable menu
+          this.menuCtrl.enable(true);
           this.handleRedirection();
         }
       }, (err: HttpErrorResponse) => {
