@@ -48,7 +48,11 @@ export class HomePage implements OnInit {
     });
   }
 
-  searchResult(result) {}
+  searchResult(result) {
+    this.vessels = result;
+  }
 
-  filterResult(result) {}
+  filterResult(result) {
+    this.vessels = result;
+  }
 }
