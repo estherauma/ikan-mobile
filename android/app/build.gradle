@@ -7,8 +7,8 @@ android {
         applicationId "com.fiftyeight.tuna.dev"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 006
-        versionName "0.0.6"
+        versionCode 007
+        versionName "0.0.7"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         aaptOptions {
              // Files and dirs to omit from the packaged assets dir, modified to accommodate modern web apps.
@@ -25,7 +25,7 @@ android {
           minifyEnabled false
           debuggable true
           firebaseAppDistribution {
-              releaseNotes="Enable menu on first time login"
+              releaseNotes="Add CRUD service for recruits"
               serviceCredentialsFile="google-application-credentials.json"
               groups="scrum"
           }
