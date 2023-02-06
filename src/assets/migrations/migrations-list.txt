@@ -3,3 +3,4 @@
 1675075517188_addAgentsTable.sql
 1675525346307_addVesselsTable.sql
 1675650377224_addWorkersTable.sql
+1675673176921_addDemandLettersTable.sql

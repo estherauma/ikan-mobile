@@ -45,6 +45,6 @@
 
   <!-- Demand letters -->
   <div *ngFor="let demandLetter of demandLetters">
-   <app-workordercard [wo]="demandLetter"></app-workordercard>
+   <app-workordercard [wo]="demandLetter" (click)="viewDetails(demandLetter)"></app-workordercard>
    </div>
 </ion-content>
