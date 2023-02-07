@@ -13,9 +13,6 @@
     </div>
     <ion-grid>
       <ion-row style="align-items: center;">
-        <ion-col>
-  
-        </ion-col>
         <ion-col size="12"><ion-text class="filter">Filter</ion-text></ion-col>
         <ion-col size="12">
           <ion-grid>
@@ -37,7 +34,7 @@
 
   <div *ngFor="let p of orgPayments" >
     <ion-text><h6 class="title">{{p.date}}</h6></ion-text>
-    <app-paymentbreakdowncard *ngFor="let paymentListing of p.payments" [madeOn]="paymentListing.madeOn"
+    <app-paymentbreakdowncard (click)="viewDetails(paymentListing)" *ngFor="let paymentListing of p.payments" [madeOn]="paymentListing.madeOn"
     [confirmedOn]="paymentListing.confirmedOn" [amount]="paymentListing.amount"
     [status]="paymentListing.status"></app-paymentbreakdowncard>
   </div>

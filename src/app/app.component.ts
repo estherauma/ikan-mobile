@@ -63,8 +63,8 @@ export class AppComponent implements OnInit, OnDestroy {
           if ( tokenExpiryDateTime < new Date(now)) {
             this.logOut();
           } else {
-            // this.router.navigate([this.authService.getCurrentUserBaseUrlFromRole(user.role)]);
-            this.router.navigate(['/payments/home']);
+            this.router.navigate([this.authService.getCurrentUserBaseUrlFromRole(user.role)]);
+            this.router.navigate(['dashboard/worker']);
           }
         }
       });

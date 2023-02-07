@@ -17,13 +17,13 @@
           </ion-row>
         </ion-col>
       </ion-row>
-      <ion-row class="ion-padding-bottom title">
+      <ion-row class="title">
         <app-title [isBlue]="true" [title]="pageTitle"></app-title>
       </ion-row>
     </ion-grid>
 
     <!-- search and filters -->
-    <div class="ion-margin-top">
+    <div>
       <app-search [searchDataSet]="vessels" (searchResult)="searchResult($event)"></app-search>
       <ion-grid>
         <ion-row>
