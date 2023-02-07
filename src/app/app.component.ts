@@ -1,5 +1,6 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { StatusBar, Style } from '@capacitor/status-bar';
 import { Preferences } from '@capacitor/preferences';
 import { ContentService } from './shared/services/content/content.service';
 import { SharedmethodsService } from './shared/services/sharedmethods/sharedmethods.service';
@@ -33,6 +34,9 @@ export class AppComponent implements OnInit, OnDestroy {
   }
 
   async ngOnInit() {
+    const showStatusBar = async() => {
+      await StatusBar.show();
+    };
     await this.sharedMethods.addNetworkEventListener((network => {
         this.networkListener = network.networkListener;
         if (network.connected) {
@@ -59,7 +63,8 @@ export class AppComponent implements OnInit, OnDestroy {
           if ( tokenExpiryDateTime < new Date(now)) {
             this.logOut();
           } else {
-            this.router.navigate([this.authService.getCurrentUserBaseUrlFromRole(user.role)]);
+            // this.router.navigate([this.authService.getCurrentUserBaseUrlFromRole(user.role)]);
+            this.router.navigate(['/payments/home']);
           }
         }
       });

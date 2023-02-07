@@ -2,8 +2,8 @@
 
 </app-header>
 
-<ion-content class="content-skyblue-bg">
-  <div class="ion-padding">
+<ion-content class="content-skyblue-bg ion-content-custom-position">
+  <app-contentwrapper>
     <ion-grid class="ion-margin-bottom">
       <ion-row class="ion-justify-content-between ion-align-items-baseline">
         <ion-col>
@@ -50,8 +50,7 @@
     <div *ngIf="!select">
       <app-workordercard *ngFor="let wo of workOrders" [wo]="wo"></app-workordercard>
     </div>
-
-  </div>
+  </app-contentwrapper>
 </ion-content>
 <div class="bottom-element">
   <div *ngIf="!select" (click)="onSelect()">
