@@ -96,6 +96,8 @@ export class SandboxPage implements OnInit {
     }
   ];
 
+  audioSrc = 'http://commondatastorage.googleapis.com/codeskulptor-demos/DDR_assets/Sevish_-__nbsp_.mp3';
+
   constructor() { }
   ngOnInit() {
   }

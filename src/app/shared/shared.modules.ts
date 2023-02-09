@@ -37,6 +37,7 @@ import { PagetabnavigatorComponent } from './components/pagetabnavigator/pagetab
 import { PageprofilecontainerComponent } from './components/pageprofilecontainer/pageprofilecontainer.component';
 import { TitleblockComponent } from './components/titleblock/titleblock.component';
 import { WorkercardComponent } from './components/workercard/workercard.component';
+import { AudioPlayerComponent } from './components/audio-player/audio-player.component';
 
 
 @NgModule({
@@ -82,6 +83,7 @@ import { WorkercardComponent } from './components/workercard/workercard.componen
     PageprofilecontainerComponent,
     TitleblockComponent,
     WorkercardComponent,
+    AudioPlayerComponent
   ],
   exports: [
     FormComponent,
@@ -119,6 +121,7 @@ import { WorkercardComponent } from './components/workercard/workercard.componen
     PageprofilecontainerComponent,
     TitleblockComponent,
     WorkercardComponent,
+    AudioPlayerComponent
   ]
 })
 
