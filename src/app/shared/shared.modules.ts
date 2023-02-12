@@ -38,6 +38,7 @@ import { PageprofilecontainerComponent } from './components/pageprofilecontainer
 import { TitleblockComponent } from './components/titleblock/titleblock.component';
 import { WorkercardComponent } from './components/workercard/workercard.component';
 import { AudioPlayerComponent } from './components/audio-player/audio-player.component';
+import { ContentwrapperComponent } from './components/contentwrapper/contentwrapper.component';
 
 
 @NgModule({
@@ -83,7 +84,8 @@ import { AudioPlayerComponent } from './components/audio-player/audio-player.com
     PageprofilecontainerComponent,
     TitleblockComponent,
     WorkercardComponent,
-    AudioPlayerComponent
+    AudioPlayerComponent,
+    ContentwrapperComponent,
   ],
   exports: [
     FormComponent,
@@ -121,7 +123,8 @@ import { AudioPlayerComponent } from './components/audio-player/audio-player.com
     PageprofilecontainerComponent,
     TitleblockComponent,
     WorkercardComponent,
-    AudioPlayerComponent
+    AudioPlayerComponent,
+    ContentwrapperComponent,
   ]
 })
 

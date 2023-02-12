@@ -13,14 +13,16 @@ export class CompanyPage implements OnInit {
       date: '10 Aug',
       payments: [
         {
-          title: '$XXX.XX',
-          subtitle: 'xx/xx/xxxx',
-          status: 'Awaiting Confirmation'
+          amount: '$XXX.XX',
+          confirmedOn: 'xx/xx/xxxx',
+          madeOn: 'xx/xx/xxxx',
+          status: 'confirmed'
         },
         {
-          title: '$XXX.XX',
-          subtitle: 'xx/xx/xxxx',
-          status: 'Awaiting Confirmation'
+          amount: '$XXX.XX',
+          confirmedOn: 'xx/xx/xxxx',
+          madeOn: 'xx/xx/xxxx',
+          status: 'confirmed'
         }
       ]
     },
@@ -28,14 +30,16 @@ export class CompanyPage implements OnInit {
       date: '8 Aug',
       payments: [
         {
-          title: '$XXX.XX',
-          subtitle: 'xx/xx/xxxx',
-          status: 'Awaiting Confirmation'
+          amount: '$XXX.XX',
+          confirmedOn: 'xx/xx/xxxx',
+          madeOn: 'xx/xx/xxxx',
+          status: 'confirmed'
         },
         {
-          title: '$XXX.XX',
-          subtitle: 'xx/xx/xxxx',
-          status: 'Awaiting Confirmation'
+          amount: '$XXX.XX',
+          confirmedOn: 'xx/xx/xxxx',
+          madeOn: 'xx/xx/xxxx',
+          status: 'confirmed'
         }
       ]
     },
@@ -43,18 +47,27 @@ export class CompanyPage implements OnInit {
       date: '31 Jul',
       payments: [
         {
-          title: '$XXX.XX',
-          subtitle: 'xx/xx/xxxx',
+          amount: '$XXX.XX',
+          confirmedOn: 'xx/xx/xxxx',
+          madeOn: 'xx/xx/xxxx',
           status: 'Awaiting Confirmation'
         },
         {
-          title: '$XXX.XX',
-          subtitle: 'xx/xx/xxxx',
+          amount: '$XXX.XX',
+          confirmedOn: 'xx/xx/xxxx',
+          madeOn: 'xx/xx/xxxx',
           status: 'Awaiting Confirmation'
         }
       ]
     }
   ];
+
+  filterOptions = [
+    {title:'closed', value:'closed'},
+    {title:'opened', value:'opened'}
+  ];
+
+  filterDataSet = [];
 
   constructor(
     public router: Router
@@ -73,4 +86,6 @@ export class CompanyPage implements OnInit {
   newPayment() {
     this.router.navigate(['payments/create']);
   }
+
+  filterResult(value) {}
 }
