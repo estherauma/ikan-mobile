@@ -134,5 +134,9 @@ ion-modal.my-own-class {
 
 .ion-content-custom-position {
   position: absolute;
+}
+
+.ios ion-content {
+  position: absolute;
   top: 60px;
 }

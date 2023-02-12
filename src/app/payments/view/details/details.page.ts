@@ -9,24 +9,38 @@ import { ActivatedRoute } from '@angular/router';
 export class DetailsPage implements OnInit {
   payment: any;
 
-  breakDown = [
+  paymentBreakdowns: any = [
     {
-      type: 'Bank Transfer:',
-      amount: '£ XXX.XX',
-      date: 'Date: xx/xx/xxxx',
-      status: 'Confirmed'
+      type: 'Bank transfer',
+      madeOn: '30/09/2022',
+      confirmedOn: '',
+      confirmed: true,
+      status: 'confirmed',
+      amount: '$999.0'
     },
     {
-      type: 'Cash:',
-      amount: '£ XXX.XX',
-      date: 'Date: xx/xx/xxxx',
-      status: 'Confirmed'
+      type: 'Cash',
+      madeOn: '30/09/2022',
+      confirmedOn: '30/09/2022',
+      confirmed: false,
+      status: '',
+      amount: '$999.0',
     },
     {
-      type: 'Beneficiery:',
-      amount: '£ XXX.XX',
-      date: 'Date: xx/xx/xxxx',
-      status: 'Confirmed'
+      type: 'Beneficiary',
+      madeOn: '30/09/2022',
+      confirmedOn: '30/09/2022',
+      confirmed: false,
+      status: '',
+      amount: '$999.0',
+    },
+    {
+      type: 'Bank transfer',
+      madeOn: '30/09/2022',
+      confirmedOn: '',
+      confirmed: false,
+      status: '',
+      amount: '$999.0',
     }
   ];
 

@@ -1,9 +1,10 @@
 <app-header [pageTitle]="" [isLightBlueBg]="true"></app-header>
 
-<ion-content class="content-skyblue-bg">
+<ion-content class="content-skyblue-bg ion-content-custom-position">
+  <app-contentwrapper>
 
-  <div class="ion-padding">
-    <ion-grid class="ion-margin-bottom">
+  <div>
+    <ion-grid>
       <ion-row class="ion-justify-content-between ion-align-items-baseline">
         <ion-col>
           <img src="/assets/icon/workorders_blue.svg" width="20" height="40" />
@@ -16,13 +17,13 @@
           </ion-row>
         </ion-col>
       </ion-row>
-      <ion-row class="ion-padding-bottom title">
+      <ion-row class="title">
         <app-title [isBlue]="true" [title]="pageTitle"></app-title>
       </ion-row>
     </ion-grid>
 
     <!-- search and filters -->
-    <div class="ion-margin-top">
+    <div>
       <app-search [searchDataSet]="vessels" (searchResult)="searchResult($event)"></app-search>
       <ion-grid>
         <ion-row>
@@ -47,4 +48,5 @@
     <app-vesselownercard [vessel]="vessel"></app-vesselownercard>
   </div>
 
+  </app-contentwrapper>
 </ion-content>
