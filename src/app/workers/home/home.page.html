@@ -1,8 +1,9 @@
 <app-header [pageTitle]=""></app-header>
 
-<ion-content class="content-skyblue-bg">
+<ion-content class="content-skyblue-bg ion-content-custom-position">
+  <app-contentwrapper>
 
-  <div class="ion-padding">
+  <div>
     <ion-grid class="ion-margin-bottom">
       <ion-row class="ion-justify-content-between ion-align-items-baseline">
         <ion-col>
@@ -46,5 +47,5 @@
   <div>
     <app-workercard (click)="viewDetails(worker)" *ngFor="let worker of workers" [worker]="worker"></app-workercard>
   </div>
-
+  </app-contentwrapper>
 </ion-content>
