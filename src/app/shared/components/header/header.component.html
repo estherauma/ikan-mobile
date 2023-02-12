@@ -2,8 +2,10 @@
   <ion-toolbar class="header-toolbar ion-no-border" [ngClass]="{'light-blue': isLightBlueBg}" color="transparent" no-border>
     <div class="header-content-container">
       <div class="section-one">
-        <ion-back-button *ngIf="isBackButton" defaultHref="" text="" icon="arrow-back-outline">
-        </ion-back-button>
+        <div *ngIf="isBackButton" class="back-section">
+          <ion-back-button [text]="backText" defaultHref="" icon="arrow-back-outline">
+          </ion-back-button>
+        </div>
         <ion-title>{{pageTitle}}</ion-title>
       </div>
       <div class="section-two">
