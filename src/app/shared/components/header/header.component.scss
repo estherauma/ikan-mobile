@@ -21,6 +21,21 @@ ion-toolbar {
     flex: 1; 
     flex-grow: 1;
     border-bottom-right-radius: 20px;
+    display: flex;
+    padding-left: 16px;
+    padding-right: 16px;
+    align-items: center;
+
+    ion-back-button {
+        color: white !important;
+        --icon-padding-end: 12px;
+    }
+
+    .back-section {
+        display: flex;
+        align-items: center;
+        color: white !important;
+    }
 }
 
 .section-two{
