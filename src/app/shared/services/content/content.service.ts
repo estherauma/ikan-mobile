@@ -26,16 +26,22 @@ export class ContentService {
     const appContent = await this.readLocalContent();
     if (appContent == null || appContent === undefined) {
       await this.fetchContent();
+      // Read the content again after fetching it and saving it to storage
+      await this.setAppContent();
     } else {
-      const result = await this.readLocalContent();
-      this.appContent = result?.content;
-      this.updateCurrentLanguage();
+      await this.setAppContent();
     }
+  }
+
+  async setAppContent() {
+    const result = await this.readLocalContent();
+    this.appContent = result?.content;
+    this.updateCurrentLanguage();
   }
 
   async currentContentCreateAt() {
     const appContent = await this.readLocalContent();
-    return appContent.createdAt;
+    return appContent?.createdAt;
   }
 
   async fetchContent() {
@@ -143,22 +149,31 @@ export class ContentService {
 
   getCommonText() {
     const content = this.appContent?.[`${this.currentLanguage}`];
-    const { commonText } = content;
-    const commonTextOject = {};
-    for (const item of commonText.data) {
-      commonTextOject[item.label] = item.value;
+    if (content != null || content !== undefined) {
+      const { commonText } = content;
+      const commonTextOject = {};
+      for (const item of commonText.data) {
+        commonTextOject[item.label] = item.value;
+      }
+      return commonTextOject;
+    } else  {
+      return { };
     }
-    return commonTextOject;
+
   }
 
   getMenuContent() {
     const content = this.appContent?.[`${this.currentLanguage}`];
-    const { sidemenu } = content;
-    const menu = [];
-    for (const menuItem of sidemenu?.data ) {
-      menu.push(menuItem);
+    if (content != null || content !== undefined) {
+      const { sidemenu } = content;
+      const menu = [];
+      for (const menuItem of sidemenu?.data ) {
+        menu.push(menuItem);
+      }
+      return menu;
+    } else {
+      return {};
     }
-    return menu;
   }
 
   getContentByPropertyName(propertyName) {
