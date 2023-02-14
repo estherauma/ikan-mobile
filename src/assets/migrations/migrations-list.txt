@@ -4,3 +4,4 @@
 1675525346307_addVesselsTable.sql
 1675650377224_addWorkersTable.sql
 1675673176921_addDemandLettersTable.sql
+1676373027719_addContractsTable.sql
