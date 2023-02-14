@@ -26,6 +26,10 @@ export class ContentService {
     const appContent = await this.readLocalContent();
     if (appContent == null || appContent === undefined) {
       await this.fetchContent();
+      // Read the content again after fetching it to ensure the app doesn't crash
+      const result = await this.readLocalContent();
+      this.appContent = result?.content;
+      this.updateCurrentLanguage();
     } else {
       const result = await this.readLocalContent();
       this.appContent = result?.content;
@@ -35,7 +39,7 @@ export class ContentService {
 
   async currentContentCreateAt() {
     const appContent = await this.readLocalContent();
-    return appContent.createdAt;
+    return appContent?.createdAt;
   }
 
   async fetchContent() {
