@@ -37,7 +37,6 @@ export class ApiService {
    * Return the data from a post request
    */
   post(resourceUrl, requestData) {
-    alert(env.apiUrl);
     //TODO: Consider checking status of the request from here and also passing interface for the expected data
     return this.http.post(`${env.apiUrl}/${resourceUrl}`, requestData, {headers: this.headers});
   }

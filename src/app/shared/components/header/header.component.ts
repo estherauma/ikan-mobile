@@ -1,4 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
+import { ContentService } from '../../services/content/content.service';
 
 @Component({
   selector: 'app-header',
@@ -12,8 +13,14 @@ export class HeaderComponent implements OnInit {
   @Input() backBtnText = '';
   @Input() isLightBlueBg = false;
 
-  constructor() { }
+  backText = '';
 
-  ngOnInit() {}
+  constructor(
+    public contentService: ContentService
+  ) { }
+
+  ngOnInit() {
+    this.backText = this.contentService.commonText?.back;
+  }
 
 }

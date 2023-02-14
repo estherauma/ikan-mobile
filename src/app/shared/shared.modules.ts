@@ -37,6 +37,7 @@ import { PagetabnavigatorComponent } from './components/pagetabnavigator/pagetab
 import { PageprofilecontainerComponent } from './components/pageprofilecontainer/pageprofilecontainer.component';
 import { TitleblockComponent } from './components/titleblock/titleblock.component';
 import { WorkercardComponent } from './components/workercard/workercard.component';
+import { AudioPlayerComponent } from './components/audio-player/audio-player.component';
 import { ContentwrapperComponent } from './components/contentwrapper/contentwrapper.component';
 
 
@@ -83,6 +84,7 @@ import { ContentwrapperComponent } from './components/contentwrapper/contentwrap
     PageprofilecontainerComponent,
     TitleblockComponent,
     WorkercardComponent,
+    AudioPlayerComponent,
     ContentwrapperComponent,
   ],
   exports: [
@@ -121,6 +123,7 @@ import { ContentwrapperComponent } from './components/contentwrapper/contentwrap
     PageprofilecontainerComponent,
     TitleblockComponent,
     WorkercardComponent,
+    AudioPlayerComponent,
     ContentwrapperComponent,
   ]
 })

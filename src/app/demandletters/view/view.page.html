@@ -1,4 +1,4 @@
-<app-header [pageTitle]=""></app-header>
+<app-header [isBackButton]="true"></app-header>
 
 <ion-content class="ion-content-custom-position content-skyblue-bg">
   <ion-grid class="ion-padding-horizontal content-container">
@@ -22,8 +22,8 @@
     <div class="letter-details">
       <div class="ion-padding-horizontal">
         <p class="title">Demand letter details</p>
-        <app-attachment 
-          *ngIf="!cooperationAgreementFile" 
+        <app-attachment
+          *ngIf="!cooperationAgreementFile"
           pdfName="Cooperate_agreement.pdf"
           (click)="uploadCopAgreement()"
           pdfInfo="xx/xx/xxxx"

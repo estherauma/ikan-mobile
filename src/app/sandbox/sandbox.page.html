@@ -2,6 +2,34 @@
 
 <ion-content>
   <div class="ion-padding">
+    
+    <app-audio-player
+      [audioSrc]="audioSrc"
+    ></app-audio-player>
+    <div class="ion-margin-bottom"></div>
+
+    <app-audio-player 
+      variant="white-bg-title-photo" 
+      title="Title here"
+      [audioSrc]="audioSrc"
+    ></app-audio-player>
+    <div class="ion-margin-bottom"></div>
+
+    <app-audio-player 
+      variant="white-bg-title" 
+      title="Title here"
+      [audioSrc]="audioSrc"
+    ></app-audio-player>
+    <div class="ion-margin-bottom"></div>
+
+    <app-audio-player 
+      variant="white-bg" 
+      [audioSrc]="audioSrc"
+    ></app-audio-player>
+    <div class="ion-margin-bottom"></div>
+
+  </div>
+  <div class="ion-padding">
     <p>paymentListings</p>
     <app-paymentbreakdowncard *ngFor="let paymentListing of paymentListings" [madeOn]="paymentListing.madeOn"
       [confirmedOn]="paymentListing.confirmedOn" [amount]="paymentListing.amount"

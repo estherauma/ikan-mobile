@@ -1,0 +1,36 @@
+<div>
+  <div>
+    <audio #audioPlayer [src]="audioSrc"></audio>
+    <div 
+      class="with-white-bg-and-title" 
+      [ngClass]="{
+        'white-bg-title-photo': variant === 'white-bg-title-photo',
+        'white-bg-title': variant === 'white-bg-title',
+        'white-bg': variant === 'white-bg'
+      }"
+    >
+      <h2 *ngIf="title" class="title">{{title}}</h2>
+      <div *ngIf="variant === 'white-bg-title-photo'" class="image-section">
+
+      </div>
+      <div class="audio-controls-wrapper with-white-bg">
+
+        <div class="section">
+            <ion-img *ngIf="!playing" (click)="playAudio()" src="/assets/icon/audio_play_blue.svg"></ion-img>
+            <ion-img *ngIf="playing"  (click)="pauseAudio()" src="/assets/icon/pause_blue.svg"></ion-img>
+            <small class="duration">{{ currentTime }}</small>
+        </div>
+  
+        <div class="progress-section">
+          <ion-progress-bar [value]="progress"></ion-progress-bar>
+        </div>
+  
+        <div class="section">
+            <small class="duration">{{ duration }}</small>
+            <ion-img (click)="muteAudio()" *ngIf="!isMuted" src="/assets/icon/speaker_gray.svg"></ion-img>
+            <ion-img *ngIf="isMuted" (click)="unmuteAudio()" src="/assets/icon/muted_speaker_grey.svg"></ion-img>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
