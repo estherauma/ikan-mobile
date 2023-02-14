@@ -24,7 +24,10 @@
 
     <!-- search and filters -->
     <div>
-      <app-search [searchDataSet]="vessels" (searchResult)="searchResult($event)"></app-search>
+      <app-search
+        [searchDataSet]="vessels"
+        (searchResult)="searchResult($event)"
+        (clear)="clearSearchResult()"></app-search>
       <ion-grid>
         <ion-row>
           <ion-text class="filter-title">Filter</ion-text>

@@ -15,6 +15,7 @@ export class HomePage implements OnInit {
   pageTitle = 'Recruits';
   workerCount = 0;
   workers = [];
+  unFilteredData = [];
   filterOptions = [];
 
   constructor(
@@ -24,7 +25,7 @@ export class HomePage implements OnInit {
     public sharedMethods: SharedmethodsService
   ) {
     this.workersDataService.getAll().subscribe((data) => {
-      this.workers = data;
+      this.workers = this.unFilteredData = data;
     });
   }
 
@@ -54,7 +55,15 @@ export class HomePage implements OnInit {
     modal.onDidDismiss().then((data) => {});
   }
 
-  searchResult(result) {}
+  searchResult(result) {
+    this.workers = result;
+  }
 
-  filterResult(result) {}
+  filterResult(result) {
+    this.workers = result;
+  }
+
+  clearSearchResult() {
+    this.workers = this.unFilteredData;
+  }
 }
