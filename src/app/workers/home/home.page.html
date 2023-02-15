@@ -24,7 +24,11 @@
 
     <!-- search and filters -->
     <div class="ion-margin-top">
-      <app-search [searchDataSet]="workers" (searchResult)="searchResult($event)"></app-search>
+      <app-search
+        [searchDataSet]="workers"
+        (searchResult)="searchResult($event)"
+        (clear)="clearSearchResult()">
+      </app-search>
       <ion-grid>
         <ion-row>
           <ion-text class="filter-title">Filter</ion-text>

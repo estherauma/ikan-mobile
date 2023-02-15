@@ -7,8 +7,8 @@ android {
         applicationId "com.fiftyeight.tuna.dev"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 111
-        versionName "0.0.11"
+        versionCode 112
+        versionName "0.0.12"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         aaptOptions {
              // Files and dirs to omit from the packaged assets dir, modified to accommodate modern web apps.
@@ -25,12 +25,8 @@ android {
           minifyEnabled false
           debuggable true
           firebaseAppDistribution {
-              releaseNotes="Fix first time app load issues"
-              serviceCredentialsFile="google-application-credentials.json"
+              releaseNotes="Update search logic for agents, workorders and vessels"
               groups="scrum"
-          }
-        }
-    }
     sourceSets {
       main {
         jniLibs.srcDirs = ['libs']

@@ -13,20 +13,28 @@ import { AgentsDataService } from '../data/agents-data.service';
 export class HomePage implements OnInit {
   pageTitle = 'Manning Agents';
   agents = [];
+  unFilteredData = [];
+
   constructor(
     public router: Router,
     public modalCtrl: ModalController,
     public agentsDataService: AgentsDataService,
   ) {
     this.agentsDataService.getAll().subscribe((data) => {
-      this.agents = data;
+      this.agents = this.unFilteredData = data;
     });
   }
 
   ngOnInit() {
   }
 
-  searchResult(searchResult) {}
+  searchResult(searchResult) {
+    this.agents = searchResult;
+  }
+
+  clearSearchResult() {
+    this.agents = this.unFilteredData;
+  }
 
   viewDetails(company) {
     this.router.navigate((['agents/details', company]));
