@@ -1,0 +1,36 @@
+      <ion-card class="stat-card" [ngClass]="{'no-bg': isNoBg, 'no-border': isNoBorder }">
+        <ion-card-content>
+          <div>
+            <div class="title-section" [ngClass]="{'no-icon-card-title-section': !isIconSection}">
+              <app-title [isBig]="true" [isBlue]="true" [title]="dataset.data.title"></app-title>
+            </div>
+            <div class="icon-container" *ngIf="isIconSection">
+              <ion-img [src]="dataset.icon"></ion-img>
+            </div>
+          </div>
+          <ion-grid>
+            <ion-row class="ion-align-items-center chart-stats-container">
+              <ion-col size="5">
+                <app-chart [isCustomBgColors]="isChartsCustomBgColors" [centerIcon]="centerIcon" [chartType]="dataset.chartType" [chartHeight]="dataset.chartHeight" [chartDatasets]="dataset.datasets" [chartLabels]="dataset.labels"></app-chart>
+              </ion-col>
+              <ion-col size="7" class="stats">
+                <ion-text>
+                  <h3 class="main-stat-title">{{dataset.data.stat.mainTitle}}: <span class="main-stat-value">{{dataset.data.stat.statPercentage}}</span></h3>
+                </ion-text>
+                <div class="stats-contents" >
+                  <ion-text *ngFor="let statBreakdown of dataset.data.stat.breakDowns">
+                    <p class="p-text">
+                      <ion-icon class="icon-highest" name="square"></ion-icon> {{ statBreakdown | slice:0:20 }}{{ statBreakdown.length > 20 ? '..' : '' }}
+                    <p>
+                  </ion-text>
+                </div>
+              </ion-col>
+            </ion-row>
+            <ion-row>
+              <ion-col size="8" *ngIf="isActionBtn">
+                <app-button size="small" title="All Payment Info" iconName="forward"></app-button>
+              </ion-col>
+            </ion-row>
+          </ion-grid>
+        </ion-card-content>
+      </ion-card>
