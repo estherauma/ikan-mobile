@@ -7,36 +7,31 @@ import { Router } from '@angular/router';
   styleUrls: ['./home.page.scss'],
 })
 export class HomePage implements OnInit {
-  pageTitle='Learning Hub';
+  title = 'Pengetahuan';
 
-  learningHub = [
+  lhs = [
     {
-      name: 'Sub chapter No.1',
-      description: 'IJSWERWXDWER',
-      image: 'https://cdn.pixabay.com/photo/2015/07/17/22/43/student-849825_1280.jpg',
+      title: 'Sebelum kamu pergi',
+      text: 'Perlakuan tidak manusiawi, transshipment, illegal fishing.',
+      progressBarValue: '60',
+      progressBarType: 'primary',
+      imageUrl: '/assets/icon/image_placeholder.svg'
     },
     {
-      name: 'Cultural orientation',
-      description: 'IJSWERWXDWER',
-      image: 'https://cdn.pixabay.com/photo/2015/07/17/22/43/student-849825_1280.jpg',
+      title: 'Sebelum kamu pergi',
+      text :'Perlakuan tidak manusiawi, transshipment, illegal fishing.',
+      progressBarValue :'60',
+      progressBarType : 'warning',
+      imageUrl : '/assets/icon/image_placeholder.svg'
     },
     {
-      name: 'Food & dietry requirements',
-      description: 'IJSWERWXDWER',
-      image: 'https://cdn.pixabay.com/photo/2015/07/17/22/43/student-849825_1280.jpg',
-    },
-    {
-      name: 'Religion',
-      description: 'IJSWERWXDWER',
-      image: 'https://cdn.pixabay.com/photo/2015/07/17/22/43/student-849825_1280.jpg',
-    },
-    {
-      name: 'Etc.',
-      description: 'IJSWERWXDWER',
-      image: 'https://cdn.pixabay.com/photo/2015/07/17/22/43/student-849825_1280.jpg',
+      title: 'Sebelum kamu pergi',
+      text :'Perlakuan tidak manusiawi, transshipment, illegal fishing.',
+      progressBarValue :'0',
+      progressBarType : 'primary',
+      imageUrl : '/assets/icon/image_placeholder.svg'
     }
   ];
-
   constructor(
     public router: Router
   ) { }
@@ -44,8 +39,9 @@ export class HomePage implements OnInit {
   ngOnInit() {
   }
 
-  viewDeatils(lh) {
-    this.router.navigate(['/learninghub/detail', lh]);
+  onClick() {
+    this.router.navigate(['learninghub/variant']);
   }
+
 
 }

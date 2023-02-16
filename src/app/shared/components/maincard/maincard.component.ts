@@ -15,7 +15,8 @@ export class MaincardComponent implements OnInit {
   @Input() imagePosition: 'left' | 'top' = 'left';
   @Input() imageSize: 'small' | 'big' = 'big';
   @Input() progressBarValue = '';
-  @Input() progressBarType: ProgressBarType = 'warning';
+  @Input() progressText = '';
+  @Input() progressBarType: ProgressBarType | string = 'warning';
   constructor() { }
 
   ngOnInit() {}

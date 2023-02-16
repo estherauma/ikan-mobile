@@ -314,6 +314,10 @@ const routes: Routes = [
     path: 'workers/training',
     loadChildren: () => import('./workers/detail/training/training.module').then( m => m.TrainingPageModule)
   },
+  {
+    path: 'learninghub/variant',
+    loadChildren: () => import('./learninghub/variant/variant.module').then( m => m.VariantPageModule)
+  },
 ];
 
 @NgModule({

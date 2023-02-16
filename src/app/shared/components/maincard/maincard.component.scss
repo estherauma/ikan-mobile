@@ -8,6 +8,11 @@ ion-card{
 
 .content{
     display: flex;
+    padding: 8px;
+    .image-section {
+        min-width: 60px;
+        margin-right: 8px ;
+    }
 }
 
 .flex-row{
@@ -38,4 +43,11 @@ ion-card{
 .small-image{
     height: 32px;
     width: 32px;;
+}
+
+.progress-with-text {
+    margin-top: 8px;
+    span{
+        color: #3565FF
+    };
 }
