@@ -2,7 +2,7 @@
         <ion-card-content>
           <div>
             <div class="title-section" [ngClass]="{'no-icon-card-title-section': !isIconSection}">
-              <app-title [isBig]="true" [isBlue]="true" [title]="dataset.data.title"></app-title>
+              <app-title [isBlue]="true" [title]="dataset.data.title"></app-title>
             </div>
             <div class="icon-container" *ngIf="isIconSection">
               <ion-img [src]="dataset.icon"></ion-img>
