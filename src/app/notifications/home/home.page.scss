@@ -1,0 +1,45 @@
+ion-item {
+    --inner-padding-bottom: 0px;
+    --background: transparent;
+    --inner-padding-end: 0px;
+    --padding-start: 0px;
+    --padding-top: 0px;
+}
+
+ion-badge {
+    border-radius: 5px;
+    margin-bottom: -12px;
+}
+
+ion-list {
+    background: transparent;
+}
+
+ion-item-sliding{
+    background: transparent;
+    --background: transparent;
+    margin-top: 16px;
+    margin-bottom: 16px;
+}
+
+ion-item-options {
+    --inner-padding-bottom: 0px;
+}
+
+.ion-item-option-second {
+    border-top-right-radius: 20px;
+    border-bottom-right-radius: 20px;
+}
+
+ion-item-option .horizontal-wrapper{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.ion-item-option-first {
+    color: #ffffff;
+    button {
+        background: #263CB1;
+    }
+}

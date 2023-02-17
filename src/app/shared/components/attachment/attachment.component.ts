@@ -10,9 +10,10 @@ export class AttachmentComponent implements OnInit {
   @Input() pdfInfo = '';
   @Input() pdfLink = '/assets/icon/pdf.svg';
   @Input() pdfName = '';
-  @Input() variant: 'white' | 'transparent' = 'white';
+  @Input() variant: 'white' | 'transparent' | 'gray' = 'white';
   @Input() docLink = '/assets/icon/pdf.svg';
   @Input() backUrl = '';
+  @Input() titleColor: 'blue' | '' = '';
   constructor(
     public router: Router
   ) { }
