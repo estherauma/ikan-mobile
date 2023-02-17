@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { ModalController } from '@ionic/angular';
 import { CreatePage } from '../create/create.page';
 import { CompaniesDataService } from '../data/companies-data.service';
@@ -15,6 +16,7 @@ export class HomePage implements OnInit {
   constructor(
     public modalCtrl: ModalController,
     public companiesDataService: CompaniesDataService,
+    public router: Router
   ) {
     this.companiesDataService.getAll().subscribe((data) => {
       this.companies = data;
@@ -33,6 +35,6 @@ export class HomePage implements OnInit {
   }
 
   viewDetails(company) {
-
+    this.router.navigate(['/companies/details', company]);
   }
 }
