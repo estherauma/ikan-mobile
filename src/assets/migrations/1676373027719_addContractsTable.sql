@@ -3,10 +3,12 @@ CREATE TABLE IF NOT EXISTS contracts (
   name VARCHAR(255) NOT NULL,
   app_ref VARCHAR(255) NOT NULL,
   internal_ref VARCHAR(255) NOT NULL,
-  start_date VARCHAR(255) NOT NULL,
+  start_date VARCHAR(255),
   end_date VARCHAR(255),
   vessel_id INTEGER NOT NULL,
   online_ref VARCHAR(255),
+  taiwanese_company_id VARCHAR(255),
+  indonesia_company_id VARCHAR(255),
   created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
   updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
   created_by VARCHAR(255) NOT NULL,
@@ -21,6 +23,18 @@ CREATE TABLE IF NOT EXISTS contract_documents (
   url VARCHAR(255) NOT NULL,
   status VARCHAR(255),
   online_ref VARCHAR(255),
+  created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  created_by VARCHAR(255) NOT NULL,
+  updated_by VARCHAR(255) NOT NULL
+);
+
+
+CREATE TABLE IF NOT EXISTS contract_documents_recipients (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  contract_document_id INTEGER NOT NULL,
+  recipient_name INTEGER NOT NULL,
+  recipient_email VARCHAR(255),
   created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
   updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
   created_by VARCHAR(255) NOT NULL,

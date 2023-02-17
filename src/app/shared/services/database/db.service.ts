@@ -85,6 +85,7 @@ export class DBService {
   async runSingleMigrationFile(migrationFileName) {
     this.http.get('assets/migrations/' + migrationFileName, { responseType: 'text' as 'text'})
     .subscribe((data: any) => {
+        // TODO: add logic for skipping comments in the migration file
         const migrationQueries = data.split(';');
         migrationQueries.forEach((query) => {
           query = query.replace(/\r?\n|\r/g, '');

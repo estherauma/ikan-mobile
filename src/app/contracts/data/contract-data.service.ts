@@ -1,0 +1,86 @@
+import { Injectable } from '@angular/core';
+import { SQLite, SQLiteObject } from '@awesome-cordova-plugins/sqlite/ngx';
+import { Platform } from '@ionic/angular';
+import { BehaviorSubject } from 'rxjs';
+
+@Injectable({
+  providedIn: 'root'
+})
+export class ContractDataService {
+  db: SQLiteObject;
+  contracts = new BehaviorSubject([]);
+
+  constructor(
+    private platform: Platform,
+    private sqlite: SQLite,
+  ) {
+    this.platform.ready().then(async() => {
+      this.sqlite.create({
+        name: 'tunalocal.db',
+        location: 'default'
+      }).then(async(_db: SQLiteObject) => {
+        this.db = _db;
+        this.retrieveContracts();
+      }).catch(e => console.log(e));
+    });
+  }
+
+  retrieveContracts() {
+    const query = 'SELECT * FROM contracts';
+    // TODO: Add a join to the contract documents later
+    // TODO: Add a join to the vessel owner company later
+    this.db.executeSql(query, []).then((data) => {
+      const contracts = [];
+      if (data.rows.length > 0) {
+        for (let i = 0; i < data.rows.length; i++) {
+          contracts.push({
+            id: data.rows.item(i).id,
+            appRef: data.rows.item(i).app_ref,
+            internalRef: data.rows.item(i).internal_ref,
+            startDate: data.rows.item(i).start_date,
+            endDate: data.rows.item(i).end_date,
+            taiwaneseCompany: 'Taiwanese Company',
+            indonesianCompany: 'Indonesian Company',
+            vesselOwnerCompany: 'Vessel Owner Company',
+            createdAt: data.rows.item(i).created_at,
+            updatedAt: data.rows.item(i).updated_at,
+            createdBy: data.rows.item(i).created_by,
+            updatedBy: data.rows.item(i).updated_by,
+          });
+        }
+
+      }
+      this.contracts.next(contracts);
+    }).catch((e) => console.log(e));
+  }
+
+  getAll() {
+    return this.contracts.asObservable();
+  }
+
+  create(data) {
+    const query = 'INSERT INTO contracts (app_ref, internal_ref, start_date, \
+      end_date, created_at, updated_at, created_by, updated_by) VALUES (?, ?, ?, ?, ?, ?, ?, ?)';
+    const params = [];
+    return this.db.executeSql(query, params).then((result) => {
+      this.retrieveContracts();
+      return result.insertId;
+    }).catch((e) => console.log(e));
+  }
+
+  update(data) { }
+
+  delete(id) { }
+
+  createContractDocument(data) { }
+
+  updateContractDocument(id, data) { }
+
+  deleteContractDocument(id) { }
+
+  createContractDocumentRecipient(data) { }
+
+  updateContractDocumentRecipient(id, data) { }
+
+  deleteContractRecipient(id) { }
+}
