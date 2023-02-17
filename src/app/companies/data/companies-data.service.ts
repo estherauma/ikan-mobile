@@ -6,7 +6,7 @@ import { BehaviorSubject } from 'rxjs';
 @Injectable({
   providedIn: 'root'
 })
-export class CompaniesServiceService {
+export class CompaniesDataService {
   companies = new BehaviorSubject([]);
   db: SQLiteObject;
 
@@ -26,7 +26,32 @@ export class CompaniesServiceService {
   }
 
   retriveCompanies() {
-    throw new Error('Method not implemented.');
+    const query = 'SELECT * FROM companies';
+    this.db.executeSql(query, []).then((data) => {
+      const companies = [];
+      if (data.rows.length > 0) {
+        for (let i = 0; i < data.rows.length; i++) {
+          companies.push({
+            id: data.rows.item(i).id,
+            name: data.rows.item(i).name,
+            description: data.rows.item(i).description,
+            status: data.rows.item(i).status,
+            country: data.rows.item(i).country,
+            telephone: data.rows.item(i).telephone,
+            email: data.rows.item(i).email,
+            addressLine1: data.rows.item(i).address_line_1,
+            addressLine2: data.rows.item(i).address_line_2,
+            addressLine3: data.rows.item(i).address_line_3,
+            createdAt: data.rows.item(i).created_at,
+            updatedAt: data.rows.item(i).updated_at,
+            createdBy: data.rows.item(i).created_by,
+            updatedBy: data.rows.item(i).updated_by,
+            imgUrl: 'assets/imgs/company.jpeg' // TODO: Update this to actualy company image once company image logic is done
+          });
+        }
+      }
+      this.companies.next(companies);
+    }).catch((e) => console.log(e));
   }
 
   getAll() {
@@ -35,7 +60,7 @@ export class CompaniesServiceService {
 
   async create(data) {
     const query = 'INSERT INTO companies (name, description, status, country, telephone, \
-      email, address_line_1, address_line_2, address_line_3 created_at, updated_at, created_by, \
+      email, address_line_1, address_line_2, address_line_3, created_at, updated_at, created_by, \
       updated_by) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)';
     const params = [data.name, data.description, data. status, data.country, data.telephone, data.email,
       data.address_line_1, data.address_line_2, data.address_line_3, data.created_at, data.updated_at,

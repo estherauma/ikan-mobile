@@ -1,6 +1,7 @@
 <app-header [isBackButton]="false"></app-header>
 
 <ion-content>
+
   <!-- Create button -->
   <ion-grid class="ion-margin-bottom">
     <ion-row class="ion-justify-content-between ion-align-items-baseline">
@@ -15,11 +16,17 @@
         </ion-row>
       </ion-col>
     </ion-row>
-    
+
     <!-- Page title -->
     <ion-row class="title">
       <app-title [isBlue]="true" [title]="pageTitle"></app-title>
     </ion-row>
   </ion-grid>
+
+  <div>
+    <div>
+      <app-workercard (click)="viewDetails(company)" *ngFor="let company of companies" [worker]="company"></app-workercard>
+    </div>
+  </div>
 
 </ion-content>

@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ModalController } from '@ionic/angular';
 import { CreatePage } from '../create/create.page';
+import { CompaniesDataService } from '../data/companies-data.service';
 
 @Component({
   selector: 'app-home',
@@ -13,10 +14,14 @@ export class HomePage implements OnInit {
   companies = [];
   constructor(
     public modalCtrl: ModalController,
-  ) { }
-
-  ngOnInit() {
+    public companiesDataService: CompaniesDataService,
+  ) {
+    this.companiesDataService.getAll().subscribe((data) => {
+      this.companies = data;
+    });
   }
+
+  ngOnInit() { }
 
   async createCompany() {
     const modal = await this.modalCtrl.create({
@@ -24,6 +29,10 @@ export class HomePage implements OnInit {
       cssClass: 'notification-modal'
     });
     modal.present();
+
+  }
+
+  viewDetails(company) {
 
   }
 }
