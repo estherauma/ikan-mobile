@@ -8,9 +8,10 @@ import { Component, ViewChild, ElementRef, Input } from '@angular/core';
 export class AudioPlayerComponent {
   @ViewChild('audioPlayer') audioPlayer: ElementRef;
 
-  @Input() variant: 'white-bg-title-photo' | 'white-bg-title' | 'white-bg' | '' = '';
+  @Input() variant: 'white-bg-title-photo' | 'white-bg-title' | 'white-bg' | 'gray-bg' | '' = '';
   @Input() title = '';
   @Input() audioSrc = '';
+  @Input() size: 'thin' | '' = '';
 
   audioTitle = 'Your Audio Title';
   currentTime = '00:00';

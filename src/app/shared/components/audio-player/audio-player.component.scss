@@ -22,6 +22,8 @@ ion-progress-bar{
 
     .progress-section {
         width: 50%;
+        margin-left: 8px;
+        margin-right: 8px;
     }
 }
 
@@ -29,6 +31,16 @@ ion-progress-bar{
     background-color: #ffffff;
     padding: 16px;
     border-radius: 20px;
+}
+
+.gray-bg {
+    background-color: var(--ikan_skyblue_100);
+    padding: 16px;
+    border-radius: 20px;
+}
+
+.thin {
+    padding: 8px !important;
 }
 
 .white-bg-title{
@@ -67,4 +79,12 @@ ion-progress-bar{
 
 h2 {
     margin-top: 0px;
+}
+
+.duration-right {
+    padding-right: 8px;
+}
+
+.duration-left {
+    padding-left: 8px;
 }

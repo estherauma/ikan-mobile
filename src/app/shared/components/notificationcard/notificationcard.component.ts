@@ -8,6 +8,7 @@ import { Component, Input, OnInit } from '@angular/core';
 export class NotificationcardComponent implements OnInit {
   @Input() statusContainer: 'skyblue-status-container' | 'gray-status-container' = 'skyblue-status-container';
   @Input() notification;
+  @Input() titleColor: 'blue' | 'deep-blue' = 'deep-blue';
 
   constructor() { }
 
