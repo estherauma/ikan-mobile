@@ -39,6 +39,7 @@ import { TitleblockComponent } from './components/titleblock/titleblock.componen
 import { WorkercardComponent } from './components/workercard/workercard.component';
 import { AudioPlayerComponent } from './components/audio-player/audio-player.component';
 import { ContentwrapperComponent } from './components/contentwrapper/contentwrapper.component';
+import { CompaniescardComponent } from './components/companiescard/companiescard.component';
 
 
 @NgModule({
@@ -86,6 +87,7 @@ import { ContentwrapperComponent } from './components/contentwrapper/contentwrap
     WorkercardComponent,
     AudioPlayerComponent,
     ContentwrapperComponent,
+    CompaniescardComponent
   ],
   exports: [
     FormComponent,
@@ -125,6 +127,7 @@ import { ContentwrapperComponent } from './components/contentwrapper/contentwrap
     WorkercardComponent,
     AudioPlayerComponent,
     ContentwrapperComponent,
+    CompaniescardComponent
   ]
 })
 

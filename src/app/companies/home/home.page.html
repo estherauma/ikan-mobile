@@ -25,7 +25,7 @@
 
   <div>
     <div>
-      <app-workercard (click)="viewDetails(company)" *ngFor="let company of companies" [worker]="company"></app-workercard>
+      <app-companiescard (click)="viewDetails(company)" *ngFor="let company of companies" [company]="company"></app-companiescard>
     </div>
   </div>
 
