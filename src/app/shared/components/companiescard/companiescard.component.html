@@ -1,0 +1,22 @@
+<ion-card class="card-body">
+  <div  class="card-content">
+    <div
+      class="card-image-section">
+      <img class="image" src="/assets/icon/ellipse_profile.svg" />
+    </div>
+    <div class="card-section">
+      <div style="position: relative;">
+        <div class="status-container">
+          <div class="status-wrapper">
+            <span >{{company.status}}</span>
+          </div>
+        </div>
+      </div>
+      <div class="ion-padding ion-margin-vertical">
+        <ion-card-title class="blue-text">{{company.name}}</ion-card-title>
+        <ion-label><span class="gray-text">Tel: {{company.telephone}}</span></ion-label> <br>
+        <ion-label><span class="gray-text">Country: {{company.country}}</span></ion-label> <br>
+      </div>
+    </div>
+  </div>
+</ion-card>

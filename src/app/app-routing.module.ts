@@ -322,6 +322,18 @@ const routes: Routes = [
     path: 'learninghub/section',
     loadChildren: () => import('./learninghub/section/section.module').then( m => m.SectionPageModule)
   },
+  {
+    path: 'companies/home',
+    loadChildren: () => import('./companies/home/home.module').then( m => m.HomePageModule)
+  },
+  {
+    path: 'companies/create',
+    loadChildren: () => import('./companies/create/create.module').then( m => m.CreatePageModule)
+  },
+  {
+    path: 'companies/details',
+    loadChildren: () => import('./companies/details/details.module').then( m => m.DetailsPageModule)
+  },
 ];
 
 @NgModule({
