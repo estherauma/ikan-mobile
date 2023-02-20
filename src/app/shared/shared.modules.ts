@@ -39,6 +39,7 @@ import { TitleblockComponent } from './components/titleblock/titleblock.componen
 import { WorkercardComponent } from './components/workercard/workercard.component';
 import { AudioPlayerComponent } from './components/audio-player/audio-player.component';
 import { ContentwrapperComponent } from './components/contentwrapper/contentwrapper.component';
+import { FeedbackStatCardComponent } from './components/feedback-stat-card/feedback-stat-card.component';
 import { CompaniescardComponent } from './components/companiescard/companiescard.component';
 
 
@@ -87,7 +88,8 @@ import { CompaniescardComponent } from './components/companiescard/companiescard
     WorkercardComponent,
     AudioPlayerComponent,
     ContentwrapperComponent,
-    CompaniescardComponent
+    FeedbackStatCardComponent,
+    CompaniescardComponent,
   ],
   exports: [
     FormComponent,
@@ -127,7 +129,8 @@ import { CompaniescardComponent } from './components/companiescard/companiescard
     WorkercardComponent,
     AudioPlayerComponent,
     ContentwrapperComponent,
-    CompaniescardComponent
+    FeedbackStatCardComponent,
+    CompaniescardComponent,
   ]
 })
 

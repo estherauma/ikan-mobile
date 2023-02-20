@@ -4,6 +4,11 @@
     transform: translateX(-50%);
 }
 
+.custom-border {
+    border-left: 1px solid #191970;
+    border-bottom: 1px solid #191970;
+}
+
 .center-container {
     text-align: center;
     position: absolute;
@@ -11,7 +16,6 @@
     left: 50%;
     transform: translate(-50%, -50%);
     font-family: GatwickBold;
-    ;
 }
 
 .white {

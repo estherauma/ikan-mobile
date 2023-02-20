@@ -1,4 +1,4 @@
-<div class="chart"> 
+<div class="chart" [ngClass]="{'custom-border': chartType === 'bar'}"> 
   <canvas [height]="chartHeight"  [id]="chartId" >{{ chart }}</canvas>  
   <div 
   *ngIf="centerText || centerIcon" 
