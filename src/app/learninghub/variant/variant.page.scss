@@ -1,0 +1,44 @@
+.audio-section{
+    display: flex;
+    position: absolute;
+    width: 100%;
+    margin-top: 260px;
+    z-index: 10;
+    height: 40px;
+    justify-content: center;
+    align-items: center;
+
+    div {
+        width: 80%;
+    }
+}
+
+.image-section{
+    height: 300px;
+    background-color: rgba(0, 0, 255, 0.5);
+    backdrop-filter: blur(5px);
+    position: absolute;
+    width: 100%;
+    top: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 32px;
+}
+
+.content-section {
+    background-color: #191970;
+    border-top-left-radius: 20px;
+    border-top-right-radius: 20px;
+    z-index: 3;
+    position: absolute;
+    width: 100%;
+    top: 280px;
+    min-height: 80%;
+    padding: 32px 16px 16px
+}
+
+ion-slides {
+    --bullet-background: #eee;
+    --bullet-background-active: #ffffff;;
+  }

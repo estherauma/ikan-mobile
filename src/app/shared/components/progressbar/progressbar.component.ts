@@ -1,7 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
 
 
-export type ProgressBarType = 'warning' | 'success';
+export type ProgressBarType = 'warning' | 'success' | 'primary';
 @Component({
   selector: 'app-progressbar',
   templateUrl: './progressbar.component.html',
@@ -9,7 +9,7 @@ export type ProgressBarType = 'warning' | 'success';
 })
 export class ProgressbarComponent implements OnInit {
   @Input() value = '100';
-  @Input() type: ProgressBarType = 'success';
+  @Input() type: ProgressBarType | string = 'success';
   @Input() title = '';
   @Input() titleColor: 'blue' | 'dark-blue' = 'blue';
   progressValue = 0;

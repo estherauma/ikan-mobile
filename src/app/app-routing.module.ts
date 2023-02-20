@@ -315,6 +315,14 @@ const routes: Routes = [
     loadChildren: () => import('./workers/detail/training/training.module').then( m => m.TrainingPageModule)
   },
   {
+    path: 'learninghub/variant',
+    loadChildren: () => import('./learninghub/variant/variant.module').then( m => m.VariantPageModule)
+  },
+  {
+    path: 'learninghub/section',
+    loadChildren: () => import('./learninghub/section/section.module').then( m => m.SectionPageModule)
+  },
+  {
     path: 'companies/home',
     loadChildren: () => import('./companies/home/home.module').then( m => m.HomePageModule)
   },
