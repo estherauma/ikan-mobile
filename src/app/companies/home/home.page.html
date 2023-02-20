@@ -1,8 +1,7 @@
 <app-header [isBackButton]="false"></app-header>
 
-<ion-content>
-
-  <!-- Create button -->
+<ion-content class="content-skyblue-bg">
+  <app-contentwrapper>
   <ion-grid class="ion-margin-bottom">
     <ion-row class="ion-justify-content-between ion-align-items-baseline">
       <ion-col>
@@ -28,5 +27,5 @@
       <app-companiescard (click)="viewDetails(company)" *ngFor="let company of companies" [company]="company"></app-companiescard>
     </div>
   </div>
-
+</app-contentwrapper>
 </ion-content>
