@@ -83,6 +83,27 @@ export class ChartComponent implements OnInit, AfterViewInit {
         ...this.chartOptions,
         ...{
           indexAxis: this.indexAxis,
+        },
+        ...{
+          plugins: {
+            legend: {
+              display: false
+            }
+          },
+          scales: {
+            x: {
+              display: false,
+              title: {
+                display: false
+              }
+            },
+            y: {
+              display: false,
+              title: {
+              display: false
+            }
+            }
+          }
         }
       }
     });
