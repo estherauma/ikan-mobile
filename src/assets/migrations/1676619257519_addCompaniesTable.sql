@@ -1,0 +1,17 @@
+CREATE TABLE IF NOT EXISTS companies (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  name VARCHAR(255) NOT NULL,
+  description TEXT NOT NULL,
+  logo VARCHAR(255),
+  status VARCHAR(255) NOT NULL,
+  country VARCHAR(255) NOT NULL,
+  telephone VARCHAR(255),
+  email VARCHAR(255),
+  address_line_1 VARCHAR(255),
+  address_line_2 VARCHAR(255),
+  address_line_3 VARCHAR(255),
+  created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  created_by VARCHAR(255) NOT NULL,
+  updated_by VARCHAR(255) NOT NULL
+);

@@ -33,6 +33,22 @@
         </div>
       </div>
 
+      <div *ngSwitchCase="'textArea'">
+        <div *ngIf="question.displayquestion" lines="none" class="transparent-bg">
+          <ion-grid>
+            <ion-row>
+              <ion-col size="12">
+                <ion-label text-wrap> {{question.label}} </ion-label>
+              </ion-col>
+              <ion-col size="12">
+                <ion-textarea class="ion-padding-start form-input" type="text" placeholder="Type here" formControlName="{{question.key}}"></ion-textarea>
+              </ion-col>
+
+            </ion-row>
+          </ion-grid>
+        </div>
+      </div>
+
       <div *ngSwitchCase="'password'">
         <div *ngIf="question.displayquestion" lines="none">
           <ion-grid>
