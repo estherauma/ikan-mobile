@@ -13,7 +13,7 @@ export class AuthService {
       case UserRole.taiwaneseAgent:
         return 'dashboard/taiwaneseagent';
       case UserRole.worker:
-        return 'dashboard/worker';
+        return 'companies/home';
       case UserRole.vesselOwner:
         return 'dashboard/vesselowner';
       case UserRole.indonesianAgent:

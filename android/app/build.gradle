@@ -26,7 +26,11 @@ android {
           debuggable true
           firebaseAppDistribution {
               releaseNotes="Update search logic for agents, workorders and vessels"
+              serviceCredentialsFile="google-application-credentials.json"
               groups="scrum"
+          }
+        }
+    }
     sourceSets {
       main {
         jniLibs.srcDirs = ['libs']
