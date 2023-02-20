@@ -47,6 +47,6 @@ export class VariantPage implements OnInit {
   }
 
   viewDetials(lh) {
-    this.router.navigate(['/learninghub/detail', lh]);
+    this.router.navigate(['/learninghub/section']);
   }
 }

@@ -15,6 +15,7 @@ export class HomePage implements OnInit {
       text: 'Perlakuan tidak manusiawi, transshipment, illegal fishing.',
       progressBarValue: '60',
       progressBarType: 'primary',
+      progressBarText: 'primary',
       imageUrl: '/assets/icon/image_placeholder.svg'
     },
     {
@@ -22,6 +23,7 @@ export class HomePage implements OnInit {
       text :'Perlakuan tidak manusiawi, transshipment, illegal fishing.',
       progressBarValue :'60',
       progressBarType : 'warning',
+      progressBarText: 'warning',
       imageUrl : '/assets/icon/image_placeholder.svg'
     },
     {
@@ -29,6 +31,7 @@ export class HomePage implements OnInit {
       text :'Perlakuan tidak manusiawi, transshipment, illegal fishing.',
       progressBarValue :'0',
       progressBarType : 'primary',
+      progressBarText: 'primary',
       imageUrl : '/assets/icon/image_placeholder.svg'
     }
   ];
