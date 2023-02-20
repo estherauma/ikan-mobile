@@ -7,8 +7,8 @@ android {
         applicationId "com.fiftyeight.tuna.dev"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 112
-        versionName "0.0.12"
+        versionCode 113
+        versionName "0.0.13"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         aaptOptions {
              // Files and dirs to omit from the packaged assets dir, modified to accommodate modern web apps.
@@ -25,9 +25,8 @@ android {
           minifyEnabled false
           debuggable true
           firebaseAppDistribution {
-              releaseNotes="Update search logic for agents, workorders and vessels"
-              serviceCredentialsFile="google-application-credentials.json"
-              groups="scrum"
+            releaseNotes="Fix mobile app check for roles and permissions"
+            groups="scrum"
           }
         }
     }
@@ -38,11 +37,11 @@ android {
     }
 }
 
- repositories {
-     flatDir{
-         dirs '../capacitor-cordova-android-plugins/src/main/libs', 'libs'
-     }
- }
+repositories {
+  flatDir{
+    dirs '../capacitor-cordova-android-plugins/src/main/libs', 'libs'
+  }
+}
 
 dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
