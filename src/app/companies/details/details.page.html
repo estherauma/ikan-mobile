@@ -1,26 +1,55 @@
 <app-header [isBackButton]="true"></app-header>
 
-<ion-content>
-  <ion-content class="ion-padding">
-    <ion-text>
-        <p>{{company.email}}</p>
-    </ion-text>
-    <ion-text>
-        <p>{{company.telephone}}</p>
-    </ion-text>
-    <br />
-    <ion-text class="text">
-        <p>{{company.addressLine1}}</p>
-    </ion-text>
-    <ion-text class="text">
-        <p>{{company.addressLine2}}</p>
-    </ion-text>
-    <ion-text class="text">
-        <p>{{company.addressLine3y}}</p>
-    </ion-text>
-    <ion-text class="text">
-        <p>{{company.description}}</p>
-    </ion-text>
- 
-</ion-content>
+<ion-content class="content-skyblue-bg ion-content-custom-position">
+    <app-contentwrapper>
+    <div class="title-container">
+        <div class="title-section">
+        <app-title [isLightBlue]="true" [isBig]="true" [title]="company.name"></app-title>
+
+        <ion-text class="text">
+            <p>{{company.description}}</p>
+        </ion-text>
+        </div>
+    </div>
+    <div class="ion-padding bottom-section">
+
+        <div>
+            <h6 class="title">Contacts</h6>
+            <div class="item-section">
+                <ion-icon name="mail-outline"></ion-icon>
+                <ion-text class="text">
+                    <p>{{company.email}}</p>
+                </ion-text>
+            </div>
+            <div class="item-section">
+                <ion-icon name="call-outline"></ion-icon>
+                <ion-text class="text">
+                    <p>{{company.telephone}}</p>
+                </ion-text>
+            </div>
+        </div>
+
+        <div>
+            <h6 class="title">Address</h6>
+            <div class="item-section">
+                <ion-icon name="home-outline"></ion-icon>
+                <ion-text class="text">
+                    <p>{{company.addressLine1}}</p>
+                </ion-text>
+            </div>
+            <div class="item-section">
+                <ion-icon name="storefront-outline"></ion-icon>
+                <ion-text class="text">
+                    <p>{{company.addressLine2}}</p>
+                </ion-text>
+            </div>
+            <div class="item-section">
+                <ion-icon name="compass-outline"></ion-icon>
+                <ion-text class="text">
+                    <p>{{company.addressLine3}}</p>
+                </ion-text>
+            </div>
+        </div>
+    </div>
+    </app-contentwrapper>
 </ion-content>

@@ -1,0 +1,51 @@
+.title-container {
+    background-color: #191970; 
+    min-height: 250px; 
+    width: 100%; 
+    margin-top: -32px; 
+    padding-top: 16px;
+
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.title-section{
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    justify-content: center;
+    .text {
+        color: #F5F5F5;
+    }
+}
+
+ion-icon{
+    color: var(--ikan_deep_gray);
+}
+
+.title {
+    color: #191970; 
+}
+
+.text{
+    color: var(--ikan_blue_100);
+}
+
+.item-section {
+    display: flex;
+    align-items: center;
+    .text{
+        padding-left: 16px;
+    }
+}
+
+.bottom-section {
+    border-top-left-radius: 20px;
+    border-top-right-radius: 20px;
+    z-index: 10;
+    margin-top: -16px;
+    background-color: var(--ikan_skyblue_100);
+    padding: 32px;
+}
