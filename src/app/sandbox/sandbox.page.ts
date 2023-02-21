@@ -1,4 +1,7 @@
 import { Component, OnInit } from '@angular/core';
+import { FormControl, Validators, FormGroup } from '@angular/forms';
+import { BaseformPage } from '../shared/components/baseform/baseform.page';
+import { ContentService } from '../shared/services/content/content.service';
 import { IPaymentsSummary } from '../shared/types/api-types';
 
 @Component({
@@ -6,7 +9,7 @@ import { IPaymentsSummary } from '../shared/types/api-types';
   templateUrl: './sandbox.page.html',
   styleUrls: ['./sandbox.page.scss'],
 })
-export class SandboxPage implements OnInit {
+export class SandboxPage extends BaseformPage implements OnInit {
   paymentBreakdowns: any = [
     {
       type: 'Bank transfer',
@@ -98,8 +101,31 @@ export class SandboxPage implements OnInit {
 
   audioSrc = 'http://commondatastorage.googleapis.com/codeskulptor-demos/DDR_assets/Sevish_-__nbsp_.mp3';
 
-  constructor() { }
+  customSubmitBtnDisabled = true;
+  formData;
+
+  constructor(
+    public contentService: ContentService,
+  ) {
+    super(contentService);
+    const pageData = this.contentService.getContentByPropertyName('createworkerprofile');
+    this.pageTitle = pageData?.pageTitle;
+    this.formQuestions = pageData?.formQuestions;
+    this.formQuestions.forEach((entry) => {
+      this.group[entry.key] = new FormControl('', [Validators.required]);
+    });
+    this.pageFormGroup = new FormGroup(this.group);
+  }
   ngOnInit() {
+  }
+
+  dataFromCustomButton(event) {
+    this.customSubmitBtnDisabled = !event.valid;
+    this.formData = event.data;
+  }
+
+  customSubmit() {
+    alert(JSON.stringify(this.formData));
   }
 
 }

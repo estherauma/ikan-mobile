@@ -15,7 +15,7 @@ export class FormComponent implements OnInit {
   // TODO: See after prismic integration if we can change this type to something more meaningful
   @Input() tunaFormquestions: any;
   @Input() tunaFormGroup: FormGroup;
-  @Input() submitButtonText: string;
+  @Input() submitButtonText = 'Submit';
   @Input() btnConfig: any = '';
   @Input() btnFill: 'solid' | 'clear' | 'outline' = 'outline';
   @Input() useCustomSubmitButton = false;
@@ -26,6 +26,7 @@ export class FormComponent implements OnInit {
   @Output() formValues = new EventEmitter<any>();
   @Output() cancel = new EventEmitter<any>();
   @Output() formValue = new EventEmitter<any>();
+  @Output() dataFromCustomButton = new EventEmitter<any>();
 
   selectedImages = {};
   selectedDocuments = {};
@@ -46,6 +47,19 @@ export class FormComponent implements OnInit {
         });
         this.formKeysToRemove.push(question.key);
       }
+    });
+
+    this.tunaFormGroup.valueChanges.subscribe((value) => {
+      const finalValues = this.removeUnwantedObjectKey(this.tunaFormGroup.value);
+
+      if (this.useCustomSubmitButton) {
+        this.dataFromCustomButton.emit({data: null, valid:  this.tunaFormGroup.valid});
+      }
+
+      if (this.useCustomSubmitButton && this.tunaFormGroup.valid) {
+        this.dataFromCustomButton.emit({data: finalValues, valid: this.tunaFormGroup.valid});
+      }
+
     });
   }
 

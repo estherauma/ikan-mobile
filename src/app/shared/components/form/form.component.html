@@ -186,7 +186,7 @@
     </div>
   </div>
 
-  <ion-grid class="buttons">
+  <ion-grid class="buttons" *ngIf="!useCustomSubmitButton">
     <ion-col size="5">
       <app-button  type="submit" [config]="btnConfig" [fill]="btnFill" [disabled]="!tunaFormGroup.valid" title={{submitButtonText.toUpperCase()}}></app-button>
     </ion-col>
