@@ -1,0 +1,85 @@
+.light{
+    background: var(--ikan_skyblue_100);
+}
+
+.no-bg {
+    background: transparent !important;
+}
+
+.stat-card {
+    border-radius: 20px;
+    position: relative;
+    background: #F2F5FF;
+}
+
+.no-icon-card-title-section {
+    margin-left: 0px !important;
+    margin-top: 0px !important;
+}
+
+.no-border {
+    box-shadow: none;
+}
+
+.icon-container {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 60px;
+    height: 60px;
+    display: flex;
+    align-items: center;
+    background: #3565FF;
+    color: #ffffff;
+    justify-content: center;
+    border-bottom-right-radius: 20px;
+}
+
+.title-section {
+    margin-left: 48px;
+    margin-top: -8px;
+}
+
+.main-stat-value {
+    color: #3565FF;
+}
+
+.main-stat-title {
+    color: #191970;
+    padding-bottom: 8px;
+    font-weight: bolder;
+}
+
+.stats-contents {
+    :nth-child(1) {
+        .p-text {
+            display: block;
+            ion-icon {
+                color: #B4C4F9;
+            }
+        }
+    }
+    :nth-child(2) {
+        .p-text {
+            display: block;
+            ion-icon {
+                color: #7594FC;
+            }
+        }
+    }
+    :nth-child(3) {
+        .p-text {
+            ion-icon {
+                color: #426EFE;
+            }
+        }
+    }
+    span{
+        color: #3565FF;
+    }
+}
+
+.chart-stats-container {
+    padding-top: 16px;
+    padding-bottom: 16px;
+}

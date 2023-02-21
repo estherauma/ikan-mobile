@@ -13,6 +13,7 @@ export class HomePage implements OnInit {
   //TODO: Use translated text from prisimic
   pageTitle = 'Vessels';
   vessels = [];
+  unFilteredData = [];
   filterOptions = [
     {title:'Active Duty', value:'Active Duty'},
     {title:'', value:'opened'}
@@ -25,7 +26,7 @@ export class HomePage implements OnInit {
     public vesselsDataService: VesselsDataService
   ) {
     this.vesselsDataService.getAll().subscribe((data) => {
-      this.vessels = data;
+      this.vessels = this.unFilteredData = data;
     });
   }
 
@@ -50,6 +51,10 @@ export class HomePage implements OnInit {
 
   searchResult(result) {
     this.vessels = result;
+  }
+
+  clearSearchResult() {
+    this.vessels = this.unFilteredData;
   }
 
   filterResult(result) {

@@ -15,6 +15,7 @@ export class HomePage implements OnInit {
   //TODO: Use translated text from prismic
   pageTitle = 'Work Orders';
   workOrders = [];
+  unFilteredData = [];
 
 selectText = '';
 cancelText = '';
@@ -33,7 +34,7 @@ filterOptions = [
     private workOrderService: WorkordersDataService,
     public modalCtrl: ModalController) {
       this.workOrderService.getAll().subscribe((data) => {
-        this.workOrders = data;
+        this.workOrders = this.unFilteredData = data;
       });
     }
 
@@ -64,9 +65,17 @@ filterOptions = [
   }
 
   searchResult(result) {
+    this.workOrders = result;
   }
 
-  filterResult(result) {}
+  clearSearchResult() {
+    console.log('clear triggered');
+    this.workOrders = this.unFilteredData;
+  }
+
+  filterResult(result) {
+    this.workOrders = result;
+  }
 
   onSelect() {
     this.select = true;

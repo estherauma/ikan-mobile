@@ -1,7 +1,7 @@
 <ion-card>
   <ion-card-content>
     <div class="content" [ngClass]="{'flex-row': imagePosition === 'left', 'flex-col': imagePosition === 'top'}">
-      <div>
+      <div class="image-section">
         <img 
         *ngIf="imageUrl" 
         [src]="imageUrl" 
@@ -16,13 +16,16 @@
       </div>
       <div>
         <app-title 
-        [title]="title" 
+        [title]="title.length > 10 ? title.slice(0, 10) + '..' : title " 
         [isBlue]="true" 
         [isBig]="cardTitleSize === 'big'"
         [isSmall]="cardTitleSize === 'small'"
         ></app-title>
-        <ion-text>{{text}}</ion-text>
-        <app-progressbar [type]="progressBarType" *ngIf="progressBarValue" [value]="progressBarValue"></app-progressbar>
+        <ion-text>{{ text.length > 18 ? text.slice(0, 18) + '..' : text }}</ion-text>
+        <div class="progress-with-text">
+          <ion-text *ngIf="progressText">{{ progressText.length > 10 ? progressText.slice(0, 10) + '..' : progressText }} <span>{{progressBarValue}}%</span></ion-text>
+          <app-progressbar [type]="progressBarType" *ngIf="progressBarValue" [value]="progressBarValue"></app-progressbar>
+        </div>
       </div>
     </div>
   </ion-card-content>

@@ -1,12 +1,35 @@
 <app-header></app-header>
 
-<ion-content>
-  <div *ngFor="let item of notifications" style="margin-left: 10px;">
-    <ion-text> <strong>{{item.title}}</strong></ion-text>
-    <ion-item-sliding *ngFor="let notif of item.content">
-      <ion-item>
-        <app-notificationcard [notification]="notif"></app-notificationcard>
-      </ion-item>
-    </ion-item-sliding>
-  </div>
+<ion-content class="content-skyblue-bg">
+  <app-contentwrapper>
+    <div class="ion-padding">
+      <div>
+        <app-title [isBig]="true" [isBlue]="true" title="Notifications"></app-title>
+      </div>
+      <div *ngFor="let item of notifications" class="ion-margin-top">
+        <ion-text *ngIf="item.title !== 'New'" class="ion-padding-bottom"> <strong>{{item.title}}</strong></ion-text>
+        <ion-badge *ngIf="item.title === 'New'" class="ion-margin-bottom" slot="start">{{item.title}}</ion-badge>
+        <ion-list>
+          <ion-item-sliding *ngFor="let notif of item.content">
+            <ion-item lines="none" fill="solid">
+              <app-notificationcard
+               [notification]="notif"
+               titleColor="blue"
+               ></app-notificationcard>
+            </ion-item>
+            <ion-item-options side="end">
+              <ion-item-option class="ion-item-option-first">
+                <ion-icon name="ellipsis-horizontal-circle"></ion-icon>
+                <p>More</p>
+              </ion-item-option>
+              <ion-item-option class="ion-item-option-second" color="danger">
+                <ion-icon slot="icon-only" name="trash"></ion-icon>
+                <p>Delete</p>
+              </ion-item-option>
+            </ion-item-options>
+          </ion-item-sliding>
+        </ion-list>
+      </div>
+    </div>
+  </app-contentwrapper>
 </ion-content>
