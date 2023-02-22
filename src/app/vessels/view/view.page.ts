@@ -11,14 +11,22 @@ import { ArchivedWoPage } from '../archived-wo/archived-wo.page';
 export class ViewPage implements OnInit {
   pageTitle = 'Vessel Details';
   vessel: any;
+  title;
+  woTitle = 'Active Work Orders';
+  editBtnText = 'Edit';
+  archivedBtnText = 'Archived';
 
   workOrders = [
     {
-      name: 'Work order 1',
-      internalRef: 'IWXDWER8234',
-      dateOpened: '2022-10-23',
+      appRef: 'ref1234',
+      createdAt: '2023-01-30 13:09:03',
+      createdBy: '-NHx56Ppqi1o6C_qKxBJ',
+      id: 1,
+      internalRef: 'ref1234',
+      name: 'work or 1',
       status: 'Open',
-      appRef: 'XXX-XXX-XXX',
+      updatedAt: '2023-01-30 13:09:03',
+      updatedBy: '-NHx56Ppqi1o6C_qKxBJ'
     }
 ];
   constructor(
@@ -33,6 +41,7 @@ export class ViewPage implements OnInit {
   getParams() {
     this.activatedRoute.params.subscribe((params) => {
       this.vessel = params;
+      this.title = `Status: ${this.vessel.status}`;
     });
   }
 
