@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { ModalController } from '@ionic/angular';
+import { ContentService } from 'src/app/shared/services/content/content.service';
 import { ArchivedWoPage } from '../archived-wo/archived-wo.page';
 
 @Component({
@@ -31,11 +32,16 @@ export class ViewPage implements OnInit {
 ];
   constructor(
     public activatedRoute: ActivatedRoute,
-    public modalCtrl: ModalController
+    public modalCtrl: ModalController,
+    public contentService: ContentService,
   ) { }
 
   async ngOnInit() {
     await this.getParams();
+
+    this.editBtnText = this.contentService.commonText?.edit;
+    this.woTitle = this.contentService.commonText?.activeWoTitle;
+    this.archivedBtnText = this.contentService.commonText?.archivedBtnText;
   }
 
   getParams() {
