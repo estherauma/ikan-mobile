@@ -8,6 +8,8 @@ import { Router } from '@angular/router';
 })
 export class VesselownercardComponent implements OnInit {
   @Input() vessel;
+  @Input() isNoBorderShadow = false;
+  @Input() background: 'transparent' | string = '';
   constructor(
     public router: Router,
   ) { }
