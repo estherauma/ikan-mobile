@@ -13,9 +13,9 @@ export class ViewPage implements OnInit {
   pageTitle = 'Vessel Details';
   vessel: any;
   title;
-  woTitle = 'Active Work Orders';
-  editBtnText = 'Edit';
-  archivedBtnText = 'Archived';
+  woTitle = '';
+  editBtnText = '';
+  archivedBtnText = '';
 
   workOrders = [
     {
