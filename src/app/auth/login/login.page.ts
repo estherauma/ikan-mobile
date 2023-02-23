@@ -18,6 +18,7 @@ import { DBService } from 'src/app/shared/services/database/db.service';
 })
 export class LoginPage extends BaseformPage implements OnInit {
   submitButtonText: string;
+  testEmails;
 
   constructor(
     public contentService: ContentService,
@@ -36,6 +37,8 @@ export class LoginPage extends BaseformPage implements OnInit {
       this.group[entry.key] = new FormControl('', [Validators.required]);
     });
     this.pageFormGroup = new FormGroup(this.group);
+
+    this.testEmails = this.dbService.testEmails;
   }
 
   ngOnInit() {
@@ -63,6 +66,12 @@ export class LoginPage extends BaseformPage implements OnInit {
           this.sharedMethods.hideLoader();
           // enable menu
           this.menuCtrl.enable(true);
+
+
+          if (this.testEmails.includes(res.data.userData?.email)) {
+            this.dbService.checkDbPlatformAndRunMigration(true);
+          }
+
           this.handleRedirection();
         }
       }, (err: HttpErrorResponse) => {

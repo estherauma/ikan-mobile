@@ -5,3 +5,8 @@
 1675650377224_addWorkersTable.sql
 1675673176921_addDemandLettersTable.sql
 1676619257519_addCompaniesTable.sql
+1677148609018_addWorkOrders_Dummy.sql.sql
+1677150886757_addWorkordersClauses_Dummy.sql
+1677155402016_addAgents_Dummy.sql
+1677155699589_addVessels_Dummy.sql
+1677156554736_addWorkers_Dummy.sql
