@@ -10,3 +10,5 @@
 1677155402016_addAgents_Dummy.sql
 1677155699589_addVessels_Dummy.sql
 1677156554736_addWorkers_Dummy.sql
+1677224168172_addDemandLetters_Dummy.sql
+1677225489170_addCompanies_Dummy.sql

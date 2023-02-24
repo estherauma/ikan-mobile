@@ -9,6 +9,20 @@ import { SQLiteObject } from './sqlite.mock';
 
 import { Platform } from '@ionic/angular';
 import { HttpClient } from '@angular/common/http';
+
+const testEmailsDb = [
+  'vessel_owner@50eight.com',
+  'tai_agent@50eight.com',
+  'indo_agent@50eight.com',
+  'worker@50eight.com',
+  'buyer@50eight.com',
+  'taien+technology@50eight.com',
+  'cici+technology@50eight.com',
+  'farah+technology@50eight.com',
+  'budi+technology@50eight.com',
+  'tony+technology@50eight.com'
+];
+
 @Injectable({
   providedIn: 'root'
 })
@@ -17,15 +31,15 @@ export class DBService {
   executedMigrations: any[] = [];
   allMigrationFiles: any[] = [];
   pendingMigrations: any[] = [];
-  testEmails = ['worker@50eight.com', 'vessel_owner@50eight.com'];
+  testEmails = testEmailsDb;
 
   constructor(
     private sqlite: SQLite,
     public platform: Platform,
     public http: HttpClient
   ) {
+    // console.log(JSON.parse(env.testEmails.replace(/\s/g, '')));
   }
-
   checkDbPlatformAndRunMigration(dummy = false) {
     this.platform.ready().then(async() => {
       this.sqlite.create({
