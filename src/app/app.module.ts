@@ -15,7 +15,7 @@ import { CommonModule } from '@angular/common';
 import { SQLite } from '@awesome-cordova-plugins/sqlite/ngx';
 
 /** This is used to make sqlite work with the browser. */
-import { SQLiteMock } from './shared/services/database/sqlite.mock';
+// import { SQLiteMock } from './shared/services/database/sqlite.mock';
 
 @NgModule({
   declarations: [ AppComponent ],
@@ -36,10 +36,10 @@ import { SQLiteMock } from './shared/services/database/sqlite.mock';
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
 
     /** Uncomment next line for native builds */
-    // { provide: SQLite },
+    { provide: SQLite },
 
     /** We use SQLiteMock for testing in the browser */
-    { provide: SQLite, useClass: SQLiteMock },
+    // { provide: SQLite, useClass: SQLiteMock },
 
   ],
   bootstrap: [AppComponent],
