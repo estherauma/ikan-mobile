@@ -2,6 +2,32 @@
   margin-top: 20px;
 }
 
-.pushRight {
-  margin-left: 15px;
+.wo-title {
+  color: #191970;
+  font-weight: bold;
+}
+
+.archive-btn {
+  width: 100px;
+  padding-left: 16px;
+}
+
+.top-title {
+  color: #191970;
+  padding-left: 8px;
+  span {
+    color: #A0ABCC;
+  }
+}
+
+.wo-titles {
+  padding-left: 16px;
+}
+
+.wo-section {
+  background-color: #D3DAEE;
+  padding: 16px;
+  padding-bottom: 32px;
+  border-top-left-radius: 30px;
+  border-top-right-radius: 30px;
 }
