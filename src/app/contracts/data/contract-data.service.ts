@@ -37,8 +37,12 @@ export class ContractDataService {
             id: data.rows.item(i).id,
             appRef: data.rows.item(i).app_ref,
             internalRef: data.rows.item(i).internal_ref,
+            name: data.rows.item(i).name,
             startDate: data.rows.item(i).start_date,
             endDate: data.rows.item(i).end_date,
+            onlineRef: data.rows.item(i).online_ref,
+            description: data.rows.item(i).description,
+            type: data.rows.item(i).type,
             taiwaneseCompany: 'Taiwanese Company',
             indonesianCompany: 'Indonesian Company',
             vesselOwnerCompany: 'Vessel Owner Company',
@@ -60,17 +64,27 @@ export class ContractDataService {
 
   create(data) {
     const query = 'INSERT INTO contracts (app_ref, internal_ref, start_date, \
-      end_date, created_at, updated_at, created_by, updated_by) VALUES (?, ?, ?, ?, ?, ?, ?, ?)';
-    const params = [];
+      end_date, description, taiwanese_company_id, indonesian_company_id, type,\
+      created_at, updated_at, created_by, updated_by) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)';
+    const params = [data.app_ref, data.internal_ref, data.start_date, data.end_date,
+      data.description, data.taiwanese_company_id, data.indonesian_company_id, data.type,
+      data.created_at, data.updated_at, data.created_by, data.updated_by];
     return this.db.executeSql(query, params).then((result) => {
       this.retrieveContracts();
+      console.log('Contract created');
       return result.insertId;
     }).catch((e) => console.log(e));
   }
 
   update(data) { }
 
-  delete(id) { }
+  delete(id) {
+    const query = 'DELETE FROM contracts WHERE id = ?';
+    const params = [id];
+    return this.db.executeSql(query, params).then((result) => {
+      this.retrieveContracts();
+    }).catch((e) => console.log(e));
+  };
 
   createContractDocument(data) { }
 

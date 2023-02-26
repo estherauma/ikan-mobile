@@ -1,76 +1,74 @@
-<app-header
-  [pageTitle]="pageTitle"
->
-</app-header>
+<app-header [pageTitle]="pageTitle"> </app-header>
 
-<ion-content>
-  <ion-grid class="ion-padding">
-    <ion-row class="ion-align-items-center">
-      <ion-col size="4">
-        <ion-thumbnail class="image">
-          <ion-img [src]=""></ion-img>
-        </ion-thumbnail>
-      </ion-col>
-      <ion-col>
-        <h1>{{pageTitle}}</h1>
-        <h5>(150)</h5>
-      </ion-col>
-    </ion-row>
-  </ion-grid>
-  <app-search [searchDataSet]="contracts" (searchResult)="searchResult($event)"></app-search>
-
-  <ion-grid>
-    <ion-row style="align-items: center;">
-      <ion-col>Filter/Sort</ion-col>
-
-      <ion-col size="auto">
-
-        <ion-grid>
-          <ion-row>
-
-            <ion-col>
-              <ion-select style="border: 2px solid gray; border-radius:10px;" placeholder="All">
-                <ion-select-option value="apples">One</ion-select-option>
-                <ion-select-option value="oranges">Two</ion-select-option>
-              </ion-select>
-            </ion-col>
-
-            <ion-col>
-              <ion-select style="border: 2px solid gray; border-radius:10px;" placeholder="All">
-                <ion-select-option value="apples">one</ion-select-option>
-                <ion-select-option value="oranges">two</ion-select-option>
-              </ion-select>
-            </ion-col>
-
-          </ion-row>
-        </ion-grid>
-
-      </ion-col>
-
-    </ion-row>
-  </ion-grid>
-
-  <!-- TODO: Add segment to separate between worker and company contracts -->
-  <ion-card *ngFor="let contract of contracts">
-    <ion-card-content>
+<ion-content class="content-skyblue-bg ion-align-items-baseline">
+  <app-contentwrapper>
+    <div>
       <ion-grid>
-        <ion-row class="ion-align-items-center">
-          <ion-col size="3">
-            <ion-thumbnail>
-              <ion-img [src]="contract.image"></ion-img>
-            </ion-thumbnail>
+        <ion-row class="ion-justify-content-between ion-align-items-baseline">
+          <ion-col>
+            <img src="/assets/icon/workorders_blue.svg" width="20" height="40" />
           </ion-col>
-          <ion-col size="8">
-            <ion-card-title>{{contract.name}}</ion-card-title>
-            <ion-label>{{contract.companyName}}</ion-label>
-            <ion-label>{{contract.vesselName}}</ion-label> <br>
-            <ion-label>{{contract.date}}</ion-label> <br>
+          <ion-col>
+            <ion-row class="ion-justify-content-end">
+              <div>
+                <app-button (onClick)="createContract()" iconName="add-outline" title="New Contract"></app-button>
+              </div>
+            </ion-row>
           </ion-col>
-          <ion-col size="1" style="text-align: center" (click)="viewDeatils(contract)">
-            <ion-icon name="chevron-forward-outline" size="large"></ion-icon>
+        </ion-row>
+        <ion-row class="title">
+          <app-title [isBlue]="true" [title]="pageTitle"></app-title>
+        </ion-row>
+      </ion-grid>
+
+
+    <!-- search and filters -->
+    <div>
+      <app-search
+        [searchDataSet]="contracts"
+        (searchResult)="searchResult($event)"
+        (clear)="clearSearchResult()"></app-search>
+      <ion-grid>
+        <ion-row>
+          <ion-text class="filter-title">Filter</ion-text>
+        </ion-row>
+        <ion-row>
+          <ion-col>
+            <app-filter type="deep-blue-90" filterProperty="status" [options]="filterOptions"
+              [filterDataSet]="contracts" (filterResult)="filterResult($event)"></app-filter>
+          </ion-col>
+
+          <ion-col>
+            <app-filter type="deep-blue-90" filterProperty="status" [options]="filterOptions"
+              [filterDataSet]="contracts" (filterResult)="filterResult($event)"></app-filter>
           </ion-col>
         </ion-row>
       </ion-grid>
-    </ion-card-content>
-  </ion-card>
+    </div>
+  </div>
+
+    <!-- TODO: Add segment to separate between worker and company contracts -->
+    <ion-card *ngFor="let contract of contracts">
+      <ion-card-content>
+        <ion-grid>
+          <ion-row class="ion-align-items-center">
+            <ion-col size="3">
+              <ion-thumbnail>
+                <ion-img [src]="contract.image"></ion-img>
+              </ion-thumbnail>
+            </ion-col>
+            <ion-col size="8">
+              <ion-card-title>{{contract.name}}</ion-card-title>
+              <ion-label>{{contract.companyName}}</ion-label>
+              <ion-label>{{contract.vesselName}}</ion-label> <br>
+              <ion-label>{{contract.date}}</ion-label> <br>
+            </ion-col>
+            <ion-col size="1" style="text-align: center" (click)="viewDeatils(contract)">
+              <ion-icon name="chevron-forward-outline" size="large"></ion-icon>
+            </ion-col>
+          </ion-row>
+        </ion-grid>
+      </ion-card-content>
+    </ion-card>
+  </app-contentwrapper>
 </ion-content>
