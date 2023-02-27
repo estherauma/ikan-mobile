@@ -31,6 +31,8 @@ export class AppComponent implements OnInit, OnDestroy {
       data.sort((a, b) => a.position - b.position);
       this.appPages = data;
     });
+
+    this.dbService.checkDbPlatformAndRunMigration();
   }
 
   async ngOnInit() {

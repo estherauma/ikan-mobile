@@ -13,13 +13,15 @@ export class HomePage implements OnInit {
   // ToDo: Add localization
   pageTitle = 'Companies';
   companies = [];
+  unFilteredData = [];
+
   constructor(
     public modalCtrl: ModalController,
     public companiesDataService: CompaniesDataService,
     public router: Router
   ) {
     this.companiesDataService.getAll().subscribe((data) => {
-      this.companies = data;
+      this.companies = this.unFilteredData = data;
     });
   }
 
