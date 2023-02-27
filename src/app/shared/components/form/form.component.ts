@@ -20,13 +20,16 @@ export class FormComponent implements OnInit {
   @Input() btnFill: 'solid' | 'clear' | 'outline' = 'outline';
   @Input() useCustomSubmitButton = false;
   @Input() isTextBlue = false;
-  @Input()  isTitleDarkBlue = false;
-  @Input()  isOtherDarkBlue = false;
+  @Input() isTitleDarkBlue = false;
+  @Input() isOtherDarkBlue = false;
+  @Input() passwordFieldType: string;
+  @Input() passwordEyeIcon: string;
 
   @Output() formValues = new EventEmitter<any>();
   @Output() cancel = new EventEmitter<any>();
   @Output() formValue = new EventEmitter<any>();
   @Output() dataFromCustomButton = new EventEmitter<any>();
+  @Output() changeFieldState = new EventEmitter<any>();
 
   selectedImages = {};
   selectedDocuments = {};
@@ -129,5 +132,8 @@ export class FormComponent implements OnInit {
         });
       };
     });
+  }
+  changePasswordState() {
+    this.changeFieldState.emit();
   }
 }

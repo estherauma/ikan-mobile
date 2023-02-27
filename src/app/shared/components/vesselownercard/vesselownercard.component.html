@@ -1,4 +1,10 @@
-<ion-card (click)="viewDetails(vessel)">
+<ion-card 
+(click)="viewDetails(vessel)" 
+[ngClass]="{
+  'is-no-border-shadow': isNoBorderShadow,
+  'transparent-bg': background === 'transparent'
+}"
+>
   <ion-card-content>
     <div 
     class="vessel-image-container"

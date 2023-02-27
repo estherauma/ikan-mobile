@@ -10,9 +10,12 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { SharedModule } from './shared/shared.modules';
 import { HttpClientModule } from '@angular/common/http';
 import { CommonModule } from '@angular/common';
+
+/** This is used to make sqlite work with the emulator. */
 import { SQLite } from '@awesome-cordova-plugins/sqlite/ngx';
-// This is used to make sqlite work with the browser.
-import { SQLiteMock } from './shared/services/database/sqlite.mock';
+
+/** This is used to make sqlite work with the browser. */
+// import { SQLiteMock } from './shared/services/database/sqlite.mock';
 
 @NgModule({
   declarations: [ AppComponent ],
@@ -31,10 +34,13 @@ import { SQLiteMock } from './shared/services/database/sqlite.mock';
   ],
   providers: [
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
-    // Uncomment next line for native builds
+
+    /** Uncomment next line for native builds */
     { provide: SQLite },
-    // We use SQLiteMock for testing in the browser
+
+    /** We use SQLiteMock for testing in the browser */
     // { provide: SQLite, useClass: SQLiteMock },
+
   ],
   bootstrap: [AppComponent],
 })
