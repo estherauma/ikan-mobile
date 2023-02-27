@@ -120,3 +120,13 @@ export interface IPaymentsSummary {
   status: TPaymentStatus;
   text: string;
 }
+
+export enum FieldType{
+  text =  'text',
+  password = 'password',
+}
+
+export enum Icons {
+  iconEyeClosed =  'assets/icon/password/eye.svg',
+  iconEyeOpen = 'assets/icon/password/eye-cross.svg'
+}

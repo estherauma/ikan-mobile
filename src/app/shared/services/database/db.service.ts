@@ -19,11 +19,6 @@ export class DBService {
   allMigrationFiles: any[] = [];
   pendingMigrations: any[] = [];
   testEmails = [
-    'vessel_owner@50eight.com',
-    'tai_agent@50eight.com',
-    'indo_agent@50eight.com',
-    'worker@50eight.com',
-    'buyer@50eight.com',
     'taien+technology@50eight.com',
     'cici+technology@50eight.com',
     'farah+technology@50eight.com',
@@ -113,6 +108,7 @@ export class DBService {
   async runSingleMigrationFile(migrationFileName) {
     this.http.get('assets/migrations/' + migrationFileName, { responseType: 'text' as 'text'})
     .subscribe((data: any) => {
+        // TODO: add logic for skipping comments in the migration file
         const migrationQueries = data.split(';');
         migrationQueries.forEach((query) => {
           query = query.replace(/\r?\n|\r/g, '');
