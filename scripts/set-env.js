@@ -7,7 +7,6 @@ const environmentFile = `export const env = {
   baseUrl: '${process.env.BASE_URL}',
   environment: '${process.env.ENVIRONMENT}',
   production: '${process.env.PRODUCTION}',
-  testEmails: '${process.env.TEST_EMAILS}'
 };
 `;
 

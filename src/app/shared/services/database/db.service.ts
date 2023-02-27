@@ -1,11 +1,11 @@
 import { Injectable } from '@angular/core';
 
 /**  Uncomment this when building for native device */
-import { SQLite, SQLiteObject } from '@awesome-cordova-plugins/sqlite/ngx';
+// import { SQLite, SQLiteObject } from '@awesome-cordova-plugins/sqlite/ngx';
 
 /**  Uncomment this when debugging on web */
-// import { SQLite } from '@awesome-cordova-plugins/sqlite/ngx';
-// import { SQLiteObject } from './sqlite.mock';
+import { SQLite } from '@awesome-cordova-plugins/sqlite/ngx';
+import { SQLiteObject } from './sqlite.mock';
 
 import { Platform } from '@ionic/angular';
 import { HttpClient } from '@angular/common/http';
@@ -35,10 +35,8 @@ export class DBService {
     private sqlite: SQLite,
     public platform: Platform,
     public http: HttpClient
-  ) {
-    // console.log(JSON.parse(env.testEmails.replace(/\s/g, '')));
-  }
-  checkDbPlatformAndRunMigration(dummy = false) {
+  ) {}
+  checkDbPlatformAndRunMigration(seedData = false) {
     this.platform.ready().then(async() => {
       this.sqlite.create({
         name: 'tunalocal.db',
@@ -49,11 +47,11 @@ export class DBService {
           this.executedMigrations = await this.readMigrationsTable();
           // TODO: remove this line. Left for testing purposes
           console.log('Migrations already executed: ' + this.executedMigrations);
-          if (!dummy) {
+          if (!seedData) {
             await this.getAndRunPendingMigrations();
             return;
           }
-          await this.getAndRunPendingMigrations(dummy);
+          await this.getAndRunPendingMigrations(seedData);
           })
       .catch(e => console.log(e));
     });
@@ -85,7 +83,7 @@ export class DBService {
     });
   }
 
-  async getAndRunPendingMigrations(dummy = false) {
+  async getAndRunPendingMigrations(seedData = false) {
     this.http.get('assets/migrations/migrations-list.txt', { responseType: 'text' as 'json'})
     .subscribe(async(data: any) => {
         this.allMigrationFiles = data.split('\n');
@@ -93,10 +91,10 @@ export class DBService {
         delete this.allMigrationFiles[this.allMigrationFiles.length - 1];
 
         this.pendingMigrations = this.allMigrationFiles.filter(x => !this.executedMigrations.includes(x));
-        if (!dummy) {
-          this.pendingMigrations = this.pendingMigrations.filter(file => !file.includes('Dummy'));
+        if (!seedData) {
+          this.pendingMigrations = this.pendingMigrations.filter(file => !file.includes('SeedData'));
         } else {
-          this.pendingMigrations = this.pendingMigrations.filter(file => file.includes('Dummy'));
+          this.pendingMigrations = this.pendingMigrations.filter(file => file.includes('SeedData'));
         }
 
         this.pendingMigrations.join('').split('');
