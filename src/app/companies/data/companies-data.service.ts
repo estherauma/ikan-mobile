@@ -20,12 +20,12 @@ export class CompaniesDataService {
         location: 'default'
       }).then(async(_db: SQLiteObject) => {
         this.db = _db;
-        this.retriveCompanies();
+        await this.retriveCompanies();
       }).catch(e => console.log(e));
     });
   }
 
-  retriveCompanies() {
+  async retriveCompanies() {
     const query = 'SELECT * FROM companies';
     this.db.executeSql(query, []).then((data) => {
       const companies = [];
