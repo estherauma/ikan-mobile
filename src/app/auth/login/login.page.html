@@ -7,11 +7,15 @@
         <ion-img class="icon" src="/assets/imgs/logo_svg.svg"></ion-img>
       </ion-row>
     </div>
-    <app-form 
-    [tunaFormGroup]="pageFormGroup" 
-    [tunaFormquestions]="formQuestions" [submitButtonText]="submitButtonText"
-    (formValue)="onSubmit($event)"
-    btnConfig="ikan-light-outline">
+    <app-form
+      [tunaFormGroup]="pageFormGroup"
+      [tunaFormquestions]="formQuestions"
+      [submitButtonText]="submitButtonText"
+      (formValue)="onSubmit($event)"
+      btnConfig="ikan-light-outline"
+      [passwordFieldType]="passwordFieldType"
+      [passwordEyeIcon]="passwordEyeIcon"
+      (changeFieldState)="changePasswordFieldState()">
     </app-form>
     <a style="color: 80D8FE;" routerLink="/auth/password-reset">Reset password</a>
   </div>
