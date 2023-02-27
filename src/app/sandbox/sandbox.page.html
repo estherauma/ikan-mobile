@@ -1,7 +1,23 @@
 <app-header></app-header>
 
 <ion-content>
+  <app-contentwrapper>
   <div class="ion-padding">
+    <div class="ion-margin form-area">
+      <p class="ion-padding">form custom submit button</p>
+      <div class="submit-btn">
+        <app-button (onClick)="customSubmit()" [disabled]="customSubmitBtnDisabled" size="small" title="submit custom"></app-button>
+      </div>
+
+      <app-form
+      [tunaFormGroup]="pageFormGroup"
+      [tunaFormquestions]="formQuestions"
+      
+      [useCustomSubmitButton]="true"
+      (dataFromCustomButton)="dataFromCustomButton($event)"
+      >
+      </app-form>
+    </div>
     
     <app-audio-player
       [audioSrc]="audioSrc"
@@ -104,4 +120,5 @@
     </div>
 
   </div>
+  </app-contentwrapper>
 </ion-content>
