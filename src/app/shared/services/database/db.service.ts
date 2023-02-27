@@ -19,11 +19,6 @@ export class DBService {
   allMigrationFiles: any[] = [];
   pendingMigrations: any[] = [];
   testEmails = [
-    'vessel_owner@50eight.com',
-    'tai_agent@50eight.com',
-    'indo_agent@50eight.com',
-    'worker@50eight.com',
-    'buyer@50eight.com',
     'taien+technology@50eight.com',
     'cici+technology@50eight.com',
     'farah+technology@50eight.com',
