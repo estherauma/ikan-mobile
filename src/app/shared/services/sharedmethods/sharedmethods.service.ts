@@ -91,4 +91,16 @@ export class SharedmethodsService {
   async getUserData() {
     return this.readDataFromStorage(StorageKeys.userData);
   }
+
+  async generateOptions(entry) {
+    // generate key value pairs for select options from array
+    if (entry.options) {
+      const options = [];
+      entry.options.forEach((option) => {
+        // TODO: Change to label:value implementation
+        options.push(option.name );
+      });
+      return options;
+    }
+  }
 }

@@ -1,0 +1,32 @@
+CREATE TABLE IF NOT EXISTS contracts (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  name VARCHAR(255) NOT NULL,
+  app_ref VARCHAR(255) NOT NULL,
+  internal_ref VARCHAR(255) NOT NULL,
+  start_date VARCHAR(255),
+  end_date VARCHAR(255),
+  online_ref VARCHAR(255),
+  description TEXT,
+  taiwanese_company_id VARCHAR(255),
+  indonesian_company_id VARCHAR(255),
+  type VARCHAR(255) NOT NULL DEFAULT 'Company',
+  created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  created_by VARCHAR(255) NOT NULL,
+  updated_by VARCHAR(255) NOT NULL
+);
+
+
+CREATE TABLE IF NOT EXISTS contract_documents (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  contract_id INTEGER NOT NULL,
+  name VARCHAR(255) NOT NULL,
+  url VARCHAR(255) NOT NULL,
+  status VARCHAR(255),
+  online_ref VARCHAR(255),
+  created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  created_by VARCHAR(255) NOT NULL,
+  updated_by VARCHAR(255) NOT NULL
+);
+
