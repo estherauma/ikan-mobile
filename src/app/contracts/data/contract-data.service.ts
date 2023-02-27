@@ -63,10 +63,10 @@ export class ContractDataService {
   }
 
   create(data) {
-    const query = 'INSERT INTO contracts (app_ref, internal_ref, start_date, \
+    const query = 'INSERT INTO contracts (name, app_ref, internal_ref, start_date, \
       end_date, description, taiwanese_company_id, indonesian_company_id, type,\
-      created_at, updated_at, created_by, updated_by) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)';
-    const params = [data.app_ref, data.internal_ref, data.start_date, data.end_date,
+      created_at, updated_at, created_by, updated_by) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)';
+    const params = [data.name, data.app_ref, data.internal_ref, data.start_date, data.end_date,
       data.description, data.taiwanese_company_id, data.indonesian_company_id, data.type,
       data.created_at, data.updated_at, data.created_by, data.updated_by];
     return this.db.executeSql(query, params).then((result) => {

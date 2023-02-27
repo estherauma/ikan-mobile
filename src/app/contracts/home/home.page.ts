@@ -108,7 +108,7 @@ export class HomePage implements OnInit {
   async createContract() {
     const modal = await this.modalCtrl.create({
       component: CreatePage,
-      cssClass: 'tuna-modal'
+      cssClass: 'notification-modal'
     });
     modal.present();
   }

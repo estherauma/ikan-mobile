@@ -37,14 +37,12 @@ export class CreatePage extends BaseformPage implements OnInit {
   }
 
   updateSelectOptions() {
-    console.log(this.formQuestions);
     this.formQuestions.forEach((entry) => {
       if (entry.key === 'taiwanese_company_id') {
         entry.options = this.taiwaneseCompanies;
       }
       if (entry.key === 'indonesian_company_id') {
-        // TODO: Change to indonesian companies
-        entry.options = this.taiwaneseCompanies;
+        entry.options = this.indonesianCompanies;
       }
     });
   }
@@ -71,6 +69,7 @@ export class CreatePage extends BaseformPage implements OnInit {
     this.sharedMethods.showLoader('Saving contract');
     const userData = await this.sharedMethods.getUserData();
     const now = this.sharedMethods.getCurrentDateTime();
+    formData.internal_ref = formData.app_ref;
     formData.created_by = userData.id;
     formData.updated_by = userData.id;
     formData.created_at = formData.updated_at = now;
