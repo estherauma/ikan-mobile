@@ -2,15 +2,34 @@
 
 <ion-content class="content-skyblue-bg ion-content-custom-position">
   <app-contentwrapper>
-  <div>
-    <div>
+    <!-- <div>
       <div class="ion-padding-horizontal ion-padding-bottom">
         <ion-img src="/assets/icon/boat_small.svg" class="icon"></ion-img>
         <app-title title="Vessel Company" [isBlue]="true" [isBig]="true"></app-title>
         <app-title title="Payment history" [isBlue]="true" variant="h5" subScript="(5 payments)"></app-title>
       </div>
       <app-search [searchDataSet]="orgPayments" (searchResult)="searchResult($event)"></app-search>
-    </div>
+    </div> -->
+    <ion-grid class="ion-padding-bottom">
+      <ion-row class="ion-justify-content-between ion-align-items-baseline">
+        <ion-col>
+          <img src="/assets/icon/boat_small.svg" width="20" height="40" />
+        </ion-col>
+        <ion-col>
+          <ion-row class="ion-justify-content-end">
+            <div>
+              <app-button (onClick)="createPayment()" iconName="add-outline" title="New Payment"></app-button>
+            </div>
+          </ion-row>
+        </ion-col>
+      </ion-row>
+      <ion-row class="ion-padding-bottom title">
+        <app-title title="Vessel Company" [isBlue]="true" [isBig]="true"></app-title>
+        <app-title title="Payment history" [isBlue]="true" variant="h5" subScript="(5 payments)"></app-title>
+      </ion-row>
+      <app-search [searchDataSet]="orgPayments" (searchResult)="searchResult($event)"></app-search>
+    </ion-grid>
+    <!-- Filters -->
     <ion-grid>
       <ion-row style="align-items: center;">
         <ion-col size="12"><ion-text class="filter">Filter</ion-text></ion-col>
@@ -18,25 +37,26 @@
           <ion-grid>
             <ion-row>
               <ion-col>
-                <app-filter filterProperty="status" [options]="filterOptions" [filterDataSet]="filterDataSet" (filterResult)="filterResult($event)"></app-filter>
+                <app-filter filterProperty="status" [options]="filterOptions" [filterDataSet]="filterDataSet"
+                  (filterResult)="filterResult($event)"></app-filter>
               </ion-col>
               <ion-col>
-                <app-filter filterProperty="status" [options]="filterOptions" [filterDataSet]="filterDataSet" (filterResult)="filterResult($event)"></app-filter>
+                <app-filter filterProperty="status" [options]="filterOptions" [filterDataSet]="filterDataSet"
+                  (filterResult)="filterResult($event)"></app-filter>
               </ion-col>
             </ion-row>
           </ion-grid>
-  
         </ion-col>
-  
       </ion-row>
     </ion-grid>
-  </div>
-
-  <div *ngFor="let p of orgPayments" >
-    <ion-text><h6 class="title">{{p.date}}</h6></ion-text>
-    <app-paymentbreakdowncard (click)="viewDetails(paymentListing)" *ngFor="let paymentListing of p.payments" [madeOn]="paymentListing.madeOn"
-    [confirmedOn]="paymentListing.confirmedOn" [amount]="paymentListing.amount"
-    [status]="paymentListing.status"></app-paymentbreakdowncard>
-  </div>
+    <!-- List of payments -->
+    <div *ngFor="let p of orgPayments">
+      <ion-text>
+        <h6 class="title">{{p.date}}</h6>
+      </ion-text>
+      <app-paymentbreakdowncard (click)="viewDetails(paymentListing)" *ngFor="let paymentListing of p.payments"
+        [madeOn]="paymentListing.madeOn" [confirmedOn]="paymentListing.confirmedOn" [amount]="paymentListing.amount"
+        [status]="paymentListing.status"></app-paymentbreakdowncard>
+    </div>
   </app-contentwrapper>
 </ion-content>

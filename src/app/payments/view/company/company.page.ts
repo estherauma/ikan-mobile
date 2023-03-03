@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { SharedmethodsService } from 'src/app/shared/services/sharedmethods/sharedmethods.service';
+import { PaymentsDataService } from '../../data/payments-data.service';
 
 @Component({
   selector: 'app-company',
@@ -70,10 +72,23 @@ export class CompanyPage implements OnInit {
   filterDataSet = [];
 
   constructor(
-    public router: Router
-  ) { }
+    public router: Router,
+    public paymentDataService: PaymentsDataService,
+    public sharedMethods: SharedmethodsService
+  ) {
+    this.paymentDataService.getAll().subscribe((data) => {
+      this.organizeData(data);
+    });
+  }
 
   ngOnInit() {
+  }
+
+  organizeData(data) {
+    console.log(data);
+    data.entry.forEach((payment) => {
+      console.log(payment);
+    });
   }
 
   searchResult(result) {
@@ -88,4 +103,8 @@ export class CompanyPage implements OnInit {
   }
 
   filterResult(value) {}
+
+  createPayment() {
+    this.router.navigate(['payments/create']);
+  }
 }
