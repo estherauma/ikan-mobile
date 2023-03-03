@@ -6,7 +6,7 @@
 1675673176921_addDemandLettersTable.sql
 1676619257519_addCompaniesTable.sql
 1676959647148_addContractsTable.sql
-1677148609018_addWorkOrdersSeedData.sql.sql
+1677156554736_addWorkersSeedData.sql
 1677150886757_addWorkordersClausesSeedData.sql
 1677155402016_addAgentsSeedData.sql
 1677155699589_addVesselsSeedData.sql

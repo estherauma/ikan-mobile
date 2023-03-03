@@ -1,8 +1,8 @@
-<app-header [pageTitle]="pageTitle"> </app-header>
+<app-header> </app-header>
 
 <ion-content class="content-skyblue-bg ion-align-items-baseline">
   <app-contentwrapper>
-    <div>
+    <div class="ion-padding">
       <ion-grid>
         <ion-row class="ion-justify-content-between ion-align-items-baseline">
           <ion-col>
@@ -48,27 +48,15 @@
   </div>
 
     <!-- TODO: Add segment to separate between worker and company contracts -->
-    <ion-card *ngFor="let contract of contracts">
-      <ion-card-content>
-        <ion-grid>
-          <ion-row class="ion-align-items-center">
-            <ion-col size="3">
-              <ion-thumbnail>
-                <ion-img [src]="contract.image"></ion-img>
-              </ion-thumbnail>
-            </ion-col>
-            <ion-col size="8">
-              <ion-card-title>{{contract.name}}</ion-card-title>
-              <ion-label>{{contract.companyName}}</ion-label>
-              <ion-label>{{contract.vesselName}}</ion-label> <br>
-              <ion-label>{{contract.date}}</ion-label> <br>
-            </ion-col>
-            <ion-col size="1" style="text-align: center" (click)="viewDeatils(contract)">
-              <ion-icon name="chevron-forward-outline" size="large"></ion-icon>
-            </ion-col>
-          </ion-row>
-        </ion-grid>
-      </ion-card-content>
-    </ion-card>
+      <!-- <app-usercontractcard 
+      *ngFor="let contract of contracts" 
+      [title]="contract.name"
+      [contract]="contract.taiwaneseCompany" 
+      [hideImage]="contract.type === 'Company'"
+      [vessel]="contract.vesselOwnerCompany" 
+      [dates]="getContractDates(contract)"
+      >
+    </app-usercontractcard> -->
+    <app-companycontractcard></app-companycontractcard>
   </app-contentwrapper>
 </ion-content>

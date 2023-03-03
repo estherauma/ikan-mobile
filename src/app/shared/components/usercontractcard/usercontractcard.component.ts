@@ -7,14 +7,15 @@ import { truncateChar } from 'src/app/utils';
   styleUrls: ['./usercontractcard.component.scss'],
 })
 export class UsercontractcardComponent implements OnInit {
-  @Input() imgUrl = '';
+  @Input() imgUrl = 'https://picsum.photos/200/300';
   @Input() title = '';
   @Input() contract = '';
   @Input() vessel = '';
   @Input() dates = '';
   @Input() isLight = false;
+  @Input() hideImage = false;
 
-  constructor() { }
+  constructor() {}
 
   ngOnInit() {}
 
