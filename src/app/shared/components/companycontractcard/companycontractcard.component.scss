@@ -1,0 +1,73 @@
+ion-card {
+    border-radius: 20px;
+}
+
+ion-card-content{
+    display: flex;
+}
+
+.company-icon-section {
+    display: flex;
+    align-items: center;
+}
+
+.logo-section {
+    height: 50px;
+    width: 50px;
+    border-radius: 10px;
+    margin: 16px;
+}
+
+ion-icon {
+    color: #191970;
+}
+
+ion-text {
+    color: #3565FF;
+}
+
+.left-side-section {
+    width: 65px;
+}
+
+.title {
+    font-size: 18px !important;
+    color: #191970;
+}
+
+.company-name-section {
+    display: flex;
+    margin-top: 12px;
+    flex-direction: column;
+}
+
+.contents-section-container {
+    display: inline-block;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    width: 250px;
+}
+
+.contents-section-container ion-card-title,
+ion-label {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    padding-bottom: 12px;
+}
+
+ion-card-content {
+    padding: 0px;
+}
+
+.gray-text {
+    color: #A0ABCC;
+}
+
+.card-section{
+    flex: 1; 
+    height: auto;
+    display: flex; 
+    flex-direction: column;
+}

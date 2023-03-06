@@ -338,6 +338,10 @@ const routes: Routes = [
     path: 'contracts/create',
     loadChildren: () => import('./contracts/create/create.module').then( m => m.CreatePageModule)
   },
+  {
+    path: 'contracts/company/home',
+    loadChildren: () => import('./contracts/company/home/home.module').then( m => m.HomePageModule)
+  },
 ];
 
 @NgModule({
