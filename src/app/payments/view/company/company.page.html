@@ -55,7 +55,7 @@
         <h6 class="title">{{p.date}}</h6>
       </ion-text>
       <app-paymentbreakdowncard (click)="viewDetails(paymentListing)" *ngFor="let paymentListing of p.payments"
-        [madeOn]="paymentListing.madeOn" [confirmedOn]="paymentListing.confirmedOn" [amount]="paymentListing.amount"
+        [madeOn]="paymentListing.date" [confirmedOn]="paymentListing.confirmedDate" [amount]="paymentListing.totalAmount"
         [status]="paymentListing.status"></app-paymentbreakdowncard>
     </div>
   </app-contentwrapper>

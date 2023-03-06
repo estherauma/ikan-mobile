@@ -10,59 +10,7 @@ import { PaymentsDataService } from '../../data/payments-data.service';
 })
 export class CompanyPage implements OnInit {
   pageTitle = '';
-  orgPayments = [
-    {
-      date: '10 Aug',
-      payments: [
-        {
-          amount: '$XXX.XX',
-          confirmedOn: 'xx/xx/xxxx',
-          madeOn: 'xx/xx/xxxx',
-          status: 'confirmed'
-        },
-        {
-          amount: '$XXX.XX',
-          confirmedOn: 'xx/xx/xxxx',
-          madeOn: 'xx/xx/xxxx',
-          status: 'confirmed'
-        }
-      ]
-    },
-    {
-      date: '8 Aug',
-      payments: [
-        {
-          amount: '$XXX.XX',
-          confirmedOn: 'xx/xx/xxxx',
-          madeOn: 'xx/xx/xxxx',
-          status: 'confirmed'
-        },
-        {
-          amount: '$XXX.XX',
-          confirmedOn: 'xx/xx/xxxx',
-          madeOn: 'xx/xx/xxxx',
-          status: 'confirmed'
-        }
-      ]
-    },
-    {
-      date: '31 Jul',
-      payments: [
-        {
-          amount: '$XXX.XX',
-          confirmedOn: 'xx/xx/xxxx',
-          madeOn: 'xx/xx/xxxx',
-          status: 'Awaiting Confirmation'
-        },
-        {
-          amount: '$XXX.XX',
-          confirmedOn: 'xx/xx/xxxx',
-          madeOn: 'xx/xx/xxxx',
-          status: 'Awaiting Confirmation'
-        }
-      ]
-    }
-  ];
+  orgPayments = [];
 
   filterOptions = [
     {title:'closed', value:'closed'},
@@ -85,10 +33,23 @@ export class CompanyPage implements OnInit {
   }
 
   organizeData(data) {
-    console.log(data);
-    data.entry.forEach((payment) => {
-      console.log(payment);
+    data.forEach((payment) => {
+      const weekday = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
+      const [year, month, dayNumber] = (new Date(payment.date)).toISOString().substr(0, 10).split('-');
+      const day = (new Date(payment.date)).getDay();
+      const dayString = weekday[day];
+      const dateString = `${dayString}-${dayNumber}-${month}-${year}`;
+      const entryExists = this.orgPayments.find((e) => e.date === dateString);
+      if (!entryExists) {
+        this.orgPayments.push({
+          date: dateString,
+          payments: [payment]
+        });
+      } else {
+        entryExists.payments.push(payment);
+      }
     });
+    this.orgPayments.sort((a, b) => (a.date < b.date) ? 1 : -1);
   }
 
   searchResult(result) {
