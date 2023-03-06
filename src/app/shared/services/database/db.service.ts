@@ -23,7 +23,8 @@ export class DBService {
     'cici+technology@50eight.com',
     'farah+technology@50eight.com',
     'budi+technology@50eight.com',
-    'tony+technology@50eight.com'
+    'tony+technology@50eight.com',
+    'samsonkapeyi@50eight.com'
   ];;
 
   constructor(
