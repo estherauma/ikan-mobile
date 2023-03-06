@@ -1,45 +1,58 @@
-<app-header [isBackButton]="true"></app-header>
+<app-header [isBackButton]="true" [pageTitle]="" [isLightBlueBg]="true"></app-header>
 
-<ion-content>
-  <ion-grid>
-    <ion-row>
-      <ion-col size="12">
-        <app-title title={{workOrder?.name}}></app-title>
+<ion-content class="content-skyblue-bg">
+  <ion-grid class="ion-margin">
+    <ion-row class="ion-justify-content-between ion-align-items-baseline">
+      <ion-col>
+        <img src="/assets/icon/workorders_blue.svg" width="32" height="48" />
       </ion-col>
-
-      <ion-col size="12">
-        <ion-card-subtitle><strong>Internal reference:</strong> {{workOrder.internalRef}}</ion-card-subtitle>
-        <ion-card-subtitle>
-          <strong>App Ref:</strong> {{workOrder?.appRef}} |
-          <strong>Date Opened</strong> {{workOrder?.createdAt}} | {{workOrder?.status}}
-        </ion-card-subtitle>
+      <ion-col>
+        <ion-row class="ion-justify-content-end">
+          <div>
+            <app-button title="Edit"></app-button>
+          </div>
+        </ion-row>
       </ion-col>
     </ion-row>
+    <div class="title">
+      <app-title [isBlue]="true" [isBig]="true" [title]="workOrder?.name" ></app-title>
+    </div>
+    <div>
+      <p class="sub-title">Internal reference: {{workOrder.internalRef}}</p>
+        <p class="meta-data">App Ref: <span>{{workOrder?.appRef}}</span></p>
+        <p class="meta-data">Date Opened: <span>{{workOrder?.createdAt}}</span></p>
+        <p class="meta-data">Status: <span>{{workOrder?.status}}</span></p>
+    </div>
   </ion-grid>
 
-  <ion-card *ngFor="let clause of clauses">
-    <ion-card-content>
-      <ion-grid>
-        <ion-row>
-          <ion-col size="3" style="padding-top: 15%">
-            <ion-icon name="expand-outline" size="large"></ion-icon>
-          </ion-col>
-          <ion-col size="8">
-            <ion-card-title>{{clause.title}}</ion-card-title>
-            <ion-card-subtitle> {{clause.description}} </ion-card-subtitle>
-
-          </ion-col>
-          <ion-col size="1" style="text-align: center; padding-top: 15%">
-            <ion-icon
-            name="chevron-forward-outline" size="large"
-            (click)="goToClauses(clause)"
-            ></ion-icon>
-          </ion-col>
-        </ion-row>
-      </ion-grid>
-    </ion-card-content>
-  </ion-card>
-  <ion-button (click)="onSubWorkOrder()" expand="block">
-    Submit Work Order
-  </ion-button>
+<div class="workorders-wrapper ion-padding">
+  <div class="workorders-container">
+    <div class="clause-sub-title">
+      <app-title title="clauses" [isSmall]="true" [isBlue]="true"></app-title>
+    </div>
+    <app-placementoffercard
+    *ngFor="let clause of clauses"
+    [title]="clause.title"
+    [details]="clause.subTitle"
+    [isFirst]="getFirstClause().id === clause.id"
+    [isLast]="getLastClause().id === clause.id"
+    [noMargin]="true"
+    [isBlue]="clause.status === 'active'"
+    ></app-placementoffercard>
+  </div>
+  <div class="ion-margin-vertical" [ngClass]="{'action-buttons': !done}">
+    <div *ngIf="done" class="done">
+      <app-button title="done" size="small"></app-button>
+    </div>
+    <app-button *ngIf="!done" title="Re-order" size="small"></app-button>
+    <app-button (onClick)="addNewClause()" *ngIf="!done" title="Add new clause" size="small" iconName="add-outline"></app-button>
+  </div>
+</div>
+<div class="ion-margin ion-padding">
+  <app-button title="Submit Work Order" [disabled]="!onDisabled" (onClick)="onSubWorkOrder()"></app-button>
+  <div class="check-section">
+    <ion-checkbox (ionChange)="onCheckBoxSelect($event)" slot="start" ></ion-checkbox>
+    <ion-label>You need to complete all sections of the Work Order before you can review or send.</ion-label>
+  </div>
+</div>
 </ion-content>

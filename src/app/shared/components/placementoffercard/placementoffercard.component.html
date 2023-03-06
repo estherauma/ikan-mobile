@@ -1,6 +1,6 @@
 <ion-card class="card-body no-border" [ngClass]="{'border-top': isFirst, 'border-bottom': isLast, 'no-margin': noMargin}">
   <div class="card-content">
-    <div class="card-image-section">
+    <div class="card-image-section" [ngClass]="{'bg-blue': isBlue}">
       <div>
         <ion-img class="icon" src="/assets/icon/tick_white.svg"></ion-img>
       </div>

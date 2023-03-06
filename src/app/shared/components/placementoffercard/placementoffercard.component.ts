@@ -11,6 +11,7 @@ export class PlacementoffercardComponent implements OnInit {
   @Input() isFirst = false;
   @Input() isLast = false;
   @Input() noMargin = false;
+  @Input() isBlue = false;
   constructor() { }
 
   ngOnInit() {}
