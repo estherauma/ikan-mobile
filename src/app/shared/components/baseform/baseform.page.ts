@@ -14,10 +14,13 @@ export class BaseformPage implements OnInit {
   pageTitle: string;
   submitButtonText: string;
 
-  constructor( public contentService: ContentService) { }
+  constructor(
+    public contentService: ContentService
+  ) { }
 
   ngOnInit() {
     this.pageFormGroup = new FormGroup(this.group);
+    this.submitButtonText = this.contentService.commonText?.create;
   }
 
   //TODO: Set the pageTitle using this function for the different pages

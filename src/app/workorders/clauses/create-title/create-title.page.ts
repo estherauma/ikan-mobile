@@ -47,7 +47,7 @@ export class CreateTitlePage extends BaseformPage implements OnInit {
     const insertId =  await this.workOrdersService.createWorkorderClauseTitle(formData);
     this.sharedMethods.hideLoader();
     this.modalCtrl.dismiss();
-    this.router.navigate(['/workorders/clauses/create-details'], { queryParams: { id: insertId } });
+    this.router.navigate(['/workorders/clauses/create-details', {clauseId: insertId, name: formData.name}]);
   }
 
 }

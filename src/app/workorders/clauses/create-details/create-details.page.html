@@ -1,9 +1,13 @@
-<ion-header>
-  <ion-toolbar>
-    <ion-title>create-details</ion-title>
-  </ion-toolbar>
-</ion-header>
-
-<ion-content>
-
-</ion-content>
+<div class="inner-content">
+  <app-header [pageTitle]="pageTitle" [isBackButton]="true"> </app-header>
+  <app-genericmodal
+    [title] = "pageTitle"
+  >
+    <app-form
+      [tunaFormGroup]="pageFormGroup"
+      [tunaFormquestions]="formQuestions"
+      [submitButtonText]="submitButtonText"
+      (formValue)="onSubmit($event)">
+    </app-form>
+  </app-genericmodal>
+</div>
