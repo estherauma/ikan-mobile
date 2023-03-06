@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { MenuController, ModalController } from '@ionic/angular';
 import { SteponePage } from '../create/stepone/stepone.page';
+import { VesselsDataService } from '../data/vessels-data.service';
 
 @Component({
   selector: 'app-home',
@@ -11,42 +12,23 @@ import { SteponePage } from '../create/stepone/stepone.page';
 export class HomePage implements OnInit {
   //TODO: Use translated text from prisimic
   pageTitle = 'Vessels';
-
-  vessels = [
-    {
-      name: 'Vessel 1',
-      regNo: 'XWERS-WWER',
-      status: 'Active Duty',
-      type: 'Type 2',
-      imgUrl: '/assets/imgs/vessel.jpeg',
-      capacity: 30,
-      age: 10
-    },
-    {
-      name: 'Vessel 2',
-      regNo: 'XWERS-WWER',
-      status: 'Active Duty',
-      type: 'Type 1',
-      imgUrl: '/assets/imgs/vessel.jpeg',
-      capacity: 40,
-      age: 11
-    },
-    {
-      name: 'Vessel 3',
-      regNo: 'XWERS-WWER',
-      status: 'Active Duty',
-      type: 'Type 1',
-      imgUrl: '/assets/imgs/vessel.jpeg',
-      capacity: 30,
-      age: 16
-    }
+  vessels = [];
+  unFilteredData = [];
+  filterOptions = [
+    {title:'Active Duty', value:'Active Duty'},
+    {title:'', value:'opened'}
   ];
 
   constructor(
     public menuCtrl: MenuController,
     public router: Router,
-    public modalController: ModalController
-  ) { }
+    public modalController: ModalController,
+    public vesselsDataService: VesselsDataService
+  ) {
+    this.vesselsDataService.getAll().subscribe((data) => {
+      this.vessels = this.unFilteredData = data;
+    });
+  }
 
   ngOnInit() {
   }
@@ -58,12 +40,24 @@ export class HomePage implements OnInit {
   async createVessel() {
     const modal = await this.modalController.create({
       component: SteponePage,
-      cssClass: 'tuna-modal'
+      cssClass: 'notification-modal'
     });
 
     modal.present();
 
     modal.onDidDismiss().then((data) => {
     });
+  }
+
+  searchResult(result) {
+    this.vessels = result;
+  }
+
+  clearSearchResult() {
+    this.vessels = this.unFilteredData;
+  }
+
+  filterResult(result) {
+    this.vessels = result;
   }
 }

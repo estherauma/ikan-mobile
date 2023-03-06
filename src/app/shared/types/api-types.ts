@@ -99,11 +99,11 @@ export interface Data {
 }
 
 export enum UserRole {
-  vesselOwner = 'vessel_owner',
-  taiwaneseAgent = 'taiwanese_agent',
-  indonesianAgent = 'indonesian_agent',
-  worker = 'worker',
-  buyer = 'buyer'
+  vesselOwner = 'Vessel Owners',
+  taiwaneseAgent = 'Taiwanese Agents',
+  indonesianAgent = 'Indonesian Agents',
+  worker = 'Workers',
+  buyer = 'Buyers'
 }
 
 export interface Blameable {
@@ -121,4 +121,14 @@ export interface IPaymentsSummary {
   amount: string;
   status: TPaymentStatus;
   text: string;
+}
+
+export enum FieldType{
+  text =  'text',
+  password = 'password',
+}
+
+export enum Icons {
+  iconEyeClosed =  'assets/icon/password/eye.svg',
+  iconEyeOpen = 'assets/icon/password/eye-cross.svg'
 }

@@ -1,0 +1,17 @@
+<ion-card class="card-body no-border" [ngClass]="{'border-top': isFirst, 'border-bottom': isLast, 'no-margin': noMargin}">
+  <div class="card-content">
+    <div class="card-image-section">
+      <div>
+        <ion-img class="icon" src="/assets/icon/tick_white.svg"></ion-img>
+      </div>
+    </div>
+    <div class="card-section">
+      <div class="ion-padding content-wrapper">
+        <ion-card-title class="title blue-dark">{{title}}</ion-card-title>
+        <div>
+          <ion-text class="gray-text">{{details}}</ion-text> 
+        </div>
+      </div>
+    </div>
+  </div>
+</ion-card>

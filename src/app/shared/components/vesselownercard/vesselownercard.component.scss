@@ -2,6 +2,14 @@ ion-card{
     border-radius: 20px;
 }
 
+.is-no-border-shadow {
+    box-shadow: none !important;
+}
+
+.transparent-bg {
+    background: transparent;
+}
+
 .icon{
     width: 62px;
     height: 60px;

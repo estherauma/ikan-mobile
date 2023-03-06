@@ -50,8 +50,8 @@ class SQLiteMock {
     let db;
     const storeddb = localStorage.getItem('database');
 
-    const arr = storeddb.split(',');
     if (storeddb) {
+      const arr = storeddb.split(',');
       db = new SQL.Database(arr);
     } else {
       db = new SQL.Database();

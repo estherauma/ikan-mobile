@@ -9,7 +9,7 @@ import { TPaymentStatus } from '../../types/api-types';
 })
 export class PaymentssummarycardComponent implements OnInit {
   @Input() iconUrl;
-  @Input() status: TPaymentStatus = 'default';
+  @Input() status = 'default';
   @Input() title;
   @Input() text;
 

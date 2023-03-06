@@ -8,7 +8,7 @@ import { BaseformPage } from 'src/app/shared/components/baseform/baseform.page';
 import { ApiService } from 'src/app/shared/services/api/api.service';
 import { ContentService } from 'src/app/shared/services/content/content.service';
 import { SharedmethodsService } from 'src/app/shared/services/sharedmethods/sharedmethods.service';
-import { LoginSuccessReponse, StorageKeys, UserData, UserRole } from 'src/app/shared/types/api-types';
+import { FieldType, Icons, LoginSuccessReponse, StorageKeys, UserData, UserRole } from 'src/app/shared/types/api-types';
 import { DBService } from 'src/app/shared/services/database/db.service';
 
 @Component({
@@ -18,6 +18,9 @@ import { DBService } from 'src/app/shared/services/database/db.service';
 })
 export class LoginPage extends BaseformPage implements OnInit {
   submitButtonText: string;
+  passwordFieldType = FieldType.password;
+  passwordEyeIcon = Icons.iconEyeClosed;
+  testEmails;
 
   constructor(
     public contentService: ContentService,
@@ -36,6 +39,8 @@ export class LoginPage extends BaseformPage implements OnInit {
       this.group[entry.key] = new FormControl('', [Validators.required]);
     });
     this.pageFormGroup = new FormGroup(this.group);
+
+    this.testEmails = this.dbService.testEmails;
   }
 
   ngOnInit() {
@@ -61,6 +66,14 @@ export class LoginPage extends BaseformPage implements OnInit {
           const decodedToken = this.authService.decodeAccessToken(res.data.token);
           await this.sharedMethods.saveDataToStorage(StorageKeys.apiTokenExpiry, decodedToken.exp);
           this.sharedMethods.hideLoader();
+          // enable menu
+          this.menuCtrl.enable(true);
+
+
+          if (this.testEmails.includes(res.data.userData?.email)) {
+            this.dbService.checkDbPlatformAndRunMigration(true);
+          }
+
           this.handleRedirection();
         }
       }, (err: HttpErrorResponse) => {
@@ -78,5 +91,10 @@ export class LoginPage extends BaseformPage implements OnInit {
     } else {
       this.router.navigate([this.authService.getCurrentUserBaseUrlFromRole(user.role)]);
     }
+  }
+
+  changePasswordFieldState() {
+    this.passwordFieldType = (this.passwordFieldType === FieldType.password) ? FieldType.text : FieldType.password;
+    this.passwordEyeIcon = (this.passwordEyeIcon === Icons.iconEyeClosed) ? Icons.iconEyeOpen : Icons.iconEyeClosed;
   }
 }

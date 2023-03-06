@@ -1,11 +1,19 @@
+ion-card {
+    margin: 0px 0px;
+    box-shadow: rgb(0 0 0 / 12%) 0px 0px 0px 0px;
+}
 .notification-card-content {
     display: flex;
     justify-content: space-between;
     align-items: stretch;
 }
 
-.blue-text {
+.deep-blue {
     color: #191970;
+}
+
+.color-blue {
+    color: var(--ikan_blue_100);
 }
 
 .gray-text {

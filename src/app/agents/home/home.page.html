@@ -1,6 +1,22 @@
 <app-header [pageTitle]="pageTitle"></app-header>
 
 <ion-content>
+
+  <ion-grid class="ion-margin-bottom">
+    <ion-row class="ion-justify-content-between ion-align-items-baseline">
+      <ion-col>
+
+      </ion-col>
+      <ion-col>
+        <ion-row class="ion-justify-content-end">
+          <div>
+            <app-button (onClick)="createAgent()" iconName="add-outline" title="New"></app-button>
+          </div>
+        </ion-row>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+
   <ion-grid class="ion-padding">
     <ion-row class="ion-align-items-center">
       <ion-col size="4">
@@ -15,7 +31,10 @@
     </ion-row>
   </ion-grid>
 
-  <app-search [searchDataSet]="agents" (searchResult)="searchResult($event)"></app-search>
+  <app-search
+    [searchDataSet]="agents"
+    (searchResult)="searchResult($event)"
+    (clear)="clearSearchResult()"  ></app-search>
 
   <!-- TODO: Add filter shared component -->
   <app-agentcard *ngFor="let agent of agents" [agent]="agent"></app-agentcard>

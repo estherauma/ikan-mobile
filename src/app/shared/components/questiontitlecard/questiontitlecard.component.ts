@@ -6,7 +6,7 @@ import { Component, Input, OnInit } from '@angular/core';
   styleUrls: ['./questiontitlecard.component.scss'],
 })
 export class QuestiontitlecardComponent implements OnInit {
-  @Input() type: 'question' | 'success' | 'warning' | 'error' = 'question';
+  @Input() type: 'question' | 'success' | 'warning' | 'error' | string = 'question';
   @Input() iconName;
   @Input() customCss;
   constructor() { }

@@ -1,0 +1,20 @@
+<div class="main-container" [ngClass]="{'within-nav':withinNav}">
+  <div class="image-container">
+    <div>
+      <div 
+      class="profile-image"
+      [ngStyle]="{'background': 'url(' + imageUrl + ') no-repeat 0 0 / cover'}"
+      ></div>
+      <div class="status-container" [ngClass]="{'pending': status === 'pending', 'active': status === 'active'}">
+        <small>{{status}}</small>
+      </div>
+    </div>
+    <app-title [title]="title" [isLightBlue]="true"></app-title>
+    <app-button *ngIf="isResendInviteBtn" [title]="reSendInviteBtnTitle" config="yellow"></app-button>
+  </div>
+  <app-pagetabnavigator 
+  (clickedMenuItem)="onClickedMenu($event)"
+  [active]="active"
+  [navItems]="navItems"
+  ></app-pagetabnavigator>
+</div>

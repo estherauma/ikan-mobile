@@ -1,16 +1,47 @@
-<form [formGroup]="tunaFormGroup" (ngSubmit)="onSubmit($event)" style="background: transparent;">
+<form [formGroup]="tunaFormGroup" (ngSubmit)="onSubmit($event)" class="transparent-bg" [ngClass]="{'text-blue': isTextBlue}">
   <div *ngFor="let question of tunaFormquestions">
 
     <div [ngSwitch]="question.questionType">
+      <div *ngSwitchCase="'h4'">
+        <div class="text-section" [ngClass]="{'text-darkblue': isTitleDarkBlue}" *ngIf="question.displayquestion" lines="none" class="transparent-bg">
+          <app-title variant="h4" [title]="question.label"></app-title>
+        </div>
+      </div>
+      <div *ngSwitchCase="'h5'">
+        <div class="text-section" [ngClass]="{'text-darkblue': isTitleDarkBlue}" *ngIf="question.displayquestion" lines="none" class="transparent-bg">
+          <app-title variant="h5" [title]="question.label"></app-title>
+        </div>
+      </div>
+      <div *ngSwitchCase="'p'">
+        <div *ngIf="question.displayquestion" [ngClass]="{'text-darkblue': isOtherDarkBlue}" lines="none" class="transparent-bg">
+          <p class="text-section">{{question.label}}</p>
+        </div>
+      </div>
       <div *ngSwitchCase="'textBox'">
-        <div *ngIf="question.displayquestion" lines="none" style="background-color: transparent;">
+        <div *ngIf="question.displayquestion" lines="none" class="transparent-bg">
           <ion-grid>
             <ion-row>
               <ion-col size="12">
                 <ion-label text-wrap> {{question.label}} </ion-label>
               </ion-col>
               <ion-col size="12">
-                <ion-input class="ion-padding-start" style="background-color: white; border-radius: 10px;" type="text" placeholder="Type here" formControlName="{{question.key}}"></ion-input>
+                <ion-input class="ion-padding-start form-input" type="text" placeholder="Type here" formControlName="{{question.key}}"></ion-input>
+              </ion-col>
+
+            </ion-row>
+          </ion-grid>
+        </div>
+      </div>
+
+      <div *ngSwitchCase="'textArea'">
+        <div *ngIf="question.displayquestion" lines="none" class="transparent-bg">
+          <ion-grid>
+            <ion-row>
+              <ion-col size="12">
+                <ion-label text-wrap> {{question.label}} </ion-label>
+              </ion-col>
+              <ion-col size="12">
+                <ion-textarea class="ion-padding-start form-input" type="text" placeholder="Type here" formControlName="{{question.key}}"></ion-textarea>
               </ion-col>
 
             </ion-row>
@@ -26,7 +57,12 @@
                 <ion-label text-wrap> {{question.label}} </ion-label>
               </ion-col>
               <ion-col size="12">
-                <ion-input class="ion-padding-start" style="background-color: white; border-radius: 10px;" type="password" placeholder="Type here" formControlName="{{question.key}}"></ion-input>
+                <ion-item>
+                  <ion-input class="ion-padding-start form-input" type="{{passwordFieldType}}" placeholder="Type here" formControlName="{{question.key}}"></ion-input>
+                  <ion-icon slot="end" src="{{passwordEyeIcon}}" (click)="changePasswordState()" ></ion-icon>
+                </ion-item>
+
+
               </ion-col>
 
             </ion-row>
@@ -35,39 +71,39 @@
       </div>
 
       <div *ngSwitchCase="'number'">
-        <ion-item *ngIf="question.displayquestion" lines="none">
+          <div *ngIf="question.displayquestion" lines="none" class="transparent-bg">
           <ion-grid>
             <ion-row>
               <ion-col size="12">
                 <ion-label text-wrap> {{question.label}} </ion-label>
               </ion-col>
               <ion-col size="12">
-                <ion-input class="ion-padding-start" type="number" placeholder="Type here" formControlName="{{question.key}}"></ion-input>
+                <ion-input class="ion-padding-start form-input" type="number" placeholder="Type here" formControlName="{{question.key}}"></ion-input>
               </ion-col>
 
             </ion-row>
           </ion-grid>
-        </ion-item>
+       </div>
       </div>
 
       <div *ngSwitchCase="'select'">
-        <ion-item *ngIf="question.displayquestion" lines="none">
+          <div *ngIf="question.displayquestion" lines="none" class="transparent-bg">
           <ion-grid>
             <ion-row>
               <ion-col size="12">
                 <ion-label text-wrap> {{question.label}} </ion-label>
               </ion-col>
               <ion-col size="12">
-                <ion-select  formControlName="{{question.key }}" textWrap interface="action-sheet" placeholder="Please Select">
-                  <ion-select-option text-wrap *ngFor="let opt of question.options" value="{{opt}}">
-                    {{opt}}
+                <ion-select class="form-input"  formControlName="{{question.key }}" textWrap interface="action-sheet" placeholder="Please Select">
+                  <ion-select-option text-wrap *ngFor="let opt of question.options" value="{{opt.value}}">
+                    {{opt.label}}
                   </ion-select-option>
                 </ion-select>
               </ion-col>
 
             </ion-row>
           </ion-grid>
-        </ion-item>
+        </div>
       </div>
 
       <div *ngSwitchCase="'date'">
@@ -127,7 +163,7 @@
       </div>
 
       <div *ngSwitchCase="'imageBox'">
-        <ion-item *ngIf="question.displayquestion" lines="none">
+          <div *ngIf="question.displayquestion" lines="none" class="transparent-bg">
           <ion-grid >
             <ion-row>
               <ion-col size="12">
@@ -149,13 +185,13 @@
             </ion-row>
 
           </ion-grid>
-        </ion-item>
+        </div>
       </div>
 
     </div>
   </div>
 
-  <ion-grid class="buttons">
+  <ion-grid class="buttons" *ngIf="!useCustomSubmitButton">
     <ion-col size="5">
       <app-button  type="submit" [config]="btnConfig" [fill]="btnFill" [disabled]="!tunaFormGroup.valid" title={{submitButtonText.toUpperCase()}}></app-button>
     </ion-col>

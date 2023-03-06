@@ -2,8 +2,8 @@
 
 </app-header>
 
-<ion-content class="content-skyblue-bg">
-  <div class="ion-padding">
+<ion-content class="content-skyblue-bg ion-content-custom-position">
+  <app-contentwrapper>
     <ion-grid class="ion-margin-bottom">
       <ion-row class="ion-justify-content-between ion-align-items-baseline">
         <ion-col>
@@ -22,7 +22,11 @@
       </ion-row>
     </ion-grid>
     <div class="ion-margin-top">
-      <app-search [searchDataSet]="workOrders" (searchResult)="searchResult($event)"></app-search>
+      <app-search
+        [searchDataSet]="workOrders"
+        (searchResult)="searchResult($event)"
+        (clear)="clearSearchResult()">
+      </app-search>
       <ion-grid>
         <ion-row>
           <ion-text class="filter-title">Filter</ion-text>
@@ -50,8 +54,7 @@
     <div *ngIf="!select">
       <app-workordercard *ngFor="let wo of workOrders" [wo]="wo"></app-workordercard>
     </div>
-
-  </div>
+  </app-contentwrapper>
 </ion-content>
 <div class="bottom-element">
   <div *ngIf="!select" (click)="onSelect()">

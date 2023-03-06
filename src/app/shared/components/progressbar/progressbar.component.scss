@@ -6,3 +6,15 @@ ion-progress-bar{
 .warning{
     --progress-background: var(--ikan_yellow_100);
 }
+
+.primary {
+    --progress-background: #74F080
+}
+
+.blue{
+    color: var(--ikan_blue_100);
+}
+
+.dark-blue {
+    color: var(--ikan_darkblue_100);
+}

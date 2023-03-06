@@ -1,14 +1,22 @@
 <app-header [pageTitle]=""></app-header>
 
-<ion-content>
-  <app-form
-    [tunaFormGroup]="createWorkerFormGroup"
+<ion-content class="content-skyblue-bg ion-content-custom-position">
+  <app-contentwrapper>
+  <div>
+    <div class="title-wrapper">
+      <app-title [isBig]="true" title="Edit"></app-title>
+    </div>
+    <app-form
+    [tunaFormGroup]="pageFormGroup"
     [tunaFormquestions]="formQuestions"
     [submitButtonText]="submitButtonText"
     (formValue)="onSubmit($event)"
+    [isTextBlue]="true"
+    [isOtherDarkBlue]="true"
+    [isTitleDarkBlue]="true"
+    btnFill="solid"
   >
   </app-form>
-  <div class="ion-padding">
-    <ion-button expand="block">SEND INVITE</ion-button>
   </div>
+  </app-contentwrapper>
 </ion-content>

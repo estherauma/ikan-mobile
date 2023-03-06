@@ -51,4 +51,26 @@
 
 ion-input{
   --height: 60px;
+  --color: var(--ikan_darkblue_100);
+}
+
+.form-input {
+  background-color: white; 
+  border-radius: 10px;
+}
+
+.text-section{
+  padding-left: 8px;
+}
+
+.transparent-bg {
+  background: transparent;
+}
+
+.text-blue {
+  color: var(--ikan_blue_100);
+}
+
+.text-darkblue{
+  color: var(--ikan_darkblue_100);
 }

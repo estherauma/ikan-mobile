@@ -1,0 +1,75 @@
+.card-content{
+    display: flex; 
+    justify-content: space-between;
+    align-items: stretch;
+}
+
+.card-image-section {
+    background: #D3DAEE; 
+    width: 70px; 
+    padding-left: 8px !important; 
+    display: flex; 
+    justify-content: center;
+    align-items: center;
+    height: auto;
+}
+
+.blue-dark{
+    color: #191970;
+}
+
+.blue-text{
+    color: #FFFFFF;
+}
+
+.gray-text{
+    color: #A0ABCC;
+}
+
+.card-section{
+    flex: 1; 
+    height: auto;
+    display: flex; 
+    flex-direction: column;
+}
+
+.card-body{
+    box-shadow: 0 !important;
+    border: 1.2px solid #191970;
+}
+
+.no-margin{
+    margin-top: 0px !important;
+    margin-bottom: 0px !important;
+}
+
+.no-border{
+    border-radius: 0px;
+}
+
+.border-top {
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+}
+
+.border-bottom {
+    border-bottom-left-radius: 10px;
+    border-bottom-right-radius: 10px;
+}
+
+.content-wrapper {
+    width: 235px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+
+ion-img{
+    --width: 32px;
+    --height: 36px;
+}
+
+.title{
+    font-size: 18px !important;
+}

@@ -26,8 +26,21 @@ import { BadgeComponent } from './components/badge/badge.component';
 import { GenericmodalComponent } from './components/genericmodal/genericmodal.component';
 import { MaincardComponent } from './components/maincard/maincard.component';
 import { ProgressbarComponent } from './components/progressbar/progressbar.component';
+import { PaymentbreakdowncardComponent } from './components/paymentbreakdowncard/paymentbreakdowncard.component';
+import { ImageselectComponent } from './components/imageselect/imageselect.component';
+import { UsercontractcardComponent } from './components/usercontractcard/usercontractcard.component';
+import { DocumentuploadComponent } from './components/documentupload/documentupload.component';
 import { VesselownercardComponent } from './components/vesselownercard/vesselownercard.component';
 import { PaymentssummarycardComponent } from './components/paymentssummarycard/paymentssummarycard.component';
+import { PlacementoffercardComponent } from './components/placementoffercard/placementoffercard.component';
+import { PagetabnavigatorComponent } from './components/pagetabnavigator/pagetabnavigator.component';
+import { PageprofilecontainerComponent } from './components/pageprofilecontainer/pageprofilecontainer.component';
+import { TitleblockComponent } from './components/titleblock/titleblock.component';
+import { WorkercardComponent } from './components/workercard/workercard.component';
+import { AudioPlayerComponent } from './components/audio-player/audio-player.component';
+import { ContentwrapperComponent } from './components/contentwrapper/contentwrapper.component';
+import { FeedbackStatCardComponent } from './components/feedback-stat-card/feedback-stat-card.component';
+import { CompaniescardComponent } from './components/companiescard/companiescard.component';
 
 
 @NgModule({
@@ -64,6 +77,19 @@ import { PaymentssummarycardComponent } from './components/paymentssummarycard/p
     VesselownercardComponent,
     PaymentssummarycardComponent,
     GenericmodalComponent,
+    PaymentbreakdowncardComponent,
+    ImageselectComponent,
+    UsercontractcardComponent,
+    DocumentuploadComponent,
+    PlacementoffercardComponent,
+    PagetabnavigatorComponent,
+    PageprofilecontainerComponent,
+    TitleblockComponent,
+    WorkercardComponent,
+    AudioPlayerComponent,
+    ContentwrapperComponent,
+    FeedbackStatCardComponent,
+    CompaniescardComponent,
   ],
   exports: [
     FormComponent,
@@ -92,6 +118,19 @@ import { PaymentssummarycardComponent } from './components/paymentssummarycard/p
     VesselownercardComponent,
     PaymentssummarycardComponent,
     GenericmodalComponent,
+    PaymentbreakdowncardComponent,
+    ImageselectComponent,
+    UsercontractcardComponent,
+    DocumentuploadComponent,
+    PlacementoffercardComponent,
+    PagetabnavigatorComponent,
+    PageprofilecontainerComponent,
+    TitleblockComponent,
+    WorkercardComponent,
+    AudioPlayerComponent,
+    ContentwrapperComponent,
+    FeedbackStatCardComponent,
+    CompaniescardComponent,
   ]
 })
 

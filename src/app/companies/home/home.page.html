@@ -1,0 +1,31 @@
+<app-header [isBackButton]="false"></app-header>
+
+<ion-content class="content-skyblue-bg ion-content-custom-position">
+  <app-contentwrapper>
+  <ion-grid class="ion-margin-bottom">
+    <ion-row class="ion-justify-content-between ion-align-items-baseline">
+      <ion-col>
+
+      </ion-col>
+      <ion-col>
+        <ion-row class="ion-justify-content-end">
+          <div>
+            <app-button (onClick)="createCompany()" iconName="add-outline" title="New"></app-button>
+          </div>
+        </ion-row>
+      </ion-col>
+    </ion-row>
+
+    <!-- Page title -->
+    <ion-row class="title">
+      <app-title [isBlue]="true" [title]="pageTitle"></app-title>
+    </ion-row>
+  </ion-grid>
+
+  <div>
+    <div>
+      <app-companiescard (click)="viewDetails(company)" *ngFor="let company of companies" [company]="company"></app-companiescard>
+    </div>
+  </div>
+</app-contentwrapper>
+</ion-content>

@@ -175,6 +175,10 @@ const routes: Routes = [
     loadChildren: () => import('./agents/home/home.module').then( m => m.HomePageModule)
   },
   {
+    path: 'agents/create',
+    loadChildren: () => import('./agents/create/create.module').then( m => m.CreatePageModule)
+  },
+  {
     path: 'agents/details',
     loadChildren: () => import('./agents/details/details.module').then( m => m.DetailsPageModule)
   },
@@ -289,6 +293,50 @@ const routes: Routes = [
   {
     path: 'sandbox',
     loadChildren: () => import('./sandbox/sandbox.module').then( m => m.SandboxPageModule)
+  },
+  {
+    path: 'workers/info',
+    loadChildren: () => import('./workers/detail/info/info.module').then( m => m.InfoPageModule)
+  },
+  {
+    path: 'workers/payment',
+    loadChildren: () => import('./workers/detail/payment/payment.module').then( m => m.PaymentPageModule)
+  },
+  {
+    path: 'workers/placement',
+    loadChildren: () => import('./workers/detail/placement/placement.module').then( m => m.PlacementPageModule)
+  },
+  {
+    path: 'workers/documents',
+    loadChildren: () => import('./workers/detail/docs/docs.module').then( m => m.DocsPageModule)
+  },
+  {
+    path: 'workers/training',
+    loadChildren: () => import('./workers/detail/training/training.module').then( m => m.TrainingPageModule)
+  },
+  {
+    path: 'learninghub/variant',
+    loadChildren: () => import('./learninghub/variant/variant.module').then( m => m.VariantPageModule)
+  },
+  {
+    path: 'learninghub/section',
+    loadChildren: () => import('./learninghub/section/section.module').then( m => m.SectionPageModule)
+  },
+  {
+    path: 'companies/home',
+    loadChildren: () => import('./companies/home/home.module').then( m => m.HomePageModule)
+  },
+  {
+    path: 'companies/create',
+    loadChildren: () => import('./companies/create/create.module').then( m => m.CreatePageModule)
+  },
+  {
+    path: 'companies/details',
+    loadChildren: () => import('./companies/details/details.module').then( m => m.DetailsPageModule)
+  },
+  {
+    path: 'contracts/create',
+    loadChildren: () => import('./contracts/create/create.module').then( m => m.CreatePageModule)
   },
 ];
 

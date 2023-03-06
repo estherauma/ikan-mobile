@@ -1,0 +1,90 @@
+ion-progress-bar{
+    height: 6px;
+    border-radius: 3px;
+}
+
+.audio-controls-wrapper {
+    display: flex; 
+    justify-content: space-between; 
+    align-items: center;
+
+    .section {
+        display: flex; 
+        width: 25%; 
+        align-items: center;
+        justify-content: space-around;
+        
+        ion-img {
+            height: 24px; 
+            width: 24px;
+        }
+    }
+
+    .progress-section {
+        width: 50%;
+        margin-left: 8px;
+        margin-right: 8px;
+    }
+}
+
+.white-bg{
+    background-color: #ffffff;
+    padding: 16px;
+    border-radius: 20px;
+}
+
+.gray-bg {
+    background-color: var(--ikan_skyblue_100);
+    padding: 16px;
+    border-radius: 20px;
+}
+
+.thin {
+    padding: 8px !important;
+}
+
+.white-bg-title{
+    background-color: #ffffff; 
+    border-radius: 20px;
+    padding: 16px;
+
+    .title {
+        text-align: center; 
+        color: #3565FF;
+        font-weight: 800;
+    }
+}
+
+.white-bg-title-photo{
+    background-color: #ffffff; 
+    border-radius: 20px;
+
+    .image-section {
+        height: 150px; 
+        background-color: #D9D9D9; 
+        width: 100%;
+    }
+
+    .title {
+        text-align: center; 
+        padding-top: 16px; 
+        color: #3565FF;
+        font-weight: 800;
+    }
+
+    .audio-controls-wrapper {
+        padding: 16px;
+    }
+}
+
+h2 {
+    margin-top: 0px;
+}
+
+.duration-right {
+    padding-right: 8px;
+}
+
+.duration-left {
+    padding-left: 8px;
+}
