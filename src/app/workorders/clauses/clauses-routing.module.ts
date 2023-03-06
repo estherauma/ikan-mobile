@@ -7,6 +7,14 @@ const routes: Routes = [
   {
     path: '',
     component: ClausesPage
+  },
+  {
+    path: 'create-title',
+    loadChildren: () => import('./create-title/create-title.module').then( m => m.CreateTitlePageModule)
+  },
+  {
+    path: 'create-details',
+    loadChildren: () => import('./create-details/create-details.module').then( m => m.CreateDetailsPageModule)
   }
 ];
 

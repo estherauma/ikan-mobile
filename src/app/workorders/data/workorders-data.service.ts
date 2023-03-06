@@ -87,6 +87,15 @@ export class WorkordersDataService {
         workOrderData.status, id];
   }
 
+  createWorkorderClauseTitle(data) {
+    const query = 'INSERT INTO workorder_clauses (name, workorder_id, created_at,\
+      updated_at, created_by, updated_by) VALUES (?, ?, ?, ?, ?, ?)';
+    const params = [ data.name, data.workOrderId, data.created_at, data.updated_at,
+      data.created_by,data.updated_by];
+      return this.db.executeSql(query, params).then((result) => result.insertId)
+      .catch(e => console.log(e));
+  }
+
   getWorkOrderClauses(workOrderId) {}
 
   updateClause(woClauseId) {}

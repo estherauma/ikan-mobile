@@ -17,13 +17,13 @@ export class HomePage implements OnInit {
   workOrders = [];
   unFilteredData = [];
 
-selectText = '';
-cancelText = '';
+  selectText = '';
+  cancelText = '';
 
-filterOptions = [
-  {title:'closed', value:'closed'},
-  {title:'opened', value:'opened'}
-];
+  filterOptions = [
+    {title:'closed', value:'closed'},
+    {title:'opened', value:'opened'}
+  ];
 
 
 
@@ -69,7 +69,6 @@ filterOptions = [
   }
 
   clearSearchResult() {
-    console.log('clear triggered');
     this.workOrders = this.unFilteredData;
   }
 

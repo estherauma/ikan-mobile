@@ -1,5 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import { ModalController } from '@ionic/angular';
+import { SharedmethodsService } from 'src/app/shared/services/sharedmethods/sharedmethods.service';
+import { CreateTitlePage } from '../clauses/create-title/create-title.page';
 
 @Component({
   selector: 'app-view',
@@ -104,7 +107,10 @@ export class ViewPage implements OnInit {
   done = false;
   onDisabled = false;
 
-  constructor(public router: Router,
+  constructor(
+    public router: Router,
+    public modalCtrl: ModalController,
+    public sharedMethods: SharedmethodsService,
     public activatedRoute: ActivatedRoute) { }
 
   ngOnInit() {
@@ -131,8 +137,15 @@ export class ViewPage implements OnInit {
     return this.clauses[this.clauses.length - 1];
   }
 
-  addNewClause() {
-    this.done = true;
+  async addNewClause() {
+    const modal = await this.modalCtrl.create({
+      component: CreateTitlePage,
+      cssClass: 'tuna-modal',
+      componentProps: {
+        workOrderId: this.workOrder.id
+      }
+    });
+    modal.present();
   }
 
   onCheckBoxSelect(e) {
