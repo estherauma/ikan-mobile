@@ -1,5 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import { ModalController } from '@ionic/angular';
+import { SharedmethodsService } from 'src/app/shared/services/sharedmethods/sharedmethods.service';
+import { CreateTitlePage } from '../clauses/create-title/create-title.page';
+import { WorkordersDataService } from '../data/workorders-data.service';
 
 @Component({
   selector: 'app-view',
@@ -9,71 +13,35 @@ import { ActivatedRoute, Router } from '@angular/router';
 export class ViewPage implements OnInit {
   pageTitle = 'View Work Order';
   workOrder: any;
-  clauses = [
-    {
-      img: '',
-      title: 'Parties requirement',
-      description: '<i>Neque porro quisquam est qui dolorem ipsum quia dolor sit amet, consectetur</i>'
-    },
-    {
-      img: '',
-      title: 'Place of work',
-      description: '<p>Neque porro quisquam est qui dolorem</p> <b>ipsum quia dolor sit amet, consectetur</b>'
-    },
-    {
-      img: '',
-      title: 'Provisions',
-      description: `<img src="https://source.unsplash.com/random" alt="A random image from Unsplash"/>
-      Neque porro quisquam est qui dolorem ipsum quia dolor sit amet, consectetur`
-    },
-    {
-      img: '',
-      title: 'Wages',
-      description: 'Neque porro quisquam est qui dolorem ipsum quia dolor sit amet, consectetur'
-    },
-    {
-      img: '',
-      title: 'Notice of Termination of Agreement',
-      description: 'Neque porro quisquam est qui dolorem ipsum quia dolor sit amet, consectetur'
-    },
-    {
-      img: '',
-      title: 'Protection',
-      description: 'Neque porro quisquam est qui dolorem ipsum quia dolor sit amet, consectetur'
-    },
-    {
-      img: '',
-      title: 'Parties requirement',
-      description: 'Neque porro quisquam est qui dolorem ipsum quia dolor sit amet, consectetur'
-    },
-    {
-      img: '',
-      title: 'Parties requirement',
-      description: 'Neque porro quisquam est qui dolorem ipsum quia dolor sit amet, consectetur'
-    },
-    {
-      img: '',
-      title: 'Expenses',
-      description: 'Neque porro quisquam est qui dolorem ipsum quia dolor sit amet, consectetur'
-    },
-    {
-      img: '',
-      title: 'Additional particulars required to be include by United Kingdom Law',
-      description: 'Neque porro quisquam est qui dolorem ipsum quia dolor sit amet, consectetur'
-    },
-    {
-      img: '',
-      title: 'Signature',
-      description: 'Neque porro quisquam est qui dolorem ipsum quia dolor sit amet, consectetur'
-    }
-  ];
+  clauses = [];
 
-  constructor(public router: Router,
-    public activatedRoute: ActivatedRoute) { }
+  done = false;
+  onDisabled = false;
+
+  constructor(
+    public router: Router,
+    public modalCtrl: ModalController,
+    public sharedMethods: SharedmethodsService,
+    public workOrderService: WorkordersDataService,
+    public activatedRoute: ActivatedRoute) {
+
+    }
 
   ngOnInit() {
     this.activatedRoute.params.subscribe((params) => {
       this.workOrder = params;
+      this.workOrderService.getWorkOrderClauses(params.id).then((data) => {
+        data.forEach((entry) => {
+        const clause = {
+          id: entry.id,
+          img: '',
+          title: entry.name,
+          subTitle: entry.explainerText,
+          status: 'active',
+        };
+        this.clauses.push(clause);
+        });
+      });
       this.pageTitle = `View ${this.workOrder.name}`;
     });
   }
@@ -82,8 +50,32 @@ export class ViewPage implements OnInit {
     const objectParams = { ...clause };
     this.router.navigate(['/workorders/clauses'], { queryParams: objectParams });
   }
+
   onSubWorkOrder() {
     this.router.navigate(['/workorders/send/signatureview']);
+  }
+
+  getFirstClause() {
+    return this.clauses[0];
+  }
+
+  getLastClause() {
+    return this.clauses[this.clauses.length - 1];
+  }
+
+  async addNewClause() {
+    const modal = await this.modalCtrl.create({
+      component: CreateTitlePage,
+      cssClass: 'tuna-modal',
+      componentProps: {
+        workOrderId: this.workOrder.id
+      }
+    });
+    modal.present();
+  }
+
+  onCheckBoxSelect(e) {
+    this.onDisabled = !this.onDisabled;
   }
 
 }
