@@ -51,13 +51,11 @@ export class CreatePage extends BaseformPage implements OnInit {
     this.submitButtonText = this.contentService.commonText?.create;
     this.companiesDataService.getAll().subscribe((data) => {
       data.forEach((entry) => {
-        // TODO: This is a hack. Fix it. First entry is with dummy wrong data
-        // TODO: Change values that are pushed to include the id of the company
         if (entry.country === ' Taiwan' || entry.country === 'Taiwan') {
-          this.taiwaneseCompanies.push(entry.name);
+          this.taiwaneseCompanies.push({label: entry.name, value: entry.id});
         }
         if (entry.country === 'Indonesia') {
-          this.indonesianCompanies.push(entry.name);
+          this.indonesianCompanies.push({label: entry.name, value: entry.id});
         }
       });
       this.updateSelectOptions();

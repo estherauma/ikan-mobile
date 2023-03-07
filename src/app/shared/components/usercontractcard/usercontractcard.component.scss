@@ -70,3 +70,18 @@ ion-img{
 .title{
     font-size: 18px !important;
 }
+
+.contents-section-container {
+    display: inline-block;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    width: 200px;
+  }
+  
+  .contents-section-container ion-card-title , ion-label {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    padding-bottom: 16px;
+  }

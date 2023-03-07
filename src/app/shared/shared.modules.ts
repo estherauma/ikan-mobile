@@ -41,6 +41,7 @@ import { AudioPlayerComponent } from './components/audio-player/audio-player.com
 import { ContentwrapperComponent } from './components/contentwrapper/contentwrapper.component';
 import { FeedbackStatCardComponent } from './components/feedback-stat-card/feedback-stat-card.component';
 import { CompaniescardComponent } from './components/companiescard/companiescard.component';
+import { CompanycontractcardComponent } from './components/companycontractcard/companycontractcard.component';
 
 
 @NgModule({
@@ -90,6 +91,7 @@ import { CompaniescardComponent } from './components/companiescard/companiescard
     ContentwrapperComponent,
     FeedbackStatCardComponent,
     CompaniescardComponent,
+    CompanycontractcardComponent,
   ],
   exports: [
     FormComponent,
@@ -131,6 +133,7 @@ import { CompaniescardComponent } from './components/companiescard/companiescard
     ContentwrapperComponent,
     FeedbackStatCardComponent,
     CompaniescardComponent,
+    CompanycontractcardComponent,
   ]
 })
 

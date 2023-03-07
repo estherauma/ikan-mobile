@@ -1,11 +1,11 @@
 import { Injectable } from '@angular/core';
 
 /**  Uncomment this when building for native device */
-import { SQLite, SQLiteObject } from '@awesome-cordova-plugins/sqlite/ngx';
+// import { SQLite, SQLiteObject } from '@awesome-cordova-plugins/sqlite/ngx';
 
 /**  Uncomment this when debugging on web */
-// import { SQLite } from '@awesome-cordova-plugins/sqlite/ngx';
-// import { SQLiteObject } from './sqlite.mock';
+import { SQLite } from '@awesome-cordova-plugins/sqlite/ngx';
+import { SQLiteObject } from './sqlite.mock';
 
 import { Platform } from '@ionic/angular';
 import { HttpClient } from '@angular/common/http';
@@ -23,7 +23,8 @@ export class DBService {
     'cici+technology@50eight.com',
     'farah+technology@50eight.com',
     'budi+technology@50eight.com',
-    'tony+technology@50eight.com'
+    'tony+technology@50eight.com',
+    'samsonkapeyi@50eight.com'
   ];;
 
   constructor(

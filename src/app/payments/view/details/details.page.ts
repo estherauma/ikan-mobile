@@ -11,14 +11,6 @@ export class DetailsPage implements OnInit {
 
   paymentBreakdowns: any = [
     {
-      type: 'Bank transfer',
-      madeOn: '30/09/2022',
-      confirmedOn: '',
-      confirmed: true,
-      status: 'confirmed',
-      amount: '$999.0'
-    },
-    {
       type: 'Cash',
       madeOn: '30/09/2022',
       confirmedOn: '30/09/2022',
@@ -52,8 +44,13 @@ export class DetailsPage implements OnInit {
     this.activatedRoute.params.subscribe((data) => {
       if (data) {
         this.payment = data;
+        this.generatePaymentBreakdown(data);
       }
     });
+  }
+
+  generatePaymentBreakdown(payment) {
+
   }
 
 }

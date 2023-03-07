@@ -1,0 +1,33 @@
+CREATE TABLE IF NOT EXISTS payments (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  payment_ref VARCHAR(255) NOT NULL,
+  company_id VARCHAR(255) NOT NULL,
+  type VARCHAR(255) NOT NULL,
+  worker_id VARCHAR(255) NOT NULL,
+  total_amount VARCHAR NOT NULL,
+  remmitance_amount VARCHAR,
+  beneficiary_amount VARCHAR,
+  cash_amount VARCHAR,
+  date VARCHAR(255) NOT NULL,
+  status VARCHAR(255) NOT NULL,
+  confirmed BOOLEAN NOT NULL DEFAULT 0,
+  confirmation_date VARCHAR(255),
+  online_ref VARCHAR(255),
+  created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  created_by VARCHAR(255) NOT NULL,
+  updated_by VARCHAR(255) NOT NULL
+);
+
+
+CREATE TABLE IF NOT EXISTS payment_deductions (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  payment_id INTEGER NOT NULL,
+  amount VARCHAR NOT NULL,
+  reason VARCHAR(255) NOT NULL,
+  online_ref VARCHAR(255),
+  created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  created_by VARCHAR(255) NOT NULL,
+  updated_by VARCHAR(255) NOT NULL
+);
