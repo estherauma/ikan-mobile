@@ -4,6 +4,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { BaseformPage } from 'src/app/shared/components/baseform/baseform.page';
 import { ContentService } from 'src/app/shared/services/content/content.service';
 import { SharedmethodsService } from 'src/app/shared/services/sharedmethods/sharedmethods.service';
+import { WorkordersDataService } from '../../data/workorders-data.service';
 
 @Component({
   selector: 'app-create-details',
@@ -12,10 +13,13 @@ import { SharedmethodsService } from 'src/app/shared/services/sharedmethods/shar
 })
 export class CreateDetailsPage extends BaseformPage implements OnInit {
   workOrderId: any;
+  workOrder: any;
+
   constructor(
     public activatedRoute: ActivatedRoute,
     public sharedMethods: SharedmethodsService,
     public router: Router,
+    public workOrderService: WorkordersDataService,
     public contentService: ContentService,
   ) {
     super(contentService);
@@ -32,17 +36,22 @@ export class CreateDetailsPage extends BaseformPage implements OnInit {
     this.submitButtonText = this.contentService.commonText?.create;
     this.activatedRoute.params.subscribe(params => {
       console.log(params);
+      this.workOrder = params;
       this.pageTitle = params?.name;
       this.workOrderId = params?.clauseId;
     });
   }
 
   async onSubmit(formData) {
+    console.log(formData);
     this.sharedMethods.showLoader(this.contentService.commonText?.saving);
     const userData = await this.sharedMethods.getUserData();
     const now = this.sharedMethods.getCurrentDateTime();
     formData.created_by = userData.id;
     formData.updated_by = userData.id;
     formData.created_at = formData.updated_at = now;
+    formData.clause_id = this.workOrderId;
+    const result = await this.workOrderService.saveWorkderClauseDetails(formData);
+    this.router.navigate(['/workorders/view', this.workOrder]);
   }
 }

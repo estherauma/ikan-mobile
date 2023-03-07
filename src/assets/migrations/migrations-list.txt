@@ -13,3 +13,4 @@
 1677156554736_addWorkersSeedData.sql
 1677224168172_addDemandLettersSeedData.sql
 1677225489170_addCompaniesSeedData.sql
+1678173855332_updateWorkOrderClausesTable.sql

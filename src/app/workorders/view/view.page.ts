@@ -3,6 +3,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { ModalController } from '@ionic/angular';
 import { SharedmethodsService } from 'src/app/shared/services/sharedmethods/sharedmethods.service';
 import { CreateTitlePage } from '../clauses/create-title/create-title.page';
+import { WorkordersDataService } from '../data/workorders-data.service';
 
 @Component({
   selector: 'app-view',
@@ -12,97 +13,7 @@ import { CreateTitlePage } from '../clauses/create-title/create-title.page';
 export class ViewPage implements OnInit {
   pageTitle = 'View Work Order';
   workOrder: any;
-  clauses = [
-    {
-      id: 1,
-      img: '',
-      title: 'Parties requirement',
-      description: '<i>Neque porro quisquam est qui dolorem ipsum quia dolor sit amet, consectetur</i>',
-      status: 'active',
-      subTitle: 'Neque porro quisquam est qui dolorem ipsum quia dolor sit amet, consectetur'
-    },
-    {
-      id: 2,
-      img: '',
-      title: 'Place of work',
-      description: '<p>Neque porro quisquam est qui dolorem</p> <b>ipsum quia dolor sit amet, consectetur</b>',
-      status: 'active',
-      subTitle: 'Neque porro quisquam est qui dolorem ipsum quia dolor sit amet, consectetur'
-    },
-    {
-      id: 3,
-      img: '',
-      title: 'Provisions',
-      description: `<img src="https://source.unsplash.com/random" alt="A random image from Unsplash"/>
-      Neque porro quisquam est qui dolorem ipsum quia dolor sit amet, consectetur`,
-      status: 'active',
-      subTitle: 'Neque porro quisquam est qui dolorem ipsum quia dolor sit amet, consectetur'
-    },
-    {
-      id: 4,
-      img: '',
-      title: 'Wages',
-      description: 'Neque porro quisquam est qui dolorem ipsum quia dolor sit amet, consectetur',
-      status: 'inactive',
-      subTitle: 'Neque porro quisquam est qui dolorem ipsum quia dolor sit amet, consectetur'
-    },
-    {
-      id: 5,
-      img: '',
-      title: 'Notice of Termination of Agreement',
-      description: 'Neque porro quisquam est qui dolorem ipsum quia dolor sit amet, consectetur',
-      status: 'inactive',
-      subTitle: 'Neque porro quisquam est qui dolorem ipsum quia dolor sit amet, consectetur'
-    },
-    {
-      id: 6,
-      img: '',
-      title: 'Protection',
-      description: 'Neque porro quisquam est qui dolorem ipsum quia dolor sit amet, consectetur',
-      status: 'active',
-      subTitle: 'Neque porro quisquam est qui dolorem ipsum quia dolor sit amet, consectetur'
-    },
-    {
-      id: 7,
-      img: '',
-      title: 'Parties requirement',
-      description: 'Neque porro quisquam est qui dolorem ipsum quia dolor sit amet, consectetur',
-      status: 'inactive',
-      subTitle: 'Neque porro quisquam est qui dolorem ipsum quia dolor sit amet, consectetur'
-    },
-    {
-      id: 8,
-      img: '',
-      title: 'Parties requirement',
-      description: 'Neque porro quisquam est qui dolorem ipsum quia dolor sit amet, consectetur',
-      status: 'active',
-      subTitle: 'Neque porro quisquam est qui dolorem ipsum quia dolor sit amet, consectetur'
-    },
-    {
-      id: 9,
-      img: '',
-      title: 'Expenses',
-      description: 'Neque porro quisquam est qui dolorem ipsum quia dolor sit amet, consectetur',
-      status: 'active',
-      subTitle: 'Neque porro quisquam est qui dolorem ipsum quia dolor sit amet, consectetur'
-    },
-    {
-      id: 10,
-      img: '',
-      title: 'Additional particulars required to be include by United Kingdom Law',
-      description: 'Neque porro quisquam est qui dolorem ipsum quia dolor sit amet, consectetur',
-      status: 'inactive',
-      subTitle: 'Neque porro quisquam est qui dolorem ipsum quia dolor sit amet, consectetur'
-    },
-    {
-      id: 11,
-      img: '',
-      title: 'Signature',
-      description: 'Neque porro quisquam est qui dolorem ipsum quia dolor sit amet, consectetur',
-      status: 'active',
-      subTitle: 'Neque porro quisquam est qui dolorem ipsum quia dolor sit amet, consectetur'
-    }
-  ];
+  clauses = [];
 
   done = false;
   onDisabled = false;
@@ -111,11 +22,26 @@ export class ViewPage implements OnInit {
     public router: Router,
     public modalCtrl: ModalController,
     public sharedMethods: SharedmethodsService,
-    public activatedRoute: ActivatedRoute) { }
+    public workOrderService: WorkordersDataService,
+    public activatedRoute: ActivatedRoute) {
+
+    }
 
   ngOnInit() {
     this.activatedRoute.params.subscribe((params) => {
       this.workOrder = params;
+      this.workOrderService.getWorkOrderClauses(params.id).then((data) => {
+        data.forEach((entry) => {
+        const clause = {
+          id: entry.id,
+          img: '',
+          title: entry.name,
+          subTitle: entry.explainerText,
+          status: 'active',
+        };
+        this.clauses.push(clause);
+        });
+      });
       this.pageTitle = `View ${this.workOrder.name}`;
     });
   }
