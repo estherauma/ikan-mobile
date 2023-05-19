@@ -16,6 +16,7 @@ export class HomePage implements OnInit {
   pageTitle = 'Work Orders';
   workOrders = [];
   unFilteredData = [];
+  noWorkOrdersText = 'No ';
 
   selectText = '';
   cancelText = '';
@@ -24,8 +25,6 @@ export class HomePage implements OnInit {
     {title:'closed', value:'closed'},
     {title:'opened', value:'opened'}
   ];
-
-
 
   constructor(
     public menuCtrl: MenuController,
@@ -39,6 +38,7 @@ export class HomePage implements OnInit {
     }
 
   ngOnInit() {
+    this.noWorkOrdersText = this.contentService.commonText?.noWorkOrdersText;
     this.cancelText = this.contentService.commonText?.cancel;
     this.selectText = this.contentService.commonText?.select;
   }

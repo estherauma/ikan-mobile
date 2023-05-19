@@ -45,6 +45,14 @@
       </ion-grid>
     </div>
 
+    <div *ngIf="workOrders.length === 0">
+      <ion-card>
+        <ion-card-content>
+          {{ noWorkOrdersText }}
+        </ion-card-content>
+      </ion-card>
+    </div>
+
     <div *ngIf="select">
       <ion-row *ngFor="let wo of workOrders" class="ion-align-items-center">
         <ion-checkbox></ion-checkbox>
