@@ -1,32 +1,28 @@
 PODS:
-  - Capacitor (4.0.1):
+  - Capacitor (5.1.0):
     - CapacitorCordova
-  - CapacitorApp (4.0.1):
+  - CapacitorApp (5.0.5):
     - Capacitor
-  - CapacitorCamera (4.1.4):
+  - CapacitorCamera (5.0.5):
     - Capacitor
-  - CapacitorCordova (4.0.1)
-  - CapacitorFilesystem (4.1.4):
+  - CapacitorCordova (5.1.0)
+  - CapacitorFilesystem (5.0.5):
     - Capacitor
-  - CapacitorHaptics (4.0.1):
+  - CapacitorHaptics (5.0.5):
     - Capacitor
-  - CapacitorKeyboard (4.0.1):
+  - CapacitorKeyboard (5.0.5):
     - Capacitor
-  - CapacitorNetwork (4.0.1):
+  - CapacitorNetwork (5.0.5):
     - Capacitor
-  - CapacitorPreferences (4.0.1):
+  - CapacitorPreferences (5.0.5):
     - Capacitor
-  - CapacitorSplashScreen (4.1.2):
+  - CapacitorSplashScreen (5.0.5):
     - Capacitor
-  - CapacitorStatusBar (4.0.1):
+  - CapacitorStatusBar (5.0.5):
     - Capacitor
-  - CapacitorToast (4.0.1):
+  - CapacitorToast (5.0.5):
     - Capacitor
-  - CapacitorVoiceRecorder (4.0.0):
-    - Capacitor
-  - CapawesomeCapacitorFilePicker (0.5.2):
-    - Capacitor
-  - CordovaPlugins (4.0.1):
+  - CordovaPlugins (5.1.0):
     - CapacitorCordova
 
 DEPENDENCIES:
@@ -42,8 +38,6 @@ DEPENDENCIES:
   - "CapacitorSplashScreen (from `../../node_modules/@capacitor/splash-screen`)"
   - "CapacitorStatusBar (from `../../node_modules/@capacitor/status-bar`)"
   - "CapacitorToast (from `../../node_modules/@capacitor/toast`)"
-  - CapacitorVoiceRecorder (from `../../node_modules/capacitor-voice-recorder`)
-  - "CapawesomeCapacitorFilePicker (from `../../node_modules/@capawesome/capacitor-file-picker`)"
   - CordovaPlugins (from `../capacitor-cordova-ios-plugins`)
 
 EXTERNAL SOURCES:
@@ -71,30 +65,24 @@ EXTERNAL SOURCES:
     :path: "../../node_modules/@capacitor/status-bar"
   CapacitorToast:
     :path: "../../node_modules/@capacitor/toast"
-  CapacitorVoiceRecorder:
-    :path: "../../node_modules/capacitor-voice-recorder"
-  CapawesomeCapacitorFilePicker:
-    :path: "../../node_modules/@capawesome/capacitor-file-picker"
   CordovaPlugins:
     :path: "../capacitor-cordova-ios-plugins"
 
 SPEC CHECKSUMS:
-  Capacitor: 706b36563433f4a866cbe6d2eade7c04725d9e08
-  CapacitorApp: 70ea773d069c24ab188ae7a01237b951920ffacf
-  CapacitorCamera: 8e1f9eac46c6a0b7df5619d20f021d852ccaa99a
-  CapacitorCordova: 728728aeeee853028558fefb4ccf7310e9d85a7a
-  CapacitorFilesystem: 3d665e5b3719d9f6e240480a7468861b0bb35f93
-  CapacitorHaptics: 02d48e2efca06ccf3273dbb638b68b0e145f623a
-  CapacitorKeyboard: 3b49a9d517641c123fb691713f99a89d6ebf3a37
-  CapacitorNetwork: c2bf9d2e9246eb2775c0571a67b316ebe8297067
-  CapacitorPreferences: d365ea3b5023b2aac39e8f5ce18de141e39d2cae
-  CapacitorSplashScreen: 58602bb275ecbc4a7957b4cdf93497db24ae2289
-  CapacitorStatusBar: e6cf2a9ed07f92ddae9ca101be36d08c61866b35
-  CapacitorToast: 1dc62f6482adba545aeb58d791f66cc7d9731c92
-  CapacitorVoiceRecorder: 43ae9e424a608e4588f2659bbb75ce44dfbb1fcf
-  CapawesomeCapacitorFilePicker: a952b37c18e7fe752ca2970d34cdf04afa86f19d
-  CordovaPlugins: 18c20a8337ed57847a79d71a47bfb073fb119736
+  Capacitor: 8dc4a61c44f6644fe4e0b61ad01ff175f9b538e5
+  CapacitorApp: 9d91a5a400e4ad8cafe66a02cc9d8073c864d7bb
+  CapacitorCamera: 834aade2952a06bd1e46c078d1068a980f37f8c9
+  CapacitorCordova: 5984fa700842461518ecd320905c7f19ecdd590b
+  CapacitorFilesystem: 335bccfc8ebe381c4e9a7328ef1c4dae9035a6fe
+  CapacitorHaptics: 4b1a7e1bac1794d1515842d304f9fce46ef5084c
+  CapacitorKeyboard: ba4d618d80bf8caef4b9d8a971d714b9ca795e28
+  CapacitorNetwork: f13736619d9859418fe9580dcfd4114e7adc9562
+  CapacitorPreferences: c4764b0b3beae28c625c87b1a80504d9b24947ec
+  CapacitorSplashScreen: e563abf6d590bfe0269515ccc9d8bc03c41f32e9
+  CapacitorStatusBar: 540867ac3c63875b65bebd888f695de50a13a9a2
+  CapacitorToast: 77841e9091bea87db10e55b48747d958d76b1fe0
+  CordovaPlugins: 9e7a2978bc5d5aa07fbcd66912f7a16e03dd0733
 
-PODFILE CHECKSUM: a647accf28a38be1098a01ba027a9fd4cb6d56e0
+PODFILE CHECKSUM: 8fddcbae3febbbd1a8a10d8b9e5e11c2858cb068
 
 COCOAPODS: 1.11.3
