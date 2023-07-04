@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Camera, CameraSource, CameraResultType } from '@capacitor/camera';
 import { Capacitor } from '@capacitor/core';
-import { FilePicker } from '@capawesome/capacitor-file-picker';
+// import { FilePicker } from '@capawesome/capacitor-file-picker';
 
 
 type UploadType = 'application/pdf' | 'image/png';
@@ -13,12 +13,12 @@ export class UploadService {
 
 
   async choseFile(types: UploadType[] = ['application/pdf']) {
-    const result = await FilePicker.pickFiles({
-      types
-    });
-    const file = result.files[0];
-    return file;
-
+    // const result = await FilePicker.pickFiles({
+    //   types
+    // });
+    // const file = result.files[0];
+    // return file;
+    return null;
   }
 
   isPlatformWeb() {
