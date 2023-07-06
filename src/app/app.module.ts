@@ -16,9 +16,10 @@ import { SQLite } from '@awesome-cordova-plugins/sqlite/ngx';
 
 /** This is used to make sqlite work with the browser. */
 import { SQLiteMock } from './shared/services/database/sqlite.mock';
+import { RedElDirective } from './red-el.directive';
 
 @NgModule({
-  declarations: [ AppComponent ],
+  declarations: [ AppComponent, RedElDirective ],
   imports: [
     BrowserModule,
     IonicModule.forRoot(),

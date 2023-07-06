@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { RecordingData, VoiceRecorder } from 'capacitor-voice-recorder';
+// import { RecordingData, VoiceRecorder } from 'capacitor-voice-recorder';
 
 @Injectable({
   providedIn: 'root'
@@ -7,7 +7,7 @@ import { RecordingData, VoiceRecorder } from 'capacitor-voice-recorder';
 export class AudioService {
   recording = false;
   constructor() {
-    VoiceRecorder.requestAudioRecordingPermission();
+    // VoiceRecorder.requestAudioRecordingPermission();
   }
 
   startRecording() {
@@ -15,22 +15,23 @@ export class AudioService {
       return;
     }
     this.recording = true;
-    VoiceRecorder.startRecording();
+    // VoiceRecorder.startRecording();
   }
   async stopRecording() {
     if (!this.recording) {
       return;
     }
     this.recording = false;
-    return VoiceRecorder.stopRecording().then(async(result: RecordingData) => {
-      if (result.value && result.value.recordDataBase64) {
-        const file = `data:audio/aac;base64,${result.value.recordDataBase64}`;
-        return {
-          file,
-          uniqueName: Date.now()
-        };
-      }
-      return null;
-    });
+    // return VoiceRecorder.stopRecording().then(async(result: RecordingData) => {
+    //   if (result.value && result.value.recordDataBase64) {
+    //     const file = `data:audio/aac;base64,${result.value.recordDataBase64}`;
+    //     return {
+    //       file,
+    //       uniqueName: Date.now()
+    //     };
+    //   }
+    //   return null;
+    // });
+    return null;
   }
 }
