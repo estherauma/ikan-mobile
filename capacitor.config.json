@@ -18,6 +18,13 @@
 		  "splashImmersive": true,
 		  "layoutName": "launch_screen",
 		  "useDialog": false
-		}
-	  }
+		},
+    "PushNotifications": {
+      "presentationOptions": [
+        "badge",
+        "sound",
+        "alert"
+      ]
+    }
+	}
 }
