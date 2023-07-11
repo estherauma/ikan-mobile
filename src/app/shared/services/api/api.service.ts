@@ -2,15 +2,20 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { env } from 'src/environments/environment';
 import { Observable } from 'rxjs';
+import { PushNotificationData, StorageKeys } from 'src/app/shared/types/api-types';
+import { Preferences } from '@capacitor/preferences';
+import { SharedmethodsService } from '../sharedmethods/sharedmethods.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ApiService {
   headers: HttpHeaders;
+  pushNotificationApi: string = env.pushNotificationApi;
 
   constructor(
-    public http: HttpClient
+    public http: HttpClient,
+    public sharedMethods: SharedmethodsService,
   ) { }
 
   async setApiRequestHeaders() {
@@ -64,5 +69,43 @@ export class ApiService {
 
   delete(resourceUrl, resourceId) {
     // TODO: Implement later when we want to start deleting records.
+  }
+
+  uploadPushNotificationData(uploadDetails: PushNotificationData): any {
+    return new Promise(async(resolve) => {
+      try {
+        if (await this.sharedMethods.checkInternetConnectionStatus()) {
+          resolve(null);
+        }
+        const headers = new HttpHeaders({ accept: 'application/json', contentType: 'application/json' });
+        const url = `${this.pushNotificationApi}notification-data`;
+        this.http.post(url, uploadDetails, { headers })
+          .subscribe(async(res) => {
+            if (!res) {
+              await Preferences.set({
+                key: StorageKeys.pushNotificationDataUploaded,
+                value: '0'
+              });
+              resolve(null);
+            }
+            await Preferences.set({
+              key: StorageKeys.pushNotificationDataUploaded,
+              value: '1'
+            });
+            resolve(JSON.parse(JSON.stringify(res)));
+          }, async(error) => {
+            console.error(error);
+            await Preferences.set({
+              key: StorageKeys.pushNotificationDataUploaded,
+              value: '0'
+            });
+            console.error(error);
+            resolve(null);
+          });
+      } catch (error) {
+        console.error(error);
+        return null;
+      }
+    });
   }
 }

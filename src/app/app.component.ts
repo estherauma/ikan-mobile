@@ -8,6 +8,7 @@ import { StorageKeys, UserData, UserRole } from './shared/types/api-types';
 import { PluginListenerHandle } from '@capacitor/core';
 import { AuthService } from './shared/services/auth/auth.service';
 import { DBService } from './shared/services/database/db.service';
+import { PushNotificationsService } from './shared/services/push-notifications/push-notifications.service';
 
 @Component({
   selector: 'app-root',
@@ -23,10 +24,12 @@ export class AppComponent implements OnInit, OnDestroy {
     public sharedMethods: SharedmethodsService,
     public router: Router,
     public authService: AuthService,
-    public dbService: DBService
+    public dbService: DBService,
+    public pushNotifications: PushNotificationsService,
   ) {
     this.contentService.setUpAppData();
     this.checkLoginStatus();
+    this.pushNotifications.setup();
     this.contentService.menuContent.subscribe((data) => {
       data.sort((a, b) => a.position - b.position);
       this.appPages = data;
@@ -51,8 +54,8 @@ export class AppComponent implements OnInit, OnDestroy {
     this.sharedMethods.removeNetworkEventListener(this.networkListener);
   }
 
-  checkLoginStatus() {
-    this.sharedMethods.readDataFromStorage(StorageKeys.apiToken)
+  async checkLoginStatus() {
+    Preferences.get({ key: StorageKeys.apiToken })
       .then(async(value) => {
         if (value != null) {
           const user: UserData = await this.sharedMethods.readDataFromStorage(StorageKeys.userData);
@@ -65,6 +68,7 @@ export class AppComponent implements OnInit, OnDestroy {
           if ( tokenExpiryDateTime < new Date(now)) {
             this.logOut();
           } else {
+            await this.pushNotifications.setSaveUploadPushNotificationData();
             this.router.navigate([this.authService.getCurrentUserBaseUrlFromRole(user.role)]);
           }
         }

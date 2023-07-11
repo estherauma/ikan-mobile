@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { PushNotificationsService } from 'src/app/shared/services/push-notifications/push-notifications.service';
 
 @Component({
   selector: 'app-taiwaneseagent',
@@ -24,9 +25,14 @@ export class TaiwaneseagentPage implements OnInit {
     }]
   };
 
-  constructor() { }
+  constructor(
+    public pushNotifications: PushNotificationsService,
+  ) { }
 
   ngOnInit() {
+    if (!this.pushNotifications.preventSecondNotificationPrompt) {
+      this.pushNotifications.checkAndroidPNsPermissions();
+    }
   }
 
 }
