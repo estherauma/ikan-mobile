@@ -39,3 +39,4 @@ npm-debug.log*
 /src/environments/environment.ts
 .env
 App/output
+/build/*
