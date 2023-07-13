@@ -74,7 +74,7 @@ export class AppComponent implements OnInit, OnDestroy {
         }
       });
   }
-
+  // TODO: Use method from AuthService
   logOut() {
     Preferences.remove({ key: StorageKeys.apiToken });
     Preferences.remove({ key: StorageKeys.apiTokenExpiry });

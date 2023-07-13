@@ -3,8 +3,7 @@ version: 2.1
 jobs:
   build-apk:
     docker:
-      # - image: cimg/node:18.12.1 has the correct versio of node
-      - image: cimg/android:2022.09-node
+      - image: cimg/android:2023.06.1-node
     environment:
         JVM_OPTS: -Xmx3200m
     steps:
@@ -49,7 +48,7 @@ jobs:
 
   build-and-release-apk:
     docker:
-      - image: cimg/android:2022.09-node
+      - image: cimg/android:2023.06.1-node
     environment:
         JVM_OPTS: -Xmx3200m
     steps:

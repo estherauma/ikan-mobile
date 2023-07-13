@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { File } from '@capawesome/capacitor-file-picker';
+// import { File } from '@capawesome/capacitor-file-picker';
 import { ModalController } from '@ionic/angular';
 import { UploadService } from 'src/app/shared/services/upload/upload.service';
 import { DemandLetter } from '../home/home.page';
@@ -14,7 +14,7 @@ export class ViewPage implements OnInit {
   pageTitle = 'View Demand Letter';
   demandLetter: DemandLetter;
   ifReviewDemandLetter = false;
-  cooperationAgreementFile: File | null = null;
+  // cooperationAgreementFile: File | null = null;
 
   workOrders = [];
 
@@ -49,11 +49,11 @@ export class ViewPage implements OnInit {
 
   async uploadCopAgreement() {
     const chosencooperationAgreement = await this.chooser.choseFile();
-    this.cooperationAgreementFile = chosencooperationAgreement;
+    // this.cooperationAgreementFile = chosencooperationAgreement;
   }
 
   showReviewButton() {
-    return !this.ifReviewDemandLetter && this.workOrders.length && this.cooperationAgreementFile;
+    // return !this.ifReviewDemandLetter && this.workOrders.length && this.cooperationAgreementFile;
   }
 
 }

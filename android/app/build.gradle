@@ -2,13 +2,14 @@ apply plugin: 'com.android.application'
 apply plugin: 'com.google.firebase.appdistribution'
 
 android {
+    namespace "com.fiftyeight.tuna.dev"
     compileSdkVersion rootProject.ext.compileSdkVersion
     defaultConfig {
         applicationId "com.fiftyeight.tuna.dev"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 113
-        versionName "0.0.13"
+        versionCode 114
+        versionName "0.0.14"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         aaptOptions {
              // Files and dirs to omit from the packaged assets dir, modified to accommodate modern web apps.
@@ -25,7 +26,7 @@ android {
           minifyEnabled false
           debuggable true
           firebaseAppDistribution {
-            releaseNotes="Fix mobile app check for roles and permissions"
+            releaseNotes="Add config to deploy app on mobile devices based on build"
             groups="scrum"
           }
         }
