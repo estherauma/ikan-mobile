@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
+import { AuthGuard } from './shared/guards/auth/authguard.guard';
 
 const routes: Routes = [
   {
@@ -45,11 +46,13 @@ const routes: Routes = [
   },
   {
     path: 'workorders/home',
-    loadChildren: () => import('./workorders/home/home.module').then( m => m.HomePageModule)
+    loadChildren: () => import('./workorders/home/home.module').then( m => m.HomePageModule),
+    canActivate: [AuthGuard],
   },
   {
     path: 'workorders/create',
-    loadChildren: () => import('./workorders/create/create.module').then( m => m.CreatePageModule)
+    loadChildren: () => import('./workorders/create/create.module').then( m => m.CreatePageModule),
+    canActivate: [AuthGuard],
   },
   {
     path: 'workorders/view',

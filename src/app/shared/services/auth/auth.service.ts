@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 import { Preferences } from '@capacitor/preferences';
 import { StorageKeys, UserData, UserRole } from '../../types/api-types';
+import { SharedmethodsService } from '../sharedmethods/sharedmethods.service';
 
 @Injectable({
   providedIn: 'root'
@@ -11,7 +12,9 @@ export class AuthService {
   userRole: string;
   currentUser: BehaviorSubject<any> = new BehaviorSubject<any>(null);
 
-  constructor() { }
+  constructor(
+    public sharedMethods: SharedmethodsService
+  ) { }
 
   getCurrentUserBaseUrlFromRole(userRole: string) {
     switch (userRole) {
@@ -26,6 +29,7 @@ export class AuthService {
       case UserRole.buyer:
             return 'dashboard/buyer';
       default:
+        this.sharedMethods.showToast('Invalid user role');
         return '';
     }
   }
@@ -41,8 +45,6 @@ export class AuthService {
   logOut() {
     Preferences.remove({ key: StorageKeys.apiToken });
     Preferences.remove({ key: StorageKeys.apiTokenExpiry });
-    // TODO: Navigation should happen in the component itself
-    // this.router.navigate(['/login']);
   }
 
   hasPermission(permissions: string[]): boolean {

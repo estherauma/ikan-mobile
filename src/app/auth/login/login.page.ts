@@ -82,6 +82,8 @@ export class LoginPage extends BaseformPage implements OnInit {
   async handleRedirection() {
     const helpScreens = await this.sharedMethods.readDataFromStorage(StorageKeys.isFirstLogin);
     const user: UserData = await this.sharedMethods.readDataFromStorage(StorageKeys.userData);
+    this.authService.userRole = user.role;
+    console.log('user role: ', user.role);
     if (!helpScreens) {
       this.router.navigate([this.authService.getCurrentUserBaseUrlFromRole(user.role)]);
     } else {

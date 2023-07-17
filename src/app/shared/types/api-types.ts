@@ -99,11 +99,11 @@ export interface Data {
 }
 
 export enum UserRole {
-  vesselOwner = 'Vessel Owners',
-  taiwaneseAgent = 'Taiwanese Agents',
-  indonesianAgent = 'Indonesian Agents',
-  worker = 'Workers',
-  buyer = 'Buyers'
+  vesselOwner = 'vessel_owner',
+  taiwaneseAgent = 'taiwanese_agent',
+  indonesianAgent = 'indonesian_agent',
+  worker = 'worker',
+  buyer = 'buyer'
 }
 
 export interface Blameable {
