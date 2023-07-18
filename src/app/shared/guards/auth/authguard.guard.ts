@@ -11,29 +11,13 @@ import { StorageKeys, UserData } from '../../types/api-types';
 export class AuthGuard implements CanActivate {
 
   userRole: string;
-  constructor(
-    public authService: AuthService,
-    public sharedMethods: SharedmethodsService
-  ) { 
-    
-  }
 
-  canActivate(
-    route: ActivatedRouteSnapshot,
-    state: RouterStateSnapshot
-  ): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
-    console.log(route.url[0].path);
-    console.log(state.url);
-    console.log(this.authService.userRole);
-    if (this.userRole == 'vsesl')
-    return true;
-  }
-
+  // Roles and actions
   commonRoutes = [];
   commonActions = [];
 
-  vesselOwnerRouotes = [
-    'workorders/home'
+  vesselOwnerRoutes = [
+    '/workorders/home'
   ];
   vesselOwnerActions = [];
 
@@ -51,5 +35,34 @@ export class AuthGuard implements CanActivate {
 
   adminRoutes = [];
   adminActions = [];
+  constructor(
+    public authService: AuthService,
+    public sharedMethods: SharedmethodsService
+  ) { 
+    
+  }
+
+  canActivate(
+    route: ActivatedRouteSnapshot,
+    state: RouterStateSnapshot
+  ): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
+    // TODO: We will use the path later. 
+    // const currentPath = route.url[0].path;
+    const currentState = state.url;
+
+    // TODO: When we start doing this for all roles, we might have to split this into different functions
+    if (this.authService.userRole === 'vessel_owner') {
+      //check if current state is in vessle owner routes
+      if (this.vesselOwnerRoutes.includes(currentState)) {
+        return true
+      }
+      return true;
+    }
+    // Once we've added all route and actions, we'll deny access to all routes by default
+    // Otherwise none of the routes will load
+    return true;
+  }
+
+ 
 
 }

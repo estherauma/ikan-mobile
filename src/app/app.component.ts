@@ -57,12 +57,9 @@ export class AppComponent implements OnInit, OnDestroy {
         if (value != null) {
           const user: UserData = await this.sharedMethods.readDataFromStorage(StorageKeys.userData);
           const now = new Date().toUTCString();
-          const tokenExpiry = await this.sharedMethods.readDataFromStorage(StorageKeys.apiTokenExpiry);
-          // For testing. Manually set token expiry date to 1st Jan 2021
-          // const tokenExpiry = 1609459200;
-          const tokenExpiryDateTime = new Date(0);
-          tokenExpiryDateTime.setUTCSeconds(tokenExpiry);
-          if ( tokenExpiryDateTime < new Date(now)) {
+          console.log('token expiry date', this.authService.tokenExpiryDate);
+          console.log('now', new Date(now));
+          if ( this.authService.tokenExpiryDate < new Date(now)) {
             this.logOut();
           } else {
             this.router.navigate([this.authService.getCurrentUserBaseUrlFromRole(user.role)]);
@@ -88,8 +85,7 @@ export class AppComponent implements OnInit, OnDestroy {
 
   onClick(index) {
     if (this.appPages[index].url === '/logout') {
-      Preferences.remove({ key: StorageKeys.apiToken });
-      Preferences.remove({ key: StorageKeys.apiTokenExpiry });
+      this.authService.logOut();
       this.router.navigate(['']);
     } else {
       this.router.navigate([this.appPages[index].url], { replaceUrl: true });

@@ -8,13 +8,30 @@ import { SharedmethodsService } from '../sharedmethods/sharedmethods.service';
   providedIn: 'root'
 })
 export class AuthService {
-  tokenExpiry: Date;
+  userToken: string;
+  userData: UserData;
   userRole: string;
+  tokenExpiryDate: Date;
   currentUser: BehaviorSubject<any> = new BehaviorSubject<any>(null);
 
+  
   constructor(
     public sharedMethods: SharedmethodsService
-  ) { }
+  ) {
+    this.setUpAuthData();
+  }
+
+  async setUpAuthData() {
+    this.userData = await this.sharedMethods.readDataFromStorage(StorageKeys.userData);
+    this.userRole = this.userData.role;
+    this.currentUser.next(this.userData);
+
+    this.userToken = await this.sharedMethods.readDataFromStorage(StorageKeys.apiToken);
+    this.decodeAccessToken = this.decodeAccessToken(this.userToken);
+    console.log('this.decodeAccessToken', this.decodeAccessToken);
+    console.log('this.userData', this.userData);
+  }
+
 
   getCurrentUserBaseUrlFromRole(userRole: string) {
     switch (userRole) {
@@ -44,15 +61,7 @@ export class AuthService {
 
   logOut() {
     Preferences.remove({ key: StorageKeys.apiToken });
-    Preferences.remove({ key: StorageKeys.apiTokenExpiry });
+    Preferences.remove({ key: StorageKeys.userData });
   }
 
-  hasPermission(permissions: string[]): boolean {
-    for (const permission of permissions) {
-      if (!this.currentUser.value || !this.currentUser.value.permissions.includes(permission)) {
-        return false;
-      }
-    }
-    return true;
-  }
 }

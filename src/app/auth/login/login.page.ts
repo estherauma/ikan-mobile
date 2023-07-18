@@ -62,8 +62,6 @@ export class LoginPage extends BaseformPage implements OnInit {
           this.pageFormGroup.reset();
           await this.sharedMethods.saveDataToStorage(StorageKeys.apiToken, res.data.token);
           await this.sharedMethods.saveDataToStorage(StorageKeys.userData, res.data.userData);
-          const decodedToken = this.authService.decodeAccessToken(res.data.token);
-          await this.sharedMethods.saveDataToStorage(StorageKeys.apiTokenExpiry, decodedToken.exp);
           this.sharedMethods.hideLoader();
           // enable menu
           this.menuCtrl.enable(true);
@@ -82,8 +80,6 @@ export class LoginPage extends BaseformPage implements OnInit {
   async handleRedirection() {
     const helpScreens = await this.sharedMethods.readDataFromStorage(StorageKeys.isFirstLogin);
     const user: UserData = await this.sharedMethods.readDataFromStorage(StorageKeys.userData);
-    this.authService.userRole = user.role;
-    console.log('user role: ', user.role);
     if (!helpScreens) {
       this.router.navigate([this.authService.getCurrentUserBaseUrlFromRole(user.role)]);
     } else {

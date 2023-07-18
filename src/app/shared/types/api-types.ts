@@ -71,21 +71,17 @@ export interface FormQuestion {
 export enum StorageKeys {
   appContent = 'appContent',
   currentLanguage = 'currentLanguage',
-  apiToken = 'apiToken',
   isFirstLogin = 'isFirstLogin',
-  authData = 'authData',
+  apiToken = 'apiToken',
   userData = 'userData',
-  apiTokenExpiry = 'apiTokenExpiry'
 }
 
-export interface UserData{
-  email: string;
+export interface UserData {
   id: string;
   firstName: string;
   lastName: string;
-  isAdmin: string;
+  email: string;
   role: UserRole;
-  tokenExpiry: string;
 }
 export interface LoginSuccessReponse {
   status: string;
