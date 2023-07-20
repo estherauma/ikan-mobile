@@ -1,11 +1,5 @@
 import { Injectable } from '@angular/core';
-
-/**  Uncomment this when building for native device */
-// import { SQLite, SQLiteObject } from '@awesome-cordova-plugins/sqlite/ngx';
-
-/**  Uncomment this when debugging on web */
-import { SQLite } from '@awesome-cordova-plugins/sqlite/ngx';
-import { SQLiteObject } from './sqlite.mock';
+import { SQLite, SQLiteObject } from '@awesome-cordova-plugins/sqlite/ngx';
 
 import { Platform } from '@ionic/angular';
 import { HttpClient } from '@angular/common/http';
@@ -107,6 +101,7 @@ export class DBService {
   }
 
   async runSingleMigrationFile(migrationFileName) {
+    
     this.http.get('assets/migrations/' + migrationFileName, { responseType: 'text' as 'text'})
     .subscribe((data: any) => {
         // TODO: add logic for skipping comments in the migration file
