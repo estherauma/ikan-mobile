@@ -4,6 +4,7 @@ import { Preferences } from '@capacitor/preferences';
 import { StorageKeys, UserData, UserRole } from '../../types/api-types';
 import { SharedmethodsService } from '../sharedmethods/sharedmethods.service';
 
+
 @Injectable({
   providedIn: 'root'
 })
@@ -27,9 +28,9 @@ export class AuthService {
     this.currentUser.next(this.userData);
 
     this.userToken = await this.sharedMethods.readDataFromStorage(StorageKeys.apiToken);
-    this.decodeAccessToken = this.decodeAccessToken(this.userToken);
-    console.log('this.decodeAccessToken', this.decodeAccessToken);
-    console.log('this.userData', this.userData);
+    const decodedAccessToken = this.decodeAccessToken(this.userToken);
+    this.tokenExpiryDate = new Date(0);
+    this.tokenExpiryDate.setUTCSeconds(decodedAccessToken.exp);
   }
 
 
