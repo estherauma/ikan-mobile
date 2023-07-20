@@ -34,7 +34,6 @@ export class PushNotificationsService {
     public apiService: ApiService,
     public alertController: AlertController,
     public sharedmethods: SharedmethodsService,
-    // public persistentData: PersistentDataService,
     public contentService: ContentService,
     ) { }
 
@@ -55,21 +54,14 @@ export class PushNotificationsService {
   async setPushNotificationData() {
     const user: UserData = await this.sharedmethods.readDataFromStorage(StorageKeys.userData);
     // TODO: add logic for all users
-    if (!user) {
+    if (!user || !this.registrationToken) {
       return;
     }
-    const messagingRepos = [ 'tuna-messaging' ]; // await this.persistentData.getMessagesDomains() || [];
+    const messagingRepos = [ 'tuna-messaging' ];
+    // TODO: add logic for all users, language and locale
     this.pushNotificationData = {
       appId: 'tuna',
-      // language: persistentData?.language, // to be added
-      // destination: persistentData?.destination,
-      // locale: persistentData?.locale, // to be added
       userRole: user?.role,
-      // age: persistentData?.age,
-      // sectors: persistentData?.sectors,
-      // gender: persistentData?.gender,
-      // organisation: persistentData?.organisation,
-      // factoryFarm: persistentData?.factoryFarm,
       registrationToken: this.registrationToken,
       messagingRepos,
     };
@@ -85,7 +77,7 @@ export class PushNotificationsService {
   }
 
   async savePushNotificationData() {
-    if (!this.pushNotificationData) {
+    if (!this.pushNotificationData || !this.pushNotificationData.registrationToken) {
       return;
     }
     await Preferences.set({
@@ -138,24 +130,20 @@ export class PushNotificationsService {
     }
   }
 
+  // TODO: add topic subscription logic
   async subscribeMessagingTopics() {
     try {
       if (this.notificationsPermission) {
         const subscriptionTopics = [];
-        const messegingRepos = [ 'tuna-messaging' ]; // await this.persistentData.getMessagesDomains();
+        const messegingRepos = [ 'tuna-messaging' ];
         const user: UserData = await this.sharedmethods.readDataFromStorage(StorageKeys.userData);
         if (messegingRepos) {
           // TODO: add logic for all users, language and locale
           if (user) {
-            // const { destination, locale, language } = persistentData;
             for (const repo of messegingRepos) {
               subscriptionTopics.push(...[
                 // add role topic
-                `${repo}_All_All_${user?.role}`,
-                // `${repo}_All_All_${language}`,
-                // `${repo}_${this.removeSpaces(destination)}_${this.removeSpaces(locale)}_${language}`,
-                // `${repo}_${this.removeSpaces(destination)}_All_${language}`,
-                // `${repo}_All_${this.removeSpaces(locale)}_${language}`
+                user?.role,
               ]);
             }
             if (subscriptionTopics) {
@@ -164,7 +152,7 @@ export class PushNotificationsService {
               }
             }
           } else {
-            console.error('Could not get persistentData for push notifications.');
+            console.error('Could not get user data for push notifications.');
           }
         }
       }
@@ -213,7 +201,14 @@ export class PushNotificationsService {
   async getFCMToken() {
     if (this.notificationsPermission) {
       await FCM.getToken()
-        .then((r) => this.registrationToken = r.token)
+        .then(async(r) => {
+          this.registrationToken = r.token;
+
+          const savedNotificationData = await this.getPushNotificationData();
+          if (!savedNotificationData) {
+            this.setSaveUploadPushNotificationData();
+          }
+        })
         .catch((err) => {
           console.error(err);
         });
