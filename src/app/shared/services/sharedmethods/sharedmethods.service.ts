@@ -120,7 +120,7 @@ export class SharedmethodsService {
 
   async getDeviceUuid() {
     const deviceInfo = await Device.getId();
-    this.deviceUuid = deviceInfo?.uuid;
+    this.deviceUuid = deviceInfo?.identifier;
   }
 
   async isAndroidVersionAbove(minVersion: number) {
