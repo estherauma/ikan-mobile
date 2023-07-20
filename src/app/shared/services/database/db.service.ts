@@ -35,8 +35,6 @@ export class DBService {
           this.db = _db;
           await this.createMigrationsTable();
           this.executedMigrations = await this.readMigrationsTable();
-          // TODO: remove this line. Left for testing purposes
-          console.log('Migrations already executed: ' + this.executedMigrations);
           if (!seedData) {
             await this.getAndRunPendingMigrations();
             return;
