@@ -28,6 +28,7 @@ android {
           firebaseAppDistribution {
             releaseNotes="Add config to deploy app on mobile devices based on build"
             groups="scrum"
+            serviceCredentialsFile=file("google-services-credentials.json")
           }
         }
     }
