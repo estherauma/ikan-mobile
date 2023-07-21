@@ -25,6 +25,7 @@ export class AppComponent implements OnInit, OnDestroy {
     public authService: AuthService,
     public dbService: DBService
   ) {
+    this.authService.setUpAuthData();
     this.contentService.setUpAppData();
     this.checkLoginStatus();
     this.contentService.menuContent.subscribe((data) => {
@@ -52,17 +53,13 @@ export class AppComponent implements OnInit, OnDestroy {
   }
 
   checkLoginStatus() {
+    console.log('checkLoginStatus')
     this.sharedMethods.readDataFromStorage(StorageKeys.apiToken)
       .then(async(value) => {
         if (value != null) {
           const user: UserData = await this.sharedMethods.readDataFromStorage(StorageKeys.userData);
           const now = new Date().toUTCString();
-          const tokenExpiry = await this.sharedMethods.readDataFromStorage(StorageKeys.apiTokenExpiry);
-          // For testing. Manually set token expiry date to 1st Jan 2021
-          // const tokenExpiry = 1609459200;
-          const tokenExpiryDateTime = new Date(0);
-          tokenExpiryDateTime.setUTCSeconds(tokenExpiry);
-          if ( tokenExpiryDateTime < new Date(now)) {
+          if ( this.authService.tokenExpiryDate < new Date(now)) {
             this.logOut();
           } else {
             this.router.navigate([this.authService.getCurrentUserBaseUrlFromRole(user.role)]);
@@ -70,10 +67,9 @@ export class AppComponent implements OnInit, OnDestroy {
         }
       });
   }
-  // TODO: Use method from AuthService
+
   logOut() {
-    Preferences.remove({ key: StorageKeys.apiToken });
-    Preferences.remove({ key: StorageKeys.apiTokenExpiry });
+    this.authService.logOut();
     this.router.navigate(['/login']);
   }
 
@@ -89,8 +85,7 @@ export class AppComponent implements OnInit, OnDestroy {
 
   onClick(index) {
     if (this.appPages[index].url === '/logout') {
-      Preferences.remove({ key: StorageKeys.apiToken });
-      Preferences.remove({ key: StorageKeys.apiTokenExpiry });
+      this.authService.logOut();
       this.router.navigate(['']);
     } else {
       this.router.navigate([this.appPages[index].url], { replaceUrl: true });
