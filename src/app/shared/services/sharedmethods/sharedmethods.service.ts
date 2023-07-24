@@ -5,13 +5,14 @@ import { Toast } from '@capacitor/toast';
 import { Preferences } from '@capacitor/preferences';
 import { PluginListenerHandle } from '@capacitor/core';
 import { StorageKeys } from '../../types/api-types';
+import { Device } from '@capacitor/device';
 
 
 @Injectable({
   providedIn: 'root'
 })
 export class SharedmethodsService {
-
+  public deviceUuid: any;
   networkListener: PluginListenerHandle;
 
   constructor(
@@ -39,13 +40,14 @@ export class SharedmethodsService {
   async saveDataToStorage(key, data) {
     Preferences.set({
       key,
-      value: JSON.stringify(data)
+      value: typeof data === 'string' ? data : JSON.stringify(data)
     });
   }
 
   async readDataFromStorage(key) {
+    if (!key) { return null; }
     const { value } = await Preferences.get({ key });
-    return JSON.parse(value);
+    return value ? JSON.parse(value) : null;
   }
 
   async addNetworkEventListener(customCallbackFunc: (
@@ -101,6 +103,47 @@ export class SharedmethodsService {
         options.push(option.name );
       });
       return options;
+    }
+  }
+
+  async checkInternetConnectionStatus() {
+    let internetConnectionStatus = false;
+    await Network.getStatus().then(state => {
+      internetConnectionStatus = state.connected;
+    });
+    return internetConnectionStatus;
+  }
+
+  async getDeviceInfo() {
+    return await Device.getInfo() || null;
+  }
+
+  async getDeviceUuid() {
+    const deviceInfo = await Device.getId();
+    this.deviceUuid = deviceInfo?.identifier;
+  }
+
+  async isAndroidVersionAbove(minVersion: number) {
+    try {
+      if (!minVersion) {
+        return false;
+      }
+      const deviceInfo = await this.getDeviceInfo();
+      if (deviceInfo?.operatingSystem !== 'android' || !deviceInfo?.osVersion) {
+        return false;
+      }
+      const osVersion = deviceInfo?.osVersion.split('.');
+      if (!osVersion || !osVersion?.length) {
+        return false;
+      }
+      const major = osVersion[0];
+      if (major && parseInt(major, 10) > minVersion) {
+        return true;
+      }
+      return false;
+    } catch (error) {
+      console.error(error);
+      return false;
     }
   }
 }
