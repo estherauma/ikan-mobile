@@ -27,6 +27,7 @@ export class AppComponent implements OnInit, OnDestroy {
     public dbService: DBService,
     public pushNotifications: PushNotificationsService,
   ) {
+    this.authService.setUpAuthData();
     this.contentService.setUpAppData();
     this.checkLoginStatus();
     this.pushNotifications.setup();
@@ -54,18 +55,13 @@ export class AppComponent implements OnInit, OnDestroy {
     this.sharedMethods.removeNetworkEventListener(this.networkListener);
   }
 
-  async checkLoginStatus() {
-    Preferences.get({ key: StorageKeys.apiToken })
+  checkLoginStatus() {
+    this.sharedMethods.readDataFromStorage(StorageKeys.apiToken)
       .then(async(value) => {
         if (value != null) {
           const user: UserData = await this.sharedMethods.readDataFromStorage(StorageKeys.userData);
           const now = new Date().toUTCString();
-          const tokenExpiry = await this.sharedMethods.readDataFromStorage(StorageKeys.apiTokenExpiry);
-          // For testing. Manually set token expiry date to 1st Jan 2021
-          // const tokenExpiry = 1609459200;
-          const tokenExpiryDateTime = new Date(0);
-          tokenExpiryDateTime.setUTCSeconds(tokenExpiry);
-          if ( tokenExpiryDateTime < new Date(now)) {
+          if ( this.authService.tokenExpiryDate < new Date(now)) {
             this.logOut();
           } else {
             await this.pushNotifications.setSaveUploadPushNotificationData();
@@ -74,10 +70,9 @@ export class AppComponent implements OnInit, OnDestroy {
         }
       });
   }
-  // TODO: Use method from AuthService
+
   logOut() {
-    Preferences.remove({ key: StorageKeys.apiToken });
-    Preferences.remove({ key: StorageKeys.apiTokenExpiry });
+    this.authService.logOut();
     this.router.navigate(['/login']);
   }
 
@@ -93,8 +88,7 @@ export class AppComponent implements OnInit, OnDestroy {
 
   onClick(index) {
     if (this.appPages[index].url === '/logout') {
-      Preferences.remove({ key: StorageKeys.apiToken });
-      Preferences.remove({ key: StorageKeys.apiTokenExpiry });
+      this.authService.logOut();
       this.router.navigate(['']);
     } else {
       this.router.navigate([this.appPages[index].url], { replaceUrl: true });

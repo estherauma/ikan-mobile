@@ -71,9 +71,8 @@ export interface FormQuestion {
 export enum StorageKeys {
   appContent = 'appContent',
   currentLanguage = 'currentLanguage',
-  apiToken = 'apiToken',
   isFirstLogin = 'isFirstLogin',
-  authData = 'authData',
+  apiToken = 'apiToken',
   userData = 'userData',
   apiTokenExpiry = 'apiTokenExpiry',
   pushNotificationData = 'pushNotificationData',
@@ -82,14 +81,12 @@ export enum StorageKeys {
   showPNsPermissionsPrompt = 'showPNsPermissionsPrompt',
 }
 
-export interface UserData{
-  email: string;
+export interface UserData {
   id: string;
   firstName: string;
   lastName: string;
-  isAdmin: string;
+  email: string;
   role: UserRole;
-  tokenExpiry: string;
 }
 export interface LoginSuccessReponse {
   status: string;
@@ -103,11 +100,11 @@ export interface Data {
 }
 
 export enum UserRole {
-  vesselOwner = 'Vessel Owners',
-  taiwaneseAgent = 'Taiwanese Agents',
-  indonesianAgent = 'Indonesian Agents',
-  worker = 'Workers',
-  buyer = 'Buyers'
+  vesselOwner = 'vessel_owner',
+  taiwaneseAgent = 'taiwanese_agent',
+  indonesianAgent = 'indonesian_agent',
+  worker = 'worker',
+  buyer = 'buyer'
 }
 
 export interface Blameable {

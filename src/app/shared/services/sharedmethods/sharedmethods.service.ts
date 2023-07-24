@@ -47,7 +47,7 @@ export class SharedmethodsService {
   async readDataFromStorage(key) {
     if (!key) { return null; }
     const { value } = await Preferences.get({ key });
-    return JSON.parse(value);
+    return value ? JSON.parse(value) : null;
   }
 
   async addNetworkEventListener(customCallbackFunc: (

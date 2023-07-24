@@ -2,16 +2,37 @@ import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 import { Preferences } from '@capacitor/preferences';
 import { StorageKeys, UserData, UserRole } from '../../types/api-types';
+import { SharedmethodsService } from '../sharedmethods/sharedmethods.service';
+
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
-  tokenExpiry: Date;
+  userToken: string;
+  userData: UserData;
   userRole: string;
+  tokenExpiryDate: Date;
   currentUser: BehaviorSubject<any> = new BehaviorSubject<any>(null);
 
-  constructor() { }
+  
+  constructor(
+    public sharedMethods: SharedmethodsService
+  ) {
+    this.setUpAuthData();
+  }
+
+  async setUpAuthData() {
+    this.userData = await this.sharedMethods.readDataFromStorage(StorageKeys.userData);
+    this.userRole = this.userData.role;
+    this.currentUser.next(this.userData);
+
+    this.userToken = await this.sharedMethods.readDataFromStorage(StorageKeys.apiToken);
+    const decodedAccessToken = this.decodeAccessToken(this.userToken);
+    this.tokenExpiryDate = new Date(0);
+    this.tokenExpiryDate.setUTCSeconds(decodedAccessToken.exp);
+  }
+
 
   getCurrentUserBaseUrlFromRole(userRole: string) {
     switch (userRole) {
@@ -26,6 +47,7 @@ export class AuthService {
       case UserRole.buyer:
             return 'dashboard/buyer';
       default:
+        this.sharedMethods.showToast('Invalid user role');
         return '';
     }
   }
@@ -40,17 +62,7 @@ export class AuthService {
 
   logOut() {
     Preferences.remove({ key: StorageKeys.apiToken });
-    Preferences.remove({ key: StorageKeys.apiTokenExpiry });
-    // TODO: Navigation should happen in the component itself
-    // this.router.navigate(['/login']);
+    Preferences.remove({ key: StorageKeys.userData });
   }
 
-  hasPermission(permissions: string[]): boolean {
-    for (const permission of permissions) {
-      if (!this.currentUser.value || !this.currentUser.value.permissions.includes(permission)) {
-        return false;
-      }
-    }
-    return true;
-  }
 }
