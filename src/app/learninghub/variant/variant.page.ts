@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
+import { ContentService } from 'src/app/shared/services/content/content.service';
 
 @Component({
   selector: 'app-variant',
@@ -7,46 +8,38 @@ import { Router } from '@angular/router';
   styleUrls: ['./variant.page.scss'],
 })
 export class VariantPage implements OnInit {
+  pageContent: any;
+  learningHubSubChapters = [];
+  chapterId: string;
 
-
-  imgUrl = 'https://cdn.pixabay.com/photo/2015/07/17/22/43/student-849825_1280.jpg';
-
-  learningHub = [
-    {
-      name: 'Sub chapter No.1',
-      description: 'IJSWERWXDWER',
-      image: 'https://cdn.pixabay.com/photo/2015/07/17/22/43/student-849825_1280.jpg',
-    },
-    {
-      name: 'Cultural orientation',
-      description: 'IJSWERWXDWER',
-      image: 'https://cdn.pixabay.com/photo/2015/07/17/22/43/student-849825_1280.jpg',
-    },
-    {
-      name: 'Food & dietry requirements',
-      description: 'IJSWERWXDWER',
-      image: 'https://cdn.pixabay.com/photo/2015/07/17/22/43/student-849825_1280.jpg',
-    },
-    {
-      name: 'Religion',
-      description: 'IJSWERWXDWER',
-      image: 'https://cdn.pixabay.com/photo/2015/07/17/22/43/student-849825_1280.jpg',
-    },
-    {
-      name: 'Etc.',
-      description: 'IJSWERWXDWER',
-      image: 'https://cdn.pixabay.com/photo/2015/07/17/22/43/student-849825_1280.jpg',
-    }
-  ];
+  imgUrl = 'https://cdn.pixabay.com/photo/2015/07/17/22/43/student-849825_1280.jpg'; // change this
 
   constructor(
-    public router: Router
-  ) { }
-
-  ngOnInit() {
+    public router: Router,
+    public contentService: ContentService,
+    public activatedRoute: ActivatedRoute,
+  ) {
+    this.activatedRoute.params.subscribe(async params => {
+      this.chapterId = params?.chapterId;
+    });
   }
 
-  viewDetials(lh) {
-    this.router.navigate(['/learninghub/section']);
+  async ngOnInit() {
+    this.pageContent =  await this.contentService.getContentByPropertyName(this.chapterId);
+    const clickableList = (this.pageContent?.pageContent?.find((e) => e.type === 'clickable_list'));
+    const subChapters = clickableList?.list;
+    this.learningHubSubChapters = subChapters?.map((subChapter) => {
+      const subChapterTitle = subChapter?.label?.substring(subChapter?.label?.indexOf(' ') + 1) || '';
+      return {
+      name: subChapterTitle,
+      description: subChapter?.description || '',
+      icon: subChapter?.icon || this.imgUrl, // TODO: use tuna icon as default
+      page: subChapter?.page,
+      };
+    });
+  }
+
+  viewDetials(item) {
+    this.router.navigate([ 'learninghub/chapters', this.chapterId, item?.page?.uid ]);
   }
 }

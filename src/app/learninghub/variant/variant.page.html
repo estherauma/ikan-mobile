@@ -25,13 +25,13 @@
     </div>
     <div class="content-section" 
     >
-    <div *ngFor="let lh of learningHub">
+    <div *ngFor="let subChapter of learningHubSubChapters">
       <app-maincard
-      [imageUrl]="lh.image"
-      imageShape="circle"
-      [title]="lh.name"
-      [text]="lh.description"
-      (click)="viewDetials(lh)"
+        [imageUrl]="subChapter?.icon"
+        imageShape="circle"
+        [title]="subChapter?.name"
+        [text]="subChapter?.description"
+        (click)="viewDetials(subChapter)"
       ></app-maincard>
     </div>
     </div>

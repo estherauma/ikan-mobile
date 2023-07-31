@@ -7,15 +7,15 @@
     </div>
     <div>
       <app-maincard
-      (click)="onClick()"
-      *ngFor="let lh of lhs"
-      [title]="lh.title"
-      [text]="lh.text"
-      [progressBarValue]="lh.progressBarValue"
-      [progressBarType]="lh.progressBarType"
-      [progressText]="lh.progressBarText"
-      [imageUrl]="lh.imageUrl"
-      imageSize="big"
+        *ngFor="let chapter of learningHubChapters"
+        [title]="chapter?.title"
+        [text]="chapter?.text"
+        [progressBarValue]="chapter?.progressBarValue"
+        [progressBarType]="chapter?.progressBarType"
+        [progressText]="chapter?.progressBarText"
+        [imageUrl]="chapter?.imageUrl"
+        imageSize="big"
+        (click)="onClick(chapter)"
       ></app-maincard>
     </div>
   </app-contentwrapper>
