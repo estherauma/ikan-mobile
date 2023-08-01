@@ -11,22 +11,22 @@ export class SubchapterComponent  implements OnInit {
   subChapterId: string;
   subChapterContent: any;
   pageContent: any = [];
+  caseStudyInputs: any;
 
   constructor(
     public activatedRoute: ActivatedRoute,
     public contentService: ContentService,
   ) {
     this.activatedRoute.params.subscribe(async params => {
-      console.log('params.......', params);
       this.subChapterId = params?.subChapterId;
     });
   }
 
   ngOnInit() {
     this.subChapterContent = this.contentService.getContentByPropertyName(this.subChapterId);
-    console.log('subbbbbbbcccc...........', this.subChapterContent);
     this.pageContent = this.subChapterContent?.pageContent;
-    console.log('pageContent...............', this.pageContent);
   }
+
+  handleCaseStudyClick() {}
 
 }
