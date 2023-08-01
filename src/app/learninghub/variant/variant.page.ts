@@ -12,7 +12,7 @@ export class VariantPage implements OnInit {
   learningHubSubChapters = [];
   chapterId: string;
 
-  imgUrl = 'https://cdn.pixabay.com/photo/2015/07/17/22/43/student-849825_1280.jpg'; // change this
+  imgUrl = 'https://cdn.pixabay.com/photo/2015/07/17/22/43/student-849825_1280.jpg'; // TODO: change this
 
   constructor(
     public router: Router,

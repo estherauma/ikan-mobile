@@ -2,10 +2,11 @@
 
 <ion-content>
   <div>
-    <div 
-    class="image-section" 
-    [ngStyle]="{'background': 'linear-gradient( rgba(53, 101, 255, 0.6) 100%, rgba(53, 101, 255, 0.6)100%),url(' + imgUrl +')'}"
+    <div
+      class="image-section" 
+      [ngStyle]="{'background': 'linear-gradient( rgba(53, 101, 255, 0.6) 100%, rgba(53, 101, 255, 0.6)100%),url(' + imgUrl +')'}"
     >
+    <app-title [title]="pageContent?.pageTitle" [isBig]="true" [isLightBlue]="true"></app-title>
     <!-- TODO: migrate ion-slides to swiperjs -->
     <!-- <ion-slides pager="true">
       <ion-slide>
@@ -18,23 +19,23 @@
     </div>
     <div class="audio-section">
       <div>
-        <app-audio-player 
-        variant="white-bg" 
-        size="thin"
+        <app-audio-player
+          variant="gray-bg" 
+          size="thin"
+          [audioSrc]="pageContent?.pageTitleAudio?.mediaData?.url || ''"
         ></app-audio-player>
       </div>
     </div>
-    <div class="content-section" 
-    >
-    <div *ngFor="let subChapter of learningHubSubChapters">
-      <app-maincard
-        [imageUrl]="subChapter?.icon"
-        imageShape="circle"
-        [title]="subChapter?.name"
-        [text]="subChapter?.description"
-        (click)="viewDetials(subChapter)"
-      ></app-maincard>
-    </div>
+    <div class="content-section">
+      <div *ngFor="let subChapter of learningHubSubChapters">
+        <app-maincard
+          [imageUrl]="subChapter?.icon"
+          imageShape="circle"
+          [title]="subChapter?.name"
+          [text]="subChapter?.description"
+          (click)="viewDetials(subChapter)"
+        ></app-maincard>
+      </div>
     </div>
   </div>
 </ion-content>

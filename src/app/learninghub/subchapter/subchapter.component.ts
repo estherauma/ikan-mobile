@@ -12,6 +12,7 @@ export class SubchapterComponent  implements OnInit {
   subChapterContent: any;
   pageContent: any = [];
   caseStudyInputs: any;
+  imgUrl = 'https://cdn.pixabay.com/photo/2015/07/17/22/43/student-849825_1280.jpg';
 
   constructor(
     public activatedRoute: ActivatedRoute,
