@@ -1,14 +1,13 @@
 import { Injectable } from '@angular/core';
-import { ActivatedRouteSnapshot, CanActivate, RouterStateSnapshot, UrlTree } from '@angular/router';
+import { ActivatedRouteSnapshot, RouterStateSnapshot, UrlTree } from '@angular/router';
 import { Observable } from 'rxjs';
 import { AuthService } from '../../services/auth/auth.service';
 import { SharedmethodsService } from '../../services/sharedmethods/sharedmethods.service';
-import { StorageKeys, UserData } from '../../types/api-types';
 
 @Injectable({
   providedIn: 'root',
 })
-export class AuthGuard implements CanActivate {
+export class AuthGuard  {
 
   userRole: string;
 
@@ -38,15 +37,13 @@ export class AuthGuard implements CanActivate {
   constructor(
     public authService: AuthService,
     public sharedMethods: SharedmethodsService
-  ) { 
-    
-  }
+  ) { }
 
   canActivate(
     route: ActivatedRouteSnapshot,
     state: RouterStateSnapshot
   ): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
-    // TODO: We will use the path later. 
+    // TODO: We will use the path later.
     // const currentPath = route.url[0].path;
     const currentState = state.url;
 
@@ -54,7 +51,7 @@ export class AuthGuard implements CanActivate {
     if (this.authService.userRole === 'vessel_owner') {
       //check if current state is in vessle owner routes
       if (this.vesselOwnerRoutes.includes(currentState)) {
-        return true
+        return true;
       }
       return true;
     }
@@ -62,7 +59,4 @@ export class AuthGuard implements CanActivate {
     // Otherwise none of the routes will load
     return true;
   }
-
- 
-
 }
