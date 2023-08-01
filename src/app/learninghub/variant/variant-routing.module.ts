@@ -10,7 +10,7 @@ const routes: Routes = [
   },
   {
     path: ':subChapterId',
-    loadChildren: () => import('../section/section.module').then( m => m.SectionPageModule)
+    loadChildren: () => import('../subchapter/subchapter.module').then( m => m.SubchapterModule)
   }
 ];
 

@@ -1,0 +1,104 @@
+<app-header [pageTitle]="" [isBackButton]="true"></app-header>
+<ion-content>
+  <div *ngFor="let section of pageContent">
+    <!-- <shared-video
+      *ngIf="section?.type === 'video'"
+      [data]="section"
+      [noText]=false
+      [theme]="theme"
+      [iframeClass]="iframeStyles"
+      [className]="videoStyles"
+      [playIcon]="videoPlayIcon"
+      [networkStatus]="networkStatus"
+      (onPlay)="handleVideoPlay.emit($event)"
+    ></shared-video>
+    <shared-text-area
+      *ngIf="section?.type === 'text_area'"
+      [data]="section"
+      [theme]="theme"
+      [type]="type"
+      [styles]="textareaStyles"
+    ></shared-text-area> -->
+    <!-- <shared-audio
+      *ngIf="section?.type === 'audio'"
+      [data]="section"
+      [theme]="theme"
+      (playing)="handleAudioPlay.emit($event)"
+      (onStop)="handleAudioPlay.emit($event)"
+    ></shared-audio>
+    <shared-case-study
+      *ngIf="section?.type === 'case_study'"
+      [data]="section"
+      [theme]="theme"
+      [icons]="caseStudyInputs?.icons"
+      [styles]="caseStudyInputs?.styles || ''"
+      (onCaseStudyClick)="handleCaseStudyClick.emit($event)"
+      (onBookmarkClick)="handleCaseStudyBookmarkClick.emit($event)"
+    ></shared-case-study> -->
+    <!-- <shared-warning-box
+      *ngIf="section?.type === 'warning_box'"
+      [data]="section"
+      [styles]="warningBoxInputs?.styles || ''"
+      [defaultIcon]="warningBoxInputs?.defaultIcon || ''"
+    ></shared-warning-box> -->
+    <app-questiontitlecard></app-questiontitlecard>
+    <!-- <shared-drop-down
+      *ngIf="section?.type === 'drop_down_content'"
+      [data]="section"
+      [theme]="theme"
+      [styles]="dropDownInputs?.styles || ''"
+      [selectedSectors]="selectedSectors"
+      [appContent]="appContent"
+      (onDropDown)="handleDropDownClick.emit($event)"
+    ></shared-drop-down> -->
+    <!-- <shared-image
+      *ngIf="section?.type === 'image'"
+      [data]="section"
+      [theme]="theme"
+    ></shared-image> -->
+    <!-- <shared-images-slider
+      *ngIf="section?.type === 'images_slider'"
+      [section]="section"
+      [theme]="theme"
+      [selectedSectors]="selectedSectors"
+      [appContent]="appContent"
+    ></shared-images-slider> -->
+    <!-- <shared-questions
+      *ngIf="section?.type === 'questions'"
+      [data]="section"
+      [theme]="theme"
+      [global]="questionsInputs.globalContent"
+      [subChapter]="questionsInputs.subChapter"
+      [responseObj]="questionsInputs.responseObj"
+      [inlineValues]="questionsInputs.inlineValues"
+      (getResponse)="handleListClick.emit($event)"
+      (onSubmit)="handleListEndIconAction.emit($event)"
+    ></shared-questions> -->
+    <!-- <shared-clickable-list
+      *ngIf="section?.type === 'clickable_list'"
+      [items]="section"
+      [theme]="theme"
+      [className]="clickableListStyles"
+      (onItemClick)="handleListClick.emit($event)"
+      (handleEndIconAction)="handleListEndIconAction.emit($event)"
+    ></shared-clickable-list> -->
+    <!-- <shared-non-clickable-list
+      *ngIf="section?.type === 'non-clickable-list'"
+      [data]="section"
+      [theme]="theme"
+      [styles]="nonClickableListStyles"
+      [selectedSectors]="selectedSectors"
+      [appContent]="appContent"
+    ></shared-non-clickable-list> -->
+    <!-- <shared-highlighted-link
+      *ngIf="section?.type === 'highlighted_link'"
+      [data]="section"
+      [theme]="theme"
+      [className]="highlightedLinkStyles"
+    ></shared-highlighted-link> -->
+  </div>
+</ion-content>
+
+<p>
+  subchapter works!
+</p>
