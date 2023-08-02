@@ -9,7 +9,7 @@ android {
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 114
-        versionName "0.0.14"
+        versionName "0.0.15"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         aaptOptions {
              // Files and dirs to omit from the packaged assets dir, modified to accommodate modern web apps.
@@ -26,7 +26,7 @@ android {
           minifyEnabled false
           debuggable true
           firebaseAppDistribution {
-            releaseNotes="Add config to deploy app on mobile devices based on build"
+            releaseNotes="Display knowledge hub content"
             groups="scrum"
             serviceCredentialsFile=file("google-services-credentials.json")
           }
