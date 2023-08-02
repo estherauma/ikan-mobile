@@ -11,6 +11,6 @@ module.exports = (cts) => {
     buildType = 'debug'
   }
 
+  setEnv.generateEnvironmentFiles();
   buildContent.generateContentFiles(buildDir, buildType);
-
 };

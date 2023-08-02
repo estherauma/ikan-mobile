@@ -74,6 +74,11 @@ export enum StorageKeys {
   isFirstLogin = 'isFirstLogin',
   apiToken = 'apiToken',
   userData = 'userData',
+  apiTokenExpiry = 'apiTokenExpiry',
+  pushNotificationData = 'pushNotificationData',
+  pushNotificationTopics = 'pushNotificationTopics',
+  pushNotificationDataUploaded = 'pushNotificationDataUploaded',
+  showPNsPermissionsPrompt = 'showPNsPermissionsPrompt',
 }
 
 export interface UserData {
@@ -127,4 +132,20 @@ export enum FieldType{
 export enum Icons {
   iconEyeClosed =  'assets/icon/password/eye.svg',
   iconEyeOpen = 'assets/icon/password/eye-cross.svg'
+}
+
+type UserRoleValue = UserRole;
+
+export interface PushNotificationData {
+  appId: string;
+  userRole: string; // fix type
+  language?: string;
+  locale?: string;
+  // age?: string;
+  // sectors?: Array<string>;
+  // gender?: string;
+  // organisation?: string;
+  // factoryFarm?: string;
+  registrationToken: string;
+  messagingRepos?: Array<string>;
 }

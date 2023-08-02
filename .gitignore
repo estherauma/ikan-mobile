@@ -37,7 +37,7 @@ npm-debug.log*
 **google-services-credentials.json
 
 
-/src/environments/environment.ts
+/src/environments/*
 .env
 App/output
 /build/*
