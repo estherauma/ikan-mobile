@@ -52,4 +52,19 @@
     >
     </shared-image>
   </div>
+  <div
+    *ngIf="upNextContent"
+    class="up-next-section"
+  >
+    <ion-item button (click)="goToNextChapter()" lines="none" fill="clear">
+      <ion-label>{{ contentService?.commonText?.upNext }}...</ion-label>
+      <app-maincard
+        imageShape="circle"
+        [imageUrl]="upNextContent?.icon"
+        [title]="upNextContent?.name"
+        [text]="upNextContent?.description"
+        (click)="goToNextChapter()"
+      ></app-maincard>
+    </ion-item>
+  </div>
 </ion-content>
