@@ -135,12 +135,19 @@ ion-modal.my-own-class {
   font-size: 16px;
 }
 
-.ion-content-custom-position {
-  position: absolute;
-}
 
-// TODO: fix this
+
+// TODO: fix safe area styles
+.ion-content-custom-position {
+  // position: absolute;
+}
 .ios ion-content {
   // position: absolute;
   // top: 60px;
+}
+body {
+  margin-top: constant(safe-area-inset-top);
+}
+ion-tab-bar {
+  margin-bottom: calc(4px + env(safe-area-inset-top));
 }
