@@ -161,6 +161,12 @@ app-subchapter {
           }
         }
       }
+      shared-image {
+        .image-wrapper {
+          background-color: #EAEDF6;
+          --background: #EAEDF6;
+        }
+      }
     }
     .up-next-section {
       background-color: #191970;
