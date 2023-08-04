@@ -152,6 +152,15 @@ app-subchapter {
           align-items: center;
         }
       }
+      app-audio-player {
+        margin: 20px;
+        .white-bg-title {
+          margin: 0px 20px 20px;
+          h2 {
+            font-size: 1.2rem;
+          }
+        }
+      }
     }
     .up-next-section {
       background-color: #191970;
