@@ -11,8 +11,7 @@ export class VariantPage implements OnInit {
   pageContent: any;
   learningHubSubChapters = [];
   chapterId: string;
-
-  imgUrl = 'https://cdn.pixabay.com/photo/2015/07/17/22/43/student-849825_1280.jpg'; // TODO: change this
+  bgImgUrl = '';
 
   constructor(
     public router: Router,
@@ -28,12 +27,13 @@ export class VariantPage implements OnInit {
     this.pageContent =  await this.contentService.getContentByPropertyName(this.chapterId);
     const clickableList = (this.pageContent?.pageContent?.find((e) => e.type === 'clickable_list'));
     const subChapters = clickableList?.list;
+    this.bgImgUrl = this.getChapterBackground(this.chapterId);
     this.learningHubSubChapters = subChapters?.map((subChapter) => {
       const subChapterTitle = subChapter?.label?.substring(subChapter?.label?.indexOf(' ') + 1) || '';
       return {
       name: subChapterTitle,
       description: subChapter?.description || '',
-      icon: subChapter?.icon || this.imgUrl, // TODO: use tuna icon as default
+      icon: subChapter?.icon || this.bgImgUrl, // TODO: use tuna icon as default
       page: subChapter?.page,
       };
     });
@@ -41,5 +41,15 @@ export class VariantPage implements OnInit {
 
   viewDetials(item) {
     this.router.navigate([ 'learninghub/chapters', this.chapterId, item?.page?.uid ]);
+  }
+  getChapterBackground(chapterId) {
+    if (chapterId === '1') {
+      return 'assets/imgs/bg-pre-departure.svg';
+    } else if (chapterId === '2') {
+      return 'assets/imgs/bg-life-on-board.svg';
+    } else if (chapterId === '3') {
+      return 'assets/imgs/bg-your-work.svg';
+    }
+    return '';
   }
 }

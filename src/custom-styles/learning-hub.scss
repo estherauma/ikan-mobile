@@ -38,6 +38,30 @@
   }
 }
 
+app-variant {
+  .content-section {
+    padding-top: 60px !important;
+    ion-card {
+      width: 100%;
+      margin: 10px 0px 12px 0px;
+
+      .text-section {
+        app-title {
+          h1 {
+            font-weight: 800;
+            font-size: 1.125rem;
+            font-family: 'interRegular' !important;
+          }
+        }
+        ion-text {
+          color: #A0ABCC;
+          font-size: 0.875rem;
+        }
+      }
+    }
+  }
+}
+
 app-subchapter {
   ion-content {
     .content-wrapper {

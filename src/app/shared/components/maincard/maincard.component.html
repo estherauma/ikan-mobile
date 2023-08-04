@@ -2,12 +2,13 @@
   <ion-card-content>
     <div class="content" [ngClass]="{'flex-row': imagePosition === 'left', 'flex-col': imagePosition === 'top'}">
       <div class="image-section">
-        <img 
+        <img
           *ngIf="imageUrl" 
           [src]="imageUrl" 
           class="mb image"
           [ngClass]="{
             'circle': imageShape === 'circle', 
+            'rounded': imageShape === 'rounded',
             'mr': imagePosition === 'left', 
             'mb': imagePosition === 'top',
             'small-image': imageSize === 'small'
