@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ContentService } from 'src/app/shared/services/content/content.service';
+import { SharedmethodsService } from 'src/app/shared/services/sharedmethods/sharedmethods.service';
 
 @Component({
   selector: 'app-variant',
@@ -17,6 +18,7 @@ export class VariantPage implements OnInit {
     public router: Router,
     public contentService: ContentService,
     public activatedRoute: ActivatedRoute,
+    public sharedmethods: SharedmethodsService,
   ) {
     this.activatedRoute.params.subscribe(async params => {
       this.chapterId = params?.chapterId;
@@ -27,7 +29,7 @@ export class VariantPage implements OnInit {
     this.pageContent =  await this.contentService.getContentByPropertyName(this.chapterId);
     const clickableList = (this.pageContent?.pageContent?.find((e) => e.type === 'clickable_list'));
     const subChapters = clickableList?.list;
-    this.bgImgUrl = this.getChapterBackground(this.chapterId);
+    this.bgImgUrl = this.sharedmethods.getChapterBackground(this.chapterId);
     this.learningHubSubChapters = subChapters?.map((subChapter) => {
       const subChapterTitle = subChapter?.label?.substring(subChapter?.label?.indexOf(' ') + 1) || '';
       return {
@@ -41,15 +43,5 @@ export class VariantPage implements OnInit {
 
   viewDetials(item) {
     this.router.navigate([ 'learninghub/chapters', this.chapterId, item?.page?.uid ]);
-  }
-  getChapterBackground(chapterId) {
-    if (chapterId === '1') {
-      return 'assets/imgs/bg-pre-departure.svg';
-    } else if (chapterId === '2') {
-      return 'assets/imgs/bg-life-on-board.svg';
-    } else if (chapterId === '3') {
-      return 'assets/imgs/bg-your-work.svg';
-    }
-    return '';
   }
 }

@@ -100,7 +100,11 @@ ion-modal.my-own-class {
 
 @font-face {   
   font-family: 'GatwickBold';    //This is what we are going to call
-  src: url('./assets/fonts/PPGatwick-Bold.otf');
+  src: url('./assets/fonts/gatwick/PPGatwick-Bold.otf');
+}
+@font-face {   
+  font-family: 'GatwickUltraLight';
+  src: url('./assets/fonts/gatwick/PPGatwick-Ultralight.otf');
 }
 
 @font-face {   
