@@ -11,7 +11,13 @@ ion-card{
     padding: 8px;
     .image-section {
         min-width: 60px;
-        margin-right: 8px ;
+        margin-right: 8px;
+    }
+    .text-section {
+        flex: 3;
+        .description {
+            line-height: 14px;
+        }
     }
 }
 
@@ -38,6 +44,7 @@ ion-card{
 .image{
     height: 60px;
     width: 60px;
+    border-radius: 10px;
 }
 
 .small-image{

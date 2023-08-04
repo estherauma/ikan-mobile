@@ -1,4 +1,42 @@
+.learning-home {
+  width: 100%;
 
+  .content-area {
+    width: 100%;
+    .title-wrapper {
+      text-align: center;
+      display: flex;
+      align-items: center;
+      padding: 0px 25px;
+      height: 150px;
+    }
+    .cards-wrapper {
+      width: 100%;
+      padding: 0px 25px 20px 25px;
+    }
+  }
+
+  ion-card {
+    width: 100%;
+    margin: 10px 0px 25px 0px;
+    app-title {
+      h1 {
+        font-weight: 800;
+        font-size: 1.125rem;
+      }
+    }
+    ion-text {
+      color: #A0ABCC;
+      font-size: 0.875rem;
+    }
+    .progress-with-text {
+      ion-progress-bar {
+        width: 100%;
+        margin-right: 8px;
+      }
+    }
+  }
+}
 
 app-subchapter {
   ion-content {
