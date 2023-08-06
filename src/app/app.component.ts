@@ -59,12 +59,17 @@ export class AppComponent implements OnInit, OnDestroy {
     this.sharedMethods.readDataFromStorage(StorageKeys.apiToken)
       .then(async(value) => {
         if (value != null) {
-          const user: UserData = await this.sharedMethods.readDataFromStorage(StorageKeys.userData);
+          // const user: UserData = await this.authService.userData;
+          let user = await this.sharedMethods.readDataFromStorage(StorageKeys.userData);
+          user = JSON.parse(user);
           const now = new Date().toUTCString();
           if ( this.authService.tokenExpiryDate < new Date(now)) {
             this.logOut();
           } else {
             await this.pushNotifications.setSaveUploadPushNotificationData();
+            // TODO: Service isn't returning role and is returning
+            // Ensure auth service returns role immediately
+           
             this.router.navigate([this.authService.getCurrentUserBaseUrlFromRole(user.role)]);
           }
         }
