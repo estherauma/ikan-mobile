@@ -10,12 +10,12 @@ import { PushNotificationsService } from 'src/app/shared/services/push-notificat
 export class VesselownerPage implements OnInit {
 
   sLists = [
-    {title: 'Work Orders', icon: '/assets/icon/workorders_blue.svg', url: ''},
-    {title: 'Vessels', icon: '/assets/icon/boat_with_blue_bg.svg',  url: ''},
-    {title: 'Agents', icon: '/assets/icon/office.svg',  url: ''},
-    {title: 'Recruits', icon: '/assets/icon/profile_info_blue.svg', url: ''},
-    {title: 'Contracts', icon: '/assets/icon/offers.svg',  url: ''},
-    {title: 'Payments', icon: '/assets/icon/single_payment_blue.svg',  url: ''},
+    {title: 'Work Orders', icon: '/assets/icon/workorders_blue.svg', url: '/workorders/home'},
+    {title: 'Vessels', icon: '/assets/icon/boat_with_blue_bg.svg',  url: '/vessels/home'},
+    {title: 'Agents', icon: '/assets/icon/office.svg',  url: '/agents/home'},
+    {title: 'Recruits', icon: '/assets/icon/profile_info_blue.svg', url: '/workers/home'},
+    {title: 'Contracts', icon: '/assets/icon/offers.svg',  url: '/contracts/company/home'},
+    {title: 'Payments', icon: '/assets/icon/single_payment_blue.svg',  url: '/payments/home'},
   ];
 
   performanceData = {
@@ -32,6 +32,11 @@ export class VesselownerPage implements OnInit {
     public contentService: ContentService,
   ) {
     let menuContent = this.contentService.getMenuContent();
+    // wait for 5 seconds
+    setTimeout(() => {
+      this.contentService.updateCurrentLanguage();
+      menuContent = this.contentService.getMenuContent();
+    }, 5000);
     // for item in slists, update title with menuContent
     this.sLists.forEach((item) => {
       Object.entries(menuContent).forEach((x) => {
