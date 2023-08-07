@@ -18,7 +18,7 @@ import { PushNotificationsService } from './shared/services/push-notifications/p
 export class AppComponent implements OnInit, OnDestroy {
   public appPages = [];
   networkListener: PluginListenerHandle;
-
+  userEmail: string;
   constructor(
     public contentService: ContentService,
     public sharedMethods: SharedmethodsService,
@@ -37,6 +37,7 @@ export class AppComponent implements OnInit, OnDestroy {
     });
 
     this.dbService.checkDbPlatformAndRunMigration();
+    this.userEmail = this.authService.userData?.email;
   }
 
   async ngOnInit() {
