@@ -2,8 +2,11 @@
 </app-header>
 
 <ion-content>
-  <app-dashboardelcomesection message="Welcome back. Here’s a bespoke message on entry."
-    name="Taien"></app-dashboardelcomesection>
+  <app-dashboardelcomesection 
+    [message]="welcomeText"
+    [message1]="welcomeMessage"
+    name="Taien">
+  </app-dashboardelcomesection>
     <div>
       <ion-card>
         <ion-card-content>
@@ -15,26 +18,26 @@
               </ion-col>
               <ion-col size="8">
                 <ion-text>
-                  <h5>41%: Statistics</h5>
+                  <h5>{{overalStat}}</h5>
                 </ion-text>
                 <br />
                 <ion-text>
                   <p>
-                    <ion-icon name="square"></ion-icon> 77%: Statistic 1
+                    <ion-icon name="square"></ion-icon>{{stat1}}
                   </p>
                 </ion-text>
                 <ion-text>
                   <p>
-                    <ion-icon name="square"></ion-icon> 20%: Statistic 2
+                    <ion-icon name="square"></ion-icon> {{stat2}}
                   </p>
                 </ion-text>
                 <ion-text>
                   <p>
-                    <ion-icon name="square"></ion-icon> 3%: Statistic 3
+                    <ion-icon name="square"></ion-icon> {{stat3}}
                   </p>
                 </ion-text>
                 <br />
-                <ion-text class="ion-center"><a routerLink="/feedbackdashboard/home">Feedback Dashboard</a></ion-text>
+                <ion-text class="ion-center"><a routerLink="/feedbackdashboard/home">{{feedbackDashboardMessage}}</a></ion-text>
               </ion-col>
             </ion-row>
           </ion-grid>

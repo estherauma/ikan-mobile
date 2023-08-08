@@ -18,14 +18,22 @@ export class VesselownerPage implements OnInit {
     {title: 'Payments', icon: '/assets/icon/single_payment_blue.svg',  url: '/payments/home'},
   ];
 
-  performanceData = {
+  performanceData: any = {
     chartType: 'doughnut',
-    title: 'Overall performace',
+    title: '',
     datasets: [{
       label: '',
       data: [65, 59, 80]
     }]
-  };
+  };;
+  feedbackDashboardMessage: string = '';
+  welcomeText: string = '';
+  welcomeMessage: string = '';
+  welcomeCardTitle: string = '';
+  overalStat: string = '';
+  stat1: string = '';
+  stat2: string = '';
+  stat3; string = '';
 
   constructor(
     public pushNotifications: PushNotificationsService,
@@ -36,7 +44,19 @@ export class VesselownerPage implements OnInit {
     setTimeout(() => {
       this.contentService.updateCurrentLanguage();
       menuContent = this.contentService.getMenuContent();
-    }, 5000);
+      this.feedbackDashboardMessage = this.contentService.commonText?.fdbckLink;
+      this.welcomeText = this.contentService.commonText?.fdbkWelcomeText;
+      this.welcomeMessage = this.contentService.commonText?.fdbkWelcomMessage;
+      this.welcomeCardTitle = this.contentService.commonText?.fdbkWelcomCardTitle;
+      this.performanceData = {
+        chartType: 'doughnut',
+        title: this.welcomeCardTitle,
+        datasets: [{
+          label: '',
+          data: [65, 59, 80]
+        }]
+      };
+    }, 1000);
     // for item in slists, update title with menuContent
     this.sLists.forEach((item) => {
       Object.entries(menuContent).forEach((x) => {
@@ -52,6 +72,10 @@ export class VesselownerPage implements OnInit {
     if (!this.pushNotifications.preventSecondNotificationPrompt) {
       this.pushNotifications.checkAndroidPNsPermissions();
     }
+    this.overalStat = this.contentService.commonText?.fdbckOverallConditions;
+    this.stat1 = this.contentService.commonText?.fdbckNotCompleted;
+    this.stat2 = this.contentService.commonText?.fdbckAdditionalLearning;
+    this.stat3 = this.contentService.commonText?.fdbckCoreTraining;
   }
 
 

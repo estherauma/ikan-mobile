@@ -5,14 +5,15 @@
     <div>
       <div class="ion-padding">
         <ion-img src="/assets/icon/performance.svg" class="icon"></ion-img>
-        <app-title [isBig]="true" [isBlue]="true" title="Feedback"></app-title>
+        <app-title [isBig]="true" [isBlue]="true" title="{{pageTitle}}"></app-title>
       </div>
     
       <app-feedback-stat-card [isChartsCustomBgColors]="true" [dataset]="trainingFeedback"></app-feedback-stat-card>
       <app-feedback-stat-card [isChartsCustomBgColors]="true" [dataset]="paymentsFeedback"></app-feedback-stat-card>
+      <app-feedback-stat-card [dataset]="conditionsFeedback"></app-feedback-stat-card>
 
 
-      <div class="bottom-section">
+      <!-- <div class="bottom-section">
         <app-feedback-stat-card 
         [isActionBtn]="false" 
         [isNoBorder]="true" 
@@ -20,10 +21,10 @@
         [isIconSection]="false" 
         centerIcon=""
         [dataset]="workerFeedback"></app-feedback-stat-card>
-        <app-feedback-stat-card [isChartsCustomBgColors]="true" [dataset]="workerTrainingFeedback"></app-feedback-stat-card>
-        <app-feedback-stat-card [dataset]="conditionsFeedback"></app-feedback-stat-card>
-        <app-feedback-stat-card [dataset]="workingHoursFeedback"></app-feedback-stat-card>
-      </div>
+        <app-feedback-stat-card [isChartsCustomBgColors]="true" [dataset]="workerTrainingFeedback"></app-feedback-stat-card> 
+        
+        <app-feedback-stat-card [dataset]="workingHoursFeedback"></app-feedback-stat-card> 
+      </div> -->
 </div>
 </app-contentwrapper>
 </ion-content>
