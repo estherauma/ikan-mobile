@@ -18,7 +18,7 @@ import { PushNotificationsService } from './shared/services/push-notifications/p
 export class AppComponent implements OnInit, OnDestroy {
   public appPages = [];
   networkListener: PluginListenerHandle;
-
+  userEmail: string;
   constructor(
     public contentService: ContentService,
     public sharedMethods: SharedmethodsService,
@@ -37,6 +37,7 @@ export class AppComponent implements OnInit, OnDestroy {
     });
 
     this.dbService.checkDbPlatformAndRunMigration();
+    this.userEmail = this.authService.userData?.email;
   }
 
   async ngOnInit() {
@@ -58,13 +59,16 @@ export class AppComponent implements OnInit, OnDestroy {
   checkLoginStatus() {
     this.sharedMethods.readDataFromStorage(StorageKeys.apiToken)
       .then(async(value) => {
-        if (value != null) {
+        if (value) {
           const user: UserData = await this.sharedMethods.readDataFromStorage(StorageKeys.userData);
           const now = new Date().toUTCString();
           if ( this.authService.tokenExpiryDate < new Date(now)) {
             this.logOut();
           } else {
             await this.pushNotifications.setSaveUploadPushNotificationData();
+            // TODO: Service isn't returning role and is returning
+            // Ensure auth service returns role immediately
+           
             this.router.navigate([this.authService.getCurrentUserBaseUrlFromRole(user.role)]);
           }
         }

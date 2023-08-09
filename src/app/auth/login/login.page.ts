@@ -44,7 +44,6 @@ export class LoginPage extends BaseformPage implements OnInit {
 
   ngOnInit() {
     this.submitButtonText = this.contentService.commonText?.login;
-    this.submitButtonText = 'Log in';
   }
 
   ionViewWillEnter() {
@@ -68,7 +67,7 @@ export class LoginPage extends BaseformPage implements OnInit {
           if (this.testEmails.includes(res.data.userData?.email)) {
             this.dbService.checkDbPlatformAndRunMigration(true);
           }
-          this.handleRedirection();
+          this.handleRedirection(res.data.userData?.role);
         }
       }, (err: HttpErrorResponse) => {
         this.sharedMethods.hideLoader();
@@ -77,13 +76,13 @@ export class LoginPage extends BaseformPage implements OnInit {
     );
   }
 
-  async handleRedirection() {
+  async handleRedirection(role) {
     const helpScreens = await this.sharedMethods.readDataFromStorage(StorageKeys.isFirstLogin);
     const user: UserData = await this.sharedMethods.readDataFromStorage(StorageKeys.userData);
     if (!helpScreens) {
-      this.router.navigate([this.authService.getCurrentUserBaseUrlFromRole(user.role)]);
+      this.router.navigate([this.authService.getCurrentUserBaseUrlFromRole(role)]);
     } else {
-      this.router.navigate([this.authService.getCurrentUserBaseUrlFromRole(user.role)]);
+      this.router.navigate([this.authService.getCurrentUserBaseUrlFromRole(role)]);
     }
   }
 

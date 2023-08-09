@@ -5,6 +5,7 @@ import { UploadService } from 'src/app/shared/services/upload/upload.service';
 import { CreatePage } from 'src/app/workorders/create/create.page';
 import { ImageselectComponent } from '../imageselect/imageselect.component';
 import { RecordoptionmodalComponent } from '../recordoptionmodal/recordoptionmodal.component';
+import { ContentService } from '../../services/content/content.service';
 
 @Component({
   selector: 'app-form',
@@ -36,10 +37,12 @@ export class FormComponent implements OnInit {
 
   formKeysToRemove = [];
   typesToExclude = ['h1','h2','h3','h4','h5','h6','p'];
+  typeHereText = 'Type here';
 
   constructor(
     public uploadService: UploadService,
     public modalCtrl: ModalController,
+    public contentService: ContentService
   ) { }
 
   ngOnInit() {
@@ -50,6 +53,7 @@ export class FormComponent implements OnInit {
         });
         this.formKeysToRemove.push(question.key);
       }
+    this.typeHereText = this.contentService.commonText?.typeHere;
     });
 
     this.tunaFormGroup.valueChanges.subscribe((value) => {
