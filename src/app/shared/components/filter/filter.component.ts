@@ -1,4 +1,5 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { ContentService } from '../../services/content/content.service';
 
 @Component({
   selector: 'app-filter',
@@ -6,25 +7,22 @@ import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
   styleUrls: ['./filter.component.scss'],
 })
 export class FilterComponent implements OnInit {
+  commonText: any;
 
-  @Input()
-  filterDataSet: any[] = [];
-
-  @Input()
-  options: any[] = [];
-
-  @Input()
-  filterProperty = '';
-
-  @Output()
-  filterResult: EventEmitter<any> = new EventEmitter<any>();
-
+  @Input() filterDataSet: any[] = [];
+  @Input() options: any[] = [];
+  @Input() filterProperty = '';
   @Input() type: 'deep-blue-filter' | 'light-blue-filter' | 'deep-blue-90' | '' = '';
   @Input() customCss='';
 
-  constructor() { }
+  @Output() filterResult: EventEmitter<any> = new EventEmitter<any>();
+
+  constructor(
+    public contentService: ContentService,
+  ) { }
 
   ngOnInit() {
+    this.commonText =this.contentService?.commonText;
     if (this.type === 'deep-blue-filter') {
       this.customCss = 'deep-blue';
     } else if (this.type === 'light-blue-filter') {

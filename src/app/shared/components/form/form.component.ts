@@ -38,6 +38,7 @@ export class FormComponent implements OnInit {
   formKeysToRemove = [];
   typesToExclude = ['h1','h2','h3','h4','h5','h6','p'];
   typeHereText = 'Type here';
+  commonText: any;
 
   constructor(
     public uploadService: UploadService,
@@ -46,6 +47,7 @@ export class FormComponent implements OnInit {
   ) { }
 
   ngOnInit() {
+    this.commonText = this.contentService?.commonText;
     this.tunaFormquestions.map(question => {
       if ([...this.typesToExclude].includes(question.questionType)) {
         this.tunaFormGroup.patchValue({
@@ -53,7 +55,7 @@ export class FormComponent implements OnInit {
         });
         this.formKeysToRemove.push(question.key);
       }
-    this.typeHereText = this.contentService.commonText?.typeHere;
+      this.typeHereText = this.commonText?.typeHere;
     });
 
     this.tunaFormGroup.valueChanges.subscribe((value) => {

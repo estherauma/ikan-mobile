@@ -94,7 +94,15 @@
                 <ion-label text-wrap> {{question.label}} </ion-label>
               </ion-col>
               <ion-col size="12">
-                <ion-select class="form-input"  formControlName="{{question.key }}" textWrap interface="action-sheet" placeholder="Please Select">
+                <ion-select
+                  class="form-input"
+                  formControlName="{{question.key }}"
+                  interface="action-sheet"
+                  [placeholder]="commonText?.pleaseSelect"
+                  [okText]="commonText?.ok"
+                  [cancelText]="commonText?.cancel"
+                  textWrap
+                >
                   <ion-select-option text-wrap *ngFor="let opt of question.options" value="{{opt.value}}">
                     {{opt.label}}
                   </ion-select-option>
@@ -114,8 +122,15 @@
                 <ion-label text-wrap> {{question.label}} </ion-label>
               </ion-col>
               <ion-col size="12">
-                <ion-datetime  displayFormat="DDDD MMM D, YYYY" min="2015" max="2060" formControlName="{{question.key}}"
-                value="" preferWheel="true" presentation="date"></ion-datetime>
+                <ion-datetime
+                  displayFormat="DDDD MMM D, YYYY"
+                  min="2015"
+                  max="2060"
+                  formControlName="{{question.key}}"
+                  value=""
+                  preferWheel="true"
+                  presentation="date"
+                ></ion-datetime>
               </ion-col>
 
             </ion-row>
