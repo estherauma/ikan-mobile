@@ -1,4 +1,5 @@
 import { Component, Input, OnInit, Output, EventEmitter } from '@angular/core';
+import { ContentService } from '../../services/content/content.service';
 
 @Component({
   selector: 'app-search',
@@ -6,14 +7,20 @@ import { Component, Input, OnInit, Output, EventEmitter } from '@angular/core';
   styleUrls: ['./search.component.scss'],
 })
 export class SearchComponent implements OnInit {
+  commonText: any;
+
   @Input() searchDataSet: any[] = [];
   @Input() searchProperty: string;
   @Output() searchResult: EventEmitter<any> = new EventEmitter<any>();
   @Output() clear: EventEmitter<any> = new EventEmitter<any>();
 
-  constructor() { }
+  constructor(
+    public contentService: ContentService,
+  ) { }
 
-  ngOnInit() { }
+  ngOnInit() {
+    this.commonText = this.contentService?.commonText
+  }
 
   onSearchTextChanged(eventData) {
     const value = eventData.detail.value.trim();
