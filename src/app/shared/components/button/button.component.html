@@ -1,4 +1,5 @@
-<ion-button 
+<ion-button
+  id="app-btn"
   [shape]="shape" 
   [fill]="fill" 
   (click)="onClick ? onButtonClick() :  null" 
@@ -10,7 +11,7 @@
   disabled="true"
   [type]="type"
 >
-<ion-icon *ngIf="iconPosition === 'left' && iconName" [name]="iconName"></ion-icon>
-<span>{{title}}</span>
-<ion-icon *ngIf="iconPosition === 'right' && iconName" [name]="iconName"></ion-icon>
+  <ion-icon *ngIf="iconPosition === 'left' && iconName" [name]="iconName"></ion-icon>
+  <span>{{title}}</span>
+  <ion-icon *ngIf="iconPosition === 'right' && iconName" [name]="iconName"></ion-icon>
 </ion-button>
