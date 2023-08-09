@@ -49,7 +49,7 @@ export class CompanyPage implements OnInit {
         entryExists.payments.push(payment);
       }
     });
-    this.orgPayments.sort((a, b) => (a.date < b.date) ? 1 : -1);
+    this.orgPayments?.sort((a, b) => (a.date < b.date) ? 1 : -1);
   }
 
   searchResult(result) {
