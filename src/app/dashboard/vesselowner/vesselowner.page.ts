@@ -56,27 +56,27 @@ export class VesselownerPage implements OnInit {
           data: [65, 59, 80]
         }]
       };
-    }, 1000);
-    // for item in slists, update title with menuContent
-    this.sLists.forEach((item) => {
-      Object.entries(menuContent).forEach((x) => {
-        if (x[1]['title'] === item.title) {
-          item['title'] = x[1]['label'];
-        }
+      // for item in slists, update title with menuContent
+      this.sLists.forEach((item) => {
+        Object.entries(menuContent).forEach((x) => {
+          if (x[1]['title'] === item.title) {
+            item['title'] = x[1]['label'];
+          }
+        });
       });
 
-    });
+      this.overalStat = this.contentService.commonText?.fdbckOverallConditions;
+      this.stat1 = this.contentService.commonText?.fdbckNotCompleted;
+      this.stat2 = this.contentService.commonText?.fdbckAdditionalLearning;
+      this.stat3 = this.contentService.commonText?.fdbckCoreTraining;
+
+    }, 1000);
+    
    }
 
   ngOnInit() {
     if (!this.pushNotifications.preventSecondNotificationPrompt) {
       this.pushNotifications.checkAndroidPNsPermissions();
     }
-    this.overalStat = this.contentService.commonText?.fdbckOverallConditions;
-    this.stat1 = this.contentService.commonText?.fdbckNotCompleted;
-    this.stat2 = this.contentService.commonText?.fdbckAdditionalLearning;
-    this.stat3 = this.contentService.commonText?.fdbckCoreTraining;
   }
-
-
 }
