@@ -26,6 +26,9 @@ export class HomePage implements OnInit {
     {title:'opened', value:'opened'}
   ];
 
+  newText = 'New';
+  filterText = 'Filter';
+
   constructor(
     public menuCtrl: MenuController,
     public router: Router,
@@ -41,6 +44,9 @@ export class HomePage implements OnInit {
     this.noWorkOrdersText = this.contentService.commonText?.noWorkOrdersText;
     this.cancelText = this.contentService.commonText?.cancel;
     this.selectText = this.contentService.commonText?.select;
+    this.newText = this.contentService.commonText?.new;
+    this.pageTitle = this.contentService.commonText?.workOrders;
+    this.filterText = this.contentService.commonText?.filter;
   }
 
   ionViewWillEnter() {

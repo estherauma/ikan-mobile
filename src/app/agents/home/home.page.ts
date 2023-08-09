@@ -4,6 +4,7 @@ import { ModalController } from '@ionic/angular';
 import { SharedmethodsService } from 'src/app/shared/services/sharedmethods/sharedmethods.service';
 import { CreatePage } from '../create/create.page';
 import { AgentsDataService } from '../data/agents-data.service';
+import { ContentService } from 'src/app/shared/services/content/content.service';
 
 @Component({
   selector: 'app-home',
@@ -14,11 +15,13 @@ export class HomePage implements OnInit {
   pageTitle = 'Manning Agents';
   agents = [];
   unFilteredData = [];
+  newText = 'New';
 
   constructor(
     public router: Router,
     public modalCtrl: ModalController,
     public agentsDataService: AgentsDataService,
+    public contentService: ContentService
   ) {
     this.agentsDataService.getAll().subscribe((data) => {
       this.agents = this.unFilteredData = data;
@@ -26,6 +29,7 @@ export class HomePage implements OnInit {
   }
 
   ngOnInit() {
+    this.newText = this.contentService.commonText?.new;
   }
 
   searchResult(searchResult) {

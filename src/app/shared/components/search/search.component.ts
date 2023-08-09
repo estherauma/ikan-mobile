@@ -1,4 +1,5 @@
 import { Component, Input, OnInit, Output, EventEmitter } from '@angular/core';
+import { ContentService } from '../../services/content/content.service';
 
 @Component({
   selector: 'app-search',
@@ -11,9 +12,14 @@ export class SearchComponent implements OnInit {
   @Output() searchResult: EventEmitter<any> = new EventEmitter<any>();
   @Output() clear: EventEmitter<any> = new EventEmitter<any>();
 
-  constructor() { }
+  searchPlaceholderText = "Enter search value"
+  constructor(
+    public contentService: ContentService,
+  ) { }
 
-  ngOnInit() { }
+  ngOnInit() { 
+    this.searchPlaceholderText = this.contentService.commonText?.enterSearchValue;
+  }
 
   onSearchTextChanged(eventData) {
     const value = eventData.detail.value.trim();

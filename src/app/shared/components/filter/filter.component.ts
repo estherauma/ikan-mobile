@@ -1,4 +1,5 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { ContentService } from '../../services/content/content.service';
 
 @Component({
   selector: 'app-filter',
@@ -22,7 +23,11 @@ export class FilterComponent implements OnInit {
   @Input() type: 'deep-blue-filter' | 'light-blue-filter' | 'deep-blue-90' | '' = '';
   @Input() customCss='';
 
-  constructor() { }
+  placeHolderText = 'All'
+
+  constructor(
+    public contentService: ContentService,
+  ) { }
 
   ngOnInit() {
     if (this.type === 'deep-blue-filter') {
@@ -34,6 +39,7 @@ export class FilterComponent implements OnInit {
     } else {
       this.customCss = 'default';
     }
+    this.placeHolderText = this.contentService.commonText?.all;
   }
 
   onChange(eventData) {
