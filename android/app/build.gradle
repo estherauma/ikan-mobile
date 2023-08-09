@@ -8,8 +8,8 @@ android {
         applicationId "com.fiftyeight.tuna.dev"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 121
-        versionName "0.0.21"
+        versionCode 122
+        versionName "0.0.22"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         aaptOptions {
              // Files and dirs to omit from the packaged assets dir, modified to accommodate modern web apps.
@@ -26,7 +26,7 @@ android {
           minifyEnabled false
           debuggable true
           firebaseAppDistribution {
-            releaseNotes="Q build 4: Translations fixes for login pages and placeholders"
+            releaseNotes="Q build 4: Logged back in if already logged in"
             groups="scrum,other-departments"
             serviceCredentialsFile=file("google-services-credentials.json")
           }
