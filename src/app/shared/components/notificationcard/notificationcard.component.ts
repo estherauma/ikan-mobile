@@ -9,6 +9,7 @@ export class NotificationcardComponent implements OnInit {
   @Input() statusContainer: 'skyblue-status-container' | 'gray-status-container' = 'skyblue-status-container';
   @Input() notification;
   @Input() titleColor: 'blue' | 'deep-blue' = 'deep-blue';
+  @Input() status: 'status';
 
   constructor() { }
 
