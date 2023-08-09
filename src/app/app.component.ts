@@ -59,10 +59,8 @@ export class AppComponent implements OnInit, OnDestroy {
   checkLoginStatus() {
     this.sharedMethods.readDataFromStorage(StorageKeys.apiToken)
       .then(async(value) => {
-        if (value != null) {
-          // const user: UserData = await this.authService.userData;
-          let user = await this.sharedMethods.readDataFromStorage(StorageKeys.userData);
-          user = JSON.parse(user);
+        if (value) {
+          const user: UserData = await this.sharedMethods.readDataFromStorage(StorageKeys.userData);
           const now = new Date().toUTCString();
           if ( this.authService.tokenExpiryDate < new Date(now)) {
             this.logOut();
