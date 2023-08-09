@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { SharedmethodsService } from 'src/app/shared/services/sharedmethods/sharedmethods.service';
 import { PaymentsDataService } from '../../data/payments-data.service';
+import { ContentService } from 'src/app/shared/services/content/content.service';
 
 @Component({
   selector: 'app-company',
@@ -9,6 +10,8 @@ import { PaymentsDataService } from '../../data/payments-data.service';
   styleUrls: ['./company.page.scss'],
 })
 export class CompanyPage implements OnInit {
+  commonText: any;
+  companyData: any;
   pageTitle = '';
   orgPayments = [];
 
@@ -22,14 +25,26 @@ export class CompanyPage implements OnInit {
   constructor(
     public router: Router,
     public paymentDataService: PaymentsDataService,
-    public sharedMethods: SharedmethodsService
+    public sharedMethods: SharedmethodsService,
+    public contentService: ContentService,
+    public activatedRoute: ActivatedRoute,
   ) {
     this.paymentDataService.getAll().subscribe((data) => {
       this.organizeData(data);
     });
+    this.activatedRoute.params.subscribe((params) => {
+      if (params) {
+        this.companyData = params;
+      }
+    });
   }
 
   ngOnInit() {
+    this.commonText = this.contentService?.commonText;
+    this.filterOptions = [
+      {title: this.commonText?.closed, value: 'closed'},
+      {title: this.commonText?.opened, value: 'opened'}
+    ];
   }
 
   organizeData(data) {
