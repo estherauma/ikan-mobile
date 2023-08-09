@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { ContentService } from 'src/app/shared/services/content/content.service';
 
 @Component({
   selector: 'app-home',
@@ -7,6 +8,7 @@ import { Router } from '@angular/router';
   styleUrls: ['./home.page.scss'],
 })
 export class HomePage implements OnInit {
+  commonText: any;
   filterDataSet =  [
     {
       name: 'Name of Vessel Company',
@@ -37,10 +39,18 @@ export class HomePage implements OnInit {
 
 
   constructor(
-    public router: Router
+    public router: Router,
+    public contentService: ContentService,
   ) { }
 
   ngOnInit() {
+    this.commonText = this.contentService?.commonText;
+    console.log(this.commonText);
+    this.pageTitle = this.commonText?.payments;
+    this.filterOptions = [
+      {title: this.commonText?.closed, value: 'closed'},
+      {title: this.commonText?.opened, value: 'opened'}
+    ];
   }
 
   searchResult(data) {

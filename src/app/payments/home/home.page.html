@@ -5,13 +5,13 @@
     <div>
       <div class="ion-padding-horizontal ion-padding-bottom">
         <ion-img src="/assets/icon/payments.svg" class="icon"></ion-img>
-        <app-title title="Payments" [isBlue]="true" [isBig]="true"></app-title>
+        <app-title [title]="commonText?.payments" [isBlue]="true" [isBig]="true"></app-title>
       </div>
       <app-search [searchDataSet]="filterDataSet" (searchResult)="searchResult($event)"></app-search>
     </div>
     <ion-grid>
       <ion-row style="align-items: center;">
-        <ion-col size="12"><ion-text class="filter">Filter</ion-text></ion-col>
+        <ion-col size="12"><ion-text class="filter">{{ commonText?.filter }}</ion-text></ion-col>
         <ion-col size="12">
           <ion-grid>
             <ion-row>
@@ -27,7 +27,14 @@
       </ion-row>
     </ion-grid>
     
-    <app-maincard cardTitleSize="small" (click)="viewDetails(org)" *ngFor="let org of organizations" imagePosition="left" imageUrl="/assets/icon/image_placeholder.svg"
-    [title]="org.name" text="medium supporting text"></app-maincard> 
+    <app-maincard
+      cardTitleSize="small"
+      (click)="viewDetails(org)"
+      *ngFor="let org of organizations"
+      imagePosition="left"
+      imageUrl="/assets/icon/image_placeholder.svg"
+      [title]="org.name"
+      text="medium supporting text"
+    ></app-maincard> 
   </app-contentwrapper>
 </ion-content>
