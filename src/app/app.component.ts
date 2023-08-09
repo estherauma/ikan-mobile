@@ -32,8 +32,10 @@ export class AppComponent implements OnInit, OnDestroy {
     this.checkLoginStatus();
     this.pushNotifications.setup();
     this.contentService.menuContent.subscribe((data) => {
-      data.sort((a, b) => a.position - b.position);
-      this.appPages = data;
+      if (data) {
+        data?.sort((a, b) => a.position - b.position);
+        this.appPages = data;
+      }
     });
 
     this.dbService.checkDbPlatformAndRunMigration();

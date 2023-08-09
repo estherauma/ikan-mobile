@@ -15,7 +15,7 @@ export class AuthService {
   tokenExpiryDate: Date;
   currentUser: BehaviorSubject<any> = new BehaviorSubject<any>(null);
 
-  
+
   constructor(
     public sharedMethods: SharedmethodsService
   ) {
@@ -24,13 +24,15 @@ export class AuthService {
 
   async setUpAuthData() {
     this.userData = await this.sharedMethods.readDataFromStorage(StorageKeys.userData);
-    this.userRole = this.userData.role;
+    this.userRole = this.userData?.role;
     this.currentUser.next(this.userData);
 
     this.userToken = await this.sharedMethods.readDataFromStorage(StorageKeys.apiToken);
-    const decodedAccessToken = this.decodeAccessToken(this.userToken);
-    this.tokenExpiryDate = new Date(0);
-    this.tokenExpiryDate.setUTCSeconds(decodedAccessToken.exp);
+    if (this.userToken) {
+      const decodedAccessToken = this.decodeAccessToken(this.userToken);
+      this.tokenExpiryDate = new Date(0);
+      this.tokenExpiryDate.setUTCSeconds(decodedAccessToken.exp);
+    }
   }
 
 
@@ -53,7 +55,7 @@ export class AuthService {
   }
 
   decodeAccessToken(accessToken) {
-    return JSON.parse(window.atob(accessToken.split('.')[1]));
+    return JSON.parse(window.atob(accessToken?.split('.')?.[1]));
   }
 
   getUser() {
