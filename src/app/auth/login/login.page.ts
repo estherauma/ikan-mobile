@@ -44,7 +44,6 @@ export class LoginPage extends BaseformPage implements OnInit {
 
   ngOnInit() {
     this.submitButtonText = this.contentService.commonText?.login;
-    this.submitButtonText = 'Log in';
   }
 
   ionViewWillEnter() {

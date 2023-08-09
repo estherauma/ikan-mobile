@@ -25,7 +25,7 @@
                 <ion-label text-wrap> {{question.label}} </ion-label>
               </ion-col>
               <ion-col size="12">
-                <ion-input class="ion-padding-start form-input" type="text" placeholder="Type here" formControlName="{{question.key}}"></ion-input>
+                <ion-input class="ion-padding-start form-input" type="text" placeholder="{{typeHereText}}" formControlName="{{question.key}}"></ion-input>
               </ion-col>
 
             </ion-row>
@@ -41,7 +41,7 @@
                 <ion-label text-wrap> {{question.label}} </ion-label>
               </ion-col>
               <ion-col size="12">
-                <ion-textarea class="ion-padding-start form-input" type="text" placeholder="Type here" formControlName="{{question.key}}"></ion-textarea>
+                <ion-textarea class="ion-padding-start form-input" type="text" placeholder="{{typeHereText}}" formControlName="{{question.key}}"></ion-textarea>
               </ion-col>
 
             </ion-row>
@@ -58,7 +58,7 @@
               </ion-col>
               <ion-col size="12">
                 <ion-item>
-                  <ion-input class="ion-padding-start form-input" type="{{passwordFieldType}}" placeholder="Type here" formControlName="{{question.key}}"></ion-input>
+                  <ion-input class="ion-padding-start form-input" type="{{passwordFieldType}}" placeholder="{{typeHereText}}" formControlName="{{question.key}}"></ion-input>
                   <ion-icon slot="end" src="{{passwordEyeIcon}}" (click)="changePasswordState()" ></ion-icon>
                 </ion-item>
 
