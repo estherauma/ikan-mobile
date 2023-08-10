@@ -16,6 +16,7 @@ import { DeductionsPage } from './deductions/deductions.page';
 export class CreatePage extends BaseformPage implements OnInit  {
   pageTitle = '';
   submitButtonText = 'Record payment';
+  commonText: any;
 
   constructor(
     public contentServ: ContentService,
@@ -35,6 +36,8 @@ export class CreatePage extends BaseformPage implements OnInit  {
   }
 
   ngOnInit() {
+    this.commonText = this.contentServ?.commonText;
+    this.submitButtonText = this.commonText?.recordPayment;
   }
 
   async onSubmit(formData) {

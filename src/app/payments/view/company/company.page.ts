@@ -22,6 +22,48 @@ export class CompanyPage implements OnInit {
 
   filterDataSet = [];
 
+  // for test purposes
+  testPayments = [
+    {
+      id: 1,
+      companyName: 'Vessel Company One',
+      type: 'Salary',
+      worker: 1,
+      totalAmount: 3000,
+      remmitanceAmount: 400,
+      beneficiaryAmount: 1000,
+      cashAmount: 1600,
+      date: new Date(),
+      // status: data.rows.item(i).status,
+      // confirmed: data.rows.item(i).confirmed,
+      // confirmedDate: data.rows.item(i).confirmed_date,
+      // onlineRef: data.rows.item(i).online_ref,
+      // createdAt: data.rows.item(i).created_at,
+      // updatedAt: data.rows.item(i).updated_at,
+      // createdBy: data.rows.item(i).created_by,
+      // updatedBy: data.rows.item(i).updated_by,
+    },
+    {
+      id: 1,
+      companyName: 'Vessel Company Two',
+      type: 'Bonus',
+      worker: 1,
+      totalAmount: 3000,
+      remmitanceAmount: 400,
+      beneficiaryAmount: 1000,
+      cashAmount: 1600,
+      date: new Date(),
+      // status: data.rows.item(i).status,
+      // confirmed: data.rows.item(i).confirmed,
+      // confirmedDate: data.rows.item(i).confirmed_date,
+      // onlineRef: data.rows.item(i).online_ref,
+      // createdAt: data.rows.item(i).created_at,
+      // updatedAt: data.rows.item(i).updated_at,
+      // createdBy: data.rows.item(i).created_by,
+      // updatedBy: data.rows.item(i).updated_by,
+    }
+  ];
+
   constructor(
     public router: Router,
     public paymentDataService: PaymentsDataService,
@@ -30,6 +72,7 @@ export class CompanyPage implements OnInit {
     public activatedRoute: ActivatedRoute,
   ) {
     this.paymentDataService.getAll().subscribe((data) => {
+      data.push(...this.testPayments); // for test purposes
       this.organizeData(data);
     });
     this.activatedRoute.params.subscribe((params) => {
