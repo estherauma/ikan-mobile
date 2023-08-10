@@ -1,4 +1,4 @@
-<ion-select (ionChange)="onChange($event)" [class]="customCss + ' filter-border'" placeholder="All">
+<ion-select (ionChange)="onChange($event)" [class]="customCss + ' filter-border'" placeholder="{{placeHolderText}}">
   <ion-select-option *ngFor="let option of options" [value]="option.value">{{option.title}}</ion-select-option>
 </ion-select>
 
