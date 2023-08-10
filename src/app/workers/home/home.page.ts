@@ -5,6 +5,7 @@ import { SharedmethodsService } from 'src/app/shared/services/sharedmethods/shar
 import { UserRole } from 'src/app/shared/types/api-types';
 import { CreatePage } from '../create/create.page';
 import { WorkersDataService } from '../data/workers-data.service';
+import { ContentService } from 'src/app/shared/services/content/content.service';
 
 @Component({
   selector: 'app-home',
@@ -12,24 +13,29 @@ import { WorkersDataService } from '../data/workers-data.service';
   styleUrls: ['./home.page.scss'],
 })
 export class HomePage implements OnInit {
-  pageTitle = 'Recruits';
+  pageTitle = '';
   workerCount = 0;
   workers = [];
   unFilteredData = [];
   filterOptions = [];
+  commonText: any;
 
   constructor(
     public router: Router,
     public modalCtrl: ModalController,
     public workersDataService: WorkersDataService,
-    public sharedMethods: SharedmethodsService
+    public sharedMethods: SharedmethodsService,
+    public contentService: ContentService,
   ) {
     this.workersDataService.getAll().subscribe((data) => {
       this.workers = this.unFilteredData = data;
     });
   }
 
-  ngOnInit() {}
+  ngOnInit() {
+    this.commonText = this.contentService?.commonText;
+    this.pageTitle = this.commonText?.recruits;
+  }
 
   viewDetails(worker) {
     const workerRole = worker.role;

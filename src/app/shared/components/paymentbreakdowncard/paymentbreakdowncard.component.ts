@@ -1,4 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
+import { ContentService } from '../../services/content/content.service';
 
 export type PaymentType = 'Bank transfer' | 'Beneficiary' | 'Cash' | 'Listing';
 @Component({
@@ -7,6 +8,8 @@ export type PaymentType = 'Bank transfer' | 'Beneficiary' | 'Cash' | 'Listing';
   styleUrls: ['./paymentbreakdowncard.component.scss'],
 })
 export class PaymentbreakdowncardComponent implements OnInit {
+  commonText: any;
+
   @Input() type: PaymentType = 'Listing';
   @Input() isListing = false;
   @Input() amount = '';
@@ -15,9 +18,13 @@ export class PaymentbreakdowncardComponent implements OnInit {
   @Input() isConfirmable = false;
   @Input() status = '';
   iconUrl;
-  constructor() { }
+
+  constructor(
+    public contentService: ContentService,
+  ) { }
 
   ngOnInit() {
+    this.commonText = this.contentService?.commonText;
     if (this.type === 'Listing') {
       this.isListing = true;
       this.iconUrl = '/assets/icon/single_payment.svg';

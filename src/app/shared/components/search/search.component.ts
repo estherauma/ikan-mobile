@@ -7,18 +7,19 @@ import { ContentService } from '../../services/content/content.service';
   styleUrls: ['./search.component.scss'],
 })
 export class SearchComponent implements OnInit {
+  commonText: any;
+
   @Input() searchDataSet: any[] = [];
   @Input() searchProperty: string;
   @Output() searchResult: EventEmitter<any> = new EventEmitter<any>();
   @Output() clear: EventEmitter<any> = new EventEmitter<any>();
 
-  searchPlaceholderText = "Enter search value"
   constructor(
     public contentService: ContentService,
   ) { }
 
-  ngOnInit() { 
-    this.searchPlaceholderText = this.contentService.commonText?.enterSearchValue;
+  ngOnInit() {
+    this.commonText = this.contentService?.commonText
   }
 
   onSearchTextChanged(eventData) {

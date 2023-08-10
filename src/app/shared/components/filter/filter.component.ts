@@ -7,29 +7,22 @@ import { ContentService } from '../../services/content/content.service';
   styleUrls: ['./filter.component.scss'],
 })
 export class FilterComponent implements OnInit {
+  commonText: any;
 
-  @Input()
-  filterDataSet: any[] = [];
-
-  @Input()
-  options: any[] = [];
-
-  @Input()
-  filterProperty = '';
-
-  @Output()
-  filterResult: EventEmitter<any> = new EventEmitter<any>();
-
+  @Input() filterDataSet: any[] = [];
+  @Input() options: any[] = [];
+  @Input() filterProperty = '';
   @Input() type: 'deep-blue-filter' | 'light-blue-filter' | 'deep-blue-90' | '' = '';
   @Input() customCss='';
 
-  placeHolderText = 'All'
+  @Output() filterResult: EventEmitter<any> = new EventEmitter<any>();
 
   constructor(
     public contentService: ContentService,
   ) { }
 
   ngOnInit() {
+    this.commonText =this.contentService?.commonText;
     if (this.type === 'deep-blue-filter') {
       this.customCss = 'deep-blue';
     } else if (this.type === 'light-blue-filter') {
@@ -39,7 +32,6 @@ export class FilterComponent implements OnInit {
     } else {
       this.customCss = 'default';
     }
-    this.placeHolderText = this.contentService.commonText?.all;
   }
 
   onChange(eventData) {
