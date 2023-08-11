@@ -24,7 +24,9 @@ export class InfoPage extends BaseformPage implements OnInit {
     this.pageFormGroup = new FormGroup(this.group);
   }
 
-  ngOnInit() {}
+  ngOnInit() {
+    this.submitButtonText = this.commonText?.saveChanges;
+  }
 
   onSubmit(data) {}
 }

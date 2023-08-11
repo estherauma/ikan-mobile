@@ -8,6 +8,7 @@ import { ContentService } from '../../services/content/content.service';
   styleUrls: ['./baseform.page.scss'],
 })
 export class BaseformPage implements OnInit {
+  commonText: any;
   pageFormGroup: FormGroup;
   formQuestions = [ ];
   group =  { };
@@ -19,6 +20,7 @@ export class BaseformPage implements OnInit {
   ) { }
 
   ngOnInit() {
+    this.commonText = this.contentService?.commonText;
     this.pageFormGroup = new FormGroup(this.group);
     this.submitButtonText = this.contentService.commonText?.create;
   }

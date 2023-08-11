@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
 import { ActivatedRoute, Router } from '@angular/router';
+import { ContentService } from 'src/app/shared/services/content/content.service';
 
 @Component({
   selector: 'app-status',
@@ -8,7 +9,7 @@ import { ActivatedRoute, Router } from '@angular/router';
   styleUrls: ['./status.page.scss'],
 })
 export class StatusPage implements OnInit {
-
+  commonText: any;
   audioRecordings = [
     {
       name: 'one',
@@ -44,10 +45,12 @@ export class StatusPage implements OnInit {
   constructor(
     public activatedRoute: ActivatedRoute,
     public sanitizer: DomSanitizer,
-    public router: Router
+    public router: Router,
+    public contentService: ContentService,
   ) { }
 
   ngOnInit() {
+    this.commonText = this.contentService?.commonText;
     this.activatedRoute.params.subscribe((params: any) => {
       if (Object.keys(params).length === 0) {
         return;

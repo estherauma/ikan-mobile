@@ -18,7 +18,7 @@ export class WorkersDataService {
         this.sqlite.create({
           name: 'tunalocal.db',
           location: 'default'
-        }).then(async(_db: SQLiteObject) => {
+        })?.then(async(_db: SQLiteObject) => {
           this.db = _db;
           this.retrieveWorkers();
         }).catch(e => console.log(e));
