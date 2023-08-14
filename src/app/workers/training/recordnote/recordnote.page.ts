@@ -1,6 +1,7 @@
  import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { AudioService } from 'src/app/shared/services/audio/audio.service';
+import { ContentService } from 'src/app/shared/services/content/content.service';
 
 @Component({
   selector: 'app-recordnote',
@@ -8,15 +9,18 @@ import { AudioService } from 'src/app/shared/services/audio/audio.service';
   styleUrls: ['./recordnote.page.scss'],
 })
 export class RecordnotePage implements OnInit {
+  commonText: any;
   recordedNote = null;
   recordingStarted = false;
   recordingStopped = false;
   constructor(
     public audioService: AudioService,
-    public router: Router
+    public router: Router,
+    public contentService: ContentService,
   ) { }
 
   ngOnInit() {
+    this.commonText = this.contentService?.commonText;
   }
 
   startRecording() {

@@ -3,7 +3,7 @@ import { FormControl, Validators, FormGroup } from '@angular/forms';
 import { StatusType } from 'src/app/shared/components/pageprofilecontainer/pageprofilecontainer.component';
 import { ContentService } from 'src/app/shared/services/content/content.service';
 import { BaseformPage } from 'src/app/shared/components/baseform/baseform.page';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Params, Router } from '@angular/router';
 
 @Component({
   selector: 'app-detail',
@@ -14,34 +14,34 @@ export class DetailPage extends BaseformPage implements OnInit {
   iconBase = 'assets/icon';
   navItems = [
     {
-      name: 'Info',
+      name: this.commonText?.info,
       url: 'workers/info',
       id: 1,
       activeIcon:`${this.iconBase}/profile_info_blue.svg` ,
       inActiveIcon:`${this.iconBase}/profile_info_white.svg`
     },
     {
-      name: 'Payment',
+      name: this.commonText?.payment,
       url: 'workers/payment',
       id: 2,
       activeIcon:`${this.iconBase}/single_payment_blue.svg` ,
       inActiveIcon: `${this.iconBase}/single_payment_white.svg`
     },
     {
-      name: 'Placement',
+      name: this.commonText?.placement,
       url: 'workers/placement',
       id: 3,
       activeIcon:`${this.iconBase}/placements_blue.svg` ,
       inActiveIcon:`${this.iconBase}/placements_white.svg`
     },
     {
-      name: 'Documents',
+      name: this.commonText?.documents,
       url: 'workers/documents',
       id: 4, activeIcon:`${this.iconBase}/documents_blue.svg` ,
       inActiveIcon:`${this.iconBase}/documents_white.svg`
     },
     {
-      name: 'Training',
+      name: this.commonText?.training,
       url: 'workers/training',
       id: 5,
       activeIcon:`${this.iconBase}/training_blue.svg` ,
@@ -51,20 +51,8 @@ export class DetailPage extends BaseformPage implements OnInit {
   activeNavItem = this.navItems[0];
   isResendInviteBtn = this.activeNavItem.id === 1;
 
-  workerInfo = {
-    email:'okumujustine01@gmail.com',
-    phone:'+256781459239',
-    building: 'Building Name',
-    street: '123 Name of Road',
-    town: 'Name of Town',
-    county: 'County',
-    zipCode: 'Zip Code',
-    country: 'Country',
-    name: 'Budi Surname',
-    status: 'pending' as StatusType
-  };
+  workerInfo: any;
 
-  submitButtonText = 'submit';
   wo = {
     name: 'Work order 2',
     internalRef: 'IJSWERWXDWER',
@@ -73,12 +61,10 @@ export class DetailPage extends BaseformPage implements OnInit {
     appRef: 'XXX-XXX-XXX',
   };
 
-  saveText = '';
-  editText = '';
-  sendReminderText = '';
   constructor(
     public contentService: ContentService,
     public router: Router,
+    public activatedRoute: ActivatedRoute,
   ) {
     super(contentService);
     const pageData = this.contentService.getContentByPropertyName('createplacementinfo');
@@ -91,12 +77,17 @@ export class DetailPage extends BaseformPage implements OnInit {
   }
 
   ngOnInit() {
-    this.editText = this.contentService.commonText?.edit;
-    this.saveText = this.contentService.commonText?.save;
-    this.sendReminderText = this.contentService.commonText?.sendreminder;
+    this.commonText = this.contentService?.commonText;
+    this.getWorkerInfo();
   }
 
-  getParams() {}
+  getWorkerInfo() {
+    this.activatedRoute.queryParams.subscribe((queryParams: Params) => {
+      if (queryParams && Object.keys(queryParams).length > 0) {
+        this.workerInfo = queryParams;
+      }
+    });
+  }
 
   onClickedMenu(menuItem) {
     this.activeNavItem = menuItem;

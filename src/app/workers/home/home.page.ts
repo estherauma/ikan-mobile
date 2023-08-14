@@ -39,14 +39,15 @@ export class HomePage implements OnInit {
 
   viewDetails(worker) {
     const workerRole = worker.role;
+    const queryParams = worker;
     switch (workerRole) {
       case UserRole.worker:
-        return this.router.navigate(['worker/profiles']);
+        return this.router.navigate(['worker/profiles'], { queryParams });
       case UserRole.taiwaneseAgent:
-          return this.router.navigate(['workers/details']);
+          return this.router.navigate(['workers/details'], { queryParams });
       default:
         // TODO: Mak it go to default route
-        return this.router.navigate(['workers/details']);
+        return this.router.navigate(['workers/details'], { queryParams });
     }
   }
 

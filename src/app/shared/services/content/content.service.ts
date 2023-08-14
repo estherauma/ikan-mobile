@@ -46,7 +46,7 @@ export class ContentService {
 
   async fetchContent() {
     const response = this.apiService.get('content/aggregated');
-    response.subscribe((res: HttpResponse<any>) => {
+    response?.subscribe((res: HttpResponse<any>) => {
       const content = res.body;
       if (content?.status === 'OK') {
         this.writeLocalContent(StorageKeys.appContent, content.data[0]);

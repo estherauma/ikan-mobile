@@ -4,26 +4,26 @@
   <ion-grid>
     <ion-row class="ion-align-content-between">
       <ion-col size="12">
-        <ion-text><h1>Record a note</h1></ion-text>
+        <ion-text><h1>{{ commonText?.recordANote }}</h1></ion-text>
       </ion-col>
       <ion-col size="12">
         <ion-row class="ion-justify-content-center ion-align-items-center" style="height: 70vh;">
           <ion-col size="6">
             <div style="display: flex; justify-content:center; flex-direction: column; align-items: center;">
-              <ion-label *ngIf="recordingStarted" class="ion-padding-vertical">recording...</ion-label>
+              <ion-label *ngIf="recordingStarted" class="ion-padding-vertical">{{ commonText?.recording }}...</ion-label>
               <div style="background-color: #e5e5e5; height: 60px; width: 60px; border-radius: 50px; display: flex; justify-content:center; align-items: center;">
                 <ion-icon size="large" name="mic-outline"></ion-icon>
               </div>
               <div class="ion-padding-vertical">
-                <ion-button [disabled]="recordingStarted" (click)="startRecording()">Start</ion-button>
-                <ion-button [disabled]="!recordingStarted" (click)="stopRecording()">Stop</ion-button>
+                <ion-button [disabled]="recordingStarted" (click)="startRecording()">{{ commonText?.start }}</ion-button>
+                <ion-button [disabled]="!recordingStarted" (click)="stopRecording()">{{ commonText?.stop }}</ion-button>
               </div>
             </div>
           </ion-col>
         </ion-row>
       </ion-col>
       <ion-col size="12">
-        <ion-button (click)="onSave()" [disabled]="!recordedNote || recordingStarted" expand="full">Save</ion-button>
+        <ion-button (click)="onSave()" [disabled]="!recordedNote || recordingStarted" expand="full">{{ commonText?.save }}</ion-button>
       </ion-col>
     </ion-row>
   </ion-grid>

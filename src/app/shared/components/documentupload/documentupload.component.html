@@ -13,7 +13,7 @@
       <ion-col *ngIf="type === 'display'">
         <div>
           <ion-text [ngClass]="{'blue-color': variant === 'solid'}">({{name}})</ion-text><br/>
-          <ion-text><small class="date">Uploaded {{uploadedDate}}</small></ion-text>
+          <ion-text><small class="date">{{ commonText?.uploaded }} {{uploadedDate}}</small></ion-text>
         </div>
       </ion-col>
     </ion-row>

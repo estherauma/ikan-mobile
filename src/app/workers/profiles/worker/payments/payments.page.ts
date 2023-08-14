@@ -17,6 +17,7 @@ export class PaymentsPage extends BaseformPage implements OnInit {
     const pageData = this.contentService.getContentByPropertyName('createplacementinfo');
     this.pageTitle = pageData?.pageTitle;
     this.formQuestions = pageData?.formQuestions;
+    this.submitButtonText = this.commonText?.saveChanges;
     this.formQuestions.forEach((entry) => {
       this.group[entry.key] = new FormControl('', [Validators.required]);
     });

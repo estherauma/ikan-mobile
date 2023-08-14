@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { ContentService } from 'src/app/shared/services/content/content.service';
 
 @Component({
   selector: 'app-placement',
@@ -6,6 +7,7 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./placement.page.scss'],
 })
 export class PlacementPage implements OnInit {
+  commonText: any;
   wo = {
     name: 'Work order 2',
     internalRef: 'IJSWERWXDWER',
@@ -34,9 +36,14 @@ export class PlacementPage implements OnInit {
       info: 'More info. Functionality here is click panel to view.',
     },
   ];
-  constructor() {}
 
-  ngOnInit() {}
+  constructor(
+    public contentService: ContentService,
+  ) {}
+
+  ngOnInit() {
+    this.commonText = this.contentService?.commonText;
+  }
 
   viewDetails(wo) {}
 }

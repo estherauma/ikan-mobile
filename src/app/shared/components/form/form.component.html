@@ -170,7 +170,7 @@
             <ion-row *ngIf="!selectedDocuments[question.key]" class="upload-wrapper">
               <div (click)="onUpload(question.key)">
                 <ion-icon name="document-text-outline"></ion-icon>
-                <p>Upload document</p>
+                <p>{{ commonText?.uploadDocument }}</p>
               </div>
             </ion-row>
 
@@ -196,7 +196,7 @@
             <ion-row *ngIf="!selectedImages[question.key]" class="upload-wrapper">
               <div (click)="takePicture(question.key)">
                 <ion-icon name="camera-outline"></ion-icon>
-                <p>Upload picture</p>
+                <p>{{ commonText?.uploadPicture }}</p>
               </div>
             </ion-row>
 
@@ -209,7 +209,13 @@
 
   <ion-grid class="buttons" *ngIf="!useCustomSubmitButton">
     <ion-col size="5">
-      <app-button  type="submit" [config]="btnConfig" [fill]="btnFill" [disabled]="!tunaFormGroup.valid" title={{submitButtonText.toUpperCase()}}></app-button>
+      <app-button
+        type="submit"
+        [config]="btnConfig"
+        [fill]="btnFill"
+        [disabled]="!tunaFormGroup.valid"
+        title={{submitButtonText?.toUpperCase()}}
+      ></app-button>
     </ion-col>
   </ion-grid>
 </form>

@@ -23,16 +23,16 @@
         </div>
         <div class="truncate-text">
           <ion-label>
-            <ion-text class="gray-text">App Ref:</ion-text>
-            <ion-text class="blue-text">{{wo.appRef}}</ion-text>
+            <ion-text class="gray-text">{{ commonText?.appRef }}: </ion-text>
+            <ion-text class="blue-text"> {{wo.appRef}}</ion-text>
           </ion-label> <br>
         </div>
         <ion-label>
-          <ion-text class="gray-text">Date Created:: </ion-text>
+          <ion-text class="gray-text">{{ commonText?.dateCreated }}: </ion-text>
           <ion-text class="blue-text">{{wo.createdAt}}</ion-text>
         </ion-label> <br>
         <ion-label>
-          <ion-text class="gray-text">Status: </ion-text>
+          <ion-text class="gray-text">{{ commonText?.status }}: </ion-text>
           <ion-text class="blue-text">{{wo.status}}</ion-text>
         </ion-label> <br>
       </div>
