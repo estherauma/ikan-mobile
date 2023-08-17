@@ -3,7 +3,7 @@
 
 <ion-content>
   <div class="ion-padding detail-section">
-    <ion-text>Ref:{{contract.ref}}</ion-text>
+    <ion-text>{{ commonText?.ref }}: {{contract.ref}}</ion-text>
     <ion-text>
       <h1>{{contract.name}}</h1>
     </ion-text>
@@ -14,12 +14,12 @@
       <h1>{{contract.companyName}}</h1>
     </ion-text>
 
-    <ion-text class="block">Vessel: {{contract.vesselName}}</ion-text>
-    <ion-text class="block">Dates: {{contract.date}}</ion-text>
+    <ion-text class="block">{{ commonText?.vessel }}: {{contract.vesselName}}</ion-text>
+    <ion-text class="block">{{ commonText?.dates }}: {{contract.date}}</ion-text>
     <br />
 
-    <ion-text class="block">Taiwanese Representative: Cici's Company</ion-text>
-    <ion-text class="block">Indonesian Representative: Farah's Company<p></p>
+    <ion-text class="block">{{ commonText?.taiwaneseRepresentative }}: Cici's Company</ion-text>
+    <ion-text class="block">{{ commonText?.indonesianRepresentative }}: Farah's Company<p></p>
     </ion-text>
 
   </div>
@@ -31,12 +31,12 @@
             <ion-icon name="checkmark-outline"></ion-icon>
           </div>
           <div class="list-content">
-            <h3>Placement Opportunity</h3>
+            <h3>{{ commonText?.placementOpportunity }}</h3>
             <ion-text>
-              <p>Status: Accepted</p>
+              <p>{{ commonText?.status }}: Accepted</p>
             </ion-text>
             <ion-text>
-              <h6>Associated Work Order/Demand Letter</h6>
+              <h6>{{ commonText?.associatedWorkOrderOrDemandLetter }}</h6>
             </ion-text>
             <ion-card>
               <ion-card-content>
@@ -47,11 +47,11 @@
                     </ion-col>
                     <ion-col size="8">
                       <ion-card-title>{{wo.name}}</ion-card-title>
-                      <ion-card-subtitle>Internal Ref: {{wo.internalRef}}</ion-card-subtitle>
+                      <ion-card-subtitle>{{ commonText?.internalRef }}: {{wo.internalRef}}</ion-card-subtitle>
                       <br>
-                      <ion-label><strong>App Ref:</strong> {{wo.appRef}}</ion-label> <br>
-                      <ion-label><strong>Date Created:</strong> {{wo.dateOpened}}</ion-label> <br>
-                      <ion-label><strong>Status:</strong> {{wo.status}}</ion-label>
+                      <ion-label><strong>{{ commonText?.appRef }}:</strong> {{wo.appRef}}</ion-label> <br>
+                      <ion-label><strong>{{ commonText?.dateCreated }}:</strong> {{wo.dateOpened}}</ion-label> <br>
+                      <ion-label><strong>{{ commonText?.status }}:</strong> {{wo.status}}</ion-label>
                     </ion-col>
                     <ion-col size="1" style="text-align: center; padding-top: 15%" (click)="viewDetails(wo)">
                       <ion-icon name="chevron-forward-outline" size="large"></ion-icon>
@@ -68,7 +68,7 @@
           <ion-icon name="checkmark-outline"></ion-icon>
         </div>
         <div class="list-content">
-          <h3>Placement Agreement</h3>
+          <h3>{{ commonText?.placementAgreement }}</h3>
 
           <ion-card>
             <ion-card-content>
@@ -94,9 +94,9 @@
           <ion-icon name="checkmark-outline"></ion-icon>
         </div>
         <div class="list-content">
-          <h3>Job Order & Service Agreement</h3>
-          <ion-text>Status: Confirmed (2/2)</ion-text>
-          <ion-text>Recipient: Cici Surname | Company name</ion-text>
+          <h3>{{ commonText?.jobOrderAndServiceAgreement }}</h3>
+          <ion-text>{{ commonText?.status }}: Confirmed (2/2)</ion-text>
+          <ion-text>{{ commonText?.recipient }}: Cici Surname | Company name</ion-text>
           <ion-card *ngFor="let osa of orderAndServiceAgreement">
             <ion-card-content>
               <ion-grid>
@@ -121,8 +121,8 @@
           <ion-icon name="checkmark-outline"></ion-icon>
         </div>
         <div class="list-content">
-          <h3>Employment agreement</h3>
-          <ion-text>Status: Complete</ion-text>
+          <h3>{{ commonText?.employmentAgreement }}</h3>
+          <ion-text>{{ commonText?.status }}: Complete</ion-text>
           <ion-card>
             <ion-card-content>
               <ion-grid>
