@@ -4,7 +4,7 @@
   <app-contentwrapper>
     <div class="ion-padding">
       <div>
-        <app-title [isBig]="true" [isBlue]="true" title="Notifications"></app-title>
+        <app-title [isBig]="true" [isBlue]="true" title="{{pageTitle}}"></app-title>
       </div>
       <div *ngFor="let item of notifications" class="ion-margin-top">
         <ion-text *ngIf="item.title !== 'New'" class="ion-padding-bottom"> <strong>{{item.title}}</strong></ion-text>
@@ -15,12 +15,13 @@
               <app-notificationcard
                [notification]="notif"
                titleColor="blue"
+               [status]="notif.status"
                ></app-notificationcard>
             </ion-item>
             <ion-item-options side="end">
               <ion-item-option class="ion-item-option-first">
                 <ion-icon name="ellipsis-horizontal-circle"></ion-icon>
-                <p>More</p>
+                <p>{{moreText}}</p>
               </ion-item-option>
               <ion-item-option class="ion-item-option-second" color="danger">
                 <ion-icon slot="icon-only" name="trash"></ion-icon>

@@ -12,13 +12,13 @@
 
       <ion-label>Title of completion bar</ion-label>
       <ion-progress-bar value="0.5"></ion-progress-bar>
-      <ion-button color="medium">Set reminder</ion-button>
+      <ion-button color="medium">{{ commonText?.setReminder }}</ion-button>
     </ion-card-content>
   </ion-card>
 
   <!-- Training documents -->
   <ion-text>
-    <h3>BP2Mi Training Document</h3>
+    <h3>{{ commonText?.BP2miTrainingDocument }}</h3>
   </ion-text>
 
   <ion-card>
@@ -30,7 +30,7 @@
           </ion-col>
           <ion-col size="10">
             <ion-text>
-              <p>Pending</p>
+              <p>{{ commonText?.pending }}</p>
             </ion-text>
           </ion-col>
         </ion-row>
@@ -48,11 +48,11 @@
 
         <ion-label>During Employment</ion-label>
         <ion-progress-bar value="0.2"></ion-progress-bar>
-        <ion-button color="medium">Set reminder</ion-button> <br>
+        <ion-button color="medium">{{ commonText?.setReminder }}</ion-button> <br>
 
         <ion-label>Post Employment</ion-label>
         <ion-progress-bar value="0.5"></ion-progress-bar>
-        <ion-button color="medium">Set reminder</ion-button>
+        <ion-button color="medium">{{ commonText?.setReminder }}</ion-button>
       </ion-card-content>
     </ion-card>
   </ion-text>
@@ -60,7 +60,7 @@
   <!-- Audio Notes -->
   <ion-card>
     <ion-card-header>
-      <ion-card-subtitle>Audio notes</ion-card-subtitle>
+      <ion-card-subtitle>{{ commonText?.audioNotes }}</ion-card-subtitle>
     </ion-card-header>
     <ion-card-content>
       <div>
@@ -70,7 +70,7 @@
               <ion-icon name="mic-outline" size="large"></ion-icon>
             </ion-col>
             <ion-col size="10">
-              <ion-label>Record new note</ion-label>
+              <ion-label>{{ commonText?.recordNewNote }}</ion-label>
             </ion-col>
           </ion-row>
         </ion-grid>
@@ -82,7 +82,7 @@
               <ion-label>Name of audio goes here</ion-label>
               <audio controls style="width: 90%;">
                 <source src="horse.ogg" type="audio/ogg">
-                Your browser does not support the audio tag.
+                {{ commonText?.browserDoesnotSupportAudioTag }}
               </audio>
             </ion-col>
           </ion-row>

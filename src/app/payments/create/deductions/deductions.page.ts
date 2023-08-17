@@ -11,6 +11,7 @@ import { SharedmethodsService } from 'src/app/shared/services/sharedmethods/shar
   styleUrls: ['./deductions.page.scss'],
 })
 export class DeductionsPage extends BaseformPage  implements OnInit {
+  commonText: any;
   submitButtonText = 'Add Deduction';
   constructor(
     public contentServ: ContentService,
@@ -28,12 +29,13 @@ export class DeductionsPage extends BaseformPage  implements OnInit {
   }
 
   ngOnInit() {
-
+    this.commonText = this.contentServ?.commonText;
+    this.submitButtonText = this.commonText?.addDeduction
   }
 
   onSubmit(formData) {
     //TODO: Add localization
-    this.sharedMethods.showLoader('Saving deduction');
+    this.sharedMethods.showLoader( this.commonText?.savingDeduction || 'Saving deduction');
     this.modalCtrl.dismiss(formData);
   }
 

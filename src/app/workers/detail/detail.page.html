@@ -2,13 +2,13 @@
 
 <ion-content class="content-skyblue-bg ion-content-custom-position">
   <app-pageprofilecontainer
-  (clickedMenuItem)="onClickedMenu($event)"
-  [active]="activeNavItem"
-  [navItems]="navItems"
-  [status]="workerInfo.status"
-  [title]="workerInfo.name"
-  [isResendInviteBtn]="isResendInviteBtn"
-  imageUrl="/assets/imgs/zila1.jpeg"
+    (clickedMenuItem)="onClickedMenu($event)"
+    [active]="activeNavItem"
+    [navItems]="navItems"
+    [status]="workerInfo.status"
+    [title]="workerInfo.name"
+    [isResendInviteBtn]="isResendInviteBtn"
+    imageUrl="/assets/imgs/zila1.jpeg"
   ></app-pageprofilecontainer>
 
 <div class="contents ion-padding">
@@ -18,7 +18,7 @@
         <div class="icon">
           <ion-img src="assets/icon/email_blue.svg"></ion-img>
         </div>
-        <p>{{workerInfo.email}}</p>
+        <p>{{workerInfo?.email}}</p>
       </div>
       <div class="text-icon">
         <div class="icon">
@@ -31,33 +31,34 @@
           <ion-img src="assets/icon/office_blue.svg"></ion-img>
         </div>
         <div>
-          <p>{{workerInfo.building}}</p>
-          <p>{{workerInfo.street}}</p>
-          <p>{{workerInfo.county}}</p>
-          <p>{{workerInfo.town}}</p>
-          <p>{{workerInfo.zipCode}}</p>
-          <p>{{workerInfo.country}}</p>
+          <!-- TODO: make sure properties match those from parent eg address line... -->
+          <p>{{workerInfo?.building}}</p>
+          <p>{{workerInfo?.street}}</p>
+          <p>{{workerInfo?.county}}</p>
+          <p>{{workerInfo?.town}}</p>
+          <p>{{workerInfo?.zipCode}}</p>
+          <p>{{workerInfo?.country}}</p>
         </div>
       </div>
       <div class="edit-btn-container">
-        <app-button (onClick)="onEdit()" [title]="editText" size="small"></app-button>
+        <app-button (onClick)="onEdit()" [title]="commonText?.edit" size="small"></app-button>
       </div>
     </div>
   </div>
   <div *ngIf="activeNavItem.id === 2">
     <div class="title-wrapper">
-      <app-title title="Account information" variant="h5"></app-title>
-      <app-button [title]="saveText" size="small"></app-button>
+      <app-title [title]="commonText?.accountInfo" variant="h5"></app-title>
+      <app-button [title]="commonText?.save" size="small"></app-button>
     </div>
     <app-form
-    [tunaFormGroup]="pageFormGroup"
-    [tunaFormquestions]="formQuestions"
-    [submitButtonText]="submitButtonText"
-    (formValue)="onSubmit($event)"
-    [isTextBlue]="true"
-    [isOtherDarkBlue]="true"
-    [isTitleDarkBlue]="true"
-    btnFill="solid"
+      [tunaFormGroup]="pageFormGroup"
+      [tunaFormquestions]="formQuestions"
+      [submitButtonText]="commonText?.submit"
+      (formValue)="onSubmit($event)"
+      [isTextBlue]="true"
+      [isOtherDarkBlue]="true"
+      [isTitleDarkBlue]="true"
+      btnFill="solid"
     >
 </app-form>      
   </div>
@@ -66,11 +67,11 @@
       <div class="ion-margin-top">
 
         <div>
-          <app-titleblock variant="pending" title="Placement Opportunity"></app-titleblock>
+          <app-titleblock variant="pending" [title]="commonText?.placementOpportunity"></app-titleblock>
           <div class="ion-padding list-content">
             <div>
-              <p>Status:<span> Sent</span> <a class="placement-link">View Placement Offer</a></p>
-              <h5 class="placement-title">Associated Work Order</h5>
+              <p>{{ commonText?.status }}:<span> {{ commonText?.sent }}</span> <a class="placement-link">{{ commonText?.viewPlacementOffer }}</a></p>
+              <h5 class="placement-title">{{ commonText?.associatedWorkOrder }}</h5>
             </div>
             <div>
               <app-workordercard 
@@ -78,39 +79,39 @@
               >
               </app-workordercard>
               <div class="send-reminder-btn">
-                <app-button size="small" [title]="sendReminderText"></app-button>
+                <app-button size="small" [title]="commonText?.sendreminder"></app-button>
               </div>
             </div>
           </div>
         </div>
 
         <div>
-          <app-titleblock title="Placement Opportunity"></app-titleblock>
+          <app-titleblock [title]="commonText?.placementOpportunity"></app-titleblock>
           <div class="ion-padding list-content">
             <div>
-              <p>Status:<span> Not started</span></p>
+              <p>{{ commonText?.status }}:<span> {{ commonText?.notStarted }}</span></p>
             </div>
             <div>
-              <p>Placement Opportunities can be sent by adding a Worker to a Demand Letter. </p>
-              <a routerLink="">Click here to see your Demand Letters.</a>
+              <p>{{ commonText?.placementOpportunitiesSendingText }} </p>
+              <a routerLink="">{{ commonText?.clickHereToSeeDemandLetters }}</a>
             </div>
           </div>
         </div>
 
         <div>
-          <app-titleblock title="Placement Agreement"></app-titleblock>
+          <app-titleblock [title]="commonText?.placementAgreement"></app-titleblock>
           <div class="ion-padding list-content">
           </div>
         </div>
       
         <div>
-          <app-titleblock title="Job Order & Service opportunity"></app-titleblock>
+          <app-titleblock [title]="commonText?.jobOrderAndServiceOpportunity"></app-titleblock>
           <div class="ion-padding list-content">
           </div>
         </div>
 
         <div>
-          <app-titleblock title="Departure"></app-titleblock>
+          <app-titleblock [title]="commonText?.departure"></app-titleblock>
           <div class="ion-padding">
           </div>
         </div>
@@ -121,31 +122,31 @@
   <div *ngIf="activeNavItem.id === 4">
     <div class="ion-margin-top">
       <div class="ion-margin">
-        <app-title title="Account information" variant="h5"></app-title>
+        <app-title [title]="commonText?.accountInfo" variant="h5"></app-title>
       </div>
       
       <div>
-        <app-titleblock variant="completed" title="Passport"></app-titleblock>
+        <app-titleblock variant="completed" [title]="commonText?.passport"></app-titleblock>
         <div class="ion-padding ion-margin-bottom">
           <app-attachment
-            pdfName="Passport"
-            pdfInfo="Click to view and edit uploaded passport picture"
+            [pdfName]="commonText?.passport"
+            [pdfInfo]="commonText?.clickToViewAndEditUploadedPassportPicture"
             docLink="/assets/imgs/zila1.jpeg"
             backUrl="/workers/details/info"
           ></app-attachment>
         </div>
       </div>
       <div>
-        <app-titleblock variant="pending" title="Visa"></app-titleblock>
+        <app-titleblock variant="pending" [title]="commonText?.visa"></app-titleblock>
         <div class="ion-margin-vertical">
-          <app-documentupload type="upload" name="Upload Visa" [isTransparent]="true"></app-documentupload>
+          <app-documentupload type="upload" [name]="commonText?.uploadVisa" [isTransparent]="true"></app-documentupload>
         </div>
       </div>
       <div>
-        <app-titleblock variant="pending" title="Signed Employment Agreement"></app-titleblock>
+        <app-titleblock variant="pending" [title]="commonText?.signedEmploymentAgreement"></app-titleblock>
         <div class="ion-padding">
           <div class="send-reminder-btn">
-            <app-button size="small" [title]="sendReminderText"></app-button>
+            <app-button size="small" [title]="commonText?.sendreminder"></app-button>
           </div>
         </div>
       </div>
@@ -153,6 +154,7 @@
   </div>
   <div *ngIf="activeNavItem.id === 5">
     <div>
+      <!-- TODO: use training data -->
       <app-title title="Training status" variant="h5"></app-title>
       <div>
         <div class="ion-padding-bottom">
@@ -160,27 +162,28 @@
           <app-progressbar title="Title of completion bar"></app-progressbar>
           <app-progressbar title="Title of completion bar"></app-progressbar>
           <div class="send-reminder-btn">
-            <app-button size="small" [title]="sendReminderText"></app-button>
+            <app-button size="small" [title]="commonText?.sendreminder"></app-button>
           </div>
           <app-progressbar title="Title of completion bar" value="76"></app-progressbar>
         </div>
 
         <div class="ion-padding-bottom">
-          <app-title title="BP2mi Training document" variant="h5"></app-title>
-          <app-documentupload iconUrl="/assets/icon/documents_blue_lg.svg" type="upload" name="Upload signed BP2mi"></app-documentupload>
+          <app-title [title]="commonText?.BP2miTrainingDocument" variant="h5"></app-title>
+          <app-documentupload iconUrl="/assets/icon/documents_blue_lg.svg" type="upload" name="{{ commonText?.uploadSignedBP2mi }}"></app-documentupload>
         </div>
 
+          <!-- TODO: use leaning hub data -->
         <div class="ion-padding-bottom">
           <app-title title="Knowledge base" variant="h5"></app-title>
           <app-progressbar title="Title of completion bar" value="76"></app-progressbar>
           <app-progressbar title="During Employment"></app-progressbar>
           <div class="send-reminder-btn">
-            <app-button size="small" [title]="sendReminderText"></app-button>
+            <app-button size="small" [title]="commonText?.sendreminder"></app-button>
           </div>
 
           <app-progressbar title="Post Employment" value="76"></app-progressbar>
           <div class="send-reminder-btn">
-            <app-button size="small" [title]="sendReminderText"></app-button>
+            <app-button size="small" [title]="commonText?.sendreminder"></app-button>
           </div>
         </div>
 

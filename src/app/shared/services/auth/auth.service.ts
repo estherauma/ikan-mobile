@@ -24,14 +24,16 @@ export class AuthService {
 
   async setUpAuthData() {
     this.userData = await this.sharedMethods.readDataFromStorage(StorageKeys.userData);
-    this.userRole = this.userData?.role;
-    this.currentUser.next(this.userData);
-
-    this.userToken = await this.sharedMethods.readDataFromStorage(StorageKeys.apiToken);
-    if (this.userToken) {
-      const decodedAccessToken = this.decodeAccessToken(this.userToken);
-      this.tokenExpiryDate = new Date(0);
-      this.tokenExpiryDate.setUTCSeconds(decodedAccessToken.exp);
+    if (this.userData) {
+      this.userRole = this.userData?.role;
+      this.currentUser.next(this.userData);
+  
+      this.userToken = await this.sharedMethods.readDataFromStorage(StorageKeys.apiToken);
+      if (this.userToken) {
+        const decodedAccessToken = this.decodeAccessToken(this.userToken);
+        this.tokenExpiryDate = new Date(0);
+        this.tokenExpiryDate.setUTCSeconds(decodedAccessToken.exp);
+      }
     }
   }
 

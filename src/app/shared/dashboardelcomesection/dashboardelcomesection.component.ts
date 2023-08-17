@@ -10,6 +10,7 @@ export class DashboardelcomesectionComponent implements OnInit {
   @Input() name: string;
   @Input() message: string;
   @Input() link: string;
+  @Input() message1: string;
 
   constructor() { }
 

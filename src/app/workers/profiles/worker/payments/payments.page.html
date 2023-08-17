@@ -7,7 +7,7 @@
       (formValue)="onSubmit($event)">
   </app-form>
   <div class="ion-padding" style="background-color: #e6e6e6;">
-    <ion-text><h1>View payment history</h1></ion-text>
+    <ion-text><h1>{{ commonText?.viewPaymentHistory }}</h1></ion-text>
     <ion-card>
       <ion-card-content>
         <ion-grid>
@@ -18,8 +18,8 @@
               </ion-thumbnail>
             </ion-col>
             <ion-col size="8">
-              <ion-card-title>All Payments (5)</ion-card-title>
-              <ion-label>Additional information</ion-label>
+              <ion-card-title>{{commonText?.allPayments }} (5)</ion-card-title>
+              <ion-label>{{ commonText?.AdditionalInformation }}</ion-label>
             </ion-col>
             <ion-col size="1" style="text-align: center; padding-top: 15%" (click)="viewAll()">
               <ion-icon name="chevron-forward-outline" size="large"></ion-icon>

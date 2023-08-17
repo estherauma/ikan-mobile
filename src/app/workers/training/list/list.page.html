@@ -10,7 +10,7 @@
             <ion-img [src]=""></ion-img>
           </ion-thumbnail>
         </div>
-        <ion-text><h1>Training</h1></ion-text>
+        <ion-text><h1>{{ commonText?.Training }}</h1></ion-text>
       </ion-col>
       <ion-col size="4">
         <div (click)="toTrainingStatus()" style="cursor:move;">
@@ -19,21 +19,34 @@
       </ion-col>
     </ion-row> 
   </div>
-  <app-search [searchDataSet]="searchAndFilterDataSet" (searchResult)="searchResult($event)"></app-search>
+  <app-search
+    [searchDataSet]="searchAndFilterDataSet"
+    (searchResult)="searchResult($event)"
+  ></app-search>
   <ion-grid>
     <ion-row style="align-items: center;">
-      <ion-col>Filter</ion-col>
+      <ion-col>{{ commonText?.filter }}</ion-col>
       <ion-col size="auto">
 
         <ion-grid>
           <ion-row>
 
             <ion-col>
-              <app-filter filterProperty="status" [options]="filterOptions" [filterDataSet]="searchAndFilterDataSet" (filterResult)="filterResult($event)"></app-filter>
+              <app-filter
+                filterProperty="status"
+                [options]="filterOptions"
+                [filterDataSet]="searchAndFilterDataSet"
+                (filterResult)="filterResult($event)"
+              ></app-filter>
             </ion-col>
 
             <ion-col>
-              <app-filter filterProperty="status" [options]="filterOptions" [filterDataSet]="searchAndFilterDataSet" (filterResult)="filterResult($event)"></app-filter>
+              <app-filter
+                filterProperty="status"
+                [options]="filterOptions"
+                [filterDataSet]="searchAndFilterDataSet"
+                (filterResult)="filterResult($event)"
+              ></app-filter>
             </ion-col>
 
           </ion-row>
@@ -66,7 +79,7 @@
                   </ion-thumbnail>
                 </ion-col>
                 <ion-col size="8">
-                  <ion-card-title>QUESTION TIME!</ion-card-title>
+                  <ion-card-title>{{ commonText?.questionTime }}!</ion-card-title>
                   <ion-icon name="checkmark-circle-outline"></ion-icon>
                 </ion-col>
               </ion-row>

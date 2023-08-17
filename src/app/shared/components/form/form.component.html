@@ -25,7 +25,7 @@
                 <ion-label text-wrap> {{question.label}} </ion-label>
               </ion-col>
               <ion-col size="12">
-                <ion-input class="ion-padding-start form-input" type="text" placeholder="Type here" formControlName="{{question.key}}"></ion-input>
+                <ion-input class="ion-padding-start form-input" type="text" placeholder="{{typeHereText}}" formControlName="{{question.key}}"></ion-input>
               </ion-col>
 
             </ion-row>
@@ -41,7 +41,7 @@
                 <ion-label text-wrap> {{question.label}} </ion-label>
               </ion-col>
               <ion-col size="12">
-                <ion-textarea class="ion-padding-start form-input" type="text" placeholder="Type here" formControlName="{{question.key}}"></ion-textarea>
+                <ion-textarea class="ion-padding-start form-input" type="text" placeholder="{{typeHereText}}" formControlName="{{question.key}}"></ion-textarea>
               </ion-col>
 
             </ion-row>
@@ -58,7 +58,7 @@
               </ion-col>
               <ion-col size="12">
                 <ion-item>
-                  <ion-input class="ion-padding-start form-input" type="{{passwordFieldType}}" placeholder="Type here" formControlName="{{question.key}}"></ion-input>
+                  <ion-input class="ion-padding-start form-input" type="{{passwordFieldType}}" placeholder="{{typeHereText}}" formControlName="{{question.key}}"></ion-input>
                   <ion-icon slot="end" src="{{passwordEyeIcon}}" (click)="changePasswordState()" ></ion-icon>
                 </ion-item>
 
@@ -78,7 +78,7 @@
                 <ion-label text-wrap> {{question.label}} </ion-label>
               </ion-col>
               <ion-col size="12">
-                <ion-input class="ion-padding-start form-input" type="number" placeholder="Type here" formControlName="{{question.key}}"></ion-input>
+                <ion-input class="ion-padding-start form-input" type="number" placeholder="{{typeHereText}}" formControlName="{{question.key}}"></ion-input>
               </ion-col>
 
             </ion-row>
@@ -94,7 +94,15 @@
                 <ion-label text-wrap> {{question.label}} </ion-label>
               </ion-col>
               <ion-col size="12">
-                <ion-select class="form-input"  formControlName="{{question.key }}" textWrap interface="action-sheet" placeholder="Please Select">
+                <ion-select
+                  class="form-input"
+                  formControlName="{{question.key }}"
+                  interface="action-sheet"
+                  [placeholder]="commonText?.pleaseSelect"
+                  [okText]="commonText?.ok"
+                  [cancelText]="commonText?.cancel"
+                  textWrap
+                >
                   <ion-select-option text-wrap *ngFor="let opt of question.options" value="{{opt.value}}">
                     {{opt.label}}
                   </ion-select-option>
@@ -114,8 +122,15 @@
                 <ion-label text-wrap> {{question.label}} </ion-label>
               </ion-col>
               <ion-col size="12">
-                <ion-datetime  displayFormat="DDDD MMM D, YYYY" min="2015" max="2060" formControlName="{{question.key}}"
-                value="" preferWheel="true" presentation="date"></ion-datetime>
+                <ion-datetime
+                  displayFormat="DDDD MMM D, YYYY"
+                  min="2015"
+                  max="2060"
+                  formControlName="{{question.key}}"
+                  value=""
+                  preferWheel="true"
+                  presentation="date"
+                ></ion-datetime>
               </ion-col>
 
             </ion-row>
@@ -155,7 +170,7 @@
             <ion-row *ngIf="!selectedDocuments[question.key]" class="upload-wrapper">
               <div (click)="onUpload(question.key)">
                 <ion-icon name="document-text-outline"></ion-icon>
-                <p>Upload document</p>
+                <p>{{ commonText?.uploadDocument }}</p>
               </div>
             </ion-row>
 
@@ -181,7 +196,7 @@
             <ion-row *ngIf="!selectedImages[question.key]" class="upload-wrapper">
               <div (click)="takePicture(question.key)">
                 <ion-icon name="camera-outline"></ion-icon>
-                <p>Upload picture</p>
+                <p>{{ commonText?.uploadPicture }}</p>
               </div>
             </ion-row>
 
@@ -194,7 +209,13 @@
 
   <ion-grid class="buttons" *ngIf="!useCustomSubmitButton">
     <ion-col size="5">
-      <app-button  type="submit" [config]="btnConfig" [fill]="btnFill" [disabled]="!tunaFormGroup.valid" title={{submitButtonText.toUpperCase()}}></app-button>
+      <app-button
+        type="submit"
+        [config]="btnConfig"
+        [fill]="btnFill"
+        [disabled]="!tunaFormGroup.valid"
+        title={{submitButtonText?.toUpperCase()}}
+      ></app-button>
     </ion-col>
   </ion-grid>
 </form>

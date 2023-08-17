@@ -1,4 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
+import { ContentService } from '../../services/content/content.service';
 
 @Component({
   selector: 'app-documentupload',
@@ -6,6 +7,8 @@ import { Component, Input, OnInit } from '@angular/core';
   styleUrls: ['./documentupload.component.scss'],
 })
 export class DocumentuploadComponent implements OnInit {
+  commonText: any;
+
   @Input() imgUrl = '';
   @Input() iconUrl = '';
   @Input() isTransparent = false;
@@ -13,8 +16,13 @@ export class DocumentuploadComponent implements OnInit {
   @Input() variant: 'dotted' | 'solid' = 'dotted';
   @Input() name = '';
   @Input() uploadedDate = '';
-  constructor() { }
 
-  ngOnInit() {}
+  constructor(
+    public contentService: ContentService,
+  ) { }
+
+  ngOnInit() {
+    this.commonText = this.contentService?.commonText;
+  }
 
 }

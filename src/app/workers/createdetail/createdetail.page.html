@@ -1,22 +1,22 @@
 <app-header [pageTitle]=""></app-header>
 
-<ion-content class="content-skyblue-bg ion-content-custom-position">
+<ion-content class="ion-padding content-skyblue-bg ion-content-custom-position">
   <app-contentwrapper>
-  <div>
-    <div class="title-wrapper">
-      <app-title [isBig]="true" title="Edit"></app-title>
+    <div>
+      <div class="title-wrapper">
+        <app-title [isBig]="true" [title]="commonText?.edit"></app-title>
+      </div>
+      <app-form
+        [tunaFormGroup]="pageFormGroup"
+        [tunaFormquestions]="formQuestions"
+        [submitButtonText]="submitButtonText"
+        (formValue)="onSubmit($event)"
+        [isTextBlue]="true"
+        [isOtherDarkBlue]="true"
+        [isTitleDarkBlue]="true"
+        btnFill="solid"
+      >
+      </app-form>
     </div>
-    <app-form
-    [tunaFormGroup]="pageFormGroup"
-    [tunaFormquestions]="formQuestions"
-    [submitButtonText]="submitButtonText"
-    (formValue)="onSubmit($event)"
-    [isTextBlue]="true"
-    [isOtherDarkBlue]="true"
-    [isTitleDarkBlue]="true"
-    btnFill="solid"
-  >
-  </app-form>
-  </div>
   </app-contentwrapper>
 </ion-content>
