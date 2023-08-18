@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { ContentService } from 'src/app/shared/services/content/content.service';
@@ -20,7 +20,6 @@ export class LoginMethodPage implements OnInit {
   constructor(
     public router: Router,
     public contentService: ContentService,
-    public cdr: ChangeDetectorRef,
   ) {
     this.watchContent = this.contentService.watchContent().subscribe((resp) => {
       if (resp) {
