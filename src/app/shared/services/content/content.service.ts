@@ -4,12 +4,14 @@ import { ApiService } from '../api/api.service';
 import { SharedmethodsService } from '../sharedmethods/sharedmethods.service';
 import { Preferences } from '@capacitor/preferences';
 import { HttpResponse } from '@angular/common/http';
-import { Subject } from 'rxjs';
+import { Subject, Subscription } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
 })
 export class ContentService {
+  public contentObs = new Subject<boolean>();
+  watchContentSubscription: Subscription;
   appContent: Content;
   currentLanguage: string;
   commonText: any;
@@ -20,6 +22,12 @@ export class ContentService {
     public sharedMethods: SharedmethodsService
   ) {
     this.setUpAppData();
+    this.watchContentSubscription = this.watchContent().subscribe((res) => {
+      if (res) {
+        this.updateCommonText();
+        this.setAppContent();
+      }
+    });
   }
 
   async setUpAppData() {
@@ -51,6 +59,7 @@ export class ContentService {
       if (content?.status === 'OK') {
         this.writeLocalContent(StorageKeys.appContent, content.data[0]);
         this.appContent = content.data[0].content;
+        this.contentObs.next(true);
       }
     });
   }
@@ -59,14 +68,17 @@ export class ContentService {
     const currentContentCreateAt = await this.currentContentCreateAt();
     // ToDo: If device time is ahead of servertime, user will not get updated content
     // Provide fix for this
-    const response = this.apiService.get(`content/compare?app_content_created_at=${currentContentCreateAt}`);
-    response.subscribe((res: HttpResponse<any>) => {
-      const content = res.body;
-      if (content?.status === 'OK' && content.new) {
-        this.writeLocalContent(StorageKeys.appContent, content.data[0]);
-        return this.appContent = content.data[0].content;
-      }
-    });
+    if (currentContentCreateAt) {
+      const response = this.apiService.get(`content/compare?app_content_created_at=${currentContentCreateAt}`);
+      response.subscribe((res: HttpResponse<any>) => {
+        const content = res.body;
+        if (content?.status === 'OK' && content.new) {
+          this.writeLocalContent(StorageKeys.appContent, content.data[0]);
+          this.contentObs.next(true);
+          return this.appContent = content.data[0].content;
+        }
+      });
+    }
   }
 
   updateCurrentLanguage() {
@@ -177,5 +189,9 @@ export class ContentService {
   getContentByPropertyName(propertyName) {
     const content = this.appContent?.[`${this.currentLanguage}`];
     return content[propertyName];
+  }
+
+  watchContent() {
+    return this.contentObs.asObservable();
   }
 }
