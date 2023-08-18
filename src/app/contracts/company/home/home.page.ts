@@ -3,7 +3,7 @@ import { Router } from '@angular/router';
 import { ModalController } from '@ionic/angular';
 import { CreatePage } from '../../create/create.page';
 import { ContractDataService } from '../../data/contract-data.service';
-import { ContentService } from 'src/app/shared/services/content/content.service';
+import { ContentService } from '../../../shared/services/content/content.service';
 
 @Component({
   selector: 'app-home',

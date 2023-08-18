@@ -64,7 +64,7 @@ export class CreatePage extends BaseformPage implements OnInit {
 
 
   async onSubmit(formData) {
-    this.sharedMethods.showLoader('Saving contract');
+    this.sharedMethods.showLoader(this.commonText?.savingContract);
     const userData = await this.sharedMethods.getUserData();
     const now = this.sharedMethods.getCurrentDateTime();
     formData.internal_ref = formData.app_ref;
