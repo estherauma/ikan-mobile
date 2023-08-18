@@ -16,6 +16,7 @@ export class PaymentPage extends BaseformPage implements OnInit {
     super(contentService);
     const pageData = this.contentService.getContentByPropertyName('createplacementinfo');
     this.pageTitle = pageData?.pageTitle;
+    this.submitButtonText = this.commonText?.submit;
     this.formQuestions = pageData?.formQuestions;
     this.formQuestions.forEach((entry) => {
       this.group[entry.key] = new FormControl('', [Validators.required]);
@@ -23,7 +24,9 @@ export class PaymentPage extends BaseformPage implements OnInit {
     this.pageFormGroup = new FormGroup(this.group);
   }
 
-  ngOnInit() {}
+  ngOnInit() {
+    this.commonText = this.contentService?.commonText;
+  }
 
   onSubmit(data) {}
 

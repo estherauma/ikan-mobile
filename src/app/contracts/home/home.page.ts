@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { ModalController } from '@ionic/angular';
-import { CompaniesDataService } from 'src/app/companies/data/companies-data.service';
 import { CreatePage } from '../create/create.page';
 import { ContractDataService } from '../data/contract-data.service';
+import { ContentService } from '../../shared/services/content/content.service';
 
 
 
@@ -13,11 +13,9 @@ import { ContractDataService } from '../data/contract-data.service';
   styleUrls: ['./home.page.scss'],
 })
 export class HomePage implements OnInit {
-  //TODO: Use translated text from prismic
   pageTitle = 'Contracts';
-
+  commonText: any;
   contracts = [];
-
   unfilteredData = [];
   filterOptions = [];
 
@@ -25,14 +23,18 @@ export class HomePage implements OnInit {
     public router: Router,
     public contractsDataService: ContractDataService,
     public modalCtrl: ModalController,
+    public contentService: ContentService,
 
   ) {
     this.contractsDataService.getAll().subscribe((data) => {
       this.contracts = this.unfilteredData = data;
+      this.pageTitle = this.commonText?.contracts;
     });
   }
 
   ngOnInit() {
+    this.commonText = this.contentService?.commonText;
+    this.pageTitle = this.commonText?.contracts;
   }
 
 

@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import { ContentService } from 'src/app/shared/services/content/content.service';
 
 @Component({
   selector: 'app-details',
@@ -7,8 +8,9 @@ import { ActivatedRoute } from '@angular/router';
   styleUrls: ['./details.page.scss'],
 })
 export class DetailsPage implements OnInit {
+  commonText: any;
+  payslipText = 'Payslip';
   payment: any;
-
   paymentBreakdowns: any = [
     {
       type: 'Cash',
@@ -37,16 +39,26 @@ export class DetailsPage implements OnInit {
   ];
 
   constructor(
-    public activatedRoute: ActivatedRoute
+    public activatedRoute: ActivatedRoute,
+    public contentService: ContentService,
   ) { }
 
   ngOnInit() {
+    this.commonText = this.contentService?.commonText;
+    this.payslipText = this.commonText?.payslip;
     this.activatedRoute.params.subscribe((data) => {
       if (data) {
         this.payment = data;
         this.generatePaymentBreakdown(data);
       }
     });
+
+    // Testing
+    if (this.contentService?.currentLanguage === 'qm-zh') {
+      this.paymentBreakdowns[0].type = '現金';
+      this.paymentBreakdowns[1].type = '受益人';
+      this.paymentBreakdowns[2].type = '銀行轉帳';
+    }
   }
 
   generatePaymentBreakdown(payment) {

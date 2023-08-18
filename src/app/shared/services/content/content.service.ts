@@ -46,7 +46,7 @@ export class ContentService {
 
   async fetchContent() {
     const response = this.apiService.get('content/aggregated');
-    response.subscribe((res: HttpResponse<any>) => {
+    response?.subscribe((res: HttpResponse<any>) => {
       const content = res.body;
       if (content?.status === 'OK') {
         this.writeLocalContent(StorageKeys.appContent, content.data[0]);
@@ -57,7 +57,8 @@ export class ContentService {
 
   async compareContent() {
     const currentContentCreateAt = await this.currentContentCreateAt();
-
+    // ToDo: If device time is ahead of servertime, user will not get updated content
+    // Provide fix for this
     const response = this.apiService.get(`content/compare?app_content_created_at=${currentContentCreateAt}`);
     response.subscribe((res: HttpResponse<any>) => {
       const content = res.body;
@@ -90,10 +91,8 @@ export class ContentService {
     this.menuContent.next(updatedContent);
   }
 
-  // TODO: Refactor to use shared method function
   async readLocalContent() {
-    const { value } = await Preferences.get({ key: StorageKeys.appContent });
-    return JSON.parse(value);
+    return this.sharedMethods?.readDataFromStorage(StorageKeys.appContent);
   }
 
   // TODO: Refactor to use shared method

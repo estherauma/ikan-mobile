@@ -38,14 +38,13 @@ export class PushNotificationsService {
     ) { }
 
   async setup() {
-    await this.getFCMToken();
-    await this.setPushNotificationData();
     const permissionStatus = await PushNotifications.requestPermissions();
-
     if (permissionStatus?.receive !== 'granted') {
       this.notificationsPermission = false;
       return;
     }
+    await this.getFCMToken();
+    await this.setPushNotificationData();
     await PushNotifications.register();
     this.addListeners();
     this.notificationsPermission = true;

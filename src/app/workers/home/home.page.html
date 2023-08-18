@@ -12,7 +12,7 @@
         <ion-col>
           <ion-row class="ion-justify-content-end">
             <div>
-              <app-button (onClick)="createWorker()" iconName="add-outline" title="New Worker"></app-button>
+              <app-button (onClick)="createWorker()" iconName="add-outline" [title]="commonText?.newWorker"></app-button>
             </div>
           </ion-row>
         </ion-col>
@@ -31,7 +31,7 @@
       </app-search>
       <ion-grid>
         <ion-row>
-          <ion-text class="filter-title">Filter</ion-text>
+          <ion-text class="filter-title">{{ commonText?.filter }}</ion-text>
         </ion-row>
         <ion-row>
           <ion-col>
@@ -40,8 +40,13 @@
           </ion-col>
 
           <ion-col>
-            <app-filter type="deep-blue-90" filterProperty="status" [options]="filterOptions"
-              [filterDataSet]="workers" (filterResult)="filterResult($event)"></app-filter>
+            <app-filter
+              type="deep-blue-90"
+              filterProperty="status"
+              [options]="filterOptions"
+              [filterDataSet]="workers"
+              (filterResult)="filterResult($event)"
+            ></app-filter>
           </ion-col>
         </ion-row>
       </ion-grid>

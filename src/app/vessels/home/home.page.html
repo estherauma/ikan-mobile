@@ -12,7 +12,7 @@
         <ion-col>
           <ion-row class="ion-justify-content-end">
             <div>
-              <app-button (onClick)="createVessel()" iconName="add-outline" title="New Vessel"></app-button>
+              <app-button (onClick)="createVessel()" iconName="add-outline" title="{{newText}}"></app-button>
             </div>
           </ion-row>
         </ion-col>
@@ -30,7 +30,7 @@
         (clear)="clearSearchResult()"></app-search>
       <ion-grid>
         <ion-row>
-          <ion-text class="filter-title">Filter</ion-text>
+          <ion-text class="filter-title">{{filterText}}</ion-text>
         </ion-row>
         <ion-row>
           <ion-col>

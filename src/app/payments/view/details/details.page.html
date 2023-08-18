@@ -2,22 +2,30 @@
 
 <ion-content class="content-skyblue-bg ion-content-custom-position">
   <app-contentwrapper>
-      <app-paymentssummarycard status="{{payment.status}}" title="{{payment.totalAmount}}"
-      text="Budi Surname">
+      <app-paymentssummarycard
+        status="{{payment.status}}"
+        title="{{payment.totalAmount}}"
+        text="Taien"
+      >
       </app-paymentssummarycard>
       <div class="ion-padding-horizontal ion-margin-bottom">
-        <app-title [isBlue]="true" title="Payment breakdown" variant="h3"></app-title>
+        <app-title [isBlue]="true" [title]="commonText?.paymentBreakdown" variant="h3"></app-title>
       </div>
 
-      <app-paymentbreakdowncard *ngFor="let paymentBreakdown of paymentBreakdowns" [type]="paymentBreakdown.type"
-      [isConfirmable]="paymentBreakdown.confirmed" [madeOn]="paymentBreakdown.madeOn"
-      [confirmedOn]="paymentBreakdown.confirmedOn" [amount]="paymentBreakdown.amount"
-      [status]="paymentBreakdown.status"></app-paymentbreakdowncard>
+      <app-paymentbreakdowncard
+        *ngFor="let paymentBreakdown of paymentBreakdowns"
+        [type]="paymentBreakdown.type"
+        [isConfirmable]="paymentBreakdown.confirmed"
+        [madeOn]="paymentBreakdown.madeOn"
+        [confirmedOn]="paymentBreakdown.confirmedOn"
+        [amount]="paymentBreakdown.amount"
+        [status]="paymentBreakdown.status"
+      ></app-paymentbreakdowncard>
 
     <div class="ion-padding-horizontal">
       <div class="ion-margin-bottom">
-          <app-attachment
-          pdfName="Payslip"
+        <app-attachment
+          [pdfName]="payslipText"
           pdfInfo="05/10/2022"
           docLink="/assets/imgs/zila1.jpeg"
           backUrl="/workers/details/info"
@@ -25,13 +33,13 @@
       </div>
       <div class="ion-margin-bottom">
         <app-attachment
-        pdfName="Payslip"
-        pdfInfo="05/10/2022"
-        docLink="/assets/imgs/zila1.jpeg"
-        backUrl="/workers/details/info"
-      ></app-attachment>
+          [pdfName]="payslipText"
+          pdfInfo="05/10/2022"
+          docLink="/assets/imgs/zila1.jpeg"
+          backUrl="/workers/details/info"
+        ></app-attachment>
       </div>
-      <app-button title="Make a new payment to this person"></app-button>
+      <app-button [title]="commonText?.makePaymentToThisPerson"></app-button>
     </div>
   </app-contentwrapper>
 </ion-content>

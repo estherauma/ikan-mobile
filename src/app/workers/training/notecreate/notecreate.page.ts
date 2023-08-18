@@ -30,7 +30,7 @@ export class NotecreatePage extends BaseformPage implements OnInit {
   }
 
   onSubmit(formData) {
-    this.sharedMethods.showLoader('Saving voice note');
+    this.sharedMethods.showLoader(this.commonText?.savingVoiceNote);
     this.modalCtrl.dismiss(formData);
   }
 }

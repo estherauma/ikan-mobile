@@ -1,5 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { TPaymentStatus } from '../../types/api-types';
+import { ContentService } from '../../services/content/content.service';
 
 
 @Component({
@@ -8,15 +9,21 @@ import { TPaymentStatus } from '../../types/api-types';
   styleUrls: ['./paymentssummarycard.component.scss'],
 })
 export class PaymentssummarycardComponent implements OnInit {
+  commonText: any;
+
   @Input() iconUrl;
   @Input() status = 'default';
   @Input() title;
   @Input() text;
 
   iconLink = '/assets/icon';
-  constructor() { }
+
+  constructor(
+    public contentService: ContentService,
+  ) { }
 
   ngOnInit() {
+    this.commonText = this.contentService?.commonText;
     if (this.iconUrl) {return;}
     if (this.status === 'warning') {
       this.iconUrl = `${this.iconLink}/good_yellow.svg`;

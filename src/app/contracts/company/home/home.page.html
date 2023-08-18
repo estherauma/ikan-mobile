@@ -11,7 +11,7 @@
           <ion-col>
             <ion-row class="ion-justify-content-end">
               <div>
-                <app-button (onClick)="createContract()" iconName="add-outline" title="New Contract"></app-button>
+                <app-button (onClick)="createContract()" iconName="add-outline" [title]="commonText?.newContract"></app-button>
               </div>
             </ion-row>
           </ion-col>
@@ -29,17 +29,26 @@
         (clear)="clearSearchResult()"></app-search>
       <ion-grid>
         <ion-row>
-          <ion-text class="filter-title">Filter</ion-text>
+          <ion-text class="filter-title">{{ commonText?.filter}}</ion-text>
         </ion-row>
         <ion-row>
           <ion-col>
-            <app-filter type="deep-blue-90" filterProperty="status" [options]="filterOptions"
-              [filterDataSet]="contracts" (filterResult)="filterResult($event)"></app-filter>
+            <app-filter type="deep-blue-90"
+              filterProperty="status"
+              [options]="filterOptions"
+              [filterDataSet]="contracts"
+              (filterResult)="filterResult($event)"
+            ></app-filter>
           </ion-col>
 
           <ion-col>
-            <app-filter type="deep-blue-90" filterProperty="status" [options]="filterOptions"
-              [filterDataSet]="contracts" (filterResult)="filterResult($event)"></app-filter>
+            <app-filter 
+              type="deep-blue-90"
+              filterProperty="status"
+              [options]="filterOptions"
+              [filterDataSet]="contracts"
+              (filterResult)="filterResult($event)"
+            ></app-filter>
           </ion-col>
         </ion-row>
       </ion-grid>

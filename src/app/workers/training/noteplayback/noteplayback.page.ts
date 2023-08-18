@@ -3,6 +3,7 @@ import { DomSanitizer } from '@angular/platform-browser';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ModalController } from '@ionic/angular';
 import { NotecreatePage } from '../notecreate/notecreate.page';
+import { ContentService } from 'src/app/shared/services/content/content.service';
 
 @Component({
   selector: 'app-noteplayback',
@@ -10,6 +11,7 @@ import { NotecreatePage } from '../notecreate/notecreate.page';
   styleUrls: ['./noteplayback.page.scss'],
 })
 export class NoteplaybackPage implements OnInit {
+  commonText: any;
   loadingNote: false;
   audioNote;
   audioNoteParams;
@@ -17,10 +19,12 @@ export class NoteplaybackPage implements OnInit {
     public modalCtrl: ModalController,
     public activatedRoute: ActivatedRoute,
     public sanitizer: DomSanitizer,
-    public router: Router
+    public router: Router,
+    public contentService: ContentService,
   ) { }
 
   ngOnInit() {
+    this.commonText = this.contentService?.commonText;
     this.activatedRoute.params.subscribe((params) => {
       this.audioNote = this.sanitizer.bypassSecurityTrustResourceUrl(params.file);
       this.audioNoteParams = params;
