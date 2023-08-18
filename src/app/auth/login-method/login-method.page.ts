@@ -11,10 +11,10 @@ import { ContentService } from 'src/app/shared/services/content/content.service'
 export class LoginMethodPage implements OnInit {
   commonText: any;
   pageTitle = 'Login Method';
-  // inviteCodeAuth and usernameAuth initialized with values for the first few seconds before content is fetched from the api
-  // TODO: uncomment after testing
-  inviteCodeAuth: string // = 'I have an invite code'.toUpperCase();
-  usernameAuth: string // = 'Login with username/email'.toUpperCase();
+  // inviteCodeAuth and usernameAuth initialized with values for 
+  // the first few seconds before content is fetched from the api
+  inviteCodeAuth: string = 'I have an invite code'.toUpperCase();
+  usernameAuth: string = 'Login with username/email'.toUpperCase();
   watchContent: Subscription;
 
   constructor(
