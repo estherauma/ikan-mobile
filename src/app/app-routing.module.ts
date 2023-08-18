@@ -190,12 +190,8 @@ const routes: Routes = [
     loadChildren: () => import('./notifications/home/home.module').then( m => m.HomePageModule)
   },
   {
-    path: 'learninghub/home',
+    path: 'learninghub',
     loadChildren: () => import('./learninghub/home/home.module').then( m => m.HomePageModule)
-  },
-  {
-    path: 'learninghub/detail',
-    loadChildren: () => import('./learninghub/detail/detail.module').then( m => m.DetailPageModule),
   },
   {
     path: 'profiles/taiwanese',
@@ -316,14 +312,6 @@ const routes: Routes = [
   {
     path: 'workers/training',
     loadChildren: () => import('./workers/detail/training/training.module').then( m => m.TrainingPageModule)
-  },
-  {
-    path: 'learninghub/variant',
-    loadChildren: () => import('./learninghub/variant/variant.module').then( m => m.VariantPageModule)
-  },
-  {
-    path: 'learninghub/section',
-    loadChildren: () => import('./learninghub/section/section.module').then( m => m.SectionPageModule)
   },
   {
     path: 'companies/home',

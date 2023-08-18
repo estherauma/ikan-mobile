@@ -38,14 +38,13 @@ export class PushNotificationsService {
     ) { }
 
   async setup() {
-    await this.getFCMToken();
-    await this.setPushNotificationData();
     const permissionStatus = await PushNotifications.requestPermissions();
-
     if (permissionStatus?.receive !== 'granted') {
       this.notificationsPermission = false;
       return;
     }
+    await this.getFCMToken();
+    await this.setPushNotificationData();
     await PushNotifications.register();
     this.addListeners();
     this.notificationsPermission = true;
@@ -257,7 +256,7 @@ export class PushNotificationsService {
   async showPNsPrompt() {
     const alertProps = {
       cssClass: 'workflow-alert',
-      message: this.contentService.commonText?.promptPushNotification, // add to prismic
+      message: this.contentService.commonText?.promptPushNotification, // TODO: add to prismic
       backdropDismiss: false,
       buttons: [
         {

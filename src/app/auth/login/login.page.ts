@@ -17,7 +17,6 @@ import { DBService } from 'src/app/shared/services/database/db.service';
   styleUrls: ['./login.page.scss'],
 })
 export class LoginPage extends BaseformPage implements OnInit {
-  submitButtonText: string;
   passwordFieldType = FieldType.password;
   passwordEyeIcon = Icons.iconEyeClosed;
   testEmails;

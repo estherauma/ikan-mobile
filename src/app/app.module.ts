@@ -1,5 +1,5 @@
 
-import { NgModule } from '@angular/core';
+import { CUSTOM_ELEMENTS_SCHEMA, NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { RouteReuseStrategy } from '@angular/router';
 import { IonicModule, IonicRouteStrategy } from '@ionic/angular';
@@ -13,6 +13,7 @@ import { CommonModule } from '@angular/common';
 
 import { SQLite } from '@awesome-cordova-plugins/sqlite/ngx';
 import { RedElDirective } from './red-el.directive';
+import { SharedComponentsModule } from '@fiftyeight/shared-components';
 
 @NgModule({
   declarations: [ AppComponent, RedElDirective ],
@@ -25,6 +26,7 @@ import { RedElDirective } from './red-el.directive';
     SharedModule,
     HttpClientModule,
     CommonModule,
+    SharedComponentsModule,
   ],
   exports: [
 
@@ -34,6 +36,7 @@ import { RedElDirective } from './red-el.directive';
     { provide: SQLite }
   ],
   bootstrap: [AppComponent],
+  schemas: [ CUSTOM_ELEMENTS_SCHEMA ]
 })
 
 

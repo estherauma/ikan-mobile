@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
+import { ContentService } from 'src/app/shared/services/content/content.service';
 
 @Component({
   selector: 'app-home',
@@ -7,43 +8,35 @@ import { Router } from '@angular/router';
   styleUrls: ['./home.page.scss'],
 })
 export class HomePage implements OnInit {
-  title = 'Pengetahuan';
+  title = '';
+  pageContent: any;
+  learningHubChapters = [];
 
-  lhs = [
-    {
-      title: 'Sebelum kamu pergi',
-      text: 'Perlakuan tidak manusiawi, transshipment, illegal fishing.',
-      progressBarValue: '60',
-      progressBarType: 'primary',
-      progressBarText: 'primary',
-      imageUrl: '/assets/icon/image_placeholder.svg'
-    },
-    {
-      title: 'Sebelum kamu pergi',
-      text :'Perlakuan tidak manusiawi, transshipment, illegal fishing.',
-      progressBarValue :'60',
-      progressBarType : 'warning',
-      progressBarText: 'warning',
-      imageUrl : '/assets/icon/image_placeholder.svg'
-    },
-    {
-      title: 'Sebelum kamu pergi',
-      text :'Perlakuan tidak manusiawi, transshipment, illegal fishing.',
-      progressBarValue :'0',
-      progressBarType : 'primary',
-      progressBarText: 'primary',
-      imageUrl : '/assets/icon/image_placeholder.svg'
-    }
-  ];
   constructor(
-    public router: Router
+    public router: Router,
+    public contentService: ContentService,
+    public activatedRoute: ActivatedRoute
   ) { }
 
   ngOnInit() {
+    this.pageContent =  this.contentService.getContentByPropertyName('chapters-list');
+    this.title = this.pageContent?.pageTitle;
+    const clickableList = this.pageContent?.pageContent?.find((e) => e.type === 'clickable_list');
+    const chapters = clickableList?.list;
+    this.learningHubChapters = chapters?.map((chapter) => ({
+      title: chapter?.label,
+      text : chapter?.description || '',
+      progressBarValue : '0',
+      progressBarType : 'primary',
+      progressBarText: this.contentService?.commonText?.completionStatus,
+       // TODO: use tuna icon as default
+      imageUrl : chapter?.icon || 'https://cdn.pixabay.com/photo/2015/07/17/22/43/student-849825_1280.jpg',
+      page: chapter?.page
+    }));
   }
 
-  onClick() {
-    this.router.navigate(['learninghub/variant']);
+  onClick(item) {
+    this.router.navigate(['learninghub/chapters', item?.page?.uid]);
   }
 
 

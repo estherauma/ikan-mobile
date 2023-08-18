@@ -7,6 +7,10 @@ const routes: Routes = [
   {
     path: '',
     component: HomePage
+  },
+  {
+    path: 'chapters/:chapterId',
+    loadChildren: () => import('../variant/variant.module').then( m => m.VariantPageModule)
   }
 ];
 
