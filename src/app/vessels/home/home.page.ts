@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { MenuController, ModalController } from '@ionic/angular';
 import { SteponePage } from '../create/stepone/stepone.page';
 import { VesselsDataService } from '../data/vessels-data.service';
+import { ContentService } from 'src/app/shared/services/content/content.service';
 
 @Component({
   selector: 'app-home',
@@ -18,12 +19,15 @@ export class HomePage implements OnInit {
     {title:'Active Duty', value:'Active Duty'},
     {title:'', value:'opened'}
   ];
+  filterText = 'Filter';
+  newText = 'New';
 
   constructor(
     public menuCtrl: MenuController,
     public router: Router,
     public modalController: ModalController,
-    public vesselsDataService: VesselsDataService
+    public vesselsDataService: VesselsDataService,
+    public contentService: ContentService,
   ) {
     this.vesselsDataService.getAll().subscribe((data) => {
       this.vessels = this.unFilteredData = data;
@@ -31,6 +35,9 @@ export class HomePage implements OnInit {
   }
 
   ngOnInit() {
+    this.filterText = this.contentService.commonText?.filter;
+    this.pageTitle = this.contentService.commonText?.vessels;
+    this.newText = this.contentService.commonText?.new;
   }
 
   ionViewWillEnter() {

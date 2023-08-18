@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { ModalController } from '@ionic/angular';
 import { ConfirmedmodalComponent } from 'src/app/shared/components/confirmedmodal/confirmedmodal.component';
 import { ConfirmmodalComponent } from 'src/app/shared/components/confirmmodal/confirmmodal.component';
+import { ContentService } from 'src/app/shared/services/content/content.service';
 
 @Component({
   selector: 'app-training',
@@ -10,7 +11,7 @@ import { ConfirmmodalComponent } from 'src/app/shared/components/confirmmodal/co
   styleUrls: ['./list.page.scss'],
 })
 export class ListPage implements OnInit {
-
+  commonText: any;
   searchAndFilterDataSet = [
     {
       title: 'Pre-departure',
@@ -44,12 +45,15 @@ export class ListPage implements OnInit {
     label: '',
     data: [65, 59, 80],
   }];
+
   constructor(
     public router: Router,
-    public modalCtrl: ModalController
+    public modalCtrl: ModalController,
+    public contentService: ContentService,
   ) { }
 
   ngOnInit() {
+    this.commonText = this.contentService?.commonText;
   }
 
   filterResult(result) { }

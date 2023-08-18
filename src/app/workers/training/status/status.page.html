@@ -5,7 +5,7 @@
     <div class="ion-padding-vertical" style="background-color: #F5F5F5;">
       <ion-row class="ion-align-items-end">
         <ion-col size="8">
-          <ion-text><h1>Training Status</h1></ion-text>
+          <ion-text><h1>{{ commonText?.trainingStatus }}</h1></ion-text>
         </ion-col>
         <ion-col size="4">
             <app-chart chartType="doughnut" [chartDatasets]="datasets"></app-chart>
@@ -25,10 +25,10 @@
         </ion-row>
       </ion-grid>
       <div class="ion-padding">
-        <ion-text><h3>BP2mi Training document</h3></ion-text>
-        <ion-text><a>Status: Complete   View doc</a></ion-text>
+        <ion-text><h3>{{ commonText?.BP2miTrainingDocument }}</h3></ion-text>
+        <ion-text> {{ commonText?.status }}: Complete <a> {{ commonText?.viewDoc }}</a></ion-text>
       </div>
-      <ion-text><h1 class="ion-padding-start">Learning Hub</h1></ion-text>
+      <ion-text><h1 class="ion-padding-start">{{ commonText?.learningHub }}</h1></ion-text>
       <ion-grid *ngFor="let learningHubStatus of learningHubStatuses">
         <ion-row>
           <ion-col size="12">
@@ -42,7 +42,7 @@
       </ion-grid>
     </div>
     <div class="ion-padding"  style="background-color: #F5F5F5;">
-      <ion-text><h1>Audio notes</h1></ion-text>
+      <ion-text><h1>{{ commonText?.audioNotes }}</h1></ion-text>
       <div (click)="onRecord()">
         <ion-row class="ion-align-items-center">
           <ion-col size="3">
@@ -51,7 +51,7 @@
             </div>
           </ion-col>
           <ion-col size="9">
-            <ion-text>Record new note</ion-text>
+            <ion-text>{{ commonText?.recordNewNote }}</ion-text>
           </ion-col>
         </ion-row>
       </div>
@@ -62,7 +62,7 @@
               <div>
                 <audio controls autobuffer="autobuffer">
                   <source [src]="audioRecording.file">
-                  Your browser does not support the audio tag.
+                  {{ commonText?.browserDoesnotSupportAudioTag }}
                 </audio>
               </div>
           </ion-col>

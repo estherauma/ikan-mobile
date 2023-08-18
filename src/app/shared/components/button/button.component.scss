@@ -16,3 +16,11 @@
 .rounded{
     border-radius: 64px;
 }
+
+
+:host.login-method {
+    #app-btn {
+        color: white !important;
+        --color: white !important;
+    }
+}

@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { ModalController } from '@ionic/angular';
 import { CreatePage } from '../create/create.page';
 import { CompaniesDataService } from '../data/companies-data.service';
+import { ContentService } from 'src/app/shared/services/content/content.service';
 
 @Component({
   selector: 'app-home',
@@ -14,18 +15,23 @@ export class HomePage implements OnInit {
   pageTitle = 'Companies';
   companies = [];
   unFilteredData = [];
+  newText = 'New';
 
   constructor(
     public modalCtrl: ModalController,
     public companiesDataService: CompaniesDataService,
-    public router: Router
+    public router: Router,
+    public contentService: ContentService,
   ) {
     this.companiesDataService.getAll().subscribe((data) => {
       this.companies = this.unFilteredData = data;
     });
   }
 
-  ngOnInit() { }
+  ngOnInit() { 
+    this.newText = this.contentService.commonText?.new;
+    this.pageTitle = this.contentService.commonText?.companies;
+  }
 
   async createCompany() {
     const modal = await this.modalCtrl.create({
