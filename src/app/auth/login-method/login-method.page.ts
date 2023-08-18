@@ -31,13 +31,7 @@ export class LoginMethodPage implements OnInit {
     });
   }
 
-  async ngOnInit() {
-    this.commonText = this.contentService?.commonText;
-    if (this.commonText) {
-      this.inviteCodeAuth = this.commonText?.inviteCodeAuth;
-      this.usernameAuth = this.commonText?.usernameAuth;
-    };
-  }
+  async ngOnInit() {}
 
   toInviteCodeScreen() {
     this.router.navigate(['auth/invite-code']);
