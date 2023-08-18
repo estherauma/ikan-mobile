@@ -140,16 +140,6 @@ ion-modal.my-own-class {
   font-size: 16px;
 }
 
-
-
-// TODO: fix safe area styles
-.ion-content-custom-position {
-  // position: absolute;
-}
-.ios ion-content {
-  // position: absolute;
-  // top: 60px;
-}
 body {
   margin-top: constant(safe-area-inset-top);
 }
