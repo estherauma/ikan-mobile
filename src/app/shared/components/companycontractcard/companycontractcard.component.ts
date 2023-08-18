@@ -1,4 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
+import { ContentService } from '../../services/content/content.service';
 
 @Component({
   selector: 'app-companycontractcard',
@@ -6,6 +7,8 @@ import { Component, Input, OnInit } from '@angular/core';
   styleUrls: ['./companycontractcard.component.scss'],
 })
 export class CompanycontractcardComponent implements OnInit {
+  commonText: any;
+
   @Input() title = '';
   @Input() contract = '';
   @Input() vessel = '';
@@ -13,8 +16,12 @@ export class CompanycontractcardComponent implements OnInit {
   @Input() isLight = false;
   @Input() hideImage = false;
 
-  constructor() { }
+  constructor(
+    public contentService: ContentService,
+  ) { }
 
-  ngOnInit() {}
+  ngOnInit() {
+    this.commonText = this.contentService?.commonText;
+  }
 
 }

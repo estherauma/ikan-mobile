@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import { ContentService } from '../../shared/services/content/content.service';
 
 @Component({
   selector: 'app-view',
@@ -7,6 +8,7 @@ import { ActivatedRoute } from '@angular/router';
   styleUrls: ['./view.page.scss'],
 })
 export class ViewPage implements OnInit {
+  commonText: any;
   pageTitle: string;
   contract;
 
@@ -39,9 +41,13 @@ export class ViewPage implements OnInit {
     },
   ];
 
-  constructor(public activatedRoute: ActivatedRoute) {}
+  constructor(
+    public activatedRoute: ActivatedRoute,
+    public contentService: ContentService
+  ) {}
 
   ngOnInit() {
+    this.commonText = this.contentService?.commonText;
     this.activatedRoute.params.subscribe((params) => {
       this.pageTitle = params.name;
       this.contract = params;

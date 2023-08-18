@@ -91,10 +91,8 @@ export class ContentService {
     this.menuContent.next(updatedContent);
   }
 
-  // TODO: Refactor to use shared method function
   async readLocalContent() {
-    const { value } = await Preferences.get({ key: StorageKeys.appContent });
-    return JSON.parse(value);
+    return this.sharedMethods?.readDataFromStorage(StorageKeys.appContent);
   }
 
   // TODO: Refactor to use shared method
