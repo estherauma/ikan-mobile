@@ -26,6 +26,7 @@
 @import "~@ionic/angular/css/flex-utils.css";
 
 /* Custom Styles */
+@import "./custom-styles/sub-chapter.scss";
 @import "./custom-styles/auth.scss";
 
 @import 'swiper/css';
@@ -139,7 +140,8 @@ ion-modal.my-own-class {
   position: absolute;
 }
 
+// TODO: fix this
 .ios ion-content {
-  position: absolute;
-  top: 60px;
+  // position: absolute;
+  // top: 60px;
 }
