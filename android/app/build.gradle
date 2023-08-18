@@ -8,7 +8,7 @@ android {
         applicationId "com.fiftyeight.tuna.dev"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 127
+        versionCode 128
         versionName "0.0.28"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         aaptOptions {
@@ -27,7 +27,7 @@ android {
           debuggable true
           firebaseAppDistribution {
             releaseNotes="Add content up-next section"
-            groups="scrum"
+            groups="scrum,other-departments"
             serviceCredentialsFile=file("google-services-credentials.json")
           }
         }
