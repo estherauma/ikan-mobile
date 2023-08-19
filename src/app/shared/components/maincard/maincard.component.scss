@@ -3,7 +3,11 @@ ion-card{
 }
 
 .circle{
-    border-radius: 50px;
+    border-radius: 50%;
+}
+
+.rounded {
+    border-radius: 10px;
 }
 
 .content{
@@ -11,7 +15,13 @@ ion-card{
     padding: 8px;
     .image-section {
         min-width: 60px;
-        margin-right: 8px ;
+        margin-right: 8px;
+    }
+    .text-section {
+        flex: 3;
+        .description {
+            line-height: 14px;
+        }
     }
 }
 
@@ -38,6 +48,7 @@ ion-card{
 .image{
     height: 60px;
     width: 60px;
+    object-fit: cover;
 }
 
 .small-image{

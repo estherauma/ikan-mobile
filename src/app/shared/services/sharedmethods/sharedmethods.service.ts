@@ -159,4 +159,19 @@ export class SharedmethodsService {
       return false;
     }
   }
+
+  // TODO: refactor fn
+  getChapterBackground(id, type ='chapter') {
+    if (id === '1') {
+      if (type === 'subchapter') return 'assets/imgs/bg-pre-departure-tinted.svg'
+      return 'assets/imgs/bg-pre-departure.svg';
+    } else if (id === '2') {
+      if (type === 'subchapter') return 'assets/imgs/bg-life-on-board-tinted.svg'
+      return 'assets/imgs/bg-life-on-board.svg';
+    } else if (id === '3') {
+      if (type === 'subchapter') return 'assets/imgs/bg-your-work-tinted.svg'
+      return 'assets/imgs/bg-your-work.svg';
+    }
+    return '';
+  }
 }

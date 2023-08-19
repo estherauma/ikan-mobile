@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ContentService } from 'src/app/shared/services/content/content.service';
+import { SharedmethodsService } from 'src/app/shared/services/sharedmethods/sharedmethods.service';
 
 @Component({
   selector: 'app-subchapter',
@@ -11,8 +12,15 @@ export class SubchapterComponent  implements OnInit {
   subChapterId: string;
   subChapterContent: any;
   pageContent: any = [];
-  caseStudyInputs: any;
-  imgUrl = 'https://cdn.pixabay.com/photo/2015/07/17/22/43/student-849825_1280.jpg';
+  caseStudyInputs = {
+    styles: 'case-study',
+    icons: {
+      forwardArrow: 'assets/icon/arrow-forward.svg',
+      bookmarkFilled: '',
+      bookmarkOutlined: '',
+    }
+  };
+  imgUrl = ''; // TODO: use tuna icon as default
   upNextContent: any;
   nextChapterId: string;
 
@@ -20,6 +28,7 @@ export class SubchapterComponent  implements OnInit {
     public activatedRoute: ActivatedRoute,
     public contentService: ContentService,
     public router: Router,
+    public sharedmethods: SharedmethodsService,
   ) {
     this.activatedRoute.params.subscribe(async params => {
       this.subChapterId = params?.subChapterId;
@@ -29,6 +38,8 @@ export class SubchapterComponent  implements OnInit {
   ngOnInit() {
     this.subChapterContent = this.contentService.getContentByPropertyName(this.subChapterId);
     this.pageContent = this.subChapterContent?.pageContent;
+    const chapterId = this.subChapterId.split('.')[0];
+    this.imgUrl = this.sharedmethods?.getChapterBackground(chapterId, 'subchapter');
     this.upNextContent = this.getNextChapterContent();
   }
 
@@ -59,10 +70,11 @@ export class SubchapterComponent  implements OnInit {
       this.nextChapterId = `${Number(this.subChapterId.split('.')[0]) + 1}`;
     }
 
+    const url = this.sharedmethods?.getChapterBackground(this.nextChapterId, 'chapter');
     const data = {
       name: nextSubChapterContent?.label || '',
       description: nextSubChapterContent?.description || '',
-      icon: nextSubChapterContent?.icon || this.imgUrl, // TODO: use tuna logo as default
+      icon: nextSubChapterContent?.icon || url, // TODO: use tuna logo as default
       page: nextSubChapterContent?.page,
     };
     return nextSubChapterContent ? data : null;
