@@ -1,0 +1,14 @@
+ion-backdrop {
+  --backdrop-opacity: 0.8;
+}
+
+.select-lang-modal {
+  --background: transparent !important;
+  
+  app-select-language {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  
+}

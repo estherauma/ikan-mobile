@@ -42,6 +42,7 @@ import { ContentwrapperComponent } from './components/contentwrapper/contentwrap
 import { FeedbackStatCardComponent } from './components/feedback-stat-card/feedback-stat-card.component';
 import { CompaniescardComponent } from './components/companiescard/companiescard.component';
 import { CompanycontractcardComponent } from './components/companycontractcard/companycontractcard.component';
+import { SelectLanguageComponent } from './components/select-language/select-language/select-language.component';
 
 
 @NgModule({
@@ -92,6 +93,7 @@ import { CompanycontractcardComponent } from './components/companycontractcard/c
     FeedbackStatCardComponent,
     CompaniescardComponent,
     CompanycontractcardComponent,
+    SelectLanguageComponent,
   ],
   exports: [
     FormComponent,

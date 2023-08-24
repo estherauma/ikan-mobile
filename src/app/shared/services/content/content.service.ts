@@ -44,7 +44,7 @@ export class ContentService {
   async setAppContent() {
     const result = await this.readLocalContent();
     this.appContent = result?.content;
-    this.updateCurrentLanguage();
+    await this.updateCurrentLanguage();
   }
 
   async currentContentCreateAt() {
@@ -81,9 +81,9 @@ export class ContentService {
     }
   }
 
-  updateCurrentLanguage() {
-    this.sharedMethods.readDataFromStorage(StorageKeys.currentLanguage)
-    .then((data) => {
+  async updateCurrentLanguage() {
+    await this.sharedMethods.readDataFromStorage(StorageKeys.currentLanguage)
+    .then(async(data) => {
       if (data != null) {
         this.currentLanguage = data;
       } else {
@@ -153,8 +153,8 @@ export class ContentService {
 
   getAvailableLanguages() {
     const content = this.appContent?.[`${this.currentLanguage}`];
-    const { languages } = content;
-    return {languages: languages.data, pageTitle: languages.pageTitle};
+    const languages = content?.languages;
+    return {languages: languages?.data, pageTitle: languages?.pageTitle};
   }
 
   getCommonText() {
