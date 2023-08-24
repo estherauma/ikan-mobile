@@ -8,8 +8,8 @@ android {
         applicationId "com.fiftyeight.tuna.dev"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 131
-        versionName "0.0.31"
+        versionCode 132
+        versionName "0.0.32"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         aaptOptions {
              // Files and dirs to omit from the packaged assets dir, modified to accommodate modern web apps.
@@ -26,7 +26,7 @@ android {
           minifyEnabled false
           debuggable true
           firebaseAppDistribution {
-            releaseNotes="Add styles to learning hub pages"
+            releaseNotes="Add select language modal on app open"
             groups="scrum,other-departments"
             serviceCredentialsFile=file("google-services-credentials.json")
           }
