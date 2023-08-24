@@ -5,14 +5,14 @@
       class="image-section" 
       [ngStyle]="{'background': 'url(' + imgUrl +') no-repeat fixed center / cover'}"
     >
-    <app-title [title]="subChapterContent?.pageTitle" [isBig]="true" [isLightBlue]="true"></app-title>
+    <app-title [title]="allPageContent?.pageTitle" [isBig]="true" [isLightBlue]="true"></app-title>
     </div>
     <!-- <div class="audio-section">
       <div>
         <app-audio-player
           variant="gray-bg" 
           size="thin"
-          [audioSrc]="subChapterContent?.pageTitleAudio?.mediaData?.url || ''"
+          [audioSrc]="allPageContent?.pageTitleAudio?.mediaData?.url || ''"
         ></app-audio-player>
       </div>
     </div> -->
@@ -38,7 +38,7 @@
           [data]="section"
           [icons]="caseStudyInputs?.icons"
           [styles]="caseStudyInputs?.styles || ''"
-          (onCaseStudyClick)="handleCaseStudyClick()"
+          (onCaseStudyClick)="handleCaseStudyClick(section)"
         >
         </shared-case-study>
     

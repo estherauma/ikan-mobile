@@ -10,7 +10,7 @@ import { SharedmethodsService } from 'src/app/shared/services/sharedmethods/shar
 })
 export class SubchapterComponent  implements OnInit {
   subChapterId: string;
-  subChapterContent: any;
+  allPageContent: any;
   pageContent: any = [];
   caseStudyInputs = {
     styles: 'case-study',
@@ -23,6 +23,9 @@ export class SubchapterComponent  implements OnInit {
   imgUrl = ''; // TODO: use tuna icon as default
   upNextContent: any;
   nextChapterId: string;
+  isCaseStudy = false;
+  caseStudyUid: string;
+  caseStudyImgUrl: string;
 
   constructor(
     public activatedRoute: ActivatedRoute,
@@ -32,15 +35,25 @@ export class SubchapterComponent  implements OnInit {
   ) {
     this.activatedRoute.params.subscribe(async params => {
       this.subChapterId = params?.subChapterId;
+      this.caseStudyUid = params?.caseStudyUid;
+      this.isCaseStudy = !!params?.caseStudyUid;
+      this.caseStudyImgUrl = params?.imgUrl || '';
     });
   }
 
   ngOnInit() {
-    this.subChapterContent = this.contentService.getContentByPropertyName(this.subChapterId);
-    this.pageContent = this.subChapterContent?.pageContent;
-    const chapterId = this.subChapterId.split('.')[0];
-    this.imgUrl = this.sharedmethods?.getChapterBackground(chapterId, 'subchapter');
-    this.upNextContent = this.getNextChapterContent();
+    if (this.isCaseStudy) {
+      this.allPageContent = this.contentService.getContentByPropertyName(this.caseStudyUid);
+      this.pageContent = this.allPageContent?.pageContent;
+      const chapterId = this.subChapterId?.split('.')[0];
+      this.imgUrl = this.caseStudyImgUrl || this.sharedmethods?.getChapterBackground(chapterId, 'subchapter');
+    } else {
+      this.allPageContent = this.contentService.getContentByPropertyName(this.subChapterId);
+      this.pageContent = this.allPageContent?.pageContent;
+      const chapterId = this.subChapterId?.split('.')[0];
+      this.imgUrl = this.sharedmethods?.getChapterBackground(chapterId, 'subchapter');
+      this.upNextContent = this.getNextChapterContent();
+    }
   }
 
   goToNextChapter() {
@@ -80,6 +93,15 @@ export class SubchapterComponent  implements OnInit {
     return nextSubChapterContent ? data : null;
   }
 
-  handleCaseStudyClick() {}
+  handleCaseStudyClick(data) {
+    const params = {
+      subChapterId: data?.subChapter,
+      caseStudyUid: data?.uid,
+      isCaseStudy: true,
+      imgUrl: data?.image?.url || '',
+      ...data
+    };
+    this.router.navigate([ 'learninghub/case-studies', data?.uid, params ]);
+  }
 
 }

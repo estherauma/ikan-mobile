@@ -11,6 +11,10 @@ const routes: Routes = [
   {
     path: 'chapters/:chapterId',
     loadChildren: () => import('../variant/variant.module').then( m => m.VariantPageModule)
+  },
+  {
+    path: 'case-studies/:caseStudyUid',
+    loadChildren: () => import('../subchapter/subchapter.module').then( m => m.SubchapterModule)
   }
 ];
 
