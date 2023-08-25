@@ -1,0 +1,22 @@
+<div class="content-wrapper">
+  <div class="logo-wrapper">
+    <ion-row class="ion-justify-content-center">
+      <ion-img class="icon" src="assets/imgs/logo_svg.svg"></ion-img>
+    </ion-row>
+  </div>
+
+  <div class="selector_wrapper">
+    <ion-item lines="none">
+      <ion-select
+        interface="action-sheet"
+        placeholder="Choose your language"
+        [disabled]="languageDataLoading"
+        (ionChange)="onLanguageSelect($event)"
+      >
+        <ion-select-option *ngFor="let language of availableLanguages" [value]="language?.localeCode">
+          {{ language?.label }}
+        </ion-select-option>
+      </ion-select>
+    </ion-item>
+  </div>
+</div>
