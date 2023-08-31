@@ -26,6 +26,8 @@ export class FormComponent implements OnInit {
   @Input() isOtherDarkBlue = false;
   @Input() passwordFieldType: string = FieldType.password;
   @Input() passwordEyeIcon: string = Icons.iconEyeClosed;
+  @Input() fieldErrors: any = {};
+  @Input() isSubmitting = false;
 
   @Output() formValues = new EventEmitter<any>();
   @Output() cancel = new EventEmitter<any>();

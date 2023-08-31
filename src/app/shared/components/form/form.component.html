@@ -204,6 +204,10 @@
         </div>
       </div>
 
+      <div *ngIf="fieldErrors[question.key]" >
+        <p class="error-text">{{ fieldErrors[question.key] }}</p>
+      </div>
+
     </div>
   </div>
 
@@ -213,7 +217,7 @@
         type="submit"
         [config]="btnConfig"
         [fill]="btnFill"
-        [disabled]="!tunaFormGroup.valid"
+        [disabled]="!tunaFormGroup.valid || isSubmitting"
         title={{submitButtonText?.toUpperCase()}}
       ></app-button>
     </ion-col>
