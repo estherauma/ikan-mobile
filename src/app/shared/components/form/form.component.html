@@ -122,15 +122,35 @@
                 <ion-label text-wrap> {{question.label}} </ion-label>
               </ion-col>
               <ion-col size="12">
-                <ion-datetime
-                  displayFormat="DDDD MMM D, YYYY"
-                  min="2015"
-                  max="2060"
-                  formControlName="{{question.key}}"
-                  value=""
-                  preferWheel="true"
-                  presentation="date"
-                ></ion-datetime>
+                <ion-input
+                  [id]="question.key"
+                  [value]="tunaFormGroup.controls[question.key].value | date"
+                  [placeholder]="question.placeholder || selectDateText"
+                  [ngClass]="(tunaFormGroup.controls[question.key].invalid && isSubmitting) ? 'invalid-input' : '' "
+                  [disabled]="tunaFormGroup.controls[question.key].disabled"
+                ></ion-input>
+                <ion-modal
+                  [trigger]="!tunaFormGroup.controls[question.key].disabled && question.key"
+                  [backdropDismiss]="false"
+                  [initialBreakpoint]="0.45"
+                  [breakpoints]="[0.45, 0.6]"
+                  handleBehavior="cycle"
+                  class="date-modal"
+                >
+                  <ng-template>
+                    <ion-datetime
+                      id="{{'datetime-' + question.key}}"
+                      presentation="date"
+                      formControlName="{{question.key}}"
+                      min="2015"
+                      max="2060"
+                      [cancelText]="commonText?.cancel"
+                      [doneText]="commonText?.done"
+                      preferWheel
+                      showDefaultButtons
+                    ></ion-datetime>
+                  </ng-template>
+                </ion-modal>
               </ion-col>
 
             </ion-row>
@@ -214,7 +234,7 @@
         [config]="btnConfig"
         [fill]="btnFill"
         [disabled]="!tunaFormGroup.valid"
-        title={{submitButtonText?.toUpperCase()}}
+        [title]="submitButtonText?.toUpperCase()"
       ></app-button>
     </ion-col>
   </ion-grid>

@@ -25,6 +25,7 @@ export class FormComponent implements OnInit {
   @Input() isOtherDarkBlue = false;
   @Input() passwordFieldType: string;
   @Input() passwordEyeIcon: string;
+  @Input() isSubmitting = false;
 
   @Output() formValues = new EventEmitter<any>();
   @Output() cancel = new EventEmitter<any>();
@@ -38,6 +39,7 @@ export class FormComponent implements OnInit {
   formKeysToRemove = [];
   typesToExclude = ['h1','h2','h3','h4','h5','h6','p'];
   typeHereText = 'Type here';
+  selectDateText = 'Select a date'; // TODO: add to prismic
   commonText: any;
 
   constructor(

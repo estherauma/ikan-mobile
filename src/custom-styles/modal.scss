@@ -72,3 +72,14 @@ ion-modal.my-own-class {
   padding-right: 10px;
   padding-bottom: 15px;
 }
+
+.date-modal {
+  width: 90%;
+  height: 80vh;
+  margin: auto;
+  border-radius: 20px;
+
+  ion-datetime {
+    min-width: 100%;
+  }
+}
