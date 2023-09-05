@@ -40,6 +40,7 @@ export class FormComponent implements OnInit {
   formKeysToRemove = [];
   typesToExclude = ['h1','h2','h3','h4','h5','h6','p'];
   typeHereText = 'Type here';
+  selectDateText = 'Select a date'; // TODO: add to prismic
   commonText: any;
 
   constructor(
