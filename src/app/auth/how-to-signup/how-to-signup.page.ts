@@ -10,7 +10,7 @@ import { env } from 'src/environments/environment';
   styleUrls: ['./how-to-signup.page.scss'],
 })
 export class HowToSignupPage implements OnInit {
-  pageTitle = '';
+  commonText: any;
   title = '';
   description = '';
   externalResourceLink = `${env.baseUrl}account/register`;
@@ -25,6 +25,7 @@ export class HowToSignupPage implements OnInit {
   }
 
   ngOnInit() {
+    this.commonText = this.contentService?.commonText;
   }
 
   onCreateLogin() {

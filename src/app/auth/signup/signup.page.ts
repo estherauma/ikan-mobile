@@ -12,10 +12,9 @@ import { SharedmethodsService } from 'src/app/shared/services/sharedmethods/shar
   styleUrls: ['./signup.page.scss'],
 })
 export class SignupPage extends BaseformPage implements OnInit {
-
-  title='Create a login';
-  description = 'feugiat id volutpat eu, laoreet ac orci. Phasellus sodales feugiat luctus. Sed hendrerit neque ut ante imperdiet';
-  submitButtonText = 'Log in';
+  title='';
+  description = '';
+  submitButtonText = '';
   isLoading = false;
   fieldErrors = {}
 
@@ -37,21 +36,25 @@ export class SignupPage extends BaseformPage implements OnInit {
   }
 
   ngOnInit() {
+    this.commonText = this.contentService?.commonText;
+    this.title = this.commonText?.signupTitle;
+    this.description = this.commonText?.signupDescription;
+    this.submitButtonText = this.commonText?.logIn;
   }
 
   async onSubmit(data) {
     this.isLoading = true;
     if (data?.password?.trim() !== data?.confirmPassword?.trim()) {
-      this.sharedMethods.showToast('Passwords do not match'); // TODO: localsie
+      this.sharedMethods.showToast(this.commonText?.passwordsDoNotMatch);
       this.isLoading = false;
       return;
     }
   
     delete data.confirmPassword;
-    this.sharedMethods?.showLoader('Submitting your data...') // TODO: localize
+    this.sharedMethods?.showLoader(this.commonText?.submittingYourData);
     this.apiService.post('accounts/register/', data).subscribe(
       res => {
-        this.sharedMethods.showToast('Account created successfully'); // TODO: localize
+        this.sharedMethods.showToast(this.commonText?.accountCreatedSuccessfully);
         this.isLoading = false;
         this.sharedMethods?.hideLoader();
         this.router.navigate(['/auth/register-success']);
@@ -64,7 +67,7 @@ export class SignupPage extends BaseformPage implements OnInit {
           this.fieldErrors = validationErrors;
           this.cdr.detectChanges();
         } else {
-          this.sharedMethods.showToast('Something went wrong'); // TODO: localize
+          this.sharedMethods.showToast(this.commonText?.somethingWentWrong);
         }
       }
     );

@@ -9,8 +9,7 @@
     <ion-text>
       <p>{{description}}</p>
     </ion-text>
-    <!-- TODO: localise -->
-    <a [href]="externalResourceLink" target="_blank">Link to external resource</a> 
+    <a [href]="externalResourceLink" target="_blank">{{ commonText?.linkToExternalResource }}</a> 
     <div class="ok-btn">
       <app-button (onClick)="onCreateLogin()" size="small" title="OK"></app-button>
     </div>

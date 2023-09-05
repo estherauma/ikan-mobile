@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { ContentService } from 'src/app/shared/services/content/content.service';
 
 @Component({
   selector: 'app-register-success',
@@ -6,11 +7,16 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./register-success.component.scss'],
 })
 export class RegisterSuccessComponent  implements OnInit {
-  // TODO: localise text
-  title: string = 'Registration Success';
+  commonText: any;
+  title: string = '';
 
-  constructor() { }
+  constructor(
+    public contentService: ContentService,
+  ) { }
 
-  ngOnInit() {}
+  ngOnInit() {
+    this.commonText = this.contentService?.commonText;
+    this.title = this.commonText?.registrationSuccess;
+  }
 
 }
