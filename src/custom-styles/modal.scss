@@ -10,5 +10,77 @@ ion-backdrop {
     flex-direction: column;
     align-items: center;
   }
-  
+}
+
+// See https://stackoverflow.com/questions/46972950/ionic-make-modal-page-fit-content-height
+ion-modal.tuna-modal {
+  &.bottom {
+    align-items: flex-end;
+  }
+
+  --height: auto;
+
+  .ion-page {
+    position: relative;
+    display: block;
+    contain: content;
+
+    .inner-content {
+      max-height: 80vh;
+      overflow: auto;
+      padding: 10px;
+    }
+  }
+}
+
+ion-modal.notification-modal {
+  --background: transparent !important;
+  &.bottom {
+    align-items: flex-end;
+  }
+
+  --height: auto;
+
+  .ion-page {
+    position: relative;
+    display: block;
+    contain: content;
+    width: 90%;
+    border-radius: 20px;
+    background-color: #ffffff;
+    left: 50%;
+    transform: translateX(-50%);
+
+    .inner-content {
+      max-height: 80vh;
+      overflow: auto;
+      padding: 10px;
+    }
+  }
+}
+
+ion-modal.my-own-class {
+  &.bottom {
+    align-items: flex-end;
+  }
+
+  --height: auto;
+  --width: 250px;
+  --border-radius: 20px;
+  align-items: flex-end;
+  justify-content: end;
+  margin-bottom: 44px;
+  padding-right: 10px;
+  padding-bottom: 15px;
+}
+
+.date-modal {
+  width: 90%;
+  height: 80vh;
+  margin: auto;
+  border-radius: 20px;
+
+  ion-datetime {
+    min-width: 100%;
+  }
 }

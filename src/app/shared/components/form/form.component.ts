@@ -6,6 +6,7 @@ import { CreatePage } from 'src/app/workorders/create/create.page';
 import { ImageselectComponent } from '../imageselect/imageselect.component';
 import { RecordoptionmodalComponent } from '../recordoptionmodal/recordoptionmodal.component';
 import { ContentService } from '../../services/content/content.service';
+import { FieldType, Icons } from '../../types/api-types';
 
 @Component({
   selector: 'app-form',
@@ -23,14 +24,15 @@ export class FormComponent implements OnInit {
   @Input() isTextBlue = false;
   @Input() isTitleDarkBlue = false;
   @Input() isOtherDarkBlue = false;
-  @Input() passwordFieldType: string;
-  @Input() passwordEyeIcon: string;
+  @Input() passwordFieldType: string = FieldType.password;
+  @Input() passwordEyeIcon: string = Icons.iconEyeClosed;
+  @Input() fieldErrors: any = {};
+  @Input() isSubmitting = false;
 
   @Output() formValues = new EventEmitter<any>();
   @Output() cancel = new EventEmitter<any>();
   @Output() formValue = new EventEmitter<any>();
   @Output() dataFromCustomButton = new EventEmitter<any>();
-  @Output() changeFieldState = new EventEmitter<any>();
 
   selectedImages = {};
   selectedDocuments = {};
@@ -38,6 +40,7 @@ export class FormComponent implements OnInit {
   formKeysToRemove = [];
   typesToExclude = ['h1','h2','h3','h4','h5','h6','p'];
   typeHereText = 'Type here';
+  selectDateText = 'Select a date'; // TODO: add to prismic
   commonText: any;
 
   constructor(
@@ -140,6 +143,7 @@ export class FormComponent implements OnInit {
     });
   }
   changePasswordState() {
-    this.changeFieldState.emit();
+    this.passwordFieldType = (this.passwordFieldType === FieldType.password) ? FieldType.text : FieldType.password;
+    this.passwordEyeIcon = (this.passwordEyeIcon === Icons.iconEyeClosed) ? Icons.iconEyeOpen : Icons.iconEyeClosed;
   }
 }
