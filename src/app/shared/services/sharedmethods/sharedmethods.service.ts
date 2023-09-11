@@ -174,4 +174,18 @@ export class SharedmethodsService {
     }
     return '';
   }
+
+  // Change page additional text array of objects into an object
+  convertAdditionalTextToObj(additionalText) {
+    if (additionalText != null || additionalText !== undefined) {
+      const textDataObject = {};
+      for (const item of additionalText) {
+        textDataObject[item.label] = item.value;
+      }
+      return textDataObject;
+    } else  {
+      return { };
+    }
+  }
+
 }
