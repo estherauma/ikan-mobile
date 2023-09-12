@@ -1,9 +1,12 @@
-import { Component, OnInit } from '@angular/core';
+import { HttpErrorResponse } from '@angular/common/http';
+import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { FormControl, Validators, FormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
 import { BaseformPage } from 'src/app/shared/components/baseform/baseform.page';
+import { ApiService } from 'src/app/shared/services/api/api.service';
 import { ContentService } from 'src/app/shared/services/content/content.service';
 import { SharedmethodsService } from 'src/app/shared/services/sharedmethods/sharedmethods.service';
+import { FieldType, Icons } from 'src/app/shared/types/api-types';
 
 @Component({
   selector: 'app-invite-code',
@@ -13,27 +16,32 @@ import { SharedmethodsService } from 'src/app/shared/services/sharedmethods/shar
 export class InviteCodePage extends BaseformPage implements OnInit {
 
   pageTitle = 'Invite Code';
+  passwordFieldType = FieldType.password;
+  passwordEyeIcon = Icons.iconEyeClosed;
+  fieldErrors = {};
 
   constructor(
     public router: Router,
     public contentService: ContentService,
-    public sharedMethods: SharedmethodsService
+    public sharedMethods: SharedmethodsService,
+    public apiService: ApiService,
+    public cdr: ChangeDetectorRef,
     ) {
       super(contentService);
     
       // const pageData = this.contentService.getContentByPropertyName('accesstoken');
       const pageData = {
         "page_name": "accesstoken",
-        "pageTitle": "Access Token",
+        "pageTitle": "Create a login",
         "last_updated": "2023-09-12T09:36:21+0000",
         "formQuestions": [
           {
             "key": "accessCode",
             "label": "Access token",
             "options": [],
-            "help_text": null,
+            "helpText": null,
             "placeholder": null,
-            "question_type": "textBox",
+            "questionType": "textBox",
             "displayquestion": true
           },
           {
@@ -42,16 +50,16 @@ export class InviteCodePage extends BaseformPage implements OnInit {
             "options": [],
             "help_text": null,
             "placeholder": null,
-            "question_type": "password",
+            "questionType": "password",
             "displayquestion": true
           },
           {
             "key": "passwordConfirm",
             "label": "Confirm your password",
             "options": [],
-            "help_text": null,
+            "helpText": null,
             "placeholder": null,
-            "question_type": "password",
+            "questionType": "password",
             "displayquestion": true
           }
         ],
@@ -99,18 +107,35 @@ export class InviteCodePage extends BaseformPage implements OnInit {
       
      }
 
-  ngOnInit() {
-  }
-
   onLogin() {
     this.router.navigate(['/intro']);
   }
 
-  onSubmit(formData) {
-
+  async onSubmit(data) {
+    this.sharedMethods.showLoader(this.pageCommonText?.loadingText);
+    if (data?.password?.trim() !== data?.passwordConfirm?.trim()) {
+      console.log('asswords do not match')
+      this.sharedMethods.showToast(this.commonText?.passwordsDoNotMatch);
+      return;
+    }
+    this.apiService.post('accounts/verify-access-token', data)
+    .subscribe(
+      res => {
+        console.log(res);
+      },
+      error => {
+        this.sharedMethods?.hideLoader();
+        if (error.status === 400) {
+          this.sharedMethods.showToast(error?.error?.message)
+        } else {
+          this.sharedMethods.showToast(this.commonText?.somethingWentWrong);
+        }
+      });
   }
 
-  inputValue(data) {
+  changePasswordFieldState() {
+    this.passwordFieldType = (this.passwordFieldType === FieldType.password) ? FieldType.text : FieldType.password;
+    this.passwordEyeIcon = (this.passwordEyeIcon === Icons.iconEyeClosed) ? Icons.iconEyeOpen : Icons.iconEyeClosed;
   }
 
 }

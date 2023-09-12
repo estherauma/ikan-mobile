@@ -10,15 +10,18 @@
     <ion-label class="ion-label">{{pageTitle}}</ion-label>
     
     <app-form 
-      btnConfig="default" 
-      btnFill="solid" 
-      [tunaFormGroup]="pageFormGroup" 
-      [tunaFormquestions]="formQuestions" 
-      [submitButtonText]="submitButtonText"
-      (formValue)="onSubmit($event)">
+        [tunaFormGroup]="pageFormGroup" 
+        [tunaFormquestions]="formQuestions" 
+        [submitButtonText]="submitButtonText"
+        (formValue)="onSubmit($event)"
+        btnConfig="ikan-light-outline" 
+        btnFill="outline"
+        [passwordFieldType]="passwordFieldType"
+        [passwordEyeIcon]="passwordEyeIcon"
+        (changeFieldState)="changePasswordFieldState()"
+      >
     </app-form>
 
   </div>
     
-
 </ion-content>
