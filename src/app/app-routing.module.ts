@@ -13,6 +13,10 @@ const routes: Routes = [
     loadChildren: () => import('./auth/password-reset/password-reset.module').then( m => m.PasswordResetPageModule)
   },
   {
+    path: 'auth/request-password-reset',
+    loadChildren: () => import('./auth/request-password-reset/request-password-reset.module').then(m => m.RequestPasswordResetModule)
+  },
+  {
     path: 'auth/login-method',
     loadChildren: () => import('./auth/login-method/login-method.module').then( m => m.LoginMethodPageModule)
   },

@@ -1,0 +1,69 @@
+import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import { FormControl, Validators, FormGroup } from '@angular/forms';
+import { Router } from '@angular/router';
+import { BaseformPage } from 'src/app/shared/components/baseform/baseform.page';
+import { ApiService } from 'src/app/shared/services/api/api.service';
+import { ContentService } from 'src/app/shared/services/content/content.service';
+import { SharedmethodsService } from 'src/app/shared/services/sharedmethods/sharedmethods.service';
+
+@Component({
+  selector: 'app-request-password-reset',
+  templateUrl: './request-password-reset.component.html',
+  styleUrls: ['./request-password-reset.component.scss'],
+})
+export class RequestPasswordResetComponent extends BaseformPage implements OnInit {
+  title='';
+  description = '"Feugiat id volutpat eu, laoreet ac orci. Phasellus sodales feugiat luctus. Sed hendrerit neque ut ante imperdiet."';
+  submitButtonText = 'Reset Password';
+  isLoading = false;
+  fieldErrors = {}
+
+  constructor(
+    public contentService: ContentService,
+    public router: Router,
+    public apiService: ApiService,
+    public sharedMethods: SharedmethodsService,
+    public cdr: ChangeDetectorRef,
+  ) {
+    super(contentService);
+  }
+
+  ngOnInit() {
+    this.commonText = this.contentService?.commonText;
+    const pageData = this.contentService.getContentByPropertyName('requestpasswordresetform');
+    console.log('pageData.........', pageData)
+    this.formQuestions = pageData?.formQuestions;
+    this.title = pageData?.pageTitle;
+    // TODO: add values after fixing aggregation
+    // this.description = 
+    // this.submitButtonText = 
+    this.formQuestions.forEach((entry) => {
+      this.group[entry.key] = new FormControl('', [Validators.required]);
+    });
+    this.pageFormGroup = new FormGroup(this.group);
+  }
+
+  async onSubmit(data) {
+    this.isLoading = true;
+    this.sharedMethods?.showLoader(this.commonText?.submittingYourData);
+    this.apiService.post('accounts/reset-password-request/', data).subscribe(
+      res => {
+        this.sharedMethods.showToast('Password reset request sent. Please check your email for the reset code.');
+        this.isLoading = false;
+        this.sharedMethods?.hideLoader();
+        this.router.navigate(['/auth/password-reset']);
+      },
+      error => {
+        this.isLoading = false;
+        this.sharedMethods?.hideLoader();
+        if (error.status === 400) {
+          const validationErrors = error.error;
+          this.fieldErrors = validationErrors;
+          this.cdr.detectChanges();
+        } else {
+          this.sharedMethods.showToast(this.commonText?.somethingWentWrong);
+        }
+      }
+    );
+  }
+}
