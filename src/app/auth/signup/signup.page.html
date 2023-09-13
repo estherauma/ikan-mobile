@@ -9,7 +9,14 @@
     <ion-text>
       <p>{{description}}</p>
     </ion-text>
-    <app-form btnConfig="default" btnFill="solid" [tunaFormGroup]="pageFormGroup" [tunaFormquestions]="formQuestions" [submitButtonText]="submitButtonText"
+    <app-form
+      btnConfig="default"
+      btnFill="solid"
+      [tunaFormGroup]="pageFormGroup"
+      [tunaFormquestions]="formQuestions"
+      [submitButtonText]="submitButtonText"
+      [fieldErrors]="fieldErrors"
+      [isSubmitting]="isLoading"
       (formValue)="onSubmit($event)">
     </app-form>
   </div>
