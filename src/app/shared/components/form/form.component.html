@@ -1,4 +1,10 @@
-<form [formGroup]="tunaFormGroup" (ngSubmit)="onSubmit($event)" class="transparent-bg" [ngClass]="{'text-blue': isTextBlue}">
+<form
+  [formGroup]="tunaFormGroup"
+  (ngSubmit)="onSubmit($event)"
+  class="transparent-bg"
+  [ngClass]="{'text-blue': isTextBlue}"
+  [autocomplete]="autocomplete"
+>
   <div *ngFor="let question of tunaFormquestions">
 
     <div [ngSwitch]="question.questionType">
@@ -228,6 +234,9 @@
         <p class="error-text">{{ fieldErrors[question.key] }}</p>
       </div>
 
+    </div>
+    <div *ngIf="nonFieldErrors">
+      <p class="error-text" *ngFor="let err of nonFieldErrors">{{err}}</p>
     </div>
   </div>
 

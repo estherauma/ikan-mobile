@@ -16,7 +16,8 @@ export class RequestPasswordResetComponent extends BaseformPage implements OnIni
   description = '"Feugiat id volutpat eu, laoreet ac orci. Phasellus sodales feugiat luctus. Sed hendrerit neque ut ante imperdiet."';
   submitButtonText = 'Reset Password';
   isLoading = false;
-  fieldErrors = {}
+  fieldErrors = {};
+  nonFieldErrors = [];
 
   constructor(
     public contentService: ContentService,
@@ -31,14 +32,13 @@ export class RequestPasswordResetComponent extends BaseformPage implements OnIni
   ngOnInit() {
     this.commonText = this.contentService?.commonText;
     const pageData = this.contentService.getContentByPropertyName('requestpasswordresetform');
-    console.log('pageData.........', pageData)
     this.formQuestions = pageData?.formQuestions;
     this.title = pageData?.pageTitle;
     // TODO: add values after fixing aggregation
     // this.description = 
     // this.submitButtonText = 
     this.formQuestions.forEach((entry) => {
-      this.group[entry.key] = new FormControl('', [Validators.required]);
+      this.group[entry.key] = new FormControl('', [Validators.required, Validators.email]);
     });
     this.pageFormGroup = new FormGroup(this.group);
   }
@@ -51,13 +51,16 @@ export class RequestPasswordResetComponent extends BaseformPage implements OnIni
         this.sharedMethods.showToast('Password reset request sent. Please check your email for the reset code.');
         this.isLoading = false;
         this.sharedMethods?.hideLoader();
-        this.router.navigate(['/auth/password-reset']);
+        this.router.navigate(['/auth/password-reset'], { queryParams: { email: data?.email } });
       },
       error => {
         this.isLoading = false;
         this.sharedMethods?.hideLoader();
         if (error.status === 400) {
-          const validationErrors = error.error;
+          const validationErrors = error.error || error.message;
+          if (error.nonFieldErrors) {
+            this.nonFieldErrors = error.nonFieldErrors;
+          }
           this.fieldErrors = validationErrors;
           this.cdr.detectChanges();
         } else {
