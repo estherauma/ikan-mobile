@@ -46,7 +46,7 @@ export class RequestPasswordResetComponent extends BaseformPage implements OnIni
   async onSubmit(data) {
     this.isLoading = true;
     this.sharedMethods?.showLoader(this.commonText?.submittingYourData);
-    this.apiService.post('accounts/reset-password-request/', data).subscribe(
+    this.apiService.post('accounts/reset-password-request', data).subscribe(
       res => {
         this.sharedMethods.showToast('Password reset request sent. Please check your email for the reset code.');
         this.isLoading = false;
