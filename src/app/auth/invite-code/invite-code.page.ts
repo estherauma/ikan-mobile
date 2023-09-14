@@ -6,7 +6,7 @@ import { BaseformPage } from 'src/app/shared/components/baseform/baseform.page';
 import { ApiService } from 'src/app/shared/services/api/api.service';
 import { ContentService } from 'src/app/shared/services/content/content.service';
 import { SharedmethodsService } from 'src/app/shared/services/sharedmethods/sharedmethods.service';
-import { FieldType, Icons } from 'src/app/shared/types/api-types';
+import { FieldType, IPasswordResetResp, Icons } from 'src/app/shared/types/api-types';
 
 @Component({
   selector: 'app-invite-code',
@@ -28,74 +28,7 @@ export class InviteCodePage extends BaseformPage implements OnInit {
     public cdr: ChangeDetectorRef,
     ) {
       super(contentService);
-    
-      // const pageData = this.contentService.getContentByPropertyName('accesstoken');
-      const pageData = {
-        "page_name": "accesstoken",
-        "pageTitle": "Create a login",
-        "last_updated": "2023-09-12T09:36:21+0000",
-        "formQuestions": [
-          {
-            "key": "accessCode",
-            "label": "Access token",
-            "options": [],
-            "helpText": null,
-            "placeholder": null,
-            "questionType": "textBox",
-            "displayquestion": true
-          },
-          {
-            "key": "password",
-            "label": "Password",
-            "options": [],
-            "help_text": null,
-            "placeholder": null,
-            "questionType": "password",
-            "displayquestion": true
-          },
-          {
-            "key": "passwordConfirm",
-            "label": "Confirm your password",
-            "options": [],
-            "helpText": null,
-            "placeholder": null,
-            "questionType": "password",
-            "displayquestion": true
-          }
-        ],
-        "additionalText": [
-          {
-            "type": "paragraph",
-            "label": "coffeee",
-            "value": "Coffee is <strong>good</strong> for you"
-          },
-          {
-            "type": "paragraph",
-            "label": "submitButtonText",
-            "value": "Go"
-          },
-          {
-            "type": "heading1",
-            "label": "sampleHeading",
-            "value": "We shall see"
-          },
-          {
-            "type": "unorderedList",
-            "label": "Ordered List",
-            "value": [
-              "asdfasds",
-              "sdfsd",
-              "asdfasdfasdf"
-            ]
-          },
-          {
-            "type": "paragraph",
-            "label": "submitButtonText",
-            "value": "Go"
-          }
-        ]
-      };
-      
+      const pageData = this.contentService.getContentByPropertyName('accesstoken');
       this.pageTitle = pageData?.pageTitle;
       this.pageCommonText = this.sharedMethods.convertAdditionalTextToObj(pageData?.additionalText);
       this.submitButtonText = this.pageCommonText?.submitButtonText;
@@ -112,16 +45,23 @@ export class InviteCodePage extends BaseformPage implements OnInit {
   }
 
   async onSubmit(data) {
-    this.sharedMethods.showLoader(this.pageCommonText?.loadingText);
+    this.sharedMethods.showLoader(this.commonText?.loadingText);
     if (data?.password?.trim() !== data?.passwordConfirm?.trim()) {
-      console.log('asswords do not match')
       this.sharedMethods.showToast(this.commonText?.passwordsDoNotMatch);
+      this.fieldErrors = {passwordConfirm: this.commonText?.passwordsDoNotMatch};
+      this.sharedMethods.hideLoader();
       return;
     }
     this.apiService.post('accounts/verify-access-token', data)
     .subscribe(
-      res => {
-        console.log(res);
+      (res: IPasswordResetResp) => {
+        if (res?.status == 'OK') {
+          this.sharedMethods.showToast(res?.message);
+          this.sharedMethods.hideLoader();
+          this.router.navigate(['/login']);
+          return;
+        }
+
       },
       error => {
         this.sharedMethods?.hideLoader();
