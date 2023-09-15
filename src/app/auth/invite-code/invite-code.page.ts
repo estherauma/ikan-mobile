@@ -114,7 +114,7 @@ export class InviteCodePage extends BaseformPage implements OnInit {
   async onSubmit(data) {
     this.sharedMethods.showLoader(this.pageCommonText?.loadingText);
     if (data?.password?.trim() !== data?.passwordConfirm?.trim()) {
-      console.log('asswords do not match')
+      
       this.sharedMethods.showToast(this.commonText?.passwordsDoNotMatch);
       return;
     }
