@@ -41,3 +41,4 @@ npm-debug.log*
 .env
 App/output
 /build/*
+local.notes.md

@@ -59,6 +59,7 @@ export class ContentService {
       if (content?.status === 'OK') {
         this.writeLocalContent(StorageKeys.appContent, content.data[0]);
         this.appContent = content.data[0].content;
+        
         this.contentObs.next(true);
       }
     });

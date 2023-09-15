@@ -9,6 +9,7 @@ import { ContentService } from '../../services/content/content.service';
 })
 export class BaseformPage implements OnInit {
   commonText: any;
+  pageCommonText: any;
   pageFormGroup: FormGroup;
   formQuestions = [ ];
   group =  { };
