@@ -35,15 +35,7 @@ export class LoginPage extends BaseformPage implements OnInit {
     this.formQuestions = pageData.formQuestions;
     this.pageTitle = pageData?.pageTitle;
     this.formQuestions.forEach((entry) => {
-      // this.group[entry.key] = new FormControl('', [Validators.required]);
       this.group[entry.key] = new FormControl('', [Validators.required]);
-      if (entry.key === 'password') {
-        this.group[entry.key] = new FormControl('TunaDev123#a', [Validators.required, Validators.minLength(8)]);
-      }
-
-      if (entry.key === 'email') {
-        this.group[entry.key] = new FormControl('taien+technology@fiftyeight.io', [Validators.required, Validators.minLength(8)]);
-      }
     });
     this.pageFormGroup = new FormGroup(this.group);
     this.testEmails = this.dbService.testEmails;
