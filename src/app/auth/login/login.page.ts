@@ -40,7 +40,7 @@ export class LoginPage extends BaseformPage implements OnInit {
     this.pageFormGroup = new FormGroup(this.group);
     this.testEmails = this.dbService.testEmails;
   }
-
+ 
   ngOnInit() {
     this.submitButtonText = this.contentService.commonText?.login;
   }

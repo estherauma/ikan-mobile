@@ -7,12 +7,21 @@
         <ion-img class="icon" src="/assets/imgs/logo_svg.svg"></ion-img>
       </ion-row>
     </div>
-    <ion-label class="ion-label">Title for field goes here</ion-label>
-    <app-invite-code-input
-    (InputValue) = "inputValue($event)"
-    >   
-    </app-invite-code-input>
-    <app-button config="ikan-light-outline" title="Go" (click)="onLogin()"></app-button>
-    </div>
+    <ion-label class="ion-label">{{pageTitle}}</ion-label>
+    
+    <app-form 
+        [tunaFormGroup]="pageFormGroup" 
+        [tunaFormquestions]="formQuestions" 
+        [submitButtonText]="submitButtonText"
+        (formValue)="onSubmit($event)"
+        btnConfig="ikan-light-outline" 
+        btnFill="outline"
+        [passwordFieldType]="passwordFieldType"
+        [passwordEyeIcon]="passwordEyeIcon"
+        [fieldErrors]="fieldErrors"
+      >
+    </app-form>
 
+  </div>
+    
 </ion-content>

@@ -149,3 +149,8 @@ export interface PushNotificationData {
   registrationToken: string;
   messagingRepos?: Array<string>;
 }
+
+export interface IPasswordResetResp {
+  status: string;
+  message: string;
+}
