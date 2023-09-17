@@ -105,6 +105,9 @@ app-subchapter {
           font-family: 'GatwickBold' !important;
           color: #3565FF !important;
         }
+        div:first-child {
+          width: 100%;
+        }
 
       }
       .sections {

@@ -1,8 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Params, Router } from '@angular/router';
 import { BaseformPage } from 'src/app/shared/components/baseform/baseform.page';
+import { ApiService } from 'src/app/shared/services/api/api.service';
 import { ContentService } from 'src/app/shared/services/content/content.service';
+import { SharedmethodsService } from 'src/app/shared/services/sharedmethods/sharedmethods.service';
 
 @Component({
   selector: 'app-password-reset',
@@ -10,30 +12,80 @@ import { ContentService } from 'src/app/shared/services/content/content.service'
   styleUrls: ['./password-reset.page.scss'],
 })
 export class PasswordResetPage extends BaseformPage implements OnInit {
-
   title='Forgot Password';
   description = 'feugiat id volutpat eu, laoreet ac orci. Phasellus sodales feugiat luctus. Sed hendrerit neque ut ante imperdiet';
   submitButtonText = 'Reset Password';
+  isLoading = false;
+  fieldErrors = {};
+  nonFieldErrors = [];
+  email = '';
 
   constructor(
     public contentService: ContentService,
-    public router: Router
+    public router: Router,
+    public apiService: ApiService,
+    public sharedMethods: SharedmethodsService,
+    public cdr: ChangeDetectorRef,
+    public activatedRoute: ActivatedRoute,
   ) {
     super(contentService);
-    const pageData = this.contentService.getContentByPropertyName('passwordresetform');
+  }
+
+  ngOnInit() {
+    this.getEmail();
+    this.commonText = this.contentService?.commonText;
+    const pageData = this.contentService.getContentByPropertyName('resetpasswordform');
     this.formQuestions = pageData.formQuestions;
     this.pageTitle = pageData?.pageTitle;
     this.formQuestions.forEach((entry) => {
       this.group[entry.key] = new FormControl('', [Validators.required]);
+      if (entry.key == 'email') {
+        this.group[entry.key] = new FormControl(this.email, [Validators.required, Validators.email]);
+      }
     });
     this.pageFormGroup = new FormGroup(this.group);
   }
 
-  ngOnInit() {
+  getEmail() {
+    this.activatedRoute.queryParams.subscribe((queryParams: Params) => {
+      if (queryParams && Object.keys(queryParams).length > 0) {
+        this.email = queryParams?.email || '';
+      }
+    });
   }
 
   onSubmit(data) {
-    this.router.navigate(['auth/create-password']);
+    this.isLoading = true;
+    if (data?.password?.trim() !== data?.confirm_password?.trim()) {
+      this.sharedMethods.showToast(this.commonText?.passwordsDoNotMatch);
+      this.isLoading = false;
+      return;
+    }
+  
+    delete data.confirm_password;
+    this.sharedMethods?.showLoader(this.commonText?.submittingYourData);
+    this.apiService.post('accounts/reset-password', data).subscribe(
+      res => {
+        this.sharedMethods.showToast('Password was reset successfully. Please proceede to login');
+        this.isLoading = false;
+        this.sharedMethods?.hideLoader();
+        this.router.navigate(['auth/password-reset-success']);
+      },
+      error => {
+        this.isLoading = false;
+        this.sharedMethods?.hideLoader();
+        if (error.status === 400) {
+          const validationErrors = error.error || error.message;
+          this.fieldErrors = validationErrors;
+          if (error.nonFieldErrors) {
+            this.nonFieldErrors = error.nonFieldErrors;
+          }
+          this.cdr.detectChanges();
+        } else {
+          this.sharedMethods.showToast(this.commonText?.somethingWentWrong);
+        }
+      }
+    );
   }
 
 }
