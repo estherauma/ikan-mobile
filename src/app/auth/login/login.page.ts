@@ -36,7 +36,6 @@ export class LoginPage extends BaseformPage implements OnInit {
 
   ngOnInit() {
     this.pageSetup();
-    this.submitButtonText = this.contentService.commonText?.login;
   }
 
   pageSetup() {

@@ -13,8 +13,9 @@ import { SharedmethodsService } from 'src/app/shared/services/sharedmethods/shar
 })
 export class RequestPasswordResetComponent extends BaseformPage implements OnInit {
   title='';
-  description = '"Feugiat id volutpat eu, laoreet ac orci. Phasellus sodales feugiat luctus. Sed hendrerit neque ut ante imperdiet."';
-  submitButtonText = 'Reset Password';
+  description = '';
+  submitButtonText = '';
+  pageText: any;
   isLoading = false;
   fieldErrors = {};
   nonFieldErrors = [];
@@ -31,12 +32,16 @@ export class RequestPasswordResetComponent extends BaseformPage implements OnIni
 
   ngOnInit() {
     this.commonText = this.contentService?.commonText;
+    this.pageSetup();
+  }
+
+  pageSetup() {
     const pageData = this.contentService.getContentByPropertyName('requestpasswordresetform');
     this.formQuestions = pageData?.formQuestions;
     this.title = pageData?.pageTitle;
-    // TODO: add values after fixing aggregation
-    // this.description = 
-    // this.submitButtonText = 
+    this.pageText = this.sharedMethods.convertAdditionalTextToObj(pageData?.additionalText);
+    this.description = this.pageText?.resetPasswordDescription;
+    this.submitButtonText = this.pageText?.submitButtonText;
     this.formQuestions.forEach((entry) => {
       this.group[entry.key] = new FormControl('', [Validators.required, Validators.email]);
     });
@@ -48,7 +53,7 @@ export class RequestPasswordResetComponent extends BaseformPage implements OnIni
     this.sharedMethods?.showLoader(this.commonText?.submittingYourData);
     this.apiService.post('accounts/reset-password-request', data).subscribe(
       res => {
-        this.sharedMethods.showToast('Password reset request sent. Please check your email for the reset code.');
+        this.sharedMethods.showToast(this.pageText?.resetRequestSent);
         this.isLoading = false;
         this.sharedMethods?.hideLoader();
         this.router.navigate(['/auth/password-reset'], { queryParams: { email: data?.email } });
