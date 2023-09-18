@@ -13,7 +13,7 @@ import { StorageKeys } from 'src/app/shared/types/api-types';
   styleUrls: ['./login-method.page.scss'],
 })
 export class LoginMethodPage implements OnInit {
-  commonText: any;
+  pageText: any;
   pageTitle = 'Login Method';
   // inviteCodeAuth and usernameAuth initialized with values for 
   // the first few seconds before content is fetched from the api
@@ -30,9 +30,7 @@ export class LoginMethodPage implements OnInit {
   ) {
     this.watchContent = this.contentService.watchContent().subscribe(async(resp) => {
       if (resp) {
-        this.commonText = this.contentService?.commonText;
-        this.inviteCodeAuth = this.commonText?.inviteCodeAuth;
-        this.usernameAuth = this.commonText?.usernameAuth;
+        this.getAuthText();
         if (!(await this.savedCurrentLanguage()) && !this.modalPresented) {
           await this.presentSelectLangModal();
           this.modalPresented = true;
@@ -42,16 +40,25 @@ export class LoginMethodPage implements OnInit {
   }
 
   async ngOnInit() {
-    this.commonText = await this.contentService?.commonText;
-    if (this.commonText && Object.keys(this.commonText).length > 0) {
-      this.inviteCodeAuth = this.commonText?.inviteCodeAuth;
-      this.usernameAuth = this.commonText?.usernameAuth;
+    const pageData = this.contentService.getContentByPropertyName('login-method');
+    this.pageText = this.sharedMethods.convertAdditionalTextToObj(pageData?.additionalText);
+    if (this.pageText && Object.keys(this.pageText).length > 0) {
+      this.inviteCodeAuth = this.pageText?.inviteCodeAuth;
+      this.usernameAuth = this.pageText?.usernameAuth;
 
       if (!(await this.savedCurrentLanguage())) {
         await this.presentSelectLangModal();
         this.modalPresented = true;
       }
     }
+  }
+
+  getAuthText() {
+    const pageData = this.contentService.getContentByPropertyName('login-method');
+    this.pageText = this.sharedMethods.convertAdditionalTextToObj(pageData?.additionalText);
+    this.inviteCodeAuth = this.pageText?.inviteCodeAuth;
+    this.usernameAuth = this.pageText?.usernameAuth;
+
   }
 
   toInviteCodeScreen() {
@@ -72,9 +79,9 @@ export class LoginMethodPage implements OnInit {
 
     modal.onDidDismiss().then((data) => {
       if (data.data) {
-        this.commonText = data.data?.commonText;
-        this.inviteCodeAuth = this.commonText?.inviteCodeAuth;
-        this.usernameAuth = this.commonText?.usernameAuth;
+        this.pageText = data.data?.loginMethodData;
+        this.inviteCodeAuth = this.pageText?.inviteCodeAuth;
+        this.usernameAuth = this.pageText?.usernameAuth;
       }
     });
 
