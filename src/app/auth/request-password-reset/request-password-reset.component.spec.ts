@@ -1,19 +1,19 @@
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { IonicModule } from '@ionic/angular';
 
-import { InviteCodeInputComponent } from './invite-code-input.component';
+import { RequestPasswordResetComponent } from './request-password-reset.component';
 
-describe('InviteCodeInputComponent', () => {
-  let component: InviteCodeInputComponent;
-  let fixture: ComponentFixture<InviteCodeInputComponent>;
+describe('RequestPasswordResetComponent', () => {
+  let component: RequestPasswordResetComponent;
+  let fixture: ComponentFixture<RequestPasswordResetComponent>;
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      declarations: [ InviteCodeInputComponent ],
+      declarations: [ RequestPasswordResetComponent ],
       imports: [IonicModule.forRoot()]
     }).compileComponents();
 
-    fixture = TestBed.createComponent(InviteCodeInputComponent);
+    fixture = TestBed.createComponent(RequestPasswordResetComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   }));

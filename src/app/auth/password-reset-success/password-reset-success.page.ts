@@ -7,8 +7,8 @@ import { Router } from '@angular/router';
   styleUrls: ['./password-reset-success.page.scss'],
 })
 export class PasswordResetSuccessPage implements OnInit {
-  title = 'New password sent';
-  description = 'feugiat id volutpat eu, laoreet ac orci. Phasellus sodales feugiat luctus. Sed hendrerit neque ut ante imperdiet';
+  title = 'Password reset successfully';
+  description = 'Your password has been reset successfully. Click OK to login with your new password.';
   constructor(
     public router: Router
   ) { }

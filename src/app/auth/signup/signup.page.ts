@@ -52,7 +52,7 @@ export class SignupPage extends BaseformPage implements OnInit {
   
     delete data.confirmPassword;
     this.sharedMethods?.showLoader(this.commonText?.submittingYourData);
-    this.apiService.post('accounts/register/', data).subscribe(
+    this.apiService.post('accounts/register', data).subscribe(
       res => {
         this.sharedMethods.showToast(this.commonText?.accountCreatedSuccessfully);
         this.isLoading = false;

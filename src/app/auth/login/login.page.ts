@@ -52,6 +52,7 @@ export class LoginPage extends BaseformPage implements OnInit {
     this.testEmails = this.dbService.testEmails;
   }
 
+
   ionViewWillEnter() {
     this.menuCtrl.enable(false);
   }
@@ -60,7 +61,7 @@ export class LoginPage extends BaseformPage implements OnInit {
 
   async onSubmit(formData) {
     this.sharedMethods.showLoader(this.contentService.commonText?.loadingText);
-    const response = await this.apiServices.post('accounts/login/', formData);
+    const response = await this.apiServices.post('accounts/login', formData);
     response.subscribe(
       async(res: LoginSuccessReponse) => {
         if (res.status === 'OK') {
