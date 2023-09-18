@@ -34,9 +34,10 @@ export class SelectLanguageComponent  implements OnInit {
   async onLanguageSelect(e) {
     await this.sharedMethods.saveDataToStorage(StorageKeys.currentLanguage, e?.detail?.value);
     await this.contentService.updateCurrentLanguage();
-    this.commonText = this.contentService?.commonText;
+    const pageData = this.contentService.getContentByPropertyName('login-method');
+    const loginMethodData = this.sharedMethods.convertAdditionalTextToObj(pageData?.additionalText);
     this.modalController?.dismiss({
-      commonText: this.commonText,
+      loginMethodData
     });
   }
 

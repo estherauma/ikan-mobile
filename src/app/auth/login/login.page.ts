@@ -20,6 +20,7 @@ export class LoginPage extends BaseformPage implements OnInit {
   passwordFieldType = FieldType.password;
   passwordEyeIcon = Icons.iconEyeClosed;
   testEmails;
+  pageText: any;
 
   constructor(
     public contentService: ContentService,
@@ -31,19 +32,25 @@ export class LoginPage extends BaseformPage implements OnInit {
     public dbService: DBService
   ) {
     super(contentService);
+  }
+
+  ngOnInit() {
+    this.pageSetup();
+  }
+
+  pageSetup() {
     const pageData = this.contentService.getLoginPageData();
     this.formQuestions = pageData.formQuestions;
     this.pageTitle = pageData?.pageTitle;
+    this.pageText = this.sharedMethods?.convertAdditionalTextToObj(pageData?.additionalText);
+    this.submitButtonText = this.pageText?.submitButtonText;
     this.formQuestions.forEach((entry) => {
       this.group[entry.key] = new FormControl('', [Validators.required]);
     });
     this.pageFormGroup = new FormGroup(this.group);
     this.testEmails = this.dbService.testEmails;
   }
- 
-  ngOnInit() {
-    this.submitButtonText = this.contentService.commonText?.login;
-  }
+
 
   ionViewWillEnter() {
     this.menuCtrl.enable(false);

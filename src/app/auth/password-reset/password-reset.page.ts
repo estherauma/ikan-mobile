@@ -12,9 +12,10 @@ import { SharedmethodsService } from 'src/app/shared/services/sharedmethods/shar
   styleUrls: ['./password-reset.page.scss'],
 })
 export class PasswordResetPage extends BaseformPage implements OnInit {
-  title='Forgot Password';
-  description = 'feugiat id volutpat eu, laoreet ac orci. Phasellus sodales feugiat luctus. Sed hendrerit neque ut ante imperdiet';
-  submitButtonText = 'Reset Password';
+  title='';
+  description = '';
+  submitButtonText = '';
+  pageText: any;
   isLoading = false;
   fieldErrors = {};
   nonFieldErrors = [];
@@ -34,9 +35,16 @@ export class PasswordResetPage extends BaseformPage implements OnInit {
   ngOnInit() {
     this.getEmail();
     this.commonText = this.contentService?.commonText;
+    this.pageSetup();
+  }
+
+  pageSetup() {
     const pageData = this.contentService.getContentByPropertyName('resetpasswordform');
     this.formQuestions = pageData.formQuestions;
-    this.pageTitle = pageData?.pageTitle;
+    this.title = pageData?.pageTitle;
+    this.pageText = this.sharedMethods.convertAdditionalTextToObj(pageData?.additionalText);
+    this.submitButtonText = this.pageText?.submitButtonText;
+    this.description = this.pageText?.description;
     this.formQuestions.forEach((entry) => {
       this.group[entry.key] = new FormControl('', [Validators.required]);
       if (entry.key == 'email') {
