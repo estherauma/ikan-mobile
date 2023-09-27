@@ -10,7 +10,7 @@ export class CompanycontractcardComponent implements OnInit {
   commonText: any;
 
   @Input() title = '';
-  @Input() contract = '';
+  @Input() contract;
   @Input() vessel = '';
   @Input() dates = '';
   @Input() isLight = false;
@@ -22,6 +22,10 @@ export class CompanycontractcardComponent implements OnInit {
 
   ngOnInit() {
     this.commonText = this.contentService?.commonText;
+  }
+
+  viewContract() {
+    console.log(this.contract);
   }
 
 }
