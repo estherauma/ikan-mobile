@@ -22,6 +22,16 @@
 	<string>$(CURRENT_PROJECT_VERSION)</string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
+	<key>NSMicrophoneUsageDescription</key>
+	<string>
+		This app requires access to your device's microphone to enable audio recording.
+
+		Purpose:
+		- Record audio messages and notes.
+
+		Privacy:
+		We prioritize your privacy and ensure that your audio data is used only within the app for the specified purposes. We do not share or store audio data without your explicit consent.
+	</string>
 	<key>NSCameraUsageDescription</key>
 	<string>Privacy - Camera Usage Description</string>
 	<key>NSPhotoLibraryAddUsageDescription</key>

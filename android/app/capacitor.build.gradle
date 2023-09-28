@@ -23,6 +23,7 @@ dependencies {
     implementation project(':capacitor-status-bar')
     implementation project(':capacitor-toast')
     implementation project(':capacitor-native-settings')
+    implementation project(':capacitor-voice-recorder')
 
 }
 
