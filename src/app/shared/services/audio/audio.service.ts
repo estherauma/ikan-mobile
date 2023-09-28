@@ -1,5 +1,4 @@
 import { Injectable } from '@angular/core';
-// import { RecordingData, VoiceRecorder } from 'capacitor-voice-recorder';
 import { VoiceRecorder, RecordingData, GenericResponse, CurrentRecordingStatus } from 'capacitor-voice-recorder';
 import { SharedmethodsService } from '../sharedmethods/sharedmethods.service';
 import { ContentService } from '../content/content.service';

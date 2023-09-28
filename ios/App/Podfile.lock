@@ -33,6 +33,8 @@ PODS:
     - Capacitor
   - CapacitorVoiceRecorder (5.0.0):
     - Capacitor
+  - CapawesomeCapacitorFilePicker (5.1.1):
+    - Capacitor
   - CordovaPlugins (5.2.3):
     - CapacitorCordova
   - Firebase/CoreOnly (9.1.0):
@@ -112,6 +114,7 @@ DEPENDENCIES:
   - "CapacitorStatusBar (from `../../node_modules/@capacitor/status-bar`)"
   - "CapacitorToast (from `../../node_modules/@capacitor/toast`)"
   - CapacitorVoiceRecorder (from `../../node_modules/capacitor-voice-recorder`)
+  - "CapawesomeCapacitorFilePicker (from `../../node_modules/@capawesome/capacitor-file-picker`)"
   - CordovaPlugins (from `../capacitor-cordova-ios-plugins`)
 
 SPEC REPOS:
@@ -162,6 +165,8 @@ EXTERNAL SOURCES:
     :path: "../../node_modules/@capacitor/toast"
   CapacitorVoiceRecorder:
     :path: "../../node_modules/capacitor-voice-recorder"
+  CapawesomeCapacitorFilePicker:
+    :path: "../../node_modules/@capawesome/capacitor-file-picker"
   CordovaPlugins:
     :path: "../capacitor-cordova-ios-plugins"
 
@@ -183,6 +188,7 @@ SPEC CHECKSUMS:
   CapacitorStatusBar: 565c0a1ebd79bb40d797606a8992b4a105885309
   CapacitorToast: bb0d79b78d9c27c0199b57f735dd50b8fc363489
   CapacitorVoiceRecorder: 872ea857b497ce2c71afe3e4eb5de0a74290c0db
+  CapawesomeCapacitorFilePicker: 4a27a464c569de315738fcb7bdd3ad544ef3c7c2
   CordovaPlugins: 392b78fd94e21b0fe749f6266436bafcbd22ea70
   Firebase: 91c243d75573ac6e7c9735ec859b72bffb61347d
   FirebaseCore: b7bfc258e996eada23b3666bd6b9a22ca092acb8
@@ -195,6 +201,6 @@ SPEC CHECKSUMS:
   nanopb: b552cce312b6c8484180ef47159bc0f65a1f0431
   PromisesObjC: 99b6f43f9e1044bd87a95a60beff28c2c44ddb72
 
-PODFILE CHECKSUM: acc377cb928cd5aee809ea09c8b623617e41d5ae
+PODFILE CHECKSUM: 3ec37c2d960c0bf72fa0de918722446101f82d4a
 
 COCOAPODS: 1.12.1

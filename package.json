@@ -40,6 +40,7 @@
     "@capacitor/splash-screen": "^5.0.0",
     "@capacitor/status-bar": "^5.0.0",
     "@capacitor/toast": "^5.0.0",
+    "@capawesome/capacitor-file-picker": "^5.1.1",
     "@fiftyeight/shared-components": "^0.0.37",
     "@ionic/angular": "^7.1.1",
     "@ionic/pwa-elements": "^3.1.1",
