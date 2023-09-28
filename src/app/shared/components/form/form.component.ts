@@ -1,12 +1,14 @@
-import { Component, OnInit, Output, EventEmitter, Input } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter, Input, ChangeDetectorRef } from '@angular/core';
 import { FormGroup } from '@angular/forms';
-import { ModalController } from '@ionic/angular';
+import { AlertController, ModalController } from '@ionic/angular';
 import { UploadService } from 'src/app/shared/services/upload/upload.service';
 import { CreatePage } from 'src/app/workorders/create/create.page';
 import { ImageselectComponent } from '../imageselect/imageselect.component';
 import { RecordoptionmodalComponent } from '../recordoptionmodal/recordoptionmodal.component';
 import { ContentService } from '../../services/content/content.service';
 import { FieldType, Icons } from '../../types/api-types';
+import { SharedmethodsService } from '../../services/sharedmethods/sharedmethods.service';
+import { AudioService } from '../../services/audio/audio.service';
 
 @Component({
   selector: 'app-form',
@@ -48,7 +50,10 @@ export class FormComponent implements OnInit {
   constructor(
     public uploadService: UploadService,
     public modalCtrl: ModalController,
-    public contentService: ContentService
+    public contentService: ContentService,
+    public sharedMethods: SharedmethodsService,
+    public audioService: AudioService,
+    public alertController: AlertController,
   ) { }
 
   ngOnInit() {
@@ -101,6 +106,9 @@ export class FormComponent implements OnInit {
   }
 
   async takePicture(key) {
+    try {
+      await this.audioService.checkDevicePermissions();
+
       const modal = await this.modalCtrl.create({
         component: ImageselectComponent,
         cssClass: 'notification-modal'
@@ -108,13 +116,33 @@ export class FormComponent implements OnInit {
       modal.present();
 
       modal.onDidDismiss().then((data) => {
-        // TODO: Form data is here for processing and saving.
+        if (data?.data?.imageData) {
+          const val = data?.data?.imageData?.webPath;
+
+          this.tunaFormGroup.patchValue({
+            [key]: val
+          });
+      
+          this.tunaFormquestions = this.tunaFormquestions.map((el: any) => {
+            if (el.key === key) {
+              return {
+                ...el,
+                value: val
+              };
+            }
+            return el;
+          });
+        }
       });
 
+      // TODO: check with @skapeyi about selectedImages
       // TODO: Add logic for take photo and update form values list
       // const picture = await this.uploadService.takePicture();
       // this.selectedImages = {...this.selectedImages, [key]:picture };
-
+      
+    } catch (error) {
+      console.error(error);
+    }
   }
 
   removeDocument(key) {
@@ -144,8 +172,32 @@ export class FormComponent implements OnInit {
       };
     });
   }
+
   changePasswordState() {
     this.passwordFieldType = (this.passwordFieldType === FieldType.password) ? FieldType.text : FieldType.password;
     this.passwordEyeIcon = (this.passwordEyeIcon === Icons.iconEyeClosed) ? Icons.iconEyeOpen : Icons.iconEyeClosed;
+  }
+
+  async handleDeleteImage(e, key) {
+    const alert = await this.alertController.create({
+      cssClass: 'tuna-alert del-img-prompt-alert',
+      header: this.commonText?.deleteImagePrompt ||'sure u want to?',
+      buttons: [
+        {
+          text: this.commonText?.cancel?.toUpperCase(),
+          role: 'cancel',
+          cssClass: 'secondary'
+        },
+        {
+          text: this.commonText?.delete?.toUpperCase(),
+          handler: () => {
+            this.tunaFormGroup.patchValue({
+              [key]: ''
+            });
+          }
+        }
+      ]
+    });
+    await alert.present();
   }
 }
