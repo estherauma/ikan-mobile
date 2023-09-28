@@ -119,19 +119,7 @@ export class FormComponent implements OnInit {
         if (data?.data?.imageData) {
           const val = data?.data?.imageData?.webPath;
 
-          this.tunaFormGroup.patchValue({
-            [key]: val
-          });
-      
-          this.tunaFormquestions = this.tunaFormquestions.map((el: any) => {
-            if (el.key === key) {
-              return {
-                ...el,
-                value: val
-              };
-            }
-            return el;
-          });
+          this.updateFieldValue(key, val);
         }
       });
 
@@ -143,6 +131,22 @@ export class FormComponent implements OnInit {
     } catch (error) {
       console.error(error);
     }
+  }
+
+  updateFieldValue(key, newValue) {
+    this.tunaFormGroup.patchValue({
+      [key]: newValue
+    });
+
+    this.tunaFormquestions = this.tunaFormquestions.map((el: any) => {
+      if (el.key === key) {
+        return {
+          ...el,
+          value: newValue
+        };
+      }
+      return el;
+    });
   }
 
   removeDocument(key) {
@@ -191,9 +195,7 @@ export class FormComponent implements OnInit {
         {
           text: this.commonText?.delete?.toUpperCase(),
           handler: () => {
-            this.tunaFormGroup.patchValue({
-              [key]: ''
-            });
+            this.updateFieldValue(key, '');
           }
         }
       ]
