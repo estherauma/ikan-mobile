@@ -185,7 +185,7 @@ export class FormComponent implements OnInit {
   async handleDeleteImage(e, key) {
     const alert = await this.alertController.create({
       cssClass: 'tuna-alert del-img-prompt-alert',
-      header: this.commonText?.deleteImagePrompt ||'sure u want to?',
+      header: this.commonText?.deleteImagePrompt,
       buttons: [
         {
           text: this.commonText?.cancel?.toUpperCase(),
