@@ -4,7 +4,7 @@ import { Capacitor } from '@capacitor/core';
 import { FilePicker } from '@capawesome/capacitor-file-picker';
 import { Filesystem, Directory } from '@capacitor/filesystem';
 
-// TODO: check with @SKapeyi if we'll only be uploading png images
+// TODO: refactor logic to upload all file types
 type UploadType = 'application/pdf' | 'image/png';
 
 @Injectable({

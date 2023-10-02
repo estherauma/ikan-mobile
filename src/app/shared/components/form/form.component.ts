@@ -123,7 +123,6 @@ export class FormComponent implements OnInit {
         }
       });
 
-      // TODO: check with @skapeyi about selectedImages
       // TODO: Add logic for take photo and update form values list
       // const picture = await this.uploadService.takePicture();
       // this.selectedImages = {...this.selectedImages, [key]:picture };
