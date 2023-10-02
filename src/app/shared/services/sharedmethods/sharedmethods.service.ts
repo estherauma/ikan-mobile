@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { LoadingController } from '@ionic/angular';
+import { LoadingController, Platform } from '@ionic/angular';
 import { Network } from '@capacitor/network';
 import { Toast } from '@capacitor/toast';
 import { Preferences } from '@capacitor/preferences';
@@ -14,10 +14,16 @@ import { Device } from '@capacitor/device';
 export class SharedmethodsService {
   public deviceUuid: any;
   networkListener: PluginListenerHandle;
+  isIos = false;
 
   constructor(
     public loadingCtrl: LoadingController,
-  ) { }
+    public platform: Platform,
+  ) {
+    if (this.platform.is('ios')) {
+      this.isIos = true;
+    }
+  }
 
   async showLoader(message: string, duration = 5000) {
     const loading = await this.loadingCtrl.create({

@@ -22,7 +22,7 @@ export class ViewPage implements OnInit {
     private activatedRoute: ActivatedRoute,
     public modalCtrl: ModalController,
     public router: Router,
-    public chooser: UploadService
+    public uploadService: UploadService,
   ) { }
 
   ngOnInit() {
@@ -48,7 +48,7 @@ export class ViewPage implements OnInit {
   }
 
   async uploadCopAgreement() {
-    const chosencooperationAgreement = await this.chooser.choseFile();
+    const chosencooperationAgreement = await this.uploadService.chooseFile();
     // this.cooperationAgreementFile = chosencooperationAgreement;
   }
 

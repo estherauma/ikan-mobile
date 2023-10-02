@@ -219,11 +219,16 @@
                 <img>
               </div>
             </ion-row>
-            <ion-row *ngIf="!selectedImages[question.key]" class="upload-wrapper">
+            <ion-row *ngIf="!selectedImages[question.key] && !question.value" class="upload-wrapper">
               <div (click)="takePicture(question.key)">
                 <ion-icon name="camera-outline"></ion-icon>
                 <p>{{ commonText?.uploadPicture }}</p>
               </div>
+            </ion-row>
+            <ion-row *ngIf="question.value" class="image-preview">
+              <img *ngIf="sharedMethods.isIos" [src]="question.value | safeurl" />
+              <img *ngIf="!sharedMethods.isIos" [src]="question.value" />
+              <ion-icon class="trash-icon" name="trash-outline" (click)="handleDeleteImage($event, question.key)"></ion-icon>
             </ion-row>
 
           </ion-grid>

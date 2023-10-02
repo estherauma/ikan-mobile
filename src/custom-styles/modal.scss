@@ -84,3 +84,44 @@ ion-modal.my-own-class {
     min-width: 100%;
   }
 }
+
+.tuna-alert  .alert-wrapper { 
+  width: 100%;
+  margin: 20px;
+  padding: 20px;
+  border-radius: 30px;
+  background-color: white;
+  max-width: 100% !important;
+  min-width: 90% !important;
+  .alert-head {
+    padding-top: 0;
+    text-align: center;
+   h2{
+    font-size: 1.25rem;
+    font-weight: bold;
+    color: #2E2D2C;
+   }
+  }
+  .alert-button-group{
+    justify-content: center;
+  }
+  .alert-button{
+    flex:none;
+    min-width: 25%;
+    padding: 8px 20px;
+    font-weight: bold;
+    color: #2E2D2C !important;
+    border-radius: 28px;
+    border: 1px solid #2E2D2C;
+    margin:0 6px;
+    background-color: white;
+  }
+}
+
+.del-img-prompt-alert .alert-wrapper{
+  .alert-button:last-child {
+    color: white !important;
+    background-color: red !important;
+    border-color: red;
+  }
+}

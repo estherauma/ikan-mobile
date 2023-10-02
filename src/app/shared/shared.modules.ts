@@ -42,6 +42,7 @@ import { FeedbackStatCardComponent } from './components/feedback-stat-card/feedb
 import { CompaniescardComponent } from './components/companiescard/companiescard.component';
 import { CompanycontractcardComponent } from './components/companycontractcard/companycontractcard.component';
 import { SelectLanguageComponent } from './components/select-language/select-language/select-language.component';
+import { SafeurlPipe } from './pipes/safeurl/safeurl.pipe';
 
 
 @NgModule({
@@ -52,6 +53,7 @@ import { SelectLanguageComponent } from './components/select-language/select-lan
     CommonModule
   ],
   declarations: [
+    SafeurlPipe,
     FormComponent,
     HeaderComponent,
     SearchComponent,
@@ -94,6 +96,7 @@ import { SelectLanguageComponent } from './components/select-language/select-lan
     SelectLanguageComponent,
   ],
   exports: [
+    SafeurlPipe,
     FormComponent,
     HeaderComponent,
     SearchComponent,

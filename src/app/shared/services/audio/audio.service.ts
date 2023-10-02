@@ -1,37 +1,185 @@
 import { Injectable } from '@angular/core';
-// import { RecordingData, VoiceRecorder } from 'capacitor-voice-recorder';
+import { VoiceRecorder, RecordingData, GenericResponse, CurrentRecordingStatus } from 'capacitor-voice-recorder';
+import { SharedmethodsService } from '../sharedmethods/sharedmethods.service';
+import { ContentService } from '../content/content.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AudioService {
-  recording = false;
-  constructor() {
-    // VoiceRecorder.requestAudioRecordingPermission();
+  isRecording = false;
+  commonText: any;
+
+  constructor(
+    public sharedMethods: SharedmethodsService,
+    public contentService: ContentService,
+  ) {
+    this.commonText = this.contentService?.commonText;
+    VoiceRecorder.requestAudioRecordingPermission();
   }
 
-  startRecording() {
-    if (this.recording) {
-      return;
+  /**
+   * Checks if device supports audio recording
+   * Checks if audio recording permissions are granted
+   * Prompts user to accept permissions if not granted
+   * @returns true / false based on device audio recording support and permissions
+   */
+  async checkDevicePermissions() {
+    const canRecord = await this.canDeviceVoiceRecord();
+    const permissionStatus = await this.getRecordingPermissionStatus();
+    if (canRecord && permissionStatus) {
+      return true;
     }
-    this.recording = true;
-    // VoiceRecorder.startRecording();
+
+    if (!canRecord) {
+      await this.sharedMethods.showToast(this.commonText?.audioRecordingNotSupported || 'Audio recording is not supported');
+      return false;
+    }
+    if (!permissionStatus) {
+      const req = await this.requestAudioRecordingPermission();
+      if (!req) {
+        await this.sharedMethods.showToast(this.commonText?.audioPermissionsDenied || 'Audio recording permissions denied');
+        return false;
+      }
+      return true;
+    }
+    return false;
   }
-  async stopRecording() {
-    if (!this.recording) {
-      return;
+
+
+  /**
+   * Returns true / false based on the ability of the current device (or web browser) to record audio
+   */
+  async canDeviceVoiceRecord() {
+    try {
+      const result: GenericResponse = await VoiceRecorder.canDeviceVoiceRecord();
+      return result?.value;
+    } catch (error) {
+      console.error(error);
+      return false;
     }
-    this.recording = false;
-    // return VoiceRecorder.stopRecording().then(async(result: RecordingData) => {
-    //   if (result.value && result.value.recordDataBase64) {
-    //     const file = `data:audio/aac;base64,${result.value.recordDataBase64}`;
-    //     return {
-    //       file,
-    //       uniqueName: Date.now()
-    //     };
-    //   }
-    //   return null;
-    // });
-    return null;
+
+  }
+
+  /**
+    * Prompts user to give the required permission.
+    * Returns true / false based on the user response.
+    */
+  async requestAudioRecordingPermission() {
+    try {
+      const result: GenericResponse = await VoiceRecorder.requestAudioRecordingPermission();
+      return result?.value;
+    } catch (error) {
+      console.error(error);
+      return false;
+    }
+  }
+
+  /**
+    * Returns true / false based on the status of the recording permission.
+    * the promise will reject with "COULD_NOT_QUERY_PERMISSION_STATUS"
+    * if the current device cannot query the current status of the recording permission
+    */
+  async getRecordingPermissionStatus() {
+    try {
+      const result: GenericResponse = await VoiceRecorder.hasAudioRecordingPermission();
+      return result?.value;
+    } catch (error) {
+      console.error(error);
+      return false;
+    }
+  }
+
+  /**
+    * In case of success the promise will resolve to { value: true }
+    * in case of an error the promise will reject with one of the following messages:
+    * "MISSING_PERMISSION", "ALREADY_RECORDING", "MICROPHONE_BEING_USED", "DEVICE_CANNOT_VOICE_RECORD", or "FAILED_TO_RECORD"
+    */
+  async startRecording () {
+    try {
+      if (this.isRecording) {
+        return;
+      }
+
+      const permissions = await this.checkDevicePermissions();
+      if (permissions) {
+        this.isRecording = true;
+        const result: GenericResponse = await VoiceRecorder.startRecording();
+      }
+    } catch (error) {
+      this.isRecording = false;
+      console.error(error);
+    }
+  }
+
+  /**
+    * In case of success the promise will resolve to:
+    * {"value": { recordDataBase64: string, msDuration: number, mimeType: string }},
+    * the file will be in one of several possible formats (more on that later).
+    * in case of an error the promise will reject with one of the following messages:
+    * "RECORDING_HAS_NOT_STARTED" or "FAILED_TO_FETCH_RECORDING"
+    */
+  async stopRecording () {
+    try {
+      if (!this.isRecording) {
+        return;
+      }
+      this.isRecording = false;
+
+      const result: RecordingData = await VoiceRecorder.stopRecording();
+      if (result?.value?.recordDataBase64) {
+          const file = `data:audio/aac;base64,${result.value.recordDataBase64}`;
+          return {
+            file,
+            uniqueName: Date.now()
+          };
+        }
+      return null;
+    } catch (error) {
+      console.error(error);
+      return null;
+    }
+  }
+
+  /**
+    * Pauses an ongoing recording. If the recording has not started yet the promise
+    * will reject with `RECORDING_HAS_NOT_STARTED`. in case of success the promise will resolve to `{ value: true }` if the pause
+    * was successful or `{ value: false }` if the recording is already paused.
+    * if the current mobile os does not support this method the promise will reject with `NOT_SUPPORTED_OS_VERSION`
+    */
+  async pauseRecording () {
+    try {
+      const result: GenericResponse = await VoiceRecorder.pauseRecording();
+      return result.value;
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
+  /**
+    * Resumes a paused recording. If the recording has not started yet the promise
+    * will reject with `RECORDING_HAS_NOT_STARTED`. in case of success the promise will resolve to `{ value: true }` if the resume
+    * was successful or `{ value: false }` if the recording is already running.
+    * if the current mobile os does not support this method the promise will reject with `NOT_SUPPORTED_OS_VERSION`
+    */
+  async resumeAudioRecording() {
+    try {
+      const result: GenericResponse = await VoiceRecorder.resumeRecording();
+      return result.value;
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
+  /**
+    * Returns the current status of the audio recording. ie "NONE" | "RECORDING" | "PAUSED"
+    */
+  async getAudioRecordingStatus() {
+    try {
+      const result: CurrentRecordingStatus = await VoiceRecorder.getCurrentStatus();
+      return result.status;
+    } catch (error) {
+      console.error(error);
+    }
   }
 }

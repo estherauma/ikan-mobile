@@ -4,11 +4,11 @@
     [isCancel]="false"
   >
   <div class="content">
-    <div class="section">
+    <div class="section" (click)="uploadFromCamera()">
       <ion-img src="/assets/icon/camera_gray_bg.svg"></ion-img>
       <h6>{{fromImage}}</h6>
     </div>
-    <div class="section">
+    <div class="section" (click)="uploadFromGallery()">
       <ion-img src="/assets/icon/image_gray_bg.svg"></ion-img>
       <h6>{{fromGallery}}</h6>
     </div>
