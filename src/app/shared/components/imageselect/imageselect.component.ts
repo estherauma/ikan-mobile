@@ -25,7 +25,7 @@ export class ImageselectComponent implements OnInit {
   }
 
   async uploadFromGallery() {
-    const imageData = await this.uploadService.choseFile(['image/png']);
+    const imageData = await this.uploadService.chooseFile(['image/png']);
     this.modalController?.dismiss({ imageData });
   }
 

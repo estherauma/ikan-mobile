@@ -96,7 +96,7 @@ export class FormComponent implements OnInit {
   }
 
   async onUpload(key) {
-    const file = await this.uploadService.choseFile();
+    const file = await this.uploadService.chooseFile();
 
     this.tunaFormGroup.patchValue({
       [key]: file

@@ -14,7 +14,7 @@ export class UploadService {
   constructor() { }
 
 
-  async choseFile(types: UploadType[] = ['application/pdf']) {
+  async chooseFile(types: UploadType[] = ['application/pdf']) {
     try {
       const result = await FilePicker.pickFiles({
         types
@@ -25,7 +25,7 @@ export class UploadService {
   
       return await this.saveFile(file?.path, fileName);
     } catch (error) {
-      console.error('Error in upload.service.ts at choseFile(). Failed to select file.', error);
+      console.error('Error in upload.service.ts at chooseFile(). Failed to select file.', error);
     }
   }
 
