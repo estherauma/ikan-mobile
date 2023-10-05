@@ -1,22 +1,29 @@
 <ion-card class="card-body">
-  <div  class="card-content">
-    <div
-      class="card-image-section">
-      <img class="image" src="/assets/icon/ellipse_profile.svg" />
-    </div>
-    <div class="card-section">
-      <div style="position: relative;">
-        <div class="status-container">
-          <div class="status-wrapper">
-            <span >{{worker.status}}</span>
-          </div>
+  <ion-row>
+    <ion-col size="12" class="status-wrapper">
+      <div class="status">
+        <span [ngClass]="worker.status.toLowerCase().includes('pending') ? 'pending' :  worker.status.toLowerCase().includes('active') ? 'active' : ''">
+          {{worker.status}}
+        </span>
+      </div>
+    </ion-col>
+  </ion-row>
+
+  <ion-row class="card-content">
+    <ion-col size="3" >
+      <div class="card-image-wrapper">
+        <img class="image" [src]="worker?.profile_img_url || '/assets/icon/ellipse_profile.svg'" />
+      </div>
+    </ion-col>
+
+    <ion-col size="9" class="card-section-wrapper">
+      <div class="card-section">
+        <div class="ion-padding">
+          <ion-card-title class="title-text">{{worker.fname}} {{worker.lname}}</ion-card-title>
+          <ion-label><span class="sub-text">{{ commonText?.telephone }}: {{worker.phone}}</span></ion-label> <br>
+          <ion-label><span class="sub-text">{{ commonText?.country }}: {{worker.country}}</span></ion-label> <br>
         </div>
       </div>
-      <div class="ion-padding ion-margin-vertical">
-        <ion-card-title class="blue-text">{{worker.fname}} {{worker.lname}}</ion-card-title>
-        <ion-label><span class="gray-text">{{ commonText?.telephone }}: {{worker.phone}}</span></ion-label> <br>
-        <ion-label><span class="gray-text">{{ commonText?.country }}: {{worker.country}}</span></ion-label> <br>
-      </div>
-    </div>
-  </div>
+    </ion-col>
+  </ion-row>
 </ion-card>
