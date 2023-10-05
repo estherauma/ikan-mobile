@@ -194,4 +194,12 @@ export class SharedmethodsService {
     }
   }
 
+
+  getStatusClass(status: string) {
+    return status.toLowerCase().includes('pending') ? 'pending' :
+      status?.toLowerCase().includes('active') ? 'active' :
+      status?.toLowerCase().includes('engaged') ? 'engaged' :
+      status?.toLowerCase().includes('inactive') ? 'inactive' :
+      '';
+  }
 }

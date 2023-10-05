@@ -2,7 +2,7 @@
   <ion-row>
     <ion-col size="12" class="status-wrapper">
       <div class="status">
-        <span [ngClass]="worker.status.toLowerCase().includes('pending') ? 'pending' :  worker.status.toLowerCase().includes('active') ? 'active' : ''">
+        <span [ngClass]="sharedMethods.getStatusClass(worker?.status)">
           {{worker.status}}
         </span>
       </div>
