@@ -4,7 +4,7 @@
 
 .card-image-wrapper {
     display: flex;
-    justify-content: end;
+    justify-content: flex-end;
     height: 80px;
     width: 80px;
     border-radius: 50%;
@@ -47,6 +47,12 @@
         }
         .active{
             background-color: #74F080;
+        }
+        .inactive{
+            background-color: grey;
+        }
+        .engaged{
+            background-color: #80D8FE;
         }
     }
 }
