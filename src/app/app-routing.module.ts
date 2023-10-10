@@ -341,6 +341,10 @@ const routes: Routes = [
     path: 'contracts/company/home',
     loadChildren: () => import('./contracts/company/home/home.module').then( m => m.HomePageModule)
   },
+  {
+    path: 'contracts/createclause',
+    loadChildren: () => import('./contracts/clauses/createclause/createclause.module').then( m => m.CreateclausePageModule)
+  },
 ];
 
 @NgModule({

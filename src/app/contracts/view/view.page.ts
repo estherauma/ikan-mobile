@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { ContentService } from '../../shared/services/content/content.service';
+import { ModalController } from '@ionic/angular';
+import { CreateclausePage } from '../clauses/createclause/createclause.page';
 
 @Component({
   selector: 'app-view',
@@ -43,16 +45,30 @@ export class ViewPage implements OnInit {
 
   constructor(
     public activatedRoute: ActivatedRoute,
-    public contentService: ContentService
+    public contentService: ContentService,
+    public modalController: ModalController
   ) {}
 
   ngOnInit() {
     this.commonText = this.contentService?.commonText;
     this.activatedRoute.params.subscribe((params) => {
+      console.log(params)
       this.pageTitle = params.name;
       this.contract = params;
     });
   }
 
   viewDetails(wo) {}
+
+  async createClause() {
+    const modal = await this.modalController.create({
+      component: CreateclausePage,
+      cssClass: 'notification-modal'
+    });
+
+    modal.present();
+
+    modal.onDidDismiss().then((data) => {
+    });
+  }
 }

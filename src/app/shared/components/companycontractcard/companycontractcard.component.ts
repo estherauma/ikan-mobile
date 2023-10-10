@@ -1,5 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { ContentService } from '../../services/content/content.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-companycontractcard',
@@ -18,6 +19,7 @@ export class CompanycontractcardComponent implements OnInit {
 
   constructor(
     public contentService: ContentService,
+    public router: Router,
   ) { }
 
   ngOnInit() {
@@ -25,7 +27,8 @@ export class CompanycontractcardComponent implements OnInit {
   }
 
   viewContract() {
-    console.log(this.contract);
+    const queryParams =  this.contract
+    this.router.navigate(['/contracts/view', queryParams])
   }
 
 }
