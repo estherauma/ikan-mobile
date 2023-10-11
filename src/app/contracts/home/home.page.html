@@ -57,21 +57,22 @@
   </div>
 
   <div *ngFor="let contract of contracts" >
+    <!-- User contracts -->
     <app-usercontractcard 
       [title]="contract.name"
-      [contract]="contract.taiwaneseCompany" 
+      [contract]="contract" 
       *ngIf="contract.type !== 'Company'"
-      [vessel]="contract.vesselOwnerCompany" 
-      [dates]="getContractDates(contract)"
-    >
+      [vessel]="contract" 
+      [dates]="getContractDates(contract)">
     </app-usercontractcard>
-      <app-companycontractcard
-        *ngIf="contract.type === 'Company'"
-        [title]="contract.name"
-        [contract]="contract.taiwaneseCompany" 
-        [vessel]="contract.vesselOwnerCompany" 
-        [dates]="getContractDates(contract)"
-      ></app-companycontractcard>
+    <!-- Company contracts -->
+    <app-companycontractcard
+      *ngIf="contract.type === 'Company'"
+      [title]="contract.name"
+      [contract]="contract" 
+      [vessel]="contract" 
+      [dates]="getContractDates(contract)">
+    </app-companycontractcard>
     </div>
   </app-contentwrapper>
 </ion-content>
