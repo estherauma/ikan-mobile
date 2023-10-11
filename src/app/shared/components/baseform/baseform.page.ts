@@ -15,6 +15,7 @@ export class BaseformPage implements OnInit {
   group =  { };
   pageTitle: string;
   submitButtonText: string;
+  pageText: any;
 
   constructor(
     public contentService: ContentService
