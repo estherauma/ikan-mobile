@@ -32,6 +32,8 @@ export class FormComponent implements OnInit {
   @Input() nonFieldErrors: any = [];
   @Input() isSubmitting = false;
   @Input() autocomplete = true;
+  @Input() uploadPictureIcon: string = 'assets/icon/camera.svg';
+  @Input() uploadPictureText: string = '';
 
   @Output() formValues = new EventEmitter<any>();
   @Output() cancel = new EventEmitter<any>();
@@ -59,6 +61,7 @@ export class FormComponent implements OnInit {
   ngOnInit() {
     this.commonText = this.contentService?.commonText;
     this.typeHereText = this.commonText?.typeHere;
+    this.uploadPictureText = this.commonText?.uploadPicture;
     this.tunaFormquestions.map(question => {
       if ([...this.typesToExclude].includes(question.questionType)) {
         this.tunaFormGroup.patchValue({

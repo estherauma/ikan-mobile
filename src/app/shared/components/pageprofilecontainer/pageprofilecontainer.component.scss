@@ -24,14 +24,15 @@
 
 .status-container {
     margin-top: -16px;
-    margin-left: 50px; 
-    height: 20px; 
-    width: 76px; 
-    border-bottom-left-radius: 20px; 
-    border-top-right-radius: 20px; 
-    display: flex; 
-    align-items: center; 
+    margin-left: 50px;
+    min-width: 70px;
+    border-bottom-left-radius: 20px;
+    border-top-right-radius: 20px;
+    display: flex;
+    align-items: center;
     justify-content: center;
+    background: #74F080;
+    padding: 2px 10px;
     small{
         color: #191970;
     }
@@ -40,9 +41,14 @@
 .pending{
     background-color: #F4992D; 
 }
-
 .active{
     background-color: #74F080;
+}
+.inactive{
+    background-color: grey;
+}
+.engaged{
+    background-color: #80D8FE;
 }
 
 .within-nav{
