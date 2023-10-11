@@ -8,8 +8,8 @@ android {
         applicationId "com.fiftyeight.tuna.dev"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 144
-        versionName "0.0.44"
+        versionCode 146
+        versionName "0.0.46"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         aaptOptions {
              // Files and dirs to omit from the packaged assets dir, modified to accommodate modern web apps.
@@ -26,7 +26,7 @@ android {
           minifyEnabled false
           debuggable true
           firebaseAppDistribution {
-            releaseNotes="Add file picker & voice recorder alternatives and allow users to add documents from gallery and camera"
+            releaseNotes="Update all instances upload audio recordings"
             groups="scrum,other-departments"
             serviceCredentialsFile=file("google-services-credentials.json")
           }
