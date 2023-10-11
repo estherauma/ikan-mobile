@@ -26,7 +26,7 @@ export class NoteplaybackPage implements OnInit {
   ngOnInit() {
     this.commonText = this.contentService?.commonText;
     this.activatedRoute.params.subscribe((params) => {
-      this.audioNote = this.sanitizer.bypassSecurityTrustResourceUrl(params.file);
+      this.audioNote = this.sanitizer.bypassSecurityTrustResourceUrl(params.file);//use url
       this.audioNoteParams = params;
     });
   }
@@ -39,12 +39,18 @@ export class NoteplaybackPage implements OnInit {
 
     modal.present();
     modal.onDidDismiss().then((noteData) => {
-      this.router.navigate(['/workers/status', {name: noteData.data.name, ...this.audioNoteParams}]);
+      this.router.navigate(
+        [ this.audioNoteParams?.previousUrl ],
+        { 
+          queryParams: {name: noteData?.data?.name, ...this.audioNoteParams},
+          replaceUrl: true,
+        }
+      );
     });
   }
 
   onDelete() {
-    this.router.navigate(['/workers/recordnote']);
+    this.router.navigate(['/workers/recordnote'], { replaceUrl: true });
   }
 
 }

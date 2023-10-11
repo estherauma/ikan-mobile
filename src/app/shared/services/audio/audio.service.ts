@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { VoiceRecorder, RecordingData, GenericResponse, CurrentRecordingStatus } from 'capacitor-voice-recorder';
 import { SharedmethodsService } from '../sharedmethods/sharedmethods.service';
 import { ContentService } from '../content/content.service';
+import { Directory, Filesystem } from '@capacitor/filesystem';
 
 @Injectable({
   providedIn: 'root'
@@ -128,15 +129,36 @@ export class AudioService {
 
       const result: RecordingData = await VoiceRecorder.stopRecording();
       if (result?.value?.recordDataBase64) {
-          const file = `data:audio/aac;base64,${result.value.recordDataBase64}`;
-          return {
-            file,
-            uniqueName: Date.now()
-          };
-        }
+        console.log('result........', result)
+        // return await this.saveFile(result?.value?.recordDataBase64);
+        const file = `data:audio/aac;base64,${result.value.recordDataBase64}`;
+        return {
+          file,
+          uniqueName: Date.now()
+        };
+      }
       return null;
     } catch (error) {
       console.error(error);
+      return null;
+    }
+  }
+
+  async saveFile(base64String: string) {
+    try {
+      const uniqueName = `${Date.now()}`;
+      const savedFile = await Filesystem.writeFile({
+        path: uniqueName,
+        data: base64String as string,
+        directory: Directory.Data,
+      });
+
+      return {
+        uniqueName,
+        filepath: savedFile.uri,
+      }
+    } catch (error) {
+      console.error('Failed to saved audio recording.', error);
       return null;
     }
   }

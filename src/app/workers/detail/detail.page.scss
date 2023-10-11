@@ -50,6 +50,7 @@
 }
 
 .send-reminder-btn {
-    width: 150px;
+    min-width: 150px;
+    max-width: 80%;
     margin-top: 8px;
 }

@@ -4,6 +4,8 @@ import { StatusType } from 'src/app/shared/components/pageprofilecontainer/pagep
 import { ContentService } from 'src/app/shared/services/content/content.service';
 import { BaseformPage } from 'src/app/shared/components/baseform/baseform.page';
 import { ActivatedRoute, Params, Router } from '@angular/router';
+import { WorkersDataService } from '../data/workers-data.service';
+import { DomSanitizer } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-detail',
@@ -50,7 +52,8 @@ export class DetailPage extends BaseformPage implements OnInit {
   ];
   activeNavItem = this.navItems[0];
   isResendInviteBtn = this.activeNavItem.id === 1;
-
+  audioRecordings: any = [];
+  workerId: string;
   workerInfo: any;
 
   wo = {
@@ -65,6 +68,8 @@ export class DetailPage extends BaseformPage implements OnInit {
     public contentService: ContentService,
     public router: Router,
     public activatedRoute: ActivatedRoute,
+    public workersDataService: WorkersDataService,
+    public sanitizer: DomSanitizer,
   ) {
     super(contentService);
     const pageData = this.contentService.getContentByPropertyName('createplacementinfo');
@@ -76,15 +81,31 @@ export class DetailPage extends BaseformPage implements OnInit {
     this.pageFormGroup = new FormGroup(this.group);
   }
 
-  ngOnInit() {
+  async ngOnInit() {
     this.commonText = this.contentService?.commonText;
-    this.getWorkerInfo();
+    await this.getWorkerInfo();
   }
 
-  getWorkerInfo() {
-    this.activatedRoute.queryParams.subscribe((queryParams: Params) => {
+  async getWorkerInfo() {
+    this.activatedRoute.queryParams.subscribe(async(queryParams: Params) => {
+      console.log('his.activatedRoute.params....qqqqqq....',queryParams)
       if (queryParams && Object.keys(queryParams).length > 0) {
-        this.workerInfo = queryParams;
+        // TODO: querying workerInfo from db vs from params
+        if (queryParams?.previousUrl) {
+
+          this.workerId = queryParams?.workerId;
+          const worker = await this.workersDataService.retrieveOne(Number(this.workerId));
+          this.workerInfo = worker;
+          console.log('rrrrrr....workerInfo', this.workerInfo)
+
+          this.audioRecordings.unshift({
+            ...queryParams,
+            file: this.sanitizer.bypassSecurityTrustResourceUrl(queryParams.file)
+          });
+        } else {
+
+          this.workerInfo = queryParams;
+        }
       }
     });
   }
@@ -104,4 +125,21 @@ export class DetailPage extends BaseformPage implements OnInit {
     this.router.navigate(['/workers/createdetail']);
   }
 
+  onRecord() {
+    this.router.navigate(
+      [
+        '/workers/recordnote',
+        {
+          previousUrl: this.router.url.split('?')[0],
+          workerId: this.workerInfo?.id
+        } 
+      ],
+      { replaceUrl: true }
+    );
+  }
+
+  onDelete(fileToDelete) {
+    const newAudioRecordings = this.audioRecordings.filter((el) => el.uniqueName !== fileToDelete);
+    this.audioRecordings = newAudioRecordings;
+  }
 }
