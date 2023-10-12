@@ -44,6 +44,7 @@ export class PaymentsDataService {
             status: data.rows.item(i).status,
             confirmed: data.rows.item(i).confirmed,
             confirmedDate: data.rows.item(i).confirmed_date,
+            fileUrl: data.rows.item(i).file_url,
             onlineRef: data.rows.item(i).online_ref,
             createdAt: data.rows.item(i).created_at,
             updatedAt: data.rows.item(i).updated_at,
@@ -62,12 +63,12 @@ export class PaymentsDataService {
 
   async create(data) {
     const query = 'INSERT INTO payments (date, payment_ref, company_id, type, worker_id, total_amount, \
-      remmitance_amount, beneficiary_amount, cash_amount, date, status, \
+      remmitance_amount, beneficiary_amount, cash_amount, date, status, file_url, \
       created_at, updated_at, created_by, updated_by) VALUES \
-      (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)';
+      (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)';
     const params = [data.paymentDate, data.payment_ref, data.company_id, data.paymentType, data.recipient, data.total,
       data.remittance, data.beneficiary, data.cash, data.date,
-      data.status, data.created_at, data.updated_at, data.created_by,
+      data.status, data?.file_url, data.created_at, data.updated_at, data.created_by,
       data.updated_by];
       return this.db.executeSql(query, params).then((result) => {
         this.retrievePayments();

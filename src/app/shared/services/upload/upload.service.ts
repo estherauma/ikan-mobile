@@ -25,6 +25,7 @@ export class UploadService {
       return await this.saveFile(file?.path, fileName);
     } catch (error) {
       console.error('Error in upload.service.ts at chooseFile(). Failed to select file.', error);
+      return null;
     }
   }
 

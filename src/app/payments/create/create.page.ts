@@ -49,9 +49,11 @@ export class CreatePage extends BaseformPage implements OnInit  {
     // TODO: Remove this line when company_id is added to the userdata from the backend
     formData.company_id = userData.company_id || 1;
     formData.status = 'Pending';
+    formData.file_url = formData.file_url.webPath
     const insertId = await this.paymentDataService.create(formData);
 
-    this.router.navigate(['/payments/view/company', {id: insertId}]);  }
+    this.router.navigate(['/payments/view/company', {id: insertId}]);
+  }
 
   async addDeduction() {
     const modal = await this.modalCtrl.create({

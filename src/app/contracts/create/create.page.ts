@@ -17,6 +17,7 @@ export class CreatePage extends BaseformPage implements OnInit {
   companies = [];
   taiwaneseCompanies = [];
   indonesianCompanies = [];
+  pageText: any;
 
   constructor(
     public companiesDataService: CompaniesDataService,
@@ -29,6 +30,7 @@ export class CreatePage extends BaseformPage implements OnInit {
     super(contentService);
     const pageData = this.contentService.getContentByPropertyName('companies-createcontract');
     this.pageTitle = pageData?.pageTitle;
+    this.pageText = this.sharedMethods.convertAdditionalTextToObj(pageData.additionalText);
     this.formQuestions = pageData?.formQuestions;
     this.formQuestions.forEach((entry) => {
       this.group[entry.key] = new FormControl('');
@@ -64,7 +66,7 @@ export class CreatePage extends BaseformPage implements OnInit {
 
 
   async onSubmit(formData) {
-    this.sharedMethods.showLoader(this.commonText?.savingContract);
+    this.sharedMethods.showLoader(this.pageText?.savingContract);
     const userData = await this.sharedMethods.getUserData();
     const now = this.sharedMethods.getCurrentDateTime();
     formData.internal_ref = formData.app_ref;
@@ -72,6 +74,20 @@ export class CreatePage extends BaseformPage implements OnInit {
     formData.updated_by = userData.id;
     formData.created_at = formData.updated_at = now;
     const insertId =  await this.contractsDataService.create(formData);
-    this.modalCtrl.dismiss();
+    if (insertId) {
+      const contractData = {
+        contract_id: insertId,
+        name: formData?.file_url.uniqueName, // TODO: change to actual name not generated one
+        url: formData?.file_url.webPath,
+        status: '', // TODO: update status
+      };
+      const docInsertId = await this.contractsDataService.createContractDocument(contractData);
+      if (!docInsertId) {
+        this.sharedMethods.showLoader(this.pageText?.errSavingDocument);
+      }
+      this.modalCtrl.dismiss();
+    } else {
+      this.sharedMethods.showLoader(this.pageText?.errCreatingContract);
+    }
   }
 }

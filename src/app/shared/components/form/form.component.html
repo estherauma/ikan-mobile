@@ -195,8 +195,8 @@
             </ion-row>
             <ion-row *ngIf="!selectedDocuments[question.key]" class="upload-wrapper">
               <div (click)="onUpload(question.key)">
-                <ion-icon name="document-text-outline"></ion-icon>
-                <p>{{ commonText?.uploadDocument }}</p>
+                <ion-icon [src]="uploadDocIcon"></ion-icon>
+                <p>{{ question.placeholder || uploadDocText}}</p>
               </div>
             </ion-row>
 
