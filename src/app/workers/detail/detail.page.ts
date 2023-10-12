@@ -6,6 +6,7 @@ import { BaseformPage } from 'src/app/shared/components/baseform/baseform.page';
 import { ActivatedRoute, Params, Router } from '@angular/router';
 import { WorkersDataService } from '../data/workers-data.service';
 import { DomSanitizer } from '@angular/platform-browser';
+import { AudioService } from 'src/app/shared/services/audio/audio.service';
 
 @Component({
   selector: 'app-detail',
@@ -52,6 +53,8 @@ export class DetailPage extends BaseformPage implements OnInit {
   ];
   activeNavItem = this.navItems[0];
   isResendInviteBtn = this.activeNavItem.id === 1;
+  // TODO: after saving & fetching audioRecordings from the db
+  // map through audioRecordings to generate file from filepath
   audioRecordings: any = [];
   workerId: string;
   workerInfo: any;
@@ -70,6 +73,7 @@ export class DetailPage extends BaseformPage implements OnInit {
     public activatedRoute: ActivatedRoute,
     public workersDataService: WorkersDataService,
     public sanitizer: DomSanitizer,
+    public audioService: AudioService,
   ) {
     super(contentService);
     const pageData = this.contentService.getContentByPropertyName('createplacementinfo');
@@ -88,19 +92,17 @@ export class DetailPage extends BaseformPage implements OnInit {
 
   async getWorkerInfo() {
     this.activatedRoute.queryParams.subscribe(async(queryParams: Params) => {
-      console.log('his.activatedRoute.params....qqqqqq....',queryParams)
       if (queryParams && Object.keys(queryParams).length > 0) {
         // TODO: querying workerInfo from db vs from params
         if (queryParams?.previousUrl) {
-
           this.workerId = queryParams?.workerId;
           const worker = await this.workersDataService.retrieveOne(Number(this.workerId));
           this.workerInfo = worker;
-          console.log('rrrrrr....workerInfo', this.workerInfo)
+          const file = await this.audioService.retrieveFile(queryParams?.filepath);
 
           this.audioRecordings.unshift({
             ...queryParams,
-            file: this.sanitizer.bypassSecurityTrustResourceUrl(queryParams.file)
+            file: this.sanitizer.bypassSecurityTrustResourceUrl(file),
           });
         } else {
 

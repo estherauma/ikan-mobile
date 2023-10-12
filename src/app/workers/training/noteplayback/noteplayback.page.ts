@@ -4,6 +4,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { ModalController } from '@ionic/angular';
 import { NotecreatePage } from '../notecreate/notecreate.page';
 import { ContentService } from 'src/app/shared/services/content/content.service';
+import { AudioService } from 'src/app/shared/services/audio/audio.service';
 
 @Component({
   selector: 'app-noteplayback',
@@ -21,13 +22,16 @@ export class NoteplaybackPage implements OnInit {
     public sanitizer: DomSanitizer,
     public router: Router,
     public contentService: ContentService,
+    public audioService: AudioService,
   ) { }
 
   ngOnInit() {
     this.commonText = this.contentService?.commonText;
-    this.activatedRoute.params.subscribe((params) => {
-      this.audioNote = this.sanitizer.bypassSecurityTrustResourceUrl(params.file);//use url
-      this.audioNoteParams = params;
+    this.activatedRoute.params.subscribe(async(params) => {
+      if (params && Object.keys(params).length > 0) {
+        this.audioNote = this.sanitizer.bypassSecurityTrustResourceUrl(params.file);
+        this.audioNoteParams = params;
+      }
     });
   }
 
@@ -37,12 +41,20 @@ export class NoteplaybackPage implements OnInit {
       cssClass: 'tuna-modal'
     });
 
+    const savedFile = await this.audioService.saveFile(this.audioNoteParams);
+
     modal.present();
     modal.onDidDismiss().then((noteData) => {
+
       this.router.navigate(
         [ this.audioNoteParams?.previousUrl ],
         { 
-          queryParams: {name: noteData?.data?.name, ...this.audioNoteParams},
+          queryParams: {
+            name: noteData?.data?.name,
+            workerId: this.audioNoteParams?.workerId,
+            previousUrl: this.audioNoteParams?.previousUrl,
+            ...savedFile
+          },
           replaceUrl: true,
         }
       );
@@ -50,7 +62,7 @@ export class NoteplaybackPage implements OnInit {
   }
 
   onDelete() {
-    this.router.navigate(['/workers/recordnote'], { replaceUrl: true });
+    this.router.navigate(['/workers/recordnote', this.audioNoteParams], {  replaceUrl: true });
   }
 
 }
