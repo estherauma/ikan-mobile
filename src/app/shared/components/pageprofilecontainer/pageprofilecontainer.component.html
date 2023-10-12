@@ -5,7 +5,7 @@
         class="profile-image"
         [ngStyle]="{'background': 'url(' + imageUrl + ') no-repeat 0 0 / cover'}"
       ></div>
-      <div class="status-container" [ngClass]="{'pending': status === 'pending', 'active': status === 'active'}">
+      <div class="status-container" [ngClass]="sharedMethods.getStatusClass(status)">
         <small>{{status}}</small>
       </div>
     </div>

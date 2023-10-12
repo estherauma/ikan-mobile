@@ -1,5 +1,6 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { ContentService } from '../../services/content/content.service';
+import { SharedmethodsService } from '../../services/sharedmethods/sharedmethods.service';
 
 
 export type StatusType = 'pending' | 'active';
@@ -24,6 +25,7 @@ export class PageprofilecontainerComponent implements OnInit {
 
   constructor(
     public contentService: ContentService,
+    public sharedMethods: SharedmethodsService,
   ) { }
 
   ngOnInit() {

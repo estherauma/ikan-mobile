@@ -3,27 +3,36 @@
 
 <ion-content>
   <div class="ion-padding detail-section">
-    <ion-text>{{ commonText?.ref }}: {{contract.ref}}</ion-text>
+    <ion-grid>
+      <ion-row class="ion-justify-content-between ion-align-items-baseline">
+        <ion-col>
+          <ion-row class="ion-justify-content-end">
+            <div>
+              <app-button (onClick)="createClause()" iconName="add-outline" title="New Clause"></app-button>
+            </div>
+          </ion-row>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+    <ion-text>{{ commonText?.ref }}: {{contract.internalRef}}</ion-text>
     <ion-text>
       <h1>{{contract.name}}</h1>
     </ion-text>
-    <ion-text>
-      <h1>+</h1>
-    </ion-text>
+   
     <ion-text>
       <h1>{{contract.companyName}}</h1>
     </ion-text>
 
     <ion-text class="block">{{ commonText?.vessel }}: {{contract.vesselName}}</ion-text>
-    <ion-text class="block">{{ commonText?.dates }}: {{contract.date}}</ion-text>
+    <ion-text class="block">{{ commonText?.dates }}: {{contract.startDate}} - {{contract.endDate}}</ion-text>
     <br />
 
-    <ion-text class="block">{{ commonText?.taiwaneseRepresentative }}: Cici's Company</ion-text>
-    <ion-text class="block">{{ commonText?.indonesianRepresentative }}: Farah's Company<p></p>
+    <ion-text class="block">{{ commonText?.taiwaneseRepresentative }}: {{contract.taiwaneseCompany}} </ion-text>
+    <ion-text class="block">{{ commonText?.indonesianRepresentative }}: {{contract.indonesianCompany}} <p></p>
     </ion-text>
 
   </div>
-  <div class="navmenu">
+  <!-- <div class="navmenu">
     <ul>
       <li>
         <div class="list-item">
@@ -143,5 +152,5 @@
         </div>
       </li>
     </ul>
-  </div>
+  </div> -->
 </ion-content>
