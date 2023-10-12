@@ -221,8 +221,8 @@
             </ion-row>
             <ion-row *ngIf="!selectedImages[question.key] && !question.value" class="upload-wrapper">
               <div (click)="takePicture(question.key)">
-                <ion-icon name="camera-outline"></ion-icon>
-                <p>{{ commonText?.uploadPicture }}</p>
+                <ion-icon [src]="uploadPictureIcon"></ion-icon>
+                <p>{{ question.placeholder || uploadPictureText}}</p>
               </div>
             </ion-row>
             <ion-row *ngIf="question.value" class="image-preview">

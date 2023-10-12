@@ -35,6 +35,7 @@ export class WorkersDataService {
             id: data.rows.item(i).id,
             fname: data.rows.item(i).f_name,
             lname: data.rows.item(i).l_name,
+            profile_img_url: data.rows.item(i).profile_img_url,
             email: data.rows.item(i).email,
             phone: data.rows.item(i).phone,
             status: data.rows.item(i).status,
@@ -96,10 +97,10 @@ export class WorkersDataService {
   }
 
   create(data) {
-    const query = 'INSERT INTO workers (f_name, l_name, email, phone, \
+    const query = 'INSERT INTO workers (f_name, l_name, profile_img_url, email, phone, \
       status, address_line_1, address_line_2, address_line_3, city, country, zip_code, created_at, updated_at, created_by, \
-      updated_by) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)';
-    const params = [data.f_name, data.l_name, data.email, data.phone,
+      updated_by) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)';
+    const params = [data.f_name, data.l_name, data.profile_img_url, data.email, data.phone,
       data.status, data.address_line_1, data.address_line_2, data.address_line_3,
       data.city, data.country, data.zip_code,  data.created_at, data.updated_at, data.created_by, data.updated_by];
     return this.db.executeSql(query, params).then((result) => {

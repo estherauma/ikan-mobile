@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
 import { ActivatedRoute, Router } from '@angular/router';
+import { AudioService } from 'src/app/shared/services/audio/audio.service';
 import { ContentService } from 'src/app/shared/services/content/content.service';
 
 @Component({
@@ -10,6 +11,8 @@ import { ContentService } from 'src/app/shared/services/content/content.service'
 })
 export class StatusPage implements OnInit {
   commonText: any;
+  // TODO: after saving & fetching audioRecordings from the db
+  // map through audioRecordings to generate file from filepath
   audioRecordings = [
     {
       name: 'one',
@@ -47,17 +50,19 @@ export class StatusPage implements OnInit {
     public sanitizer: DomSanitizer,
     public router: Router,
     public contentService: ContentService,
+    public audioService: AudioService,
   ) { }
 
   ngOnInit() {
     this.commonText = this.contentService?.commonText;
-    this.activatedRoute.params.subscribe((params: any) => {
+    this.activatedRoute.params.subscribe(async(params: any) => {
       if (Object.keys(params).length === 0) {
         return;
       }
+      const file = await this.audioService.retrieveFile(params.filepath);
       this.audioRecordings.unshift({
         ...params,
-        file: this.sanitizer.bypassSecurityTrustResourceUrl(params.file)
+        file: this.sanitizer.bypassSecurityTrustResourceUrl(file),
       });
     });
   }

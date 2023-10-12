@@ -6,9 +6,9 @@
     [active]="activeNavItem"
     [navItems]="navItems"
     [status]="workerInfo?.status"
-    [title]="workerInfo?.name"
-    [isResendInviteBtn]="isResendInviteBtn"
-    imageUrl="/assets/imgs/zila1.jpeg"
+    [title]="workerInfo?.fname + ' ' + workerInfo?.lname"
+    [isResendInviteBtn]="isResendInviteBtn && workerInfo?.status.toLowerCase().includes('pending')"
+    [imageUrl]="workerInfo?.profile_img_url || '/assets/icon/ellipse_profile.svg'"
   ></app-pageprofilecontainer>
 
 <div class="contents ion-padding">

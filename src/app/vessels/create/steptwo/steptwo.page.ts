@@ -16,6 +16,7 @@ export class SteptwoPage extends BaseformPage implements OnInit {
   submitButtonText = 'Save';
   prevQuestions: any;
   prevData: any;
+  pageText: any;
 
   constructor(
     public sharedMethods: SharedmethodsService,
@@ -42,7 +43,10 @@ export class SteptwoPage extends BaseformPage implements OnInit {
     const pageData = this.contentService.getContentByPropertyName(
       'vessels-createsteptwo'
     );
+    this.commonText = this.contentService.commonText;
+    this.submitButtonText = this.commonText?.save;
     this.pageTitle = pageData?.pageTitle;
+    this.pageText = this.sharedMethods.convertAdditionalTextToObj(pageData?.additionalText);
     this.formQuestions = this.prevQuestions.concat(pageData?.formQuestions);
     this.formQuestions.forEach((entry) => {
       if (entry.key in this.prevData) {
@@ -57,17 +61,27 @@ export class SteptwoPage extends BaseformPage implements OnInit {
   }
 
   async onSubmit(formData) {
-    this.sharedMethods.showLoader('Saving vessel, please wait...');
+    this.sharedMethods.showLoader(this.pageText?.savingVessel);
     const now = this.sharedMethods.getCurrentDateTime();
     formData.created_at = formData.updated_at = now;
     const userData = await this.sharedMethods.getUserData();
     formData.created_by = formData.updated_by = userData.id;
     const insertId = await this.vesselDataService.create(formData);
     if (insertId) {
+      const imageData = {
+        vessel_id: insertId,
+        image_url: formData?.image_url,
+        description: '', // TODO: update description
+      };
+      const imageInsertId = await this.vesselDataService.createVesselImage(imageData);
+      if (!imageInsertId) {
+        this.sharedMethods.showLoader(this.pageText?.errSavingImage);
+      }
       this.modalCtrl.dismiss();
       this.router.navigate(['vessels/view', formData]);
     } else {
-      this.sharedMethods.showLoader('Error creating vessel');
+
+      this.sharedMethods.showLoader(this.pageText?.errCreatingVessel);
     }
   }
 }

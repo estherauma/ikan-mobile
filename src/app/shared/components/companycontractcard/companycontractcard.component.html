@@ -1,5 +1,5 @@
 <div>
-  <ion-card>
+  <ion-card (click)="viewContract()">
     <ion-card-content>
         <div class="left-side-section">
           <div class="logo-section">
@@ -12,12 +12,12 @@
                 <ion-card-title class="title blue-dark">{{title}}</ion-card-title>
                 <ion-label>
                   <ion-text class="gray-text">{{ commonText?.contract }}: </ion-text>
-                  <ion-text class="blue-text">{{contract}}</ion-text>
+                  <ion-text class="blue-text">{{contract?.appRef}}</ion-text>
                 </ion-label> <br>
-                <ion-label>
+                <!-- <ion-label>
                   <ion-text class="gray-text">{{ commonText?.vessel }}: </ion-text>
                   <ion-text class="blue-text">{{vessel}}</ion-text>
-                </ion-label> <br>
+                </ion-label> <br> -->
                 <ion-label>
                   <ion-text class="gray-text">{{ commonText?.dates }}: </ion-text>
                   <ion-text class="blue-text">{{dates}}</ion-text>

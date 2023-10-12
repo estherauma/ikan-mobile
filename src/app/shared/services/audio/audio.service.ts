@@ -3,6 +3,7 @@ import { VoiceRecorder, RecordingData, GenericResponse, CurrentRecordingStatus }
 import { SharedmethodsService } from '../sharedmethods/sharedmethods.service';
 import { ContentService } from '../content/content.service';
 import { Directory, Filesystem } from '@capacitor/filesystem';
+import { DomSanitizer } from '@angular/platform-browser';
 
 @Injectable({
   providedIn: 'root'
@@ -14,6 +15,7 @@ export class AudioService {
   constructor(
     public sharedMethods: SharedmethodsService,
     public contentService: ContentService,
+    public sanitizer: DomSanitizer,
   ) {
     this.commonText = this.contentService?.commonText;
     VoiceRecorder.requestAudioRecordingPermission();
@@ -129,38 +131,50 @@ export class AudioService {
 
       const result: RecordingData = await VoiceRecorder.stopRecording();
       if (result?.value?.recordDataBase64) {
-        console.log('result........', result)
-        // return await this.saveFile(result?.value?.recordDataBase64);
-        const file = `data:audio/aac;base64,${result.value.recordDataBase64}`;
+        const file = `data:audio/aac;base64,${result.value?.recordDataBase64}`;
+        const uniqueName = `${Date.now()}`;
+ 
         return {
-          file,
-          uniqueName: Date.now()
-        };
+          uniqueName,
+          file
+        }
       }
+
       return null;
     } catch (error) {
       console.error(error);
       return null;
     }
   }
-
-  async saveFile(base64String: string) {
+  async saveFile(obj) {
     try {
-      const uniqueName = `${Date.now()}`;
+      const base64String = obj.file.split('data:audio/aac;base64,')[1];
       const savedFile = await Filesystem.writeFile({
-        path: uniqueName,
+        path: obj.uniqueName,
         data: base64String as string,
         directory: Directory.Data,
       });
 
       return {
-        uniqueName,
+        uniqueName: obj.uniqueName,
         filepath: savedFile.uri,
       }
     } catch (error) {
       console.error('Failed to saved audio recording.', error);
       return null;
     }
+  }
+
+  /**
+   * @param path uri path
+   */ 
+  async retrieveFile(path) {
+    const content = await Filesystem.readFile({
+      path
+    });
+  
+    const file = `data:audio/aac;base64,${content.data}`;
+    return file;
   }
 
   /**

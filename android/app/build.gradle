@@ -26,7 +26,7 @@ android {
           minifyEnabled false
           debuggable true
           firebaseAppDistribution {
-            releaseNotes="Add file picker & voice recorder alternatives and allow users to add documents from gallery and camera"
+            releaseNotes="Update all instances upload documents"
             groups="scrum,other-departments"
             serviceCredentialsFile=file("google-services-credentials.json")
           }

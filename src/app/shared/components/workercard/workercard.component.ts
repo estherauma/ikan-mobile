@@ -1,5 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { ContentService } from '../../services/content/content.service';
+import { SharedmethodsService } from '../../services/sharedmethods/sharedmethods.service';
 
 @Component({
   selector: 'app-workercard',
@@ -13,6 +14,7 @@ export class WorkercardComponent implements OnInit {
 
   constructor (
     public contentService: ContentService,
+    public sharedMethods: SharedmethodsService,
   ) { }
 
   ngOnInit() {
