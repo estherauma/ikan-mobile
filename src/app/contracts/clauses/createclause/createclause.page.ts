@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
+import { ModalController } from '@ionic/angular';
 import { BaseformPage } from 'src/app/shared/components/baseform/baseform.page';
 import { ApiService } from 'src/app/shared/services/api/api.service';
 import { ContentService } from 'src/app/shared/services/content/content.service';
@@ -17,7 +18,8 @@ export class CreateclausePage extends BaseformPage implements OnInit {
     public contentService: ContentService,
     public router: Router,
     public apiService: ApiService,
-    public sharedMethods: SharedmethodsService
+    public sharedMethods: SharedmethodsService,
+    public modalCtrl: ModalController
   ) {
     super(contentService);
    }
@@ -39,6 +41,9 @@ export class CreateclausePage extends BaseformPage implements OnInit {
     this.pageFormGroup = new FormGroup(this.group);
   }
 
-  onSubmit(form) {}
+  onSubmit(formData) {
+    this.modalCtrl.dismiss();
+    this.router.navigate(['/contracts/createdetails', formData]);
+  }
 
 }
