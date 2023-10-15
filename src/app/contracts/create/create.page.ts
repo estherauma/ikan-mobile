@@ -75,16 +75,19 @@ export class CreatePage extends BaseformPage implements OnInit {
     formData.created_at = formData.updated_at = now;
     const insertId =  await this.contractsDataService.create(formData);
     if (insertId) {
-      const contractData = {
-        contract_id: insertId,
-        name: formData?.file_url.uniqueName, // TODO: change to actual name not generated one
-        url: formData?.file_url.webPath,
-        status: '', // TODO: update status
-      };
-      const docInsertId = await this.contractsDataService.createContractDocument(contractData);
-      if (!docInsertId) {
-        this.sharedMethods.showLoader(this.pageText?.errSavingDocument);
+      if (formData?.file_url?.webPath) {
+        const contractData = {
+          contract_id: insertId,
+          name: formData?.file_url.uniqueName, // TODO: change to actual name not generated one
+          url: formData?.file_url.webPath,
+          status: '', // TODO: update status
+        };
+        const docInsertId = await this.contractsDataService.createContractDocument(contractData);
+        if (!docInsertId) {
+          this.sharedMethods.showLoader(this.pageText?.errSavingDocument);
+        }
       }
+
       this.modalCtrl.dismiss();
     } else {
       this.sharedMethods.showLoader(this.pageText?.errCreatingContract);
