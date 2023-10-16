@@ -150,7 +150,7 @@ export class AudioService {
     try {
       const base64String = obj.file.split('data:audio/aac;base64,')[1];
       const savedFile = await Filesystem.writeFile({
-        path: obj.uniqueName,
+        path: `recordings/${obj.uniqueName}`,
         data: base64String as string,
         directory: Directory.Data,
       });
@@ -169,8 +169,12 @@ export class AudioService {
    * @param path uri path
    */ 
   async retrieveFile(path) {
+    const lastIndexOfSlash = path.lastIndexOf('/');
+    const filename = path.substring(lastIndexOfSlash + 1);
+    const filepath = `recordings/${filename}`
     const content = await Filesystem.readFile({
-      path
+      path: filepath,
+      directory: Directory.Data
     });
   
     const file = `data:audio/aac;base64,${content.data}`;
