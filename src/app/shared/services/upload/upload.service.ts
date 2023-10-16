@@ -3,9 +3,8 @@ import { Camera, CameraSource, CameraResultType } from '@capacitor/camera';
 import { Capacitor } from '@capacitor/core';
 import { FilePicker } from '@capawesome/capacitor-file-picker';
 import { Filesystem, Directory } from '@capacitor/filesystem';
+import { UploadType } from '../../types/types';
 
-// TODO: refactor logic to upload all file types
-type UploadType = 'application/pdf' | 'image/png';
 
 @Injectable({
   providedIn: 'root'
@@ -26,6 +25,7 @@ export class UploadService {
       return await this.saveFile(file?.path, fileName);
     } catch (error) {
       console.error('Error in upload.service.ts at chooseFile(). Failed to select file.', error);
+      return null;
     }
   }
 

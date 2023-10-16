@@ -34,6 +34,8 @@ export class FormComponent implements OnInit {
   @Input() autocomplete = true;
   @Input() uploadPictureIcon: string = 'assets/icon/camera.svg';
   @Input() uploadPictureText: string = '';
+  @Input() uploadDocIcon: string = 'assets/icon/pdf.svg';
+  @Input() uploadDocText: string = '';
 
   @Output() formValues = new EventEmitter<any>();
   @Output() cancel = new EventEmitter<any>();
@@ -62,6 +64,7 @@ export class FormComponent implements OnInit {
     this.commonText = this.contentService?.commonText;
     this.typeHereText = this.commonText?.typeHere;
     this.uploadPictureText = this.commonText?.uploadPicture;
+    this.uploadDocText = this.commonText?.uploadDocument;
     this.tunaFormquestions.map(question => {
       if ([...this.typesToExclude].includes(question.questionType)) {
         this.tunaFormGroup.patchValue({
