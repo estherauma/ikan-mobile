@@ -3,12 +3,10 @@
   [shape]="shape" 
   [fill]="fill" 
   (click)="onClick ? onButtonClick() :  null" 
-  expand="full" 
   [size]="size"
-  disabled={{disabled}}
+  [disabled]="disabled"
   [class]="customClasses"
   [color]="color"
-  disabled="true"
   [type]="type"
 >
   <ion-icon *ngIf="iconPosition === 'left' && iconName" [name]="iconName"></ion-icon>

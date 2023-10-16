@@ -11,13 +11,16 @@ import { SharedmethodsService } from 'src/app/shared/services/sharedmethods/shar
   styleUrls: ['./notecreate.page.scss'],
 })
 export class NotecreatePage extends BaseformPage implements OnInit {
-  submitButtonText = 'Save';
+  submitButtonText = '';
+  
   constructor(
     public contentService: ContentService,
     public modalCtrl: ModalController,
     public sharedMethods: SharedmethodsService,
   ) {
     super(contentService);
+    this.commonText = this.contentService?.commonText;
+    this.submitButtonText = this.commonText?.save;
     const deductionsData = this.contentService.getContentByPropertyName('createaudionote');
     this.formQuestions = deductionsData?.formQuestions;
     this.formQuestions.forEach((q) => {
