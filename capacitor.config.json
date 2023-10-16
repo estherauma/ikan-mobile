@@ -28,6 +28,12 @@
         "sound",
         "alert"
       ]
+    },
+		"LocalNotifications": {
+      "smallIcon": "ic_stat_icon_notify",
+			"icon": "icon_notify",
+      "iconColor": "#3565FF",
+      "sound": "beep.wav"
     }
 	}
 }
