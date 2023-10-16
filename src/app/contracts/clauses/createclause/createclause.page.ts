@@ -45,5 +45,4 @@ export class CreateclausePage extends BaseformPage implements OnInit {
     this.modalCtrl.dismiss();
     this.router.navigate(['/contracts/createdetails', formData]);
   }
-
 }
