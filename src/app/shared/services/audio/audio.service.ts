@@ -2,6 +2,8 @@ import { Injectable } from '@angular/core';
 import { VoiceRecorder, RecordingData, GenericResponse, CurrentRecordingStatus } from 'capacitor-voice-recorder';
 import { SharedmethodsService } from '../sharedmethods/sharedmethods.service';
 import { ContentService } from '../content/content.service';
+import { Directory, Filesystem } from '@capacitor/filesystem';
+import { DomSanitizer } from '@angular/platform-browser';
 
 @Injectable({
   providedIn: 'root'
@@ -13,6 +15,7 @@ export class AudioService {
   constructor(
     public sharedMethods: SharedmethodsService,
     public contentService: ContentService,
+    public sanitizer: DomSanitizer,
   ) {
     this.commonText = this.contentService?.commonText;
     VoiceRecorder.requestAudioRecordingPermission();
@@ -128,17 +131,54 @@ export class AudioService {
 
       const result: RecordingData = await VoiceRecorder.stopRecording();
       if (result?.value?.recordDataBase64) {
-          const file = `data:audio/aac;base64,${result.value.recordDataBase64}`;
-          return {
-            file,
-            uniqueName: Date.now()
-          };
+        const file = `data:audio/aac;base64,${result.value?.recordDataBase64}`;
+        const uniqueName = `${Date.now()}`;
+ 
+        return {
+          uniqueName,
+          file
         }
+      }
+
       return null;
     } catch (error) {
       console.error(error);
       return null;
     }
+  }
+  async saveFile(obj) {
+    try {
+      const base64String = obj.file.split('data:audio/aac;base64,')[1];
+      const savedFile = await Filesystem.writeFile({
+        path: `recordings/${obj.uniqueName}`,
+        data: base64String as string,
+        directory: Directory.Data,
+      });
+
+      return {
+        uniqueName: obj.uniqueName,
+        filepath: savedFile.uri,
+      }
+    } catch (error) {
+      console.error('Failed to saved audio recording.', error);
+      return null;
+    }
+  }
+
+  /**
+   * @param path uri path
+   */ 
+  async retrieveFile(path) {
+    const lastIndexOfSlash = path.lastIndexOf('/');
+    const filename = path.substring(lastIndexOfSlash + 1);
+    const filepath = `recordings/${filename}`
+    const content = await Filesystem.readFile({
+      path: filepath,
+      directory: Directory.Data
+    });
+  
+    const file = `data:audio/aac;base64,${content.data}`;
+    return file;
   }
 
   /**
