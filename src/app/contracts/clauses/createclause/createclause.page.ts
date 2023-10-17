@@ -13,6 +13,7 @@ import { SharedmethodsService } from 'src/app/shared/services/sharedmethods/shar
   styleUrls: ['./createclause.page.scss'],
 })
 export class CreateclausePage extends BaseformPage implements OnInit {
+  contractId: any;
 
   constructor(
     public contentService: ContentService,
@@ -31,6 +32,7 @@ export class CreateclausePage extends BaseformPage implements OnInit {
 
   pageSetup(){
     const pageData = this.contentService.getContentByPropertyName('contract-create-clause');
+    console.log(pageData);
     this.formQuestions = pageData.formQuestions;
     this.pageTitle = pageData?.pageTitle;
     this.pageText = this.sharedMethods.convertAdditionalTextToObj(pageData?.additionalText);
@@ -42,6 +44,7 @@ export class CreateclausePage extends BaseformPage implements OnInit {
   }
 
   onSubmit(formData) {
+    formData.contractId = this.contractId
     this.modalCtrl.dismiss();
     this.router.navigate(['/contracts/createdetails', formData]);
   }

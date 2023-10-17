@@ -62,7 +62,10 @@ export class ViewPage implements OnInit {
   async createClause() {
     const modal = await this.modalController.create({
       component: CreateclausePage,
-      cssClass: 'notification-modal'
+      cssClass: 'notification-modal',
+      componentProps: {
+        contractId: this.contract.id,
+      }
     });
 
     modal.present();

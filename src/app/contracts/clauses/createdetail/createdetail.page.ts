@@ -16,6 +16,7 @@ export class CreatedetailPage extends BaseformPage implements OnInit {
     'Parties to this contract - Party B': 'contract-clauses-parties-requirement-fishers'
   }
   objectTolookup: string;
+  contractId: any
 
   constructor(
     public contentService: ContentService,
@@ -31,6 +32,7 @@ export class CreatedetailPage extends BaseformPage implements OnInit {
       this.objectTolookup = params['clause-type']; 
       // remove whitespace from beginning and end of string
       this.objectTolookup = this.objectTolookup.trim();
+      this.contractId = params['contractId'];
       this.pageSetup();
     });
   }
@@ -42,15 +44,18 @@ export class CreatedetailPage extends BaseformPage implements OnInit {
       return;
     }
     this.pageTitle = pageData?.pageTitle;
+    this.pageText = this.sharedMethods.convertAdditionalTextToObj(pageData?.additionalText);
     this.formQuestions = pageData?.formQuestions;
     this.formQuestions.forEach((entry) => {
       this.group[entry.key] = new FormControl('', [Validators.required]);
     });
     this.pageFormGroup = new FormGroup(this.group);
+    this.submitButtonText = this.pageText?.submitButtonText;
   }
 
   onSubmit(formData) {
     console.log(formData);
+    console.log(this.contractId);
   }
 
 }
