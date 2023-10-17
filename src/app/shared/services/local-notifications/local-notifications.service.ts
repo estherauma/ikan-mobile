@@ -33,8 +33,8 @@ export class LocalNotificationsService {
     if (permissionsGranted) {
       const notifications: LocalNotificationSchema[] = [
         {
-          title: 'Test Notification',
-          body: 'This is a test notification.',
+          title: 'Survey',
+          body: 'A quick survey checking on you',
           id: 1,
           schedule: { on: { weekday: Weekday.Monday, } }, // Notification will run every Monday
           actionTypeId: 'survey',
@@ -82,9 +82,9 @@ export class LocalNotificationsService {
               }
               // TO BE REMOVED
               // for testing purposes
-              // if (notification?.actionTypeId === 'test') {
-              //   this.router.navigate([ 'survey' ]);
-              // }
+              if (notification?.actionTypeId === 'test') {
+                this.router.navigate([ 'survey' ]);
+              }
               break;
             default:
               break;
