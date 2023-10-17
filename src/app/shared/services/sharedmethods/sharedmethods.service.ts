@@ -60,6 +60,14 @@ export class SharedmethodsService {
     }
   }
 
+  async saveSurveyDataToLocalStorage(key, date, obj) {
+    const storedValues = await this.readDataFromStorage(key);
+    await Preferences.set({
+      key,
+      value: JSON.stringify({ ...storedValues, [date]: obj })
+    });
+  }
+
   isValidJSON(str: string) {
     try {
       JSON.parse(str);

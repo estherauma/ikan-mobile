@@ -1,0 +1,51 @@
+import { Component, OnInit } from '@angular/core';
+import { ContentService } from '../shared/services/content/content.service';
+import { BaseformPage } from '../shared/components/baseform/baseform.page';
+import { FormControl, Validators, FormGroup } from '@angular/forms';
+import { SharedmethodsService } from '../shared/services/sharedmethods/sharedmethods.service';
+import { Router } from '@angular/router';
+import { StorageKeys } from '../shared/types/api-types';
+import { AuthService } from '../shared/services/auth/auth.service';
+
+@Component({
+  selector: 'app-survey',
+  templateUrl: './survey.component.html',
+  styleUrls: ['./survey.component.scss'],
+})
+export class SurveyComponent extends BaseformPage  implements OnInit {
+
+  constructor(
+    public contentService: ContentService,
+    public sharedMethods: SharedmethodsService,
+    public router: Router,
+    public authService: AuthService,
+  ) {
+    super(contentService)
+  }
+
+  ngOnInit() {
+    this.commonText = this.contentService?.commonText;
+    const pageData = this.contentService.getContentByPropertyName('survey');
+    this.pageTitle  = pageData?.pageTitle;
+    this.formQuestions = pageData?.formQuestions;
+    this.formQuestions.forEach(entry => {
+      this.group[entry.key] = new FormControl('', [ Validators.required ]);
+    });
+    this.pageFormGroup = new FormGroup(this.group);
+  }
+
+  async onSubmit(formData) {
+    this.sharedMethods.showLoader(this.commonText?.submittingYourData);
+    const date = this.sharedMethods.getCurrentDateTime('date');
+    const now = this.sharedMethods.getCurrentDateTime();
+    const user = await this.sharedMethods.readDataFromStorage(StorageKeys.userData);
+    const surveyData = {
+      ...formData,
+      createdAt: now
+    };
+    await this.sharedMethods.saveSurveyDataToLocalStorage(StorageKeys.survey, date, surveyData);
+
+    this.sharedMethods?.hideLoader();
+    this.router.navigate([this.authService.getCurrentUserBaseUrlFromRole(user?.role)]);
+  }
+}
