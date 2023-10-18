@@ -97,4 +97,43 @@ export class ContractDataService {
   updateContractDocumentRecipient(id, data) { }
 
   deleteContractRecipient(id) { }
+
+  retrieveContractClauses(contractid) {
+    const query  = 'SELECT * FROM contract_clauses WHERE contract_id = ?';
+    const params = [contractid];
+    return this.db.executeSql(query, params).then((data) => {
+      const clauses = [];
+      if (data.rows.length > 0) {
+        for (let i = 0; i < data.rows.length; i++) {
+          clauses.push({
+            id: data.rows.item(i).id,
+            appRef: data.rows.item(i).app_ref,
+            name: data.rows.item(i).name,
+            kind: data.rows.item(i).kind,
+            onlineRef: data.rows.item(i).online_ref,
+            content: data.rows.item(i).content,
+            createdAt: data.rows.item(i).created_at,
+            updatedAt: data.rows.item(i).updated_at,
+            createdBy: data.rows.item(i).created_by,
+            updatedBy: data.rows.item(i).updated_by,
+          });
+        }
+      }
+      return clauses;
+    });
+  }
+
+  saveContractClause(contractId, clauseData) {
+    const query = 'INSERT INTO contract_clauses (contract_id, app_ref, \
+      name, kind, content, created_at, updated_at, created_by, updated_by) \
+      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)';
+    const params = [contractId, clauseData.app_ref, clauseData.name, clauseData.kind,
+      clauseData.content, clauseData.created_at, clauseData.updated_at,
+      clauseData.created_by, 
+      clauseData.updated_by];
+    return this.db.executeSql(query, params).then((result) => {
+      console.log('Contract clause saved');
+      return result.insertId;
+    }).catch((e) => console.log(e));
+  }
 }

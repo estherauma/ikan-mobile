@@ -4,6 +4,7 @@ import { ActivatedRoute } from '@angular/router';
 import { BaseformPage } from 'src/app/shared/components/baseform/baseform.page';
 import { ContentService } from 'src/app/shared/services/content/content.service';
 import { SharedmethodsService } from 'src/app/shared/services/sharedmethods/sharedmethods.service';
+import { ContractDataService } from '../../data/contract-data.service';
 
 @Component({
   selector: 'app-createdetail',
@@ -21,7 +22,8 @@ export class CreatedetailPage extends BaseformPage implements OnInit {
   constructor(
     public contentService: ContentService,
     public activatedRoute: ActivatedRoute,
-    public sharedMethods: SharedmethodsService
+    public sharedMethods: SharedmethodsService,
+    private contractDataServ: ContractDataService
   ) { 
     super(contentService)
   }
@@ -33,6 +35,8 @@ export class CreatedetailPage extends BaseformPage implements OnInit {
       // remove whitespace from beginning and end of string
       this.objectTolookup = this.objectTolookup.trim();
       this.contractId = params['contractId'];
+      // TODO: Add a check to see if the contract clause exists
+      // We should be able to fetch it and display it for the user to edit
       this.pageSetup();
     });
   }
@@ -53,9 +57,23 @@ export class CreatedetailPage extends BaseformPage implements OnInit {
     this.submitButtonText = this.pageText?.submitButtonText;
   }
 
-  onSubmit(formData) {
+  async onSubmit(formData) {
+    const userData = await this.sharedMethods.getUserData();
+    const now = this.sharedMethods.getCurrentDateTime();
+    // We need this information before we append meta data
+    formData.content = formData;
+    formData.app_ref = this.sharedMethods.generateAppRef();
+    formData.created_by = userData.id;
+    formData.updated_by = userData.id;
+    formData.created_at = formData.updated_at = now;
+    formData.kind = this.objectTolookup;
+    formData.name = this.pageTitle;
     console.log(formData);
-    console.log(this.contractId);
+    this.contractDataServ.saveContractClause(this.contractId, formData)
+    .then((result) => {
+     this.sharedMethods.showToast(this.pageText?.contractClauseSaved);
+     // reroute back to clause list page
+    })
   }
 
 }

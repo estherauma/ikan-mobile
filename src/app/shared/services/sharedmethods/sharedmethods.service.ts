@@ -6,6 +6,7 @@ import { Preferences } from '@capacitor/preferences';
 import { PluginListenerHandle } from '@capacitor/core';
 import { StorageKeys } from '../../types/api-types';
 import { Device } from '@capacitor/device';
+import {v4 as uuidv4} from 'uuid';
 
 
 @Injectable({
@@ -201,5 +202,9 @@ export class SharedmethodsService {
       status?.toLowerCase().includes('active') ? 'active' :
       status?.toLowerCase().includes('engaged') ? 'engaged' :
       '';
+  }
+
+  generateAppRef() {
+    return uuidv4();
   }
 }
