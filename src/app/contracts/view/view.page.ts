@@ -54,6 +54,7 @@ export class ViewPage implements OnInit {
     this.activatedRoute.params.subscribe((params) => {
       this.pageTitle = params.name;
       this.contract = params;
+      // TODO: When PARAM is contract id, fetch contract details from the DB
     });
   }
 

@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { BaseformPage } from 'src/app/shared/components/baseform/baseform.page';
 import { ContentService } from 'src/app/shared/services/content/content.service';
 import { SharedmethodsService } from 'src/app/shared/services/sharedmethods/sharedmethods.service';
@@ -23,7 +23,8 @@ export class CreatedetailPage extends BaseformPage implements OnInit {
     public contentService: ContentService,
     public activatedRoute: ActivatedRoute,
     public sharedMethods: SharedmethodsService,
-    private contractDataServ: ContractDataService
+    private contractDataServ: ContractDataService,
+    public router: Router
   ) { 
     super(contentService)
   }
@@ -68,11 +69,10 @@ export class CreatedetailPage extends BaseformPage implements OnInit {
     formData.created_at = formData.updated_at = now;
     formData.kind = this.objectTolookup;
     formData.name = this.pageTitle;
-    console.log(formData);
     this.contractDataServ.saveContractClause(this.contractId, formData)
     .then((result) => {
-     this.sharedMethods.showToast(this.pageText?.contractClauseSaved);
-     // reroute back to clause list page
+     this.sharedMethods.showToast(this.pageText?.contractClauseSaved)
+     this.router.navigate(['/contracts/view', this.contractId]);
     })
   }
 
