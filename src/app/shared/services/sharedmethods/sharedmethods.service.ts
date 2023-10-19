@@ -61,6 +61,14 @@ export class SharedmethodsService {
     }
   }
 
+  async saveSurveyDataToLocalStorage(key, date, obj) {
+    const storedValues = await this.readDataFromStorage(key);
+    await Preferences.set({
+      key,
+      value: JSON.stringify({ ...storedValues, [date]: obj })
+    });
+  }
+
   isValidJSON(str: string) {
     try {
       JSON.parse(str);
@@ -197,7 +205,7 @@ export class SharedmethodsService {
 
 
   getStatusClass(status: string) {
-    return status.toLowerCase().includes('pending') ? 'pending' :
+    return status?.toLowerCase().includes('pending') ? 'pending' :
       status?.toLowerCase().includes('inactive') ? 'inactive' :
       status?.toLowerCase().includes('active') ? 'active' :
       status?.toLowerCase().includes('engaged') ? 'engaged' :

@@ -1,5 +1,5 @@
  import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { AudioService } from 'src/app/shared/services/audio/audio.service';
 import { ContentService } from 'src/app/shared/services/content/content.service';
 
@@ -10,14 +10,25 @@ import { ContentService } from 'src/app/shared/services/content/content.service'
 })
 export class RecordnotePage implements OnInit {
   commonText: any;
+  previousUrl: string = '';
+  workerId: string;
   recordedNote = null;
   recordingStarted = false;
   recordingStopped = false;
+  
   constructor(
     public audioService: AudioService,
     public router: Router,
     public contentService: ContentService,
-  ) { }
+    public activatedRoute: ActivatedRoute,
+  ) {
+    this.activatedRoute.params.subscribe((params) => {
+      if (params){
+        this.previousUrl = params?.previousUrl;
+        this.workerId = params?.workerId;
+      }
+    });
+  }
 
   ngOnInit() {
     this.commonText = this.contentService?.commonText;
@@ -35,7 +46,13 @@ export class RecordnotePage implements OnInit {
   }
 
   onSave() {
-    this.router.navigate(['/workers/noteplayback', this.recordedNote]);
+    const params = {
+      ...this.recordedNote,
+      previousUrl: this.previousUrl,
+      workerId: this.workerId,
+    };
+
+    this.router.navigate(['/workers/noteplayback', params], { replaceUrl: true });
   }
 
 }

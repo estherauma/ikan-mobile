@@ -28,12 +28,12 @@ export class VesselsDataService {
   }
 
   retriveVessels() {
-    const query = 'SELECT * FROM vessels';
+    const query = 'SELECT vessels.*, vessel_images.image_url FROM vessels \
+      JOIN vessel_images ON vessels.id = vessel_images.vessel_id';
     this.db.executeSql(query, []).then(async(data) => {
       const vessels = [];
       if (data.rows.length > 0) {
         for (let i = 0; i < data.rows.length; i++) {
-          const vessel_image = await this.getVesselImageByVesselId(data.rows.item(i).id);
           vessels.push({
             id: data.rows.item(i).id,
             name: data.rows.item(i).name,
@@ -46,7 +46,7 @@ export class VesselsDataService {
             updatedAt: data.rows.item(i).updated_at,
             createdBy: data.rows.item(i).created_by,
             updatedBy: data.rows.item(i).updated_by,
-            imgUrl: vessel_image?.image_url || 'assets/imgs/vessel.jpeg',
+            imgUrl: data.rows.item(i).image_url || 'assets/imgs/vessel.jpeg',
           });
         }
       }

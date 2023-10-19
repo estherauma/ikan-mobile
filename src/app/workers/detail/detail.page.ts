@@ -4,6 +4,9 @@ import { StatusType } from 'src/app/shared/components/pageprofilecontainer/pagep
 import { ContentService } from 'src/app/shared/services/content/content.service';
 import { BaseformPage } from 'src/app/shared/components/baseform/baseform.page';
 import { ActivatedRoute, Params, Router } from '@angular/router';
+import { WorkersDataService } from '../data/workers-data.service';
+import { DomSanitizer } from '@angular/platform-browser';
+import { AudioService } from 'src/app/shared/services/audio/audio.service';
 
 @Component({
   selector: 'app-detail',
@@ -50,7 +53,10 @@ export class DetailPage extends BaseformPage implements OnInit {
   ];
   activeNavItem = this.navItems[0];
   isResendInviteBtn = this.activeNavItem.id === 1;
-
+  // TODO: after saving & fetching audioRecordings from the db
+  // map through audioRecordings to generate file from filepath
+  audioRecordings: any = [];
+  workerId: string;
   workerInfo: any;
 
   wo = {
@@ -65,6 +71,9 @@ export class DetailPage extends BaseformPage implements OnInit {
     public contentService: ContentService,
     public router: Router,
     public activatedRoute: ActivatedRoute,
+    public workersDataService: WorkersDataService,
+    public sanitizer: DomSanitizer,
+    public audioService: AudioService,
   ) {
     super(contentService);
     const pageData = this.contentService.getContentByPropertyName('createplacementinfo');
@@ -76,15 +85,29 @@ export class DetailPage extends BaseformPage implements OnInit {
     this.pageFormGroup = new FormGroup(this.group);
   }
 
-  ngOnInit() {
+  async ngOnInit() {
     this.commonText = this.contentService?.commonText;
-    this.getWorkerInfo();
+    await this.getWorkerInfo();
   }
 
-  getWorkerInfo() {
-    this.activatedRoute.queryParams.subscribe((queryParams: Params) => {
+  async getWorkerInfo() {
+    this.activatedRoute.queryParams.subscribe(async(queryParams: Params) => {
       if (queryParams && Object.keys(queryParams).length > 0) {
-        this.workerInfo = queryParams;
+        // TODO: querying workerInfo from db vs from params
+        if (queryParams?.previousUrl) {
+          this.workerId = queryParams?.workerId;
+          const worker = await this.workersDataService.retrieveOne(Number(this.workerId));
+          this.workerInfo = worker;
+          const file = await this.audioService.retrieveFile(queryParams?.filepath);
+
+          this.audioRecordings.unshift({
+            ...queryParams,
+            file: this.sanitizer.bypassSecurityTrustResourceUrl(file),
+          });
+        } else {
+
+          this.workerInfo = queryParams;
+        }
       }
     });
   }
@@ -104,4 +127,21 @@ export class DetailPage extends BaseformPage implements OnInit {
     this.router.navigate(['/workers/createdetail']);
   }
 
+  onRecord() {
+    this.router.navigate(
+      [
+        '/workers/recordnote',
+        {
+          previousUrl: this.router.url.split('?')[0],
+          workerId: this.workerInfo?.id
+        } 
+      ],
+      { replaceUrl: true }
+    );
+  }
+
+  onDelete(fileToDelete) {
+    const newAudioRecordings = this.audioRecordings.filter((el) => el.uniqueName !== fileToDelete);
+    this.audioRecordings = newAudioRecordings;
+  }
 }

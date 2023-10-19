@@ -9,3 +9,4 @@
 1677489436083_addPaymentsTables.sql
 1678173855332_updateWorkOrderClausesTable.sql
 1697536278356_addContractClauseTable.sql
+1697090968535_addPaymentsFileurl.sql

@@ -9,6 +9,7 @@ import { PluginListenerHandle } from '@capacitor/core';
 import { AuthService } from './shared/services/auth/auth.service';
 import { DBService } from './shared/services/database/db.service';
 import { PushNotificationsService } from './shared/services/push-notifications/push-notifications.service';
+import { LocalNotificationsService } from './shared/services/local-notifications/local-notifications.service';
 
 @Component({
   selector: 'app-root',
@@ -26,11 +27,13 @@ export class AppComponent implements OnInit, OnDestroy {
     public authService: AuthService,
     public dbService: DBService,
     public pushNotifications: PushNotificationsService,
+    public localNotifications: LocalNotificationsService,
   ) {
     this.authService.setUpAuthData();
     this.contentService.setUpAppData();
     this.checkLoginStatus();
     this.pushNotifications.setup();
+    this.localNotifications.scheduleNotifications();
     this.contentService.menuContent.subscribe((data) => {
       if (data && Object.keys(data).length > 0) {
         data?.sort((a, b) => a.position - b.position);
