@@ -1,0 +1,12 @@
+<app-header [pageTitle]="pageTitle"></app-header>
+
+<ion-content class="ion-padding content-skyblue-bg">
+  <app-form
+    btnFill="solid"
+    [tunaFormGroup]="pageFormGroup"
+    [tunaFormquestions]="formQuestions"
+    [submitButtonText]="commonText?.submit"
+    (formValue)="onSubmit($event)"
+  >
+  </app-form>
+</ion-content>

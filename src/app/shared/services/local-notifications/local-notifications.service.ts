@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { Router } from '@angular/router';
 import { ActionPerformed, LocalNotificationSchema, LocalNotifications, PermissionStatus, Weekday } from '@capacitor/local-notifications';
 
 @Injectable({
@@ -6,8 +7,11 @@ import { ActionPerformed, LocalNotificationSchema, LocalNotifications, Permissio
 })
 export class LocalNotificationsService {
 
-  constructor() {
+  constructor(
+    public router: Router,
+  ) {
     this.scheduleNotifications();
+    this.addListeners();
   }
 
   async requestNotificationPermission() {
@@ -29,21 +33,28 @@ export class LocalNotificationsService {
     if (permissionsGranted) {
       const notifications: LocalNotificationSchema[] = [
         {
-          title: 'Test Notification',
-          body: 'This is a test notification.',
+          title: 'Survey',
+          body: 'A quick survey checking on you',
           id: 1,
           schedule: { on: { weekday: Weekday.Monday, } }, // Notification will run every Monday
+          actionTypeId: 'survey',
+
         },
-        {
-          title: 'Another Notification',
-          body: 'This is another test notification.',
-          id: 1,
-          schedule: { 
-            at: new Date(Date.now() + 1000), 
-            repeats: true,
-            every: "minute" //runs every minute
-          } 
-        },
+        // TO BE REMOVED
+        // Testing purposes
+        // Uncomment the code block below (& in addListeners()) to run the notification every minute
+        // {
+        //   title: 'Another Test Notification',
+        //   body: 'This is another test notification.',
+        //   id: 2,
+        //   schedule: { 
+        //     at: new Date(Date.now() + 1000), 
+        //     repeats: true,
+        //     every: "minute" //runs every minute
+        //   },
+        //   actionTypeId: 'test',
+        // },
+
         // ADD NOTIFICATIONS HERE
       ];
     
@@ -62,7 +73,24 @@ export class LocalNotificationsService {
       
       LocalNotifications.addListener(
         'localNotificationActionPerformed',
-        (notificationAction: ActionPerformed) => {}
+        (notificationAction: ActionPerformed) => {
+          const notification: LocalNotificationSchema = notificationAction?.notification;
+          switch (notificationAction?.actionId) {
+            case 'tap':
+              if (notification?.actionTypeId === 'survey') {
+                this.router.navigate([ 'survey' ]);
+              }
+              // TO BE REMOVED
+              // for testing purposes
+              if (notification?.actionTypeId === 'test') {
+                this.router.navigate([ 'survey' ]);
+              }
+              break;
+            default:
+              break;
+          }
+
+        }
       );
 
 

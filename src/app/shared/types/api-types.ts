@@ -79,6 +79,7 @@ export enum StorageKeys {
   pushNotificationTopics = 'pushNotificationTopics',
   pushNotificationDataUploaded = 'pushNotificationDataUploaded',
   showPNsPermissionsPrompt = 'showPNsPermissionsPrompt',
+  survey = 'survey',
 }
 
 export interface UserData {
