@@ -52,9 +52,9 @@ export class ViewPage implements OnInit {
   ngOnInit() {
     this.commonText = this.contentService?.commonText;
     this.activatedRoute.params.subscribe((params) => {
-      console.log(params)
       this.pageTitle = params.name;
       this.contract = params;
+      // TODO: When PARAM is contract id, fetch contract details from the DB
     });
   }
 
@@ -63,7 +63,10 @@ export class ViewPage implements OnInit {
   async createClause() {
     const modal = await this.modalController.create({
       component: CreateclausePage,
-      cssClass: 'notification-modal'
+      cssClass: 'notification-modal',
+      componentProps: {
+        contractId: this.contract.id,
+      }
     });
 
     modal.present();
