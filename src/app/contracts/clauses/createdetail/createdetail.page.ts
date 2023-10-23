@@ -15,7 +15,8 @@ export class CreatedetailPage extends BaseformPage implements OnInit {
   clauseMapping = {
     'Parties to this contract - Party A': 'contract-clauses-parties-requirement-vessel',
     'Parties to this contract - Party B': 'contract-clauses-parties-requirement-fishers',
-    'Article 1 Period of validity': 'contract-clauses-contract-validity'
+    'Article 1 Period of validity': 'contract-clauses-contract-validity',
+    'Article 2 Wage benefits and means of payment': 'contract-clauses-wage-benefits',
   }
   objectTolookup: string;
   contractId: any
@@ -55,6 +56,19 @@ export class CreatedetailPage extends BaseformPage implements OnInit {
     this.formQuestions = pageData?.formQuestions;
     this.formQuestions.forEach((entry) => {
       this.group[entry.key] = new FormControl('', [Validators.required]);
+      // add change listener to payment frequency
+      if (entry.key === 'paymentFrequency') {
+        this.group[entry.key].valueChanges.subscribe((value) => {
+          this.paymentFrequencyChanged(value);
+        });
+      }
+
+      // add change listener to payment method
+      if (entry.key === 'paymentMethod') {
+        this.group[entry.key].valueChanges.subscribe((value) => {
+          this.paymentMethodChanged(value);
+        });
+      }
     });
     this.pageFormGroup = new FormGroup(this.group);
     this.submitButtonText = this.pageText?.submitButtonText;
@@ -78,4 +92,55 @@ export class CreatedetailPage extends BaseformPage implements OnInit {
     })
   }
 
+  paymentFrequencyChanged(value) {
+    switch (value.trim()) {
+      case 'Every month': {
+        this.formQuestions.forEach((entry) => {
+          if (entry.key === 'paymentFrequencyDetails')  {
+            entry.displayquestion = false;
+            return;
+          }
+        })
+        break;
+      }
+      case 'Other': {
+        // show the paymentFrequencyDetails form control
+        this.formQuestions.forEach((entry) => {
+          if (entry.key === 'paymentFrequencyDetails')  {
+            entry.displayquestion = true;
+            return;
+          }
+        })
+        break;
+      }
+      default: {
+        break;
+      }
+    }
+  }
+
+  paymentMethodChanged(value) {
+    console.log(this.formQuestions);
+    switch (value.trim()) {
+      case 'Partly cash & partly bank transfer': {
+        // show the cashAmount and bankTransferAmount form controls
+        this.formQuestions.forEach((entry) => {
+          if (entry.key === 'bankTransferAmount' || entry.key === 'cashAmount')  {
+            entry.displayquestion = true;
+            // can't return here because I need it to go through all of them to find both
+          }
+        })
+        break;
+      }
+      default: {
+        this.formQuestions.forEach((entry) => {
+          if (entry.key === 'bankTransferAmount' || entry.key === 'cashAmount')  {
+            entry.displayquestion = false;
+            // can't return here because I need it to go through all of them to find both
+          }
+        })
+        break;
+      }
+    }
+  }
 }
