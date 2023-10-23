@@ -14,7 +14,8 @@ import { ContractDataService } from '../../data/contract-data.service';
 export class CreatedetailPage extends BaseformPage implements OnInit {
   clauseMapping = {
     'Parties to this contract - Party A': 'contract-clauses-parties-requirement-vessel',
-    'Parties to this contract - Party B': 'contract-clauses-parties-requirement-fishers'
+    'Parties to this contract - Party B': 'contract-clauses-parties-requirement-fishers',
+    'Article 1 Period of validity': 'contract-clauses-contract-validity'
   }
   objectTolookup: string;
   contractId: any
@@ -49,6 +50,7 @@ export class CreatedetailPage extends BaseformPage implements OnInit {
       return;
     }
     this.pageTitle = pageData?.pageTitle;
+    console.log(pageData);
     this.pageText = this.sharedMethods.convertAdditionalTextToObj(pageData?.additionalText);
     this.formQuestions = pageData?.formQuestions;
     this.formQuestions.forEach((entry) => {
