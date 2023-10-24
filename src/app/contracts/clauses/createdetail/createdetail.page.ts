@@ -17,7 +17,9 @@ export class CreatedetailPage extends BaseformPage implements OnInit {
     'Parties to this contract - Party B': 'contract-clauses-parties-requirement-fishers',
     'Article 1 Period of validity': 'contract-clauses-contract-validity',
     'Article 2 Wage benefits and means of payment': 'contract-clauses-wage-benefits',
-    'Article 5 Working hours rest and leave': 'contract-clauses-working-hours-rest-and-leave'
+    'Article 5 Working hours rest and leave': 'contract-clauses-working-hours-rest-and-leave',
+    'Article 6 Labor protection and benefits': 'contract-clauses-labor-protection-and-benefits',
+    'Attachments': 'contract-clauses-attachments',
   }
   objectTolookup: string;
   contractId: any
@@ -68,6 +70,13 @@ export class CreatedetailPage extends BaseformPage implements OnInit {
       if (entry.key === 'paymentMethod') {
         this.group[entry.key].valueChanges.subscribe((value) => {
           this.paymentMethodChanged(value);
+        });
+      }
+
+      // add change listener to attachment page account
+      if (entry.key === 'isCrewMemberAccount') {
+        this.group[entry.key].valueChanges.subscribe((value) => {
+          this.isCrewMemberAccountChanged(value);
         });
       }
     });
@@ -121,7 +130,6 @@ export class CreatedetailPage extends BaseformPage implements OnInit {
   }
 
   paymentMethodChanged(value) {
-    console.log(this.formQuestions);
     switch (value.trim()) {
       case 'Partly cash & partly bank transfer': {
         // show the cashAmount and bankTransferAmount form controls
@@ -141,6 +149,29 @@ export class CreatedetailPage extends BaseformPage implements OnInit {
           }
         })
         break;
+      }
+    }
+  }
+
+  isCrewMemberAccountChanged(value) {
+    console.log(this.formQuestions)
+    switch (value.trim()) {
+      case 'Yes': {
+        this.formQuestions.forEach((entry) => {
+          console.log(entry.key)
+          if (entry.key === 'relativePhoneNumber' || entry.key === 'relativeWhatspp' || entry.key === 'relativeFb' || entry.key === 'relativeOthers')  {
+            entry.displayquestion = true;
+          }
+        });
+        break;
+      }
+      default: {
+        this.formQuestions.forEach((entry) => {
+          if (entry.key === 'relativePhoneNumber' || entry.key === 'relativeWhatspp' || entry.key === 'relativeFb' || entry.key === 'others')  {
+            entry.displayquestion = false;
+          }
+        });
+        break
       }
     }
   }
