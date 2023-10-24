@@ -17,6 +17,7 @@ export class CreatedetailPage extends BaseformPage implements OnInit {
     'Parties to this contract - Party B': 'contract-clauses-parties-requirement-fishers',
     'Article 1 Period of validity': 'contract-clauses-contract-validity',
     'Article 2 Wage benefits and means of payment': 'contract-clauses-wage-benefits',
+    'Article 5 Working hours rest and leave': 'contract-clauses-working-hours-rest-and-leave'
   }
   objectTolookup: string;
   contractId: any
