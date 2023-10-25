@@ -8,6 +8,7 @@
         <ion-col>
           <ion-row class="ion-justify-content-end">
             <div>
+              <!-- TODO: Add logic for clause translation -->
               <app-button (onClick)="createClause()" iconName="add-outline" title="New Clause"></app-button>
             </div>
           </ion-row>
@@ -32,125 +33,25 @@
     </ion-text>
 
   </div>
-  <!-- <div class="navmenu">
-    <ul>
-      <li>
-        <div class="list-item">
-          <div class="icon">
-            <ion-icon name="checkmark-outline"></ion-icon>
-          </div>
-          <div class="list-content">
-            <h3>{{ commonText?.placementOpportunity }}</h3>
-            <ion-text>
-              <p>{{ commonText?.status }}: Accepted</p>
-            </ion-text>
-            <ion-text>
-              <h6>{{ commonText?.associatedWorkOrderOrDemandLetter }}</h6>
-            </ion-text>
-            <ion-card>
-              <ion-card-content>
-                <ion-grid>
-                  <ion-row>
-                    <ion-col size="3" style="padding-top: 15%">
-                      <ion-icon name="expand-outline" size="large"></ion-icon>
-                    </ion-col>
-                    <ion-col size="8">
-                      <ion-card-title>{{wo.name}}</ion-card-title>
-                      <ion-card-subtitle>{{ commonText?.internalRef }}: {{wo.internalRef}}</ion-card-subtitle>
-                      <br>
-                      <ion-label><strong>{{ commonText?.appRef }}:</strong> {{wo.appRef}}</ion-label> <br>
-                      <ion-label><strong>{{ commonText?.dateCreated }}:</strong> {{wo.dateOpened}}</ion-label> <br>
-                      <ion-label><strong>{{ commonText?.status }}:</strong> {{wo.status}}</ion-label>
-                    </ion-col>
-                    <ion-col size="1" style="text-align: center; padding-top: 15%" (click)="viewDetails(wo)">
-                      <ion-icon name="chevron-forward-outline" size="large"></ion-icon>
-                    </ion-col>
-                  </ion-row>
-                </ion-grid>
-              </ion-card-content>
-            </ion-card>
-          </div>
-        </div>
-      </li>
-      <li>
-        <div class="icon">
-          <ion-icon name="checkmark-outline"></ion-icon>
-        </div>
-        <div class="list-content">
-          <h3>{{ commonText?.placementAgreement }}</h3>
-
-          <ion-card>
-            <ion-card-content>
-              <ion-grid>
-                <ion-row class="ion-align-items-center">
-                  <ion-col size="3">
-                    <ion-thumbnail>
-                      <ion-img [src]=""></ion-img>
-                    </ion-thumbnail>
-                  </ion-col>
-                  <ion-col size="8">
-                    <ion-card-title>{{placementAgreement.name}}</ion-card-title>
-                    <ion-label>{{placementAgreement.info}}</ion-label>
-                  </ion-col>
-                </ion-row>
-              </ion-grid>
-            </ion-card-content>
-          </ion-card>
-        </div>
-      </li>
-      <li>
-        <div class="icon">
-          <ion-icon name="checkmark-outline"></ion-icon>
-        </div>
-        <div class="list-content">
-          <h3>{{ commonText?.jobOrderAndServiceAgreement }}</h3>
-          <ion-text>{{ commonText?.status }}: Confirmed (2/2)</ion-text>
-          <ion-text>{{ commonText?.recipient }}: Cici Surname | Company name</ion-text>
-          <ion-card *ngFor="let osa of orderAndServiceAgreement">
-            <ion-card-content>
-              <ion-grid>
-                <ion-row class="ion-align-items-center">
-                  <ion-col size="3">
-                    <ion-thumbnail>
-                      <ion-img [src]=""></ion-img>
-                    </ion-thumbnail>
-                  </ion-col>
-                  <ion-col size="8">
-                    <ion-card-title>{{osa.name}}</ion-card-title>
-                    <ion-label>{{osa.info}}</ion-label>
-                  </ion-col>
-                </ion-row>
-              </ion-grid>
-            </ion-card-content>
-          </ion-card>
-        </div>
-      </li>
-      <li>
-        <div class="icon">
-          <ion-icon name="checkmark-outline"></ion-icon>
-        </div>
-        <div class="list-content">
-          <h3>{{ commonText?.employmentAgreement }}</h3>
-          <ion-text>{{ commonText?.status }}: Complete</ion-text>
-          <ion-card>
-            <ion-card-content>
-              <ion-grid>
-                <ion-row class="ion-align-items-center">
-                  <ion-col size="3">
-                    <ion-thumbnail>
-                      <ion-img [src]=""></ion-img>
-                    </ion-thumbnail>
-                  </ion-col>
-                  <ion-col size="8">
-                    <ion-card-title>{{employmentAgreement.name}}</ion-card-title>
-                    <ion-label>{{employmentAgreement.info}}</ion-label>
-                  </ion-col>
-                </ion-row>
-              </ion-grid>
-            </ion-card-content>
-          </ion-card>
-        </div>
-      </li>
-    </ul>
-  </div> -->
+  <div class="workorders-wrapper ion-padding">
+    <div class="workorders-container">
+      <div class="clause-sub-title">
+        <app-title title="clauses" [isSmall]="true" [isBlue]="true"></app-title>
+      </div>
+      <app-placementoffercard
+      *ngFor="let clause of contractClauses"
+      [title]="clause.title"
+      [details]="clause.subTitle"
+      [noMargin]="true"
+      [isBlue]="clause.status === 'active'"
+      ></app-placementoffercard>
+    </div>
+    <div class="ion-margin-vertical" [ngClass]="{'action-buttons': !done}">
+      <div *ngIf="done" class="done">
+        <app-button title="done" size="small"></app-button>
+      </div>
+      <app-button *ngIf="!done" title="Re-order" size="small"></app-button>
+      <app-button (onClick)="createClause()" *ngIf="!done" title="Add new clause" size="small" iconName="add-outline"></app-button>
+    </div>
+  </div>
 </ion-content>

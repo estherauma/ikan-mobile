@@ -28,8 +28,7 @@ export class ContractDataService {
   }
 
   retrieveContracts() {
-    const query = 'SELECT contracts.*, contract_documents.file_url FROM contracts \
-      JOIN contract_documents ON contracts.id = contract_documents.contract_id';
+    const query = 'SELECT * FROM contracts';
     // TODO: Add a join to the vessel owner company later
     this.db.executeSql(query, []).then((data) => {
       const contracts = [];
@@ -51,8 +50,7 @@ export class ContractDataService {
             createdAt: data.rows.item(i).created_at,
             updatedAt: data.rows.item(i).updated_at,
             createdBy: data.rows.item(i).created_by,
-            updatedBy: data.rows.item(i).updated_by,
-            fileUrl: data.rows.item(i).file_url,
+            updatedBy: data.rows.item(i).updated_by
           });
         }
 

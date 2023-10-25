@@ -22,7 +22,7 @@ export class CreatedetailPage extends BaseformPage implements OnInit {
     'Attachments': 'contract-clauses-attachments',
   }
   objectTolookup: string;
-  contractId: any
+  contractId: any;
 
   constructor(
     public contentService: ContentService,
@@ -54,11 +54,10 @@ export class CreatedetailPage extends BaseformPage implements OnInit {
       return;
     }
     this.pageTitle = pageData?.pageTitle;
-    console.log(pageData);
     this.pageText = this.sharedMethods.convertAdditionalTextToObj(pageData?.additionalText);
     this.formQuestions = pageData?.formQuestions;
     this.formQuestions.forEach((entry) => {
-      this.group[entry.key] = new FormControl('', [Validators.required]);
+      this.group[entry.key] = new FormControl('', []);
       // add change listener to payment frequency
       if (entry.key === 'paymentFrequency') {
         this.group[entry.key].valueChanges.subscribe((value) => {
