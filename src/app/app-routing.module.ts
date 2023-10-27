@@ -353,6 +353,10 @@ const routes: Routes = [
     path: 'survey',
     loadChildren: () => import('./survey/survey.module').then(m => m.SurveyModule)
   },
+  {
+    path: 'contracts/clauses/viewclause',
+    loadChildren: () => import('./contracts/clauses/viewclause/viewclause.module').then( m => m.ViewclausePageModule)
+  },
 ];
 
 @NgModule({

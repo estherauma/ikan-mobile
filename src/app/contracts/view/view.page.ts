@@ -61,28 +61,23 @@ export class ViewPage implements OnInit {
       // TODO: When PARAM is contract id, fetch contract details from the DB
       this.contractDataService.retrieveContractClauses(this.contract.id)
       .then((response) => {
-
         response.forEach((entry) => {
-          if (entry.kind === 'Parties to this contract - Party A' || entry.kind === 'Parties to this contract - Party B') {
-            const isPartiesClauseIncluded = this.contractClauses.some((clause) => {
-              return clause.title === 'Parties to this contract' || clause.title === 'Parties to this contract - Party A' || clause.title === 'Parties to this contract - Party B';
-            })
-            if (isPartiesClauseIncluded) {
-              // get clause index
-              const clauseIndex = this.contractClauses.findIndex((clause) => {
-                
-              })
-            } else {
-              this.contractClauses.push({
-                title: entry.name,
-                id: entry.id,
-                entry: entry
-              })
-            }
+          // Avoid adding the clause twice.
+          // TODO: Add logic to check if clause is included when creating clauses
+          const clauseIncluded = this.contractClauses.some((clause) => {
+            return clause.title === entry.name;
+          });
+          if (clauseIncluded) {
+            return;
+          }
+          if (entry.kind === 'contract-clauses-parties-requirement-fishers') {
+            // Parties requirement has two entires, so ignore and exit loop
+            return;
           } else {
             this.contractClauses.push({
               title: entry.name,
               id: entry.id,
+              kind: entry.kind,
               entry: entry
             })
           }
@@ -92,8 +87,6 @@ export class ViewPage implements OnInit {
       });
     });
   }
-
-  viewDetails(wo) {}
 
   async createClause() {
     const modal = await this.modalController.create({
@@ -109,4 +102,5 @@ export class ViewPage implements OnInit {
     modal.onDidDismiss().then((data) => {
     });
   }
+
 }

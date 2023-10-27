@@ -92,7 +92,7 @@ export class CreatedetailPage extends BaseformPage implements OnInit {
     formData.created_by = userData.id;
     formData.updated_by = userData.id;
     formData.created_at = formData.updated_at = now;
-    formData.kind = this.objectTolookup;
+    formData.kind = this.clauseMapping[this.objectTolookup];
     formData.name = this.pageTitle;
     this.contractDataServ.saveContractClause(this.contractId, formData)
     .then((result) => {

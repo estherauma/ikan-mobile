@@ -1,4 +1,8 @@
-<ion-card class="card-body no-border" [ngClass]="{'border-top': isFirst, 'border-bottom': isLast, 'no-margin': noMargin}">
+<ion-card 
+  class="card-body no-border" 
+  [ngClass]="{'border-top': isFirst, 'border-bottom': isLast, 'no-margin': noMargin}"
+  (click)="viewClauseDetails()"
+  >
   <div class="card-content">
     <div class="card-image-section" [ngClass]="{'bg-blue': isBlue}">
       <div>
