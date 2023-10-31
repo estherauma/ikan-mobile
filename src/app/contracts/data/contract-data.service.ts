@@ -173,4 +173,29 @@ export class ContractDataService {
       return result.insertId;
     }).catch((e) => console.log(e));
   }
+
+  retrieveClauseDetails(clauseId) {
+    const query = 'SELECT * FROM contract_clauses WHERE id = ?';
+    const params = [clauseId];
+    return this.db.executeSql(query, params).then((data) => {
+      const clause = [];
+      if (data.rows.length > 0) {
+        for (let i = 0; i < data.rows.length; i++) {
+          clause.push({
+            id: data.rows.item(i).id,
+            appRef: data.rows.item(i).app_ref,
+            name: data.rows.item(i).name,
+            kind: data.rows.item(i).kind,
+            onlineRef: data.rows.item(i).online_ref,
+            content: data.rows.item(i).content,
+            createdAt: data.rows.item(i).created_at,
+            updatedAt: data.rows.item(i).updated_at,
+            createdBy: data.rows.item(i).created_by,
+            updatedBy: data.rows.item(i).updated_by,
+          });
+        }
+      }
+      return clause;
+    });
+  }
 }

@@ -78,11 +78,10 @@ export class ViewPage implements OnInit {
               title: entry.name,
               id: entry.id,
               kind: entry.kind,
-              entry: entry
+              entry: entry,
+              data: JSON.stringify(entry.content)
             })
           }
-          console.log(entry)
-          console.log('********************')
         });
       });
     });
@@ -96,11 +95,8 @@ export class ViewPage implements OnInit {
         contractId: this.contract.id,
       }
     });
-
     modal.present();
-
     modal.onDidDismiss().then((data) => {
     });
   }
-
 }

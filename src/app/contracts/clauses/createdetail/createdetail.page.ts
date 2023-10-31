@@ -87,7 +87,7 @@ export class CreatedetailPage extends BaseformPage implements OnInit {
     const userData = await this.sharedMethods.getUserData();
     const now = this.sharedMethods.getCurrentDateTime();
     // We need this information before we append meta data
-    formData.content = formData;
+    formData.content = JSON.stringify(formData);
     formData.app_ref = this.sharedMethods.generateAppRef();
     formData.created_by = userData.id;
     formData.updated_by = userData.id;
