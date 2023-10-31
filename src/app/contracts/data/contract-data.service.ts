@@ -174,6 +174,8 @@ export class ContractDataService {
     }).catch((e) => console.log(e));
   }
 
+  // Not using this at the moment
+  // Leaving it here to see if we ever need it. 
   retrieveClauseDetails(clauseId) {
     const query = 'SELECT * FROM contract_clauses WHERE id = ?';
     const params = [clauseId];

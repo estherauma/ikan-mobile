@@ -79,7 +79,7 @@ export class ViewPage implements OnInit {
               id: entry.id,
               kind: entry.kind,
               entry: entry,
-              data: JSON.stringify(entry.content)
+              data: entry.content
             })
           }
         });

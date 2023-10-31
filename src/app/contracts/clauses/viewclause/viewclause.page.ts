@@ -40,9 +40,9 @@ export class ViewclausePage implements OnInit {
       textHtml += '<br/> <br/>';
       textHtml += element?.paragraph;
     });
-    // let clauseReplacement = await this.getClauseDetails();
-    console.log(this.clauseDetails);
-    this.htmlContent = this.fillPlaceHolders(textHtml, ['one', 'two', 'three', 'four', 'five', 'six', 'seve', 'eight', 'nine', 'ten', 'eleven'])
+    let formValues = await this.orderDataForClause(this.clauseDetails?.kind, this.clauseDetails?.data);
+    console.log(formValues);
+    this.htmlContent = this.fillPlaceHolders(textHtml, formValues)
   }
 
   fillPlaceHolders(inputString, placeholderValues) {
@@ -53,10 +53,28 @@ export class ViewclausePage implements OnInit {
     return result;
   }
 
-  async getClauseDetails() {
-    const clause = await this.contractDataService.retrieveClauseDetails(this.clauseDetails?.id);
-    this.clauseContent = clause;
-    console.log(this.clauseContent)
-    return clause
+  async orderDataForClause(clauseType, data) {
+    let parsedObject = JSON.parse(data);
+    switch (clauseType) {
+      case 'contract-clauses-parties-requirement-vessel':
+        let replacement = await this.orderClauseOneData(parsedObject);
+        return replacement
+      default:
+        return {}
+    }
   }
+
+  async orderClauseOneData(data) {
+    console.log(typeof data)
+    let response = [];
+    for (const [key, value] of Object.entries(data)) {
+      response.push(value)
+    }
+    // clause one has two entries, so we need to add the second entry
+    
+    return response;
+  }
+
+  orderClauseTwoData(data) {}
+
 }
