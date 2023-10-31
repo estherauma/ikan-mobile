@@ -4,12 +4,16 @@
   <app-contentwrapper>
   <div class="title-container">
       <div class="title-section">
-      <app-title [isLightBlue]="true" [isBig]="true" [title]="company.name"></app-title>
+      <app-title [isLightBlue]="true" [isBig]="true" [title]="pageData.pageTitle"></app-title>
       </div>
   </div>
   <div class="ion-padding bottom-section">
+    <ion-card>
+      <ion-card [innerHtml]="htmlContent" class="card-body">
 
-  
+      </ion-card>
+    </ion-card>
+   
   </div>
   </app-contentwrapper>
 </ion-content>

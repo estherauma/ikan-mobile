@@ -10,6 +10,7 @@ import { Router } from '@angular/router';
 export class PlacementoffercardComponent implements OnInit {
   @Input() clauseId = '';
   @Input() clauseKind = '';
+  @Input() clause : any;
   @Input() title = '';
   @Input() details = '';
   @Input() isFirst = false;
@@ -24,9 +25,6 @@ export class PlacementoffercardComponent implements OnInit {
   ngOnInit() {}
 
   viewClauseDetails() {
-    console.log(this.clauseKind)
-    console.log(this.clauseId)
-    console.log('view clause details')
-    this.router.navigate(['/contracts/clauses/viewclause/', {clauseId: this.clauseId, clauseKind: this.clauseKind}])
+    this.router.navigate(['/contracts/clauses/viewclause/', this.clause])
   }
 }

@@ -170,7 +170,6 @@ export class ContractDataService {
       clauseData.created_by, 
       clauseData.updated_by];
     return this.db.executeSql(query, params).then((result) => {
-      console.log('Contract clause saved');
       return result.insertId;
     }).catch((e) => console.log(e));
   }

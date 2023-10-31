@@ -1,4 +1,4 @@
-<app-header [pageTitle]="pageTitle">
+<app-header [pageTitle]="pageTitle" [isBackButton]="true">
 </app-header>
 
 <ion-content>
@@ -42,6 +42,7 @@
       *ngFor="let clause of contractClauses"
       [clauseId] = clause.id
       [clauseKind] = clause.kind
+      [clause] = clause
       [title]="clause.title"
       [details]="clause.subTitle"
       [noMargin]="true"
