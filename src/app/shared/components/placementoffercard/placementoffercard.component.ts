@@ -17,6 +17,7 @@ export class PlacementoffercardComponent implements OnInit {
   @Input() isLast = false;
   @Input() noMargin = false;
   @Input() isBlue = false;
+  @Input() partyB = '';
 
   constructor(
     public router: Router
@@ -25,6 +26,8 @@ export class PlacementoffercardComponent implements OnInit {
   ngOnInit() {}
 
   viewClauseDetails() {
+    // Temp fix to get partyB clause it to the view page
+    this.clause.partyB = this.partyB;
     this.router.navigate(['/contracts/clauses/viewclause/', this.clause])
   }
 }

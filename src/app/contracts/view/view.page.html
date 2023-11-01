@@ -47,7 +47,7 @@
       [details]="clause.subTitle"
       [noMargin]="true"
       [isBlue]="clause.status === 'active'"
-      onclick=""
+      [partyB]="partiesRequirementId"
       ></app-placementoffercard>
     </div>
     <div class="ion-margin-vertical" [ngClass]="{'action-buttons': !done}">

@@ -16,6 +16,7 @@ export class ViewPage implements OnInit {
   contract;
   contractClauses = [];
   done = false;
+  partiesRequirementId: string;
 
   wo = {
     name: 'Work order 2',
@@ -72,6 +73,7 @@ export class ViewPage implements OnInit {
           }
           if (entry.kind === 'contract-clauses-parties-requirement-fishers') {
             // Parties requirement has two entires, so ignore and exit loop
+            this.partiesRequirementId = entry.id;
             return;
           } else {
             this.contractClauses.push({
