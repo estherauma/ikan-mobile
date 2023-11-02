@@ -13,6 +13,10 @@ export class ViewclausePage implements OnInit {
   clauseContentObjectMapping = {
     'contract-clauses-parties-requirement-vessel': 'contract-clauses-parties-to-this-contract-content',
     'contract-clauses-contract-validity':'contract-clauses-contract-validity-content',
+    'contract-clauses-wage-benefits': 'contract-clauses-wage-benefits-content',
+    'contract-clauses-working-hours-rest-and-leave': 'contract-clauses-working-hours-rest-and-leave-content',
+    'contract-clauses-labor-protection-and-benefits': 'contract-clauses-labor-protection-and-benefits-content',
+    'contract-clauses-attachments': 'contract-clauses-attachments-content'
   }
   clauseDetails: any;
   clauseContent: any;
