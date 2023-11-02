@@ -62,3 +62,10 @@ ion-card{
         color: #3565FF
     };
 }
+
+
+:host.upnext {
+    .content {
+        align-items: center;
+    }
+}
