@@ -11,7 +11,7 @@ export class MaincardComponent implements OnInit {
   @Input() text = '';
   @Input() title = '';
   @Input() imageUrl = '';
-  @Input() imageShape: 'rounded' | 'circle' = 'rounded';
+  @Input() imageShape: 'rounded' | 'circle';
   @Input() imagePosition: 'left' | 'top' = 'left';
   @Input() imageSize: 'small' | 'big' = 'big';
   @Input() progressBarValue = '';
