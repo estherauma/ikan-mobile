@@ -12,6 +12,7 @@ export class ViewclausePage implements OnInit {
   // maps to prismic content page keys
   clauseContentObjectMapping = {
     'contract-clauses-parties-requirement-vessel': 'contract-clauses-parties-to-this-contract-content',
+    'contract-clauses-contract-validity':'contract-clauses-contract-validity-content',
   }
   clauseDetails: any;
   clauseContent: any;
@@ -27,12 +28,14 @@ export class ViewclausePage implements OnInit {
   ngOnInit() {
     this.activatedRoute.params.subscribe((params) => {
       this.clauseDetails = params;
+      console.log(this.clauseDetails);
       this.pageSetup();
     });
   }
 
   async pageSetup() {
     this.pageData = this.contentService.getContentByPropertyName(this.clauseContentObjectMapping[this.clauseDetails?.kind]);
+    console.log(this.pageData);
     let pageContent = this.pageData?.pageContent;
     let pageTextArray = pageContent[0]?.description;
     let textHtml = '';
@@ -54,12 +57,14 @@ export class ViewclausePage implements OnInit {
 
   async orderDataForClause(clauseType, data) {
     let parsedObject = JSON.parse(data);
+    let replacement = []
     switch (clauseType) {
       case 'contract-clauses-parties-requirement-vessel':
-        let replacement = await this.orderClauseOneData(parsedObject);
-        return replacement
+        let clauseOneData = await this.orderClauseOneData(parsedObject);
+        return clauseOneData
       default:
-        return {}
+        let replacement = await this.orderOtherClauses(parsedObject);
+        return replacement
     }
   }
 
@@ -75,6 +80,14 @@ export class ViewclausePage implements OnInit {
       for (const [key, value] of Object.entries(partyBDetails)) {
         response.push(value)
       }
+    }
+    return response;
+  }
+
+  async orderOtherClauses(data) {
+    let response = [];
+    for (const [key, value] of Object.entries(data)) {
+      response.push(value)
     }
     return response;
   }

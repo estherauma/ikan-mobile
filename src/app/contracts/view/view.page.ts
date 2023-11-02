@@ -55,6 +55,7 @@ export class ViewPage implements OnInit {
   ) {}
 
   ngOnInit() {
+
     this.commonText = this.contentService?.commonText;
     this.activatedRoute.params.subscribe((params) => {
       this.pageTitle = params.name;
