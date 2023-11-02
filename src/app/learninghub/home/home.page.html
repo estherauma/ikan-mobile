@@ -8,6 +8,7 @@
     <div class="cards-wrapper">
       <app-maincard
         *ngFor="let chapter of learningHubChapters"
+        class="learning-hub-home"
         [title]="chapter?.title"
         [text]="chapter?.text"
         [progressBarValue]="chapter?.progressBarValue"

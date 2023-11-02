@@ -30,7 +30,6 @@
       <div *ngFor="let subChapter of learningHubSubChapters">
         <app-maincard
           [imageUrl]="subChapter?.icon"
-          imageShape="circle"
           [title]="subChapter?.name"
           [text]="subChapter?.description"
           (click)="viewDetials(subChapter)"
