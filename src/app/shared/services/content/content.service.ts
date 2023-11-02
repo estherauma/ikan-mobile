@@ -66,24 +66,19 @@ export class ContentService {
   }
 
   async compareContent() {
-    let  currentContentCreateAt = await this.currentContentCreateAt();
+    const currentContentCreateAt = await this.currentContentCreateAt();
     // ToDo: If device time is ahead of servertime, user will not get updated content
     // Provide fix for this
     if (currentContentCreateAt) {
-      // hack to fetch content everytime
-      currentContentCreateAt = '2021-09-23T07:55:22+0000';
       const response = this.apiService.get(`content/compare?app_content_created_at=${currentContentCreateAt}`);
       response.subscribe((res: HttpResponse<any>) => {
         const content = res.body;
-        console.log('received data')
         if (content?.status === 'OK' && content.new) {
           this.writeLocalContent(StorageKeys.appContent, content.data[0]);
           this.contentObs.next(true);
           return this.appContent = content.data[0].content;
         }
       });
-    } else {
-      console.log('No date content found')
     }
   }
 
@@ -193,7 +188,6 @@ export class ContentService {
   }
 
   getContentByPropertyName(propertyName) {
-    console.log(this.appContent);
     const content = this.appContent?.[`${this.currentLanguage}`];
     return content[propertyName];
   }

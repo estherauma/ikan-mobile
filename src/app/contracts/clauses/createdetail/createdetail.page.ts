@@ -153,7 +153,6 @@ export class CreatedetailPage extends BaseformPage implements OnInit {
   }
 
   isCrewMemberAccountChanged(value) {
-    console.log(this.formQuestions)
     switch (value.trim()) {
       case 'Yes': {
         this.formQuestions.forEach((entry) => {

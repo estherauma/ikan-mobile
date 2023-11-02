@@ -32,14 +32,12 @@ export class ViewclausePage implements OnInit {
   ngOnInit() {
     this.activatedRoute.params.subscribe((params) => {
       this.clauseDetails = params;
-      console.log(this.clauseDetails);
       this.pageSetup();
     });
   }
 
   async pageSetup() {
     this.pageData = this.contentService.getContentByPropertyName(this.clauseContentObjectMapping[this.clauseDetails?.kind]);
-    console.log(this.pageData);
     let pageContent = this.pageData?.pageContent;
     let pageTextArray = pageContent[0]?.description;
     let textHtml = '';
