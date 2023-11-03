@@ -58,10 +58,11 @@
 }
 
 .content-wrapper {
-    width: 235px;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
+    width: 250px;
+    // white-space: nowrap;
+    // overflow: hidden;
+    // text-overflow: ellipsis;
+    // word-wrap: normal;
 }
 
 

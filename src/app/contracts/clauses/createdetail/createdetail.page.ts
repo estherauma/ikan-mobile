@@ -22,7 +22,7 @@ export class CreatedetailPage extends BaseformPage implements OnInit {
     'Attachments': 'contract-clauses-attachments',
   }
   objectTolookup: string;
-  contractId: any
+  contractId: any;
 
   constructor(
     public contentService: ContentService,
@@ -54,11 +54,10 @@ export class CreatedetailPage extends BaseformPage implements OnInit {
       return;
     }
     this.pageTitle = pageData?.pageTitle;
-    console.log(pageData);
     this.pageText = this.sharedMethods.convertAdditionalTextToObj(pageData?.additionalText);
     this.formQuestions = pageData?.formQuestions;
     this.formQuestions.forEach((entry) => {
-      this.group[entry.key] = new FormControl('', [Validators.required]);
+      this.group[entry.key] = new FormControl('', []);
       // add change listener to payment frequency
       if (entry.key === 'paymentFrequency') {
         this.group[entry.key].valueChanges.subscribe((value) => {
@@ -88,17 +87,17 @@ export class CreatedetailPage extends BaseformPage implements OnInit {
     const userData = await this.sharedMethods.getUserData();
     const now = this.sharedMethods.getCurrentDateTime();
     // We need this information before we append meta data
-    formData.content = formData;
+    formData.content = JSON.stringify(formData);
     formData.app_ref = this.sharedMethods.generateAppRef();
     formData.created_by = userData.id;
     formData.updated_by = userData.id;
     formData.created_at = formData.updated_at = now;
-    formData.kind = this.objectTolookup;
+    formData.kind = this.clauseMapping[this.objectTolookup];
     formData.name = this.pageTitle;
     this.contractDataServ.saveContractClause(this.contractId, formData)
     .then((result) => {
      this.sharedMethods.showToast(this.pageText?.contractClauseSaved)
-     this.router.navigate(['/contracts/view', this.contractId]);
+     this.router.navigate(['/contracts/view']);
     })
   }
 
@@ -154,7 +153,6 @@ export class CreatedetailPage extends BaseformPage implements OnInit {
   }
 
   isCrewMemberAccountChanged(value) {
-    console.log(this.formQuestions)
     switch (value.trim()) {
       case 'Yes': {
         this.formQuestions.forEach((entry) => {

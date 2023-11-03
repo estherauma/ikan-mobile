@@ -77,7 +77,6 @@ export class DBService {
         this.allMigrationFiles = data.split('\n');
         // remove empty array elements
         delete this.allMigrationFiles[this.allMigrationFiles.length - 1];
-
         this.pendingMigrations = this.allMigrationFiles.filter(x => !this.executedMigrations.includes(x));
         if (!seedData) {
           this.pendingMigrations = this.pendingMigrations.filter(file => !file.includes('SeedData'));
@@ -111,7 +110,9 @@ export class DBService {
             // TODO: remove this line. Left for testing purposes
             console.log(`Query " ${query} " executed`);
           })
-          .catch(e => console.log(e));
+          .catch(e => {
+            console.log(`Error executing query: ${query}`);
+          });
         });
         this.db.executeSql('INSERT INTO migrations (name, executed_at) VALUES (?, ?)', [migrationFileName, new Date()])
         .then(() => console.log('Migration ' + migrationFileName + ' marked as completed'))
