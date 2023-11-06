@@ -38,6 +38,7 @@ export class LanguagePage implements OnInit {
     const {languages, pageTitle} = data;
     this.pageTitle = pageTitle;
     this.availableLanguages = languages;
+    this.contentServ.compareContent();
   }
 
 

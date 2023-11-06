@@ -32,7 +32,6 @@ export class CreateclausePage extends BaseformPage implements OnInit {
 
   pageSetup(){
     const pageData = this.contentService.getContentByPropertyName('contract-create-clause');
-    console.log(pageData);
     this.formQuestions = pageData.formQuestions;
     this.pageTitle = pageData?.pageTitle;
     this.pageText = this.sharedMethods.convertAdditionalTextToObj(pageData?.additionalText);

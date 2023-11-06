@@ -16,7 +16,13 @@ export class ViewclausePage implements OnInit {
     'contract-clauses-wage-benefits': 'contract-clauses-wage-benefits-content',
     'contract-clauses-working-hours-rest-and-leave': 'contract-clauses-working-hours-rest-and-leave-content',
     'contract-clauses-labor-protection-and-benefits': 'contract-clauses-labor-protection-and-benefits-content',
-    'contract-clauses-attachments': 'contract-clauses-attachments-content'
+    'contract-clauses-attachments': 'contract-clauses-attachments-content',
+    'contract-clauses-accident-medical-and-life-insurance': 'contract-clauses-accident-medical-and-life-insurance-content',
+    'contract-clauses-transportation-severance-food-accomodation': 'contract-clauses-transportation-severance-food-accomodation-content',
+    'contract-clause-requirements-that-party-b-must-comply-with':'contract-clause-requirements-that-party-b-must-comply-with-content',
+    'contract-clauses-means-to-address-breach-of-contract': 'contract-clauses-means-to-address-breach-of-contract-content',
+    'contract-clauses-dispute-settlement': 'contract-clauses-dispute-settlement-content',
+    'contract-clauses-miscellaneous': 'contract-clauses-miscellaneous-content'
   }
   clauseDetails: any;
   clauseContent: any;

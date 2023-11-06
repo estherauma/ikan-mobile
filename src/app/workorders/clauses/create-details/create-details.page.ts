@@ -35,7 +35,6 @@ export class CreateDetailsPage extends BaseformPage implements OnInit {
   ngOnInit() {
     this.submitButtonText = this.contentService.commonText?.create;
     this.activatedRoute.params.subscribe(params => {
-      console.log(params);
       this.workOrder = params;
       this.pageTitle = params?.name;
       this.workOrderId = params?.clauseId;
@@ -43,7 +42,6 @@ export class CreateDetailsPage extends BaseformPage implements OnInit {
   }
 
   async onSubmit(formData) {
-    console.log(formData);
     this.sharedMethods.showLoader(this.contentService.commonText?.saving);
     const userData = await this.sharedMethods.getUserData();
     const now = this.sharedMethods.getCurrentDateTime();
