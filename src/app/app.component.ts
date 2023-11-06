@@ -10,6 +10,7 @@ import { AuthService } from './shared/services/auth/auth.service';
 import { DBService } from './shared/services/database/db.service';
 import { PushNotificationsService } from './shared/services/push-notifications/push-notifications.service';
 import { LocalNotificationsService } from './shared/services/local-notifications/local-notifications.service';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-root',
@@ -20,6 +21,9 @@ export class AppComponent implements OnInit, OnDestroy {
   public appPages = [];
   networkListener: PluginListenerHandle;
   userEmail: string;
+  appSetupComplete = false;
+  watchContent: Subscription;
+
   constructor(
     public contentService: ContentService,
     public sharedMethods: SharedmethodsService,
@@ -30,7 +34,9 @@ export class AppComponent implements OnInit, OnDestroy {
     public localNotifications: LocalNotificationsService,
   ) {
     this.authService.setUpAuthData();
-    this.contentService.setUpAppData();
+    this.contentService.setUpAppData().then(() => {
+      this.checkSetupComplete();
+    });
     this.checkLoginStatus();
     this.pushNotifications.setup();
     this.localNotifications.scheduleNotifications();
@@ -40,7 +46,11 @@ export class AppComponent implements OnInit, OnDestroy {
         this.appPages = data;
       }
     });
-
+    this.contentService.watchContent().subscribe((resp) => {
+      if (resp) {
+        this.checkSetupComplete();
+      }
+    });
     this.dbService.checkDbPlatformAndRunMigration();
     this.userEmail = this.authService.userData?.email;
   }
@@ -49,12 +59,20 @@ export class AppComponent implements OnInit, OnDestroy {
     const showStatusBar = async() => {
       await StatusBar.show();
     };
-    await this.sharedMethods.addNetworkEventListener((network => {
+    await this.sharedMethods.addNetworkEventListener((async(network) => {
         this.networkListener = network.networkListener;
         if (network.connected) {
-          return this.contentService.compareContent();
+          await this.contentService.compareContent();
+          this.checkSetupComplete();
         }
     }));
+  }
+
+  checkSetupComplete() {
+    const appContent = this.contentService.appContent;
+    if (appContent) {
+      this.appSetupComplete = true;
+    }
   }
 
   ngOnDestroy() {
