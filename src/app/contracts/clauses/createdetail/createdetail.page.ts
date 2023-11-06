@@ -156,7 +156,6 @@ export class CreatedetailPage extends BaseformPage implements OnInit {
     switch (value.trim()) {
       case 'Yes': {
         this.formQuestions.forEach((entry) => {
-          console.log(entry.key)
           if (entry.key === 'relativePhoneNumber' || entry.key === 'relativeWhatspp' || entry.key === 'relativeFb' || entry.key === 'relativeOthers')  {
             entry.displayquestion = true;
           }

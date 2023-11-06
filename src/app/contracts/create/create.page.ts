@@ -87,10 +87,37 @@ export class CreatePage extends BaseformPage implements OnInit {
           this.sharedMethods.showLoader(this.pageText?.errSavingDocument);
         }
       }
-
+      await this.createStaticContractClauses(insertId);
       this.modalCtrl.dismiss();
     } else {
       this.sharedMethods.showLoader(this.pageText?.errCreatingContract);
     }
+  }
+
+  async createStaticContractClauses(contractId) {
+    // Article 3, 4, 7, 8, 9 10 have static content and we need to create clauses for them from here
+    const clauseMapping = {
+      'article3': 'contract-clauses-accident-medical-and-life-insurance',
+      'article4': 'contract-clauses-transportation-severance-food-accomodation',
+      'article7':'contract-clause-requirements-that-party-b-must-comply-with',
+      'article8': 'contract-clauses-means-to-address-breach-of-contract',
+      'article9': 'contract-clauses-dispute-settlement',
+      'article10': 'contract-clauses-miscellaneous'
+    }
+    const userData = await this.sharedMethods.getUserData();
+    for (const [key, value] of Object.entries(clauseMapping)) {
+      const now = this.sharedMethods.getCurrentDateTime();
+      const clauseData = this.contentService.getContentByPropertyName(`${value}-content`)
+      let contractClauseData = {}
+      contractClauseData['content'] = JSON.stringify({});
+      contractClauseData['app_ref'] = this.sharedMethods.generateAppRef();
+      contractClauseData['created_by'] = userData.id;
+      contractClauseData['updated_by'] = userData.id;
+      contractClauseData['created_at'] = contractClauseData['updated_at'] = now;
+      contractClauseData['kind'] = value;
+      contractClauseData['name'] = clauseData?.pageTitle;
+      this.contractsDataService.saveContractClause(contractId, contractClauseData);
+    }
+
   }
 }
