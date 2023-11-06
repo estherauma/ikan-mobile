@@ -24,9 +24,7 @@ export class TermsOfUsePage implements OnInit {
     const content = this.contentService.getContentByPropertyName('terms-of-use');
     this.pageTitle = content?.pageTitle;
     const pageContent = content?.pageContent[0];
-    console.log(pageContent);
     pageContent['description'].forEach((element) => {
-      console.log(element)
       if (element?.paragraph !== undefined || element?.paragraph !== null) {
         this.pageContent += element?.paragraph;
         this.pageContent += '<br/>';
