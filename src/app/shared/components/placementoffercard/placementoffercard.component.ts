@@ -1,4 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
+
 
 @Component({
   selector: 'app-placementoffercard',
@@ -6,14 +8,26 @@ import { Component, Input, OnInit } from '@angular/core';
   styleUrls: ['./placementoffercard.component.scss'],
 })
 export class PlacementoffercardComponent implements OnInit {
+  @Input() clauseId = '';
+  @Input() clauseKind = '';
+  @Input() clause : any;
   @Input() title = '';
   @Input() details = '';
   @Input() isFirst = false;
   @Input() isLast = false;
   @Input() noMargin = false;
   @Input() isBlue = false;
-  constructor() { }
+  @Input() partyB = '';
+
+  constructor(
+    public router: Router
+  ) { }
 
   ngOnInit() {}
 
+  viewClauseDetails() {
+    // Temp fix to get partyB clause it to the view page
+    this.clause.partyB = this.partyB;
+    this.router.navigate(['/contracts/clauses/viewclause/', this.clause])
+  }
 }

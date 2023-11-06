@@ -3,6 +3,7 @@ import { ActivatedRoute } from '@angular/router';
 import { ContentService } from '../../shared/services/content/content.service';
 import { ModalController } from '@ionic/angular';
 import { CreateclausePage } from '../clauses/createclause/createclause.page';
+import { ContractDataService } from '../data/contract-data.service';
 
 @Component({
   selector: 'app-view',
@@ -13,6 +14,9 @@ export class ViewPage implements OnInit {
   commonText: any;
   pageTitle: string;
   contract;
+  contractClauses = [];
+  done = false;
+  partiesRequirementId: string;
 
   wo = {
     name: 'Work order 2',
@@ -46,19 +50,45 @@ export class ViewPage implements OnInit {
   constructor(
     public activatedRoute: ActivatedRoute,
     public contentService: ContentService,
-    public modalController: ModalController
+    public modalController: ModalController,
+    public contractDataService: ContractDataService
   ) {}
 
   ngOnInit() {
+
     this.commonText = this.contentService?.commonText;
     this.activatedRoute.params.subscribe((params) => {
       this.pageTitle = params.name;
       this.contract = params;
       // TODO: When PARAM is contract id, fetch contract details from the DB
+      this.contractDataService.retrieveContractClauses(this.contract.id)
+      .then((response) => {
+        response.forEach((entry) => {
+          // Avoid adding the clause twice.
+          // TODO: Add logic to check if clause is included when creating clauses
+          const clauseIncluded = this.contractClauses.some((clause) => {
+            return clause.title === entry.name;
+          });
+          if (clauseIncluded) {
+            return;
+          }
+          if (entry.kind === 'contract-clauses-parties-requirement-fishers') {
+            // Parties requirement has two entires, so ignore and exit loop
+            this.partiesRequirementId = entry.id;
+            return;
+          } else {
+            this.contractClauses.push({
+              title: entry.name,
+              id: entry.id,
+              kind: entry.kind,
+              entry: entry,
+              data: entry.content
+            })
+          }
+        });
+      });
     });
   }
-
-  viewDetails(wo) {}
 
   async createClause() {
     const modal = await this.modalController.create({
@@ -68,9 +98,7 @@ export class ViewPage implements OnInit {
         contractId: this.contract.id,
       }
     });
-
     modal.present();
-
     modal.onDidDismiss().then((data) => {
     });
   }

@@ -28,7 +28,6 @@ export class HomePage implements OnInit {
   }
 
   onViewDocument(url) {
-    console.log(url);
     this.router.navigate(['mydocuments/details']);
   }
 

@@ -66,7 +66,6 @@ export class HomePage implements OnInit {
 
   ngOnInit() {
     this.commonText = this.contentService?.commonText;
-    console.log(this.commonText);
     this.pageTitle = this.commonText?.payments;
     this.filterOptions = [
       {title: this.commonText?.closed, value: 'closed'},
@@ -90,7 +89,6 @@ export class HomePage implements OnInit {
 
 
   viewDetails(organization) {
-    console.log('organization...', organization)
     const queryParams = organization
     this.router.navigate(['payments/view/company', organization], { queryParams });
   }
