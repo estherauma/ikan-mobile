@@ -357,6 +357,14 @@ const routes: Routes = [
     path: 'contracts/clauses/viewclause',
     loadChildren: () => import('./contracts/clauses/viewclause/viewclause.module').then( m => m.ViewclausePageModule)
   },
+  {
+    path: 'about/privacy-policy',
+    loadChildren: () => import('./about/privacy-policy/privacy-policy.module').then( m => m.PrivacyPolicyPageModule)
+  },
+  {
+    path: 'about/terms-of-use',
+    loadChildren: () => import('./about/terms-of-use/terms-of-use.module').then( m => m.TermsOfUsePageModule)
+  },
 ];
 
 @NgModule({
