@@ -16,6 +16,7 @@ export class HomePage implements OnInit {
   agents = [];
   unFilteredData = [];
   newText = 'New';
+  commonText: any;
 
   constructor(
     public router: Router,
@@ -29,7 +30,9 @@ export class HomePage implements OnInit {
   }
 
   ngOnInit() {
-    this.newText = this.contentService.commonText?.new;
+    this.commonText = this.contentService?.commonText;
+    this.newText = this.commonText?.new;
+    this.pageTitle = this.commonText?.manningAgents;
   }
 
   searchResult(searchResult) {
