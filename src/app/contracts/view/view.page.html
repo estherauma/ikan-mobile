@@ -9,7 +9,7 @@
           <ion-row class="ion-justify-content-end">
             <div>
               <!-- TODO: Add logic for clause translation -->
-              <app-button (onClick)="createClause()" iconName="add-outline" title="New Clause"></app-button>
+              <app-button (onClick)="createClause()" iconName="add-outline" [title]="createButtonText"></app-button>
             </div>
           </ion-row>
         </ion-col>
@@ -51,8 +51,7 @@
       ></app-placementoffercard>
     </div>
     <div class="ion-margin-vertical" [ngClass]="{'action-buttons': !done}">
-      <app-button *ngIf="!done" title="Re-order" size="small"></app-button>
-      <app-button (onClick)="createClause()" *ngIf="!done" title="Add new clause" size="small" iconName="add-outline"></app-button>
+      <app-button (onClick)="createClause()" *ngIf="!done" [title]="createButtonText" size="small" iconName="add-outline"></app-button>
     </div>
   </div>
 </ion-content>

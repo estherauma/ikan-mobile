@@ -4,6 +4,7 @@ import { ContentService } from '../../shared/services/content/content.service';
 import { ModalController } from '@ionic/angular';
 import { CreateclausePage } from '../clauses/createclause/createclause.page';
 import { ContractDataService } from '../data/contract-data.service';
+import { SharedmethodsService } from 'src/app/shared/services/sharedmethods/sharedmethods.service';
 
 @Component({
   selector: 'app-view',
@@ -17,45 +18,18 @@ export class ViewPage implements OnInit {
   contractClauses = [];
   done = false;
   partiesRequirementId: string;
-
-  wo = {
-    name: 'Work order 2',
-    internalRef: 'IJSWERWXDWER',
-    dateOpened: '2022-10-15',
-    status: 'Close',
-    appRef: 'XXX-XXX-XXX',
-  };
-
-  placementAgreement = {
-    name: 'Placement_Agreement.pdf',
-    info: 'More info. Functionality here is click panel to view.',
-  };
-
-  employmentAgreement = {
-    name: 'Employment Agreement.pdf',
-    info: 'More info. Functionality here is click panel to view.',
-  };
-
-  orderAndServiceAgreement = [
-    {
-      name: 'Job Order.pdf',
-      info: 'More info. Functionality here is click panel to view.',
-    },
-    {
-      name: 'Service Agreement.pdf',
-      info: 'More info. Functionality here is click panel to view.',
-    },
-  ];
+  createButtonText: string = 'Add new clause';
+  pageText: any;
 
   constructor(
     public activatedRoute: ActivatedRoute,
     public contentService: ContentService,
     public modalController: ModalController,
-    public contractDataService: ContractDataService
+    public contractDataService: ContractDataService,
+    public sharedMethods: SharedmethodsService
   ) {}
 
   ngOnInit() {
-
     this.commonText = this.contentService?.commonText;
     this.activatedRoute.params.subscribe((params) => {
       this.pageTitle = params.name;
@@ -88,6 +62,7 @@ export class ViewPage implements OnInit {
         });
       });
     });
+    this.pageSetup();
   }
 
   async createClause() {
@@ -102,4 +77,14 @@ export class ViewPage implements OnInit {
     modal.onDidDismiss().then((data) => {
     });
   }
+
+  pageSetup() {
+    const pageData = this.contentService.getContentByPropertyName('contracts-view-clause');
+    if (!pageData) {
+        return;
+    }
+    this.pageText = this.sharedMethods.convertAdditionalTextToObj(pageData?.additionalText);
+    this.createButtonText = this.pageText?.addNewCaluse
+  }
+
 }
