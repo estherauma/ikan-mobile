@@ -23,6 +23,7 @@ export class AppComponent implements OnInit, OnDestroy {
   userEmail: string;
   appSetupComplete = false;
   watchContent: Subscription;
+  commonText: any;
 
   constructor(
     public contentService: ContentService,
@@ -66,6 +67,7 @@ export class AppComponent implements OnInit, OnDestroy {
           this.checkSetupComplete();
         }
     }));
+    this.commonText = this.contentService.commonText;
   }
 
   checkSetupComplete() {
