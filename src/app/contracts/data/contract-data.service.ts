@@ -55,6 +55,7 @@ export class ContractDataService {
         }
 
       }
+      contracts.reverse();
       this.contracts.next(contracts);
     }).catch((e) => console.log(e));
   }
