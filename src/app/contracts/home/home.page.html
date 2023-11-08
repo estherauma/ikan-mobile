@@ -58,16 +58,15 @@
 
   <div *ngFor="let contract of contracts" >
     <!-- User contracts -->
-    <app-usercontractcard 
+    <!-- <app-usercontractcard 
       [title]="contract.name"
       [contract]="contract" 
       *ngIf="contract.type !== 'Company'"
       [vessel]="contract" 
       [dates]="getContractDates(contract)">
-    </app-usercontractcard>
+    </app-usercontractcard> -->
     <!-- Company contracts -->
     <app-companycontractcard
-      *ngIf="contract.type === 'Company'"
       [title]="contract.name"
       [contract]="contract" 
       [vessel]="contract" 

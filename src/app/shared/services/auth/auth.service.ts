@@ -47,9 +47,9 @@ export class AuthService {
       case UserRole.vesselOwner:
         return 'dashboard/vesselowner';
       case UserRole.indonesianAgent:
-          return 'dashboard/indonesianagent';
+        return 'dashboard/indonesianagent';
       case UserRole.buyer:
-            return 'dashboard/buyer';
+        return 'dashboard/buyer';
       default:
         this.sharedMethods.showToast('Invalid user role');
         return '';
