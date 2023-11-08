@@ -20,7 +20,8 @@ export class LoginMethodPage implements OnInit {
   inviteCodeAuth: string = 'I have an invite code'.toUpperCase();
   usernameAuth: string = 'Login with username/email'.toUpperCase();
   watchContent: Subscription;
-  modalPresented = false;
+  langModalPresented = false;
+  modalDisplaying = false;
 
   constructor(
     public router: Router,
@@ -31,9 +32,9 @@ export class LoginMethodPage implements OnInit {
     this.watchContent = this.contentService.watchContent().subscribe(async(resp) => {
       if (resp) {
         this.getAuthText();
-        if (!(await this.savedCurrentLanguage()) && !this.modalPresented) {
+        if (!(await this.savedCurrentLanguage()) && !this.langModalPresented && !this.modalDisplaying) {
           await this.presentSelectLangModal();
-          this.modalPresented = true;
+          this.langModalPresented = true;
         }
       }
     });
@@ -43,12 +44,12 @@ export class LoginMethodPage implements OnInit {
     const pageData = this.contentService.getContentByPropertyName('login-method');
     this.pageText = this.sharedMethods.convertAdditionalTextToObj(pageData?.additionalText);
     if (this.pageText && Object.keys(this.pageText).length > 0) {
-      this.inviteCodeAuth = this.pageText?.inviteCodeAuth;
-      this.usernameAuth = this.pageText?.usernameAuth;
+      this.inviteCodeAuth = this.pageText?.inviteCodeAuth || this.inviteCodeAuth;
+      this.usernameAuth = this.pageText?.usernameAuth || this.usernameAuth;
 
       if (!(await this.savedCurrentLanguage())) {
         await this.presentSelectLangModal();
-        this.modalPresented = true;
+        this.langModalPresented = true;
       }
     }
   }
@@ -70,6 +71,7 @@ export class LoginMethodPage implements OnInit {
   }
 
   async presentSelectLangModal() {
+    this.modalDisplaying = true;
     const modal = await this.modalController?.create({
       component: SelectLanguageComponent,
       cssClass: 'select-lang-modal',
@@ -83,6 +85,7 @@ export class LoginMethodPage implements OnInit {
         this.inviteCodeAuth = this.pageText?.inviteCodeAuth;
         this.usernameAuth = this.pageText?.usernameAuth;
       }
+      this.modalDisplaying = false;
     });
 
     await modal.present();

@@ -105,7 +105,7 @@ export class ContentService {
   }
 
   async readLocalContent() {
-    return this.sharedMethods?.readDataFromStorage(StorageKeys.appContent);
+    return await this.sharedMethods?.readDataFromStorage(StorageKeys.appContent);
   }
 
   // TODO: Refactor to use shared method
