@@ -4,10 +4,10 @@
 <ion-content>
   <app-dashboardelcomesection 
     [message]="welcomeText"
-    [message1]="welcomeMessage"
-    name="Taien">
+    [message1]=""
+    [name]="name">
   </app-dashboardelcomesection>
-    <div>
+    <!-- <div>
       <ion-card>
         <ion-card-content>
           <ion-card-title>{{performanceData.title}}</ion-card-title>
@@ -43,7 +43,7 @@
           </ion-grid>
         </ion-card-content>
       </ion-card>
-    </div>
+    </div> -->
   <div style="background-color: #F5F5F5;" class="ion-padding">
     <ion-card *ngFor="let sList of sLists">
       <ion-card-content [routerLink]="sList.url">
