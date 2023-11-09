@@ -1,15 +1,19 @@
 <app-header [isBackButton]="true"></app-header>
 
-<ion-content class="content-skyblue-bg ion-content-custom-position">
+<ion-content class="content-skyblue-bg ion-content-custom-position ion-padding">
   <app-contentwrapper>
-  <div class="title-container">
+    <div class="title-container ion-padding">
       <div class="title-section">
-      <app-title [isLightBlue]="true" [isBig]="true" [title]="pageData.pageTitle"></app-title>
+      <app-title
+        class="view-clause"
+        [isBig]="true"
+        [title]="pageData?.pageTitle"
+      ></app-title>
       </div>
-  </div>
-  <div class="ion-padding bottom-section">
-    <div [innerHtml]="htmlContent">
     </div>
-  </div>
+    <div class="ion-padding bottom-section">
+      <div [innerHtml]="htmlContent">
+      </div>
+    </div>
   </app-contentwrapper>
 </ion-content>
