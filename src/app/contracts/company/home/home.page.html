@@ -59,7 +59,7 @@
       <app-companycontractcard
         *ngIf="contract.type === 'Company'"
         [title]="contract.name"
-        [contract]="contract.taiwaneseCompany" 
+        [contract]="contract"
         [vessel]="contract.vesselOwnerCompany" 
         [dates]="getContractDates(contract)"
       ></app-companycontractcard>
