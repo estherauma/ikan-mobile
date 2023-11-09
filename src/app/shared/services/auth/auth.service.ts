@@ -69,4 +69,19 @@ export class AuthService {
     Preferences.remove({ key: StorageKeys.userData });
   }
 
+  alterMenuBaseOnRole(menuItems) {
+    let finalMenu = []
+    menuItems.forEach((menuItem) => {
+      if (menuItem?.roles == null) {
+        return;
+      }
+      let allowedRoles = menuItem.roles.split(',');
+      if (allowedRoles.includes(this.userRole) || allowedRoles.includes('all')) {
+       finalMenu.push(menuItem);
+      }
+    })
+    console.log(finalMenu);
+    return finalMenu;
+  }  
+
 }
