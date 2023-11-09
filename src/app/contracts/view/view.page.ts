@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { ContentService } from '../../shared/services/content/content.service';
 import { ModalController } from '@ionic/angular';
@@ -30,11 +30,14 @@ export class ViewPage implements OnInit {
   ) {}
 
   ngOnInit() {
+    // TODO: Consider refactoring this method to smaller functions
     this.commonText = this.contentService?.commonText;
     this.activatedRoute.params.subscribe((params) => {
-      this.pageTitle = params.name;
       this.contract = params;
-      // TODO: When PARAM is contract id, fetch contract details from the DB
+      if (params.name === 'undefined' || params.name === undefined) {
+        this.contract = this.contractDataService.getSingleContract(params.id);
+      }
+      this.pageTitle = params.name;
       this.contractDataService.retrieveContractClauses(this.contract.id)
       .then((response) => {
         response.forEach((entry) => {
