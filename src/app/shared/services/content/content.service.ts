@@ -195,4 +195,22 @@ export class ContentService {
   watchContent() {
     return this.contentObs.asObservable();
   }
+
+  async getSurveyData() {
+    const content = this.appContent?.[`${this.currentLanguage}`];
+    if (!content) return {};
+    
+    const allDocs: Array<any> = Object.values(content);
+    const contentDocs = allDocs?.filter((doc) => (doc?.type === 'create_content_area' && !isNaN(doc?.pageName)));
+
+    let result = {};
+    contentDocs?.forEach((item) => {
+      const qtns = item?.pageContent?.filter(x => x.type === 'questions');
+      if (qtns?.length) {
+        result[item?.pageName] = qtns;
+      }
+    });
+    
+    return result;
+  }
 }
