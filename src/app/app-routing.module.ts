@@ -365,6 +365,10 @@ const routes: Routes = [
     path: 'about/terms-of-use',
     loadChildren: () => import('./about/terms-of-use/terms-of-use.module').then( m => m.TermsOfUsePageModule)
   },
+  {
+    path: 'help',
+    loadChildren: () => import('./get-help/get-help.module').then(m => m.GetHelpModule)
+  },
 ];
 
 @NgModule({
