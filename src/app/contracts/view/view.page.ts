@@ -5,6 +5,7 @@ import { ModalController } from '@ionic/angular';
 import { CreateclausePage } from '../clauses/createclause/createclause.page';
 import { ContractDataService } from '../data/contract-data.service';
 import { SharedmethodsService } from 'src/app/shared/services/sharedmethods/sharedmethods.service';
+import { AuthService } from 'src/app/shared/services/auth/auth.service';
 
 @Component({
   selector: 'app-view',
@@ -26,7 +27,8 @@ export class ViewPage implements OnInit {
     public contentService: ContentService,
     public modalController: ModalController,
     public contractDataService: ContractDataService,
-    public sharedMethods: SharedmethodsService
+    public sharedMethods: SharedmethodsService,
+    public authService: AuthService,
   ) {}
 
   ngOnInit() {

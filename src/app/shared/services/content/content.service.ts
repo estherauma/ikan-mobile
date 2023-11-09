@@ -5,6 +5,7 @@ import { SharedmethodsService } from '../sharedmethods/sharedmethods.service';
 import { Preferences } from '@capacitor/preferences';
 import { HttpResponse } from '@angular/common/http';
 import { Subject, Subscription } from 'rxjs';
+import { AuthService } from '../auth/auth.service';
 
 @Injectable({
   providedIn: 'root',
@@ -19,7 +20,8 @@ export class ContentService {
 
   constructor(
     public apiService: ApiService,
-    public sharedMethods: SharedmethodsService
+    public sharedMethods: SharedmethodsService,
+    public authService: AuthService
   ) {
     this.setUpAppData();
     this.watchContentSubscription = this.watchContent().subscribe((res) => {
@@ -177,10 +179,11 @@ export class ContentService {
     const content = this.appContent?.[`${this.currentLanguage}`];
     if (content != null || content !== undefined) {
       const { sidemenu } = content;
-      const menu = [];
+      const allMenuItems = [];
       for (const menuItem of sidemenu?.data ) {
-        menu.push(menuItem);
+        allMenuItems.push(menuItem);
       }
+      let menu = this.authService.alterMenuBaseOnRole(allMenuItems)
       return menu;
     } else {
       return {};
