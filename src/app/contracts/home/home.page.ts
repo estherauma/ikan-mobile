@@ -4,7 +4,7 @@ import { ModalController } from '@ionic/angular';
 import { CreatePage } from '../create/create.page';
 import { ContractDataService } from '../data/contract-data.service';
 import { ContentService } from '../../shared/services/content/content.service';
-
+import { formatDate } from "@angular/common";
 
 
 @Component({
@@ -63,6 +63,9 @@ export class HomePage implements OnInit {
   }
 
   getContractDates(contract) {
-    return `${contract.startDate} - ${contract.endDate}`;
+    const locale = this.contentService.currentLanguage;
+    const start = formatDate(contract?.startDate, 'dd/MM/yyyy', locale);
+    const end = formatDate(contract?.endDate, 'dd/MM/yyyy', locale);
+    return `${start} - ${end}`;
   }
 }

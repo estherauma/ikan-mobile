@@ -6,8 +6,9 @@ ion-card-content{
     display: flex;
 }
 
-.company-icon-section {
+.center {
     display: flex;
+    justify-content: center;
     align-items: center;
 }
 
@@ -24,6 +25,7 @@ ion-icon {
 
 ion-text {
     color: #3565FF;
+    font-size: 0.9rem;
 }
 
 .left-side-section {
@@ -31,8 +33,13 @@ ion-text {
 }
 
 .title {
-    font-size: 18px !important;
+    font-size: 1.125rem;
     color: #191970;
+    font-weight: 700;
+    line-height: 19px;
+    letter-spacing: 0em;
+    text-align: left;
+
 }
 
 .company-name-section {
