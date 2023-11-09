@@ -210,7 +210,6 @@ app-get-help {
       margin-bottom: 100px;
       .textarea {
         p {
-          line-height: unset !important;
           margin-bottom: 10px !important;
         }
 
@@ -221,11 +220,11 @@ app-get-help {
         }
 
         h3 {
-          margin-top: 8px;
+          margin-top: 60px;
         }
 
         h2 {
-          margin-top: 80px;
+          margin-top: 70px;
           font-size: 20px
         }
       }
