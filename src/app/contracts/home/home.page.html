@@ -9,7 +9,7 @@
             <img src="/assets/icon/workorders_blue.svg" width="20" height="40" />
           </ion-col>
           <ion-col>
-            <ion-row class="ion-justify-content-end">
+            <ion-row *ngIf="authService.userRole === 'vessel_owner'" class="ion-justify-content-end">
               <div>
                 <app-button (onClick)="createContract()" iconName="add-outline" [title]="commonText?.newContract"></app-button>
               </div>

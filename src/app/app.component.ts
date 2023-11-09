@@ -44,7 +44,7 @@ export class AppComponent implements OnInit, OnDestroy {
     this.contentService.menuContent.subscribe((data) => {
       if (data && Object.keys(data).length > 0) {
         data?.sort((a, b) => a.position - b.position);
-        this.appPages = data;
+        this.appPages = this.authService.alterMenuBaseOnRole(data);
       }
     });
     this.contentService.watchContent().subscribe((resp) => {
