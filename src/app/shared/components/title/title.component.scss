@@ -18,3 +18,11 @@
 .big{
   font-size: 36px !important;
 }
+
+:host.view-clause {
+  h1 {
+    color: #3565FF;
+    font-size: 1.6rem !important;
+    line-height: 36px;
+  }
+}

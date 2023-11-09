@@ -16,7 +16,7 @@ export class VesselownerPage implements OnInit {
     {title: 'Vessels', icon: '/assets/icon/boat_with_blue_bg.svg',  url: '/vessels/home'},
     {title: 'Agents', icon: '/assets/icon/office.svg',  url: '/agents/home'},
     {title: 'Recruits', icon: '/assets/icon/profile_info_blue.svg', url: '/workers/home'},
-    {title: 'Contracts', icon: '/assets/icon/offers.svg',  url: '/contracts/company/home'},
+    {title: 'Contracts', icon: '/assets/icon/offers.svg',  url: '/contracts/home'},
     // {title: 'Payments', icon: '/assets/icon/single_payment_blue.svg',  url: '/payments/home'},
   ];
 

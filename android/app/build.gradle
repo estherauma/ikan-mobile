@@ -26,7 +26,7 @@ android {
           minifyEnabled false
           debuggable true
           firebaseAppDistribution {
-            releaseNotes="Fix home pages"
+            releaseNotes="Fix contract and form styles"
             groups="scrum,other-departments"
             serviceCredentialsFile=file("google-services-credentials.json")
           }
