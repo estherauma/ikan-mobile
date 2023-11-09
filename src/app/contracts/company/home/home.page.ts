@@ -59,6 +59,7 @@ export class HomePage implements OnInit {
     this.contracts = result;
   }
 
+  // TODO: Move to sharedMethods
   getContractDates(contract) {
     const locale = this.contentService.currentLanguage;
     const start = formatDate(contract?.startDate, 'dd/MM/yyyy', locale);
