@@ -5,6 +5,7 @@ import { CreatePage } from '../create/create.page';
 import { ContractDataService } from '../data/contract-data.service';
 import { ContentService } from '../../shared/services/content/content.service';
 import { formatDate } from "@angular/common";
+import { AuthService } from 'src/app/shared/services/auth/auth.service';
 
 
 @Component({
@@ -24,6 +25,7 @@ export class HomePage implements OnInit {
     public contractsDataService: ContractDataService,
     public modalCtrl: ModalController,
     public contentService: ContentService,
+    public authService: AuthService
 
   ) {
     this.contractsDataService.getAll().subscribe((data) => {

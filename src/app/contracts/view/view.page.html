@@ -9,7 +9,7 @@
           <ion-row class="ion-justify-content-end">
             <div>
               <!-- TODO: Add logic for clause translation -->
-              <app-button (onClick)="createClause()" iconName="add-outline" [title]="createButtonText"></app-button>
+              <app-button *ngIf="authService.userRole === 'vessel_owner'" (onClick)="createClause()" iconName="add-outline" [title]="createButtonText"></app-button>
             </div>
           </ion-row>
         </ion-col>
