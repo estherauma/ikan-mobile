@@ -96,7 +96,7 @@ export class CreatedetailPage extends BaseformPage implements OnInit {
     formData.name = this.pageTitle;
     this.contractDataServ.saveContractClause(this.contractId, formData)
     .then((result) => {
-     this.sharedMethods.showToast(this.pageText?.contractClauseSaved)
+     this.sharedMethods.showToast(this.contentService.commonText?.clauseSaved)
      this.router.navigate(['/contracts/view', {id: this.contractId}]);
     })
   }
