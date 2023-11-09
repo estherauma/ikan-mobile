@@ -15,7 +15,7 @@ export class WorkerPage implements OnInit {
   name: string = '';
 
   sLists = [
-    {title: 'Contracts', icon: '/assets/icon/offers.svg',  url: '/contracts/company/home'},
+    {title: 'Contracts', icon: '/assets/icon/offers.svg',  url: '/contracts/home'},
     // {title: 'Placement'},
     // {title: 'My Document'},
     // {title: 'To Do'},

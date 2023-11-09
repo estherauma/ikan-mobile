@@ -53,7 +53,6 @@ export class ContractDataService {
             updatedBy: data.rows.item(i).updated_by
           });
         }
-
       }
       contracts.reverse();
       this.contracts.next(contracts);
@@ -62,6 +61,17 @@ export class ContractDataService {
 
   getAll() {
     return this.contracts.asObservable();
+  }
+
+  getSingleContract(contractId) {
+    let contract = {};
+    this.contracts.getValue().forEach((entry) => {
+      if (entry.id == contractId) {
+        contract = entry;
+        return;
+      }
+    });
+    return contract;
   }
 
   create(data) {

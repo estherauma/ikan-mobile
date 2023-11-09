@@ -6,7 +6,7 @@
   div {
     width: 48%;
     text-align: center;
-    background-color: #ecebe6;
+    background-color: white;
     border-radius: 40px;
 
     ion-icon {
@@ -18,7 +18,7 @@
     p {
       font-size: 0.8rem;
       margin-top: 5px;
-      color: var(--ion-color-text-black);
+      color: var(--ikan_darkblue_100);
     }
   }
 }
@@ -51,12 +51,18 @@
 
 ion-input{
   --height: 60px;
-  --color: var(--ikan_darkblue_100);
+}
+
+ion-select {
+  --padding-start: 20px;
+  --padding-end: 20px;
 }
 
 .form-input {
   background-color: white; 
   border-radius: 10px;
+  color: var(--ikan_darkblue_100);
+  --color: var(--ikan_darkblue_100);
 }
 
 .text-section{
@@ -83,4 +89,23 @@ ion-input{
 
 .password-wrapper {
   border-radius: 10px;
+}
+
+:host.create-contract,
+:host.create-clause,
+:host.create-clause-detail,
+:host.create-agent,
+:host.create-company,
+:host.create-vessel-step-1,
+:host.create-vessel-step-2,
+:host.create-worker,
+:host.create-note {
+  .form-input {
+    background: #EAEDF6;
+  }
+  .upload-wrapper {
+    div {
+    background-color: #EAEDF6;
+    }
+  }
 }
