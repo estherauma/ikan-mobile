@@ -62,7 +62,8 @@ app-variant {
   }
 }
 
-app-subchapter {
+app-subchapter,
+app-get-help {
   ion-content {
     background-color: #EAEDF6;
     --background: #EAEDF6;
@@ -198,6 +199,35 @@ app-subchapter {
       ion-text {
         color: #A0ABCC;
         font-size: 0.875rem;
+      }
+    }
+  }
+}
+
+app-get-help {
+  ion-content {
+    .content-section {
+      margin-bottom: 100px;
+      .textarea {
+        p {
+          line-height: unset !important;
+          margin-bottom: 10px !important;
+        }
+
+        h4 {
+          font-size: 18px;
+          margin-top: 40px;
+          margin-bottom: 5px
+        }
+
+        h3 {
+          margin-top: 8px;
+        }
+
+        h2 {
+          margin-top: 80px;
+          font-size: 20px
+        }
       }
     }
   }
