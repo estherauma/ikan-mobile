@@ -256,7 +256,7 @@ export class PushNotificationsService {
   async showPNsPrompt() {
     const alertProps = {
       cssClass: 'workflow-alert',
-      message: this.contentService.commonText?.promptPushNotification, // TODO: add to prismic
+      message: this.contentService.commonText?.promptPushNotification,
       backdropDismiss: false,
       buttons: [
         {
