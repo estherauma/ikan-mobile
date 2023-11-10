@@ -13,6 +13,7 @@ import { AuthService } from '../shared/services/auth/auth.service';
   styleUrls: ['./survey.component.scss'],
 })
 export class SurveyComponent extends BaseformPage  implements OnInit {
+  attemptedFollowUpQtnKeys = {};
 
   constructor(
     public contentService: ContentService,
@@ -35,17 +36,23 @@ export class SurveyComponent extends BaseformPage  implements OnInit {
 
       if (entry?.options) {
         this.group[entry.key].valueChanges.subscribe((value) => {
-          const option = entry.options.filter(x => x.value === value);
+          // Remove previous option from formGroup
+          if (this.attemptedFollowUpQtnKeys?.[entry.key]) {
+            this.pageFormGroup.removeControl(this.attemptedFollowUpQtnKeys[entry.key]);
+            delete this.attemptedFollowUpQtnKeys[entry.key];
 
-          if (option?.[0]?.followUpQuestion) {
+          }
+
+          const currentOption = entry.options.filter(x => x.value === value);
+          if (currentOption?.[0]?.followUpQuestion) {
             entry.hasFollowUpQuestion = true;
-            entry.followUpQuestion = option?.[0]?.followUpQuestion;
+            entry.followUpQuestion = currentOption?.[0]?.followUpQuestion;
             this.group[entry.followUpQuestion.key] = new FormControl('', []);
+            this.attemptedFollowUpQtnKeys[entry.key] = currentOption?.[0]?.followUpQuestion.key;
           } else {
             entry.hasFollowUpQuestion = false;
             entry.followUpQuestion = null;
           }
-
           this.cdr.detectChanges();
         });
       }
