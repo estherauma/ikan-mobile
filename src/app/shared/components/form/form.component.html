@@ -1,4 +1,5 @@
 <form
+  *ngIf="tunaFormGroup"
   [formGroup]="tunaFormGroup"
   (ngSubmit)="onSubmit($event)"
   class="transparent-bg"
@@ -23,7 +24,7 @@
           <p class="text-section">{{question.label}}</p>
         </div>
       </div>
-      <div *ngSwitchCase="'textBox' || 'text'">
+      <div *ngSwitchCase="question.questionType === 'textBox' || question.questionType  === 'text' ? question.questionType : '' ">
         <div *ngIf="question.displayquestion" lines="none" class="transparent-bg">
           <ion-grid>
             <ion-row>
@@ -44,7 +45,7 @@
         </div>
       </div>
 
-      <div *ngSwitchCase="'textArea' || 'textarea'">
+      <div *ngSwitchCase="question.questionType === 'textArea' || question.questionType  === 'textarea' ? question.questionType : ''">
         <div *ngIf="question.displayquestion" lines="none" class="transparent-bg">
           <ion-grid>
             <ion-row>
