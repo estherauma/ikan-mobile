@@ -75,7 +75,7 @@ export class FormComponent implements OnInit {
       }
     });
 
-    this.tunaFormGroup.valueChanges.subscribe((value) => {
+    this.tunaFormGroup?.valueChanges.subscribe((value) => {
       const finalValues = this.removeUnwantedObjectKey(this.tunaFormGroup.value);
 
       if (this.useCustomSubmitButton) {

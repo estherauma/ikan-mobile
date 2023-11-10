@@ -23,7 +23,7 @@
           <p class="text-section">{{question.label}}</p>
         </div>
       </div>
-      <div *ngSwitchCase="'textBox'">
+      <div *ngSwitchCase="'textBox' || 'text'">
         <div *ngIf="question.displayquestion" lines="none" class="transparent-bg">
           <ion-grid>
             <ion-row>
@@ -44,7 +44,7 @@
         </div>
       </div>
 
-      <div *ngSwitchCase="'textArea'">
+      <div *ngSwitchCase="'textArea' || 'textarea'">
         <div *ngIf="question.displayquestion" lines="none" class="transparent-bg">
           <ion-grid>
             <ion-row>

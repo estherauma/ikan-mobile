@@ -23,11 +23,13 @@ export class SurveyComponent extends BaseformPage  implements OnInit {
     super(contentService)
   }
 
-  ngOnInit() {
+  async ngOnInit() {
     this.commonText = this.contentService?.commonText;
     const pageData = this.contentService.getContentByPropertyName('survey');
     this.pageTitle  = pageData?.pageTitle;
-    this.formQuestions = pageData?.formQuestions;
+    // this.formQuestions = pageData?.formQuestions;
+    this.formQuestions = await this.contentService.getSurveyQuestions().then((result) => this.formQuestions =result);
+
     this.formQuestions.forEach(entry => {
       this.group[entry.key] = new FormControl('', [ Validators.required ]);
     });

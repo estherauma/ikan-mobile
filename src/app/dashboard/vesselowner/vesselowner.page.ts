@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { ContentService } from 'src/app/shared/services/content/content.service';
 import { PushNotificationsService } from 'src/app/shared/services/push-notifications/push-notifications.service';
 import { SharedmethodsService } from 'src/app/shared/services/sharedmethods/sharedmethods.service';
@@ -42,6 +43,7 @@ export class VesselownerPage implements OnInit {
     public pushNotifications: PushNotificationsService,
     public contentService: ContentService,
     public sharedmethods: SharedmethodsService,
+    public router: Router,
   ) {
     let menuContent = this.contentService.getMenuContent();
     // wait for 5 seconds
@@ -84,5 +86,9 @@ export class VesselownerPage implements OnInit {
     }
     const user = await this.sharedmethods.readDataFromStorage(StorageKeys.userData);
     this.name = this.contentService.commonText?.hi + ' ' + user?.firstName;
+  }
+
+  gooo() {
+    this.router.navigate(['survey'])
   }
 }
