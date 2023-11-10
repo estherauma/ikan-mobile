@@ -11,6 +11,7 @@ import { DBService } from './shared/services/database/db.service';
 import { PushNotificationsService } from './shared/services/push-notifications/push-notifications.service';
 import { LocalNotificationsService } from './shared/services/local-notifications/local-notifications.service';
 import { Subscription } from 'rxjs';
+import { SyncService } from './shared/services/sync/sync.service';
 
 @Component({
   selector: 'app-root',
@@ -33,6 +34,7 @@ export class AppComponent implements OnInit, OnDestroy {
     public dbService: DBService,
     public pushNotifications: PushNotificationsService,
     public localNotifications: LocalNotificationsService,
+    public syncService: SyncService,
   ) {
     this.authService.setUpAuthData();
     this.contentService.setUpAppData().then(() => {
@@ -119,7 +121,10 @@ export class AppComponent implements OnInit, OnDestroy {
     if (this.appPages[index].url === '/logout') {
       this.authService.logOut();
       this.router.navigate(['']);
-    } else {
+    } else if(this.appPages[index].url === '/sync') {
+      this.syncService.syncData();
+    }
+     else {
       this.router.navigate([this.appPages[index].url], { replaceUrl: true });
     }
   }

@@ -71,6 +71,7 @@ export class AuthService {
 
   alterMenuBaseOnRole(menuItems) {
     let finalMenu = []
+    finalMenu.push({label: 'Sync', url: '/sync', icon: 'sync', role:'all', enabled: true, position: 399});
     menuItems.forEach((menuItem) => {
       if (menuItem?.roles == null) {
         return;
@@ -80,7 +81,6 @@ export class AuthService {
        finalMenu.push(menuItem);
       }
     })
-    console.log(finalMenu);
     return finalMenu;
   }  
 
