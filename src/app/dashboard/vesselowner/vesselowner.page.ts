@@ -88,7 +88,8 @@ export class VesselownerPage implements OnInit {
     this.name = this.contentService.commonText?.hi || '' + ' ' + user?.firstName || '';
   }
 
-  gooo() {
-    this.router.navigate(['survey'])
-  }
+  // For testing purposes
+  // gooo() {
+  //   this.router.navigate(['survey'])
+  // }
 }
