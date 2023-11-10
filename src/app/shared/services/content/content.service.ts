@@ -215,7 +215,6 @@ export class ContentService {
         result[item?.pageName] = qtns;
       }
     });
-    console.log('eeeeeeeeeeeee.........', result)
     return result;
   }
 
@@ -225,50 +224,32 @@ export class ContentService {
     if(!savedCategories || !savedCategories?.length) {
       const categories = Object.keys(surveyData);
       await this.sharedMethods.saveDataToStorage(StorageKeys.surveyCategories, categories);
+      return categories;
     }
   }
 
   async getSurveyQuestions() {
-    const allCategories = await this.sharedMethods.readDataFromStorage(StorageKeys.surveyCategories);
+    let allCategories;
+    allCategories = await this.sharedMethods.readDataFromStorage(StorageKeys.surveyCategories);
+    if(!allCategories?.length) {
+      allCategories = await this.saveSurveyCategories();
+    }
+    
     // get random category
-    const randomIndex = Math.floor(Math.random() * allCategories.length);
-    const randomCategory = allCategories[randomIndex];
-    const surveyData =  await this.getSurveyData();
-    console.log('surveyData[randomCategory]surveyData[randomCategory]--------',surveyData[randomCategory])
-    const qtns = surveyData[randomCategory];
-    return qtns.map((qn) => {
-      const options = qn.options?.map(x => {return {label: x.option, value: x.option, ...x}});
-      return {
-        category: null,
-        displayquestion: true,
-        helpText: qn?.helpText ? qn?.helpText : null,
-        key: qn.key,
-        label: qn.question ? qn.question : '',
-        placeholder: qn?.placeholder ? qn.placeholder : null,
-        questionType: qn.questionType,
-        options,
-      }
-    });
+    // const randomIndex = Math.floor(Math.random() * allCategories.length);
+    // const randomCategory = allCategories[randomIndex];
+    const category = allCategories[0];
+    const surveyData =  this.getSurveyData();
+    
+    return surveyData[category].map((qn) => ({
+      category: null,
+      displayquestion: true,
+      helpText: qn?.helpText ?? null,
+      key: qn.key,
+      label: qn.question ?? '',
+      placeholder: qn?.placeholder ?? null,
+      questionType: qn.questionType,
+      options: (qn.options ?? []).map(x => ({ label: x.option, value: x.option, ...x })),
+    })) ?? [];
   }
-
-  // async getSurveyQuestions() {
-  //   const [allCategories, surveyData] = await Promise.all([
-  //     this.sharedMethods.readDataFromStorage(StorageKeys.surveyCategories),
-  //     this.getSurveyData()
-  //   ]);
-  
-  //   const randomIndex = Math.floor(Math.random() * allCategories.length);
-  //   const randomCategory = allCategories[randomIndex];
-  
-  //   return surveyData[randomCategory]?.map(qn => ({
-  //     category: null,
-  //     displayquestion: true,
-  //     helpText: qn?.helpText ?? null,
-  //     key: qn.key,
-  //     label: qn.question ?? '',
-  //     placeholder: qn?.placeholder ?? null,
-  //     questionType: qn.questionType,
-  //     options: (qn.options ?? []).map(x => ({ label: x.option, value: x.option, ...x }))
-  //   })) ?? [];
-  // }
 }

@@ -27,11 +27,10 @@ export class SurveyComponent extends BaseformPage  implements OnInit {
     this.commonText = this.contentService?.commonText;
     const pageData = this.contentService.getContentByPropertyName('survey');
     this.pageTitle  = pageData?.pageTitle;
-    // this.formQuestions = pageData?.formQuestions;
-    this.formQuestions = await this.contentService.getSurveyQuestions().then((result) => this.formQuestions =result);
+    this.formQuestions = await this.contentService.getSurveyQuestions();
 
     this.formQuestions.forEach(entry => {
-      this.group[entry.key] = new FormControl('', [ Validators.required ]);
+      this.group[entry.key] = new FormControl('', []);
     });
     this.pageFormGroup = new FormGroup(this.group);
   }
@@ -46,8 +45,15 @@ export class SurveyComponent extends BaseformPage  implements OnInit {
       createdAt: now
     };
     await this.sharedMethods.saveSurveyDataToLocalStorage(StorageKeys.survey, date, surveyData);
+    await this.removeCategoryFromSavedOptions();
 
     this.sharedMethods?.hideLoader();
     this.router.navigate([this.authService.getCurrentUserBaseUrlFromRole(user?.role)]);
+  }
+
+  async removeCategoryFromSavedOptions() {
+    const allCategories = await this.sharedMethods.readDataFromStorage(StorageKeys.surveyCategories);
+    allCategories.shift();
+    await this.sharedMethods.saveDataToStorage(StorageKeys.surveyCategories, allCategories);
   }
 }
