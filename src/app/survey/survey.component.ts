@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { ContentService } from '../shared/services/content/content.service';
 import { BaseformPage } from '../shared/components/baseform/baseform.page';
 import { FormControl, Validators, FormGroup } from '@angular/forms';
@@ -19,6 +19,7 @@ export class SurveyComponent extends BaseformPage  implements OnInit {
     public sharedMethods: SharedmethodsService,
     public router: Router,
     public authService: AuthService,
+    public cdr: ChangeDetectorRef,
   ) {
     super(contentService)
   }
@@ -31,6 +32,23 @@ export class SurveyComponent extends BaseformPage  implements OnInit {
 
     this.formQuestions.forEach(entry => {
       this.group[entry.key] = new FormControl('', []);
+
+      if (entry?.options) {
+        this.group[entry.key].valueChanges.subscribe((value) => {
+          const option = entry.options.filter(x => x.value === value);
+
+          if (option?.[0]?.followUpQuestion) {
+            entry.hasFollowUpQuestion = true;
+            entry.followUpQuestion = option?.[0]?.followUpQuestion;
+            this.group[entry.followUpQuestion.key] = new FormControl('', []);
+          } else {
+            entry.hasFollowUpQuestion = false;
+            entry.followUpQuestion = null;
+          }
+
+          this.cdr.detectChanges();
+        });
+      }
     });
     this.pageFormGroup = new FormGroup(this.group);
   }
