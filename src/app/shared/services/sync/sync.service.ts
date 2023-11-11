@@ -5,6 +5,7 @@ import { CompaniesDataService } from 'src/app/companies/data/companies-data.serv
 import { Platform } from '@ionic/angular';
 import { SQLite, SQLiteObject } from '@awesome-cordova-plugins/sqlite/ngx';
 import { CreateCompanyResp } from './types';
+import { VesselsDataService } from 'src/app/vessels/data/vessels-data.service';
 
 @Injectable({
   providedIn: 'root'
@@ -16,7 +17,8 @@ export class SyncService {
     private platform: Platform,
     public sqlite: SQLite,
     private apiService: ApiService,
-    private companyServ: CompaniesDataService
+    private companyServ: CompaniesDataService,
+    private vesselServ: VesselsDataService
   ) { 
     this.platform.ready().then(async() => {
       this.sqlite.create({
@@ -39,6 +41,7 @@ export class SyncService {
 
   syncData() {
     this.syncCompanies();
+    this.syncVessels();
   }
 
   syncCompanies() { 
@@ -62,7 +65,26 @@ export class SyncService {
       }
     })
   }
-  syncVessels() {}
+
+  syncVessels() {
+    this.vesselServ.getAll().subscribe((data) => {
+      let vessels = data;
+      if (vessels.length > 0) {
+        vessels.forEach((vessel) => {
+          delete vessel.id;
+          if (!vessel.online_ref) {
+            this.apiService.post('vessels', vessel).subscribe((response) => {
+              console.log(response);
+            });
+          } else {
+            // this.apiService.put('vessels', vessel.online_ref, vessel).subscribe((response) => {
+            //   console.log(response);
+            // });
+          }
+        });
+      }
+    });
+  }
 
 
 }
