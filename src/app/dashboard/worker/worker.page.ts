@@ -39,7 +39,7 @@ export class WorkerPage implements OnInit {
   async setupPage() {
     this.commonText = this.contentService.commonText;
     this.user = await this.sharedmethods.readDataFromStorage(StorageKeys.userData);
-    this.name = this.commonText?.hi + ' ' + this.user?.firstName;
+    this.name = this.commonText?.hi || '' + ' ' + this.user?.firstName || '';
     this.contentService.updateCurrentLanguage();
     const menuContent = this.contentService.getMenuContent();
 

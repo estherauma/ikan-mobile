@@ -80,7 +80,6 @@ export class AuthService {
        finalMenu.push(menuItem);
       }
     })
-    console.log(finalMenu);
     return finalMenu;
   }  
 
