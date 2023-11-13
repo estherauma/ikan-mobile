@@ -38,11 +38,11 @@ export class LocalNotificationsService {
           id: 1,
           schedule: {
             repeats: true,
-            every: 'week',
             on:
               {
                 weekday: Weekday.Sunday,
-                hour: 18
+                hour: 18,
+                minute: 0,
               }
             }, // Notification will run every Sunday
           actionTypeId: 'survey',
