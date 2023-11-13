@@ -38,7 +38,7 @@ export class SharedmethodsService {
     await this.loadingCtrl.dismiss();
   }
 
-  async showToast(text = 'Hooray!') {
+  async showToast(text = 'Something went wrong, please try again!') {
     await Toast.show({
       text
     });
