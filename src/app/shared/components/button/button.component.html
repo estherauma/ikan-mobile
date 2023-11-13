@@ -9,7 +9,15 @@
   [color]="color"
   [type]="type"
 >
-  <ion-icon *ngIf="iconPosition === 'left' && iconName" [name]="iconName"></ion-icon>
+  <ion-icon
+    *ngIf="iconPosition === 'left' && iconName"
+    [name]="iconName"
+    class="ion-margin-end"
+  ></ion-icon>
   <span>{{title}}</span>
-  <ion-icon *ngIf="iconPosition === 'right' && iconName" [name]="iconName"></ion-icon>
+  <ion-icon
+    *ngIf="iconPosition === 'right' && iconName"
+    [name]="iconName"
+    class="ion-margin-start"
+  ></ion-icon>
 </ion-button>

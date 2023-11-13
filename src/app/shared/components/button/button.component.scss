@@ -20,6 +20,12 @@
 #app-btn {
     --padding-start: 20px;
     --padding-end: 20px;
+    text-wrap: wrap;
+    max-width: 100%;
+    span {
+        max-width: 80%;
+        margin: 7px 0;
+    }
 }
 
 
@@ -27,5 +33,11 @@
     #app-btn {
         color: white !important;
         --color: white !important;
+    }
+}
+
+:host.form-btn {
+    #app-btn {
+        min-width: 50%;
     }
 }
