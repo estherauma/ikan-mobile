@@ -4,17 +4,15 @@
   <app-contentwrapper>
 
   <div>
-    <ion-grid class="ion-margin-bottom">
-      <ion-row class="ion-justify-content-between ion-align-items-baseline">
-        <ion-col>
+    <ion-grid class="ion-margin-bottom ion-margin-top">
+      <ion-row class="ion-align-items-center">
+        <ion-col size="2">
           <img src="/assets/icon/workorders_blue.svg" width="20" height="40" />
         </ion-col>
-        <ion-col>
-          <ion-row class="ion-justify-content-end">
-            <div>
-              <app-button (onClick)="createWorker()" iconName="add-outline" [title]="commonText?.newWorker"></app-button>
-            </div>
-          </ion-row>
+        <ion-col size="10" class="ion-justify-content-end">
+          <div class="ion-justify-content-end">
+            <app-button (onClick)="createWorker()" iconName="add-outline" [title]="commonText?.newWorker"></app-button>
+          </div>
         </ion-col>
       </ion-row>
       <ion-row class="ion-padding-bottom title">

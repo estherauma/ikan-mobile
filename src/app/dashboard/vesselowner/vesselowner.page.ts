@@ -85,7 +85,7 @@ export class VesselownerPage implements OnInit {
       this.pushNotifications.checkAndroidPNsPermissions();
     }
     const user = await this.sharedmethods.readDataFromStorage(StorageKeys.userData);
-    this.name = this.contentService.commonText?.hi || '' + ' ' + user?.firstName || '';
+    this.name = (this.contentService.commonText?.hi || '') + ' ' + (user?.firstName || '');
   }
 
   // For testing purposes
