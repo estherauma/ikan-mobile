@@ -72,7 +72,7 @@ export class PasswordResetPage extends BaseformPage implements OnInit {
   
     delete data.confirm_password;
     this.sharedMethods?.showLoader(this.commonText?.submittingYourData);
-    this.apiService.post('accounts/reset-password', data).subscribe(
+    this.apiService.post('accounts/reset-password', data, true).subscribe(
       res => {
         this.sharedMethods.showToast('Password was reset successfully. Please proceede to login');
         this.isLoading = false;
