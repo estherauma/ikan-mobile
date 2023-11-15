@@ -52,7 +52,6 @@ export class CompaniesDataService {
           });
         }
       }
-      console.log(companies)
       this.companies.next(companies);
     }).catch((e) => console.log(e));
   }
