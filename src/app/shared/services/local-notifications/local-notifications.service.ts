@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { ActionPerformed, LocalNotificationSchema, LocalNotifications, PermissionStatus, Weekday } from '@capacitor/local-notifications';
 import { SurveyModes } from '../../types/api-types';
+import { SharedmethodsService } from '../sharedmethods/sharedmethods.service';
 
 @Injectable({
   providedIn: 'root'
@@ -10,6 +11,7 @@ export class LocalNotificationsService {
 
   constructor(
     public router: Router,
+    public sharedMethods: SharedmethodsService,
   ) {
     this.scheduleNotifications();
     this.addListeners();
@@ -32,7 +34,7 @@ export class LocalNotificationsService {
   async scheduleNotifications() {
     const permissionsGranted = await this.requestNotificationPermission();
     if (permissionsGranted) {
-      const notifications: LocalNotificationSchema[] = [
+      const allNotifications: LocalNotificationSchema[] = [
         {
           title: 'Survey',
           body: 'A quick survey checking on you',
@@ -47,7 +49,9 @@ export class LocalNotificationsService {
               }
             }, // Notification will run every Sunday
           actionTypeId: 'survey',
-          
+          extra: {
+            role: 'worker'
+          }
         },
         // TO BE REMOVED
         // Testing purposes
@@ -66,6 +70,9 @@ export class LocalNotificationsService {
 
         // ADD NOTIFICATIONS HERE
       ];
+
+      const user = await this.sharedMethods.getUserData();
+      const notifications = allNotifications.filter((notif) => notif?.extra?.role === user?.role || !notif.extra?.role);
     
       await LocalNotifications.schedule({
         notifications: notifications,
