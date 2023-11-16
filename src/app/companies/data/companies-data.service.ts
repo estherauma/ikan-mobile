@@ -65,7 +65,7 @@ export class CompaniesDataService {
     const query = 'INSERT INTO companies (name, description, status, country, telephone, \
       email, address_line_1, address_line_2, address_line_3, created_at, updated_at, created_by, \
       updated_by, app_ref) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)';
-    const params = [data.name, data.description, data. status, data.country, data.telephone, data.email,
+    const params = [data.name, data.description, data.status, data.country, data.telephone, data.email,
       data.address_line_1, data.address_line_2, data.address_line_3, data.created_at, data.updated_at,
       data.created_by, data.updated_by, data.app_ref];
     return this.db.executeSql(query, params).then((result) => {
