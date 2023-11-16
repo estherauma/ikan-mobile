@@ -50,7 +50,7 @@ export class LocalNotificationsService {
             }, // Notification will run every Sunday
           actionTypeId: 'survey',
           extra: {
-            role: 'worker'
+            roles: ['worker']
           }
         },
         // TO BE REMOVED
@@ -72,7 +72,7 @@ export class LocalNotificationsService {
       ];
 
       const user = await this.sharedMethods.getUserData();
-      const notifications = allNotifications.filter((notif) => notif?.extra?.role === user?.role || !notif.extra?.role);
+      const notifications = allNotifications.filter((notif) => notif?.extra?.roles?.includes(user?.role) || !notif.extra?.roles);
     
       await LocalNotifications.schedule({
         notifications: notifications,
