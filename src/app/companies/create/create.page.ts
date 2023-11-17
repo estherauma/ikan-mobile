@@ -41,6 +41,7 @@ export class CreatePage extends BaseformPage implements OnInit {
     formData.updated_by = userData.id;
     formData.created_at = formData.updated_at = now;
     formData.logo_url = '';
+    formData.app_ref = this.sharedMethods.generateAppRef();
     const insertId =  await this.companiesDataService.create(formData);
     this.modalCtrl.dismiss();
   }

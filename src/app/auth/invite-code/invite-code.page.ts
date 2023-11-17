@@ -52,7 +52,7 @@ export class InviteCodePage extends BaseformPage implements OnInit {
       this.sharedMethods.hideLoader();
       return;
     }
-    this.apiService.post('accounts/verify-access-token', data)
+    this.apiService.post('accounts/verify-access-token', data, true)
     .subscribe(
       (res: IPasswordResetResp) => {
         if (res?.status == 'OK') {
