@@ -5,6 +5,7 @@ import { Observable } from 'rxjs';
 import { PushNotificationData, StorageKeys } from 'src/app/shared/types/api-types';
 import { Preferences } from '@capacitor/preferences';
 import { SharedmethodsService } from '../sharedmethods/sharedmethods.service';
+import { AuthService } from '../auth/auth.service';
 
 @Injectable({
   providedIn: 'root'
@@ -15,12 +16,13 @@ export class ApiService {
 
   constructor(
     public http: HttpClient,
-    public sharedMethods: SharedmethodsService,
-  ) { }
+    public sharedMethods: SharedmethodsService
+  ) {
+    this.setApiRequestHeaders();
+  }
 
   async setApiRequestHeaders() {
-    const accessToken = '';
-
+    const accessToken = await this.sharedMethods.readDataFromStorage(StorageKeys.apiToken);
     this.headers = new HttpHeaders({
       // eslint-disable-next-line @typescript-eslint/naming-convention
       Authorization: `Bearer ${accessToken}`
@@ -41,8 +43,11 @@ export class ApiService {
    * @param requestData
    * Return the data from a post request
    */
-  post(resourceUrl, requestData) {
+  post(resourceUrl, requestData, excludeHeaders=false) {
     //TODO: Consider checking status of the request from here and also passing interface for the expected data
+    if (excludeHeaders) {
+      return this.http.post(`${env.apiUrl}/${resourceUrl}`, requestData);
+    }
     return this.http.post(`${env.apiUrl}/${resourceUrl}`, requestData, {headers: this.headers});
   }
 
@@ -52,9 +57,8 @@ export class ApiService {
    * @param resourceId
    * @param requestData
    */
-  put(resourceUrl, resourceId, requestData): void {
-    this.http.put(`${env.apiUrl}/${resourceUrl}/${resourceId}/`, requestData, {headers: this.headers})
-    .subscribe((response) => response);
+  put(resourceUrl, resourceId, requestData) {
+    return this.http.put(`${env.apiUrl}/${resourceUrl}/${resourceId}/`, requestData, {headers: this.headers})
   }
 
   /**
