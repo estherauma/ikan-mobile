@@ -74,7 +74,7 @@ export class PasswordResetPage extends BaseformPage implements OnInit {
     this.sharedMethods?.showLoader(this.commonText?.submittingYourData);
     this.apiService.post('accounts/reset-password', data, true).subscribe(
       res => {
-        this.sharedMethods.showToast('Password was reset successfully. Please proceede to login');
+        this.sharedMethods.showToast(this.pageText?.passwordResetProceedToLogin || 'Password was reset successfully. Please proceede to login');
         this.isLoading = false;
         this.sharedMethods?.hideLoader();
         this.router.navigate(['auth/password-reset-success']);

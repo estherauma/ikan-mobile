@@ -66,7 +66,7 @@ export class FormComponent implements OnInit {
     this.uploadPictureText = this.commonText?.uploadPicture;
     this.uploadDocText = this.commonText?.uploadDocument;
     this.submitButtonText = this.commonText?.submit;
-    this.tunaFormquestions.map(question => {
+    this.tunaFormquestions?.map(question => {
       if ([...this.typesToExclude].includes(question.questionType)) {
         this.tunaFormGroup.patchValue({
           [question.key]: question.key
@@ -75,7 +75,7 @@ export class FormComponent implements OnInit {
       }
     });
 
-    this.tunaFormGroup.valueChanges.subscribe((value) => {
+    this.tunaFormGroup?.valueChanges.subscribe((value) => {
       const finalValues = this.removeUnwantedObjectKey(this.tunaFormGroup.value);
 
       if (this.useCustomSubmitButton) {
@@ -144,7 +144,7 @@ export class FormComponent implements OnInit {
       [key]: newValue
     });
 
-    this.tunaFormquestions = this.tunaFormquestions.map((el: any) => {
+    this.tunaFormquestions = this.tunaFormquestions?.map((el: any) => {
       if (el.key === key) {
         return {
           ...el,

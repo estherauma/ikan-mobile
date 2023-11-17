@@ -50,7 +50,7 @@ export class CreatedetailPage extends BaseformPage implements OnInit {
   pageSetup(){
     const pageData = this.contentService.getContentByPropertyName(this.clauseMapping[this.objectTolookup]);
     if (!pageData) {
-      this.sharedMethods.showToast(this.commonText?.somethingWentWrong)
+      this.sharedMethods.showToast(this.commonText?.somethingWentWrong);
       return;
     }
     this.pageTitle = pageData?.pageTitle;
@@ -96,7 +96,7 @@ export class CreatedetailPage extends BaseformPage implements OnInit {
     formData.name = this.pageTitle;
     this.contractDataServ.saveContractClause(this.contractId, formData)
     .then((result) => {
-     this.sharedMethods.showToast(this.contentService.commonText?.clauseSaved)
+     this.sharedMethods.showToast(this.contentService.commonText?.clauseSaved);
      this.router.navigate(['/contracts/view', {id: this.contractId}]);
     })
   }
@@ -168,7 +168,7 @@ export class CreatedetailPage extends BaseformPage implements OnInit {
             entry.displayquestion = false;
           }
         });
-        break
+        break;
       }
     }
   }

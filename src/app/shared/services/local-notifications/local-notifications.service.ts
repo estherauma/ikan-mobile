@@ -36,7 +36,15 @@ export class LocalNotificationsService {
           title: 'Survey',
           body: 'A quick survey checking on you',
           id: 1,
-          schedule: { on: { weekday: Weekday.Monday, } }, // Notification will run every Monday
+          schedule: {
+            repeats: true,
+            on:
+              {
+                weekday: Weekday.Sunday,
+                hour: 18,
+                minute: 0,
+              }
+            }, // Notification will run every Sunday
           actionTypeId: 'survey',
 
         },

@@ -66,7 +66,7 @@ export class InviteCodePage extends BaseformPage implements OnInit {
       error => {
         this.sharedMethods?.hideLoader();
         if (error.status === 400) {
-          this.sharedMethods.showToast(error?.error?.message)
+          this.sharedMethods.showToast(error?.error?.message );
         } else {
           this.sharedMethods.showToast(this.commonText?.somethingWentWrong);
         }

@@ -53,6 +53,7 @@ export class AppComponent implements OnInit, OnDestroy {
     this.contentService.watchContent().subscribe((resp) => {
       if (resp) {
         this.checkSetupComplete();
+        this.contentService.saveSurveyCategories();
       }
     });
     this.dbService.checkDbPlatformAndRunMigration();
@@ -71,6 +72,7 @@ export class AppComponent implements OnInit, OnDestroy {
         }
     }));
     this.commonText = this.contentService.commonText;
+    await this.contentService.saveSurveyCategories();
   }
 
   checkSetupComplete() {

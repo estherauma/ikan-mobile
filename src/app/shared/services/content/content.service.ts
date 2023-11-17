@@ -30,6 +30,7 @@ export class ContentService {
         this.setAppContent();
       }
     });
+    this.saveSurveyCategories();
   }
 
   async setUpAppData() {
@@ -47,6 +48,7 @@ export class ContentService {
     const result = await this.readLocalContent();
     this.appContent = result?.content;
     await this.updateCurrentLanguage();
+
   }
 
   async currentContentCreateAt() {
@@ -197,5 +199,57 @@ export class ContentService {
 
   watchContent() {
     return this.contentObs.asObservable();
+  }
+
+  getSurveyData() {
+    const content = this.appContent?.[`${this.currentLanguage}`];
+    if (!content) return {};
+    
+    const allDocs: Array<any> = Object.values(content);
+    const contentDocs = allDocs?.filter((doc) => (doc?.type === 'create_content_area' && !isNaN(doc?.pageName)));
+
+    let result = {};
+    contentDocs?.forEach((item) => {
+      const qtns = item?.pageContent?.filter(x => x.type === 'questions');
+      if (qtns?.length) {
+        result[item?.pageName] = qtns;
+      }
+    });
+    return result;
+  }
+
+  async saveSurveyCategories() {
+    const surveyData = this.getSurveyData();
+    const savedCategories = await this.sharedMethods.readDataFromStorage(StorageKeys.surveyCategories);
+    if(!savedCategories || !savedCategories?.length) {
+      const categories = Object.keys(surveyData);
+      await this.sharedMethods.saveDataToStorage(StorageKeys.surveyCategories, categories);
+      return categories;
+    }
+  }
+
+  async getSurveyQuestions() {
+    let allCategories;
+    allCategories = await this.sharedMethods.readDataFromStorage(StorageKeys.surveyCategories);
+    if(!allCategories?.length) {
+      allCategories = await this.saveSurveyCategories();
+    }
+    
+    // get random category
+    // const randomIndex = Math.floor(Math.random() * allCategories.length);
+    // const randomCategory = allCategories[randomIndex];
+    const category = allCategories[0];
+    const surveyData =  this.getSurveyData();
+    
+    return surveyData[category].map((qn) => ({
+      category: null,
+      displayquestion: true,
+      helpText: qn?.helpText ?? null,
+      key: qn.key,
+      label: qn.question ?? '',
+      placeholder: qn?.placeholder ?? null,
+      questionType: qn.questionType,
+      options: (qn.options ?? []).map(x => ({ label: x.option, value: x.option, ...x })),
+    })) ?? [];
   }
 }

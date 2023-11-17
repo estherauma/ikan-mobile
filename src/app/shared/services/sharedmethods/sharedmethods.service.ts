@@ -63,9 +63,11 @@ export class SharedmethodsService {
 
   async saveSurveyDataToLocalStorage(key, date, obj) {
     const storedValues = await this.readDataFromStorage(key);
+    const sameDateValues = storedValues?.[date] ?? {};
+    
     await Preferences.set({
       key,
-      value: JSON.stringify({ ...storedValues, [date]: obj })
+      value: JSON.stringify({ ...storedValues, [date]: {...sameDateValues, ...obj} })
     });
   }
 
