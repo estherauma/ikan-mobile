@@ -307,6 +307,7 @@
       </div>
 
       <!-- TODO use reusable component -->
+      <!-- Followup Question Section -->
       <div
         lines="none"
         id="follow-up"
@@ -583,6 +584,12 @@
               </ion-grid>
             </div>
           </div>
+        </div>
+      </div>
+
+      <div *ngIf="question?.helpText && question?.displayquestion" class="help-text-wrapper">
+        <div [ngClass]="{'text-darkblue': isOtherDarkBlue}" lines="none" class="transparent-bg">
+          <p class="text-section">{{question.helpText}}</p>
         </div>
       </div>
 

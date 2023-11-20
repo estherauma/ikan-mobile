@@ -3,8 +3,8 @@ import { ContentService } from '../shared/services/content/content.service';
 import { BaseformPage } from '../shared/components/baseform/baseform.page';
 import { FormControl, Validators, FormGroup } from '@angular/forms';
 import { SharedmethodsService } from '../shared/services/sharedmethods/sharedmethods.service';
-import { Router } from '@angular/router';
-import { StorageKeys } from '../shared/types/api-types';
+import { ActivatedRoute, Params, Router } from '@angular/router';
+import { StorageKeys, SurveyModes } from '../shared/types/api-types';
 import { AuthService } from '../shared/services/auth/auth.service';
 
 @Component({
@@ -14,6 +14,7 @@ import { AuthService } from '../shared/services/auth/auth.service';
 })
 export class SurveyComponent extends BaseformPage  implements OnInit {
   attemptedFollowUpQtnKeys = {};
+  mode = '';
 
   constructor(
     public contentService: ContentService,
@@ -21,15 +22,22 @@ export class SurveyComponent extends BaseformPage  implements OnInit {
     public router: Router,
     public authService: AuthService,
     public cdr: ChangeDetectorRef,
+    public activatedRoute: ActivatedRoute,
   ) {
     super(contentService)
+    this.getMode();
   }
 
   async ngOnInit() {
     this.commonText = this.contentService?.commonText;
     const pageData = this.contentService.getContentByPropertyName('survey');
     this.pageTitle  = pageData?.pageTitle;
-    this.formQuestions = await this.contentService.getSurveyQuestions();
+
+    if (this.mode === SurveyModes.notification) {
+      this.formQuestions = await this.contentService.getSurveyQuestions();
+    } else {
+      this.formQuestions = pageData?.formQuestions;
+    }
 
     this.formQuestions.forEach(entry => {
       this.group[entry.key] = new FormControl('', []);
@@ -58,6 +66,14 @@ export class SurveyComponent extends BaseformPage  implements OnInit {
       }
     });
     this.pageFormGroup = new FormGroup(this.group);
+  }
+
+  getMode() {
+    this.activatedRoute.queryParams.subscribe((queryParams: Params) => {
+      if (queryParams && Object.keys(queryParams).length > 0) {
+        this.mode = queryParams?.mode || '';
+      }
+    });
   }
 
   async onSubmit(formData) {
