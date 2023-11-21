@@ -137,9 +137,9 @@ export class DBService {
     });
   }
 
-  updateDatabaseField(table, field, value, id) {
-    const params = [value, id];
-    const query = `UPDATE ${table} SET ${field} = ? WHERE id = ?`;
+  updateDatabaseField(table, field, value, appRef) {
+    const params = [value, appRef];
+    const query = `UPDATE ${table} SET ${field} = ? WHERE app_ref = ?`;
     this.db.executeSql(query, params).then(() => {
     }).catch((error) => {
       console.log(error);

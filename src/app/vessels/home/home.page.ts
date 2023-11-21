@@ -34,18 +34,6 @@ export class HomePage implements OnInit {
     public sharedMethods: SharedmethodsService
   ) {
     this.vesselsDataService.getAll().subscribe((data) => {
-      for (let vessel of data) {
-        if (vessel.appRef == null || vessel.appRef == '' || vessel.appRef == undefined) {
-          vessel.appRef = this.sharedMethods.generateAppRef();
-          this.dbService.setAppRef(vessel.id, vessel.app_ref, 'vessels');
-        }
-
-        if (vessel.commissioningDate == null  || vessel.commissioningDate == undefined) {
-          vessel.commissioningDate = new Date();
-          this.dbService.updateDatabaseField('vessels', vessel.commissioning_date, vessel.commissioningDate, vessel.id);
-        }
-      }
-
       this.vessels = this.unFilteredData = data;
     });
   }

@@ -18,7 +18,8 @@ export class SyncService {
     public sqlite: SQLite,
     private apiService: ApiService,
     private companyServ: CompaniesDataService,
-    private vesselServ: VesselsDataService
+    private vesselServ: VesselsDataService,
+    private dbService: DBService
   ) { 
     this.platform.ready().then(async() => {
       this.sqlite.create({
@@ -75,7 +76,7 @@ export class SyncService {
           if (!vessel.onlineRef) {
             this.apiService.post('vessels', vessel).subscribe((response: CreateVesselResp) => {
               if (response?.status === 'OK') {
-                this.updateEntityOnlineId(response?.data?.id, vessel.appRef, 'vessels');
+                this.dbService.updateDatabaseField('vessels', 'online_ref', response?.data?.id, vessel.appRef);
               }
             });
           } else {
@@ -87,6 +88,5 @@ export class SyncService {
       }
     });
   }
-
 
 }

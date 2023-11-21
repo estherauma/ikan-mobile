@@ -62,9 +62,9 @@ export class VesselsDataService {
 
   async create(data) {
     const query = 'INSERT INTO vessels (name, reg_no, type, status, \
-      capacity, commissioning_date, created_at, updated_at, created_by, updated_by) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)';
+      capacity, commissioning_date, created_at, updated_at, created_by, updated_by, app_ref) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)';
     const params = [data.name, data.reg_no, data.type, data.status, data.capacity,
-      data.commissioning_date, data.created_at, data.updated_at, data.created_by, data.updated_by];
+      data.commissioning_date, data.created_at, data.updated_at, data.created_by, data.updated_by, data.app_ref];
     return this.db.executeSql(query, params).then((result) => {
       this.retriveVessels();
       return result.insertId;
