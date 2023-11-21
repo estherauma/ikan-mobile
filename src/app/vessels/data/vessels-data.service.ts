@@ -36,17 +36,19 @@ export class VesselsDataService {
         for (let i = 0; i < data.rows.length; i++) {
           vessels.push({
             id: data.rows.item(i).id,
+            appRef: data.rows.item(i).app_ref,
             name: data.rows.item(i).name,
             regNo: data.rows.item(i).reg_no,
-            type: data.rows.item(i).type,
+            vesselType: data.rows.item(i).type,
             status: data.rows.item(i).status,
             capacity: data.rows.item(i).capacity,
-            commissioningData: data.rows.item(i).commissioning_date,
+            commissioningDate: data.rows.item(i).commissioning_date,
             createdAt: data.rows.item(i).created_at,
             updatedAt: data.rows.item(i).updated_at,
             createdBy: data.rows.item(i).created_by,
             updatedBy: data.rows.item(i).updated_by,
             imgUrl: data.rows.item(i).image_url || 'assets/imgs/vessel.jpeg',
+            onlineRef: data.rows.item(i).online_ref,
           });
         }
       }
@@ -60,9 +62,9 @@ export class VesselsDataService {
 
   async create(data) {
     const query = 'INSERT INTO vessels (name, reg_no, type, status, \
-      capacity, commissioning_date, created_at, updated_at, created_by, updated_by) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)';
+      capacity, commissioning_date, created_at, updated_at, created_by, updated_by, app_ref) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)';
     const params = [data.name, data.reg_no, data.type, data.status, data.capacity,
-      data.commissiong_date, data.created_at, data.updated_at, data.created_by, data.updated_by];
+      data.commissioning_date, data.created_at, data.updated_at, data.created_by, data.updated_by, data.app_ref];
     return this.db.executeSql(query, params).then((result) => {
       this.retriveVessels();
       return result.insertId;

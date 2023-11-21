@@ -66,7 +66,9 @@ export class SteptwoPage extends BaseformPage implements OnInit {
     formData.created_at = formData.updated_at = now;
     const userData = await this.sharedMethods.getUserData();
     formData.created_by = formData.updated_by = userData.id;
+    formData.app_ref = this.sharedMethods.generateAppRef();
     const insertId = await this.vesselDataService.create(formData);
+    
     if (insertId) {
       const imageData = {
         vessel_id: insertId,

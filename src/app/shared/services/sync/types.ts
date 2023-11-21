@@ -23,3 +23,25 @@ export interface CreateCompanyResp {
     addressLine3: string;
   }
   
+export interface CreateVesselResp {
+  status: string;
+  data:   VesselData;
+}
+
+export interface VesselData {
+  id:                string;
+  deleted:           boolean;
+  createdAt:         string;
+  updatedAt:         string;
+  deletedAt:         null;
+  createdBy:         string;
+  updatedBy:         string;
+  deletedBy:         null;
+  appRef:            string;
+  name:              string;
+  regNo:             string;
+  vesselType:        string;
+  status:            string;
+  capacity:          string;
+  commissioningDate: string;
+}
