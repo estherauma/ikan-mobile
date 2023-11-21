@@ -11,3 +11,4 @@
 1697536278356_addContractClauseTable.sql
 1697090968535_addPaymentsFileurl.sql
 1699637568591_alterCompaniesTable.sql
+1700480064721_alterVesselsTable.sql

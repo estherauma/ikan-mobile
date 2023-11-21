@@ -1,9 +1,11 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { Data, Router } from '@angular/router';
 import { MenuController, ModalController } from '@ionic/angular';
 import { SteponePage } from '../create/stepone/stepone.page';
 import { VesselsDataService } from '../data/vessels-data.service';
 import { ContentService } from 'src/app/shared/services/content/content.service';
+import { DBService } from 'src/app/shared/services/database/db.service';
+import { SharedmethodsService } from 'src/app/shared/services/sharedmethods/sharedmethods.service';
 
 @Component({
   selector: 'app-home',
@@ -28,8 +30,22 @@ export class HomePage implements OnInit {
     public modalController: ModalController,
     public vesselsDataService: VesselsDataService,
     public contentService: ContentService,
+    public dbService: DBService,
+    public sharedMethods: SharedmethodsService
   ) {
     this.vesselsDataService.getAll().subscribe((data) => {
+      for (let vessel of data) {
+        if (vessel.appRef == null || vessel.appRef == '' || vessel.appRef == undefined) {
+          vessel.appRef = this.sharedMethods.generateAppRef();
+          this.dbService.setAppRef(vessel.id, vessel.app_ref, 'vessels');
+        }
+
+        if (vessel.commissioningDate == null  || vessel.commissioningDate == undefined) {
+          vessel.commissioningDate = new Date();
+          this.dbService.updateDatabaseField('vessels', vessel.commissioning_date, vessel.commissioningDate, vessel.id);
+        }
+      }
+
       this.vessels = this.unFilteredData = data;
     });
   }

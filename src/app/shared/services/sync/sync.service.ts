@@ -4,7 +4,7 @@ import { DBService } from '../database/db.service';
 import { CompaniesDataService } from 'src/app/companies/data/companies-data.service';
 import { Platform } from '@ionic/angular';
 import { SQLite, SQLiteObject } from '@awesome-cordova-plugins/sqlite/ngx';
-import { CreateCompanyResp } from './types';
+import { CreateCompanyResp, CreateVesselResp } from './types';
 import { VesselsDataService } from 'src/app/vessels/data/vessels-data.service';
 
 @Injectable({
@@ -73,8 +73,10 @@ export class SyncService {
         vessels.forEach((vessel) => {
           delete vessel.id;
           if (!vessel.online_ref) {
-            this.apiService.post('vessels', vessel).subscribe((response) => {
-              console.log(response);
+            this.apiService.post('vessels', vessel).subscribe((response: CreateVesselResp) => {
+              if (response?.status === 'OK') {
+                this.updateEntityOnlineId(response?.data?.id, vessel.appRef, 'vessels');
+              }
             });
           } else {
             // this.apiService.put('vessels', vessel.online_ref, vessel).subscribe((response) => {

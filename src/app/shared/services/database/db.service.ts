@@ -128,4 +128,21 @@ export class DBService {
       .catch(e => console.log(e));
   }
 
+  setAppRef(id, appRef, table) {
+    const params = [appRef, id];
+    const query = `UPDATE ${table} SET app_ref = ? WHERE id = ?`;
+    this.db.executeSql(query, params).then(() => {
+    }).catch((error) => {
+      console.log(error);
+    });
+  }
+
+  updateDatabaseField(table, field, value, id) {
+    const params = [value, id];
+    const query = `UPDATE ${table} SET ${field} = ? WHERE id = ?`;
+    this.db.executeSql(query, params).then(() => {
+    }).catch((error) => {
+      console.log(error);
+    });
+  }
 }
