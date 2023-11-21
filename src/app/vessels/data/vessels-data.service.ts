@@ -48,6 +48,7 @@ export class VesselsDataService {
             createdBy: data.rows.item(i).created_by,
             updatedBy: data.rows.item(i).updated_by,
             imgUrl: data.rows.item(i).image_url || 'assets/imgs/vessel.jpeg',
+            onlineRef: data.rows.item(i).online_ref,
           });
         }
       }

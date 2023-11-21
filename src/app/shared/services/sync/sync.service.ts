@@ -50,7 +50,7 @@ export class SyncService {
       if (companies.length > 0) {
         companies.forEach((company) => {
           delete company.id;
-          if (!company.online_ref) {
+          if (!company.onlineRef) {
             this.apiService.post('companies', company).subscribe((response: CreateCompanyResp) => {
               if (response?.status === 'OK') {
                 this.updateEntityOnlineId(response?.data?.id, company.appRef, 'companies');
@@ -72,7 +72,7 @@ export class SyncService {
       if (vessels.length > 0) {
         vessels.forEach((vessel) => {
           delete vessel.id;
-          if (!vessel.online_ref) {
+          if (!vessel.onlineRef) {
             this.apiService.post('vessels', vessel).subscribe((response: CreateVesselResp) => {
               if (response?.status === 'OK') {
                 this.updateEntityOnlineId(response?.data?.id, vessel.appRef, 'vessels');

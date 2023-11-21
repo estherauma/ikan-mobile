@@ -34,7 +34,7 @@ export class CompaniesDataService {
           companies.push({
             id: data.rows.item(i).id,
             appRef: data.rows.item(i).app_ref,
-            online_ref: data.rows.item(i).online_ref,
+            onlineRef: data.rows.item(i).online_ref,
             name: data.rows.item(i).name,
             description: data.rows.item(i).description,
             status: data.rows.item(i).status,
