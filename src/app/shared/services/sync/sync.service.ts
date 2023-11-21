@@ -4,7 +4,7 @@ import { DBService } from '../database/db.service';
 import { CompaniesDataService } from 'src/app/companies/data/companies-data.service';
 import { Platform } from '@ionic/angular';
 import { SQLite, SQLiteObject } from '@awesome-cordova-plugins/sqlite/ngx';
-import { CreateCompanyResp, CreateVesselResp } from './types';
+import { CreateCompanyResp, CreateContractResp, CreateVesselResp } from './types';
 import { VesselsDataService } from 'src/app/vessels/data/vessels-data.service';
 import { ContractDataService } from 'src/app/contracts/data/contract-data.service';
 
@@ -101,8 +101,10 @@ export class SyncService {
           contract.endDate = new Date(contract.endDate).toISOString().split('T')[0];
           delete contract.id;
           if (!contract.onlineRef) {
-            this.apiService.post('contracts', contract).subscribe((response) => {
-              console.log(response);
+            this.apiService.post('contracts', contract).subscribe((response: CreateContractResp) => {
+              if (response?.status === 'OK') {
+                this.dbService.updateDatabaseField('contracts', 'online_ref', response?.data?.id, contract.appRef);
+              }
             });
           } else {
             // this.apiService.put('contracts', contract.online_ref, contract).subscribe((response) => {
