@@ -145,4 +145,16 @@ export class DBService {
       console.log(error);
     });
   }
+
+  async getEntityOnlineRef(name, table) {
+    const params = [name];
+    const query = `SELECT online_ref FROM ${table} WHERE app_ref = ?`;
+    return this.db.executeSql(query, params).then((data) => {
+      if (data.rows.length > 0) {
+        return data.rows.item(0).online_ref;
+      }
+    }).catch((error) => {
+      console.log(error);
+    });
+  }
 }
