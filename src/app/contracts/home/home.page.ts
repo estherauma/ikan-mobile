@@ -29,6 +29,7 @@ export class HomePage implements OnInit {
 
   ) {
     this.contractsDataService.getAll().subscribe((data) => {
+      console.log(data);
       this.contracts = this.unfilteredData = data;
       this.pageTitle = this.commonText?.contracts;
     });

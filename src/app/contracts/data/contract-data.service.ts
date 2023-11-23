@@ -43,7 +43,7 @@ export class ContractDataService {
             endDate: data.rows.item(i).end_date,
             onlineRef: data.rows.item(i).online_ref,
             description: data.rows.item(i).description,
-            type: data.rows.item(i).type,
+            kind: data.rows.item(i).type,
             taiwaneseCompany: 'Taiwanese Company',
             indonesianCompany: 'Indonesian Company',
             vesselOwnerCompany: 'Vessel Owner Company',

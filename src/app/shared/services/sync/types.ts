@@ -45,3 +45,28 @@ export interface VesselData {
   capacity:          string;
   commissioningDate: string;
 }
+
+export interface CreateContractResp {
+  status: string;
+  data:   ContractData;
+}
+
+export interface ContractData {
+  id:                string;
+  name:              string;
+  appRef:            string;
+  internalRef:       string;
+  startDate:         string;
+  endDate:           string;
+  description:       string;
+  taiwaneseCompany:  string;
+  indonesianCompany: string;
+  kind:              string;
+  deleted:           boolean;
+  createdAt:         string;
+  updatedAt:         string;
+  deletedAt:         null;
+  createdBy:         string;
+  updatedBy:         string;
+  deletedBy:         null;
+}
