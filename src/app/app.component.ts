@@ -44,7 +44,7 @@ export class AppComponent implements OnInit, OnDestroy {
     this.pushNotifications.setup();
     this.localNotifications.scheduleNotifications();
     this.contentService.menuContent.subscribe((data) => {
-      data.push({label: 'Sync', url: '/sync', icon: 'sync', role:'all', enabled: true, position: 399});
+      data.push({label: 'Sync', url: '/sync', icon: 'sync', roles:'all', enabled: true, position: 399});
       if (data && Object.keys(data).length > 0) {
         data?.sort((a, b) => a.position - b.position);
         this.appPages = this.authService.alterMenuBaseOnRole(data);
