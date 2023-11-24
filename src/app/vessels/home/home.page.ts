@@ -1,9 +1,11 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { Data, Router } from '@angular/router';
 import { MenuController, ModalController } from '@ionic/angular';
 import { SteponePage } from '../create/stepone/stepone.page';
 import { VesselsDataService } from '../data/vessels-data.service';
 import { ContentService } from 'src/app/shared/services/content/content.service';
+import { DBService } from 'src/app/shared/services/database/db.service';
+import { SharedmethodsService } from 'src/app/shared/services/sharedmethods/sharedmethods.service';
 
 @Component({
   selector: 'app-home',
@@ -28,6 +30,8 @@ export class HomePage implements OnInit {
     public modalController: ModalController,
     public vesselsDataService: VesselsDataService,
     public contentService: ContentService,
+    public dbService: DBService,
+    public sharedMethods: SharedmethodsService
   ) {
     this.vesselsDataService.getAll().subscribe((data) => {
       this.vessels = this.unFilteredData = data;

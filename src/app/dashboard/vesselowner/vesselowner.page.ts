@@ -96,6 +96,6 @@ export class VesselownerPage implements OnInit {
 
   // For testing purposes
   // gooo() {
-  //   this.router.navigate(['survey'])
+  //   this.router.navigate(['survey'], { queryParams: { mode: 'notification' }});
   // }
 }

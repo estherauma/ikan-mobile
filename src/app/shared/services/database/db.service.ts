@@ -128,4 +128,33 @@ export class DBService {
       .catch(e => console.log(e));
   }
 
+  setAppRef(id, appRef, table) {
+    const params = [appRef, id];
+    const query = `UPDATE ${table} SET app_ref = ? WHERE id = ?`;
+    this.db.executeSql(query, params).then(() => {
+    }).catch((error) => {
+      console.log(error);
+    });
+  }
+
+  updateDatabaseField(table, field, value, appRef) {
+    const params = [value, appRef];
+    const query = `UPDATE ${table} SET ${field} = ? WHERE app_ref = ?`;
+    this.db.executeSql(query, params).then(() => {
+    }).catch((error) => {
+      console.log(error);
+    });
+  }
+
+  async getEntityOnlineRef(name, table) {
+    const params = [name];
+    const query = `SELECT online_ref FROM ${table} WHERE app_ref = ?`;
+    return this.db.executeSql(query, params).then((data) => {
+      if (data.rows.length > 0) {
+        return data.rows.item(0).online_ref;
+      }
+    }).catch((error) => {
+      console.log(error);
+    });
+  }
 }

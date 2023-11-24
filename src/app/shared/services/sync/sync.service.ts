@@ -4,8 +4,9 @@ import { DBService } from '../database/db.service';
 import { CompaniesDataService } from 'src/app/companies/data/companies-data.service';
 import { Platform } from '@ionic/angular';
 import { SQLite, SQLiteObject } from '@awesome-cordova-plugins/sqlite/ngx';
-import { CreateCompanyResp } from './types';
+import { CreateCompanyResp, CreateContractResp, CreateVesselResp } from './types';
 import { VesselsDataService } from 'src/app/vessels/data/vessels-data.service';
+import { ContractDataService } from 'src/app/contracts/data/contract-data.service';
 
 @Injectable({
   providedIn: 'root'
@@ -18,7 +19,9 @@ export class SyncService {
     public sqlite: SQLite,
     private apiService: ApiService,
     private companyServ: CompaniesDataService,
-    private vesselServ: VesselsDataService
+    private vesselServ: VesselsDataService,
+    private contractServ: ContractDataService,
+    private dbService: DBService
   ) { 
     this.platform.ready().then(async() => {
       this.sqlite.create({
@@ -42,6 +45,7 @@ export class SyncService {
   syncData() {
     this.syncCompanies();
     this.syncVessels();
+    this.syncContracts();
   }
 
   syncCompanies() { 
@@ -50,7 +54,7 @@ export class SyncService {
       if (companies.length > 0) {
         companies.forEach((company) => {
           delete company.id;
-          if (!company.online_ref) {
+          if (!company.onlineRef) {
             this.apiService.post('companies', company).subscribe((response: CreateCompanyResp) => {
               if (response?.status === 'OK') {
                 this.updateEntityOnlineId(response?.data?.id, company.appRef, 'companies');
@@ -72,9 +76,11 @@ export class SyncService {
       if (vessels.length > 0) {
         vessels.forEach((vessel) => {
           delete vessel.id;
-          if (!vessel.online_ref) {
-            this.apiService.post('vessels', vessel).subscribe((response) => {
-              console.log(response);
+          if (!vessel.onlineRef) {
+            this.apiService.post('vessels', vessel).subscribe((response: CreateVesselResp) => {
+              if (response?.status === 'OK') {
+                this.dbService.updateDatabaseField('vessels', 'online_ref', response?.data?.id, vessel.appRef);
+              }
             });
           } else {
             // this.apiService.put('vessels', vessel.online_ref, vessel).subscribe((response) => {
@@ -86,5 +92,33 @@ export class SyncService {
     });
   }
 
+  syncContracts() {
+    this.contractServ.getAll().subscribe((data) => {
+      let contracts  = data;
+      if (contracts.length > 0) {
+        contracts.forEach((contract) => {
+          contract.startDate = new Date(contract.startDate).toISOString().split('T')[0];
+          contract.endDate = new Date(contract.endDate).toISOString().split('T')[0];
+          delete contract.id;
+          if (!contract.onlineRef) {
+            this.apiService.post('contracts', contract).subscribe((response: CreateContractResp) => {
+              if (response?.status === 'OK') {
+                this.dbService.updateDatabaseField('contracts', 'online_ref', response?.data?.id, contract.appRef);
+              }
+            });
+          } else {
+            // this.apiService.put('contracts', contract.online_ref, contract).subscribe((response) => {
+            //   console.log(response);
+            // });
+          }
+        });
+      }
+    });
+  }
+
+  syncContractClauses(contractId) {
+    // This has a bit of logic behind it.
+    // The contract_id has to be the for the online record and not the local
+  }
 
 }
