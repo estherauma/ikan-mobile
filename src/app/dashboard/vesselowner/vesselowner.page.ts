@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { ContentService } from 'src/app/shared/services/content/content.service';
 import { PushNotificationsService } from 'src/app/shared/services/push-notifications/push-notifications.service';
@@ -38,18 +38,33 @@ export class VesselownerPage implements OnInit {
   stat2: string = '';
   stat3: string = '';
   name: string = '';
+  menuContent: any;
 
   constructor(
     public pushNotifications: PushNotificationsService,
     public contentService: ContentService,
     public sharedmethods: SharedmethodsService,
     public router: Router,
+    public cdr: ChangeDetectorRef,
   ) {
-    let menuContent = this.contentService.getMenuContent();
+    this.menuContent = this.contentService.getMenuContent();
+    this.setupPage();
+   }
+
+  async ngOnInit() {
+    if (!this.pushNotifications.preventSecondNotificationPrompt) {
+      this.pushNotifications.checkAndroidPNsPermissions();
+    }
+    await this.setupPage();
+    const user = await this.sharedmethods.readDataFromStorage(StorageKeys.userData);
+    this.name = (this.contentService.commonText?.hi || '') + ' ' + (user?.firstName || '');
+  }
+
+  async setupPage() {
     // wait for 5 seconds
     setTimeout(() => {
       this.contentService.updateCurrentLanguage();
-      menuContent = this.contentService.getMenuContent();
+      this.menuContent = this.contentService.getMenuContent();
       this.feedbackDashboardMessage = this.contentService.commonText?.fdbckLink;
       this.welcomeText = this.contentService.commonText?.fdbkWelcomeText;
       this.welcomeMessage = this.contentService.commonText?.fdbkWelcomMessage;
@@ -64,7 +79,7 @@ export class VesselownerPage implements OnInit {
       };
       // for item in slists, update title with menuContent
       this.sLists.forEach((item) => {
-        Object.entries(menuContent).forEach((x) => {
+        Object.entries(this.menuContent).forEach((x) => {
           if (x[1]['title'] === item.title) {
             item['title'] = x[1]['label'];
           }
@@ -77,15 +92,6 @@ export class VesselownerPage implements OnInit {
       this.stat3 = this.contentService.commonText?.fdbckCoreTraining;
 
     }, 1000);
-    
-   }
-
-  async ngOnInit() {
-    if (!this.pushNotifications.preventSecondNotificationPrompt) {
-      this.pushNotifications.checkAndroidPNsPermissions();
-    }
-    const user = await this.sharedmethods.readDataFromStorage(StorageKeys.userData);
-    this.name = (this.contentService.commonText?.hi || '') + ' ' + (user?.firstName || '');
   }
 
   // For testing purposes
