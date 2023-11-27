@@ -28,6 +28,7 @@ export class ContentService {
       if (res) {
         this.updateCommonText();
         this.setAppContent();
+        this.updateSideMenu();
       }
     });
     this.saveSurveyCategories();
@@ -80,7 +81,9 @@ export class ContentService {
         if (content?.status === 'OK' && content.new) {
           this.writeLocalContent(StorageKeys.appContent, content.data[0]);
           this.contentObs.next(true);
-          return this.appContent = content.data[0].content;
+          this.appContent = content.data[0].content;
+          this.updateSideMenu();
+          return this.appContent;
         }
       });
     }
@@ -181,14 +184,12 @@ export class ContentService {
     const content = this.appContent?.[`${this.currentLanguage}`];
     if (content != null || content !== undefined) {
       const { sidemenu } = content;
-      const allMenuItems = [];
-      for (const menuItem of sidemenu?.data ) {
-        allMenuItems.push(menuItem);
-      }
-      let menu = this.authService.alterMenuBaseOnRole(allMenuItems)
+      const allMenuItems: Array<any> = sidemenu?.data;
+      const menu = this.authService.alterMenuBaseOnRole(allMenuItems);
+
       return menu;
     } else {
-      return {};
+      return [];
     }
   }
 

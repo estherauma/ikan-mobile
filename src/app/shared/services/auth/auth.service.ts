@@ -20,6 +20,12 @@ export class AuthService {
     public sharedMethods: SharedmethodsService
   ) {
     this.setUpAuthData();
+    this.getUser().subscribe((data) => {
+      if (data && Object.keys(data).length > 0) {
+        this.userData = data;
+        this.userRole = data.role;
+      }
+    });
   }
 
   async setUpAuthData() {
@@ -69,14 +75,14 @@ export class AuthService {
     Preferences.remove({ key: StorageKeys.userData });
   }
 
-  alterMenuBaseOnRole(menuItems) {
-    let finalMenu = []
+  alterMenuBaseOnRole(menuItems: Array<any>) {
+    let finalMenu = [];
     menuItems.forEach((menuItem) => {
       if (menuItem?.roles == null) {
         return;
       }
       let allowedRoles = menuItem.roles.split(',');
-      if (allowedRoles.includes(this.userRole) || allowedRoles.includes('all')) {
+      if (menuItem?.enabled && (allowedRoles.includes(this.userRole) || allowedRoles.includes('all'))) {
        finalMenu.push(menuItem);
       }
     })
