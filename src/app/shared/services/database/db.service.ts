@@ -157,4 +157,15 @@ export class DBService {
       console.log(error);
     });
   }
+
+  // Use this to delete any record from a table that you want to delete
+  deleteEntity(table, appRef) {
+    const params = [appRef];
+    const query = `DELETE FROM ${table} WHERE app_ref = ?`;
+    this.db.executeSql(query, params).then(() => {
+      console.log(`Deleted entity ${appRef} from ${table}`)
+    }).catch((error) => {
+      console.log(error);
+    });
+  }
 }
