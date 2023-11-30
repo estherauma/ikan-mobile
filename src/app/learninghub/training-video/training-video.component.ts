@@ -1,8 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { ModalController } from '@ionic/angular';
 import { BaseformPage } from 'src/app/shared/components/baseform/baseform.page';
 import { ContentService } from 'src/app/shared/services/content/content.service';
 import { SharedmethodsService } from 'src/app/shared/services/sharedmethods/sharedmethods.service';
+import { StorageKeys } from 'src/app/shared/types/api-types';
 
 @Component({
   selector: 'app-training-video',
@@ -17,6 +19,7 @@ export class TrainingVideoComponent extends BaseformPage  implements OnInit {
   constructor(
     public contentService: ContentService,
     public sharedMethods: SharedmethodsService,
+    public modalCtrl: ModalController,
   ) {
     super(contentService)
   }
@@ -62,7 +65,19 @@ export class TrainingVideoComponent extends BaseformPage  implements OnInit {
     'video/mp4';
   }
 
-  onSubmit(formData) {
-    console.log('onSubmit......', formData);
+  async onSubmit(formData) {
+    this.sharedMethods.showLoader(this.commonText?.submittingYourData);
+    const result =  this.formQuestions.map((item) => {
+      return {
+        key: item.key,
+        question: item.label,
+        value: formData[item.key]
+      }
+    });
+
+    // TODO: upload responses to api
+    await this.sharedMethods.saveDataToStorage(StorageKeys.TFAVideoResponses, formData);
+    await this.sharedMethods.saveDataToStorage(StorageKeys.watchedTFAVideo, true);
+    this.modalCtrl.dismiss();
   }
 }
