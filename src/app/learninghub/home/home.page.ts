@@ -55,7 +55,8 @@ export class HomePage implements OnInit {
   async showTrainingVideo() {
     const modal = await this.modalCtrl.create({
       component: TrainingVideoComponent,
-      cssClass: 'tfa-training-video'
+      cssClass: 'tfa-training-video',
+      backdropDismiss: false,
     });
     modal.present();
     modal.onDidDismiss().then((data) => {});
