@@ -125,3 +125,52 @@ ion-modal.my-own-class {
     border-color: red;
   }
 }
+
+ion-modal.tfa-training-video {
+  --background: transparent !important;
+
+  --height: 80%;
+
+  .ion-page {
+    position: relative;
+    display: block;
+    contain: content;
+    width: 90%;
+    border-radius: 20px;
+    background-color: #ffffff;
+    left: 50%;
+    transform: translateX(-50%);
+
+    .items-wrapper {
+      max-height: 80vh;
+      overflow: auto;
+      padding: 40px 10px;
+
+      .video-container {
+        #video {
+          margin-left: unset;
+          margin-right: unset;
+
+          .iframeWidth {
+            width: 100% !important;
+            height: 100% !important;
+            max-height: 300px;
+            max-width: 500px;
+            border-radius: 20px;
+          }
+        }
+      }
+
+      .questions {
+        .textarea {
+          p {
+            margin: 0;
+            padding: 25px 0px 0px;
+            font-style: italic;
+            background: var(--ikan_skyblue_100);
+          }
+        }
+      }
+    }
+  }
+}
