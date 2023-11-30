@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { env } from 'src/environments/environment';
 import { Observable } from 'rxjs';
-import { PushNotificationData, StorageKeys } from 'src/app/shared/types/api-types';
+import { PushNotificationData, StorageKeys, SurveyResponse } from 'src/app/shared/types/api-types';
 import { Preferences } from '@capacitor/preferences';
 import { SharedmethodsService } from '../sharedmethods/sharedmethods.service';
 import { AuthService } from '../auth/auth.service';
@@ -19,6 +19,7 @@ export class ApiService {
     public sharedMethods: SharedmethodsService
   ) {
     this.setApiRequestHeaders();
+    this.uploadSurveyResponses()
   }
 
   async setApiRequestHeaders() {
@@ -111,5 +112,25 @@ export class ApiService {
         return null;
       }
     });
+  }
+
+
+  async uploadSurveyResponses() {
+    const surveyResponses: Array<SurveyResponse> = await this.sharedMethods.readDataFromStorage(StorageKeys.survey);
+    if (!surveyResponses?.length) { return };
+
+    if (await this.sharedMethods.checkInternetConnectionStatus()) {
+      await Promise.all(surveyResponses?.map(async (item) => {
+        try {
+          await this.post('surveys', item).toPromise();
+          surveyResponses.shift();
+        } catch (e) {
+          console.error(e);
+        }
+      }));
+    }
+
+
+    await this.sharedMethods.saveDataToStorage(StorageKeys.survey, surveyResponses);
   }
 }

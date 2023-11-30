@@ -4,8 +4,9 @@ import { BaseformPage } from '../shared/components/baseform/baseform.page';
 import { FormControl, Validators, FormGroup } from '@angular/forms';
 import { SharedmethodsService } from '../shared/services/sharedmethods/sharedmethods.service';
 import { ActivatedRoute, Params, Router } from '@angular/router';
-import { StorageKeys, SurveyModes } from '../shared/types/api-types';
+import { StorageKeys, SurveyModes, SurveyResponse } from '../shared/types/api-types';
 import { AuthService } from '../shared/services/auth/auth.service';
+import { ApiService } from '../shared/services/api/api.service';
 
 @Component({
   selector: 'app-survey',
@@ -23,6 +24,7 @@ export class SurveyComponent extends BaseformPage  implements OnInit {
     public authService: AuthService,
     public cdr: ChangeDetectorRef,
     public activatedRoute: ActivatedRoute,
+    public apiService: ApiService,
   ) {
     super(contentService)
     this.getMode();
@@ -79,13 +81,12 @@ export class SurveyComponent extends BaseformPage  implements OnInit {
   async onSubmit(formData) {
     this.sharedMethods.showLoader(this.commonText?.submittingYourData);
     const date = this.sharedMethods.getCurrentDateTime('date');
-    const now = this.sharedMethods.getCurrentDateTime();
     const user = await this.sharedMethods.readDataFromStorage(StorageKeys.userData);
     const surveyData = [];
     this.formQuestions.forEach((qtn) => {
       surveyData.push({
         app_ref: this.sharedMethods.generateAppRef(),
-        survey_date: now,
+        survey_date: date,
         question_key: qtn.key,
         question_text: qtn?.label,
         question_response: formData[qtn.key],
@@ -94,13 +95,25 @@ export class SurveyComponent extends BaseformPage  implements OnInit {
       if (qtn?.hasFollowUpQuestion) {
         surveyData.push({
           app_ref: this.sharedMethods.generateAppRef(),
-          survey_date: now,
+          survey_date: date,
           question_key: qtn?.followUpQuestion?.key,
           question_text: qtn?.followUpQuestion?.label,
           question_response: formData[qtn?.followUpQuestion?.key],
         });
       };
     });
+
+    if (await this.sharedMethods.checkInternetConnectionStatus()) {
+
+      await Promise.all(surveyData?.map(async (item) => {
+        try {
+          await this.apiService.post('surveys', item).toPromise();
+          surveyData.shift();
+        } catch (e) {
+          console.error(e);
+        }
+      }));
+    }
 
     await this.sharedMethods.saveSurveyDataToLocalStorage(StorageKeys.survey, surveyData);
     await this.removeCategoryFromSavedOptions();
