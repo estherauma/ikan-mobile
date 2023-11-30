@@ -15,6 +15,7 @@ export class TrainingVideoComponent extends BaseformPage  implements OnInit {
   questionHelperText: any;
   video: any;
   networkStatus = false;
+  defaultThumbnail = '/assets/icon/default-thumbnail.jpg';
 
   constructor(
     public contentService: ContentService,
