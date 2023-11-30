@@ -81,11 +81,28 @@ export class SurveyComponent extends BaseformPage  implements OnInit {
     const date = this.sharedMethods.getCurrentDateTime('date');
     const now = this.sharedMethods.getCurrentDateTime();
     const user = await this.sharedMethods.readDataFromStorage(StorageKeys.userData);
-    const surveyData = {
-      ...formData,
-      createdAt: now
-    };
-    await this.sharedMethods.saveSurveyDataToLocalStorage(StorageKeys.survey, date, surveyData);
+    const surveyData = [];
+    this.formQuestions.forEach((qtn) => {
+      surveyData.push({
+        app_ref: this.sharedMethods.generateAppRef(),
+        survey_date: now,
+        question_key: qtn.key,
+        question_text: qtn?.label,
+        question_response: formData[qtn.key],
+      });
+
+      if (qtn?.hasFollowUpQuestion) {
+        surveyData.push({
+          app_ref: this.sharedMethods.generateAppRef(),
+          survey_date: now,
+          question_key: qtn?.followUpQuestion?.key,
+          question_text: qtn?.followUpQuestion?.label,
+          question_response: formData[qtn?.followUpQuestion?.key],
+        });
+      };
+    });
+
+    await this.sharedMethods.saveSurveyDataToLocalStorage(StorageKeys.survey, surveyData);
     await this.removeCategoryFromSavedOptions();
 
     this.sharedMethods?.hideLoader();
