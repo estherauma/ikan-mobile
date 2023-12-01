@@ -4,7 +4,7 @@ import { DBService } from '../database/db.service';
 import { CompaniesDataService } from 'src/app/companies/data/companies-data.service';
 import { Platform } from '@ionic/angular';
 import { SQLite, SQLiteObject } from '@awesome-cordova-plugins/sqlite/ngx';
-import { CreateCompanyResp, CreateContractResp, CreateVesselResp } from './types';
+import { CreateCompanyResp, CreateContractClauseResp, CreateContractResp, CreateVesselResp } from './types';
 import { VesselsDataService } from 'src/app/vessels/data/vessels-data.service';
 import { ContractDataService } from 'src/app/contracts/data/contract-data.service';
 
@@ -99,14 +99,20 @@ export class SyncService {
         contracts.forEach((contract) => {
           contract.startDate = new Date(contract.startDate).toISOString().split('T')[0];
           contract.endDate = new Date(contract.endDate).toISOString().split('T')[0];
-          delete contract.id;
           if (!contract.onlineRef) {
+            delete contract.id;
             this.apiService.post('contracts', contract).subscribe((response: CreateContractResp) => {
               if (response?.status === 'OK') {
                 this.dbService.updateDatabaseField('contracts', 'online_ref', response?.data?.id, contract.appRef);
+                // start syncing the clauses at this point. 
+                // we'd avoid making a different db call to get th online_ref
+                this.syncContractClauses(contract.id, response?.data?.id);
               }
             });
           } else {
+            // if the contracts are synced, we want to update the contract or sync the clauses
+            // you can't sync  the clauses without the contract online_ref
+            this.syncContractClauses(contract.id, contract.onlineRef);
             // this.apiService.put('contracts', contract.online_ref, contract).subscribe((response) => {
             //   console.log(response);
             // });
@@ -116,9 +122,27 @@ export class SyncService {
     });
   }
 
-  syncContractClauses(contractId) {
-    // This has a bit of logic behind it.
-    // The contract_id has to be the for the online record and not the local
+  async syncContractClauses(contractId, contractOnlineRef) {
+    let clauses = await this.contractServ.retrieveContractClauses(contractId);
+    clauses.forEach((clause) => {
+      delete clause.id;
+      // The contract_id has to be the for the online record and not the local before sending to the api
+      // replace the contract_id with the contract id online_ref
+      clause.contract = contractOnlineRef;
+      if (!clause.onlineRef) {
+        console.log(clause);
+        this.apiService.post('contracts/clauses', clause).subscribe((response: CreateContractClauseResp) => {
+          if (response?.status === 'OK') {
+            this.dbService.updateDatabaseField('contract_clauses', 'online_ref', response?.data?.id, clause.appRef);
+          }
+        });
+      } else {
+        // this.apiService.put('contract-clauses', clause.online_ref, clause).subscribe((response) => {
+        //   console.log(response);
+        // });
+      }
+    });
+    
   }
 
 }
