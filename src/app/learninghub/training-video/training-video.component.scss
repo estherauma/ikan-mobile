@@ -1,0 +1,26 @@
+.items-wrapper {
+  background-color: var(--ikan_skyblue_100);
+
+  .title-wrapper {
+    h2 {
+      margin-bottom: 20px;
+      text-align: center;
+      font-weight: 600;
+    }
+  }
+  .video-container {
+    padding: 10px 10px 30px 10px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+    video, iframe {
+      width: 90%;
+      height: auto;
+      max-height: 300px;
+      max-width: 500px;
+      border-radius: 20px;
+    }
+  }
+}

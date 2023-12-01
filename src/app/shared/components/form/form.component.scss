@@ -107,13 +107,31 @@ ion-select {
 :host.create-vessel-step-1,
 :host.create-vessel-step-2,
 :host.create-worker,
-:host.create-note {
+:host.create-note,
+:host.training-video-form {
   .form-input {
     background: #EAEDF6;
   }
   .upload-wrapper {
     div {
     background-color: #EAEDF6;
+    }
+  }
+}
+
+:host.training-video-form {
+  form {
+    margin: 10px;
+
+    ion-radio-group {
+      ion-item {
+        --background: #EAEDF6;
+
+        ion-radio {
+          width: unset;
+          margin-right: 20px;
+        }
+      }
     }
   }
 }

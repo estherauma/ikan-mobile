@@ -1,0 +1,44 @@
+<div class="items-wrapper">
+  <div class="title-wrapper center-content">
+    <h2 class="center-content">{{pageTitle}}</h2>
+  </div>
+  <div class="video-container">
+    <shared-video
+      [data]="video"
+      [networkStatus]="networkStatus"
+      [defaultThumbnail]="defaultThumbnail"
+      playIcon="assets/icon/play.svg"
+      (onPlay)="onPlay($event)"
+    >
+    </shared-video>
+
+    <!-- For other video types -->
+    <!-- <video controls>
+      <source
+        [src]="video?.mediaData?.url"
+        [type]="getVideoType(video?.mediaData?.url)"
+      >
+      Your browser does not support the video tag.
+    </video> -->
+
+  </div>
+  <div class="questions">
+    <shared-text-area
+      *ngIf="questionHelperText"
+      [data]="questionHelperText"
+      styles="textarea"
+    >
+    </shared-text-area>
+
+    <app-form
+      class="training-video-form"
+      btnFill="solid"
+      [tunaFormGroup]="pageFormGroup"
+      [tunaFormquestions]="formQuestions"
+      [submitButtonText]="commonText?.submit"
+      (formValue)="onSubmit($event)"
+    >
+    </app-form>
+  </div>
+
+</div>

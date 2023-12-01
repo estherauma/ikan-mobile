@@ -81,6 +81,8 @@ export enum StorageKeys {
   showPNsPermissionsPrompt = 'showPNsPermissionsPrompt',
   survey = 'survey',
   surveyCategories = 'surveyCategories',
+  watchedTFAVideo = 'watchedTFAVideo',
+  TFAVideoResponses = 'TFAVideoResponses',
 }
 
 export interface UserData {
