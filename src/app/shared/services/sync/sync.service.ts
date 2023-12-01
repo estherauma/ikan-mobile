@@ -7,6 +7,8 @@ import { SQLite, SQLiteObject } from '@awesome-cordova-plugins/sqlite/ngx';
 import { CreateCompanyResp, CreateContractClauseResp, CreateContractResp, CreateVesselResp } from './types';
 import { VesselsDataService } from 'src/app/vessels/data/vessels-data.service';
 import { ContractDataService } from 'src/app/contracts/data/contract-data.service';
+import { SharedmethodsService } from '../sharedmethods/sharedmethods.service';
+import { StorageKeys, SurveyResponse } from '../../types/api-types';
 
 @Injectable({
   providedIn: 'root'
@@ -21,7 +23,8 @@ export class SyncService {
     private companyServ: CompaniesDataService,
     private vesselServ: VesselsDataService,
     private contractServ: ContractDataService,
-    private dbService: DBService
+    private dbService: DBService,
+    public sharedMethods: SharedmethodsService,
   ) { 
     this.platform.ready().then(async() => {
       this.sqlite.create({
@@ -31,6 +34,7 @@ export class SyncService {
         this.db = _db;
       }).catch(e => console.log(e));
     });
+    this.uploadSurveyResponses();
   }
 
   updateEntityOnlineId(onlineId: string, appRef: string, table: string) {
@@ -145,4 +149,21 @@ export class SyncService {
     
   }
 
+  async uploadSurveyResponses() {
+    const surveyResponses: Array<SurveyResponse> = await this.sharedMethods.readDataFromStorage(StorageKeys.survey);
+    if (!surveyResponses?.length) { return };
+
+    if (await this.sharedMethods.checkInternetConnectionStatus()) {
+      await Promise.all(surveyResponses?.map(async (item) => {
+        try {
+          await this.apiService.post('surveys', item).toPromise();
+          surveyResponses.shift();
+        } catch (e) {
+          console.error(e);
+        }
+      }));
+    }
+
+    await this.sharedMethods.saveDataToStorage(StorageKeys.survey, surveyResponses);
+  }
 }
