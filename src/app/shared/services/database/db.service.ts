@@ -51,8 +51,8 @@ export class DBService {
       .catch(e => console.log(e));
   }
 
-  createMigrationsTable() {
-    this.db.executeSql('CREATE TABLE IF NOT EXISTS migrations (id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT, executed_at DATETIME)', [])
+  async createMigrationsTable() {
+    return this.db.executeSql('CREATE TABLE IF NOT EXISTS migrations (id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT, executed_at DATETIME)', [])
       .then(() => {})
       .catch(e => console.log('Migrations table already exists'));
   }
@@ -74,7 +74,7 @@ export class DBService {
   async getAndRunPendingMigrations(seedData = false) {
     this.http.get('assets/migrations/migrations-list.txt', { responseType: 'text' as 'json'})
     .subscribe(async(data: any) => {
-        this.allMigrationFiles = data.split('\n');
+        this.allMigrationFiles = (data as string)?.split('\n') || [];
         // remove empty array elements
         delete this.allMigrationFiles[this.allMigrationFiles.length - 1];
         this.pendingMigrations = this.allMigrationFiles.filter(x => !this.executedMigrations.includes(x));
@@ -92,8 +92,8 @@ export class DBService {
   }
 
   async runPendingMigrations(pendingMigrations) {
-    pendingMigrations.forEach((migration) => {
-      this.runSingleMigrationFile(migration);
+    pendingMigrations.forEach(async(migration) => {
+      await this.runSingleMigrationFile(migration);
     });
   }
 
@@ -153,6 +153,17 @@ export class DBService {
       if (data.rows.length > 0) {
         return data.rows.item(0).online_ref;
       }
+    }).catch((error) => {
+      console.log(error);
+    });
+  }
+
+  // Use this to delete any record from a table that you want to delete
+  deleteEntity(table, appRef) {
+    const params = [appRef];
+    const query = `DELETE FROM ${table} WHERE app_ref = ?`;
+    this.db.executeSql(query, params).then(() => {
+      console.log(`Deleted entity ${appRef} from ${table}`)
     }).catch((error) => {
       console.log(error);
     });
