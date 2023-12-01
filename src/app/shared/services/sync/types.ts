@@ -70,3 +70,27 @@ export interface ContractData {
   updatedBy:         string;
   deletedBy:         null;
 }
+
+
+export interface CreateContractClauseResp {
+  status: string;
+  data:   ContractClauseData;
+}
+
+export interface ContractClauseData {
+  id:        string;
+  contract:  string;
+  name:      string;
+  order:     null;
+  status:    null;
+  deleted:   boolean;
+  createdAt: string;
+  updatedAt: string;
+  deletedAt: null;
+  createdBy: string;
+  updatedBy: string;
+  deletedBy: null;
+  appRef:    string;
+  kind:      string;
+  content:   string;
+}

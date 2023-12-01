@@ -1,6 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import { ModalController } from '@ionic/angular';
 import { ContentService } from 'src/app/shared/services/content/content.service';
+import { TrainingVideoComponent } from '../training-video/training-video.component';
+import { SharedmethodsService } from 'src/app/shared/services/sharedmethods/sharedmethods.service';
+import { StorageKeys } from 'src/app/shared/types/api-types';
 
 @Component({
   selector: 'app-home',
@@ -15,10 +19,12 @@ export class HomePage implements OnInit {
   constructor(
     public router: Router,
     public contentService: ContentService,
-    public activatedRoute: ActivatedRoute
+    public activatedRoute: ActivatedRoute,
+    public modalCtrl: ModalController,
+    public sharedMethods: SharedmethodsService,
   ) { }
 
-  ngOnInit() {
+  async ngOnInit() {
     this.pageContent =  this.contentService.getContentByPropertyName('chapters-list');
     this.title = this.pageContent?.pageTitle;
     const clickableList = this.pageContent?.pageContent?.find((e) => e.type === 'clickable_list');
@@ -33,11 +39,27 @@ export class HomePage implements OnInit {
       imageUrl : chapter?.icon || 'https://cdn.pixabay.com/photo/2015/07/17/22/43/student-849825_1280.jpg',
       page: chapter?.page
     }));
+
+    const user = await this.sharedMethods.readDataFromStorage(StorageKeys.userData);
+    const watchedTFAVideo = await this.sharedMethods.readDataFromStorage(StorageKeys.watchedTFAVideo);
+    // show training video to workers only
+    if (user?.role === 'worker' && !watchedTFAVideo) {
+      await this.showTrainingVideo();
+    }
   }
 
   onClick(item) {
     this.router.navigate(['learninghub/chapters', item?.page?.uid]);
   }
 
+  async showTrainingVideo() {
+    const modal = await this.modalCtrl.create({
+      component: TrainingVideoComponent,
+      cssClass: 'tfa-training-video',
+      backdropDismiss: false,
+    });
+    modal.present();
+    modal.onDidDismiss().then((data) => {});
+  }
 
 }
