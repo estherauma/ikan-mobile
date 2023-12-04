@@ -84,39 +84,49 @@ export class SurveyComponent extends BaseformPage  implements OnInit {
     const user = await this.sharedMethods.readDataFromStorage(StorageKeys.userData);
     const surveyData = [];
     this.formQuestions.forEach((qtn) => {
-      surveyData.push({
-        app_ref: this.sharedMethods.generateAppRef(),
-        survey_date: date,
-        question_key: qtn.key,
-        question_text: qtn?.label,
-        question_response: formData[qtn.key],
-      });
-
-      if (qtn?.hasFollowUpQuestion) {
+      // check if question has response and if response is an array, check it has at least one item
+      if (formData[qtn.key] && (!Array.isArray(formData[qtn.key]) || formData[qtn.key].length)) {;
         surveyData.push({
           app_ref: this.sharedMethods.generateAppRef(),
           survey_date: date,
-          question_key: qtn?.followUpQuestion?.key,
-          question_text: qtn?.followUpQuestion?.label,
-          question_response: formData[qtn?.followUpQuestion?.key],
+          question_key: qtn.key,
+          question_text: qtn?.label,
+          question_response: formData[qtn.key],
         });
-      };
+
+        // check if question has followup question and if followup question has response and if response is an array, check it has at least one item
+        if (qtn?.hasFollowUpQuestion && formData[qtn?.followUpQuestion?.key]
+              && (!Array.isArray(formData[qtn?.followUpQuestion?.key]) || formData[qtn?.followUpQuestion?.key].length)) {
+          surveyData.push({
+            app_ref: this.sharedMethods.generateAppRef(),
+            survey_date: date,
+            question_key: qtn?.followUpQuestion?.key,
+            question_text: qtn?.followUpQuestion?.label,
+            question_response: formData[qtn?.followUpQuestion?.key],
+          });
+        };
+      }
     });
 
-    if (await this.sharedMethods.checkInternetConnectionStatus()) {
+    if (surveyData?.length) {
+      if (await this.sharedMethods.checkInternetConnectionStatus()) {
 
-      await Promise.all(surveyData?.map(async (item) => {
-        try {
-          await this.apiService.post('surveys', item).toPromise();
-          surveyData.shift();
-        } catch (e) {
-          console.error(e);
-        }
-      }));
+        await Promise.all(surveyData?.map(async (item) => {
+          try {
+            await this.apiService.post('surveys', item).toPromise();
+            surveyData.shift();
+          } catch (e) {
+            console.error(e);
+          }
+        }));
+      }
+
+      await this.sharedMethods.saveSurveyDataToLocalStorage(StorageKeys.survey, surveyData);
     }
 
-    await this.sharedMethods.saveSurveyDataToLocalStorage(StorageKeys.survey, surveyData);
-    await this.removeCategoryFromSavedOptions();
+    if (this.mode === SurveyModes.notification) {
+      await this.removeCategoryFromSavedOptions();
+    }
 
     this.sharedMethods?.hideLoader();
     this.router.navigate([this.authService.getCurrentUserBaseUrlFromRole(user?.role)]);
