@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { env } from 'src/environments/environment';
 import { Observable } from 'rxjs';
-import { PushNotificationData, StorageKeys, SurveyResponse } from 'src/app/shared/types/api-types';
+import { PushNotificationData, StorageKeys } from 'src/app/shared/types/api-types';
 import { Preferences } from '@capacitor/preferences';
 import { SharedmethodsService } from '../sharedmethods/sharedmethods.service';
 import { AuthService } from '../auth/auth.service';

@@ -4,11 +4,11 @@ import { DBService } from '../database/db.service';
 import { CompaniesDataService } from 'src/app/companies/data/companies-data.service';
 import { Platform } from '@ionic/angular';
 import { SQLite, SQLiteObject } from '@awesome-cordova-plugins/sqlite/ngx';
-import { CreateCompanyResp, CreateContractClauseResp, CreateContractResp, CreateVesselResp } from './types';
+import { CreateCompanyResp, CreateContractClauseResp, CreateContractResp, CreateVesselResp, SurveyResponse } from './types';
 import { VesselsDataService } from 'src/app/vessels/data/vessels-data.service';
 import { ContractDataService } from 'src/app/contracts/data/contract-data.service';
 import { SharedmethodsService } from '../sharedmethods/sharedmethods.service';
-import { StorageKeys, SurveyResponse } from '../../types/api-types';
+import { StorageKeys } from '../../types/api-types';
 
 @Injectable({
   providedIn: 'root'
