@@ -6,6 +6,8 @@ import { SharedmethodsService } from '../shared/services/sharedmethods/sharedmet
 import { ActivatedRoute, Params, Router } from '@angular/router';
 import { StorageKeys, SurveyModes } from '../shared/types/api-types';
 import { AuthService } from '../shared/services/auth/auth.service';
+import { ApiService } from '../shared/services/api/api.service';
+import { SurveyDataService } from './data/survey-data.service';
 
 @Component({
   selector: 'app-survey',
@@ -23,6 +25,8 @@ export class SurveyComponent extends BaseformPage  implements OnInit {
     public authService: AuthService,
     public cdr: ChangeDetectorRef,
     public activatedRoute: ActivatedRoute,
+    public apiService: ApiService,
+    public surveysDataService: SurveyDataService,
   ) {
     super(contentService)
   }
@@ -79,14 +83,45 @@ export class SurveyComponent extends BaseformPage  implements OnInit {
   async onSubmit(formData) {
     this.sharedMethods.showLoader(this.commonText?.submittingYourData);
     const date = this.sharedMethods.getCurrentDateTime('date');
-    const now = this.sharedMethods.getCurrentDateTime();
     const user = await this.sharedMethods.readDataFromStorage(StorageKeys.userData);
-    const surveyData = {
-      ...formData,
-      createdAt: now
-    };
-    await this.sharedMethods.saveSurveyDataToLocalStorage(StorageKeys.survey, date, surveyData);
-    await this.removeCategoryFromSavedOptions();
+    const surveyData = [];
+    this.formQuestions.forEach((qtn) => {
+      // check if question has response and if response is an array, check it has at least one item
+      if (formData[qtn.key] && (!Array.isArray(formData[qtn.key]) || formData[qtn.key].length)) {;
+        surveyData.push({
+          app_ref: this.sharedMethods.generateAppRef(),
+          survey_date: date,
+          question_key: qtn.key,
+          question_text: qtn?.label || qtn?.question,
+          question_response: formData[qtn.key],
+        });
+
+        // check if question has followup question and if followup question has response and if response is an array, check it has at least one item
+        if (qtn?.hasFollowUpQuestion && formData[qtn?.followUpQuestion?.key]
+              && (!Array.isArray(formData[qtn?.followUpQuestion?.key]) || formData[qtn?.followUpQuestion?.key].length)) {
+          surveyData.push({
+            app_ref: this.sharedMethods.generateAppRef(),
+            survey_date: date,
+            question_key: qtn?.followUpQuestion?.key,
+            question_text: qtn?.followUpQuestion?.label,
+            question_response: formData[qtn?.followUpQuestion?.key],
+          });
+        };
+      }
+    });
+
+    if (surveyData?.length) {
+      surveyData.forEach(async (item) => {
+        const insertId =  await this.surveysDataService.create(item);
+        if (!insertId) {
+          this.sharedMethods.showToast(this.commonText?.errSavingResponses || 'Error saving responses');
+        }
+      });
+    }
+
+    if (this.mode === SurveyModes.notification) {
+      await this.removeCategoryFromSavedOptions();
+    }
 
     this.sharedMethods?.hideLoader();
     this.router.navigate([this.authService.getCurrentUserBaseUrlFromRole(user?.role)]);
@@ -97,4 +132,5 @@ export class SurveyComponent extends BaseformPage  implements OnInit {
     allCategories.shift();
     await this.sharedMethods.saveDataToStorage(StorageKeys.surveyCategories, allCategories);
   }
+
 }

@@ -94,3 +94,12 @@ export interface ContractClauseData {
   kind:      string;
   content:   string;
 }
+
+export interface CreateSurveyResp {
+  status: string;
+  data:   SurveyDataResp;
+}
+export interface SurveyDataResp {
+  id: string;
+  // TODO: Add other fields
+}
