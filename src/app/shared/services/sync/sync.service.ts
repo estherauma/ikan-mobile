@@ -157,7 +157,7 @@ export class SyncService {
           delete survey.id;
           if (!survey.onlineRef) {
             this.apiService.post('surveys', survey).subscribe((response: SurveyResponse) => {
-              if (response['status'] === 'OK') {
+              if (response?.status === 'OK') {
                 this.dbService.updateDatabaseField('surveys', 'online_ref', response['data'].id, survey.appRef);
               }
             }, e => console.error(e));
