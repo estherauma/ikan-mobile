@@ -38,9 +38,10 @@ export class SharedmethodsService {
     await this.loadingCtrl.dismiss();
   }
 
-  async showToast(text = 'Hooray!') {
+  async showToast(text = 'Hooray!', duration: 'short' | 'long' = 'short') {
     await Toast.show({
-      text
+      text,
+      duration
     });
   }
 
@@ -59,16 +60,6 @@ export class SharedmethodsService {
     } else {
       return value ? value : null;
     }
-  }
-
-  async saveSurveyDataToLocalStorage(key, date, obj) {
-    const storedValues = await this.readDataFromStorage(key);
-    const sameDateValues = storedValues?.[date] ?? {};
-    
-    await Preferences.set({
-      key,
-      value: JSON.stringify({ ...storedValues, [date]: {...sameDateValues, ...obj} })
-    });
   }
 
   isValidJSON(str: string) {

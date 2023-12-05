@@ -4,11 +4,11 @@ import { DBService } from '../database/db.service';
 import { CompaniesDataService } from 'src/app/companies/data/companies-data.service';
 import { Platform } from '@ionic/angular';
 import { SQLite, SQLiteObject } from '@awesome-cordova-plugins/sqlite/ngx';
-import { CreateCompanyResp, CreateContractClauseResp, CreateContractResp, CreateVesselResp, SurveyResponse } from './types';
+import { CreateCompanyResp, CreateContractClauseResp, CreateContractResp, CreateVesselResp } from './types';
 import { VesselsDataService } from 'src/app/vessels/data/vessels-data.service';
 import { ContractDataService } from 'src/app/contracts/data/contract-data.service';
 import { SharedmethodsService } from '../sharedmethods/sharedmethods.service';
-import { StorageKeys } from '../../types/api-types';
+import { SurveyDataService } from 'src/app/survey/data/survey-data.service';
 
 @Injectable({
   providedIn: 'root'
@@ -25,6 +25,7 @@ export class SyncService {
     private contractServ: ContractDataService,
     private dbService: DBService,
     private sharedMethods: SharedmethodsService,
+    private surveyDataService: SurveyDataService,
   ) { 
     this.platform.ready().then(async() => {
       this.sqlite.create({
@@ -34,7 +35,6 @@ export class SyncService {
         this.db = _db;
       }).catch(e => console.log(e));
     });
-    this.uploadTFAVideoResponses();
   }
 
   updateEntityOnlineId(onlineId: string, appRef: string, table: string) {
@@ -50,6 +50,7 @@ export class SyncService {
     this.syncCompanies();
     this.syncVessels();
     this.syncContracts();
+    this.syncSurveyResponses();
   }
 
   syncCompanies() { 
@@ -149,22 +150,22 @@ export class SyncService {
     
   }
 
-  async uploadTFAVideoResponses() {
-    const videoResponses: Array<SurveyResponse> = await this.sharedMethods.readDataFromStorage(StorageKeys.TFAVideoResponses);
-    if (!videoResponses?.length) { return };
-
-    if (await this.sharedMethods.checkInternetConnectionStatus()) {
-      await Promise.all(videoResponses?.map(async (item) => {
-        try {
-          await this.apiService.post('surveys', item).toPromise();
-          videoResponses.shift();
-        } catch (e) {
-          console.error(e);
-        }
-      }));
-    }
-
-    await this.sharedMethods.saveDataToStorage(StorageKeys.TFAVideoResponses, videoResponses);
+  async syncSurveyResponses() {
+    this.surveyDataService.getAll().subscribe((surveys) => {
+      if (surveys?.length) {
+        surveys.forEach((survey) => {
+          delete survey.id;
+          if (!survey.onlineRef) {
+            this.apiService.post('surveys', survey).subscribe((response) => {
+              if (response['status'] === 'OK') {
+                this.dbService.updateDatabaseField('surveys', 'online_ref', response['data'].id, survey.appRef);
+              }
+            }, e => console.error(e));
+          } else {
+            // TODO: add update logic
+          }
+        });
+      }
+    });
   }
-
 }
