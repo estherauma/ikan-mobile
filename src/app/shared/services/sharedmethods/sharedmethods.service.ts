@@ -38,9 +38,10 @@ export class SharedmethodsService {
     await this.loadingCtrl.dismiss();
   }
 
-  async showToast(text = 'Hooray!') {
+  async showToast(text = 'Hooray!', duration: 'short' | 'long' = 'short') {
     await Toast.show({
-      text
+      text,
+      duration
     });
   }
 
