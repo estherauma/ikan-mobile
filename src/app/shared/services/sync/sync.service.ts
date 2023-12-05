@@ -4,7 +4,7 @@ import { DBService } from '../database/db.service';
 import { CompaniesDataService } from 'src/app/companies/data/companies-data.service';
 import { Platform } from '@ionic/angular';
 import { SQLite, SQLiteObject } from '@awesome-cordova-plugins/sqlite/ngx';
-import { CreateCompanyResp, CreateContractClauseResp, CreateContractResp, CreateVesselResp, SurveyResponse } from './types';
+import { CreateCompanyResp, CreateContractClauseResp, CreateContractResp, CreateSurveyResp, CreateVesselResp } from './types';
 import { VesselsDataService } from 'src/app/vessels/data/vessels-data.service';
 import { ContractDataService } from 'src/app/contracts/data/contract-data.service';
 import { SharedmethodsService } from '../sharedmethods/sharedmethods.service';
@@ -156,9 +156,9 @@ export class SyncService {
         surveys.forEach((survey) => {
           delete survey.id;
           if (!survey.onlineRef) {
-            this.apiService.post('surveys', survey).subscribe((response: SurveyResponse) => {
+            this.apiService.post('surveys', survey).subscribe((response:CreateSurveyResp) => {
               if (response?.status === 'OK') {
-                this.dbService.updateDatabaseField('surveys', 'online_ref', response['data'].id, survey.appRef);
+                this.dbService.updateDatabaseField('surveys', 'online_ref', response?.data.id, survey.appRef);
               }
             }, e => console.error(e));
           } else {

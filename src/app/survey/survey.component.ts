@@ -7,8 +7,6 @@ import { ActivatedRoute, Params, Router } from '@angular/router';
 import { StorageKeys, SurveyModes } from '../shared/types/api-types';
 import { AuthService } from '../shared/services/auth/auth.service';
 import { ApiService } from '../shared/services/api/api.service';
-import { Preferences } from '@capacitor/preferences';
-import { SurveyResponse } from '../shared/services/sync/types';
 import { SurveyDataService } from './data/survey-data.service';
 
 @Component({
