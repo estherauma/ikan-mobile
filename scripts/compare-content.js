@@ -33,7 +33,8 @@ for (const langCode in jsonObject) {
 if (Object.keys(missingKeys).length > 0) {
     console.log("Missing keys in other languages:");
     for (const langCode in missingKeys) {
-        console.log(`${langCode}: ${missingKeys[langCode]}`);
+        console.log(`------------ Missing in ${langCode}:--------------------------------------`);
+        console.log(` ${missingKeys[langCode]}`);
     }
 } else {
     console.log("No missing keys in other languages.");
