@@ -156,7 +156,7 @@ export class SyncService {
         surveys.forEach((survey) => {
           delete survey.id;
           if (!survey.onlineRef) {
-            this.apiService.post('surveys', survey).subscribe((response) => {
+            this.apiService.post('surveys', survey).subscribe((response: SurveyResponse) => {
               if (response['status'] === 'OK') {
                 this.dbService.updateDatabaseField('surveys', 'online_ref', response['data'].id, survey.appRef);
               }
