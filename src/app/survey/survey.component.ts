@@ -92,7 +92,7 @@ export class SurveyComponent extends BaseformPage  implements OnInit {
           app_ref: this.sharedMethods.generateAppRef(),
           survey_date: date,
           question_key: qtn.key,
-          question_text: qtn?.label,
+          question_text: qtn?.label || qtn?.question,
           question_response: formData[qtn.key],
         });
 
