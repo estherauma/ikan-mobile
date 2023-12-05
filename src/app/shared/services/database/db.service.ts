@@ -168,4 +168,17 @@ export class DBService {
       console.log(error);
     });
   }
+
+  checkIfEntryExists(table, appRef) {
+    const params = [appRef];
+    const query = `SELECT * FROM ${table} WHERE app_ref = ?`;
+    return this.db.executeSql(query, params).then((data) => {
+      if (data.rows.length > 0) {
+        return true;
+      }
+      return false;
+    }).catch((error) => {
+      console.log(error);
+    });
+  }
 }

@@ -4,7 +4,7 @@ import { DBService } from '../database/db.service';
 import { CompaniesDataService } from 'src/app/companies/data/companies-data.service';
 import { Platform } from '@ionic/angular';
 import { SQLite, SQLiteObject } from '@awesome-cordova-plugins/sqlite/ngx';
-import { CreateCompanyResp, CreateContractClauseResp, CreateContractResp, CreateSurveyResp, CreateVesselResp } from './types';
+import { CreateCompanyResp, CreateContractClauseResp, CreateContractResp, CreateSurveyResp, CreateVesselResp, GetCompaniesResponse } from './types';
 import { VesselsDataService } from 'src/app/vessels/data/vessels-data.service';
 import { ContractDataService } from 'src/app/contracts/data/contract-data.service';
 import { SharedmethodsService } from '../sharedmethods/sharedmethods.service';
@@ -15,7 +15,7 @@ import { SurveyDataService } from 'src/app/survey/data/survey-data.service';
 })
 export class SyncService {
   db: SQLiteObject;
-  
+
   constructor(
     private platform: Platform,
     public sqlite: SQLite,
@@ -26,19 +26,19 @@ export class SyncService {
     private dbService: DBService,
     private sharedMethods: SharedmethodsService,
     private surveyDataService: SurveyDataService,
-  ) { 
-    this.platform.ready().then(async() => {
+  ) {
+    this.platform.ready().then(async () => {
       this.sqlite.create({
         name: 'tunalocal.db',
         location: 'default'
-      }).then(async(_db: SQLiteObject) => {
+      }).then(async (_db: SQLiteObject) => {
         this.db = _db;
       }).catch(e => console.log(e));
     });
   }
 
   updateEntityOnlineId(onlineId: string, appRef: string, table: string) {
-    const params = [ onlineId, appRef ];
+    const params = [onlineId, appRef];
     const query = `UPDATE ${table} SET online_ref = ? WHERE app_ref = ?`;
     this.db.executeSql(query, params).then(() => {
     }).catch((error) => {
@@ -51,9 +51,12 @@ export class SyncService {
     this.syncVessels();
     this.syncContracts();
     this.syncSurveyResponses();
+
+    // fetch data from the API
+    this.fetchCompanies();
   }
 
-  syncCompanies() { 
+  syncCompanies() {
     this.companyServ.getAll().subscribe((data) => {
       let companies = data;
       if (companies.length > 0) {
@@ -73,6 +76,23 @@ export class SyncService {
         });
       }
     })
+  }
+
+  fetchCompanies() {
+    this.apiService.get('companies').subscribe((response: GetCompaniesResponse) => {
+      if (response.status === 200 && response.body.data.length > 0) {
+        response.body.data.forEach((company) => {
+          // if the company doesn't exist in the local db, add it
+          this.dbService.checkIfEntryExists('companies', company.appRef)
+          .then((exists) => {
+            if (!exists) {
+              this.companyServ.saveOnlineCompany(company)
+              .then((id) => { console.log ( `Company ${company.name} saved with id ${id}`)});
+            }
+          });
+        });
+      }
+    });
   }
 
   syncVessels() {

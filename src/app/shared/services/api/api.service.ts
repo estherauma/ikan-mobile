@@ -33,7 +33,8 @@ export class ApiService {
    * @param resourceUrl
    */
   get(resourceUrl): Observable<any> {
-    return this.http.get(`${env.apiUrl}/${resourceUrl}`, {observe: 'response'});
+    const requestUrl = `${env.apiUrl}/${resourceUrl}`;
+    return this.http.get(requestUrl, { headers: this.headers, observe: 'response' });
   }
 
 
