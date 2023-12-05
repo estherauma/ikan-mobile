@@ -8,7 +8,7 @@ import { CreateCompanyResp, CreateContractClauseResp, CreateContractResp, Create
 import { VesselsDataService } from 'src/app/vessels/data/vessels-data.service';
 import { ContractDataService } from 'src/app/contracts/data/contract-data.service';
 import { SharedmethodsService } from '../sharedmethods/sharedmethods.service';
-import { StorageKeys } from '../../types/api-types';
+import { SurveyDataService } from 'src/app/survey/data/survey-data.service';
 
 @Injectable({
   providedIn: 'root'
@@ -25,6 +25,7 @@ export class SyncService {
     private contractServ: ContractDataService,
     private dbService: DBService,
     public sharedMethods: SharedmethodsService,
+    private surveyDataService: SurveyDataService,
   ) { 
     this.platform.ready().then(async() => {
       this.sqlite.create({
@@ -34,7 +35,6 @@ export class SyncService {
         this.db = _db;
       }).catch(e => console.log(e));
     });
-    this.uploadSurveyResponses();
   }
 
   updateEntityOnlineId(onlineId: string, appRef: string, table: string) {
@@ -50,6 +50,7 @@ export class SyncService {
     this.syncCompanies();
     this.syncVessels();
     this.syncContracts();
+    this.syncSurveyResponses();
   }
 
   syncCompanies() { 
@@ -149,21 +150,22 @@ export class SyncService {
     
   }
 
-  async uploadSurveyResponses() {
-    const surveyResponses: Array<SurveyResponse> = await this.sharedMethods.readDataFromStorage(StorageKeys.survey);
-    if (!surveyResponses?.length) { return };
-
-    if (await this.sharedMethods.checkInternetConnectionStatus()) {
-      await Promise.all(surveyResponses?.map(async (item) => {
-        try {
-          await this.apiService.post('surveys', item).toPromise();
-          surveyResponses.shift();
-        } catch (e) {
-          console.error(e);
-        }
-      }));
-    }
-
-    await this.sharedMethods.saveDataToStorage(StorageKeys.survey, surveyResponses);
+  async syncSurveyResponses() {
+    this.surveyDataService.getAll().subscribe((surveys) => {
+      if (surveys?.length) {
+        surveys.forEach((survey) => {
+          delete survey.id;
+          if (!survey.onlineRef) {
+            this.apiService.post('surveys', survey).subscribe((response) => {
+              if (response['status'] === 'OK') {
+                this.dbService.updateDatabaseField('surveys', 'online_ref', response['data'].id, survey.appRef);
+              }
+            }, e => console.error(e));
+          } else {
+            // TODO: add update logic
+          }
+        });
+      }
+    });
   }
 }

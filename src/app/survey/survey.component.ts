@@ -9,6 +9,7 @@ import { AuthService } from '../shared/services/auth/auth.service';
 import { ApiService } from '../shared/services/api/api.service';
 import { Preferences } from '@capacitor/preferences';
 import { SurveyResponse } from '../shared/services/sync/types';
+import { SurveyDataService } from './data/survey-data.service';
 
 @Component({
   selector: 'app-survey',
@@ -27,6 +28,7 @@ export class SurveyComponent extends BaseformPage  implements OnInit {
     public cdr: ChangeDetectorRef,
     public activatedRoute: ActivatedRoute,
     public apiService: ApiService,
+    public surveysDataService: SurveyDataService,
   ) {
     super(contentService)
     this.getMode();
@@ -111,19 +113,12 @@ export class SurveyComponent extends BaseformPage  implements OnInit {
     });
 
     if (surveyData?.length) {
-      if (await this.sharedMethods.checkInternetConnectionStatus()) {
-
-        await Promise.all(surveyData?.map(async (item) => {
-          try {
-            await this.apiService.post('surveys', item).toPromise();
-            surveyData.shift();
-          } catch (e) {
-            console.error(e);
-          }
-        }));
-      }
-
-      await this.saveSurveyDataToLocalStorage(StorageKeys.survey, surveyData);
+      surveyData.forEach(async (item) => {
+        const insertId =  await this.surveysDataService.create(item);
+        if (!insertId) {
+          this.sharedMethods.showToast(this.commonText?.errSavingResponses || 'Error saving responses');
+        }
+      });
     }
 
     if (this.mode === SurveyModes.notification) {
@@ -140,13 +135,4 @@ export class SurveyComponent extends BaseformPage  implements OnInit {
     await this.sharedMethods.saveDataToStorage(StorageKeys.surveyCategories, allCategories);
   }
 
-  async saveSurveyDataToLocalStorage(key, data) {
-    const storedValues: Array<SurveyResponse> = await this.sharedMethods.readDataFromStorage(key);
-    const updatedValues: Array<SurveyResponse> = storedValues?.length ? storedValues.concat(...data) : data;
-    
-    await Preferences.set({
-      key,
-      value: JSON.stringify(updatedValues)
-    });
-  }
 }
