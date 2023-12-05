@@ -158,6 +158,6 @@ export interface IPasswordResetResp {
   message: string;
 }
 
-export enum SurveyModes {
+export enum SurveySources {
   notification = 'notification',
 }
