@@ -1,0 +1,13 @@
+CREATE TABLE IF NOT EXISTS surveys (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    app_ref VARCHAR(255) NOT NULL UNIQUE,
+    survey_date VARCHAR(255) NOT NULL,
+    question_key VARCHAR(255) NOT NULL,
+    question_text VARCHAR(255) NOT NULL,
+    question_response VARCHAR(255) NOT NULL,
+    online_ref VARCHAR(255),
+    created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    created_by VARCHAR(255) NOT NULL,
+    updated_by VARCHAR(255) NOT NULL
+)
