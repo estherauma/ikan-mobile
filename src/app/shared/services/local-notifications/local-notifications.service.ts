@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { ActionPerformed, LocalNotificationSchema, LocalNotifications, PermissionStatus, Weekday } from '@capacitor/local-notifications';
-import { SurveyModes } from '../../types/api-types';
+import { SurveySources } from '../../types/api-types';
 import { SharedmethodsService } from '../sharedmethods/sharedmethods.service';
 
 @Injectable({
@@ -94,12 +94,12 @@ export class LocalNotificationsService {
           switch (notificationAction?.actionId) {
             case 'tap':
               if (notification?.actionTypeId === 'survey') {
-                this.router.navigate([ 'survey' ], { queryParams: { mode: SurveyModes.notification }});
+                this.router.navigate([ 'survey' ], { queryParams: { surveySource: SurveySources.notification }});
               }
               // TO BE REMOVED
               // for testing purposes
               if (notification?.actionTypeId === 'test') {
-                this.router.navigate([ 'survey' ], { queryParams: { mode: SurveyModes.notification }});
+                this.router.navigate([ 'survey' ], { queryParams: { surveySource: SurveySources.notification }});
               }
               break;
             default:

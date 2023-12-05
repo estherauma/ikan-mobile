@@ -4,7 +4,7 @@ import { BaseformPage } from '../shared/components/baseform/baseform.page';
 import { FormControl, Validators, FormGroup } from '@angular/forms';
 import { SharedmethodsService } from '../shared/services/sharedmethods/sharedmethods.service';
 import { ActivatedRoute, Params, Router } from '@angular/router';
-import { StorageKeys, SurveyModes } from '../shared/types/api-types';
+import { StorageKeys, SurveySources } from '../shared/types/api-types';
 import { AuthService } from '../shared/services/auth/auth.service';
 import { ApiService } from '../shared/services/api/api.service';
 import { SurveyDataService } from './data/survey-data.service';
@@ -16,7 +16,7 @@ import { SurveyDataService } from './data/survey-data.service';
 })
 export class SurveyComponent extends BaseformPage  implements OnInit {
   attemptedFollowUpQtnKeys = {};
-  mode = '';
+  surveySource = '';
 
   constructor(
     public contentService: ContentService,
@@ -35,9 +35,10 @@ export class SurveyComponent extends BaseformPage  implements OnInit {
     this.commonText = this.contentService?.commonText;
     const pageData = this.contentService.getContentByPropertyName('survey');
     this.pageTitle  = pageData?.pageTitle;
-    await this.getMode();
+    await this.getSurveySource();
 
-    if (this.mode === SurveyModes.notification) {
+    if (this.surveySource === SurveySources.notification) {
+      console.log('gggggggggg.........', this.surveySource)
       this.formQuestions = await this.contentService.getSurveyQuestions();
     } else {
       this.formQuestions = pageData?.formQuestions;
@@ -72,10 +73,10 @@ export class SurveyComponent extends BaseformPage  implements OnInit {
     this.pageFormGroup = new FormGroup(this.group);
   }
 
-  async getMode() {
+  async getSurveySource() {
     return this.activatedRoute.queryParams.subscribe((queryParams: Params) => {
       if (queryParams && Object.keys(queryParams).length > 0) {
-        this.mode = queryParams?.mode || '';
+        this.surveySource = queryParams?.surveySource || '';
       }
     });
   }
@@ -119,7 +120,7 @@ export class SurveyComponent extends BaseformPage  implements OnInit {
       });
     }
 
-    if (this.mode === SurveyModes.notification) {
+    if (this.surveySource === SurveySources.notification) {
       await this.removeCategoryFromSavedOptions();
     }
 
