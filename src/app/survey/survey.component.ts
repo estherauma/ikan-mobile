@@ -38,7 +38,6 @@ export class SurveyComponent extends BaseformPage  implements OnInit {
     await this.getSurveySource();
 
     if (this.surveySource === SurveySources.notification) {
-      console.log('gggggggggg.........', this.surveySource)
       this.formQuestions = await this.contentService.getSurveyQuestions();
     } else {
       this.formQuestions = pageData?.formQuestions;
