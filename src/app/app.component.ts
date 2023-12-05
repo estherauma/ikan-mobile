@@ -1,10 +1,9 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { StatusBar, Style } from '@capacitor/status-bar';
-import { Preferences } from '@capacitor/preferences';
+import { StatusBar } from '@capacitor/status-bar';
 import { ContentService } from './shared/services/content/content.service';
 import { SharedmethodsService } from './shared/services/sharedmethods/sharedmethods.service';
-import { StorageKeys, UserData, UserRole } from './shared/types/api-types';
+import { StorageKeys, UserData } from './shared/types/api-types';
 import { PluginListenerHandle } from '@capacitor/core';
 import { AuthService } from './shared/services/auth/auth.service';
 import { DBService } from './shared/services/database/db.service';
@@ -12,6 +11,8 @@ import { PushNotificationsService } from './shared/services/push-notifications/p
 import { LocalNotificationsService } from './shared/services/local-notifications/local-notifications.service';
 import { Subscription } from 'rxjs';
 import { SyncService } from './shared/services/sync/sync.service';
+import { TrainingVideoComponent } from './learninghub/training-video/training-video.component';
+import { ModalController } from '@ionic/angular';
 
 @Component({
   selector: 'app-root',
@@ -35,6 +36,7 @@ export class AppComponent implements OnInit, OnDestroy {
     public pushNotifications: PushNotificationsService,
     public localNotifications: LocalNotificationsService,
     public syncService: SyncService,
+    public modalController: ModalController,
   ) {
     this.authService.setUpAuthData();
     this.contentService.setUpAppData().then(() => {
@@ -120,15 +122,27 @@ export class AppComponent implements OnInit, OnDestroy {
     }
   }
 
-  onClick(index) {
+  async onClick(index) {
     if (this.appPages[index].url === '/logout') {
       this.authService.logOut();
       this.router.navigate(['']);
     } else if(this.appPages[index].url === '/sync') {
+      await this.sharedMethods.showToast(this.contentService.commonText?.syncingData || 'Syncing data...', 'long');
       this.syncService.syncData();
-    }
-     else {
+    } else if (this.appPages[index].url === '/tfa-video') {
+      await this.showTrainingVideo();
+    } else {
       this.router.navigate([this.appPages[index].url], { replaceUrl: true });
     }
+  }
+
+  async showTrainingVideo() {
+    const modal = await this.modalController.create({
+      component: TrainingVideoComponent,
+      cssClass: 'tfa-training-video',
+      backdropDismiss: false,
+    });
+    modal.present();
+    modal.onDidDismiss().then((data) => {});
   }
 }
