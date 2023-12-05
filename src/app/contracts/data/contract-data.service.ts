@@ -87,6 +87,19 @@ export class ContractDataService {
     }).catch((e) => console.log(e));
   }
 
+  saveOnlineContract(data) {
+    const query = 'INSERT INTO contracts (name, app_ref, internal_ref, start_date, \
+      end_date, description, taiwanese_company_id, indonesian_company_id, type,\
+      created_at, updated_at, created_by, updated_by, online_ref) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)';
+    const params = [data.name, data.appRef, data.appRef, data.startDate, data.endDate,
+      data.description, data.taiwaneseCompany, data.indonesianCompany, data.kind,
+      data.createdAt, data.updatedAt, data.createdBy, data.updatedBy, data.id];
+    return this.db.executeSql(query, params).then((result) => {
+      this.retrieveContracts();
+      return result.insertId;
+    }).catch((e) => console.log(e));
+  }
+
   update(data) { }
 
   delete(id) {

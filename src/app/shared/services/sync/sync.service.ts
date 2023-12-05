@@ -54,6 +54,7 @@ export class SyncService {
 
     // fetch data from the API
     this.fetchCompanies();
+    this.fetchContracts();
   }
 
   syncCompanies() {
@@ -142,6 +143,22 @@ export class SyncService {
             //   console.log(response);
             // });
           }
+        });
+      }
+    });
+  }
+
+  fetchContracts() {
+    this.apiService.get('contracts').subscribe((response) => {
+      if (response.status === 200 && response.body.data.length > 0) {
+        response.body.data.forEach((contract) => {
+          this.dbService.checkIfEntryExists('contracts', contract.appRef)
+          .then((exists) => {
+            if (!exists) {
+              this.contractServ.saveOnlineContract(contract)
+              .then((id) => { console.log ( `Contract ${contract.name} saved with id ${id}`)});
+            }
+          });
         });
       }
     });
