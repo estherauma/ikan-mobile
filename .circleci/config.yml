@@ -42,7 +42,7 @@ jobs:
           name: Build debug APK
           command: |
             cd android
-            ./gradlew :app:assemble
+            ./gradlew :app:assembleDebug
       - store_artifacts:
           path: android/app/build/outputs/apk/debug
 
