@@ -28,7 +28,7 @@ android {
           debuggable true
           applicationIdSuffix ".tuna.dev"
           firebaseAppDistribution {
-            releaseNotes="Initial iKAN release"
+            releaseNotes="Other bug fixes around contracts"
             groups="scrum,other-departments"
             serviceCredentialsFile=file("google-services-credentials.json")
           }

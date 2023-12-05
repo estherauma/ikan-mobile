@@ -65,10 +65,11 @@ export class HomePage implements OnInit {
   }
 
   // TODO: Move to sharedMethods
+  // Todo: Our locales apart from english through an error. Setting this here to english for now.
   getContractDates(contract) {
     const locale = this.contentService.currentLanguage;
-    const start = formatDate(contract?.startDate, 'dd/MM/yyyy', locale);
-    const end = formatDate(contract?.endDate, 'dd/MM/yyyy', locale);
+    const start = formatDate(contract?.startDate, 'dd/MM/yyyy', 'en-us');
+    const end = formatDate(contract?.endDate, 'dd/MM/yyyy', 'en-us');
     return `${start} - ${end}`;
   }
 }

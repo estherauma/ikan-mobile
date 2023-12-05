@@ -42,3 +42,5 @@ npm-debug.log*
 App/output
 /build/*
 local.notes.md
+
+**/all-content.json

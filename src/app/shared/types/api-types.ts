@@ -82,7 +82,6 @@ export enum StorageKeys {
   survey = 'survey',
   surveyCategories = 'surveyCategories',
   watchedTFAVideo = 'watchedTFAVideo',
-  TFAVideoResponses = 'TFAVideoResponses',
 }
 
 export interface UserData {
@@ -159,6 +158,6 @@ export interface IPasswordResetResp {
   message: string;
 }
 
-export enum SurveyModes {
+export enum SurveySources {
   notification = 'notification',
 }

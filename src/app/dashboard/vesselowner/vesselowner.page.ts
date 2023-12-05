@@ -15,7 +15,7 @@ export class VesselownerPage implements OnInit {
   sLists = [
     // {title: 'Work Orders', icon: '/assets/icon/workorders_blue.svg', url: '/workorders/home'},
     {title: 'Vessels', icon: '/assets/icon/boat_with_blue_bg.svg',  url: '/vessels/home'},
-    {title: 'Agents', icon: '/assets/icon/office.svg',  url: '/agents/home'},
+    {title: 'Manning Agencies', icon: '/assets/icon/office.svg',  url: '/companies/home'},
     {title: 'Recruits', icon: '/assets/icon/profile_info_blue.svg', url: '/workers/home'},
     {title: 'Contracts', icon: '/assets/icon/offers.svg',  url: '/contracts/home'},
     // {title: 'Payments', icon: '/assets/icon/single_payment_blue.svg',  url: '/payments/home'},
@@ -96,6 +96,6 @@ export class VesselownerPage implements OnInit {
 
   // For testing purposes
   // gooo() {
-  //   this.router.navigate(['survey'], { queryParams: { mode: 'notification' }});
+  //   this.router.navigate(['survey'], { queryParams: { surveySource: 'notification' }});
   // }
 }
