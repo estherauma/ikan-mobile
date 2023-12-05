@@ -24,7 +24,7 @@ export class SyncService {
     private vesselServ: VesselsDataService,
     private contractServ: ContractDataService,
     private dbService: DBService,
-    public sharedMethods: SharedmethodsService,
+    private sharedMethods: SharedmethodsService,
     private surveyDataService: SurveyDataService,
   ) { 
     this.platform.ready().then(async() => {
