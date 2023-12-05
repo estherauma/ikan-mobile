@@ -4,7 +4,7 @@ import { Network } from '@capacitor/network';
 import { Toast } from '@capacitor/toast';
 import { Preferences } from '@capacitor/preferences';
 import { PluginListenerHandle } from '@capacitor/core';
-import { StorageKeys, SurveyResponse } from '../../types/api-types';
+import { StorageKeys } from '../../types/api-types';
 import { Device } from '@capacitor/device';
 import {v4 as uuidv4} from 'uuid';
 
@@ -59,16 +59,6 @@ export class SharedmethodsService {
     } else {
       return value ? value : null;
     }
-  }
-
-  async saveSurveyDataToLocalStorage(key, data) {
-    const storedValues: Array<SurveyResponse> = await this.readDataFromStorage(key);
-    const updatedValues: Array<SurveyResponse> = storedValues?.length ? storedValues.concat(...data) : data;
-    
-    await Preferences.set({
-      key,
-      value: JSON.stringify(updatedValues)
-    });
   }
 
   isValidJSON(str: string) {

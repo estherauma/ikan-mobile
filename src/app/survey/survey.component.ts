@@ -4,9 +4,11 @@ import { BaseformPage } from '../shared/components/baseform/baseform.page';
 import { FormControl, Validators, FormGroup } from '@angular/forms';
 import { SharedmethodsService } from '../shared/services/sharedmethods/sharedmethods.service';
 import { ActivatedRoute, Params, Router } from '@angular/router';
-import { StorageKeys, SurveyModes, SurveyResponse } from '../shared/types/api-types';
+import { StorageKeys, SurveyModes } from '../shared/types/api-types';
 import { AuthService } from '../shared/services/auth/auth.service';
 import { ApiService } from '../shared/services/api/api.service';
+import { Preferences } from '@capacitor/preferences';
+import { SurveyResponse } from '../shared/services/sync/types';
 
 @Component({
   selector: 'app-survey',
@@ -121,7 +123,7 @@ export class SurveyComponent extends BaseformPage  implements OnInit {
         }));
       }
 
-      await this.sharedMethods.saveSurveyDataToLocalStorage(StorageKeys.survey, surveyData);
+      await this.saveSurveyDataToLocalStorage(StorageKeys.survey, surveyData);
     }
 
     if (this.mode === SurveyModes.notification) {
@@ -136,5 +138,15 @@ export class SurveyComponent extends BaseformPage  implements OnInit {
     const allCategories = await this.sharedMethods.readDataFromStorage(StorageKeys.surveyCategories);
     allCategories.shift();
     await this.sharedMethods.saveDataToStorage(StorageKeys.surveyCategories, allCategories);
+  }
+
+  async saveSurveyDataToLocalStorage(key, data) {
+    const storedValues: Array<SurveyResponse> = await this.sharedMethods.readDataFromStorage(key);
+    const updatedValues: Array<SurveyResponse> = storedValues?.length ? storedValues.concat(...data) : data;
+    
+    await Preferences.set({
+      key,
+      value: JSON.stringify(updatedValues)
+    });
   }
 }

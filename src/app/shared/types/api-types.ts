@@ -162,14 +162,3 @@ export interface IPasswordResetResp {
 export enum SurveyModes {
   notification = 'notification',
 }
-
-export interface SurveyResponse {
-  category?: string;
-  app_ref?: string;
-  survey_date: string;
-  question_key: string;
-  question_text: string;
-  question_response?: QuestionValue;
-}
-
-export type QuestionValue = string | number | Array<any>;
