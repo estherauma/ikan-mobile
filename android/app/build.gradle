@@ -5,7 +5,7 @@ android {
     namespace "com.fiftyeight.tuna"
     compileSdkVersion rootProject.ext.compileSdkVersion
     defaultConfig {
-        applicationId "com.fiftyeight"
+        applicationId "com.fiftyeight.tuna.dev"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 1000
@@ -21,12 +21,12 @@ android {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
-            applicationIdSuffix ".tuna"
+            applicationId "com.fiftyeight.tuna"
         }
         debug {
           minifyEnabled false
           debuggable true
-          applicationIdSuffix ".tuna.dev"
+          applicationId "com.fiiftyeight.tuna.dev"
           firebaseAppDistribution {
             releaseNotes="Initial iKAN release"
             groups="scrum,other-departments"
