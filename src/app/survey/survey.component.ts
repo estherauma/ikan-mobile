@@ -25,13 +25,13 @@ export class SurveyComponent extends BaseformPage  implements OnInit {
     public activatedRoute: ActivatedRoute,
   ) {
     super(contentService)
-    this.getMode();
   }
 
   async ngOnInit() {
     this.commonText = this.contentService?.commonText;
     const pageData = this.contentService.getContentByPropertyName('survey');
     this.pageTitle  = pageData?.pageTitle;
+    await this.getMode();
 
     if (this.mode === SurveyModes.notification) {
       this.formQuestions = await this.contentService.getSurveyQuestions();
@@ -68,8 +68,8 @@ export class SurveyComponent extends BaseformPage  implements OnInit {
     this.pageFormGroup = new FormGroup(this.group);
   }
 
-  getMode() {
-    this.activatedRoute.queryParams.subscribe((queryParams: Params) => {
+  async getMode() {
+    return this.activatedRoute.queryParams.subscribe((queryParams: Params) => {
       if (queryParams && Object.keys(queryParams).length > 0) {
         this.mode = queryParams?.mode || '';
       }
