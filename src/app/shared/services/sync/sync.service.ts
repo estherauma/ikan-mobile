@@ -4,9 +4,11 @@ import { DBService } from '../database/db.service';
 import { CompaniesDataService } from 'src/app/companies/data/companies-data.service';
 import { Platform } from '@ionic/angular';
 import { SQLite, SQLiteObject } from '@awesome-cordova-plugins/sqlite/ngx';
-import { CreateCompanyResp, CreateContractClauseResp, CreateContractResp, CreateVesselResp } from './types';
+import { CreateCompanyResp, CreateContractClauseResp, CreateContractResp, CreateVesselResp, SurveyResponse } from './types';
 import { VesselsDataService } from 'src/app/vessels/data/vessels-data.service';
 import { ContractDataService } from 'src/app/contracts/data/contract-data.service';
+import { SharedmethodsService } from '../sharedmethods/sharedmethods.service';
+import { StorageKeys } from '../../types/api-types';
 
 @Injectable({
   providedIn: 'root'
@@ -21,7 +23,8 @@ export class SyncService {
     private companyServ: CompaniesDataService,
     private vesselServ: VesselsDataService,
     private contractServ: ContractDataService,
-    private dbService: DBService
+    private dbService: DBService,
+    private sharedMethods: SharedmethodsService,
   ) { 
     this.platform.ready().then(async() => {
       this.sqlite.create({
@@ -31,6 +34,7 @@ export class SyncService {
         this.db = _db;
       }).catch(e => console.log(e));
     });
+    this.uploadTFAVideoResponses();
   }
 
   updateEntityOnlineId(onlineId: string, appRef: string, table: string) {
@@ -143,6 +147,24 @@ export class SyncService {
       }
     });
     
+  }
+
+  async uploadTFAVideoResponses() {
+    const videoResponses: Array<SurveyResponse> = await this.sharedMethods.readDataFromStorage(StorageKeys.TFAVideoResponses);
+    if (!videoResponses?.length) { return };
+
+    if (await this.sharedMethods.checkInternetConnectionStatus()) {
+      await Promise.all(videoResponses?.map(async (item) => {
+        try {
+          await this.apiService.post('surveys', item).toPromise();
+          videoResponses.shift();
+        } catch (e) {
+          console.error(e);
+        }
+      }));
+    }
+
+    await this.sharedMethods.saveDataToStorage(StorageKeys.TFAVideoResponses, videoResponses);
   }
 
 }

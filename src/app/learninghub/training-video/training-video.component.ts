@@ -2,8 +2,10 @@ import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ModalController } from '@ionic/angular';
 import { BaseformPage } from 'src/app/shared/components/baseform/baseform.page';
+import { ApiService } from 'src/app/shared/services/api/api.service';
 import { ContentService } from 'src/app/shared/services/content/content.service';
 import { SharedmethodsService } from 'src/app/shared/services/sharedmethods/sharedmethods.service';
+import { SurveyResponse } from 'src/app/shared/services/sync/types';
 import { StorageKeys } from 'src/app/shared/types/api-types';
 
 @Component({
@@ -21,6 +23,7 @@ export class TrainingVideoComponent extends BaseformPage  implements OnInit {
     public contentService: ContentService,
     public sharedMethods: SharedmethodsService,
     public modalCtrl: ModalController,
+    public apiService: ApiService,
   ) {
     super(contentService)
   }
@@ -36,7 +39,11 @@ export class TrainingVideoComponent extends BaseformPage  implements OnInit {
 
     this.formQuestions = this.getFormQuestions(pageData);
     this.formQuestions.forEach(entry => {
-      this.group[entry.key] = new FormControl('', [ Validators.required ]);
+      this.group[entry.key] = new FormControl(null, [ Validators.required ]);
+      entry.options = [
+        {label: entry.options[0].option, value: 'True'},
+        {label: entry.options[1].option, value: 'False'},
+      ];
     });
     this.pageFormGroup = new FormGroup(this.group);
   }
@@ -68,17 +75,36 @@ export class TrainingVideoComponent extends BaseformPage  implements OnInit {
 
   async onSubmit(formData) {
     this.sharedMethods.showLoader(this.commonText?.submittingYourData);
-    const result =  this.formQuestions.map((item) => {
+    const date = this.sharedMethods.getCurrentDateTime('date');
+    const videoResponses =  this.formQuestions.map((item) => {
       return {
-        key: item.key,
-        question: item.label,
-        value: formData[item.key]
+        app_ref: this.sharedMethods.generateAppRef(),
+        survey_date: date,
+        question_key: item.key,
+        question_text: item?.label || item?.question,
+        question_response: formData[item.key],
       }
     });
 
-    // TODO: upload responses to api
-    await this.sharedMethods.saveDataToStorage(StorageKeys.TFAVideoResponses, formData);
+
+    if (await this.sharedMethods.checkInternetConnectionStatus()) {
+      await Promise.all(videoResponses?.map(async (item) => {
+        try {
+          await this.apiService.post('surveys', item).toPromise();
+          videoResponses.shift();
+        } catch (e) {
+          console.error(e);
+        }
+      }));
+    }
+
+    const savedResponses: Array<SurveyResponse> = await this.sharedMethods.readDataFromStorage(StorageKeys.TFAVideoResponses);
+    const data = [...savedResponses, ...videoResponses];
+
+    await this.sharedMethods.saveDataToStorage(StorageKeys.TFAVideoResponses, data);
     await this.sharedMethods.saveDataToStorage(StorageKeys.watchedTFAVideo, true);
+
+    this.sharedMethods?.hideLoader();
     this.modalCtrl.dismiss();
   }
 }
