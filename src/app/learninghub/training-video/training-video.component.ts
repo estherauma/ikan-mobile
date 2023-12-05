@@ -6,6 +6,7 @@ import { ApiService } from 'src/app/shared/services/api/api.service';
 import { ContentService } from 'src/app/shared/services/content/content.service';
 import { SharedmethodsService } from 'src/app/shared/services/sharedmethods/sharedmethods.service';
 import { StorageKeys } from 'src/app/shared/types/api-types';
+import { SurveyDataService } from 'src/app/survey/data/survey-data.service';
 
 @Component({
   selector: 'app-training-video',
@@ -23,6 +24,7 @@ export class TrainingVideoComponent extends BaseformPage  implements OnInit {
     public sharedMethods: SharedmethodsService,
     public modalCtrl: ModalController,
     public apiService: ApiService,
+    public surveysDataService: SurveyDataService,
   ) {
     super(contentService)
   }
@@ -85,22 +87,15 @@ export class TrainingVideoComponent extends BaseformPage  implements OnInit {
       }
     });
 
+    if (videoResponses?.length) {
+      videoResponses.forEach(async(item) => {
+        const insertId = await this.surveysDataService.create(item);
+        if (!insertId) {
+          this.sharedMethods.showToast(this.commonText?.errSavingResponses || 'Error saving responses');
+        }
+      });
+    }
 
-    // if (await this.sharedMethods.checkInternetConnectionStatus()) {
-    //   await Promise.all(videoResponses?.map(async (item) => {
-    //     try {
-    //       await this.apiService.post('surveys', item).toPromise();
-    //       videoResponses.shift();
-    //     } catch (e) {
-    //       console.error(e);
-    //     }
-    //   }));
-    // }
-
-    // const savedResponses: Array<SurveyResponse> = await this.sharedMethods.readDataFromStorage(StorageKeys.TFAVideoResponses);
-    // const data = [...savedResponses, ...videoResponses];
-
-    // await this.sharedMethods.saveDataToStorage(StorageKeys.TFAVideoResponses, data);
     await this.sharedMethods.saveDataToStorage(StorageKeys.watchedTFAVideo, true);
 
     this.sharedMethods?.hideLoader();
