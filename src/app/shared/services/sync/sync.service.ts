@@ -4,7 +4,7 @@ import { DBService } from '../database/db.service';
 import { CompaniesDataService } from 'src/app/companies/data/companies-data.service';
 import { Platform } from '@ionic/angular';
 import { SQLite, SQLiteObject } from '@awesome-cordova-plugins/sqlite/ngx';
-import { CreateCompanyResp, CreateContractClauseResp, CreateContractResp, CreateSurveyResp, CreateVesselResp, GetCompaniesResponse } from './types';
+import { CreateCompanyResp, CreateContractClauseResp, CreateContractResp, CreateSurveyResp, CreateVesselResp, GetClausesResponse, GetCompaniesResponse, GetContractsResponse } from './types';
 import { VesselsDataService } from 'src/app/vessels/data/vessels-data.service';
 import { ContractDataService } from 'src/app/contracts/data/contract-data.service';
 import { SharedmethodsService } from '../sharedmethods/sharedmethods.service';
@@ -46,7 +46,7 @@ export class SyncService {
     });
   }
 
-  syncData() {
+  async syncData() {
     this.syncCompanies();
     this.syncVessels();
     this.syncContracts();
@@ -54,7 +54,8 @@ export class SyncService {
 
     // fetch data from the API
     this.fetchCompanies();
-    this.fetchContracts();
+    await this.fetchContracts();
+    this.fetchContractClauses();
   }
 
   syncCompanies() {
@@ -148,8 +149,8 @@ export class SyncService {
     });
   }
 
-  fetchContracts() {
-    this.apiService.get('contracts').subscribe((response) => {
+  async fetchContracts() {
+    this.apiService.get('contracts').subscribe((response:GetContractsResponse) => {
       if (response.status === 200 && response.body.data.length > 0) {
         response.body.data.forEach((contract) => {
           this.dbService.checkIfEntryExists('contracts', contract.appRef)
@@ -184,7 +185,23 @@ export class SyncService {
         // });
       }
     });
-    
+  }
+
+  async fetchContractClauses() {
+    this.apiService.get('contracts/clauses').subscribe((response:GetClausesResponse) => {
+      if (response.status === 200 && response.body.length > 0) {
+        response.body.forEach((clause) => {
+          this.dbService.checkIfEntryExists('contract_clauses', clause.appRef)
+          .then((exists) => {
+            if (!exists) {
+              console.log(clause)
+              // this.contractServ.saveOnlineContractClause(clause)
+              // .then((id) => { console.log ( `Contract clause ${clause.name} saved with id ${id}`)});
+            }
+          });
+        });
+      }
+    });
   }
 
   async syncSurveyResponses() {
