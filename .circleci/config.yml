@@ -122,7 +122,7 @@ workflows:
                 - dev
                 - staging
                 - main
-                - thesammie/58-1841-ready-tuna-for-qs-demo
+                - skapeyi/58-2378-fetch-companies-contracts-and-clauses-from-the-dashboard-to
               # ignore:
               #   - staging
               #   - main
