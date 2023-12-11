@@ -94,9 +94,9 @@ export class LoginPage extends BaseformPage implements OnInit {
     const helpScreens = await this.sharedMethods.readDataFromStorage(StorageKeys.isFirstLogin);
     const user: UserData = await this.sharedMethods.readDataFromStorage(StorageKeys.userData);
     if (!helpScreens) {
-      this.router.navigate([this.authService.getCurrentUserBaseUrlFromRole(role)]);
+      this.router.navigate([this.authService.getCurrentUserBaseUrlFromRole(role)], { replaceUrl: true });
     } else {
-      this.router.navigate([this.authService.getCurrentUserBaseUrlFromRole(role)]);
+      this.router.navigate([this.authService.getCurrentUserBaseUrlFromRole(role)], { replaceUrl: true });
     }
   }
 
