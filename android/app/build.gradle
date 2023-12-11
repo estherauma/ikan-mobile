@@ -8,8 +8,8 @@ android {
         applicationId "com.fiftyeight"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 100001
-        versionName "1.0.01-02"
+        versionCode 100102
+        versionName "1.01.02"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         aaptOptions {
              // Files and dirs to omit from the packaged assets dir, modified to accommodate modern web apps.
