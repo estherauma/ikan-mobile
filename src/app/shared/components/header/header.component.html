@@ -3,7 +3,7 @@
     <div class="header-content-container">
       <div class="section-one">
         <div *ngIf="isBackButton" class="back-section">
-          <ion-back-button [text]="backText" defaultHref="" icon="arrow-back-outline">
+          <ion-back-button [text]="backText" [defaultHref]="defaultHref" icon="arrow-back-outline">
           </ion-back-button>
         </div>
         <ion-title>{{pageTitle}}</ion-title>

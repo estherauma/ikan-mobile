@@ -1,5 +1,5 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { NavigationEnd, NavigationStart, Router } from '@angular/router';
 import { StatusBar } from '@capacitor/status-bar';
 import { ContentService } from './shared/services/content/content.service';
 import { SharedmethodsService } from './shared/services/sharedmethods/sharedmethods.service';
@@ -12,7 +12,9 @@ import { LocalNotificationsService } from './shared/services/local-notifications
 import { Subscription } from 'rxjs';
 import { SyncService } from './shared/services/sync/sync.service';
 import { TrainingVideoComponent } from './learninghub/training-video/training-video.component';
-import { ModalController } from '@ionic/angular';
+import { ModalController, Platform } from '@ionic/angular';
+import { App } from '@capacitor/app';
+import { Location } from '@angular/common';
 
 @Component({
   selector: 'app-root',
@@ -37,6 +39,8 @@ export class AppComponent implements OnInit, OnDestroy {
     public localNotifications: LocalNotificationsService,
     public syncService: SyncService,
     public modalController: ModalController,
+    public platform: Platform,
+    public location: Location,
   ) {
     this.authService.setUpAuthData();
     this.contentService.setUpAppData().then(() => {
@@ -66,6 +70,7 @@ export class AppComponent implements OnInit, OnDestroy {
     const showStatusBar = async() => {
       await StatusBar.show();
     };
+    this.handleBackButtonNavigation();
     await this.sharedMethods.addNetworkEventListener((async(network) => {
         this.networkListener = network.networkListener;
         if (network.connected) {
@@ -132,7 +137,7 @@ export class AppComponent implements OnInit, OnDestroy {
     } else if (this.appPages[index].url === '/tfa-video') {
       await this.showTrainingVideo();
     } else {
-      this.router.navigate([this.appPages[index].url], { replaceUrl: true });
+      this.router.navigate([this.appPages[index].url]);
     }
   }
 
@@ -140,9 +145,25 @@ export class AppComponent implements OnInit, OnDestroy {
     const modal = await this.modalController.create({
       component: TrainingVideoComponent,
       cssClass: 'tfa-training-video',
-      backdropDismiss: false,
+      // commented out because it's messing with the back button navigation
+      // backdropDismiss: false,
     });
     modal.present();
-    modal.onDidDismiss().then((data) => {});
+  }
+
+
+  handleBackButtonNavigation() {
+    this.platform.backButton.subscribeWithPriority(-1, async () => {
+      // store url as it changes during navigation
+      const targetUrl = this.router.url;
+      const user: UserData = await this.sharedMethods.readDataFromStorage(StorageKeys.userData);
+      const dashboard = this.authService.getCurrentUserBaseUrlFromRole(user?.role);
+
+      if (user  && targetUrl === `/${dashboard}` ||
+        (!user && targetUrl === '/auth/login-method')
+      ) {
+        return App.minimizeApp();
+      }
+    });
   }
 }
