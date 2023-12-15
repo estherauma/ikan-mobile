@@ -3,6 +3,7 @@ import { SQLite, SQLiteObject } from '@awesome-cordova-plugins/sqlite/ngx';
 
 import { Platform } from '@ionic/angular';
 import { HttpClient } from '@angular/common/http';
+import { GlobalErrorHandlerService } from '../error-handler/global-error-handler.service';
 
 @Injectable({
   providedIn: 'root'
@@ -24,8 +25,10 @@ export class DBService {
   constructor(
     private sqlite: SQLite,
     public platform: Platform,
-    public http: HttpClient
+    public http: HttpClient,
+    public globalErrorHandler: GlobalErrorHandlerService,
   ) {}
+  
   checkDbPlatformAndRunMigration(seedData = false) {
     this.platform.ready().then(async() => {
       this.sqlite.create({
@@ -41,20 +44,26 @@ export class DBService {
           }
           await this.getAndRunPendingMigrations(seedData);
           })
-      .catch(e => console.log(e));
+        .catch(e => {
+          this.globalErrorHandler.handleError(e, 'Error in db.service.ts at checkDbPlatformAndRunMigration(). Error creating database or running migrations');
+        });
     });
   }
 
   checkDBStatus() {
     this.sqlite.echoTest()
       .then(() => console.log('DB is ready'))
-      .catch(e => console.log(e));
+      .catch(e => {
+        this.globalErrorHandler.handleError(e, 'Error in db.service.ts at checkDBStatus(). Error checking database status');
+      });
   }
 
   async createMigrationsTable() {
     return this.db.executeSql('CREATE TABLE IF NOT EXISTS migrations (id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT, executed_at DATETIME)', [])
       .then(() => {})
-      .catch(e => console.log('Migrations table already exists'));
+      .catch(e => {
+        this.globalErrorHandler.handleError(e, 'Error in db.service.ts at createMigrationsTable(). Error creating migrations table or table already exists');
+      });
   }
 
   readMigrationsTable() {
@@ -68,6 +77,9 @@ export class DBService {
         }
       }
       return this.executedMigrations;
+    }).catch(e => {
+      this.globalErrorHandler.handleError(e, 'Error in db.service.ts at readMigrationsTable(). Error reading migrations table');
+      return [];
     });
   }
 
@@ -112,11 +124,14 @@ export class DBService {
           })
           .catch(e => {
             console.log(`Error executing query: ${query}`);
+            this.globalErrorHandler.handleError(e, `Error in db.service.ts at runSingleMigrationFile(). Error executing ${query}`);
           });
         });
         this.db.executeSql('INSERT INTO migrations (name, executed_at) VALUES (?, ?)', [migrationFileName, new Date()])
         .then(() => console.log('Migration ' + migrationFileName + ' marked as completed'))
-        .catch(e => console.log(e));
+        .catch(e => {
+          this.globalErrorHandler.handleError(e, `Error in db.service.ts at runSingleMigrationFile(). Error inserting migration ${migrationFileName} into migrations table`); 
+        });
     });
   }
 
@@ -125,7 +140,9 @@ export class DBService {
       name: 'tunalocal.db',
       location: 'default'
     }).then(() => console.log('Database deleted'))
-      .catch(e => console.log(e));
+      .catch(e => {
+        this.globalErrorHandler.handleError(e, 'Error in db.service.ts at dropDatabase(). Error dropping database');
+      });
   }
 
   setAppRef(id, appRef, table) {
@@ -133,7 +150,7 @@ export class DBService {
     const query = `UPDATE ${table} SET app_ref = ? WHERE id = ?`;
     this.db.executeSql(query, params).then(() => {
     }).catch((error) => {
-      console.log(error);
+      this.globalErrorHandler.handleError(error, `Error in db.service.ts at setAppRef(). Failed to update app_ref for id ${id} in the ${table} table`);
     });
   }
 
@@ -142,7 +159,7 @@ export class DBService {
     const query = `UPDATE ${table} SET ${field} = ? WHERE app_ref = ?`;
     this.db.executeSql(query, params).then(() => {
     }).catch((error) => {
-      console.log(error);
+      this.globalErrorHandler.handleError(error, `Error in db.service.ts at updateDatabaseField(). Failed to update the ${field} field for app_ref ${appRef} in the ${table} table`);
     });
   }
 
@@ -154,7 +171,7 @@ export class DBService {
         return data.rows.item(0).online_ref;
       }
     }).catch((error) => {
-      console.log(error);
+      this.globalErrorHandler.handleError(error, `Error in db.service.ts at getEntityOnlineRef(). Failed to get online_ref for app_ref ${name} in the ${table} table`);
     });
   }
 
@@ -165,7 +182,7 @@ export class DBService {
     this.db.executeSql(query, params).then(() => {
       console.log(`Deleted entity ${appRef} from ${table}`)
     }).catch((error) => {
-      console.log(error);
+      this.globalErrorHandler.handleError(error, `Error in db.service.ts at deleteEntity(). Failed to delete entity ${appRef} from ${table}`);
     });
   }
 }
