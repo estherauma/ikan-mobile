@@ -21,6 +21,10 @@ export class GlobalErrorHandlerService implements ErrorHandler {
   }
 
   handleError(error: any, customErrMsg = ''): void {
+    // log error to console
+    console.error(customErrMsg, error);
+
+    // send error to Sentry
     Sentry.captureException(error, (scope) => {
       scope.setTransactionName(customErrMsg);
       return scope;
