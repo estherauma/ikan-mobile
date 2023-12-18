@@ -9,7 +9,7 @@ android {
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 1001
-        versionName "1.0.1"
+        versionName "1.1.01"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         aaptOptions {
              // Files and dirs to omit from the packaged assets dir, modified to accommodate modern web apps.
@@ -28,7 +28,7 @@ android {
           debuggable true
           applicationIdSuffix ".tuna.dev"
           firebaseAppDistribution {
-            releaseNotes="Add sync for agencies and contracts"
+            releaseNotes="Fix back navigation"
             groups="scrum,other-departments"
             serviceCredentialsFile=file("google-services-credentials.json")
           }

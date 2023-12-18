@@ -1,5 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { ContentService } from '../../services/content/content.service';
+import { SharedmethodsService } from '../../services/sharedmethods/sharedmethods.service';
+import { AuthService } from '../../services/auth/auth.service';
 
 @Component({
   selector: 'app-header',
@@ -14,13 +16,22 @@ export class HeaderComponent implements OnInit {
   @Input() isLightBlueBg = false;
 
   backText = '';
+  defaultHref = '';
 
   constructor(
-    public contentService: ContentService
+    public contentService: ContentService,
+    public sharedMethods: SharedmethodsService,
+    public authService: AuthService,
   ) { }
 
-  ngOnInit() {
+  async ngOnInit() {
     this.backText = this.contentService.commonText?.back;
+    const user = await this.sharedMethods.getUserData();
+    if (user) {
+      const dashboard = this.authService.getCurrentUserBaseUrlFromRole(user?.role);
+      this.defaultHref = dashboard ?? this.defaultHref;
+    }
+
   }
 
 }

@@ -80,7 +80,7 @@ export class SteptwoPage extends BaseformPage implements OnInit {
         this.sharedMethods.showLoader(this.pageText?.errSavingImage);
       }
       this.modalCtrl.dismiss();
-      this.router.navigate(['vessels/view', formData]);
+      this.router.navigate(['vessels/view', formData], { replaceUrl: true });
     } else {
 
       this.sharedMethods.showLoader(this.pageText?.errCreatingVessel);
