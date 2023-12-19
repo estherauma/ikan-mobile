@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { ActionPerformed, LocalNotificationSchema, LocalNotifications, PermissionStatus, Weekday } from '@capacitor/local-notifications';
 import { SurveySources } from '../../types/api-types';
 import { SharedmethodsService } from '../sharedmethods/sharedmethods.service';
+import { env } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root'
@@ -32,11 +33,13 @@ export class LocalNotificationsService {
 
 
   async scheduleNotifications() {
+    const isProduction = env.production;
     const permissionsGranted = await this.requestNotificationPermission();
     if (permissionsGranted) {
       const allNotifications: LocalNotificationSchema[] = [
         {
-          title: 'Survey',
+          // TODO: add to prismic
+          title: 'Survey' + (isProduction ? '' : ' (Development)'),
           body: 'A quick survey checking on you',
           id: 1,
           schedule: {
@@ -57,7 +60,7 @@ export class LocalNotificationsService {
         // Testing purposes
         // Uncomment the code block below (& in addListeners()) to run the notification every minute
         // {
-        //   title: 'Another Test Notification',
+        //   title: 'Another Test Notification' + (isProduction ? '' : ' (Development)'),
         //   body: 'This is another test notification.',
         //   id: 2,
         //   schedule: { 
