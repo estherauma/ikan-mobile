@@ -74,6 +74,18 @@ export class ContractDataService {
     return contract;
   }
 
+  getContractByField(field, value) {
+    let contract;
+    this.contracts.getValue().forEach((entry) => {
+      if (entry[field] === value) {
+        contract = entry;
+      } else {
+        contract = null;
+      }
+    });
+    return contract;
+  }
+
   create(data) {
     const query = 'INSERT INTO contracts (name, app_ref, internal_ref, start_date, \
       end_date, description, taiwanese_company_id, indonesian_company_id, type,\
@@ -81,6 +93,19 @@ export class ContractDataService {
     const params = [data.name, data.app_ref, data.internal_ref, data.start_date, data.end_date,
       data.description, data.taiwanese_company_id, data.indonesian_company_id, data.type,
       data.created_at, data.updated_at, data.created_by, data.updated_by];
+    return this.db.executeSql(query, params).then((result) => {
+      this.retrieveContracts();
+      return result.insertId;
+    }).catch((e) => console.log(e));
+  }
+
+  saveOnlineContract(data) {
+    const query = 'INSERT INTO contracts (name, app_ref, internal_ref, start_date, \
+      end_date, description, taiwanese_company_id, indonesian_company_id, type,\
+      created_at, updated_at, created_by, updated_by, online_ref) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)';
+    const params = [data.name, data.appRef, data.appRef, data.startDate, data.endDate,
+      data.description, data.taiwaneseCompany, data.indonesianCompany, data.kind,
+      data.createdAt, data.updatedAt, data.createdBy, data.updatedBy, data.id];
     return this.db.executeSql(query, params).then((result) => {
       this.retrieveContracts();
       return result.insertId;
@@ -180,6 +205,18 @@ export class ContractDataService {
       clauseData.content, clauseData.created_at, clauseData.updated_at,
       clauseData.created_by, 
       clauseData.updated_by];
+    return this.db.executeSql(query, params).then((result) => {
+      return result.insertId;
+    }).catch((e) => console.log(e));
+  }
+
+  saveOnlineContractClause(contractId, clauseData) {
+    const query = 'INSERT INTO contract_clauses (contract_id, app_ref, \
+      name, kind, content, created_at, updated_at, created_by, updated_by) \
+      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)';
+    const params = [contractId, clauseData.appRef, clauseData.name, clauseData.kind,
+      clauseData.content, clauseData.createdAt, clauseData.updatedAt,
+      clauseData.createdBy, clauseData.updatedBy];
     return this.db.executeSql(query, params).then((result) => {
       return result.insertId;
     }).catch((e) => console.log(e));

@@ -185,4 +185,17 @@ export class DBService {
       this.globalErrorHandler.handleError(error, `Error in db.service.ts at deleteEntity(). Failed to delete entity ${appRef} from ${table}`);
     });
   }
+
+  checkIfEntryExists(table, appRef) {
+    const params = [appRef];
+    const query = `SELECT * FROM ${table} WHERE app_ref = ?`;
+    return this.db.executeSql(query, params).then((data) => {
+      if (data.rows.length > 0) {
+        return true;
+      }
+      return false;
+    }).catch((error) => {
+      console.log(error);
+    });
+  }
 }

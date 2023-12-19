@@ -4,18 +4,19 @@ import { DBService } from '../database/db.service';
 import { CompaniesDataService } from 'src/app/companies/data/companies-data.service';
 import { Platform } from '@ionic/angular';
 import { SQLite, SQLiteObject } from '@awesome-cordova-plugins/sqlite/ngx';
-import { CreateCompanyResp, CreateContractClauseResp, CreateContractResp, CreateSurveyResp, CreateVesselResp } from './types';
+import { CreateCompanyResp, CreateContractClauseResp, CreateContractResp, CreateSurveyResp, CreateVesselResp, GetClausesResponse, GetCompaniesResponse, GetContractsResponse } from './types';
 import { VesselsDataService } from 'src/app/vessels/data/vessels-data.service';
 import { ContractDataService } from 'src/app/contracts/data/contract-data.service';
 import { SharedmethodsService } from '../sharedmethods/sharedmethods.service';
 import { SurveyDataService } from 'src/app/survey/data/survey-data.service';
+import { forkJoin } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
 export class SyncService {
   db: SQLiteObject;
-  
+
   constructor(
     private platform: Platform,
     public sqlite: SQLite,
@@ -26,19 +27,19 @@ export class SyncService {
     private dbService: DBService,
     private sharedMethods: SharedmethodsService,
     private surveyDataService: SurveyDataService,
-  ) { 
-    this.platform.ready().then(async() => {
+  ) {
+    this.platform.ready().then(async () => {
       this.sqlite.create({
         name: 'tunalocal.db',
         location: 'default'
-      }).then(async(_db: SQLiteObject) => {
+      }).then(async (_db: SQLiteObject) => {
         this.db = _db;
       }).catch(e => console.log(e));
     });
   }
 
   updateEntityOnlineId(onlineId: string, appRef: string, table: string) {
-    const params = [ onlineId, appRef ];
+    const params = [onlineId, appRef];
     const query = `UPDATE ${table} SET online_ref = ? WHERE app_ref = ?`;
     this.db.executeSql(query, params).then(() => {
     }).catch((error) => {
@@ -46,14 +47,18 @@ export class SyncService {
     });
   }
 
-  syncData() {
+  async syncData() {
     this.syncCompanies();
     this.syncVessels();
     this.syncContracts();
     this.syncSurveyResponses();
+
+    // fetch data from the API
+    this.fetchCompanies();
+    this.fetchContracts(); // clauses are fetched after contracts have been fetched in the fetchContracts method
   }
 
-  syncCompanies() { 
+  syncCompanies() {
     this.companyServ.getAll().subscribe((data) => {
       let companies = data;
       if (companies.length > 0) {
@@ -73,6 +78,23 @@ export class SyncService {
         });
       }
     })
+  }
+
+  fetchCompanies() {
+    this.apiService.get('companies').subscribe((response: GetCompaniesResponse) => {
+      if (response.status === 200 && response.body.data.length > 0) {
+        response.body.data.forEach((company) => {
+          // if the company doesn't exist in the local db, add it
+          this.dbService.checkIfEntryExists('companies', company.appRef)
+          .then((exists) => {
+            if (!exists) {
+              this.companyServ.saveOnlineCompany(company)
+              .then((id) => { console.log ( `Company ${company.name} saved with id ${id}`)});
+            }
+          });
+        });
+      }
+    });
   }
 
   syncVessels() {
@@ -127,6 +149,26 @@ export class SyncService {
     });
   }
 
+  async fetchContracts() {
+    return this.apiService.get('contracts').subscribe(async(response:GetContractsResponse) => {
+      if (response.status === 200 && response.body.data.length > 0) {
+        forkJoin(response.body.data.map(async(contract) => {
+          await this.dbService.checkIfEntryExists('contracts', contract.appRef)
+          .then((exists) => {
+            if (!exists) {
+              this.contractServ.saveOnlineContract(contract)
+              .then((id) => { console.log ( `Contract ${contract.name} saved with id ${id}`)});
+            }
+          });
+        })).subscribe(() => {
+          // fetch the contract clauses after the contracts have been fetched
+          this.fetchContractClauses();
+        });
+
+      }
+    });
+  }
+
   async syncContractClauses(contractId, contractOnlineRef) {
     let clauses = await this.contractServ.retrieveContractClauses(contractId);
     clauses.forEach((clause) => {
@@ -135,7 +177,6 @@ export class SyncService {
       // replace the contract_id with the contract id online_ref
       clause.contract = contractOnlineRef;
       if (!clause.onlineRef) {
-        console.log(clause);
         this.apiService.post('contracts/clauses', clause).subscribe((response: CreateContractClauseResp) => {
           if (response?.status === 'OK') {
             this.dbService.updateDatabaseField('contract_clauses', 'online_ref', response?.data?.id, clause.appRef);
@@ -147,7 +188,25 @@ export class SyncService {
         // });
       }
     });
-    
+  }
+
+  async fetchContractClauses() {
+    return this.apiService.get('contracts/clauses').subscribe((response:GetClausesResponse) => {
+      if (response.status === 200 && response.body.length > 0) {
+        response.body.forEach((clause) => {
+          this.dbService.checkIfEntryExists('contract_clauses', clause.appRef)
+          .then((exists) => {
+            if (!exists) {
+              const contract = this.contractServ.getContractByField('name', clause.contract);
+              if (contract) {
+                this.contractServ.saveOnlineContractClause(contract?.id, clause)
+                .then((id) => { console.log ( `Contract clause ${clause.name} saved with id ${id}`)});
+              }
+            }
+          });
+        });
+      }
+    });
   }
 
   async syncSurveyResponses() {

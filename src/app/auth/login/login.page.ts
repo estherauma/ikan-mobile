@@ -10,6 +10,7 @@ import { ContentService } from 'src/app/shared/services/content/content.service'
 import { SharedmethodsService } from 'src/app/shared/services/sharedmethods/sharedmethods.service';
 import { FieldType, Icons, LoginSuccessReponse, StorageKeys, UserData, UserRole } from 'src/app/shared/types/api-types';
 import { DBService } from 'src/app/shared/services/database/db.service';
+import { SyncService } from 'src/app/shared/services/sync/sync.service';
 
 @Component({
   selector: 'app-login',
@@ -29,7 +30,8 @@ export class LoginPage extends BaseformPage implements OnInit {
     public sharedMethods: SharedmethodsService,
     public router: Router,
     public authService: AuthService,
-    public dbService: DBService
+    public dbService: DBService,
+    public syncService: SyncService,
   ) {
     super(contentService);
   }
@@ -76,6 +78,8 @@ export class LoginPage extends BaseformPage implements OnInit {
           await this.sharedMethods.saveDataToStorage(StorageKeys.userData, res.data.userData);
           this.authService.currentUser.next(res.data.userData);
           this.sharedMethods.hideLoader();
+          // sync data
+          await this.syncService.syncData();
           // enable menu
           this.menuCtrl.enable(true);
           if (this.testEmails.includes(res.data.userData?.email)) {

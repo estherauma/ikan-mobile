@@ -73,6 +73,21 @@ export class CompaniesDataService {
     }).catch((e) => console.log(e));
   }
 
+
+  async saveOnlineCompany(data) {
+    const query = 'INSERT INTO companies (name, description, status, country, telephone, \
+      email, address_line_1, address_line_2, address_line_3, created_at, updated_at, created_by, \
+      updated_by, app_ref, online_ref) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)';
+    const params = [data.name, data.description, 'Active', data.country, data.telephone, data.email,
+      data.addressLine1, data.addressLine2, data.addressLine3, data.createdAt, data.updatedAt,
+      data.createdBy, data.updatedBy, data.appRef, data.id];
+      return this.db.executeSql(query, params).then((result) => {
+        this.retriveCompanies();
+        return result.insertId;
+      }).catch((e) => console.log(e));   
+  }
+    
+
   updateCompanyLogo(companyId, logoUrl) {}
 
   delete(id) {
