@@ -41,10 +41,8 @@ export class TrainingVideoComponent extends BaseformPage  implements OnInit {
     this.formQuestions = this.getFormQuestions(pageData);
     this.formQuestions.forEach(entry => {
       this.group[entry.key] = new FormControl(null, [ Validators.required ]);
-      entry.options = [
-        {label: entry.options[0].option, value: 'True'},
-        {label: entry.options[1].option, value: 'False'},
-      ];
+      entry.options[0] = { ...entry.options[0], value: 'True' };
+      entry.options[1] = { ...entry.options[1], value: 'False' };
     });
     this.pageFormGroup = new FormGroup(this.group);
   }

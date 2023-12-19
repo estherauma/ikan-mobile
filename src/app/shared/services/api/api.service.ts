@@ -6,6 +6,7 @@ import { PushNotificationData, StorageKeys } from 'src/app/shared/types/api-type
 import { Preferences } from '@capacitor/preferences';
 import { SharedmethodsService } from '../sharedmethods/sharedmethods.service';
 import { AuthService } from '../auth/auth.service';
+import { GlobalErrorHandlerService } from '../error-handler/global-error-handler.service';
 
 @Injectable({
   providedIn: 'root'
@@ -16,7 +17,8 @@ export class ApiService {
 
   constructor(
     public http: HttpClient,
-    public sharedMethods: SharedmethodsService
+    public sharedMethods: SharedmethodsService,
+    public globalErrorHandler: GlobalErrorHandlerService,
   ) {
     this.setApiRequestHeaders();
   }
@@ -108,7 +110,7 @@ export class ApiService {
             resolve(null);
           });
       } catch (error) {
-        console.error(error);
+        this.globalErrorHandler.handleError(error, 'Error in api.service.ts at uploadPushNotificationData(). Failed to upload push notification data.');
         return null;
       }
     });

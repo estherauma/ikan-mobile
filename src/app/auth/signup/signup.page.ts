@@ -69,7 +69,7 @@ export class SignupPage extends BaseformPage implements OnInit {
         this.isLoading = false;
         this.sharedMethods?.hideLoader();
         if (error.status === 400) {
-          const validationErrors = error.error;
+          const validationErrors = error.error || error.message;
           this.fieldErrors = validationErrors;
           this.cdr.detectChanges();
         } else {

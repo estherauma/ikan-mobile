@@ -22,11 +22,17 @@ android {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
             applicationIdSuffix ".tuna"
+            resValue "string", "app_name", "IKAN"
+            resValue "string", "title_activity_main", "IKAN"
+            namespace "com.fiftyeight.tuna"
         }
         debug {
           minifyEnabled false
           debuggable true
           applicationIdSuffix ".tuna.dev"
+          resValue "string", "app_name", "IKAN(Dev)"
+          resValue "string", "title_activity_main", "IKAN(Dev)"
+          namespace "com.fiftyeight.tuna.dev"
           firebaseAppDistribution {
             releaseNotes="Add sync for agencies and contracts"
             groups="scrum,other-departments"
