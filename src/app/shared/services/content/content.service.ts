@@ -58,7 +58,7 @@ export class ContentService {
   }
 
   async fetchContent() {
-    const response = this.apiService.get('content/aggregated');
+    const response = this.apiService.get('content/aggregated', true);
     response?.subscribe((res: HttpResponse<any>) => {
       const content = res.body;
       if (content?.status === 'OK') {
