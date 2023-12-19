@@ -4,6 +4,7 @@ import { SharedmethodsService } from '../sharedmethods/sharedmethods.service';
 import { ContentService } from '../content/content.service';
 import { Directory, Filesystem } from '@capacitor/filesystem';
 import { DomSanitizer } from '@angular/platform-browser';
+import { GlobalErrorHandlerService } from '../error-handler/global-error-handler.service';
 
 @Injectable({
   providedIn: 'root'
@@ -16,6 +17,7 @@ export class AudioService {
     public sharedMethods: SharedmethodsService,
     public contentService: ContentService,
     public sanitizer: DomSanitizer,
+    public globalErrorHandler: GlobalErrorHandlerService,
   ) {
     this.commonText = this.contentService?.commonText;
     VoiceRecorder.requestAudioRecordingPermission();
@@ -58,7 +60,7 @@ export class AudioService {
       const result: GenericResponse = await VoiceRecorder.canDeviceVoiceRecord();
       return result?.value;
     } catch (error) {
-      console.error(error);
+      this.globalErrorHandler.handleError(error, 'Error in audio.service.ts at canDeviceVoiceRecord(). Checking device audio recording support failed.');
       return false;
     }
 
@@ -73,7 +75,7 @@ export class AudioService {
       const result: GenericResponse = await VoiceRecorder.requestAudioRecordingPermission();
       return result?.value;
     } catch (error) {
-      console.error(error);
+      this.globalErrorHandler.handleError(error, 'Error in audio.service.ts at requestAudioRecordingPermission(). Requesting permission failed.');
       return false;
     }
   }
@@ -88,7 +90,7 @@ export class AudioService {
       const result: GenericResponse = await VoiceRecorder.hasAudioRecordingPermission();
       return result?.value;
     } catch (error) {
-      console.error(error);
+      this.globalErrorHandler.handleError(error, 'Error in audio.service.ts at getRecordingPermissionStatus(). Getting permission status failed.');
       return false;
     }
   }
@@ -111,7 +113,7 @@ export class AudioService {
       }
     } catch (error) {
       this.isRecording = false;
-      console.error(error);
+      this.globalErrorHandler.handleError(error, 'Error in audio.service.ts at startRecording(). Recording not started.');
     }
   }
 
@@ -142,10 +144,11 @@ export class AudioService {
 
       return null;
     } catch (error) {
-      console.error(error);
+      this.globalErrorHandler.handleError(error, 'Error in audio.service.ts at stopRecording(). Recording not stopped.');
       return null;
     }
   }
+
   async saveFile(obj) {
     try {
       const base64String = obj.file.split('data:audio/aac;base64,')[1];
@@ -160,7 +163,7 @@ export class AudioService {
         filepath: savedFile.uri,
       }
     } catch (error) {
-      console.error('Failed to saved audio recording.', error);
+      this.globalErrorHandler.handleError(error, 'Error in audio.service.ts at saveFile(). Failed to save audio recording.');
       return null;
     }
   }
@@ -192,7 +195,7 @@ export class AudioService {
       const result: GenericResponse = await VoiceRecorder.pauseRecording();
       return result.value;
     } catch (error) {
-      console.error(error);
+      this.globalErrorHandler.handleError(error, 'Error in audio.service.ts at pauseRecording(). Recording not paused.');
     }
   }
 
@@ -207,7 +210,7 @@ export class AudioService {
       const result: GenericResponse = await VoiceRecorder.resumeRecording();
       return result.value;
     } catch (error) {
-      console.error(error);
+      this.globalErrorHandler.handleError(error, 'Error in audio.service.ts at resumeAudioRecording(). Recording not resumed.');
     }
   }
 
@@ -219,7 +222,7 @@ export class AudioService {
       const result: CurrentRecordingStatus = await VoiceRecorder.getCurrentStatus();
       return result.status;
     } catch (error) {
-      console.error(error);
+      this.globalErrorHandler.handleError(error, 'Error in audio.service.ts at getAudioRecordingStatus(). Failed to get audio recording status.');
     }
   }
 }

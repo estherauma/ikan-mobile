@@ -10,6 +10,7 @@ module.exports.generateEnvironmentFiles = ()=>{
     baseUrl: '${process.env.BASE_URL}',
     environment: '${process.env.ENVIRONMENT}',
     pushNotificationApi: '${process.env.DEV_PUSH_NOTIFICATION_URL}',
+    sentryDSN: '${process.env.SENTRY_DSN}'
   };
   `;
 
@@ -20,6 +21,7 @@ module.exports.generateEnvironmentFiles = ()=>{
     baseUrl: '${process.env.BASE_URL}',
     environment: '${process.env.ENVIRONMENT}',
     pushNotificationApi: '${process.env.STAGING_PUSH_NOTIFICATION_URL}',
+    sentryDSN: '${process.env.SENTRY_DSN}'
   };
   `;
 
@@ -30,6 +32,7 @@ module.exports.generateEnvironmentFiles = ()=>{
     baseUrl: '${process.env.BASE_URL}',
     environment: '${process.env.ENVIRONMENT}',
     pushNotificationApi: '${process.env.PROD_PUSH_NOTIFICATION_URL}',
+    sentryDSN: '${process.env.SENTRY_DSN}'
   };
   `;
 
