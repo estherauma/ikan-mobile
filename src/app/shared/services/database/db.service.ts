@@ -29,8 +29,8 @@ export class DBService {
     public globalErrorHandler: GlobalErrorHandlerService,
   ) {}
   
-  checkDbPlatformAndRunMigration(seedData = false) {
-    this.platform.ready().then(async() => {
+  async checkDbPlatformAndRunMigration(seedData = false) {
+    await this.platform.ready().then(async() => {
       this.sqlite.create({
         name: 'tunalocal.db',
         location: 'default'
