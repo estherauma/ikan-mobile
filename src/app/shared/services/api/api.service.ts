@@ -34,8 +34,11 @@ export class ApiService {
    *
    * @param resourceUrl
    */
-  get(resourceUrl): Observable<any> {
+  get(resourceUrl, excludeHeaders=false): Observable<any> {
     const requestUrl = `${env.apiUrl}/${resourceUrl}`;
+    if (excludeHeaders) {
+      return this.http.get(requestUrl, {observe: 'response'});
+    }
     return this.http.get(requestUrl, { headers: this.headers, observe: 'response' });
   }
 

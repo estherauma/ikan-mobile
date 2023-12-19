@@ -34,7 +34,7 @@ android {
           resValue "string", "title_activity_main", "IKAN(Dev)"
           namespace "com.fiftyeight.tuna.dev"
           firebaseAppDistribution {
-            releaseNotes="Fix: run sync after db setup"
+            releaseNotes="Fix content fetch"
             groups="scrum,other-departments"
             serviceCredentialsFile=file("google-services-credentials.json")
           }
