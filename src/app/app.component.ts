@@ -49,6 +49,7 @@ export class AppComponent implements OnInit, OnDestroy {
     this.checkLoginStatus();
     this.pushNotifications.setup();
     this.localNotifications.scheduleNotifications();
+    this.syncData();
     this.contentService.menuContent.subscribe((data) => {
       data.push({label: 'Sync', url: '/sync', icon: 'sync', roles:'all', enabled: true, position: 399});
       if (data && Object.keys(data).length > 0) {
@@ -165,5 +166,12 @@ export class AppComponent implements OnInit, OnDestroy {
         return App.minimizeApp();
       }
     });
+  }
+
+  async syncData() {
+    const user: UserData = await this.sharedMethods.readDataFromStorage(StorageKeys.userData);
+    if (user) {
+      await this.syncService.syncData();
+    }
   }
 }
