@@ -28,7 +28,7 @@ android {
           debuggable true
           applicationIdSuffix ".tuna.dev"
           firebaseAppDistribution {
-            releaseNotes="Fix back navigation"
+            releaseNotes="Add sync for agencies and contracts"
             groups="scrum,other-departments"
             serviceCredentialsFile=file("google-services-credentials.json")
           }
