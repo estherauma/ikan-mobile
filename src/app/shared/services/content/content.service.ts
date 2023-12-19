@@ -195,7 +195,7 @@ export class ContentService {
 
   getContentByPropertyName(propertyName) {
     const content = this.appContent?.[`${this.currentLanguage}`];
-    return content[propertyName];
+    return content?.[propertyName];
   }
 
   watchContent() {
