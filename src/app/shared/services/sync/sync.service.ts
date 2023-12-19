@@ -9,6 +9,7 @@ import { VesselsDataService } from 'src/app/vessels/data/vessels-data.service';
 import { ContractDataService } from 'src/app/contracts/data/contract-data.service';
 import { SharedmethodsService } from '../sharedmethods/sharedmethods.service';
 import { SurveyDataService } from 'src/app/survey/data/survey-data.service';
+import { forkJoin } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -54,8 +55,7 @@ export class SyncService {
 
     // fetch data from the API
     this.fetchCompanies();
-    await this.fetchContracts();
-    this.fetchContractClauses();
+    this.fetchContracts(); // clauses are fetched after contracts have been fetched in the fetchContracts method
   }
 
   syncCompanies() {
@@ -150,17 +150,21 @@ export class SyncService {
   }
 
   async fetchContracts() {
-    this.apiService.get('contracts').subscribe((response:GetContractsResponse) => {
+    return this.apiService.get('contracts').subscribe(async(response:GetContractsResponse) => {
       if (response.status === 200 && response.body.data.length > 0) {
-        response.body.data.forEach((contract) => {
-          this.dbService.checkIfEntryExists('contracts', contract.appRef)
+        forkJoin(response.body.data.map(async(contract) => {
+          await this.dbService.checkIfEntryExists('contracts', contract.appRef)
           .then((exists) => {
             if (!exists) {
               this.contractServ.saveOnlineContract(contract)
               .then((id) => { console.log ( `Contract ${contract.name} saved with id ${id}`)});
             }
           });
+        })).subscribe(() => {
+          // fetch the contract clauses after the contracts have been fetched
+          this.fetchContractClauses();
         });
+
       }
     });
   }
@@ -173,7 +177,6 @@ export class SyncService {
       // replace the contract_id with the contract id online_ref
       clause.contract = contractOnlineRef;
       if (!clause.onlineRef) {
-        console.log(clause);
         this.apiService.post('contracts/clauses', clause).subscribe((response: CreateContractClauseResp) => {
           if (response?.status === 'OK') {
             this.dbService.updateDatabaseField('contract_clauses', 'online_ref', response?.data?.id, clause.appRef);
@@ -188,15 +191,17 @@ export class SyncService {
   }
 
   async fetchContractClauses() {
-    this.apiService.get('contracts/clauses').subscribe((response:GetClausesResponse) => {
+    return this.apiService.get('contracts/clauses').subscribe((response:GetClausesResponse) => {
       if (response.status === 200 && response.body.length > 0) {
         response.body.forEach((clause) => {
           this.dbService.checkIfEntryExists('contract_clauses', clause.appRef)
           .then((exists) => {
             if (!exists) {
-              console.log(clause)
-              // this.contractServ.saveOnlineContractClause(clause)
-              // .then((id) => { console.log ( `Contract clause ${clause.name} saved with id ${id}`)});
+              const contract = this.contractServ.getContractByField('name', clause.contract);
+              if (contract) {
+                this.contractServ.saveOnlineContractClause(contract?.id, clause)
+                .then((id) => { console.log ( `Contract clause ${clause.name} saved with id ${id}`)});
+              }
             }
           });
         });
