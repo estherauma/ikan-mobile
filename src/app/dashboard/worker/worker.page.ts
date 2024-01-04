@@ -27,7 +27,14 @@ export class WorkerPage implements OnInit {
     public pushNotifications: PushNotificationsService,
     public contentService: ContentService,
     public sharedmethods: SharedmethodsService,
-  ) { }
+  ) {
+    this.contentService.watchContent().subscribe(async(resp) => {
+      if (resp) {
+        this.commonText = this.contentService.commonText;
+        await this.setupPage();
+      }
+    });
+  }
 
   ngOnInit() {
     if (!this.pushNotifications.preventSecondNotificationPrompt) {
@@ -40,13 +47,13 @@ export class WorkerPage implements OnInit {
     this.commonText = this.contentService.commonText;
     this.user = await this.sharedmethods.readDataFromStorage(StorageKeys.userData);
     this.name = this.commonText?.hi || '' + ' ' + this.user?.firstName || '';
-    this.contentService.updateCurrentLanguage();
-    const menuContent = this.contentService.getMenuContent();
+    await this.contentService.updateCurrentLanguage();
+    const menuContent = await this.contentService.getMenuContent();
 
       // for item in slists, update title with menuContent
       this.sLists.forEach((item) => {
         Object.entries(menuContent).forEach((x) => {
-          if (x[1]['title'] === item.title) {
+          if (x[1]['url'] === item.url) {
             item['title'] = x[1]['label'];
           }
         });
