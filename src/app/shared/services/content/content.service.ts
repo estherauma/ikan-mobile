@@ -14,7 +14,7 @@ export class ContentService {
   public contentObs = new Subject<boolean>();
   watchContentSubscription: Subscription;
   appContent: Content;
-  currentLanguage: string;
+  currentLanguage: string = 'en-us';
   commonText: any;
   menuContent = new Subject<any>();
 
@@ -90,24 +90,20 @@ export class ContentService {
   }
 
   async updateCurrentLanguage() {
-    await this.sharedMethods.readDataFromStorage(StorageKeys.currentLanguage)
-    .then(async(data) => {
-      if (data != null) {
-        this.currentLanguage = data;
-      } else {
-        this.currentLanguage = 'en-us';
-      }
+    const lang = await this.sharedMethods.readDataFromStorage(StorageKeys.currentLanguage);
+    if (lang) {
+      this.currentLanguage = lang;
       this.updateCommonText();
       this.updateSideMenu();
-    });
+    } 
   }
 
   updateCommonText() {
     this.commonText = this.getCommonText();
   }
 
-  updateSideMenu() {
-    const updatedContent = this.getMenuContent();
+  async updateSideMenu() {
+    const updatedContent = await this.getMenuContent();
     this.menuContent.next(updatedContent);
   }
 
@@ -180,7 +176,7 @@ export class ContentService {
 
   }
 
-  getMenuContent() {
+  async getMenuContent() {
     const content = this.appContent?.[`${this.currentLanguage}`];
     if (content != null || content !== undefined) {
       const { sidemenu } = content;
