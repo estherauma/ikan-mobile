@@ -43,10 +43,11 @@ export class LanguagePage implements OnInit {
 
 
   async changeLanguage(selectedLanguage) {
-    this.sharedMethods.saveDataToStorage(StorageKeys.currentLanguage,selectedLanguage?.detail?.value);
-    const user: UserData = await this.sharedMethods.readDataFromStorage(StorageKeys.userData);
+    await this.sharedMethods.saveDataToStorage(StorageKeys.currentLanguage,selectedLanguage?.detail?.value);
     await this.contentServ.updateCurrentLanguage();
-    this.contentServ.updateSideMenu();
+    this.contentServ.contentObs.next(true);
+    
+    const user: UserData = await this.sharedMethods.readDataFromStorage(StorageKeys.userData);
     this.router.navigate([this.authService.getCurrentUserBaseUrlFromRole(user.role)], {replaceUrl: true});
   }
 }

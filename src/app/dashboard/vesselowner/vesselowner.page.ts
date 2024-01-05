@@ -28,7 +28,7 @@ export class VesselownerPage implements OnInit {
       label: '',
       data: [65, 59, 80]
     }]
-  };;
+  };
   feedbackDashboardMessage: string = '';
   welcomeText: string = '';
   welcomeMessage: string = '';
@@ -39,6 +39,7 @@ export class VesselownerPage implements OnInit {
   stat3: string = '';
   name: string = '';
   menuContent: any;
+  commonText: any;
 
   constructor(
     public pushNotifications: PushNotificationsService,
@@ -49,6 +50,13 @@ export class VesselownerPage implements OnInit {
   ) {
     this.menuContent = this.contentService.getMenuContent();
     this.setupPage();
+    this.contentService.watchContent().subscribe(async(resp) => {
+      if (resp) {
+        this.commonText = this.contentService.commonText;
+        this.menuContent = await this.contentService.getMenuContent();
+        await this.setupPage();
+      }
+    });
    }
 
   async ngOnInit() {
@@ -56,42 +64,42 @@ export class VesselownerPage implements OnInit {
       this.pushNotifications.checkAndroidPNsPermissions();
     }
     await this.setupPage();
-    const user = await this.sharedmethods.readDataFromStorage(StorageKeys.userData);
-    this.name = (this.contentService.commonText?.hi || '') + ' ' + (user?.firstName || '');
   }
 
   async setupPage() {
-    // wait for 5 seconds
-    setTimeout(() => {
-      this.contentService.updateCurrentLanguage();
-      this.menuContent = this.contentService.getMenuContent();
-      this.feedbackDashboardMessage = this.contentService.commonText?.fdbckLink;
-      this.welcomeText = this.contentService.commonText?.fdbkWelcomeText;
-      this.welcomeMessage = this.contentService.commonText?.fdbkWelcomMessage;
-      this.welcomeCardTitle = this.contentService.commonText?.fdbkWelcomCardTitle;
-      this.performanceData = {
-        chartType: 'doughnut',
-        title: this.welcomeCardTitle,
-        datasets: [{
-          label: '',
-          data: [65, 59, 80]
-        }]
-      };
-      // for item in slists, update title with menuContent
-      this.sLists.forEach((item) => {
-        Object.entries(this.menuContent).forEach((x) => {
-          if (x[1]['title'] === item.title) {
-            item['title'] = x[1]['label'];
-          }
-        });
+    await this.contentService.updateCurrentLanguage();
+    this.menuContent = await this.contentService.getMenuContent();
+    this.commonText = this.contentService.commonText;
+    this.feedbackDashboardMessage = this.commonText?.fdbckLink;
+    this.welcomeText = this.commonText?.fdbkWelcomeText;
+    this.welcomeMessage = this.commonText?.fdbkWelcomMessage;
+    this.welcomeCardTitle = this.commonText?.fdbkWelcomCardTitle;
+    this.performanceData = {
+      chartType: 'doughnut',
+      title: this.welcomeCardTitle,
+      datasets: [{
+        label: '',
+        data: [65, 59, 80]
+      }]
+    };
+    
+    // for item in slists, update title with menuContent
+    this.sLists.forEach((item) => {
+      Object.entries(this.menuContent).forEach((x) => {
+        if (x[1]['url'] === item.url) {
+          item['title'] = x[1]['label'];
+        }
       });
+    });
 
-      this.overalStat = this.contentService.commonText?.fdbckOverallConditions;
-      this.stat1 = this.contentService.commonText?.fdbckNotCompleted;
-      this.stat2 = this.contentService.commonText?.fdbckAdditionalLearning;
-      this.stat3 = this.contentService.commonText?.fdbckCoreTraining;
+    this.overalStat = this.commonText?.fdbckOverallConditions;
+    this.stat1 = this.commonText?.fdbckNotCompleted;
+    this.stat2 = this.commonText?.fdbckAdditionalLearning;
+    this.stat3 = this.commonText?.fdbckCoreTraining;
 
-    }, 1000);
+    // get user name
+    const user = await this.sharedmethods.readDataFromStorage(StorageKeys.userData);
+    this.name = (this.commonText?.hi || '') + ' ' + (user?.firstName || '');
   }
 
   // For testing purposes
