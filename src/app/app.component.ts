@@ -137,6 +137,9 @@ export class AppComponent implements OnInit, OnDestroy {
       this.syncService.syncData();
     } else if (this.appPages[index].url === '/tfa-video') {
       await this.showTrainingVideo();
+    } else if (this.appPages[index].url === '/myprofile') {
+      const user: UserData = await this.sharedMethods.readDataFromStorage(StorageKeys.userData);
+      this.router.navigate([ this.sharedMethods.getProfileUrlBasedOnRole(user?.role) ]);
     } else {
       this.router.navigate([this.appPages[index].url]);
     }
