@@ -1,10 +1,11 @@
 
 <ion-content>
   <app-form
-      [tunaFormGroup]="pageFormGroup"
-      [tunaFormquestions]="formQuestions"
-      [submitButtonText]="submitButtonText"
-      (formValue)="onSubmit($event)">
+    class="worker-profile-payment"
+    [tunaFormGroup]="pageFormGroup"
+    [tunaFormquestions]="formQuestions"
+    [submitButtonText]="submitButtonText"
+    (formValue)="onSubmit($event)">
   </app-form>
   <div class="ion-padding" style="background-color: #e6e6e6;">
     <ion-text><h1>{{ commonText?.viewPaymentHistory }}</h1></ion-text>

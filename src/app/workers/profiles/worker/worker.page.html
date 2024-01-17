@@ -1,9 +1,23 @@
 <app-header [pageTitle]=""></app-header>
 
 <ion-content>
+  <!-- <div class="image-container">
+    <div>
+      <div 
+        class="profile-image"
+        [ngStyle]="{'background': 'url(' + imageUrl || '/assets/icon/ellipse_profile.svg' + ') no-repeat 0 0 / cover'}"
+      ></div>
+      <div class="status-container" [ngClass]="sharedMethods.getStatusClass('Active')">
+        <small>{{ 'aaaa'}}</small>
+      </div>
+    </div>
+    <app-title [title]=" 'test title'" [isLightBlue]="true"></app-title>
+    <!- <app-button *ngIf="isResendInviteBtn || true" [title]="reSendInviteBtnTitle || 'test resend'" config="yellow"></app-button> ->
+  </div> -->
+
   <div class="tabContent">
-    <ion-tabs>
-      <ion-tab-bar slot="bottom">
+    <ion-tabs class="worker-ion-tabs">
+      <ion-tab-bar slot="top">
         <ion-tab-button tab="info">
           <ion-icon name="person-circle-outline"></ion-icon>
           <ion-label>{{ commonText?.info }}</ion-label>
@@ -11,6 +25,7 @@
 
         <ion-tab-button tab="payments">
           <ion-icon name="wallet-outline"></ion-icon>
+          <!-- TODO: change label to Payment not PaymentInfo -->
           <ion-label>{{ commonText?.paymentInfo }}</ion-label>
         </ion-tab-button>
       </ion-tab-bar>

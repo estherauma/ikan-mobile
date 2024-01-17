@@ -135,3 +135,23 @@ ion-select {
     }
   }
 }
+
+:host.worker-profile-info,
+:host.worker-profile-payment {
+  form {
+    background: var(--ion-color-primary);
+    padding: 30px 20px;
+
+    ion-label{
+      color: white;
+    }
+
+    .text-section {
+      color: white;
+    }
+    
+    .title {
+      color: #80D8FE;
+    }
+  }
+}

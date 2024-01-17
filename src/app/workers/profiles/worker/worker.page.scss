@@ -1,0 +1,36 @@
+ion-content {
+  width: 100%;
+  height: 100%;
+  background: var(--ikan_skyblue_100);
+  
+  .image-container{
+    height: 250px;
+    background: var(--ikan_skyblue_100);
+    
+  }
+  
+  .tabContent {
+    width: 100%;
+
+    ion-tab-bar {
+      top: 150px;
+      position: relative;
+      border: unset;
+      border-radius: 20px 20px 0 0;
+      width: 90%;
+      margin: 0 auto;
+    }
+
+    ion-tab-button {
+      --color: var(--ikan_deep_gray);
+      --color-selected: white;
+      background: var(--ikan_light_gray);
+      --background: var(--ikan_light_gray);
+    }
+
+    .tab-selected {
+      background: var(--ion-color-primary);
+      --background: var(--ion-color-primary);
+    }
+  }
+}
