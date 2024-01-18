@@ -1,7 +1,11 @@
 .worker-ion-tabs {
   .tabs-inner {
     position: relative;
-    top: 150px;
+    top: 250px;
+  }
+  .ion-page {
+    // The subtracted value is the offset of the tab bar
+    height: calc(100% - 250px);
   }
 }
 
@@ -9,6 +13,23 @@ app-payments {
   app-title {
     .title {
       color: #80D8FE;
+      padding-top: 20px;
+    }
+  }
+}
+
+app-worker {
+  app-button {
+    #app-btn {
+      min-width: 100px;
+      float: right;
+    }
+  }
+
+  app-title {
+    h1 {
+      margin: 15px 15px 0 0px;
+      font-size: 1.5rem;
     }
   }
 }

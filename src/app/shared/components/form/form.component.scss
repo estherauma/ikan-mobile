@@ -137,10 +137,11 @@ ion-select {
 }
 
 :host.worker-profile-info,
-:host.worker-profile-payment {
+:host.worker-profile-payment-acct,
+:host.worker-profile-payment-beneficiary {
   form {
     background: var(--ion-color-primary);
-    padding: 30px 20px;
+    padding: 20px 20px 0 20px;
 
     ion-label{
       color: white;
@@ -149,9 +150,15 @@ ion-select {
     .text-section {
       color: white;
     }
-    
+
     .title {
       color: #80D8FE;
     }
+  }
+}
+
+:host.worker-profile-payment-beneficiary {
+  form {
+    background: var(--ikan_darkblue_90);
   }
 }

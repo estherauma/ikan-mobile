@@ -9,6 +9,7 @@ import { SharedmethodsService } from 'src/app/shared/services/sharedmethods/shar
 })
 export class WorkerPage implements OnInit {
   commonText: any;
+  pageTitle: string = 'My Profile'
   imageUrl: string = '';
 
   constructor(
@@ -19,5 +20,7 @@ export class WorkerPage implements OnInit {
   ngOnInit() {
     this.commonText = this.contentService?.commonText;
   }
+
+  saveProfile() {}
 
 }
