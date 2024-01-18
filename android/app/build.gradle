@@ -8,8 +8,8 @@ android {
         applicationId "com.fiftyeight"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 100107
-        versionName "1.01.07"
+        versionCode 100108
+        versionName "1.01.08"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         aaptOptions {
              // Files and dirs to omit from the packaged assets dir, modified to accommodate modern web apps.
@@ -34,7 +34,7 @@ android {
           resValue "string", "title_activity_main", "IKAN(Dev)"
           namespace "com.fiftyeight.tuna.dev"
           firebaseAppDistribution {
-            releaseNotes="Fix language switching on the dashboard pages"
+            releaseNotes="Display and style worker profile pages"
             groups="scrum,other-departments"
             serviceCredentialsFile=file("google-services-credentials.json")
           }
