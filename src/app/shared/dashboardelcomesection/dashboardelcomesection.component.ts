@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 
 @Component({
   selector: 'app-dashboardelcomesection',
@@ -12,8 +12,14 @@ export class DashboardelcomesectionComponent implements OnInit {
   @Input() link: string;
   @Input() message1: string;
 
+  @Output() onProfileClick = new EventEmitter<any>();
+
   constructor() { }
 
   ngOnInit() {}
+
+  onIconClick() {
+    this.onProfileClick.emit();
+  }
 
 }
