@@ -4,7 +4,7 @@
     class="worker-profile-payment-acct"
     [tunaFormGroup]="acctFormGroup"
     [tunaFormquestions]="acctFormQtns"
-    [submitButtonText]="submitButtonText"
+    [useCustomSubmitButton]="true"
     (formValue)="onSubmit($event)"
   >
   </app-form>
@@ -13,7 +13,7 @@
     class="worker-profile-payment-beneficiary"
     [tunaFormGroup]="beneficiaryFormGroup"
     [tunaFormquestions]="beneficiaryFormQtns"
-    [submitButtonText]="submitButtonText"
+    [useCustomSubmitButton]="true"
     (formValue)="onSubmit($event)"
   >
   </app-form>
