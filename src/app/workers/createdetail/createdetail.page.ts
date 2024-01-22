@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, Validators, FormGroup } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { ModalController } from '@ionic/angular';
+import { AlertController, ModalController } from '@ionic/angular';
 import { BaseformPage } from 'src/app/shared/components/baseform/baseform.page';
 import { ContentService } from 'src/app/shared/services/content/content.service';
 import { SharedmethodsService } from 'src/app/shared/services/sharedmethods/sharedmethods.service';
@@ -25,7 +25,8 @@ export class CreateDetailPage extends BaseformPage implements OnInit {
     public router: Router,
     public sharedMethods: SharedmethodsService,
     public workerDataService: WorkersDataService,
-    public modalCtrl: ModalController
+    public modalCtrl: ModalController,
+    public alertCtrl: AlertController,
   ) {
     super(contentService);
    }
@@ -67,9 +68,32 @@ export class CreateDetailPage extends BaseformPage implements OnInit {
     if (insertId) {
       this.modalCtrl.dismiss();
       this.router.navigate(['workers/home', formData]);
+      // show invite success alert
+      // Commented out because it is not implemented yet
+      // await this.showInviteSentAlert(formData);
     } else {
       this.sharedMethods.showLoader(this.contentService.commonText?.error);
     }
   }
 
+  async showInviteSentAlert(formData) {
+    // TODO: Add message to prismic
+    const message = `A new invitation has been sent to ${formData.f_name} ${formData.l_name} to join IKAN. \
+      Once they have accepted, you will see them in the workers' area of the app`;
+    const alert = await this.alertCtrl.create({
+      cssClass: 'tuna-alert invite-success-alert',
+      header: this.contentService.commonText?.inviteSent || 'Invite Sent',
+      message,
+      buttons: [
+        {
+          text: this.contentService.commonText?.ok,
+          handler: () => {
+            this.modalCtrl.dismiss();
+            this.router.navigate(['workers/home', formData]);
+          }
+        }
+      ]
+    });
+    await alert.present();
+  }
 }
