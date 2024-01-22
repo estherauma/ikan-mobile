@@ -54,7 +54,7 @@ export class HomePage implements OnInit {
   async createWorker() {
     const modal = await this.modalCtrl.create({
       component: CreatePage,
-      cssClass: 'tuna-modal',
+      cssClass: 'tuna-modal workers-create-modal',
 
     });
     modal.present();
