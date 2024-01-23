@@ -127,13 +127,14 @@ export class SyncService {
           contract.startDate = new Date(contract.startDate).toISOString().split('T')[0];
           contract.endDate = new Date(contract.endDate).toISOString().split('T')[0];
           if (!contract.onlineRef) {
+            let tempContractId = contract.id;
             delete contract.id;
             this.apiService.post('contracts', contract).subscribe((response: CreateContractResp) => {
               if (response?.status === 'OK') {
                 this.dbService.updateDatabaseField('contracts', 'online_ref', response?.data?.id, contract.appRef);
                 // start syncing the clauses at this point. 
                 // we'd avoid making a different db call to get th online_ref
-                this.syncContractClauses(contract.id, response?.data?.id);
+                this.syncContractClauses(tempContractId, response?.data?.id);
               }
             });
           } else {
