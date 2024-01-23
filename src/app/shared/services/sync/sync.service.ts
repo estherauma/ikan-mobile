@@ -63,7 +63,7 @@ export class SyncService {
       let companies = data;
       if (companies.length > 0) {
         companies.forEach((company) => {
-          delete company.id;
+          // delete company.id;
           if (!company.onlineRef) {
             this.apiService.post('companies', company).subscribe((response: CreateCompanyResp) => {
               if (response?.status === 'OK') {
@@ -102,7 +102,7 @@ export class SyncService {
       let vessels = data;
       if (vessels.length > 0) {
         vessels.forEach((vessel) => {
-          delete vessel.id;
+          // delete vessel.id;
           if (!vessel.onlineRef) {
             this.apiService.post('vessels', vessel).subscribe((response: CreateVesselResp) => {
               if (response?.status === 'OK') {
