@@ -52,8 +52,6 @@ export class SyncService {
     this.syncVessels();
     this.syncContracts();
     this.syncSurveyResponses();
-
-    // fetch data from the API
     this.fetchCompanies();
     this.fetchContracts(); // clauses are fetched after contracts have been fetched in the fetchContracts method
   }
@@ -63,7 +61,6 @@ export class SyncService {
       let companies = data;
       if (companies.length > 0) {
         companies.forEach((company) => {
-          // delete company.id;
           if (!company.onlineRef) {
             this.apiService.post('companies', company).subscribe((response: CreateCompanyResp) => {
               if (response?.status === 'OK') {
@@ -102,7 +99,6 @@ export class SyncService {
       let vessels = data;
       if (vessels.length > 0) {
         vessels.forEach((vessel) => {
-          // delete vessel.id;
           if (!vessel.onlineRef) {
             this.apiService.post('vessels', vessel).subscribe((response: CreateVesselResp) => {
               if (response?.status === 'OK') {
@@ -175,7 +171,6 @@ export class SyncService {
   async syncContractClauses(contractId, contractOnlineRef) {
     let clauses = await this.contractServ.retrieveContractClauses(contractId);
     clauses.forEach((clause) => {
-      delete clause.id;
       // The contract_id has to be the for the online record and not the local before sending to the api
       // replace the contract_id with the contract id online_ref
       clause.contract = contractOnlineRef;
@@ -200,7 +195,7 @@ export class SyncService {
           this.dbService.checkIfEntryExists('contract_clauses', clause.appRef)
           .then((exists) => {
             if (!exists) {
-              const contract = this.contractServ.getContractByField('name', clause.contract);
+              const contract = this.contractServ.getContractByField('onlineRef', clause.contract);
               if (contract) {
                 this.contractServ.saveOnlineContractClause(contract?.id, clause)
                 .then((id) => { console.log ( `Contract clause ${clause.name} saved with id ${id}`)});
