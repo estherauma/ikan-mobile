@@ -12,9 +12,9 @@
           <ion-icon *ngIf="!imageUrl" class="image icon" name="person-circle-outline" />
           <img *ngIf="imageUrl" class="image img" [src]="imageUrl || '/assets/icon/ellipse_profile.svg'" />
       </ion-col>
-      <ion-col size="9">
+      <!-- <ion-col size="9">
           <app-button class="worker-prof-save-btn" (onClick)="saveProfile()" [title]="commonText?.save"></app-button>
-      </ion-col>
+      </ion-col> -->
     </ion-row>
   </div>
 
