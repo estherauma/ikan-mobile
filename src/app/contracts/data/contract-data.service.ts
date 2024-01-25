@@ -75,16 +75,17 @@ export class ContractDataService {
   }
 
   getContractByField(field, value) {
-    let contract;
+    let contract = null;
     this.contracts.getValue().forEach((entry) => {
-      if (entry[field] === value) {
+      if (entry[field].toString() === value.toString()) {
         contract = entry;
-      } else {
-        contract = null;
+        return false;  // Exit the loop once the condition is met
       }
     });
+  
     return contract;
   }
+  
 
   create(data) {
     const query = 'INSERT INTO contracts (name, app_ref, internal_ref, start_date, \
@@ -211,10 +212,11 @@ export class ContractDataService {
   }
 
   saveOnlineContractClause(contractId, clauseData) {
-    const query = 'INSERT INTO contract_clauses (contract_id, app_ref, \
+    console.log(clauseData);
+    const query = 'INSERT INTO contract_clauses (online_ref, contract_id, app_ref, \
       name, kind, content, created_at, updated_at, created_by, updated_by) \
-      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)';
-    const params = [contractId, clauseData.appRef, clauseData.name, clauseData.kind,
+      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)';
+    const params = [clauseData.id, contractId, clauseData.appRef, clauseData.name, clauseData.kind,
       clauseData.content, clauseData.createdAt, clauseData.updatedAt,
       clauseData.createdBy, clauseData.updatedBy];
     return this.db.executeSql(query, params).then((result) => {

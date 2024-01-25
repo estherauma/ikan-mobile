@@ -89,6 +89,12 @@ export class ViewclausePage implements OnInit {
         response.push(value)
       }
     }
+    // The values for the clause are repeated at the bottom of clause one details. These are passport/id, 
+    // in the responses array, add the 7th, 14th, 14th and 14th item end of the array in that order
+    response.push(response[7]);
+    response.push(response[15]);
+    response.push(response[14]);
+    response.push(response[14]);
     return response;
   }
 
