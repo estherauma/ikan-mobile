@@ -3,7 +3,7 @@
     <ion-menu contentId="main-content" type="overlay">
       <ion-content>
         <ion-list id="inbox-list">
-          <ion-list-header>Tuna</ion-list-header>
+          <ion-list-header>IKAN</ion-list-header>
           <ion-note>{{ userEmail }}</ion-note>
 
           <ion-menu-toggle auto-hide="false" *ngFor="let p of appPages; let i = index">
@@ -13,10 +13,13 @@
               (click)="onClick(i)"
               lines="none"
               detail="false"
-              routerLinkActive="selected">
+              routerLinkActive="selected"
+              [ngClass]="{'is-last': p.last}"
+            >
               <ion-icon slot="start" [name]="p.icon"></ion-icon>
               <ion-label>{{ p.label }}</ion-label>
             </ion-item>
+            <hr *ngIf="p.last" />
           </ion-menu-toggle>
         </ion-list>
       </ion-content>
