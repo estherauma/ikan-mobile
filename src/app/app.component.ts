@@ -91,7 +91,6 @@ export class AppComponent implements OnInit, OnDestroy {
     }));
     this.commonText = this.contentService.commonText;
     this.userEmail = this.authService.userData?.email;
-    console.log('this.user...', this.userEmail)
     await this.contentService.saveSurveyCategories();
   }
 
