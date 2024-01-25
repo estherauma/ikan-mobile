@@ -1,8 +1,9 @@
 <ion-content>
     <app-form
+        class="worker-profile-info"
         [tunaFormGroup]="pageFormGroup"
         [tunaFormquestions]="formQuestions"
-        [submitButtonText]="submitButtonText"
+        [useCustomSubmitButton]="false"
         (formValue)="onSubmit($event)">
     </app-form>    
   </ion-content>

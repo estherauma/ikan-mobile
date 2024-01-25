@@ -50,7 +50,8 @@ export class AppComponent implements OnInit, OnDestroy {
     this.pushNotifications.setup();
     this.localNotifications.scheduleNotifications();
     this.contentService.menuContent.subscribe((data) => {
-      data.push({label: 'Sync', url: '/sync', icon: 'sync', roles:'all', enabled: true, position: 399});
+      // TODO: move to prismic
+      data.push({label: 'Sync', url: '/sync', icon: 'sync', roles:'all', enabled: true, position: 395});
       if (data && Object.keys(data).length > 0) {
         data?.sort((a, b) => a.position - b.position);
 
@@ -118,7 +119,7 @@ export class AppComponent implements OnInit, OnDestroy {
             // TODO: Service isn't returning role and is returning
             // Ensure auth service returns role immediately
            
-            this.router.navigate([this.authService.getCurrentUserBaseUrlFromRole(user.role)]);
+            this.router.navigate([this.authService.getCurrentUserBaseUrlFromRole(user?.role)]);
           }
         }
       });
@@ -148,6 +149,9 @@ export class AppComponent implements OnInit, OnDestroy {
       this.syncService.syncData();
     } else if (this.appPages[index].url === '/tfa-video') {
       await this.showTrainingVideo();
+    } else if (this.appPages[index].url === '/myprofile') {
+      const user: UserData = await this.sharedMethods.readDataFromStorage(StorageKeys.userData);
+      this.router.navigate([ this.sharedMethods.getProfileUrlBasedOnRole(user?.role) ]);
     } else {
       this.router.navigate([this.appPages[index].url]);
     }

@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { ContentService } from 'src/app/shared/services/content/content.service';
 import { PushNotificationsService } from 'src/app/shared/services/push-notifications/push-notifications.service';
 import { SharedmethodsService } from 'src/app/shared/services/sharedmethods/sharedmethods.service';
@@ -27,6 +28,7 @@ export class WorkerPage implements OnInit {
     public pushNotifications: PushNotificationsService,
     public contentService: ContentService,
     public sharedmethods: SharedmethodsService,
+    public router: Router,
   ) {
     this.contentService.watchContent().subscribe(async(resp) => {
       if (resp) {
@@ -58,5 +60,9 @@ export class WorkerPage implements OnInit {
           }
         });
       });
+  }
+
+  goToWorkerProfile() {
+    this.router.navigate(['/worker/profile']);
   }
 }

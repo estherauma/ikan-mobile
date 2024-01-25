@@ -5,7 +5,9 @@
   <app-dashboardelcomesection 
     [message]="commonText?.fdbkWelcomeText"
     [message1]=""
-    [name]="name">
+    [name]="name"
+    (onProfileClick)="goToWorkerProfile()"
+  >
   </app-dashboardelcomesection>
 
     <!-- <div class="user-notification">

@@ -1,0 +1,50 @@
+.worker-ion-tabs {
+  .tabs-inner {
+    position: relative;
+    top: 220px;
+  }
+  .ion-page {
+    // The subtracted value is the offset of the tab bar
+    height: calc(100% - 220px);
+  }
+}
+
+app-payments {
+  app-title {
+    .title {
+      color: #80D8FE;
+      padding-top: 20px;
+    }
+  }
+}
+
+app-payments,
+app-info {
+  app-button {
+    ion-button::part(native) {
+      background: white;
+      margin: 10px 0;
+    }
+  }
+  form {
+    button[type="submit"] {
+      display: unset !important;
+    }
+  }
+}
+
+app-worker {
+  app-button {
+    #app-btn {
+      min-width: 100px;
+      float: right;
+    }
+  }
+
+  app-title {
+    h1 {
+      margin: 15px 15px 0 0px;
+      font-size: 1.5rem;
+    }
+  }
+}

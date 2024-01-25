@@ -222,7 +222,7 @@ const routes: Routes = [
     loadChildren: () => import('./workers/createdetail/createdetail.module').then( m => m.CreatePageModule)
   },
   {
-    path: 'worker/profiles',
+    path: 'worker/profile',
     loadChildren: () => import('./workers/profiles/worker/worker.module').then( m => m.WorkerPageModule)
   },
   {

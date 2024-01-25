@@ -42,7 +42,7 @@ export class HomePage implements OnInit {
     const queryParams = worker;
     switch (workerRole) {
       case UserRole.worker:
-        return this.router.navigate(['worker/profiles'], { queryParams });
+        return this.router.navigate(['worker/profile'], { queryParams });
       case UserRole.taiwaneseAgent:
           return this.router.navigate(['workers/details'], { queryParams });
       default:

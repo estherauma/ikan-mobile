@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ContentService } from 'src/app/shared/services/content/content.service';
+import { SharedmethodsService } from 'src/app/shared/services/sharedmethods/sharedmethods.service';
 
 @Component({
   selector: 'app-worker',
@@ -8,13 +9,18 @@ import { ContentService } from 'src/app/shared/services/content/content.service'
 })
 export class WorkerPage implements OnInit {
   commonText: any;
+  pageTitle: string = 'My Profile'
+  imageUrl: string = '';
 
   constructor(
     public contentService: ContentService,
+    public sharedMethods: SharedmethodsService,
   ) { }
 
   ngOnInit() {
     this.commonText = this.contentService?.commonText;
   }
+
+  saveProfile() {}
 
 }

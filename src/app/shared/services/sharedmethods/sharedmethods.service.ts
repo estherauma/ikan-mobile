@@ -7,6 +7,7 @@ import { PluginListenerHandle } from '@capacitor/core';
 import { StorageKeys } from '../../types/api-types';
 import { Device } from '@capacitor/device';
 import {v4 as uuidv4} from 'uuid';
+import { UserRole } from '../../types/api-types';
 
 
 @Injectable({
@@ -207,5 +208,14 @@ export class SharedmethodsService {
 
   generateAppRef() {
     return uuidv4();
+  }
+
+  getProfileUrlBasedOnRole(role: string) {
+    switch (role) {
+      case UserRole.worker:
+        return '/worker/profile';
+      default:
+        return '';
+    }
   }
 }

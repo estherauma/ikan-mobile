@@ -1,0 +1,80 @@
+ion-content {
+  width: 100%;
+  height: 100%;
+  background: var(--ikan_skyblue_100);
+  
+  .profile-preview {
+    height: 220px;
+    background: var(--ikan_skyblue_100);
+    padding: 0 20px;
+
+    .img-wrapper {
+      display: flex;
+      justify-content: flex-end;
+      height: 80px;
+      width: 80px;
+      border-radius: 50%;
+  
+      .image{
+        object-fit: cover;
+        width: 100%;
+        height: 100%;
+        border-radius: 50%;
+      }
+
+      .img {
+        border: 2px solid #80D8FE;
+      }
+    }
+    
+  }
+  
+  .tabContent {
+    width: 100%;
+
+    ion-tab-bar {
+      top: 220px;
+      position: relative;
+      border: unset;
+      border-radius: 20px 20px 0 0;
+      width: 80%;
+      margin: 0 auto;
+    }
+
+    ion-tab-button {
+      --color: var(--ikan_deep_gray);
+      --color-selected: white;
+      background: var(--ikan_light_gray);
+      --background: var(--ikan_light_gray);
+      ion-item {
+        background: var(--ikan_light_gray);
+        --background: var(--ikan_light_gray);
+        --background-activated: var(--ikan_light_gray);
+        --color: var(--ikan_deep_gray);
+        --color-activated: var(--ikan_deep_gray);
+
+        ion-icon {
+          margin-right: 5px;
+          color: var(--ikan_deep_gray);
+        }
+      }
+    }
+
+    .tab-selected {
+      background: var(--ion-color-primary);
+      --background: var(--ion-color-primary);
+      ion-item {
+        background: var(--ion-color-primary);
+        --background: var(--ion-color-primary);
+        --background-activated: var(--ion-color-primary);
+        --color: white;
+        --color-activated: white;
+        
+        ion-icon {
+          margin-right: 5px;
+          color: white;
+        }
+      }
+    }
+  }
+}
