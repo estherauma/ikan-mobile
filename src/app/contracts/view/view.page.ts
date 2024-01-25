@@ -6,6 +6,7 @@ import { CreateclausePage } from '../clauses/createclause/createclause.page';
 import { ContractDataService } from '../data/contract-data.service';
 import { SharedmethodsService } from 'src/app/shared/services/sharedmethods/sharedmethods.service';
 import { AuthService } from 'src/app/shared/services/auth/auth.service';
+import { StorageKeys } from 'src/app/shared/types/api-types';
 
 @Component({
   selector: 'app-view',
@@ -13,6 +14,21 @@ import { AuthService } from 'src/app/shared/services/auth/auth.service';
   styleUrls: ['./view.page.scss'],
 })
 export class ViewPage implements OnInit {
+  // Duplicated. See how to DRY
+  clauseContentObjectMapping = {
+    'contract-clauses-parties-requirement-vessel': 'contract-clauses-parties-to-this-contract-content',
+    'contract-clauses-contract-validity':'contract-clauses-contract-validity-content',
+    'contract-clauses-wage-benefits': 'contract-clauses-wage-benefits-content',
+    'contract-clauses-working-hours-rest-and-leave': 'contract-clauses-working-hours-rest-and-leave-content',
+    'contract-clauses-labor-protection-and-benefits': 'contract-clauses-labor-protection-and-benefits-content',
+    'contract-clauses-attachments': 'contract-clauses-attachments-content',
+    'contract-clauses-accident-medical-and-life-insurance': 'contract-clauses-accident-medical-and-life-insurance-content',
+    'contract-clauses-transportation-severance-food-accomodation': 'contract-clauses-transportation-severance-food-accomodation-content',
+    'contract-clause-requirements-that-party-b-must-comply-with':'contract-clause-requirements-that-party-b-must-comply-with-content',
+    'contract-clauses-means-to-address-breach-of-contract': 'contract-clauses-means-to-address-breach-of-contract-content',
+    'contract-clauses-dispute-settlement': 'contract-clauses-dispute-settlement-content',
+    'contract-clauses-miscellaneous': 'contract-clauses-miscellaneous-content'
+  }
   commonText: any;
   pageTitle: string;
   contract;
@@ -56,8 +72,10 @@ export class ViewPage implements OnInit {
             this.partiesRequirementId = entry.id;
             return;
           } else {
+            const clauseDetails = this.contentService.getContentByPropertyName(this.clauseContentObjectMapping[entry.kind]);
             this.contractClauses.push({
               title: entry.name,
+              translatedTitle: clauseDetails?.pageTitle,
               id: entry.id,
               kind: entry.kind,
               entry: entry,
@@ -91,5 +109,4 @@ export class ViewPage implements OnInit {
     this.pageText = this.sharedMethods.convertAdditionalTextToObj(pageData?.additionalText);
     this.createButtonText = this.pageText?.addNewCaluse
   }
-
 }

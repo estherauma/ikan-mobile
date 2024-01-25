@@ -75,7 +75,7 @@ export class ContentService {
     // ToDo: If device time is ahead of servertime, user will not get updated content
     // Provide fix for this
     if (currentContentCreateAt) {
-      const response = this.apiService.get(`content/compare?app_content_created_at=${currentContentCreateAt}`);
+      const response = this.apiService.get(`content/compare?app_content_created_at=${currentContentCreateAt}`, true);
       response.subscribe((res: HttpResponse<any>) => {
         const content = res.body;
         if (content?.status === 'OK' && content.new) {
