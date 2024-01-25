@@ -135,3 +135,30 @@ ion-select {
     }
   }
 }
+
+:host.worker-profile-info,
+:host.worker-profile-payment-acct,
+:host.worker-profile-payment-beneficiary {
+  form {
+    background: var(--ion-color-primary);
+    padding: 20px;
+
+    ion-label{
+      color: white;
+    }
+
+    .text-section {
+      color: white;
+    }
+
+    .title {
+      color: #80D8FE;
+    }
+  }
+}
+
+:host.worker-profile-payment-beneficiary {
+  form {
+    background: var(--ikan_darkblue_90);
+  }
+}
