@@ -53,16 +53,16 @@ export class AppComponent implements OnInit, OnDestroy {
       data.push({label: 'Sync', url: '/sync', icon: 'sync', roles:'all', enabled: true, position: 399});
       if (data && Object.keys(data).length > 0) {
         data?.sort((a, b) => a.position - b.position);
-        let lastCategory = null;
 
-        
+        // identify last item in a menu section 
+        let lastSectionItem = null;
         data.forEach(el => {
-          if (lastCategory !== null && lastCategory !== el.position - el.position % 100 && data.indexOf(el) !== data.length - 1) {
+          if (lastSectionItem !== null && lastSectionItem !== el.position - el.position % 100 && data.indexOf(el) !== data.length - 1) {
             el.last = true;
           } else {
             el.last = false;
           }
-          lastCategory = el.position - el.position % 100;
+          lastSectionItem = el.position - el.position % 100;
         });
   
         this.appPages = this.authService.alterMenuBaseOnRole(data);
