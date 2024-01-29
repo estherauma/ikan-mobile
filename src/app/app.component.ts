@@ -54,6 +54,18 @@ export class AppComponent implements OnInit, OnDestroy {
       data.push({label: 'Sync', url: '/sync', icon: 'sync', roles:'all', enabled: true, position: 395});
       if (data && Object.keys(data).length > 0) {
         data?.sort((a, b) => a.position - b.position);
+
+        // identify last item in a menu section 
+        let lastSectionItem = null;
+        data.forEach(el => {
+          if (lastSectionItem !== null && lastSectionItem !== el.position - el.position % 100 && data.indexOf(el) !== data.length - 1) {
+            el.last = true;
+          } else {
+            el.last = false;
+          }
+          lastSectionItem = el.position - el.position % 100;
+        });
+  
         this.appPages = this.authService.alterMenuBaseOnRole(data);
       }
     });
@@ -64,7 +76,6 @@ export class AppComponent implements OnInit, OnDestroy {
       }
     });
     this.setupDB();
-    this.userEmail = this.authService.userData?.email;
   }
 
   async ngOnInit() {
@@ -80,6 +91,7 @@ export class AppComponent implements OnInit, OnDestroy {
         }
     }));
     this.commonText = this.contentService.commonText;
+    this.userEmail = this.authService.userData?.email;
     await this.contentService.saveSurveyCategories();
   }
 
