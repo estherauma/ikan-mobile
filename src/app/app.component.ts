@@ -50,23 +50,26 @@ export class AppComponent implements OnInit, OnDestroy {
     this.pushNotifications.setup();
     this.localNotifications.scheduleNotifications();
     this.contentService.menuContent.subscribe((data) => {
-      // TODO: move to prismic
-      data.push({label: 'Sync', url: '/sync', icon: 'sync', roles:'all', enabled: true, position: 395});
       if (data && Object.keys(data).length > 0) {
         data?.sort((a, b) => a.position - b.position);
 
-        // identify last item in a menu section 
-        let lastSectionItem = null;
-        data.forEach(el => {
-          if (lastSectionItem !== null && lastSectionItem !== el.position - el.position % 100 && data.indexOf(el) !== data.length - 1) {
-            el.last = true;
+        // identify last item in a menu section
+        data.forEach((el, index) => {
+          if (index === data.length - 1 ) {
+            el.last = false
           } else {
-            el.last = false;
+            const nextItem = data[index + 1]
+            const nextSection = nextItem?.position - nextItem?.position % 100;
+            const currentSection = el.position - el.position % 100;
+            if (currentSection !== nextSection) {
+              el.last = true;
+            } else {
+              el.last = false;
+            }
           }
-          lastSectionItem = el.position - el.position % 100;
         });
   
-        this.appPages = this.authService.alterMenuBaseOnRole(data);
+        this.appPages = this.authService.alterMenuBasedOnRole(data);
       }
     });
     this.contentService.watchContent().subscribe((resp) => {

@@ -75,7 +75,7 @@ export class AuthService {
     Preferences.remove({ key: StorageKeys.userData });
   }
 
-  alterMenuBaseOnRole(menuItems: Array<any>) {
+  alterMenuBasedOnRole(menuItems: Array<any>) {
     let finalMenu = [];
     menuItems.forEach((menuItem) => {
       if (menuItem?.roles == null) {
