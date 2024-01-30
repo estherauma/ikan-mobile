@@ -69,7 +69,7 @@ export class AppComponent implements OnInit, OnDestroy {
           }
         });
   
-        this.appPages = this.authService.alterMenuBaseOnRole(data);
+        this.appPages = this.authService.alterMenuBasedOnRole(data);
       }
     });
     this.contentService.watchContent().subscribe((resp) => {
