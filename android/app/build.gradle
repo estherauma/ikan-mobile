@@ -8,8 +8,8 @@ android {
         applicationId "com.fiftyeight"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 100111
-        versionName "1.01.11"
+        versionCode 100113
+        versionName "1.01.13"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         aaptOptions {
              // Files and dirs to omit from the packaged assets dir, modified to accommodate modern web apps.
@@ -34,7 +34,7 @@ android {
           resValue "string", "title_activity_main", "IKAN(Dev)"
           namespace "com.fiftyeight.tuna.dev"
           firebaseAppDistribution {
-            releaseNotes="Add menu styles"
+            releaseNotes="Navigate to survey page after clicking notification"
             groups="scrum,other-departments"
             serviceCredentialsFile=file("google-services-credentials.json")
           }
