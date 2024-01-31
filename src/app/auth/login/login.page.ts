@@ -11,6 +11,7 @@ import { SharedmethodsService } from 'src/app/shared/services/sharedmethods/shar
 import { FieldType, Icons, LoginSuccessReponse, StorageKeys, UserData, UserRole } from 'src/app/shared/types/api-types';
 import { DBService } from 'src/app/shared/services/database/db.service';
 import { SyncService } from 'src/app/shared/services/sync/sync.service';
+import { LocalNotificationsService } from 'src/app/shared/services/local-notifications/local-notifications.service';
 
 @Component({
   selector: 'app-login',
@@ -32,6 +33,7 @@ export class LoginPage extends BaseformPage implements OnInit {
     public authService: AuthService,
     public dbService: DBService,
     public syncService: SyncService,
+    public localNotifications: LocalNotificationsService,
   ) {
     super(contentService);
   }
@@ -78,6 +80,7 @@ export class LoginPage extends BaseformPage implements OnInit {
           await this.sharedMethods.saveDataToStorage(StorageKeys.userData, res.data.userData);
           this.authService.currentUser.next(res.data.userData);
           this.sharedMethods.hideLoader();
+          this.localNotifications.scheduleNotifications();
           // sync data
           await this.syncService.syncData();
           // enable menu
