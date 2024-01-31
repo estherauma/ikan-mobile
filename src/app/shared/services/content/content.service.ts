@@ -181,7 +181,7 @@ export class ContentService {
     if (content != null || content !== undefined) {
       const { sidemenu } = content;
       const allMenuItems: Array<any> = sidemenu?.data;
-      const menu = this.authService.alterMenuBaseOnRole(allMenuItems);
+      const menu = this.authService.alterMenuBasedOnRole(allMenuItems);
 
       return menu;
     } else {
