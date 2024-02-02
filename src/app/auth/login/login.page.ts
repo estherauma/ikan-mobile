@@ -12,6 +12,7 @@ import { FieldType, Icons, LoginSuccessReponse, StorageKeys, UserData, UserRole 
 import { DBService } from 'src/app/shared/services/database/db.service';
 import { SyncService } from 'src/app/shared/services/sync/sync.service';
 import { LocalNotificationsService } from 'src/app/shared/services/local-notifications/local-notifications.service';
+import { LocalNotifications  } from '@capacitor/local-notifications';
 
 @Component({
   selector: 'app-login',
@@ -80,7 +81,11 @@ export class LoginPage extends BaseformPage implements OnInit {
           await this.sharedMethods.saveDataToStorage(StorageKeys.userData, res.data.userData);
           this.authService.currentUser.next(res.data.userData);
           this.sharedMethods.hideLoader();
+
+          // setup/reset local notifications
+          await LocalNotifications.removeAllListeners();
           this.localNotifications.scheduleNotifications();
+
           // sync data
           await this.syncService.syncData();
           // enable menu

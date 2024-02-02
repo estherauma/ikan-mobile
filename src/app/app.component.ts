@@ -15,6 +15,7 @@ import { TrainingVideoComponent } from './learninghub/training-video/training-vi
 import { ModalController, Platform } from '@ionic/angular';
 import { App } from '@capacitor/app';
 import { Location } from '@angular/common';
+import { LocalNotifications  } from '@capacitor/local-notifications';
 
 @Component({
   selector: 'app-root',
@@ -145,6 +146,7 @@ export class AppComponent implements OnInit, OnDestroy {
 
   async onClick(index) {
     if (this.appPages[index].url === '/logout') {
+      await LocalNotifications.removeAllListeners();
       this.authService.logOut();
       this.router.navigate(['']);
     } else if(this.appPages[index].url === '/sync') {
