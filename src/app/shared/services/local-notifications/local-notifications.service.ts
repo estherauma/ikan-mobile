@@ -83,17 +83,17 @@ export class LocalNotificationsService {
           },
 
           // FOR TEST PURPOSES
-          {
-              title: 'Test Notification' + (isProduction ? '' : ' (Development)'),
-              body: 'This is a test notification.',
-              id: 2,
-              schedule: { 
-                at: new Date(Date.now() + 1000), 
-                repeats: true,
-                every: "minute", //runs every minute
-              },
-              actionTypeId: 'survey',
-            },
+          // {
+          //     title: 'Test Notification' + (isProduction ? '' : ' (Development)'),
+          //     body: 'This is a test notification.',
+          //     id: 2,
+          //     schedule: { 
+          //       at: new Date(Date.now() + 1000), 
+          //       repeats: true,
+          //       every: "minute", //runs every minute
+          //     },
+          //     actionTypeId: 'survey',
+          //   },
 
           // TO BE REMOVED
           // Testing purposes
