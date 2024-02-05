@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ContractDataService } from '../../data/contract-data.service';
 import { ActivatedRoute } from '@angular/router';
 import { ContentService } from 'src/app/shared/services/content/content.service';
+import { formatDate } from '@angular/common';
 
 @Component({
   selector: 'app-viewclause',
@@ -79,14 +80,16 @@ export class ViewclausePage implements OnInit {
   async orderClauseOneData(data) {
     let response = [];
     for (const [key, value] of Object.entries(data)) {
-      response.push(value)
+      const formattedValue  = this.formatClauseValues(key, value);
+      response.push(formattedValue);
     }
     // clause one has two entries, so we need to add the second entry
     if  (this.clauseDetails?.partyB !== undefined || this.clauseDetails?.partyB !== null) {
       let partyBClauseDetails = await this.contractDataService.retrieveClauseDetails(this.clauseDetails?.partyB);
       let partyBDetails = JSON.parse(partyBClauseDetails[0]?.content);
       for (const [key, value] of Object.entries(partyBDetails)) {
-        response.push(value)
+        const formattedValue  = this.formatClauseValues(key, value);
+        response.push(formattedValue);
       }
     }
     // The values for the clause are repeated at the bottom of clause one details. These are passport/id, 
@@ -101,8 +104,22 @@ export class ViewclausePage implements OnInit {
   async orderOtherClauses(data) {
     let response = [];
     for (const [key, value] of Object.entries(data)) {
-      response.push(value)
+      const formattedValue  = this.formatClauseValues(key, value);
+      
+      response.push(formattedValue)
     }
     return response;
+  }
+
+  formatClauseValues(key: string, value: any) {
+    if (!value || !key) {
+      return value;
+    }
+
+    if (key?.toLowerCase().includes('date')) {
+      // TODO: check which format to use so that we have uniformity in the app
+      return formatDate(value, 'yyyy/MM/dd', 'en-us');
+    }
+    return value;
   }
 }
