@@ -1,23 +1,40 @@
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
-import { ActionPerformed, LocalNotificationSchema, LocalNotifications, PermissionStatus, Weekday } from '@capacitor/local-notifications';
+import { ActionPerformed, LocalNotificationSchema, LocalNotifications, Weekday } from '@capacitor/local-notifications';
 import { SurveySources } from '../../types/api-types';
 import { SharedmethodsService } from '../sharedmethods/sharedmethods.service';
 import { GlobalErrorHandlerService } from '../error-handler/global-error-handler.service';
 import { env } from 'src/environments/environment';
+import { AuthService } from '../auth/auth.service';
+import { Platform } from '@ionic/angular';
+import { App, AppState } from '@capacitor/app';
+import { Plugins, } from '@capacitor/core';
+const coreApp = Plugins.App;
 
 @Injectable({
   providedIn: 'root'
 })
 export class LocalNotificationsService {
 
+  appActive = false;
+
   constructor(
     public router: Router,
     public sharedMethods: SharedmethodsService,
     public globalErrorHandler: GlobalErrorHandlerService,
+    public platform: Platform,
+    public authService: AuthService,
   ) {
+
+    this.platform.ready().then(() => {
+      App.addListener('appStateChange', (state: AppState) => {
+        this.appActive = state.isActive;
+      });
+
     this.scheduleNotifications();
     this.addListeners();
+  
+    });
   }
 
   async requestNotificationPermission() {
@@ -61,9 +78,23 @@ export class LocalNotificationsService {
               }, // Notification will run every Sunday
             actionTypeId: 'survey',
             extra: {
-              roles: ['worker']
+              roles: ['worker',]
             }
           },
+
+          // FOR TEST PURPOSES
+          // {
+          //     title: 'Test Notification' + (isProduction ? '' : ' (Development)'),
+          //     body: 'This is a test notification.',
+          //     id: 2,
+          //     schedule: { 
+          //       at: new Date(Date.now() + 1000), 
+          //       repeats: true,
+          //       every: "minute", //runs every minute
+          //     },
+          //     actionTypeId: 'survey',
+          //   },
+
           // TO BE REMOVED
           // Testing purposes
           // Uncomment the code block below (& in addListeners()) to run the notification every minute
@@ -103,11 +134,16 @@ export class LocalNotificationsService {
       
       LocalNotifications.addListener(
         'localNotificationActionPerformed',
-        (notificationAction: ActionPerformed) => {
+        async(notificationAction: ActionPerformed) => {
           const notification: LocalNotificationSchema = notificationAction?.notification;
           switch (notificationAction?.actionId) {
             case 'tap':
               if (notification?.actionTypeId === 'survey') {
+                if (!this.appActive) {
+                  return setTimeout(async() => {
+                    await this.router.navigate([ 'survey' ], { queryParams: { surveySource: SurveySources.notification }});
+                  }, 700);
+                }
                 this.router.navigate([ 'survey' ], { queryParams: { surveySource: SurveySources.notification }});
               }
               // TO BE REMOVED
