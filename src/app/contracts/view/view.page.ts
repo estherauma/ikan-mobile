@@ -69,6 +69,7 @@ export class ViewPage implements OnInit {
           }
           if (entry.kind === 'contract-clauses-parties-requirement-fishers') {
             // Parties requirement has two entires, so ignore and exit loop
+            // TODO: fix value, it's currently undefined
             this.partiesRequirementId = entry.id;
             return;
           } else {
