@@ -48,9 +48,16 @@ export class ViewclausePage implements OnInit {
     let pageContent = this.pageData?.pageContent;
     let pageTextArray = pageContent[0]?.description;
     let textHtml = '';
-    pageTextArray.forEach((element) => {
-      textHtml += '<br/> <br/>';
-      textHtml += element?.paragraph;
+    pageTextArray.forEach((element, idx) => {
+      if (idx === 0) {
+        textHtml += element?.paragraph;
+      } else if (element?.paragraph === '{{}}') {
+        textHtml += '<br/>';
+        textHtml += element?.paragraph;
+      } else {
+        textHtml += '<br/><br/>';
+        textHtml += element?.paragraph;
+      }
     });
     let formValues = await this.orderDataForClause(this.clauseDetails?.kind, this.clauseDetails?.data);
     this.htmlContent = this.fillPlaceHolders(textHtml, formValues)
@@ -59,7 +66,7 @@ export class ViewclausePage implements OnInit {
   fillPlaceHolders(inputString, placeholderValues) {
     let result = inputString;
     placeholderValues.forEach((element) => {
-      result = result.replace('{{}}', `<br/> ${element}`);
+      result = result.replace('{{}}', `${element}`);
     });
     return result;
   }
@@ -102,10 +109,14 @@ export class ViewclausePage implements OnInit {
   }
 
   async orderOtherClauses(data) {
+    // TODO: refactor payments & benefits data display
+    if (!data?.paymentFrequencyDetails) {
+      delete data.paymentFrequencyDetails;
+    }
+
     let response = [];
     for (const [key, value] of Object.entries(data)) {
       const formattedValue  = this.formatClauseValues(key, value);
-      
       response.push(formattedValue)
     }
     return response;
