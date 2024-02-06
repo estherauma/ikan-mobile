@@ -130,7 +130,10 @@ export class ViewclausePage implements OnInit {
     if (key?.toLowerCase().includes('date')) {
       // TODO: check which format to use so that we have uniformity in the app
       return formatDate(value, 'yyyy/MM/dd', 'en-us');
+    } else if (key === 'partyASignature' || key === 'partyBSignature') {
+      return `<img class="image" src="${value}" alt="image">`; 
     }
+
     return value;
   }
 }
