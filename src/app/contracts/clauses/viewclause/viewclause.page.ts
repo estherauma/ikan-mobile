@@ -103,8 +103,8 @@ export class ViewclausePage implements OnInit {
     // in the responses array, add the 7th, 14th, 14th and 14th item end of the array in that order
     response.push(response[7]);
     response.push(response[15]);
-    response.push(response[14]);
-    response.push(response[14]);
+    response.push(response[14]); // TODO: pick vessel-name from existing vessel list. Refer to createdetail TODO.
+    response.push(response[14]); // TODO: pick vessel-id from existing vessel list. Refer to createdetail TODO.
     return response;
   }
 
