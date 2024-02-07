@@ -24,8 +24,10 @@ export class CreatedetailPage extends BaseformPage implements OnInit {
   }
   objectTolookup: string;
   contractId: any;
-  pageName: string = '';
+  isPartyBForm: boolean = false;
   vessels: any = [];
+  noVesselsText: string = 'No vessels found. Please add a vessel first';
+  
 
   constructor(
     public contentService: ContentService,
@@ -53,10 +55,13 @@ export class CreatedetailPage extends BaseformPage implements OnInit {
 
   pageSetup(){
     const pageData = this.contentService.getContentByPropertyName(this.clauseMapping[this.objectTolookup]);
-    this.pageName = pageData?.pageName;
     if (!pageData) {
       this.sharedMethods.showToast(this.commonText?.somethingWentWrong);
       return;
+    }
+    const pageName = pageData?.pageName;
+    if (pageName === 'contract-clauses-parties-requirement-fishers') {
+      this.isPartyBForm = true;
     }
 
 
@@ -66,6 +71,7 @@ export class CreatedetailPage extends BaseformPage implements OnInit {
 
     this.pageTitle = pageData?.pageTitle;
     this.pageText = this.sharedMethods.convertAdditionalTextToObj(pageData?.additionalText);
+    this.noVesselsText = this.pageText?.noVesselsText || this.noVesselsText;
     this.formQuestions = pageData?.formQuestions;
     this.formQuestions.forEach((entry) => {
       this.group[entry.key] = new FormControl('', []);
@@ -91,7 +97,7 @@ export class CreatedetailPage extends BaseformPage implements OnInit {
       }
 
       // add vessel options (parties B clause)
-      if (this.pageName === 'contract-clauses-parties-requirement-fishers' && entry.key === 'vessel') {
+      if (this.isPartyBForm && entry.key === 'vessel') {
         const options = this.vessels.map((vessel) => {
           return { label: vessel.name, value: vessel.appRef }
         });
