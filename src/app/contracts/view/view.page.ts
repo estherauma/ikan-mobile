@@ -108,6 +108,6 @@ export class ViewPage implements OnInit {
         return;
     }
     this.pageText = this.sharedMethods.convertAdditionalTextToObj(pageData?.additionalText);
-    this.createButtonText = this.pageText?.addNewCaluse
+    this.createButtonText = this.pageText?.addNewClause;
   }
 }

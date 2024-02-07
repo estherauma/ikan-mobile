@@ -48,9 +48,16 @@ export class ViewclausePage implements OnInit {
     let pageContent = this.pageData?.pageContent;
     let pageTextArray = pageContent[0]?.description;
     let textHtml = '';
-    pageTextArray.forEach((element) => {
-      textHtml += '<br/> <br/>';
-      textHtml += element?.paragraph;
+    pageTextArray.forEach((element, idx) => {
+      if (idx === 0) {
+        textHtml += element?.paragraph;
+      } else if (element?.paragraph === '{{}}') {
+        textHtml += '<br/>';
+        textHtml += element?.paragraph;
+      } else {
+        textHtml += '<br/><br/>';
+        textHtml += element?.paragraph;
+      }
     });
     let formValues = await this.orderDataForClause(this.clauseDetails?.kind, this.clauseDetails?.data);
     this.htmlContent = this.fillPlaceHolders(textHtml, formValues)
@@ -59,7 +66,7 @@ export class ViewclausePage implements OnInit {
   fillPlaceHolders(inputString, placeholderValues) {
     let result = inputString;
     placeholderValues.forEach((element) => {
-      result = result.replace('{{}}', `<br/> ${element}`);
+      result = result.replace('{{}}', `${element}`);
     });
     return result;
   }
@@ -96,16 +103,20 @@ export class ViewclausePage implements OnInit {
     // in the responses array, add the 7th, 14th, 14th and 14th item end of the array in that order
     response.push(response[7]);
     response.push(response[15]);
-    response.push(response[14]);
-    response.push(response[14]);
+    response.push(response[14]); // TODO: pick vessel-name from existing vessel list. Refer to createdetail TODO.
+    response.push(response[14]); // TODO: pick vessel-id from existing vessel list. Refer to createdetail TODO.
     return response;
   }
 
   async orderOtherClauses(data) {
+    // TODO: refactor payments & benefits data display
+    if (!data?.paymentFrequencyDetails) {
+      delete data.paymentFrequencyDetails;
+    }
+
     let response = [];
     for (const [key, value] of Object.entries(data)) {
       const formattedValue  = this.formatClauseValues(key, value);
-      
       response.push(formattedValue)
     }
     return response;
@@ -119,7 +130,10 @@ export class ViewclausePage implements OnInit {
     if (key?.toLowerCase().includes('date')) {
       // TODO: check which format to use so that we have uniformity in the app
       return formatDate(value, 'yyyy/MM/dd', 'en-us');
+    } else if (key === 'partyASignature' || key === 'partyBSignature') {
+      return `<img class="image" src="${value}" alt="image">`; 
     }
+
     return value;
   }
 }

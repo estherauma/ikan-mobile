@@ -35,6 +35,8 @@ export class CreatedetailPage extends BaseformPage implements OnInit {
   }
 
   ngOnInit() {
+    // TODO: FOr the parties to this contract form, vessel input values should be picked from existing vessels
+    
     this.activatedRoute.params.subscribe((params) => {
       // we use this to search the content by the key to load the form we need.
       this.objectTolookup = params['clause-type']; 
