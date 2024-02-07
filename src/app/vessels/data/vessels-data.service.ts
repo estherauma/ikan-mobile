@@ -28,8 +28,7 @@ export class VesselsDataService {
   }
 
   retriveVessels() {
-    const query = 'SELECT vessels.*, vessel_images.image_url FROM vessels \
-      JOIN vessel_images ON vessels.id = vessel_images.vessel_id';
+    const query = 'SELECT * FROM vessels';
     this.db.executeSql(query, []).then(async(data) => {
       const vessels = [];
       if (data.rows.length > 0) {
@@ -65,6 +64,19 @@ export class VesselsDataService {
       capacity, commissioning_date, created_at, updated_at, created_by, updated_by, app_ref) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)';
     const params = [data.name, data.reg_no, data.type, data.status, data.capacity,
       data.commissioning_date, data.created_at, data.updated_at, data.created_by, data.updated_by, data.app_ref];
+    return this.db.executeSql(query, params).then((result) => {
+      this.retriveVessels();
+      return result.insertId;
+    }).catch(e => console.log(e));
+  }
+
+  async saveOnlineVessel(data) {
+    const query = 'INSERT INTO vessels (name, reg_no, type, status, \
+      capacity, commissioning_date, created_at, updated_at, created_by, \
+      updated_by, app_ref, online_ref) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)';
+    const params = [data.name, data.regNo, data.vesselType, data.status, data.capacity,
+      data.commissioningDate, data.createdAt, data.updatedAt, data.createdBy,
+      data.updatedBy, data.appRef, data.id];
     return this.db.executeSql(query, params).then((result) => {
       this.retriveVessels();
       return result.insertId;
