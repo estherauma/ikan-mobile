@@ -630,7 +630,7 @@
     <ion-col size="5">
       <app-button
         class="form-btn"
-        type="submit"
+        [type]="'submit'"
         [config]="btnConfig"
         [fill]="btnFill"
         [disabled]="!tunaFormGroup.valid || isSubmitting"
