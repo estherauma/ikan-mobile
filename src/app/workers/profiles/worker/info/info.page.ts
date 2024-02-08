@@ -9,23 +9,23 @@ import { ContentService } from 'src/app/shared/services/content/content.service'
   styleUrls: ['./info.page.scss'],
 })
 export class InfoPage extends BaseformPage implements OnInit {
+  submitButtonText = 'Save';
 
-  submitButtonText = 'Save changes';
   constructor(
     public contentService: ContentService
   ) {
     super(contentService);
     const pageData = this.contentService.getContentByPropertyName('workerbudiinfo');
-    this.pageTitle = pageData?.pageTitle;
     this.formQuestions = pageData?.formQuestions;
-    this.formQuestions.forEach((entry) => {
+    this.formQuestions?.forEach((entry) => {
       this.group[entry.key] = new FormControl('', [Validators.required]);
     });
     this.pageFormGroup = new FormGroup(this.group);
   }
 
   ngOnInit() {
-    this.submitButtonText = this.commonText?.saveChanges;
+    this.commonText = this.contentService.commonText;
+    this.submitButtonText = this.commonText?.save;
   }
 
   onSubmit(data) {}

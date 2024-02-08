@@ -4,7 +4,7 @@
     class="worker-profile-payment-acct"
     [tunaFormGroup]="acctFormGroup"
     [tunaFormquestions]="acctFormQtns"
-    [useCustomSubmitButton]="true"
+    [submitButtonText]="submitButtonText"
     (formValue)="onSubmit($event)"
   >
   </app-form>
@@ -13,12 +13,13 @@
     class="worker-profile-payment-beneficiary"
     [tunaFormGroup]="beneficiaryFormGroup"
     [tunaFormquestions]="beneficiaryFormQtns"
-    [useCustomSubmitButton]="false"
+    [submitButtonText]="submitButtonText"
     (formValue)="onSubmit($event)"
   >
   </app-form>
 
-  <div class="ion-padding pay-history">
+  <!-- Payment history commented out for now -->
+  <!-- <div class="ion-padding pay-history">
     <ion-text><h1>{{ commonText?.viewPaymentHistory }}</h1></ion-text>
     <ion-card>
       <ion-card-content>
@@ -40,5 +41,5 @@
         </ion-grid>
       </ion-card-content>
     </ion-card>
-  </div>      
+  </div>       -->
 </ion-content>

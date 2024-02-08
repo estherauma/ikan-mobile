@@ -9,7 +9,7 @@ import { ContentService } from 'src/app/shared/services/content/content.service'
   styleUrls: ['./payments.page.scss'],
 })
 export class PaymentsPage extends BaseformPage implements OnInit {
-  submitButtonText = 'Save changes';
+  submitButtonText = 'Save';
   acctFormQtns: any;
   beneficiaryFormQtns: any;
   acctGroup = {};
@@ -29,20 +29,21 @@ export class PaymentsPage extends BaseformPage implements OnInit {
 
   pageSetup() {
     this.commonText = this.contentService.commonText;
-    const pageData = this.contentService.getContentByPropertyName('createplacementinfo');
-    this.pageTitle = pageData?.pageTitle;
-    this.submitButtonText = this.commonText?.saveChanges;
-    this.formQuestions = pageData?.formQuestions;
-    const acctInfoIndex = this.formQuestions.findIndex((entry) => entry.key === 'accountInformation');
-    this.acctFormQtns = this.formQuestions.slice(0, acctInfoIndex);
-    this.beneficiaryFormQtns = this.formQuestions.slice(acctInfoIndex);
+    this.submitButtonText = this.commonText?.save;
+
+    // TODO: maintain leading zeros for account number
+    const acctInfoPageData = this.contentService.getContentByPropertyName('accountinformation');
+    this.acctFormQtns = acctInfoPageData?.formQuestions;
+
+    const beneficiaryPageData = this.contentService.getContentByPropertyName('beneficiaryaccountinformation');
+    this.beneficiaryFormQtns = beneficiaryPageData?.formQuestions;
 
     this.acctFormQtns.forEach((entry) => {
       this.acctGroup[entry.key] = new FormControl('', [Validators.required]);
     });
     this.acctFormGroup = new FormGroup(this.acctGroup);
 
-    this.beneficiaryFormQtns.forEach((entry) => {
+    this.beneficiaryFormQtns?.forEach((entry) => {
       this.beneficiaryGroup[entry.key] = new FormControl('', [Validators.required]);
     });
     this.beneficiaryFormGroup = new FormGroup(this.beneficiaryGroup);
