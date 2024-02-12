@@ -10,7 +10,7 @@ import { ContractDataService } from 'src/app/contracts/data/contract-data.servic
 import { SharedmethodsService } from '../sharedmethods/sharedmethods.service';
 import { SurveyDataService } from 'src/app/survey/data/survey-data.service';
 import { forkJoin } from 'rxjs';
-import { StorageKeys } from '../../types/api-types';
+import { ProfilesDataService } from 'src/app/profiles/data/profiles-data.service';
 
 @Injectable({
   providedIn: 'root'
@@ -28,6 +28,7 @@ export class SyncService {
     private dbService: DBService,
     private sharedMethods: SharedmethodsService,
     private surveyDataService: SurveyDataService,
+    private profilesDataService: ProfilesDataService,
   ) {
     this.platform.ready().then(async () => {
       this.sqlite.create({
@@ -236,7 +237,29 @@ export class SyncService {
       if (response.status === 200 && response.body.data) {
         // save the profile to the local storage
         // TODO: save to db instead
-        await this.sharedMethods.saveDataToStorage(StorageKeys.userProfile, response.body.data);
+        // await this.sharedMethods.saveDataToStorage(StorageKeys.userProfile, response.body.data);
+        const user = await this.sharedMethods.getUserData();
+        const now = this.sharedMethods.getCurrentDateTime();
+        const dataToSave = {...response.body.data, userRole: user.role};
+        dataToSave.createdAt = dataToSave.updatedAt ??  now;
+        dataToSave.updatedAt = dataToSave.updatedAt ??  now;
+        dataToSave.createdBy = dataToSave.updatedBy ?? user?.id;
+        dataToSave.updatedBy = dataToSave.updatedBy ?? user?.id;
+        const profileExists = await this.profilesDataService.checkIfProfileExists(dataToSave.email);
+        if (!profileExists) {
+          this.profilesDataService.create(dataToSave)
+          .then((id) => { console.log ( `Profile ${dataToSave.email} saved with id ${id}`)});
+        } else {
+          const currentProfile = await this.profilesDataService.getSingleProfile(dataToSave.email);
+          console.log('currentProfile....', currentProfile);
+          console.log('currentProfile?.updatedAt < dataToSave.updatedAt.....', currentProfile?.updatedAt < dataToSave.updatedAt)
+          // TODO: test this
+          if (currentProfile?.updatedAt < dataToSave.updatedAt) {
+            this.profilesDataService.update(dataToSave)
+            .then((id) => { console.log ( `Profile ${dataToSave.email} updated.`)}); // Add to prismic
+          }
+        }
+
       }
     });
   }
