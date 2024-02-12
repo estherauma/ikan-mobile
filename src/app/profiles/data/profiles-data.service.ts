@@ -172,4 +172,22 @@ export class ProfilesDataService {
       return result.insertId;
     }).catch((e) => console.error(e));
   }
+
+  update(data) {
+    const query = 'UPDATE profiles SET first_name = ?, last_name = ?, telephone = ?, mobile = ?, \
+      address_line_1 = ?, address_line_2 = ?, address_line_3 = ?, city = ?, country = ?, postal_code = ?, \
+      profile_image = ?, registration_number = ?, passport_number = ?, position = ?, is_active = ?, is_verified = ?, \
+      last_login = ?, user_role = ?, updated_at = ?, updated_by = ? \
+      WHERE email = ?';
+    const params = [data.first_name, data.last_name, data.telephone, data.mobile,
+      data.address_line_1, data.address_line_2, data.address_line_3, data.city, data.country,
+      data.postal_code, data.profile_image, data.registration_number, data.passport_number,
+      data.position, data.is_active, data.is_verified, data.last_login, data.user_role,
+      data.updated_at, data.updated_by, data.email];
+    
+    return this.db.executeSql(query, params).then((result) => {
+      this.retrieveProfiles();
+      return result;
+    }).catch((e) => console.error(e));
+  }
 }
