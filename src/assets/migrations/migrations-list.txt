@@ -13,3 +13,4 @@
 1699637568591_alterCompaniesTable.sql
 1700480064721_alterVesselsTable.sql
 1701768285812_addSurveysTable.sql
+1707738917494_addProfilesTable.sql
