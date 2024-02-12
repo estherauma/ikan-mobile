@@ -28,7 +28,9 @@ export class VesselsDataService {
   }
 
   retriveVessels() {
-    const query = 'SELECT * FROM vessels';
+    const query = 'SELECT vessels.*, vessel_images.image_url \
+      FROM vessels \
+      LEFT JOIN vessel_images ON vessels.id = vessel_images.vessel_id';
     this.db.executeSql(query, []).then(async(data) => {
       const vessels = [];
       if (data.rows.length > 0) {
