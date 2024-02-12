@@ -4,12 +4,13 @@ import { DBService } from '../database/db.service';
 import { CompaniesDataService } from 'src/app/companies/data/companies-data.service';
 import { Platform } from '@ionic/angular';
 import { SQLite, SQLiteObject } from '@awesome-cordova-plugins/sqlite/ngx';
-import { CreateCompanyResp, CreateContractClauseResp, CreateContractResp, CreateSurveyResp, CreateVesselResp, GetClausesResponse, GetCompaniesResponse, GetContractsResponse } from './types';
+import { CreateCompanyResp, CreateContractClauseResp, CreateContractResp, CreateSurveyResp, CreateVesselResp, GetClausesResponse, GetCompaniesResponse, GetContractsResponse, GetProfileResponse } from './types';
 import { VesselsDataService } from 'src/app/vessels/data/vessels-data.service';
 import { ContractDataService } from 'src/app/contracts/data/contract-data.service';
 import { SharedmethodsService } from '../sharedmethods/sharedmethods.service';
 import { SurveyDataService } from 'src/app/survey/data/survey-data.service';
 import { forkJoin } from 'rxjs';
+import { StorageKeys } from '../../types/api-types';
 
 @Injectable({
   providedIn: 'root'
@@ -52,6 +53,7 @@ export class SyncService {
     this.syncVessels();
     this.syncContracts();
     this.syncSurveyResponses();
+    this.fetchProfile();
     this.fetchCompanies();
     this.fetchContracts(); // clauses are fetched after contracts have been fetched in the fetchContracts method
   }
@@ -225,4 +227,20 @@ export class SyncService {
       }
     });
   }
+
+  syncProfile() {}
+
+  fetchProfile() {
+    this.apiService.get('accounts/profile').subscribe(async(response: GetProfileResponse) => {
+      console.log('profile response...', response)
+      if (response.status === 200 && response.body.data) {
+        // save the profile to the local storage
+        // TODO: save to db instead
+        await this.sharedMethods.saveDataToStorage(StorageKeys.userProfile, response.body.data);
+      }
+    });
+  }
+
+  syncUsersProfiles() {}
+  fetchUsersProfiles() {}
 }

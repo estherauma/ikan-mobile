@@ -87,6 +87,5 @@ export class AuthService {
       }
     })
     return finalMenu;
-  }  
-
+  }
 }
