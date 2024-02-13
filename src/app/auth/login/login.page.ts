@@ -79,6 +79,9 @@ export class LoginPage extends BaseformPage implements OnInit {
           this.pageFormGroup.reset();
           await this.sharedMethods.saveDataToStorage(StorageKeys.apiToken, res.data.token);
           await this.sharedMethods.saveDataToStorage(StorageKeys.userData, res.data.userData);
+          
+          // set api headers for sync service that requires saved token
+          await this.apiServices.setApiRequestHeaders();
           this.authService.currentUser.next(res.data.userData);
           this.sharedMethods.hideLoader();
 

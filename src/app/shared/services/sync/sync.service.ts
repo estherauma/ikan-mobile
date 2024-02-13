@@ -58,6 +58,7 @@ export class SyncService {
   }
 
   async syncData() {
+    this.apiService.setApiRequestHeaders();
     this.syncCompanies();
     this.syncVessels();
     this.syncContracts();
