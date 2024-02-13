@@ -241,11 +241,7 @@ export class SyncService {
 
   fetchProfile() {
     this.apiService.get('accounts/profile').subscribe(async(response: GetProfileResponse) => {
-      console.log('profile response...', response)
       if (response.status === 200 && response.body.data) {
-        // save the profile to the local storage
-        // TODO: save to db instead
-        // await this.sharedMethods.saveDataToStorage(StorageKeys.userProfile, response.body.data);
         const user = await this.sharedMethods.getUserData();
         const now = this.sharedMethods.getCurrentDateTime();
         const dataToSave = {...response.body.data, userRole: user.role};
@@ -256,15 +252,15 @@ export class SyncService {
         const profileExists = await this.profilesDataService.checkIfProfileExists(dataToSave.email);
         if (!profileExists) {
           this.profilesDataService.create(dataToSave)
-          .then((id) => { console.log ( `Profile ${dataToSave.email} saved with id ${id}`)});
+          .then((id) => { console.log ( `Profile ${dataToSave.email} saved with id ${id}`)})
+          .catch((e) => console.error(e));
         } else {
           const currentProfile = await this.profilesDataService.getSingleProfile(dataToSave.email);
-          console.log('currentProfile....', currentProfile);
-          console.log('currentProfile?.updatedAt < dataToSave.updatedAt.....', currentProfile?.updatedAt < dataToSave.updatedAt)
-          // TODO: test this
-          if (currentProfile?.updatedAt < dataToSave.updatedAt) {
+          const currentDate = new Date(currentProfile?.updatedAt);
+          const newDate = new Date(dataToSave?.updatedAt);
+          if (currentDate < newDate) {
             this.profilesDataService.update(dataToSave)
-            .then((id) => { console.log ( `Profile ${dataToSave.email} updated.`)}); // Add to prismic
+            .then((id) => { console.log ( `Profile ${dataToSave.email} updated.`)});
           }
         }
 
