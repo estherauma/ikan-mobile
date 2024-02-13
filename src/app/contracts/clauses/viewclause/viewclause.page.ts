@@ -3,6 +3,7 @@ import { ContractDataService } from '../../data/contract-data.service';
 import { ActivatedRoute } from '@angular/router';
 import { ContentService } from 'src/app/shared/services/content/content.service';
 import { formatDate } from '@angular/common';
+import { VesselsDataService } from 'src/app/vessels/data/vessels-data.service';
 
 @Component({
   selector: 'app-viewclause',
@@ -29,11 +30,15 @@ export class ViewclausePage implements OnInit {
   clauseContent: any;
   pageData: any;
   htmlContent: any;
+  pageName: string = '';
+  allVessels: any = [];
+  vesselDetails: any;
 
   constructor(
     public contractDataService: ContractDataService,
     public activatedRoute: ActivatedRoute,
     public contentService: ContentService,
+    public vesselsDataService: VesselsDataService,
   ) { }
 
   ngOnInit() {
@@ -44,7 +49,11 @@ export class ViewclausePage implements OnInit {
   }
 
   async pageSetup() {
+    this.vesselsDataService.getAll().subscribe((data) => {
+      this.allVessels = data;
+    });
     this.pageData = this.contentService.getContentByPropertyName(this.clauseContentObjectMapping[this.clauseDetails?.kind]);
+    this.pageName = this.pageData?.pageName;
     let pageContent = this.pageData?.pageContent;
     let pageTextArray = pageContent[0]?.description;
     let textHtml = '';
@@ -103,8 +112,8 @@ export class ViewclausePage implements OnInit {
     // in the responses array, add the 7th, 14th, 14th and 14th item end of the array in that order
     response.push(response[7]);
     response.push(response[15]);
-    response.push(response[14]); // TODO: pick vessel-name from existing vessel list. Refer to createdetail TODO.
-    response.push(response[14]); // TODO: pick vessel-id from existing vessel list. Refer to createdetail TODO.
+    response.push(this.vesselDetails?.name);
+    response.push(this.vesselDetails?.regNo);
     return response;
   }
 
@@ -132,6 +141,10 @@ export class ViewclausePage implements OnInit {
       return formatDate(value, 'yyyy/MM/dd', 'en-us');
     } else if (key === 'partyASignature' || key === 'partyBSignature') {
       return `<img class="image" src="${value}" alt="image">`; 
+    } else if (this.pageName === 'contract-clauses-parties-to-this-contract-content' && key === 'vessel') {
+      const vessel = this.allVessels.find((vessel) => vessel.appRef === value);
+      this.vesselDetails = vessel;
+      return vessel?.name;
     }
 
     return value;

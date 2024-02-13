@@ -202,3 +202,35 @@ export interface Body {
   kind:      string;
   content:   string;
 }
+
+export interface GetVesselsResponse {
+  status:     number;
+  statusText: string;
+  url:        string;
+  ok:         boolean;
+  type:       number;
+  body:       GetVesselsBody;
+}
+
+export interface GetVesselsBody {
+  status: string;
+  data:   VesselsBody[];
+}
+
+export interface VesselsBody {
+  id:                string;
+  deleted:           boolean;
+  createdAt:         string;
+  updatedAt:         string;
+  deletedAt?:         string| null;
+  createdBy:         string;
+  updatedBy:         string;
+  deletedBy?:        string | null;
+  appRef:            string;
+  name:              string;
+  regNo:             string;
+  vesselType:        string;
+  status:            string;
+  capacity:          string;
+  commissioningDate: string;
+}

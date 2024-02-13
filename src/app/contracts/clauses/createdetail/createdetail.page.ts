@@ -5,6 +5,7 @@ import { BaseformPage } from 'src/app/shared/components/baseform/baseform.page';
 import { ContentService } from 'src/app/shared/services/content/content.service';
 import { SharedmethodsService } from 'src/app/shared/services/sharedmethods/sharedmethods.service';
 import { ContractDataService } from '../../data/contract-data.service';
+import { VesselsDataService } from 'src/app/vessels/data/vessels-data.service';
 
 @Component({
   selector: 'app-createdetail',
@@ -23,20 +24,23 @@ export class CreatedetailPage extends BaseformPage implements OnInit {
   }
   objectTolookup: string;
   contractId: any;
+  isPartyBForm: boolean = false;
+  vessels: any = [];
+  noVesselsText: string = 'No vessels found. Please add a vessel first';
+  
 
   constructor(
     public contentService: ContentService,
     public activatedRoute: ActivatedRoute,
     public sharedMethods: SharedmethodsService,
     private contractDataServ: ContractDataService,
-    public router: Router
+    public router: Router,
+    public vesselsDataService: VesselsDataService,
   ) { 
     super(contentService)
   }
 
   ngOnInit() {
-    // TODO: FOr the parties to this contract form, vessel input values should be picked from existing vessels
-    
     this.activatedRoute.params.subscribe((params) => {
       // we use this to search the content by the key to load the form we need.
       this.objectTolookup = params['clause-type']; 
@@ -55,8 +59,19 @@ export class CreatedetailPage extends BaseformPage implements OnInit {
       this.sharedMethods.showToast(this.commonText?.somethingWentWrong);
       return;
     }
+    const pageName = pageData?.pageName;
+    if (pageName === 'contract-clauses-parties-requirement-fishers') {
+      this.isPartyBForm = true;
+    }
+
+
+    this.vesselsDataService.getAll().subscribe((data) => {
+      this.vessels = data;
+    });
+
     this.pageTitle = pageData?.pageTitle;
     this.pageText = this.sharedMethods.convertAdditionalTextToObj(pageData?.additionalText);
+    this.noVesselsText = this.pageText?.noVesselsText || this.noVesselsText;
     this.formQuestions = pageData?.formQuestions;
     this.formQuestions.forEach((entry) => {
       this.group[entry.key] = new FormControl('', []);
@@ -79,6 +94,14 @@ export class CreatedetailPage extends BaseformPage implements OnInit {
         this.group[entry.key].valueChanges.subscribe((value) => {
           this.isCrewMemberAccountChanged(value);
         });
+      }
+
+      // add vessel options (parties B clause)
+      if (this.isPartyBForm && entry.key === 'vessel') {
+        const options = this.vessels.map((vessel) => {
+          return { label: vessel.name, value: vessel.appRef }
+        });
+        entry.options = options;
       }
     });
     this.pageFormGroup = new FormGroup(this.group);

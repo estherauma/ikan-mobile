@@ -8,7 +8,7 @@ android {
         applicationId "com.fiftyeight"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 100117
+        versionCode 10017
         versionName "1.01.17"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         aaptOptions {
