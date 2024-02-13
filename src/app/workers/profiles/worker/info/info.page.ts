@@ -32,10 +32,8 @@ export class InfoPage extends BaseformPage implements OnInit {
     const profData = await this.profilesDataService.getSingleProfile(this.userData?.email);
     if (profData?.id) {
       this.profileData = profData;
-      console.log('this.profileData: ', this.profileData);
     }
     this.initializeForm();
-    console.log('userData: ', this.userData);
   }
 
   initializeForm() {
@@ -54,7 +52,7 @@ export class InfoPage extends BaseformPage implements OnInit {
         entry.questionType = 'email';
         this.group[entry.key] = new FormControl(value, [Validators.required, Validators.email]);
       }
-      if (entry.key === 'lastName' || entry.key === 'addressLine2' || entry.key === 'addressLine3' || entry.key === 'postalCode' || entry.key === 'address') {
+      if (entry.key === 'lastName' || entry.key === 'addressLine2' || entry.key === 'addressLine3' || entry.key === 'postalCode') {
         this.group[entry.key] = new FormControl(value, []);
       }
     });
@@ -65,7 +63,7 @@ export class InfoPage extends BaseformPage implements OnInit {
     this.sharedMethods.showLoader('Saving Profile.....'); // Add to prismic
     const userData = await this.sharedMethods.getUserData();
     const now = this.sharedMethods.getCurrentDateTime();
-    data.user_role = userData.role;
+    data.userRole = userData.role;
     data.updated_by = userData.id;
     data.updated_at = now;
     const profileExists = await this.profilesDataService.checkIfProfileExists(data.email);

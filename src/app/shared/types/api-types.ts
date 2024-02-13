@@ -82,7 +82,6 @@ export enum StorageKeys {
   survey = 'survey',
   surveyCategories = 'surveyCategories',
   watchedTFAVideo = 'watchedTFAVideo',
-  userProfile = 'userProfile',
 }
 
 export interface UserData {
