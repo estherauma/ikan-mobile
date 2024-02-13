@@ -4,6 +4,12 @@
 
 <ion-content class="ion-padding">
   <div class="inner-content">
+    <p
+      *ngIf="isPartyBForm && !vessels?.length"
+      class="no-vessels-text"
+    >
+    {{noVesselsText}}
+    </p>
     <app-form
       class="create-clause-detail"
       [tunaFormGroup]="pageFormGroup"

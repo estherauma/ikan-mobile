@@ -4,7 +4,18 @@ import { DBService } from '../database/db.service';
 import { CompaniesDataService } from 'src/app/companies/data/companies-data.service';
 import { Platform } from '@ionic/angular';
 import { SQLite, SQLiteObject } from '@awesome-cordova-plugins/sqlite/ngx';
-import { CreateCompanyResp, CreateContractClauseResp, CreateContractResp, CreateSurveyResp, CreateVesselResp, GetClausesResponse, GetCompaniesResponse, GetContractsResponse, GetProfileResponse } from './types';
+import {
+  CreateCompanyResp,
+  CreateContractClauseResp,
+  CreateContractResp,
+  CreateSurveyResp,
+  CreateVesselResp,
+  GetClausesResponse,
+  GetCompaniesResponse,
+  GetContractsResponse,
+  GetVesselsResponse,
+  GetProfileResponse,
+} from './types';
 import { VesselsDataService } from 'src/app/vessels/data/vessels-data.service';
 import { ContractDataService } from 'src/app/contracts/data/contract-data.service';
 import { SharedmethodsService } from '../sharedmethods/sharedmethods.service';
@@ -50,12 +61,14 @@ export class SyncService {
   }
 
   async syncData() {
+    this.apiService.setApiRequestHeaders();
     this.syncCompanies();
     this.syncVessels();
     this.syncContracts();
     this.syncSurveyResponses();
     this.fetchProfile();
     this.fetchCompanies();
+    this.fetchVessels();
     this.fetchContracts(); // clauses are fetched after contracts have been fetched in the fetchContracts method
   }
 
@@ -113,6 +126,22 @@ export class SyncService {
             //   console.log(response);
             // });
           }
+        });
+      }
+    });
+  }
+
+  fetchVessels() {
+    this.apiService.get('vessels').subscribe((response: GetVesselsResponse) => {
+      if (response.status === 200 && response.body.data.length > 0) {
+        response.body.data.forEach((vessel) => {
+          this.dbService.checkIfEntryExists('vessels', vessel.appRef)
+          .then((exists) => {
+            if (!exists) {
+              this.vesselServ.saveOnlineVessel(vessel)
+              .then((id) => { console.log ( `Vessel ${vessel.name} saved with id ${id}`)});
+            }
+          });
         });
       }
     });
