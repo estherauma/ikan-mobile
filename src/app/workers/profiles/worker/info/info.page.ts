@@ -39,7 +39,6 @@ export class InfoPage extends BaseformPage implements OnInit {
   initializeForm() {
     const pageData = this.contentService.getContentByPropertyName('workerbudiinfo');
     this.pageText = this.sharedMethods.convertAdditionalTextToObj(pageData?.additionalText);
-    console.log('this.pageText', this.pageText)
     this.formQuestions = pageData?.formQuestions;
     this.formQuestions?.forEach((entry) => {
       // this field will not be displayed
