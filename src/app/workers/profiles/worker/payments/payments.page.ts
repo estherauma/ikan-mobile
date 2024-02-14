@@ -1,7 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, Validators, FormGroup } from '@angular/forms';
+import { PaymentsDataService } from 'src/app/payments/data/payments-data.service';
+import { ProfilesDataService } from 'src/app/profiles/data/profiles-data.service';
 import { BaseformPage } from 'src/app/shared/components/baseform/baseform.page';
 import { ContentService } from 'src/app/shared/services/content/content.service';
+import { SharedmethodsService } from 'src/app/shared/services/sharedmethods/sharedmethods.service';
+import { ProfileData } from 'src/app/shared/services/sync/types';
 
 @Component({
   selector: 'app-payments',
@@ -18,9 +22,14 @@ export class PaymentsPage extends BaseformPage implements OnInit {
   beneficiaryFormGroup: FormGroup;
   acctData: any;
   beneficiaryData: any;
+  userId: any;
+  profileData: ProfileData;
   
   constructor(
-    public contentService: ContentService
+    public contentService: ContentService,
+    public sharedMethods: SharedmethodsService,
+    public paymentsDataService: PaymentsDataService,
+    public profilesDataService: ProfilesDataService,
   ) {
     super(contentService);
   }
@@ -29,9 +38,22 @@ export class PaymentsPage extends BaseformPage implements OnInit {
     this.pageSetup();
   }
 
-  pageSetup() {
+  async pageSetup() {
     this.commonText = this.contentService.commonText;
     this.submitButtonText = this.commonText?.save;
+    const userData = await this.sharedMethods.getUserData();
+    const profData: ProfileData = await this.profilesDataService.getSingleProfile(userData?.email);
+    if (profData?.id) {
+      this.profileData = profData;
+    }
+    const acctData = await this.paymentsDataService.getSingleBankAccount(this.profileData?.id);
+    if (acctData?.id) {
+      this.acctData = acctData;
+    }
+    const beneficiaryData = await this.paymentsDataService.getSingleBeneficiary(this.profileData?.id);
+    if (beneficiaryData?.id) {
+      this.beneficiaryData = beneficiaryData;
+    }
     this.initializeForms();
   }
 
@@ -82,12 +104,74 @@ export class PaymentsPage extends BaseformPage implements OnInit {
     this.beneficiaryFormGroup = new FormGroup(this.beneficiaryGroup);
   }
 
-  onSubmitAccount(data) {
-    console.log('data....aaaaaccctttt...', data);
+  async onSubmitAccount(data) {
+    this.sharedMethods.showLoader(this.pageText?.savingAccountInfo || 'Saving account information', 2000); // add to prismic
+    const userData = await this.sharedMethods.getUserData();
+    const now = this.sharedMethods.getCurrentDateTime();
+    data.updatedBy = userData.id;
+    data.updatedAt = now;
+    data.userId = this.profileData?.id;
+
+    const accountExists = await this.paymentsDataService.checkIfBankAccountExists(data.userId);
+    if (accountExists) {
+      data = { ...this.acctData, ...data};
+      const result = await this.paymentsDataService.updateBankAccount(data);
+      if (result?.rowsAffected > 0) {
+        this.sharedMethods.hideLoader();
+        this.sharedMethods.showToast(this.pageText?.bankAccountUpdateSuccess || 'Bank account updated successfully'); // add to prismic
+      } else {
+        this.sharedMethods.hideLoader();
+        this.sharedMethods.showToast(this.pageText?.bankAccountUpdateFailure || 'Failed to update bank account'); // add to prismic
+      }
+    } else {
+      data.appRef = this.sharedMethods.generateAppRef();
+      data.isActive = true;
+      data.createdAt = now;
+      data.createdBy = userData.id;
+      const insertId = await this.paymentsDataService.createBankAccount(data);
+      if (insertId) {
+        this.sharedMethods.hideLoader();
+        this.sharedMethods.showToast(this.pageText?.bankAccountCreateSuccess || 'Bank account added successfully'); // add to prismic
+      } else {
+        this.sharedMethods.hideLoader();
+        this.sharedMethods.showToast(this.pageText?.bankAccountCreateFailure || 'Failed to created bank account'); // add to prismic
+      }
+    }
   }
 
-  onSubmitBeneficiary(data) {
-    console.log('data......bbbbbbbbbeennn.....', data);
+  async onSubmitBeneficiary(data) {
+    this.sharedMethods.showLoader(this.pageText?.savingBeneficiary || 'Saving beneficiary', 2000); // add to prismic
+    const userData = await this.sharedMethods.getUserData();
+    const now = this.sharedMethods.getCurrentDateTime();
+    data.updatedBy = userData.id;
+    data.updatedAt = now;
+    data.userId = this.profileData?.id;
+
+    const beneficiaryExists = await this.paymentsDataService.checkIfBeneficiaryExists(data.userId);
+    if (beneficiaryExists) {
+      data = { ...this.beneficiaryData, ...data};
+      const result = await this.paymentsDataService.updateBeneficiary(data);
+      if (result?.rowsAffected > 0) {
+        this.sharedMethods.hideLoader();
+        this.sharedMethods.showToast(this.pageText?.beneficiaryUpdateSuccess || 'Beneficiary updated successfully'); // add to prismic
+      } else {
+        this.sharedMethods.hideLoader();
+        this.sharedMethods.showToast(this.pageText?.beneficiaryUpdateFailure || 'Failed to update beneficiary'); // add to prismic
+      }
+    } else {
+      data.appRef = this.sharedMethods.generateAppRef();
+      data.isActive = true;
+      data.createdAt = now;
+      data.createdBy = userData.id;
+      const insertId = await this.paymentsDataService.createBeneficiary(data);
+      if (insertId) {
+        this.sharedMethods.hideLoader();
+        this.sharedMethods.showToast(this.pageText?.beneficiaryCreateSuccess || 'Beneficiary added successfully'); // add to prismic
+      } else {
+        this.sharedMethods.hideLoader();
+        this.sharedMethods.showToast(this.pageText?.beneficiaryCreateFailure || 'Failed to create beneficiary'); // add to prismic
+      }
+    }
   }
 
   viewAll() {}

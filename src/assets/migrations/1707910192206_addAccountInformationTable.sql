@@ -14,7 +14,7 @@ CREATE TABLE IF NOT EXISTS user_bank_accounts (
   updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
   created_by VARCHAR(255) NOT NULL,
   updated_by VARCHAR(255) NOT NULL
-)
+);
 
 CREATE TABLE IF NOT EXISTS user_beneficiaries (
   id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -34,6 +34,6 @@ CREATE TABLE IF NOT EXISTS user_beneficiaries (
   updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
   created_by VARCHAR(255) NOT NULL,
   updated_by VARCHAR(255) NOT NULL
-)
+);
 
 ALTER TABLE profiles ADD online_ref VARCHAR(255);

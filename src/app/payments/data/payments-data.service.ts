@@ -23,6 +23,8 @@ export class PaymentsDataService {
       }).then(async(_db: SQLiteObject) => {
         this.db = _db;
         this.retrievePayments();
+        this.retrieveBankAccounts();
+        this.retrieveBeneficiaries();
       }).catch(e => console.log(e));
     });
   }
@@ -91,7 +93,7 @@ export class PaymentsDataService {
 
   retrieveBankAccounts() {
     const query = 'SELECT * FROM user_bank_accounts';
-    this.db.executeSql(query, []).then((data) => {
+    return this.db.executeSql(query, []).then((data) => {
       const bankAccounts = [];
       if (data.rows.length > 0) {
         for (let i = 0; i < data.rows.length; i++) {
@@ -126,6 +128,12 @@ export class PaymentsDataService {
     return this.bankAccounts.asObservable();
   }
 
+  async getSingleBankAccount(userId) {
+    const bankAccounts = await this.retrieveBankAccounts();
+    const acct = bankAccounts.find((acct) => acct.userId === userId);
+    return acct;
+  }
+
   createBankAccount(data) {
     const query = 'INSERT INTO user_bank_accounts (app_ref, online_ref, user_id, \
       account_name, account_number, routing_number, swift_code, bank_name, bank_branch, \
@@ -155,9 +163,15 @@ export class PaymentsDataService {
     });
   }
 
+  async checkIfBankAccountExists(userId: string) {
+    const bankAccounts = await this.retrieveBankAccounts();
+    const acctExists = bankAccounts.some((acct) => acct.userId === userId);
+    return acctExists;
+  }
+
   retrieveBeneficiaries() {
     const query = 'SELECT * FROM user_beneficiaries';
-    this.db.executeSql(query, []).then((data) => {
+    return this.db.executeSql(query, []).then((data) => {
       const beneficiaries = [];
       if (data.rows.length > 0) {
         for (let i = 0; i < data.rows.length; i++) {
@@ -194,6 +208,12 @@ export class PaymentsDataService {
     return this.beneficiaries.asObservable();
   }
 
+  async getSingleBeneficiary(userId) {
+    const beneficiaries = await this.retrieveBeneficiaries();
+    const beneficiary = beneficiaries.find((beneficiary) => beneficiary.userId === userId);
+    return beneficiary;
+  }
+
   createBeneficiary(data) {
     const query = 'INSERT INTO user_beneficiaries (app_ref, online_ref, user_id, \
       f_name, l_name, account_name, account_number, routing_number, swift_code, bank_name, bank_branch, \
@@ -224,5 +244,11 @@ export class PaymentsDataService {
       console.error(e);
       return null;
     });
+  }
+
+  async checkIfBeneficiaryExists(userId) {
+    const beneficiaries = await this.retrieveBeneficiaries();
+    const beneficiaryExists = beneficiaries.some((beneficiary) => (beneficiary.userId === userId));
+    return beneficiaryExists;
   }
 }

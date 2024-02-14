@@ -61,7 +61,7 @@ export class InfoPage extends BaseformPage implements OnInit {
   }
 
   async onSubmit(data) {
-    this.sharedMethods.showLoader(this.pageText?.savingProfile);
+    this.sharedMethods.showLoader(this.pageText?.savingProfile, 2000);
     const userData = await this.sharedMethods.getUserData();
     const now = this.sharedMethods.getCurrentDateTime();
     data.userRole = userData.role;
