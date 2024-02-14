@@ -16,6 +16,8 @@ export class PaymentsPage extends BaseformPage implements OnInit {
   beneficiaryGroup = {};
   acctFormGroup: FormGroup;
   beneficiaryFormGroup: FormGroup;
+  acctData: any;
+  beneficiaryData: any;
   
   constructor(
     public contentService: ContentService
@@ -30,26 +32,63 @@ export class PaymentsPage extends BaseformPage implements OnInit {
   pageSetup() {
     this.commonText = this.contentService.commonText;
     this.submitButtonText = this.commonText?.save;
+    this.initializeForms();
+  }
 
-    // TODO: maintain leading zeros for account number
+  initializeForms() {
+    // User account form
     const acctInfoPageData = this.contentService.getContentByPropertyName('accountinformation');
     this.acctFormQtns = acctInfoPageData?.formQuestions;
-
-    const beneficiaryPageData = this.contentService.getContentByPropertyName('beneficiaryaccountinformation');
-    this.beneficiaryFormQtns = beneficiaryPageData?.formQuestions;
-
     this.acctFormQtns.forEach((entry) => {
-      this.acctGroup[entry.key] = new FormControl('', [Validators.required]);
+      // this field will not be displayed
+      if (entry.key === 'accountInformation') {
+        return;
+      }
+
+      const value = this.acctData?.[entry.key] || '';
+      this.acctGroup[entry.key] = new FormControl(value, [Validators.required]);
+
+      if (entry.key === 'accountNumber') {
+        entry.inputmode = 'numeric';
+        this.acctGroup[entry.key] = new FormControl(value, [Validators.required]);
+      }
+      if (entry.key === 'lastName' || entry.key === 'lName' || entry.key === 'swiftCode') {
+        this.acctGroup[entry.key] = new FormControl(value, []);
+      }
     });
+    
     this.acctFormGroup = new FormGroup(this.acctGroup);
 
+    // Beneficiary form
+    const beneficiaryPageData = this.contentService.getContentByPropertyName('beneficiaryaccountinformation');
+    this.beneficiaryFormQtns = beneficiaryPageData?.formQuestions;
     this.beneficiaryFormQtns?.forEach((entry) => {
-      this.beneficiaryGroup[entry.key] = new FormControl('', [Validators.required]);
+      // this field will not be displayed
+      if (entry.key === 'beneficiaryAccountInformation') {
+        return;
+      }
+
+      const value = this.beneficiaryData?.[entry.key] || '';
+      this.beneficiaryGroup[entry.key] = new FormControl(value, [Validators.required]);
+
+      if (entry.key === 'accountNumber') {
+        entry.inputmode = 'numeric';
+        this.beneficiaryGroup[entry.key] = new FormControl(value, [Validators.required]);
+      }
+      if (entry.key === 'lastName' || entry.key === 'lName' || entry.key === 'swiftCode') {
+        this.beneficiaryGroup[entry.key] = new FormControl(value, []);
+      }
     });
     this.beneficiaryFormGroup = new FormGroup(this.beneficiaryGroup);
   }
 
-  onSubmit(data) {}
+  onSubmitAccount(data) {
+    console.log('data....aaaaaccctttt...', data);
+  }
+
+  onSubmitBeneficiary(data) {
+    console.log('data......bbbbbbbbbeennn.....', data);
+  }
 
   viewAll() {}
 
