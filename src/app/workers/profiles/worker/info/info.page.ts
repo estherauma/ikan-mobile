@@ -38,6 +38,8 @@ export class InfoPage extends BaseformPage implements OnInit {
 
   initializeForm() {
     const pageData = this.contentService.getContentByPropertyName('workerbudiinfo');
+    this.pageText = this.sharedMethods.convertAdditionalTextToObj(pageData?.additionalText);
+    console.log('this.pageText', this.pageText)
     this.formQuestions = pageData?.formQuestions;
     this.formQuestions?.forEach((entry) => {
       // this field will not be displayed
@@ -60,7 +62,7 @@ export class InfoPage extends BaseformPage implements OnInit {
   }
 
   async onSubmit(data) {
-    this.sharedMethods.showLoader('Saving Profile.....'); // Add to prismic
+    this.sharedMethods.showLoader(this.pageText?.savingProfile);
     const userData = await this.sharedMethods.getUserData();
     const now = this.sharedMethods.getCurrentDateTime();
     data.userRole = userData.role;
@@ -72,10 +74,10 @@ export class InfoPage extends BaseformPage implements OnInit {
       const result = await this.profilesDataService.update(data);
       if (result?.rowsAffected > 0) {
         this.sharedMethods.hideLoader();
-        this.sharedMethods.showToast('Profile Updated Successfully'); // Add to prismic
+        this.sharedMethods.showToast(this.pageText?.profileUpdateSuccess);
       } else {
         this.sharedMethods.hideLoader();
-        this.sharedMethods.showToast('Profile Update Failed'); // Add to prismic
+        this.sharedMethods.showToast(this.pageText?.profileUpdateFailure);
       }
     } else {
       data.created_at = now;
@@ -83,10 +85,10 @@ export class InfoPage extends BaseformPage implements OnInit {
       const insertId = await this.profilesDataService.create(data);
       if (insertId) {
         this.sharedMethods.hideLoader();
-        this.sharedMethods.showToast('Profile Created Successfully'); // Add to prismic
+        this.sharedMethods.showToast(this.pageText?.profileCreateSuccess);
       } else {
         this.sharedMethods.hideLoader();
-        this.sharedMethods.showToast('Profile Creation Failed'); // Add to prismic
+        this.sharedMethods.showToast(this.pageText?.profileCreateFailure);
       }
     }
   }
