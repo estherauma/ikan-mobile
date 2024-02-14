@@ -266,8 +266,6 @@ export class SyncService {
     });
   }
 
-  syncProfile() {}
-
   fetchProfile() {
     this.apiService.get('accounts/profile').subscribe(async(response: GetProfileResponse) => {
       if (response.status === 200 && response.body.data) {
@@ -296,7 +294,4 @@ export class SyncService {
       }
     });
   }
-
-  syncUsersProfiles() {}
-  fetchUsersProfiles() {}
 }
