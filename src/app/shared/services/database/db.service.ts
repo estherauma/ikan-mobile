@@ -196,6 +196,7 @@ export class DBService {
       return false;
     }).catch((error) => {
       console.log(error);
+      return false;
     });
   }
 }
