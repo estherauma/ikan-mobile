@@ -187,10 +187,6 @@ export class SyncService {
           await this.dbService.checkIfEntryExists('contracts', contract.appRef)
           .then(async(exists) => {
             if (!exists) {
-              const now = this.sharedMethods.getCurrentDateTime();
-              const user = await this.sharedMethods.getUserData();
-              contract.updatedAt = contract.updatedAt ??  now;
-              contract.updatedBy = contract.updatedBy ?? user?.id;
               this.contractServ.saveOnlineContract(contract)
               .then((id) => { console.log ( `Contract ${contract.name} saved with id ${id}`)});
             }
@@ -231,10 +227,6 @@ export class SyncService {
           this.dbService.checkIfEntryExists('contract_clauses', clause.appRef)
           .then(async(exists) => {
             if (!exists) {
-              const now = this.sharedMethods.getCurrentDateTime();
-              const user = await this.sharedMethods.getUserData();
-              clause.updatedAt = clause.updatedAt ?? now;
-              clause.updatedBy = clause.updatedBy ?? user?.id;
               const contract = this.contractServ.getContractByField('onlineRef', clause.contract);
               if (contract) {
                 this.contractServ.saveOnlineContractClause(contract?.id, clause)
