@@ -19,6 +19,7 @@ export class WorkerPage implements OnInit {
 
   ngOnInit() {
     this.commonText = this.contentService?.commonText;
+    this.pageTitle = this.commonText?.myProfile || this.pageTitle;
   }
 
   saveProfile() {}

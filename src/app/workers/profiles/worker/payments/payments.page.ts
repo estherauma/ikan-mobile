@@ -105,7 +105,7 @@ export class PaymentsPage extends BaseformPage implements OnInit {
   }
 
   async onSubmitAccount(data) {
-    this.sharedMethods.showLoader(this.pageText?.savingAccountInfo || 'Saving account information', 2000); // add to prismic
+    this.sharedMethods.showLoader(this.pageText?.savingAccountInfo, 2000);
     const userData = await this.sharedMethods.getUserData();
     const now = this.sharedMethods.getCurrentDateTime();
     data.updatedBy = userData.id;
@@ -118,10 +118,10 @@ export class PaymentsPage extends BaseformPage implements OnInit {
       const result = await this.paymentsDataService.updateBankAccount(data);
       if (result?.rowsAffected > 0) {
         this.sharedMethods.hideLoader();
-        this.sharedMethods.showToast(this.pageText?.bankAccountUpdateSuccess || 'Bank account updated successfully'); // add to prismic
+        this.sharedMethods.showToast(this.pageText?.bankAccountUpdateSuccess);
       } else {
         this.sharedMethods.hideLoader();
-        this.sharedMethods.showToast(this.pageText?.bankAccountUpdateFailure || 'Failed to update bank account'); // add to prismic
+        this.sharedMethods.showToast(this.pageText?.bankAccountUpdateFailure);
       }
     } else {
       data.appRef = this.sharedMethods.generateAppRef();
@@ -131,16 +131,16 @@ export class PaymentsPage extends BaseformPage implements OnInit {
       const insertId = await this.paymentsDataService.createBankAccount(data);
       if (insertId) {
         this.sharedMethods.hideLoader();
-        this.sharedMethods.showToast(this.pageText?.bankAccountCreateSuccess || 'Bank account added successfully'); // add to prismic
+        this.sharedMethods.showToast(this.pageText?.bankAccountCreateSuccess);
       } else {
         this.sharedMethods.hideLoader();
-        this.sharedMethods.showToast(this.pageText?.bankAccountCreateFailure || 'Failed to created bank account'); // add to prismic
+        this.sharedMethods.showToast(this.pageText?.bankAccountCreateFailure);
       }
     }
   }
 
   async onSubmitBeneficiary(data) {
-    this.sharedMethods.showLoader(this.pageText?.savingBeneficiary || 'Saving beneficiary', 2000); // add to prismic
+    this.sharedMethods.showLoader(this.pageText?.savingBeneficiary, 2000);
     const userData = await this.sharedMethods.getUserData();
     const now = this.sharedMethods.getCurrentDateTime();
     data.updatedBy = userData.id;
@@ -153,10 +153,10 @@ export class PaymentsPage extends BaseformPage implements OnInit {
       const result = await this.paymentsDataService.updateBeneficiary(data);
       if (result?.rowsAffected > 0) {
         this.sharedMethods.hideLoader();
-        this.sharedMethods.showToast(this.pageText?.beneficiaryUpdateSuccess || 'Beneficiary updated successfully'); // add to prismic
+        this.sharedMethods.showToast(this.pageText?.beneficiaryUpdateSuccess);
       } else {
         this.sharedMethods.hideLoader();
-        this.sharedMethods.showToast(this.pageText?.beneficiaryUpdateFailure || 'Failed to update beneficiary'); // add to prismic
+        this.sharedMethods.showToast(this.pageText?.beneficiaryUpdateFailure);
       }
     } else {
       data.appRef = this.sharedMethods.generateAppRef();
@@ -166,10 +166,10 @@ export class PaymentsPage extends BaseformPage implements OnInit {
       const insertId = await this.paymentsDataService.createBeneficiary(data);
       if (insertId) {
         this.sharedMethods.hideLoader();
-        this.sharedMethods.showToast(this.pageText?.beneficiaryCreateSuccess || 'Beneficiary added successfully'); // add to prismic
+        this.sharedMethods.showToast(this.pageText?.beneficiaryCreateSuccess);
       } else {
         this.sharedMethods.hideLoader();
-        this.sharedMethods.showToast(this.pageText?.beneficiaryCreateFailure || 'Failed to create beneficiary'); // add to prismic
+        this.sharedMethods.showToast(this.pageText?.beneficiaryCreateFailure);
       }
     }
   }
