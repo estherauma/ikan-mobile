@@ -203,6 +203,7 @@ export interface Body {
   content:   string;
 }
 
+
 export interface GetVesselsResponse {
   status:     number;
   statusText: string;
@@ -233,4 +234,47 @@ export interface VesselsBody {
   status:            string;
   capacity:          string;
   commissioningDate: string;
+}
+
+export interface GetProfileResponse {
+  status:     number;
+  statusText: string;
+  url:        string;
+  ok:         boolean;
+  type:       number;
+  body:       GetProfileBody;
+}
+
+export interface GetProfileBody {
+  status:   string;
+  data:     ProfileData;
+}
+
+export interface ProfileData {
+  id:                   string;
+  deleted:              boolean;
+  createdAt:            string;
+  updatedAt:            string;
+  deletedAt?:           string | null;
+  createdBy:            string | null;
+  updatedBy:            string | null;
+  deletedBy?:           string | null;
+  email:                string;
+  firstName:            string | null;
+  lastName:             string | null;
+  telephone:            string | null;
+  mobile:               string | null;
+  addressLine1:         string | null;
+  addressLine2:         string | null;
+  addressLine3:         string | null;
+  city:                 string | null;
+  country:              string | null;
+  postalCode:           string | null;
+  profileImage?:        string | null;
+  registrationNumber?:  string | null;
+  passportNumber?:      string | null;
+  position?:            string | null;
+  isActive:             boolean;
+  isVerified:           boolean;
+  lastLogin:            string;
 }

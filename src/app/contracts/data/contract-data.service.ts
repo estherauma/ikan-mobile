@@ -97,7 +97,10 @@ export class ContractDataService {
     return this.db.executeSql(query, params).then((result) => {
       this.retrieveContracts();
       return result.insertId;
-    }).catch((e) => console.log(e));
+    }).catch((e) => {
+      console.log(e);
+      return null;
+    });
   }
 
   saveOnlineContract(data) {
@@ -110,7 +113,10 @@ export class ContractDataService {
     return this.db.executeSql(query, params).then((result) => {
       this.retrieveContracts();
       return result.insertId;
-    }).catch((e) => console.log(e));
+    }).catch((e) => {
+      console.log(e);
+      return null;
+    });
   }
 
   update(data) { }
@@ -208,7 +214,10 @@ export class ContractDataService {
       clauseData.updated_by];
     return this.db.executeSql(query, params).then((result) => {
       return result.insertId;
-    }).catch((e) => console.log(e));
+    }).catch((e) => {
+      console.log(e);
+      return null;
+    });
   }
 
   saveOnlineContractClause(contractId, clauseData) {
@@ -221,7 +230,10 @@ export class ContractDataService {
       clauseData.createdBy, clauseData.updatedBy];
     return this.db.executeSql(query, params).then((result) => {
       return result.insertId;
-    }).catch((e) => console.log(e));
+    }).catch((e) => {
+      console.log(e);
+      return null;
+    });
   }
 
   retrieveClauseDetails(clauseId) {

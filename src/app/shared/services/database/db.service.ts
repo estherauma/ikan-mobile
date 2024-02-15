@@ -123,12 +123,12 @@ export class DBService {
             console.log(`Query " ${query} " executed`);
           })
           .catch(e => {
-            console.log(`Error executing query: ${query}`);
+            console.error(`Error executing query: ${query}`);
             this.globalErrorHandler.handleError(e, `Error in db.service.ts at runSingleMigrationFile(). Error executing ${query}`);
           });
         });
         this.db.executeSql('INSERT INTO migrations (name, executed_at) VALUES (?, ?)', [migrationFileName, new Date()])
-        .then(() => console.log('Migration ' + migrationFileName + ' marked as completed'))
+        .then(() => console.error('Migration ' + migrationFileName + ' marked as completed'))
         .catch(e => {
           this.globalErrorHandler.handleError(e, `Error in db.service.ts at runSingleMigrationFile(). Error inserting migration ${migrationFileName} into migrations table`); 
         });

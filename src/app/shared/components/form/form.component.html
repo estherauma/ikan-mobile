@@ -45,7 +45,7 @@
         </div>
       </div>
 
-      <div *ngSwitchCase="question.questionType === 'email'">
+      <div *ngSwitchCase="question.questionType === 'email' ? question.questionType : '' ">
         <div *ngIf="question.displayquestion" lines="none" class="transparent-bg">
           <ion-grid>
             <ion-row>
@@ -57,6 +57,28 @@
                   class="ion-padding-start form-input"
                   type="email"
                   placeholder="{{question?.placeholder || typeHereText}}"
+                  formControlName="{{question.key}}"
+                ></ion-input>
+              </ion-col>
+
+            </ion-row>
+          </ion-grid>
+        </div>
+      </div>
+
+      
+      <div *ngSwitchCase="question.questionType === 'tel' || question.questionType  === 'telephone' ? question.questionType : '' ">
+        <div *ngIf="question.displayquestion" lines="none" class="transparent-bg">
+          <ion-grid>
+            <ion-row>
+              <ion-col size="12">
+                <ion-label text-wrap> {{question.label}} </ion-label>
+              </ion-col>
+              <ion-col size="12">
+                <ion-input
+                  class="ion-padding-start form-input"
+                  type="tel"
+                  placeholder="888-888-8888"
                   formControlName="{{question.key}}"
                 ></ion-input>
               </ion-col>
@@ -139,14 +161,14 @@
           <ion-grid>
             <ion-row>
               <ion-col size="12">
-                <ion-label text-wrap> {{question.label}} </ion-label>
+                <ion-label text-wrap> {{question?.label}} </ion-label>
               </ion-col>
               <ion-col size="12">
                 <ion-select
                   class="form-input"
                   formControlName="{{question.key }}"
                   interface="action-sheet"
-                  [placeholder]="commonText?.pleaseSelect"
+                  [placeholder]="question?.placeholder || commonText?.pleaseSelect"
                   [okText]="commonText?.ok"
                   [cancelText]="commonText?.cancel"
                   textWrap
@@ -282,13 +304,13 @@
           <ion-grid >
             <ion-row>
               <ion-col size="12">
-                <ion-label text-wrap> {{question.label}} </ion-label>
+                <ion-label text-wrap> {{question?.label}} </ion-label>
               </ion-col>
               <ion-col size="12">
                 <ion-select
                   class="form-input"
                   [formControlName]="question.key"
-                  [placeholder]="commonText?.pleaseSelect"
+                  [placeholder]="question?.placeholder || commonText?.pleaseSelect"
                   [okText]="commonText?.ok"
                   [cancelText]="commonText?.cancel"
                   interface="action-sheet"
@@ -426,7 +448,7 @@
                       class="form-input"
                       formControlName="{{question.followUpQuestion.key }}"
                       interface="action-sheet"
-                      [placeholder]="commonText?.pleaseSelect"
+                      [placeholder]="question?.followUpQuestion?.placeholder ||commonText?.pleaseSelect"
                       [okText]="commonText?.ok"
                       [cancelText]="commonText?.cancel"
                       textWrap
@@ -568,7 +590,7 @@
                     <ion-select
                       class="form-input"
                       [formControlName]="question.followUpQuestion.key"
-                      [placeholder]="commonText?.pleaseSelect"
+                      [placeholder]="question?.followUpQuestion?.placeholder || commonText?.pleaseSelect"
                       [okText]="commonText?.ok"
                       [cancelText]="commonText?.cancel"
                       interface="action-sheet"
@@ -630,7 +652,7 @@
     <ion-col size="5">
       <app-button
         class="form-btn"
-        type="submit"
+        [type]="'submit'"
         [config]="btnConfig"
         [fill]="btnFill"
         [disabled]="!tunaFormGroup.valid || isSubmitting"

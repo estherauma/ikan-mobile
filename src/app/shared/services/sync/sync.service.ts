@@ -13,13 +13,15 @@ import {
   GetClausesResponse,
   GetCompaniesResponse,
   GetContractsResponse,
-  GetVesselsResponse
+  GetVesselsResponse,
+  GetProfileResponse,
 } from './types';
 import { VesselsDataService } from 'src/app/vessels/data/vessels-data.service';
 import { ContractDataService } from 'src/app/contracts/data/contract-data.service';
 import { SharedmethodsService } from '../sharedmethods/sharedmethods.service';
 import { SurveyDataService } from 'src/app/survey/data/survey-data.service';
 import { forkJoin } from 'rxjs';
+import { ProfilesDataService } from 'src/app/profiles/data/profiles-data.service';
 
 @Injectable({
   providedIn: 'root'
@@ -37,6 +39,7 @@ export class SyncService {
     private dbService: DBService,
     private sharedMethods: SharedmethodsService,
     private surveyDataService: SurveyDataService,
+    private profilesDataService: ProfilesDataService,
   ) {
     this.platform.ready().then(async () => {
       this.sqlite.create({
@@ -63,6 +66,7 @@ export class SyncService {
     this.syncVessels();
     this.syncContracts();
     this.syncSurveyResponses();
+    this.fetchProfile();
     this.fetchCompanies();
     this.fetchVessels();
     this.fetchContracts(); // clauses are fetched after contracts have been fetched in the fetchContracts method
@@ -181,7 +185,7 @@ export class SyncService {
       if (response.status === 200 && response.body.data.length > 0) {
         forkJoin(response.body.data.map(async(contract) => {
           await this.dbService.checkIfEntryExists('contracts', contract.appRef)
-          .then((exists) => {
+          .then(async(exists) => {
             if (!exists) {
               this.contractServ.saveOnlineContract(contract)
               .then((id) => { console.log ( `Contract ${contract.name} saved with id ${id}`)});
@@ -221,7 +225,7 @@ export class SyncService {
       if (response.status === 200 && response.body.length > 0) {
         response.body.forEach((clause) => {
           this.dbService.checkIfEntryExists('contract_clauses', clause.appRef)
-          .then((exists) => {
+          .then(async(exists) => {
             if (!exists) {
               const contract = this.contractServ.getContractByField('onlineRef', clause.contract);
               if (contract) {
@@ -250,6 +254,35 @@ export class SyncService {
             // TODO: add update logic
           }
         });
+      }
+    });
+  }
+
+  fetchProfile() {
+    this.apiService.get('accounts/profile').subscribe(async(response: GetProfileResponse) => {
+      if (response.status === 200 && response.body.data) {
+        const user = await this.sharedMethods.getUserData();
+        const now = this.sharedMethods.getCurrentDateTime();
+        const dataToSave = {...response.body.data, userRole: user.role};
+        dataToSave.createdAt = dataToSave.updatedAt ??  now;
+        dataToSave.updatedAt = dataToSave.updatedAt ??  now;
+        dataToSave.createdBy = dataToSave.updatedBy ?? user?.id;
+        dataToSave.updatedBy = dataToSave.updatedBy ?? user?.id;
+        const profileExists = await this.profilesDataService.checkIfProfileExists(dataToSave.email);
+        if (!profileExists) {
+          this.profilesDataService.create(dataToSave)
+          .then((id) => { console.log ( `Profile ${dataToSave.email} saved with id ${id}`)})
+          .catch((e) => console.error(e));
+        } else {
+          const currentProfile = await this.profilesDataService.getSingleProfile(dataToSave.email);
+          const currentDate = new Date(currentProfile?.updatedAt);
+          const newDate = new Date(dataToSave?.updatedAt);
+          if (currentDate < newDate) {
+            this.profilesDataService.update(dataToSave)
+            .then((id) => { console.log ( `Profile ${dataToSave.email} updated.`)});
+          }
+        }
+
       }
     });
   }
