@@ -26,7 +26,13 @@ jobs:
       - run:
           name: Ionic Build
           command: |
-            ionic build
+            if [ ${{ github.ref }} = "refs/heads/main" ]; then
+              ionic build --configuration=production
+            elif [ ${{ github.ref }} = "refs/heads/staging" ]; then
+              ionic build --configuration=staging
+            else
+              ionic build
+            fi
             npx cap sync android
       - run:
           name: Store Google Services Account
@@ -122,7 +128,3 @@ workflows:
                 - dev
                 - staging
                 - main
-                - thesammie/58-1841-ready-tuna-for-qs-demo
-              # ignore:
-              #   - staging
-              #   - main
