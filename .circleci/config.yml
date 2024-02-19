@@ -115,7 +115,6 @@ workflows:
                 - dev
                 - staging
                 - main
-                - skapeyi/58-2625-set-up-build-configurations-for-different-envs
 
   # All pushes to any branch are going to result into apks being pushed to firebase for testing.
   # Ignoring staging and main because we'd have already tested on the feature branches and on dev
