@@ -11,6 +11,7 @@ jobs:
       - run:
           name: "Install gradle"
           command: |
+            echo "$CIRCLE_BRANCH"
             wget https://services.gradle.org/distributions/gradle-4.0.2-bin.zip -P /tmp
             sudo unzip -d /opt/gradle /tmp/gradle-*.zip
             echo 'export GRADLE_HOME=/opt/gradle/gradle-4.0.2' >> $BASH_ENV
@@ -26,9 +27,9 @@ jobs:
       - run:
           name: Ionic Build
           command: |
-            if [ "${{ github.ref }}" = "refs/heads/main" ]; then
+            if [ "$CIRCLE_BRANCH" = "refs/heads/main" ]; then
               ionic build --configuration=production
-            elif [ "${{ github.ref }}" = "refs/heads/staging" ]; then
+            elif [ "$CIRCLE_BRANCH" = "refs/heads/staging" ]; then
               ionic build --configuration=staging
             else
               ionic build
