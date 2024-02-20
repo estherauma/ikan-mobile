@@ -24,6 +24,8 @@ export class PaymentsPage extends BaseformPage implements OnInit {
   beneficiaryData: any;
   userId: any;
   profileData: ProfileData;
+  acctPageText: any;
+  benficiaryPageText: any;
   
   constructor(
     public contentService: ContentService,
@@ -60,6 +62,7 @@ export class PaymentsPage extends BaseformPage implements OnInit {
   initializeForms() {
     // User account form
     const acctInfoPageData = this.contentService.getContentByPropertyName('accountinformation');
+    this.acctPageText = this.sharedMethods.convertAdditionalTextToObj(acctInfoPageData?.additionalText);
     this.acctFormQtns = acctInfoPageData?.formQuestions;
     this.acctFormQtns.forEach((entry) => {
       // this field will not be displayed
@@ -83,6 +86,7 @@ export class PaymentsPage extends BaseformPage implements OnInit {
 
     // Beneficiary form
     const beneficiaryPageData = this.contentService.getContentByPropertyName('beneficiaryaccountinformation');
+    this.benficiaryPageText = this.sharedMethods.convertAdditionalTextToObj(beneficiaryPageData?.additionalText);
     this.beneficiaryFormQtns = beneficiaryPageData?.formQuestions;
     this.beneficiaryFormQtns?.forEach((entry) => {
       // this field will not be displayed
@@ -105,7 +109,7 @@ export class PaymentsPage extends BaseformPage implements OnInit {
   }
 
   async onSubmitAccount(data) {
-    this.sharedMethods.showLoader(this.pageText?.savingAccountInfo, 2000);
+    this.sharedMethods.showLoader(this.acctPageText?.savingAccountInfo, 2000);
     const userData = await this.sharedMethods.getUserData();
     const now = this.sharedMethods.getCurrentDateTime();
     data.updatedBy = userData.id;
@@ -118,10 +122,10 @@ export class PaymentsPage extends BaseformPage implements OnInit {
       const result = await this.paymentsDataService.updateBankAccount(data);
       if (result?.rowsAffected > 0) {
         this.sharedMethods.hideLoader();
-        this.sharedMethods.showToast(this.pageText?.bankAccountUpdateSuccess);
+        this.sharedMethods.showToast(this.acctPageText?.bankAccountUpdateSuccess);
       } else {
         this.sharedMethods.hideLoader();
-        this.sharedMethods.showToast(this.pageText?.bankAccountUpdateFailure);
+        this.sharedMethods.showToast(this.acctPageText?.bankAccountUpdateFailure);
       }
     } else {
       data.appRef = this.sharedMethods.generateAppRef();
@@ -131,16 +135,16 @@ export class PaymentsPage extends BaseformPage implements OnInit {
       const insertId = await this.paymentsDataService.createBankAccount(data);
       if (insertId) {
         this.sharedMethods.hideLoader();
-        this.sharedMethods.showToast(this.pageText?.bankAccountCreateSuccess);
+        this.sharedMethods.showToast(this.acctPageText?.bankAccountCreateSuccess);
       } else {
         this.sharedMethods.hideLoader();
-        this.sharedMethods.showToast(this.pageText?.bankAccountCreateFailure);
+        this.sharedMethods.showToast(this.acctPageText?.bankAccountCreateFailure);
       }
     }
   }
 
   async onSubmitBeneficiary(data) {
-    this.sharedMethods.showLoader(this.pageText?.savingBeneficiary, 2000);
+    this.sharedMethods.showLoader(this.benficiaryPageText?.savingBeneficiary, 2000);
     const userData = await this.sharedMethods.getUserData();
     const now = this.sharedMethods.getCurrentDateTime();
     data.updatedBy = userData.id;
@@ -153,10 +157,10 @@ export class PaymentsPage extends BaseformPage implements OnInit {
       const result = await this.paymentsDataService.updateBeneficiary(data);
       if (result?.rowsAffected > 0) {
         this.sharedMethods.hideLoader();
-        this.sharedMethods.showToast(this.pageText?.beneficiaryUpdateSuccess);
+        this.sharedMethods.showToast(this.benficiaryPageText?.beneficiaryUpdateSuccess);
       } else {
         this.sharedMethods.hideLoader();
-        this.sharedMethods.showToast(this.pageText?.beneficiaryUpdateFailure);
+        this.sharedMethods.showToast(this.benficiaryPageText?.beneficiaryUpdateFailure);
       }
     } else {
       data.appRef = this.sharedMethods.generateAppRef();
@@ -166,10 +170,10 @@ export class PaymentsPage extends BaseformPage implements OnInit {
       const insertId = await this.paymentsDataService.createBeneficiary(data);
       if (insertId) {
         this.sharedMethods.hideLoader();
-        this.sharedMethods.showToast(this.pageText?.beneficiaryCreateSuccess);
+        this.sharedMethods.showToast(this.benficiaryPageText?.beneficiaryCreateSuccess);
       } else {
         this.sharedMethods.hideLoader();
-        this.sharedMethods.showToast(this.pageText?.beneficiaryCreateFailure);
+        this.sharedMethods.showToast(this.benficiaryPageText?.beneficiaryCreateFailure);
       }
     }
   }
