@@ -26,9 +26,9 @@ jobs:
       - run:
           name: Ionic Build
           command: |
-            if [ ${{ github.ref }} = "refs/heads/main" ]; then
+            if [ "${{ github.ref }}" = "refs/heads/main" ]; then
               ionic build --configuration=production
-            elif [ ${{ github.ref }} = "refs/heads/staging" ]; then
+            elif [ "${{ github.ref }}" = "refs/heads/staging" ]; then
               ionic build --configuration=staging
             else
               ionic build
@@ -116,9 +116,6 @@ workflows:
                 - staging
                 - main
 
-  # All pushes to any branch are going to result into apks being pushed to firebase for testing.
-  # Ignoring staging and main because we'd have already tested on the feature branches and on dev
-  # TODO: Revert this later when we don't need a lot of testing to happen
   build-test-generate-release-firebase-apk:
     jobs:
       - build-and-release-apk:
