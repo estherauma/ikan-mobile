@@ -26,7 +26,6 @@ jobs:
       - run:
           name: Ionic Build
           command: |
-            echo "$CIRCLE_BRANCH"
             if [ "$CIRCLE_BRANCH" = "refs/heads/main" ]; then
               ionic build --configuration=production
             elif [ "$CIRCLE_BRANCH" = "refs/heads/staging" ]; then
