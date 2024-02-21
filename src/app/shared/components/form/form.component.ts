@@ -36,6 +36,7 @@ export class FormComponent implements OnInit {
   @Input() uploadPictureText: string = '';
   @Input() uploadDocIcon: string = 'assets/icon/pdf.svg';
   @Input() uploadDocText: string = '';
+  @Input() showCancelButton: boolean = false;
 
   @Output() formValues = new EventEmitter<any>();
   @Output() cancel = new EventEmitter<any>();
@@ -92,6 +93,10 @@ export class FormComponent implements OnInit {
   onSubmit(event) {
     const finalValues = this.removeUnwantedObjectKey(this.tunaFormGroup.value);
     this.formValue.emit(finalValues);
+  }
+
+  onCancel() {
+    this.cancel.emit();
   }
 
   removeUnwantedObjectKey(obj) {
