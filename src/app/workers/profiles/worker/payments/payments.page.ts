@@ -26,6 +26,8 @@ export class PaymentsPage extends BaseformPage implements OnInit {
   profileData: ProfileData;
   acctPageText: any;
   benficiaryPageText: any;
+  isViewAcct: boolean = false;
+  isViewBeneficiary: boolean = false;
   
   constructor(
     public contentService: ContentService,
@@ -48,12 +50,14 @@ export class PaymentsPage extends BaseformPage implements OnInit {
     if (profData?.id) {
       this.profileData = profData;
     }
-    const acctData = await this.paymentsDataService.getSingleBankAccount(this.profileData?.id);
+    const acctData = await this.paymentsDataService.getActiveBankAccount(this.profileData?.id);
     if (acctData?.id) {
+      this.isViewAcct = true;
       this.acctData = acctData;
     }
-    const beneficiaryData = await this.paymentsDataService.getSingleBeneficiary(this.profileData?.id);
+    const beneficiaryData = await this.paymentsDataService.getActiveBeneficiary(this.profileData?.id);
     if (beneficiaryData?.id) {
+      this.isViewBeneficiary = true;
       this.beneficiaryData = beneficiaryData;
     }
     this.initializeForms();
@@ -116,11 +120,12 @@ export class PaymentsPage extends BaseformPage implements OnInit {
     data.updatedAt = now;
     data.userId = this.profileData?.id;
 
-    const accountExists = await this.paymentsDataService.checkIfBankAccountExists(data.userId);
+    const accountExists = await this.paymentsDataService.checkIfBankAccountExists(data.userId, data?.accountNumber);
     if (accountExists) {
       data = { ...this.acctData, ...data};
       const result = await this.paymentsDataService.updateBankAccount(data);
       if (result?.rowsAffected > 0) {
+        await this.paymentsDataService.deactivateOldAccounts(data?.accountNumber, data.userId, 'user_bank_accounts');
         this.sharedMethods.hideLoader();
         this.sharedMethods.showToast(this.acctPageText?.bankAccountUpdateSuccess);
       } else {
@@ -134,6 +139,7 @@ export class PaymentsPage extends BaseformPage implements OnInit {
       data.createdBy = userData.id;
       const insertId = await this.paymentsDataService.createBankAccount(data);
       if (insertId) {
+        await this.paymentsDataService.deactivateOldAccounts(data?.accountNumber, data.userId, 'user_bank_accounts');
         this.sharedMethods.hideLoader();
         this.sharedMethods.showToast(this.acctPageText?.bankAccountCreateSuccess);
       } else {
@@ -141,7 +147,12 @@ export class PaymentsPage extends BaseformPage implements OnInit {
         this.sharedMethods.showToast(this.acctPageText?.bankAccountCreateFailure);
       }
     }
+    // this.pageSetup();
   }
+
+  editAccount() {}
+
+  addNewAccount () {}
 
   async onSubmitBeneficiary(data) {
     this.sharedMethods.showLoader(this.benficiaryPageText?.savingBeneficiary, 2000);
@@ -151,11 +162,12 @@ export class PaymentsPage extends BaseformPage implements OnInit {
     data.updatedAt = now;
     data.userId = this.profileData?.id;
 
-    const beneficiaryExists = await this.paymentsDataService.checkIfBeneficiaryExists(data.userId);
+    const beneficiaryExists = await this.paymentsDataService.checkIfBeneficiaryExists(data.userId, data.accountNumber);
     if (beneficiaryExists) {
       data = { ...this.beneficiaryData, ...data};
       const result = await this.paymentsDataService.updateBeneficiary(data);
       if (result?.rowsAffected > 0) {
+        await this.paymentsDataService.deactivateOldAccounts(data?.accountNumber, data.userId, 'user_beneficiaries');
         this.sharedMethods.hideLoader();
         this.sharedMethods.showToast(this.benficiaryPageText?.beneficiaryUpdateSuccess);
       } else {
@@ -167,8 +179,10 @@ export class PaymentsPage extends BaseformPage implements OnInit {
       data.isActive = true;
       data.createdAt = now;
       data.createdBy = userData.id;
+
       const insertId = await this.paymentsDataService.createBeneficiary(data);
       if (insertId) {
+        await this.paymentsDataService.deactivateOldAccounts(data?.accountNumber, data.userId, 'user_beneficiaries');
         this.sharedMethods.hideLoader();
         this.sharedMethods.showToast(this.benficiaryPageText?.beneficiaryCreateSuccess);
       } else {
@@ -176,7 +190,12 @@ export class PaymentsPage extends BaseformPage implements OnInit {
         this.sharedMethods.showToast(this.benficiaryPageText?.beneficiaryCreateFailure);
       }
     }
+    // this.pageSetup();
   }
+
+  editBeneficiary () {}
+
+  addNewBeneficiary () {}
 
   viewAll() {}
 

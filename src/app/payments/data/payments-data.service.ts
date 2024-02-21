@@ -128,10 +128,10 @@ export class PaymentsDataService {
     return this.bankAccounts.asObservable();
   }
 
-  async getSingleBankAccount(userId) {
+  async getActiveBankAccount(userId) {
     const bankAccounts = await this.retrieveBankAccounts();
-    const acct = bankAccounts.find((acct) => acct.userId === userId);
-    return acct;
+    const activeAcct = bankAccounts.find((acct) => acct.userId === userId && acct.isActive);
+    return activeAcct;
   }
 
   createBankAccount(data) {
@@ -163,9 +163,9 @@ export class PaymentsDataService {
     });
   }
 
-  async checkIfBankAccountExists(userId: string) {
+  async checkIfBankAccountExists(userId: string, accountNumber: string) {
     const bankAccounts = await this.retrieveBankAccounts();
-    const acctExists = bankAccounts.some((acct) => acct.userId === userId);
+    const acctExists = bankAccounts.some((acct) => acct.userId === userId && acct.accountNumber === accountNumber);
     return acctExists;
   }
 
@@ -208,9 +208,9 @@ export class PaymentsDataService {
     return this.beneficiaries.asObservable();
   }
 
-  async getSingleBeneficiary(userId) {
+  async getActiveBeneficiary(userId) {
     const beneficiaries = await this.retrieveBeneficiaries();
-    const beneficiary = beneficiaries.find((beneficiary) => beneficiary.userId === userId);
+    const beneficiary = beneficiaries.find((beneficiary) => beneficiary.userId === userId && beneficiary.isActive);
     return beneficiary;
   }
 
@@ -246,9 +246,18 @@ export class PaymentsDataService {
     });
   }
 
-  async checkIfBeneficiaryExists(userId) {
+  async checkIfBeneficiaryExists(userId, accountNumber: string) {
     const beneficiaries = await this.retrieveBeneficiaries();
-    const beneficiaryExists = beneficiaries.some((beneficiary) => (beneficiary.userId === userId));
+    const beneficiaryExists = beneficiaries.some((beneficiary) => (beneficiary.userId === userId && beneficiary.accountNumber === accountNumber));
     return beneficiaryExists;
+  }
+
+  deactivateOldAccounts(accountNumber: string, userId: string, table: string) {
+    const params = [userId, accountNumber];
+    const query = `UPDATE ${table} SET is_active = 0 WHERE user_id = ? and account_number != ?`;
+    return this.db.executeSql(query, params).then(() => {
+    }).catch((error) => {
+      console.log(error);
+    });
   }
 }
