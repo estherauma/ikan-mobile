@@ -48,7 +48,7 @@ export class PaymentsPage extends BaseformPage implements OnInit {
 
   async pageSetup() {
     this.commonText = this.contentService.commonText;
-    this.submitButtonText = this.commonText?.save;
+    this.submitButtonText = (this.isEditingAcct || this.isEditingBeneficiary) ? this.commonText?.update : this.commonText?.save;
     const userData = await this.sharedMethods.getUserData();
     const profData: ProfileData = await this.profilesDataService.getSingleProfile(userData?.email);
     if (profData?.id) {
@@ -130,6 +130,7 @@ export class PaymentsPage extends BaseformPage implements OnInit {
       const result = await this.paymentsDataService.updateBankAccount(data);
       if (result?.rowsAffected > 0) {
         await this.paymentsDataService.deactivateOldAccounts(data?.accountNumber, data.userId, 'user_bank_accounts');
+        this.isAddingAcct = false;
         this.isEditingAcct = false;
         await this.pageSetup();
         this.sharedMethods.hideLoader();
@@ -147,6 +148,7 @@ export class PaymentsPage extends BaseformPage implements OnInit {
       if (insertId) {
         await this.paymentsDataService.deactivateOldAccounts(data?.accountNumber, data.userId, 'user_bank_accounts');
         this.isAddingAcct = false;
+        this.isEditingAcct = false;
         await this.pageSetup();
         this.sharedMethods.hideLoader();
         this.sharedMethods.showToast(this.acctPageText?.bankAccountCreateSuccess);
@@ -164,6 +166,7 @@ export class PaymentsPage extends BaseformPage implements OnInit {
   }
 
   async addNewAccount() {
+    this.isEditingBeneficiary = false;
     this.isEditingAcct = false;
     this.isAddingAcct = true;
     await this.pageSetup();
@@ -191,6 +194,7 @@ export class PaymentsPage extends BaseformPage implements OnInit {
       const result = await this.paymentsDataService.updateBeneficiary(data);
       if (result?.rowsAffected > 0) {
         await this.paymentsDataService.deactivateOldAccounts(data?.accountNumber, data.userId, 'user_beneficiaries');
+        this.isAddingBeneficiary = false;
         this.isEditingBeneficiary = false;
         this.pageSetup();
         this.sharedMethods.hideLoader();
@@ -209,6 +213,7 @@ export class PaymentsPage extends BaseformPage implements OnInit {
       if (insertId) {
         await this.paymentsDataService.deactivateOldAccounts(data?.accountNumber, data.userId, 'user_beneficiaries');
         this.isAddingBeneficiary = false;
+        this.isEditingBeneficiary = false;
         await this.pageSetup();
         this.sharedMethods.hideLoader();
         this.sharedMethods.showToast(this.benficiaryPageText?.beneficiaryCreateSuccess);
@@ -226,6 +231,7 @@ export class PaymentsPage extends BaseformPage implements OnInit {
   }
 
   async addNewBeneficiary () {
+    this.isEditingAcct = false;
     this.isEditingBeneficiary = false;
     this.isAddingBeneficiary = true;
     await this.pageSetup();
