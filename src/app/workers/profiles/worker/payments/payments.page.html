@@ -7,7 +7,9 @@
       [tunaFormGroup]="acctFormGroup"
       [tunaFormquestions]="acctFormQtns"
       [submitButtonText]="submitButtonText"
+      [showCancelButton]="isEditingAcct || isAddingAcct"
       (formValue)="onSubmitAccount($event)"
+      (cancel)="cancelAcctEdit()"
     >
     </app-form>
     <div *ngIf="isViewAcct" class="view">
@@ -62,7 +64,9 @@
       [tunaFormGroup]="beneficiaryFormGroup"
       [tunaFormquestions]="beneficiaryFormQtns"
       [submitButtonText]="submitButtonText"
+      [showCancelButton]="isEditingBeneficiary || isAddingBeneficiary"
       (formValue)="onSubmitBeneficiary($event)"
+      (cancel)="cancelBeneficiaryEdit()"
     >
     </app-form>
     <div *ngIf="isViewBeneficiary" class="view">
