@@ -9,4 +9,57 @@ ion-content {
       margin-bottom: 20px;
     }
   }
+
+  .view {
+    background: var(--ikan_skyblue_100);
+    padding: 20px;
+
+    h1 {
+      color: #80D8FE;
+      font-size: 1.3rem;
+      margin-bottom: 20px;
+    }
+
+    h4 {
+      font-family: GatwickBold;
+      font-size: 1.25rem;
+      text-align: left;
+      color: #191970;
+    }
+
+    .buttons {
+      display: flex;
+      justify-content: space-between;
+      padding: 0 5px;
+
+      ion-button {
+        text-transform: none;
+        --padding-start: 10px;
+        --padding-end: 10px;
+        text-wrap: wrap;
+        max-width: 45%;
+        --background: rgba(25, 25, 112, 0.8);
+        --border-radius: 4px;
+        border-radius: 4px;
+        margin: 0 10px;
+      }
+    }
+    ion-col {
+      padding: 2px 5px;
+    }
+    .label-col {
+      margin: 15px 0 0 0;
+    }
+
+    .label {
+      font-family: interRegular;
+      font-size: 1rem;
+      color: #3565FF;
+      --color: #3565FF;
+    }
+
+    .value {
+      font-size: 1.2rem;
+    }
+  }
 }
