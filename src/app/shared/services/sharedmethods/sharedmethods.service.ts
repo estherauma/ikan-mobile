@@ -215,7 +215,7 @@ export class SharedmethodsService {
       case UserRole.worker:
         return '/worker/profile';
       default:
-        return '';
+        return 'profile';
     }
   }
 }
