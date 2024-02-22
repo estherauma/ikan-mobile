@@ -2,7 +2,11 @@
 </app-header>
 
 <ion-content>
-  <app-dashboardelcomesection message="Welcome back. See notifications for latest updates." name="Tony" link="">
+  <app-dashboardelcomesection
+    message="Welcome back. See notifications for latest updates."
+    name="Tony"
+    (onProfileClick)="goToProfile()"
+  >
   </app-dashboardelcomesection>
   <div>
     <ion-card>
