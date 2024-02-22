@@ -166,3 +166,15 @@ ion-select {
     background: var(--ikan_darkblue_90);
   }
 }
+
+
+:host.profile-form {
+  form {
+    background: var(--ikan_skyblue_100);
+    padding: 20px;
+
+    ion-label{
+      color: var(--ikan_darkblue_90);
+    }
+  }
+}

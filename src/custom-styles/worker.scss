@@ -33,7 +33,8 @@ app-info {
   }
 }
 
-app-worker {
+app-worker,
+app-profile {
   app-button {
     #app-btn {
       min-width: 140px;
@@ -46,6 +47,26 @@ app-worker {
     h1 {
       margin: 15px 15px 0 0px;
       font-size: 1.5rem;
+    }
+  }
+}
+
+app-profile {
+  app-button {
+    #app-btn {
+      background: var(--ion-color-primary);
+      color: white !important;
+      border-radius: 20px;
+      span {
+        color: white !important;
+      }
+    }
+  }
+  form {
+    .title {
+      color: var(--ikan_darkblue_90);
+      font-family: 'interRegular' !important;
+      margin: 10px 10px 0px 10px;
     }
   }
 }
