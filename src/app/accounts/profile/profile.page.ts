@@ -117,7 +117,7 @@ export class ProfilePage extends BaseformPage implements OnInit {
   }
 
   async onSubmitRegDetails(data) {
-    this.sharedMethods.showLoader(this.regPageText?.savingRegDetails || 'Saving regDetails', 2000);
+    this.sharedMethods.showLoader(this.regPageText?.savingRegDetails, 2000);
     const userData = await this.sharedMethods.getUserData();
     const now = this.sharedMethods.getCurrentDateTime();
     data.email = this.profileData?.email;
@@ -128,14 +128,14 @@ export class ProfilePage extends BaseformPage implements OnInit {
       const result = await this.profilesDataService.updateProfileRegistrationDetails(data);
       if (result?.rowsAffected > 0) {
         this.sharedMethods.hideLoader();
-        this.sharedMethods.showToast(this.regPageText?.regDetailsUpdateSuccess || 'Registration details updated successfully');
+        this.sharedMethods.showToast(this.regPageText?.regDetailsUpdateSuccess);
       } else {
         this.sharedMethods.hideLoader();
-        this.sharedMethods.showToast(this.regPageText?.regDetailsUpdateFailure || 'Registration details update failed');
+        this.sharedMethods.showToast(this.regPageText?.regDetailsUpdateFailure);
       }
     } else {
       this.sharedMethods.hideLoader();
-      this.sharedMethods.showToast(this.regPageText?.updateProfileFirst || 'Please update your profile first');
+      this.sharedMethods.showToast(this.regPageText?.updateProfileFirst);
     }
   }
 }
