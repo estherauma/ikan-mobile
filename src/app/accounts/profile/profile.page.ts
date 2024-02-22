@@ -62,5 +62,35 @@ export class ProfilePage extends BaseformPage implements OnInit {
     this.pageFormGroup = new FormGroup(this.group);
   }
 
-  onSubmit(data) {}
+  async onSubmit(data) {
+    this.sharedMethods.showLoader(this.pageText?.savingProfile, 2000);
+    const userData = await this.sharedMethods.getUserData();
+    const now = this.sharedMethods.getCurrentDateTime();
+    data.userRole = userData.role;
+    data.updated_by = userData.id;
+    data.updated_at = now;
+    const profileExists = await this.profilesDataService.checkIfProfileExists(data.email);
+    if (profileExists) {
+      data = { ...this.profileData, ...data}
+      const result = await this.profilesDataService.update(data);
+      if (result?.rowsAffected > 0) {
+        this.sharedMethods.hideLoader();
+        this.sharedMethods.showToast(this.pageText?.profileUpdateSuccess);
+      } else {
+        this.sharedMethods.hideLoader();
+        this.sharedMethods.showToast(this.pageText?.profileUpdateFailure);
+      }
+    } else {
+      data.created_at = now;
+      data.created_by = userData.id;
+      const insertId = await this.profilesDataService.create(data);
+      if (insertId) {
+        this.sharedMethods.hideLoader();
+        this.sharedMethods.showToast(this.pageText?.profileCreateSuccess);
+      } else {
+        this.sharedMethods.hideLoader();
+        this.sharedMethods.showToast(this.pageText?.profileCreateFailure);
+      }
+    }
+  }
 }
