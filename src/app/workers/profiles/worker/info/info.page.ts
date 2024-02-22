@@ -65,8 +65,8 @@ export class InfoPage extends BaseformPage implements OnInit {
     const userData = await this.sharedMethods.getUserData();
     const now = this.sharedMethods.getCurrentDateTime();
     data.userRole = userData.role;
-    data.updated_by = userData.id;
-    data.updated_at = now;
+    data.updatedBy = userData.id;
+    data.updatedAt = now;
     const profileExists = await this.profilesDataService.checkIfProfileExists(data.email);
     if (profileExists) {
       data = { ...this.profileData, ...data}
@@ -79,8 +79,8 @@ export class InfoPage extends BaseformPage implements OnInit {
         this.sharedMethods.showToast(this.pageText?.profileUpdateFailure);
       }
     } else {
-      data.created_at = now;
-      data.created_by = userData.id;
+      data.createdAt = now;
+      data.createdBy = userData.id;
       const insertId = await this.profilesDataService.create(data);
       if (insertId) {
         this.sharedMethods.hideLoader();

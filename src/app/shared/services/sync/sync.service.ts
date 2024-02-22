@@ -66,7 +66,7 @@ export class SyncService {
     this.syncVessels();
     this.syncContracts();
     this.syncSurveyResponses();
-    // this.fetchProfile();
+    this.fetchProfile();
     this.fetchCompanies();
     this.fetchVessels();
     this.fetchContracts(); // clauses are fetched after contracts have been fetched in the fetchContracts method

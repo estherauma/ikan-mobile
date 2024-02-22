@@ -55,7 +55,7 @@ export class ProfilePage extends BaseformPage implements OnInit {
         entry.questionType = 'email';
         this.group[entry.key] = new FormControl(value, [Validators.required, Validators.email]);
       }
-      if (entry.key === 'lastName' || entry.key === 'addressLine2' || entry.key === 'addressLine3' || entry.key === 'postalCode') {
+      if (entry.key === 'lastName' || entry.key === 'addressLine2' || entry.key === 'addressLine3' || entry.key === 'postalCode' || entry.key === 'mobile') {
         this.group[entry.key] = new FormControl(value, []);
       }
     });
@@ -67,8 +67,8 @@ export class ProfilePage extends BaseformPage implements OnInit {
     const userData = await this.sharedMethods.getUserData();
     const now = this.sharedMethods.getCurrentDateTime();
     data.userRole = userData.role;
-    data.updated_by = userData.id;
-    data.updated_at = now;
+    data.updatedBy = userData.id;
+    data.updatedAt = now;
     const profileExists = await this.profilesDataService.checkIfProfileExists(data.email);
     if (profileExists) {
       data = { ...this.profileData, ...data}
@@ -81,8 +81,8 @@ export class ProfilePage extends BaseformPage implements OnInit {
         this.sharedMethods.showToast(this.pageText?.profileUpdateFailure);
       }
     } else {
-      data.created_at = now;
-      data.created_by = userData.id;
+      data.createdAt = now;
+      data.createdBy = userData.id;
       const insertId = await this.profilesDataService.create(data);
       if (insertId) {
         this.sharedMethods.hideLoader();
