@@ -21,6 +21,7 @@ export class ProfilePage extends BaseformPage implements OnInit {
   regGroup = {};
   regFormGroup: FormGroup;
   regPageText: any;
+  isAgent: boolean = false;
 
   constructor(
     public contentService: ContentService,
@@ -35,6 +36,7 @@ export class ProfilePage extends BaseformPage implements OnInit {
     this.pageTitle = this.commonText?.myProfile || this.pageTitle;
     this.submitButtonText = this.commonText?.save;
     this.userData = await this.sharedMethods.getUserData();
+    this.isAgent = this.userData?.role === UserRole.indonesianAgent || this.userData?.role === UserRole.taiwaneseAgent;
     const profData = await this.profilesDataService.getSingleProfile(this.userData?.email);
     if (profData?.id) {
       this.profileData = profData;

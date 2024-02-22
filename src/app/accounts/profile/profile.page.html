@@ -24,7 +24,7 @@
     >
     </app-form>
   </div>
-  <div class="registration-details-form">
+  <div *ngIf="isAgent" class="registration-details-form">
     <app-form
       class="registration-details-form"
       [tunaFormGroup]="regFormGroup"
