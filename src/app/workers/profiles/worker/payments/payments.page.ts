@@ -32,6 +32,8 @@ export class PaymentsPage extends BaseformPage implements OnInit {
   isEditingBeneficiary: boolean = false;
   isAddingAcct: boolean = false;
   isAddingBeneficiary: boolean = false;
+  acctPageTitle: string = '';
+  beneficiaryPageTitle: string = '';
   
   constructor(
     public contentService: ContentService,
@@ -70,6 +72,7 @@ export class PaymentsPage extends BaseformPage implements OnInit {
   initializeForms() {
     // User account form
     const acctInfoPageData = this.contentService.getContentByPropertyName('accountinformation');
+    this.acctPageTitle = acctInfoPageData?.pageTitle;
     this.acctPageText = this.sharedMethods.convertAdditionalTextToObj(acctInfoPageData?.additionalText);
     this.acctFormQtns = acctInfoPageData?.formQuestions;
     this.acctFormQtns.forEach((entry) => {
@@ -94,6 +97,7 @@ export class PaymentsPage extends BaseformPage implements OnInit {
 
     // Beneficiary form
     const beneficiaryPageData = this.contentService.getContentByPropertyName('beneficiaryaccountinformation');
+    this.beneficiaryPageTitle = beneficiaryPageData?.pageTitle;
     this.benficiaryPageText = this.sharedMethods.convertAdditionalTextToObj(beneficiaryPageData?.additionalText);
     this.beneficiaryFormQtns = beneficiaryPageData?.formQuestions;
     this.beneficiaryFormQtns?.forEach((entry) => {
