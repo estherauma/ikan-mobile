@@ -26,6 +26,19 @@ app-info {
       margin: 10px 0;
     }
   }
+  .edit-profile {
+    #app-btn {
+      background: var(--ion-color-primary);
+      min-width: 100px !important;
+      text-transform: none;
+      height: 30px;
+      border-radius: 25px;
+    }
+    ion-button::part(native) {
+      background: unset;
+      margin: unset;
+    }
+  }
   form {
     button[type="submit"] {
       display: unset !important;

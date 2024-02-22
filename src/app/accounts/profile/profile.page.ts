@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormControl, Validators, FormGroup } from '@angular/forms';
 import { ProfilesDataService } from 'src/app/profiles/data/profiles-data.service';
 import { BaseformPage } from 'src/app/shared/components/baseform/baseform.page';
@@ -29,7 +29,6 @@ export class ProfilePage extends BaseformPage implements OnInit {
     public contentService: ContentService,
     public sharedMethods: SharedmethodsService,
     public profilesDataService: ProfilesDataService,
-    public cdr: ChangeDetectorRef,
   ) {
     super(contentService);
   }
@@ -48,7 +47,6 @@ export class ProfilePage extends BaseformPage implements OnInit {
     if (profData?.id) {
       this.profileData = profData;
     }
-
     // This ensures that the profile view happens when some of the fields have values otherwise the view would be blank
     this.isViewProfile = (this.profileData?.id && this.profileData?.addressLine1 && this.profileData?.firstName && this.profileData?.email && this.profileData?.telephone) ? true : false;
     this.initializeForm();
@@ -61,6 +59,7 @@ export class ProfilePage extends BaseformPage implements OnInit {
     this.formQuestions = pageData?.formQuestions;
     this.formQuestions?.forEach((entry) => {
       this.viewData[entry.key] = entry?.label;
+      
       // this field will not be displayed
       if (entry.key === 'address') {
         return;
@@ -85,6 +84,7 @@ export class ProfilePage extends BaseformPage implements OnInit {
     this.regFormQtns = regPageData?.formQuestions;
     this.regFormQtns?.forEach((entry) => {
       this.viewData[entry.key] = entry?.label;
+      
       // this field will not be displayed
       if (entry.key === 'registrationDetails') {
         return;

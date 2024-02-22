@@ -96,8 +96,8 @@ export class ProfilesDataService {
       data?.position, data?.isActive, data?.isVerified, data?.lastLogin, data?.userRole,
       data?.createdAt, data?.updatedAt, data?.createdBy, data?.updatedBy];
     
-    return this.db.executeSql(query, params).then((result) => {
-      this.retrieveProfiles();
+    return this.db.executeSql(query, params).then(async(result) => {
+      await this.retrieveProfiles();
       return result.insertId;
     }).catch((e) => {
       console.error(e);
@@ -116,8 +116,8 @@ export class ProfilesDataService {
       data?.position, data?.isActive, data?.isVerified, data?.lastLogin, data?.userRole,
       data?.createdAt, data?.updatedAt, data?.createdBy, data?.updatedBy, data?.id];
 
-    return this.db.executeSql(query, params).then((result) => {
-      this.retrieveProfiles();
+    return this.db.executeSql(query, params).then(async(result) => {
+      await this.retrieveProfiles();
       return result.insertId;
     }).catch((e) => {
       console.error(e);

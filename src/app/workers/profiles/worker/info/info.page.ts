@@ -16,6 +16,8 @@ export class InfoPage extends BaseformPage implements OnInit {
   submitButtonText = 'Save';
   userData: UserData;
   profileData: ProfileData;
+  isViewInfo: boolean = false;
+  viewInfo: any = {};
 
   constructor(
     public contentService: ContentService,
@@ -26,6 +28,10 @@ export class InfoPage extends BaseformPage implements OnInit {
   }
 
   async ngOnInit() {
+    await this.pageSetup();
+  }
+
+  async pageSetup() {
     this.commonText = this.contentService.commonText;
     this.submitButtonText = this.commonText?.save;
     this.userData = await this.sharedMethods.getUserData();
@@ -33,6 +39,8 @@ export class InfoPage extends BaseformPage implements OnInit {
     if (profData?.id) {
       this.profileData = profData;
     }
+    // This ensures that the profile view happens when some of the fields have values otherwise the view would be blank
+    this.isViewInfo = (this.profileData?.id && this.profileData?.addressLine1 && this.profileData?.firstName && this.profileData?.email && this.profileData?.mobile) ? true : false;
     this.initializeForm();
   }
 
@@ -41,6 +49,8 @@ export class InfoPage extends BaseformPage implements OnInit {
     this.pageText = this.sharedMethods.convertAdditionalTextToObj(pageData?.additionalText);
     this.formQuestions = pageData?.formQuestions;
     this.formQuestions?.forEach((entry) => {
+      this.viewInfo[entry.key] = entry?.label;
+
       // this field will not be displayed
       if (entry.key === 'address') {
         return;
@@ -72,6 +82,7 @@ export class InfoPage extends BaseformPage implements OnInit {
       data = { ...this.profileData, ...data}
       const result = await this.profilesDataService.update(data);
       if (result?.rowsAffected > 0) {
+        await this.pageSetup();
         this.sharedMethods.hideLoader();
         this.sharedMethods.showToast(this.pageText?.profileUpdateSuccess);
       } else {
@@ -83,6 +94,7 @@ export class InfoPage extends BaseformPage implements OnInit {
       data.createdBy = userData.id;
       const insertId = await this.profilesDataService.create(data);
       if (insertId) {
+        await this.pageSetup();
         this.sharedMethods.hideLoader();
         this.sharedMethods.showToast(this.pageText?.profileCreateSuccess);
       } else {
@@ -92,5 +104,7 @@ export class InfoPage extends BaseformPage implements OnInit {
     }
   }
 
-
+  editInfo() {
+    this.isViewInfo = false;
+  }
 }
