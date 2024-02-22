@@ -137,8 +137,8 @@ export class ProfilesDataService {
       data.position, data.isActive, data.isVerified, data.lastLogin, data.userRole,
       data.updatedAt, data.updatedBy, data.email];
     
-    return this.db.executeSql(query, params).then((result) => {
-      this.retrieveProfiles();
+    return this.db.executeSql(query, params).then(async(result) => {
+      await this.retrieveProfiles();
       return result;
     }).catch((e) => {
       console.error(e);
@@ -156,8 +156,8 @@ export class ProfilesDataService {
     const query = 'UPDATE profiles SET registration_number = ?, passport_number = ?, updated_at = ?, updated_by = ? \
       WHERE email = ?';
     const params = [data.registrationNumber, data.passportNumber, data.updatedAt, data.updatedBy, data.email];
-    return this.db.executeSql(query, params).then((result) => {
-      this.retrieveProfiles();
+    return this.db.executeSql(query, params).then(async (result) => {
+      await this.retrieveProfiles();
       return result;
     }).catch((e) => {
       console.error(e);

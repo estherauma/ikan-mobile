@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { FormControl, Validators, FormGroup } from '@angular/forms';
 import { ProfilesDataService } from 'src/app/profiles/data/profiles-data.service';
 import { BaseformPage } from 'src/app/shared/components/baseform/baseform.page';
@@ -22,17 +22,24 @@ export class ProfilePage extends BaseformPage implements OnInit {
   regFormGroup: FormGroup;
   regPageText: any;
   isAgent: boolean = false;
+  isViewProfile: boolean = false;
+  viewData: any = {};
 
   constructor(
     public contentService: ContentService,
     public sharedMethods: SharedmethodsService,
     public profilesDataService: ProfilesDataService,
+    public cdr: ChangeDetectorRef,
   ) {
     super(contentService);
   }
 
   async ngOnInit() {
-    this.commonText = this.contentService?.commonText;
+    await this.pageSetup();
+  }
+
+  async pageSetup() {
+    this.commonText = await this.contentService?.commonText;
     this.pageTitle = this.commonText?.myProfile || this.pageTitle;
     this.submitButtonText = this.commonText?.save;
     this.userData = await this.sharedMethods.getUserData();
@@ -41,6 +48,9 @@ export class ProfilePage extends BaseformPage implements OnInit {
     if (profData?.id) {
       this.profileData = profData;
     }
+
+    // This ensures that the profile view happens when some of the fields have values otherwise the view would be blank
+    this.isViewProfile = (this.profileData?.id && this.profileData?.addressLine1 && this.profileData?.firstName && this.profileData?.email && this.profileData?.telephone) ? true : false;
     this.initializeForm();
   }
 
@@ -50,6 +60,7 @@ export class ProfilePage extends BaseformPage implements OnInit {
     this.pageText = this.sharedMethods.convertAdditionalTextToObj(pageData?.additionalText);
     this.formQuestions = pageData?.formQuestions;
     this.formQuestions?.forEach((entry) => {
+      this.viewData[entry.key] = entry?.label;
       // this field will not be displayed
       if (entry.key === 'address') {
         return;
@@ -73,6 +84,7 @@ export class ProfilePage extends BaseformPage implements OnInit {
     this.regPageText = this.sharedMethods.convertAdditionalTextToObj(regPageData?.additionalText);
     this.regFormQtns = regPageData?.formQuestions;
     this.regFormQtns?.forEach((entry) => {
+      this.viewData[entry.key] = entry?.label;
       // this field will not be displayed
       if (entry.key === 'registrationDetails') {
         return;
@@ -96,6 +108,7 @@ export class ProfilePage extends BaseformPage implements OnInit {
       data = { ...this.profileData, ...data}
       const result = await this.profilesDataService.update(data);
       if (result?.rowsAffected > 0) {
+        await this.pageSetup();
         this.sharedMethods.hideLoader();
         this.sharedMethods.showToast(this.pageText?.profileUpdateSuccess);
       } else {
@@ -107,6 +120,7 @@ export class ProfilePage extends BaseformPage implements OnInit {
       data.createdBy = userData.id;
       const insertId = await this.profilesDataService.create(data);
       if (insertId) {
+        await this.pageSetup();
         this.sharedMethods.hideLoader();
         this.sharedMethods.showToast(this.pageText?.profileCreateSuccess);
       } else {
@@ -127,6 +141,7 @@ export class ProfilePage extends BaseformPage implements OnInit {
     if (profileExists) {
       const result = await this.profilesDataService.updateProfileRegistrationDetails(data);
       if (result?.rowsAffected > 0) {
+        await this.pageSetup();
         this.sharedMethods.hideLoader();
         this.sharedMethods.showToast(this.regPageText?.regDetailsUpdateSuccess);
       } else {
@@ -137,5 +152,9 @@ export class ProfilePage extends BaseformPage implements OnInit {
       this.sharedMethods.hideLoader();
       this.sharedMethods.showToast(this.regPageText?.updateProfileFirst);
     }
+  }
+
+  editProfile() {
+    this.isViewProfile = false;
   }
 }
