@@ -37,6 +37,7 @@
                   type="text"
                   placeholder="{{question?.placeholder || typeHereText}}"
                   formControlName="{{question.key}}"
+                  inputmode="{{question.inputmode || undefined}}"
                 ></ion-input>
               </ion-col>
 
@@ -648,16 +649,25 @@
     </div>
   </div>
 
-  <ion-grid class="buttons" *ngIf="!useCustomSubmitButton">
-    <ion-col size="5">
+  <ion-row class="buttons" *ngIf="!useCustomSubmitButton">
+    <ion-col *ngIf="showCancelButton" size="6">
+      <app-button
+        class="form-btn cancel-btn"
+        [config]="btnConfig"
+        [fill]="btnFill"
+        [title]="commonText?.cancel.toUpperCase()"
+        (onClick)="onCancel()"
+      ></app-button>
+    </ion-col>
+    <ion-col [size]="showCancelButton ? '6' : '12'">
       <app-button
         class="form-btn"
-        [type]="'submit'"
+        type="submit"
         [config]="btnConfig"
         [fill]="btnFill"
         [disabled]="!tunaFormGroup.valid || isSubmitting"
         [title]="submitButtonText?.toUpperCase()"
       ></app-button>
     </ion-col>
-  </ion-grid>
+  </ion-row>
 </form>

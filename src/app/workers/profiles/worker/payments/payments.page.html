@@ -1,22 +1,166 @@
 
 <ion-content [fullscreen]="true">
-  <app-form
-    class="worker-profile-payment-acct"
-    [tunaFormGroup]="acctFormGroup"
-    [tunaFormquestions]="acctFormQtns"
-    [submitButtonText]="submitButtonText"
-    (formValue)="onSubmit($event)"
-  >
-  </app-form>
+  <div class="account-section">
+    <app-form
+      *ngIf="!isViewAcct"
+      class="worker-profile-payment-acct"
+      [tunaFormGroup]="acctFormGroup"
+      [tunaFormquestions]="acctFormQtns"
+      [submitButtonText]="submitButtonText"
+      [showCancelButton]="isEditingAcct || isAddingAcct"
+      (formValue)="onSubmitAccount($event)"
+      (cancel)="cancelAcctEdit()"
+    >
+    </app-form>
+    <div *ngIf="isViewAcct" class="view">
+      <ion-row>
+        <ion-col size="12">
+          <h4>{{ acctPageTitle }}</h4>
+        </ion-col>
+        <ion-col size="12" class="buttons">
+          <ion-button fill="solid" (click)="editAccount()">{{ acctPageText?.editAccount }}</ion-button>
+          <ion-button fill="solid" (click)="addNewAccount()">{{ acctPageText?.addNewAccount }}</ion-button>
+        </ion-col>
+      </ion-row>
+      <ion-row *ngIf="acctData?.accountName">
+        <ion-col size="12" class="label-col">
+          <ion-label class="label">{{ acctPageText?.nameOnAccount }}</ion-label>
+        </ion-col>
+        <ion-col size="12">
+          <ion-label class="value">{{ acctData?.accountName }}</ion-label>
+        </ion-col>
+      </ion-row>
+      <ion-row *ngIf="acctData?.accountNumber">
+        <ion-col size="12" class="label-col">
+          <ion-label class="label">{{ acctPageText?.accountNumber }}</ion-label>
+        </ion-col>
+        <ion-col size="12">
+          <ion-label class="value">{{ acctData?.accountNumber }}</ion-label>
+        </ion-col>
+      </ion-row>
+      <ion-row *ngIf="acctData?.bankName">
+        <ion-col size="12" class="label-col">
+          <ion-label class="label">{{ acctPageText?.bankName }}</ion-label>
+        </ion-col>
+        <ion-col size="12">
+          <ion-label class="value">{{ acctData?.bankName }}</ion-label>
+        </ion-col>
+      </ion-row>
+      <ion-row *ngIf="acctData?.bankBranch">
+        <ion-col size="12" class="label-col">
+          <ion-label class="label">{{ acctPageText?.bankBranch }}</ion-label>
+        </ion-col>
+        <ion-col size="12">
+          <ion-label class="value">{{ acctData?.bankBranch }}</ion-label>
+        </ion-col>
+      </ion-row>
+      <ion-row *ngIf="acctData?.swiftCode">
+        <ion-col size="12" class="label-col">
+          <ion-label class="label">{{ acctPageText?.sortCode }}</ion-label>
+        </ion-col>
+        <ion-col size="12">
+          <ion-label class="value">{{ acctData?.swiftCode  }}</ion-label>
+        </ion-col>
+      </ion-row>
+      <ion-row *ngIf="acctData?.routingNumber">
+        <ion-col size="12" class="label-col">
+          <ion-label class="label">{{ acctPageText?.routingNumber }}</ion-label>
+        </ion-col>
+        <ion-col size="12">
+          <ion-label class="value">{{ acctData?.routingNumber }}</ion-label>
+        </ion-col>
+      </ion-row>
+    </div>
+  </div>
 
-  <app-form
-    class="worker-profile-payment-beneficiary"
-    [tunaFormGroup]="beneficiaryFormGroup"
-    [tunaFormquestions]="beneficiaryFormQtns"
-    [submitButtonText]="submitButtonText"
-    (formValue)="onSubmit($event)"
-  >
-  </app-form>
+  <div class="beneficiary-section">
+    <app-form
+      *ngIf="!isViewBeneficiary"
+      class="worker-profile-payment-beneficiary"
+      [tunaFormGroup]="beneficiaryFormGroup"
+      [tunaFormquestions]="beneficiaryFormQtns"
+      [submitButtonText]="submitButtonText"
+      [showCancelButton]="isEditingBeneficiary || isAddingBeneficiary"
+      (formValue)="onSubmitBeneficiary($event)"
+      (cancel)="cancelBeneficiaryEdit()"
+    >
+    </app-form>
+    <div *ngIf="isViewBeneficiary" class="view">
+      <ion-row>
+        <ion-col size="12">
+          <h4>{{ beneficiaryPageTitle }}</h4>
+        </ion-col>
+        <ion-col size="12" class="buttons">
+          <ion-button fill="solid" (click)="editBeneficiary()">{{ benficiaryPageText?.editBeneficiary }}</ion-button>
+          <ion-button fill="solid" (click)="addNewBeneficiary()">{{ benficiaryPageText?.addNewBeneficiary }}</ion-button>
+        </ion-col>
+      </ion-row>
+      <ion-row *ngIf="beneficiaryData?.fName">
+        <ion-col size="12" class="label-col">
+          <ion-label class="label">{{ benficiaryPageText?.fName }}</ion-label>
+        </ion-col>
+        <ion-col size="12">
+          <ion-label class="value">{{ beneficiaryData?.fName }}</ion-label>
+        </ion-col>
+      </ion-row>
+      <ion-row *ngIf="beneficiaryData?.lname">
+        <ion-col size="12" class="label-col">
+          <ion-label class="label">{{ benficiaryPageText?.surname }}</ion-label>
+        </ion-col>
+        <ion-col size="12">
+          <ion-label class="value">{{ beneficiaryData?.lname }}</ion-label>
+        </ion-col>
+      </ion-row>
+      <ion-row *ngIf="beneficiaryData?.accountName">
+        <ion-col size="12" class="label-col">
+          <ion-label class="label">{{ benficiaryPageText?.nameOnAccount }}</ion-label>
+        </ion-col>
+        <ion-col size="12">
+          <ion-label class="value">{{ beneficiaryData?.accountName }}</ion-label>
+        </ion-col>
+      </ion-row>
+      <ion-row *ngIf="beneficiaryData?.accountNumber">
+        <ion-col size="12" class="label-col">
+          <ion-label class="label">{{ benficiaryPageText?.accountNumber }}</ion-label>
+        </ion-col>
+        <ion-col size="12">
+          <ion-label class="value">{{ beneficiaryData?.accountNumber }}</ion-label>
+        </ion-col>
+      </ion-row>
+      <ion-row *ngIf="beneficiaryData?.bankName">
+        <ion-col size="12" class="label-col">
+          <ion-label class="label">{{ benficiaryPageText?.bankName }}</ion-label>
+        </ion-col>
+        <ion-col size="12">
+          <ion-label class="value">{{ beneficiaryData?.bankName }}</ion-label>
+        </ion-col>
+      </ion-row>
+      <ion-row *ngIf="beneficiaryData?.bankBranch">
+        <ion-col size="12" class="label-col">
+          <ion-label class="label">{{ benficiaryPageText?.bankBranch }}</ion-label>
+        </ion-col>
+        <ion-col size="12">
+          <ion-label class="value">{{ beneficiaryData?.bankBranch }}</ion-label>
+        </ion-col>
+      </ion-row>
+      <ion-row *ngIf="beneficiaryData?.swiftCode">
+        <ion-col size="12" class="label-col">
+          <ion-label class="label">{{ benficiaryPageText?.sortCode }}</ion-label>
+        </ion-col>
+        <ion-col size="12">
+          <ion-label class="value">{{ beneficiaryData?.swiftCode  }}</ion-label>
+        </ion-col>
+      </ion-row>
+      <ion-row *ngIf="beneficiaryData?.routingNumber">
+        <ion-col size="12" class="label-col">
+          <ion-label class="label">{{ benficiaryPageText?.routingNumber }}</ion-label>
+        </ion-col>
+        <ion-col size="12">
+          <ion-label class="value">{{ beneficiaryData?.routingNumber }}</ion-label>
+        </ion-col>
+      </ion-row>
+    </div>
+  </div>
 
   <!-- Payment history commented out for now -->
   <!-- <div class="ion-padding pay-history">

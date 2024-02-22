@@ -1,7 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, Validators, FormGroup } from '@angular/forms';
+import { PaymentsDataService } from 'src/app/payments/data/payments-data.service';
+import { ProfilesDataService } from 'src/app/profiles/data/profiles-data.service';
 import { BaseformPage } from 'src/app/shared/components/baseform/baseform.page';
 import { ContentService } from 'src/app/shared/services/content/content.service';
+import { SharedmethodsService } from 'src/app/shared/services/sharedmethods/sharedmethods.service';
+import { ProfileData } from 'src/app/shared/services/sync/types';
 
 @Component({
   selector: 'app-payments',
@@ -16,9 +20,26 @@ export class PaymentsPage extends BaseformPage implements OnInit {
   beneficiaryGroup = {};
   acctFormGroup: FormGroup;
   beneficiaryFormGroup: FormGroup;
+  acctData: any;
+  beneficiaryData: any;
+  userId: any;
+  profileData: ProfileData;
+  acctPageText: any;
+  benficiaryPageText: any;
+  isViewAcct: boolean = false;
+  isViewBeneficiary: boolean = false;
+  isEditingAcct: boolean = false;
+  isEditingBeneficiary: boolean = false;
+  isAddingAcct: boolean = false;
+  isAddingBeneficiary: boolean = false;
+  acctPageTitle: string = '';
+  beneficiaryPageTitle: string = '';
   
   constructor(
-    public contentService: ContentService
+    public contentService: ContentService,
+    public sharedMethods: SharedmethodsService,
+    public paymentsDataService: PaymentsDataService,
+    public profilesDataService: ProfilesDataService,
   ) {
     super(contentService);
   }
@@ -27,29 +48,208 @@ export class PaymentsPage extends BaseformPage implements OnInit {
     this.pageSetup();
   }
 
-  pageSetup() {
+  async pageSetup() {
     this.commonText = this.contentService.commonText;
-    this.submitButtonText = this.commonText?.save;
+    this.submitButtonText = (this.isEditingAcct || this.isEditingBeneficiary) ? this.commonText?.update : this.commonText?.save;
+    const userData = await this.sharedMethods.getUserData();
+    const profData: ProfileData = await this.profilesDataService.getSingleProfile(userData?.email);
+    if (profData?.id) {
+      this.profileData = profData;
+    }
+    const acctData = await this.paymentsDataService.getActiveBankAccount(this.profileData?.id);
+    if (acctData?.id) {
+      this.isViewAcct = true;
+      this.acctData = acctData;
+    }
+    const beneficiaryData = await this.paymentsDataService.getActiveBeneficiary(this.profileData?.id);
+    if (beneficiaryData?.id) {
+      this.isViewBeneficiary = true;
+      this.beneficiaryData = beneficiaryData;
+    }
+    this.initializeForms();
+  }
 
-    // TODO: maintain leading zeros for account number
+  initializeForms() {
+    // User account form
     const acctInfoPageData = this.contentService.getContentByPropertyName('accountinformation');
+    this.acctPageTitle = acctInfoPageData?.pageTitle;
+    this.acctPageText = this.sharedMethods.convertAdditionalTextToObj(acctInfoPageData?.additionalText);
     this.acctFormQtns = acctInfoPageData?.formQuestions;
-
-    const beneficiaryPageData = this.contentService.getContentByPropertyName('beneficiaryaccountinformation');
-    this.beneficiaryFormQtns = beneficiaryPageData?.formQuestions;
-
     this.acctFormQtns.forEach((entry) => {
-      this.acctGroup[entry.key] = new FormControl('', [Validators.required]);
+      // this field will not be displayed
+      if (entry.key === 'accountInformation') {
+        return;
+      }
+
+      const value = this.isEditingAcct ? (this.acctData?.[entry.key] || '') : '';
+      this.acctGroup[entry.key] = new FormControl(value, [Validators.required]);
+
+      if (entry.key === 'accountNumber') {
+        entry.inputmode = 'numeric';
+        this.acctGroup[entry.key] = new FormControl(value, [Validators.required]);
+      }
+      if (entry.key === 'lastName' || entry.key === 'lName' || entry.key === 'swiftCode'||
+        entry.key === 'bankBranch' || entry.key === 'routingNumber') {
+        this.acctGroup[entry.key] = new FormControl(value, []);
+      }
     });
+    
     this.acctFormGroup = new FormGroup(this.acctGroup);
 
+    // Beneficiary form
+    const beneficiaryPageData = this.contentService.getContentByPropertyName('beneficiaryaccountinformation');
+    this.beneficiaryPageTitle = beneficiaryPageData?.pageTitle;
+    this.benficiaryPageText = this.sharedMethods.convertAdditionalTextToObj(beneficiaryPageData?.additionalText);
+    this.beneficiaryFormQtns = beneficiaryPageData?.formQuestions;
     this.beneficiaryFormQtns?.forEach((entry) => {
-      this.beneficiaryGroup[entry.key] = new FormControl('', [Validators.required]);
+      // this field will not be displayed
+      if (entry.key === 'beneficiaryAccountInformation') {
+        return;
+      }
+
+      const value = this.isEditingBeneficiary ? (this.beneficiaryData?.[entry.key] || '') : '';
+      this.beneficiaryGroup[entry.key] = new FormControl(value, [Validators.required]);
+
+      if (entry.key === 'accountNumber') {
+        entry.inputmode = 'numeric';
+        this.beneficiaryGroup[entry.key] = new FormControl(value, [Validators.required]);
+      }
+      if (entry.key === 'lastName' || entry.key === 'lName' || entry.key === 'swiftCode'||
+      entry.key === 'bankBranch' || entry.key === 'routingNumber') {
+        this.beneficiaryGroup[entry.key] = new FormControl(value, []);
+      }
     });
     this.beneficiaryFormGroup = new FormGroup(this.beneficiaryGroup);
   }
 
-  onSubmit(data) {}
+  async onSubmitAccount(data) {
+    this.sharedMethods.showLoader(this.acctPageText?.savingAccountInfo, 2000);
+    const userData = await this.sharedMethods.getUserData();
+    const now = this.sharedMethods.getCurrentDateTime();
+    data.updatedBy = userData.id;
+    data.updatedAt = now;
+    data.userId = this.profileData?.id;
+
+    const accountExists = await this.paymentsDataService.checkIfBankAccountExists(data.userId, data?.accountNumber);
+    if (accountExists) {
+      data = { ...this.acctData, ...data};
+      const result = await this.paymentsDataService.updateBankAccount(data);
+      if (result?.rowsAffected > 0) {
+        await this.paymentsDataService.deactivateOldAccounts(data?.accountNumber, data.userId, 'user_bank_accounts');
+        this.isAddingAcct = false;
+        this.isEditingAcct = false;
+        await this.pageSetup();
+        this.sharedMethods.hideLoader();
+        this.sharedMethods.showToast(this.acctPageText?.bankAccountUpdateSuccess);
+      } else {
+        this.sharedMethods.hideLoader();
+        this.sharedMethods.showToast(this.acctPageText?.bankAccountUpdateFailure);
+      }
+    } else {
+      data.appRef = this.sharedMethods.generateAppRef();
+      data.isActive = true;
+      data.createdAt = now;
+      data.createdBy = userData.id;
+      const insertId = await this.paymentsDataService.createBankAccount(data);
+      if (insertId) {
+        await this.paymentsDataService.deactivateOldAccounts(data?.accountNumber, data.userId, 'user_bank_accounts');
+        this.isAddingAcct = false;
+        this.isEditingAcct = false;
+        await this.pageSetup();
+        this.sharedMethods.hideLoader();
+        this.sharedMethods.showToast(this.acctPageText?.bankAccountCreateSuccess);
+      } else {
+        this.sharedMethods.hideLoader();
+        this.sharedMethods.showToast(this.acctPageText?.bankAccountCreateFailure);
+      }
+    }
+  }
+
+  async editAccount() {
+    this.isEditingAcct = true;
+    await this.pageSetup();
+    this.isViewAcct = false;
+  }
+
+  async addNewAccount() {
+    this.isEditingBeneficiary = false;
+    this.isEditingAcct = false;
+    this.isAddingAcct = true;
+    await this.pageSetup();
+    this.isViewAcct = false;
+  }
+
+  async cancelAcctEdit() {
+    this.isEditingAcct = false;
+    this.isAddingAcct = false;
+    this.isViewAcct = true;
+    await this.pageSetup();
+  }
+
+  async onSubmitBeneficiary(data) {
+    this.sharedMethods.showLoader(this.benficiaryPageText?.savingBeneficiary, 2000);
+    const userData = await this.sharedMethods.getUserData();
+    const now = this.sharedMethods.getCurrentDateTime();
+    data.updatedBy = userData.id;
+    data.updatedAt = now;
+    data.userId = this.profileData?.id;
+
+    const beneficiaryExists = await this.paymentsDataService.checkIfBeneficiaryExists(data.userId, data.accountNumber);
+    if (beneficiaryExists) {
+      data = { ...this.beneficiaryData, ...data};
+      const result = await this.paymentsDataService.updateBeneficiary(data);
+      if (result?.rowsAffected > 0) {
+        await this.paymentsDataService.deactivateOldAccounts(data?.accountNumber, data.userId, 'user_beneficiaries');
+        this.isAddingBeneficiary = false;
+        this.isEditingBeneficiary = false;
+        this.pageSetup();
+        this.sharedMethods.hideLoader();
+        this.sharedMethods.showToast(this.benficiaryPageText?.beneficiaryUpdateSuccess);
+      } else {
+        this.sharedMethods.hideLoader();
+        this.sharedMethods.showToast(this.benficiaryPageText?.beneficiaryUpdateFailure);
+      }
+    } else {
+      data.appRef = this.sharedMethods.generateAppRef();
+      data.isActive = true;
+      data.createdAt = now;
+      data.createdBy = userData.id;
+
+      const insertId = await this.paymentsDataService.createBeneficiary(data);
+      if (insertId) {
+        await this.paymentsDataService.deactivateOldAccounts(data?.accountNumber, data.userId, 'user_beneficiaries');
+        this.isAddingBeneficiary = false;
+        this.isEditingBeneficiary = false;
+        await this.pageSetup();
+        this.sharedMethods.hideLoader();
+        this.sharedMethods.showToast(this.benficiaryPageText?.beneficiaryCreateSuccess);
+      } else {
+        this.sharedMethods.hideLoader();
+        this.sharedMethods.showToast(this.benficiaryPageText?.beneficiaryCreateFailure);
+      }
+    }
+  }
+
+  async editBeneficiary () {
+    this.isEditingBeneficiary = true;
+    await this.pageSetup();
+    this.isViewBeneficiary = false;
+  }
+
+  async addNewBeneficiary () {
+    this.isEditingAcct = false;
+    this.isEditingBeneficiary = false;
+    this.isAddingBeneficiary = true;
+    await this.pageSetup();
+    this.isViewBeneficiary = false;
+  }
+
+  async cancelBeneficiaryEdit () {
+    this.isEditingBeneficiary = false;
+    this.isAddingBeneficiary = true;
+    this.isViewBeneficiary = true;
+    await this.pageSetup();
+  }
 
   viewAll() {}
 
