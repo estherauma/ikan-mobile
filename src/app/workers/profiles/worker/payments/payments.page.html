@@ -15,16 +15,16 @@
     <div *ngIf="isViewAcct" class="view">
       <ion-row>
         <ion-col size="12">
-          <h4>{{ acctPageText?.pageTitle || 'Account Information' }}</h4>
+          <h4>{{ acctPageText?.pageTitle }}</h4>
         </ion-col>
         <ion-col size="12" class="buttons">
-          <ion-button fill="solid" (click)="editAccount()">{{ acctPageText?.editAccount || 'Edit account' }}</ion-button>
-          <ion-button fill="solid" (click)="addNewAccount()">{{ acctPageText?.addNewAccount || ' Add new account' }}</ion-button>
+          <ion-button fill="solid" (click)="editAccount()">{{ acctPageText?.editAccount }}</ion-button>
+          <ion-button fill="solid" (click)="addNewAccount()">{{ acctPageText?.addNewAccount }}</ion-button>
         </ion-col>
       </ion-row>
       <ion-row *ngIf="acctData?.accountName">
         <ion-col size="12" class="label-col">
-          <ion-label class="label">{{ commonText?.nameOnAccount || 'Name on Account' }}</ion-label>
+          <ion-label class="label">{{ acctPageText?.nameOnAccount }}</ion-label>
         </ion-col>
         <ion-col size="12">
           <ion-label class="value">{{ acctData?.accountName }}</ion-label>
@@ -32,7 +32,7 @@
       </ion-row>
       <ion-row *ngIf="acctData?.accountNumber">
         <ion-col size="12" class="label-col">
-          <ion-label class="label">{{ commonText?.accountNumber || 'Account Number' }}</ion-label>
+          <ion-label class="label">{{ acctPageText?.accountNumber }}</ion-label>
         </ion-col>
         <ion-col size="12">
           <ion-label class="value">{{ acctData?.accountNumber }}</ion-label>
@@ -40,7 +40,7 @@
       </ion-row>
       <ion-row *ngIf="acctData?.bankName">
         <ion-col size="12" class="label-col">
-          <ion-label class="label">{{ commonText?.bankName || 'Bank Name' }}</ion-label>
+          <ion-label class="label">{{ acctPageText?.bankName }}</ion-label>
         </ion-col>
         <ion-col size="12">
           <ion-label class="value">{{ acctData?.bankName }}</ion-label>
@@ -48,7 +48,7 @@
       </ion-row>
       <ion-row *ngIf="acctData?.sortCode">
         <ion-col size="12" class="label-col">
-          <ion-label class="label">{{ commonText?.sortCode || 'Sort Code' }}</ion-label>
+          <ion-label class="label">{{ acctPageText?.sortCode }}</ion-label>
         </ion-col>
         <ion-col size="12">
           <ion-label class="value">{{ acctData?.sortCode  }}</ion-label>
@@ -72,16 +72,16 @@
     <div *ngIf="isViewBeneficiary" class="view">
       <ion-row>
         <ion-col size="12">
-          <h4>{{ benficiaryPageText?.pageTitle || 'Beneficiary Account Information' }}</h4>
+          <h4>{{ benficiaryPageText?.pageTitle }}</h4>
         </ion-col>
         <ion-col size="12" class="buttons">
-          <ion-button fill="solid" (click)="editBeneficiary()">{{ benficiaryPageText?.editAccount || 'Edit beneficiary' }}</ion-button>
-          <ion-button fill="solid" (click)="addNewBeneficiary()">{{ benficiaryPageText?.addNewAccount || ' Add new beneficiary' }}</ion-button>
+          <ion-button fill="solid" (click)="editBeneficiary()">{{ benficiaryPageText?.editBeneficiary }}</ion-button>
+          <ion-button fill="solid" (click)="addNewBeneficiary()">{{ benficiaryPageText?.addNewBeneficiary }}</ion-button>
         </ion-col>
       </ion-row>
       <ion-row *ngIf="beneficiaryData?.fName">
         <ion-col size="12" class="label-col">
-          <ion-label class="label">{{ commonText?.fName || 'First Name' }}</ion-label>
+          <ion-label class="label">{{ benficiaryPageText?.fName }}</ion-label>
         </ion-col>
         <ion-col size="12">
           <ion-label class="value">{{ beneficiaryData?.fName }}</ion-label>
@@ -89,7 +89,7 @@
       </ion-row>
       <ion-row *ngIf="beneficiaryData?.lname">
         <ion-col size="12" class="label-col">
-          <ion-label class="label">{{ commonText?.surname || 'Surname' }}</ion-label>
+          <ion-label class="label">{{ benficiaryPageText?.surname }}</ion-label>
         </ion-col>
         <ion-col size="12">
           <ion-label class="value">{{ beneficiaryData?.lname }}</ion-label>
@@ -97,7 +97,7 @@
       </ion-row>
       <ion-row *ngIf="beneficiaryData?.nameOnAccount">
         <ion-col size="12" class="label-col">
-          <ion-label class="label">{{ commonText?.nameOnAccount || 'Name as it appears on Account' }}</ion-label>
+          <ion-label class="label">{{ benficiaryPageText?.nameOnAccount }}</ion-label>
         </ion-col>
         <ion-col size="12">
           <ion-label class="value">{{ beneficiaryData?.nameOnAccount }}</ion-label>
@@ -105,7 +105,7 @@
       </ion-row>
       <ion-row *ngIf="beneficiaryData?.accountNumber">
         <ion-col size="12" class="label-col">
-          <ion-label class="label">{{ commonText?.accountNumber || 'Account Number' }}</ion-label>
+          <ion-label class="label">{{ benficiaryPageText?.accountNumber }}</ion-label>
         </ion-col>
         <ion-col size="12">
           <ion-label class="value">{{ beneficiaryData?.accountNumber }}</ion-label>
@@ -113,7 +113,7 @@
       </ion-row>
       <ion-row *ngIf="beneficiaryData?.bankName">
         <ion-col size="12" class="label-col">
-          <ion-label class="label">{{ commonText?.bankName || 'Bank Name' }}</ion-label>
+          <ion-label class="label">{{ benficiaryPageText?.bankName }}</ion-label>
         </ion-col>
         <ion-col size="12">
           <ion-label class="value">{{ beneficiaryData?.bankName }}</ion-label>
@@ -121,7 +121,7 @@
       </ion-row>
       <ion-row *ngIf="beneficiaryData?.sortCode">
         <ion-col size="12" class="label-col">
-          <ion-label class="label">{{ commonText?.sortCode || 'Sort Code' }}</ion-label>
+          <ion-label class="label">{{ benficiaryPageText?.sortCode }}</ion-label>
         </ion-col>
         <ion-col size="12">
           <ion-label class="value">{{ beneficiaryData?.sortCode  }}</ion-label>
@@ -132,7 +132,7 @@
 
   <!-- Payment history commented out for now -->
   <!-- <div class="ion-padding pay-history">
-    <ion-label><h1>{{ commonText?.viewPaymentHistory }}</h1></ion-label>
+    <ion-text><h1>{{ commonText?.viewPaymentHistory }}</h1></ion-text>
     <ion-card>
       <ion-card-content>
         <ion-grid>
