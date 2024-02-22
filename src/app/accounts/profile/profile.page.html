@@ -24,4 +24,14 @@
     >
     </app-form>
   </div>
+  <div class="registration-details-form">
+    <app-form
+      class="registration-details-form"
+      [tunaFormGroup]="regFormGroup"
+      [tunaFormquestions]="regFormQtns"
+      [submitButtonText]="submitButtonText"
+      (formValue)="onSubmitRegDetails($event)"
+    >
+    </app-form>
+  </div>
 </ion-content>

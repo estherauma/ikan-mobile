@@ -151,4 +151,17 @@ export class ProfilesDataService {
     const profileExists = profiles.some((prof) => prof.email === email);
     return profileExists;
   }
+
+  async updateProfileRegistrationDetails(data) {
+    const query = 'UPDATE profiles SET registration_number = ?, passport_number = ?, updated_at = ?, updated_by = ? \
+      WHERE email = ?';
+    const params = [data.registrationNumber, data.passportNumber, data.updatedAt, data.updatedBy, data.email];
+    return this.db.executeSql(query, params).then((result) => {
+      this.retrieveProfiles();
+      return result;
+    }).catch((e) => {
+      console.error(e);
+      return null;
+    });
+  }
 }

@@ -17,6 +17,10 @@ export class ProfilePage extends BaseformPage implements OnInit {
   imageUrl: string = '';
   userData: UserData;
   profileData: ProfileData;
+  regFormQtns: any;
+  regGroup = {};
+  regFormGroup: FormGroup;
+  regPageText: any;
 
   constructor(
     public contentService: ContentService,
@@ -39,6 +43,7 @@ export class ProfilePage extends BaseformPage implements OnInit {
   }
 
   initializeForm() {
+    // Profile form
     const pageData = this.contentService.getContentByPropertyName('vo-agent-buyer-profile-form');
     this.pageText = this.sharedMethods.convertAdditionalTextToObj(pageData?.additionalText);
     this.formQuestions = pageData?.formQuestions;
@@ -60,6 +65,21 @@ export class ProfilePage extends BaseformPage implements OnInit {
       }
     });
     this.pageFormGroup = new FormGroup(this.group);
+
+    // Registration Details form
+    const regPageData = this.contentService.getContentByPropertyName('registration-details-form');
+    this.regPageText = this.sharedMethods.convertAdditionalTextToObj(regPageData?.additionalText);
+    this.regFormQtns = regPageData?.formQuestions;
+    this.regFormQtns?.forEach((entry) => {
+      // this field will not be displayed
+      if (entry.key === 'registrationDetails') {
+        return;
+      }
+
+      const value = this.profileData?.[entry.key] || '';
+      this.regGroup[entry.key] = new FormControl(value, []);
+    });
+    this.regFormGroup = new FormGroup(this.regGroup);
   }
 
   async onSubmit(data) {
@@ -91,6 +111,29 @@ export class ProfilePage extends BaseformPage implements OnInit {
         this.sharedMethods.hideLoader();
         this.sharedMethods.showToast(this.pageText?.profileCreateFailure);
       }
+    }
+  }
+
+  async onSubmitRegDetails(data) {
+    this.sharedMethods.showLoader(this.regPageText?.savingRegDetails || 'Saving regDetails', 2000);
+    const userData = await this.sharedMethods.getUserData();
+    const now = this.sharedMethods.getCurrentDateTime();
+    data.email = this.profileData?.email;
+    data.updatedBy = userData.id;
+    data.updatedAt = now;
+    const profileExists = await this.profilesDataService.checkIfProfileExists(data.email);
+    if (profileExists) {
+      const result = await this.profilesDataService.updateProfileRegistrationDetails(data);
+      if (result?.rowsAffected > 0) {
+        this.sharedMethods.hideLoader();
+        this.sharedMethods.showToast(this.regPageText?.regDetailsUpdateSuccess || 'Registration details updated successfully');
+      } else {
+        this.sharedMethods.hideLoader();
+        this.sharedMethods.showToast(this.regPageText?.regDetailsUpdateFailure || 'Registration details update failed');
+      }
+    } else {
+      this.sharedMethods.hideLoader();
+      this.sharedMethods.showToast(this.regPageText?.updateProfileFirst || 'Please update your profile first');
     }
   }
 }
