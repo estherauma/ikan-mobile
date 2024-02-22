@@ -88,7 +88,8 @@ export class PaymentsPage extends BaseformPage implements OnInit {
         entry.inputmode = 'numeric';
         this.acctGroup[entry.key] = new FormControl(value, [Validators.required]);
       }
-      if (entry.key === 'lastName' || entry.key === 'lName' || entry.key === 'swiftCode') {
+      if (entry.key === 'lastName' || entry.key === 'lName' || entry.key === 'swiftCode'||
+        entry.key === 'bankBranch' || entry.key === 'routingNumber') {
         this.acctGroup[entry.key] = new FormControl(value, []);
       }
     });
@@ -113,7 +114,8 @@ export class PaymentsPage extends BaseformPage implements OnInit {
         entry.inputmode = 'numeric';
         this.beneficiaryGroup[entry.key] = new FormControl(value, [Validators.required]);
       }
-      if (entry.key === 'lastName' || entry.key === 'lName' || entry.key === 'swiftCode') {
+      if (entry.key === 'lastName' || entry.key === 'lName' || entry.key === 'swiftCode'||
+      entry.key === 'bankBranch' || entry.key === 'routingNumber') {
         this.beneficiaryGroup[entry.key] = new FormControl(value, []);
       }
     });
