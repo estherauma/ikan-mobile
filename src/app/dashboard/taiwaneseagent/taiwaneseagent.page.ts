@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { PushNotificationsService } from 'src/app/shared/services/push-notifications/push-notifications.service';
 
 @Component({
@@ -27,6 +28,7 @@ export class TaiwaneseagentPage implements OnInit {
 
   constructor(
     public pushNotifications: PushNotificationsService,
+    public router: Router,
   ) { }
 
   ngOnInit() {
@@ -35,4 +37,7 @@ export class TaiwaneseagentPage implements OnInit {
     }
   }
 
+  goToProfile() {
+    this.router.navigate(['profile']);
+  }
 }

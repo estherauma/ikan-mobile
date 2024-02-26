@@ -1,9 +1,178 @@
-<ion-header>
-  <ion-toolbar>
-    <ion-title>profile</ion-title>
-  </ion-toolbar>
-</ion-header>
+<app-header pageTitle=""></app-header>
 
-<ion-content>
+<ion-content [fullscreen]="true">
+  <div class="profile-image">
+    <ion-row class="ion-padding-bottom title">
+      <app-title [isBlue]="true" [title]="pageTitle"></app-title>
+    </ion-row>
 
+    <ion-row>
+      <ion-col size="3" class="img-wrapper">
+          <ion-icon *ngIf="!imageUrl" class="image icon" name="person-circle-outline" />
+          <img *ngIf="imageUrl" class="image img" [src]="imageUrl || '/assets/icon/ellipse_profile.svg'" />
+      </ion-col>
+      <ion-col *ngIf="isViewProfile" size="9">
+        <app-button
+          class="edit-profile"
+          config=""
+          fill="solid"
+          [title]="commonText?.edit"
+          (onClick)="editProfile()"
+        >
+        </app-button>
+      </ion-col>
+    </ion-row>
+  </div>
+
+  <div *ngIf="!isViewProfile" class="profile">
+    <app-form
+      class="profile-form"
+      [tunaFormGroup]="pageFormGroup"
+      [tunaFormquestions]="formQuestions"
+      [submitButtonText]="submitButtonText"
+      (formValue)="onSubmit($event)"
+    >
+    </app-form>
+  </div>
+  <div *ngIf="isAgent && !isViewProfile" class="registration-details">
+    <app-form
+      class="registration-details-form"
+      [tunaFormGroup]="regFormGroup"
+      [tunaFormquestions]="regFormQtns"
+      [submitButtonText]="submitButtonText"
+      (formValue)="onSubmitRegDetails($event)"
+    >
+    </app-form>
+  </div>
+
+  <div *ngIf="isViewProfile" class="view">
+    <div class="profile-view">
+      <ion-row *ngIf="profileData?.firstName">
+        <ion-col size="12" class="label-col">
+          <ion-label class="label">{{ viewData?.firstName }}</ion-label>
+        </ion-col>
+        <ion-col size="12">
+          <ion-label class="value">{{ profileData?.firstName }}</ion-label>
+        </ion-col>
+      </ion-row>
+      <ion-row *ngIf="profileData?.lastName">
+        <ion-col size="12" class="label-col">
+          <ion-label class="label">{{ viewData?.lastName }}</ion-label>
+        </ion-col>
+        <ion-col size="12">
+          <ion-label class="value">{{ profileData?.lastName }}</ion-label>
+        </ion-col>
+      </ion-row>
+      <ion-row *ngIf="profileData?.position">
+        <ion-col size="12" class="label-col">
+          <ion-label class="label">{{ viewData?.position }}</ion-label>
+        </ion-col>
+        <ion-col size="12">
+          <ion-label class="value">{{ profileData?.position }}</ion-label>
+        </ion-col>
+      </ion-row>
+      <!-- <ion-row *ngIf="profileData?.companyName">
+        <ion-col size="12" class="label-col">
+          <ion-label class="label">{{ viewData?.companyName }}</ion-label>
+        </ion-col>
+        <ion-col size="12">
+          <ion-label class="value">{{ profileData?.companyName }}</ion-label>
+        </ion-col>
+      </ion-row> -->
+      <ion-row *ngIf="profileData?.email">
+        <ion-col size="12" class="label-col">
+          <ion-label class="label">{{ viewData?.email }}</ion-label>
+        </ion-col>
+        <ion-col size="12">
+          <ion-label class="value">{{ profileData?.email }}</ion-label>
+        </ion-col>
+      </ion-row>
+      <ion-row *ngIf="profileData?.telephone">
+        <ion-col size="12" class="label-col">
+          <ion-label class="label">{{ viewData?.telephone }}</ion-label>
+        </ion-col>
+        <ion-col size="12">
+          <ion-label class="value">{{ profileData?.telephone }}</ion-label>
+        </ion-col>
+      </ion-row>
+      <ion-row *ngIf="profileData?.mobile">
+        <ion-col size="12" class="label-col">
+          <ion-label class="label">{{ viewData?.mobile }}</ion-label>
+        </ion-col>
+        <ion-col size="12">
+          <ion-label class="value">{{ profileData?.mobile }}</ion-label>
+        </ion-col>
+      </ion-row>
+      <ion-row *ngIf="profileData?.addressLine1">
+        <ion-col size="12" class="label-col">
+          <ion-label class="label">{{ viewData?.address }}</ion-label>
+        </ion-col>
+        <ion-col *ngIf="profileData?.addressLine1" size="12">
+          <ion-label class="value">{{ profileData?.addressLine1 }}</ion-label>
+        </ion-col>
+        <ion-col *ngIf="profileData?.addressLine2" size="12">
+          <ion-label class="value">{{ profileData?.addressLine2 }}</ion-label>
+        </ion-col>
+        <ion-col *ngIf="profileData?.addressLine3" size="12">
+          <ion-label class="value">{{ profileData?.addressLine3 }}</ion-label>
+        </ion-col>
+      </ion-row>
+      <ion-row *ngIf="profileData?.city">
+        <ion-col size="12" class="label-col">
+          <ion-label class="label">{{ viewData?.city || commonText?.city }}</ion-label>
+        </ion-col>
+        <ion-col size="12">
+          <ion-label class="value">{{ profileData?.city }}</ion-label>
+        </ion-col>
+      </ion-row>
+      <ion-row *ngIf="profileData?.country">
+        <ion-col size="12" class="label-col">
+          <ion-label class="label">{{ viewData?.country || commonText?.country }}</ion-label>
+        </ion-col>
+        <ion-col size="12">
+          <ion-label class="value">{{ profileData?.country }}</ion-label>
+        </ion-col>
+      </ion-row>
+      <ion-row *ngIf="profileData?.postalCode">
+        <ion-col size="12" class="label-col">
+          <ion-label class="label">{{ viewData?.postalCode || commonText?.postalCode }}</ion-label>
+        </ion-col>
+        <ion-col size="12">
+          <ion-label class="value">{{ profileData?.postalCode }}</ion-label>
+        </ion-col>
+      </ion-row>
+    </div>
+
+    <div
+      *ngIf="isAgent && (profileData?.registrationNumber || profileData?.passportNumber)"
+      class="registration-details-view"
+    >
+      <h4>{{ viewData?.registrationDetails }}</h4>
+      <!-- display license doc -->
+      <!-- <ion-row *ngIf="profileData?.registrationLicense">
+        <ion-col size="12" class="label-col">
+          <ion-label class="label">{{ viewData?.registrationLicense }}</ion-label>
+        </ion-col>
+        <ion-col size="12">
+          <ion-label class="value">{{ profileData?.registrationLicense }}</ion-label>
+        </ion-col>
+      </ion-row> -->
+      <ion-row *ngIf="profileData?.registrationNumber">
+        <ion-col size="12" class="label-col">
+          <ion-label class="label">{{ viewData?.registrationNumber }}</ion-label>
+        </ion-col>
+        <ion-col size="12">
+          <ion-label class="value">{{ profileData?.registrationNumber }}</ion-label>
+        </ion-col>
+      </ion-row>
+      <ion-row *ngIf="profileData?.passportNumber">
+        <ion-col size="12" class="label-col">
+          <ion-label class="label">{{ viewData?.passportNumber }}</ion-label>
+        </ion-col>
+        <ion-col size="12">
+          <ion-label class="value">{{ profileData?.passportNumber }}</ion-label>
+        </ion-col>
+      </ion-row>
+    </div>
+  </div>
 </ion-content>

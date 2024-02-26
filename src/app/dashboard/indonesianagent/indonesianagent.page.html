@@ -3,10 +3,11 @@
 
 <ion-content>
   <app-dashboardelcomesection 
-    message="Welcome back. Here’s a bespoke message on entry. Could also include a"
+    message="Welcome back."
     name="Farah"
-    link=""
-  ></app-dashboardelcomesection>
+    (onProfileClick)="goToProfile()"
+  >
+</app-dashboardelcomesection>
   <div>
     <ion-card>
       <ion-card-content>

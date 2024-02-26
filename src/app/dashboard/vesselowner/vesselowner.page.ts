@@ -102,8 +102,7 @@ export class VesselownerPage implements OnInit {
     this.name = (this.commonText?.hi || '') + ' ' + (user?.firstName || '');
   }
 
-  // For testing purposes
-  // gooo() {
-  //   this.router.navigate(['survey'], { queryParams: { surveySource: 'notification' }});
-  // }
+  goToProfile() {
+    this.router.navigate(['profile']);
+  }
 }

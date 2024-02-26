@@ -1,3 +1,28 @@
 ion-content {
   background: var(--ion-color-primary);
+
+  .view-info {
+    background: var(--ikan_skyblue_100);
+    background: rgba(211, 218, 238, 0.7);
+    width: 100%;
+    min-height: 80%;
+    padding: 20px;
+    ion-col {
+      padding: 2px 5px;
+    }
+    .label-col {
+      margin: 15px 0 0 0;
+    }
+
+    .label {
+      font-family: interRegular;
+      font-size: 0.95rem;
+      color: #3565FF;
+      --color: #3565FF;
+    }
+
+    .value {
+      font-size: 1.2rem;
+    }
+  }
 }

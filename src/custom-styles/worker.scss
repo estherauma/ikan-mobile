@@ -26,6 +26,19 @@ app-info {
       margin: 10px 0;
     }
   }
+  .edit-profile {
+    #app-btn {
+      background: var(--ion-color-primary);
+      min-width: 100px !important;
+      text-transform: none;
+      height: 30px;
+      border-radius: 25px;
+    }
+    ion-button::part(native) {
+      background: unset;
+      margin: unset;
+    }
+  }
   form {
     button[type="submit"] {
       display: unset !important;
@@ -33,7 +46,8 @@ app-info {
   }
 }
 
-app-worker {
+app-worker,
+app-profile {
   app-button {
     #app-btn {
       min-width: 140px !important;
@@ -46,6 +60,35 @@ app-worker {
     h1 {
       margin: 15px 15px 0 0px;
       font-size: 1.5rem;
+    }
+  }
+}
+
+app-profile {
+  app-button {
+    #app-btn {
+      background: var(--ion-color-primary);
+      color: white !important;
+      border-radius: 20px;
+      span {
+        color: white !important;
+      }
+    }
+  }
+
+  .edit-profile {
+    #app-btn {
+      min-width: 100px !important;
+      text-transform: none;
+      min-height: 40px; 
+    }
+  }
+
+  form {
+    .title {
+      color: var(--ikan_darkblue_90);
+      font-family: 'interRegular' !important;
+      margin: 10px 10px 0px 10px;
     }
   }
 }
