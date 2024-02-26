@@ -75,12 +75,14 @@ export class ProfilesDataService {
     });
   }
 
-  getProfilesByRole(userRole: string) {
-    return this.profiles.getValue().filter((prof) => prof.userRole === userRole);
+  async getProfilesByRole(userRole: string) {
+    const profiles = await this.retrieveProfiles();
+    return profiles.filter((prof) => prof.userRole === userRole);
   }
 
   async getSingleProfile(email: string) {
-    const profile = await this.profiles.getValue().find((p) => p.email === email);
+    const profiles = await this.retrieveProfiles();
+    const profile = profiles.find((p) => p.email === email);
     return profile;
   }
 
