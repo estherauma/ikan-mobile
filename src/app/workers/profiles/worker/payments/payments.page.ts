@@ -81,17 +81,16 @@ export class PaymentsPage extends BaseformPage implements OnInit {
         return;
       }
 
-      const value = this.isEditingAcct ? (this.acctData?.[entry.key] || '') : '';
-      this.acctGroup[entry.key] = new FormControl(value, [Validators.required]);
-
+      const validators = [];
+      if (entry.isRequired) {
+        validators.push(Validators.required);
+      }
       if (entry.key === 'accountNumber') {
         entry.inputmode = 'numeric';
-        this.acctGroup[entry.key] = new FormControl(value, [Validators.required]);
       }
-      if (entry.key === 'lastName' || entry.key === 'lName' || entry.key === 'swiftCode'||
-        entry.key === 'bankBranch' || entry.key === 'routingNumber') {
-        this.acctGroup[entry.key] = new FormControl(value, []);
-      }
+
+      const value = this.isEditingAcct ? (this.acctData?.[entry.key] || '') : '';
+      this.acctGroup[entry.key] = new FormControl(value, validators);
     });
     
     this.acctFormGroup = new FormGroup(this.acctGroup);
@@ -107,17 +106,16 @@ export class PaymentsPage extends BaseformPage implements OnInit {
         return;
       }
 
-      const value = this.isEditingBeneficiary ? (this.beneficiaryData?.[entry.key] || '') : '';
-      this.beneficiaryGroup[entry.key] = new FormControl(value, [Validators.required]);
-
+      const validators = [];
+      if (entry.isRequired) {
+        validators.push(Validators.required);
+      }
       if (entry.key === 'accountNumber') {
         entry.inputmode = 'numeric';
-        this.beneficiaryGroup[entry.key] = new FormControl(value, [Validators.required]);
       }
-      if (entry.key === 'lastName' || entry.key === 'lName' || entry.key === 'swiftCode'||
-      entry.key === 'bankBranch' || entry.key === 'routingNumber') {
-        this.beneficiaryGroup[entry.key] = new FormControl(value, []);
-      }
+
+      const value = this.isEditingBeneficiary ? (this.beneficiaryData?.[entry.key] || '') : '';
+      this.beneficiaryGroup[entry.key] = new FormControl(value, validators);
     });
     this.beneficiaryFormGroup = new FormGroup(this.beneficiaryGroup);
   }
