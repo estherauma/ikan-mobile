@@ -10,8 +10,11 @@ ion-content {
     ion-col {
       padding: 2px 5px;
     }
-    .label-col {
+    .ion-row {
       margin: 15px 0 0 0;
+    }
+    .btn-row {
+      margin: 0;
     }
 
     .label {
@@ -23,6 +26,15 @@ ion-content {
 
     .value {
       font-size: 1.2rem;
+    }
+
+    .address {
+      ion-label {
+        margin: 0 0 0 5px;
+      }
+      .value {
+        margin: 0 0 15px 5px;
+      }
     }
   }
 }
