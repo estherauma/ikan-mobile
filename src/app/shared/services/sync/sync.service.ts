@@ -15,6 +15,8 @@ import {
   GetContractsResponse,
   GetVesselsResponse,
   GetProfileResponse,
+  CreateProfileResponse,
+  ProfileSyncData,
 } from './types';
 import { VesselsDataService } from 'src/app/vessels/data/vessels-data.service';
 import { ContractDataService } from 'src/app/contracts/data/contract-data.service';
@@ -22,6 +24,7 @@ import { SharedmethodsService } from '../sharedmethods/sharedmethods.service';
 import { SurveyDataService } from 'src/app/survey/data/survey-data.service';
 import { forkJoin } from 'rxjs';
 import { ProfilesDataService } from 'src/app/profiles/data/profiles-data.service';
+import { AuthService } from '../auth/auth.service';
 
 @Injectable({
   providedIn: 'root'
@@ -40,6 +43,7 @@ export class SyncService {
     private sharedMethods: SharedmethodsService,
     private surveyDataService: SurveyDataService,
     private profilesDataService: ProfilesDataService,
+    private authService: AuthService,
   ) {
     this.platform.ready().then(async () => {
       this.sqlite.create({
@@ -61,12 +65,17 @@ export class SyncService {
   }
 
   async syncData() {
+    const isValid = await this.authService.checkAcessTokenValidity();
+    if (!isValid) {
+      return;
+    }
+
     this.apiService.setApiRequestHeaders();
+    this.syncUsersData();
     this.syncCompanies();
     this.syncVessels();
     this.syncContracts();
     this.syncSurveyResponses();
-    this.fetchProfile();
     this.fetchCompanies();
     this.fetchVessels();
     this.fetchContracts(); // clauses are fetched after contracts have been fetched in the fetchContracts method
@@ -258,32 +267,81 @@ export class SyncService {
     });
   }
 
-  fetchProfile() {
-    this.apiService.get('accounts/profile').subscribe(async(response: GetProfileResponse) => {
+  async syncUsersData() {
+    await this.fetchProfile();
+    await this.syncProfiles();
+  }
+
+  // fetches current user's profile only
+  async fetchProfile() {
+    return this.apiService.get('accounts/profile').subscribe(async(response: GetProfileResponse) => {
       if (response.status === 200 && response.body.data) {
         const user = await this.sharedMethods.getUserData();
         const now = this.sharedMethods.getCurrentDateTime();
         const dataToSave = {...response.body.data, userRole: user.role};
-        dataToSave.createdAt = dataToSave.updatedAt ??  now;
+        dataToSave.createdAt = dataToSave.createdAt ??  now;
         dataToSave.updatedAt = dataToSave.updatedAt ??  now;
-        dataToSave.createdBy = dataToSave.updatedBy ?? user?.id;
+        dataToSave.createdBy = dataToSave.createdBy ?? user?.id;
         dataToSave.updatedBy = dataToSave.updatedBy ?? user?.id;
         const profileExists = await this.profilesDataService.checkIfProfileExists(dataToSave.email);
         if (!profileExists) {
-          this.profilesDataService.create(dataToSave)
+          await this.profilesDataService.saveOnlineProfile(dataToSave)
           .then((id) => { console.log ( `Profile ${dataToSave.email} saved with id ${id}`)})
           .catch((e) => console.error(e));
         } else {
           const currentProfile = await this.profilesDataService.getSingleProfile(dataToSave.email);
           const currentDate = new Date(currentProfile?.updatedAt);
           const newDate = new Date(dataToSave?.updatedAt);
+
+          if (!currentProfile?.onlineRef) {
+            // update onlineref if not exists
+            await this.profilesDataService.updateProfileOnlineRef(dataToSave.email, dataToSave.id);
+          }
           if (currentDate < newDate) {
-            this.profilesDataService.update(dataToSave)
-            .then((id) => { console.log ( `Profile ${dataToSave.email} updated.`)});
+            await this.profilesDataService.update(dataToSave)
+            .then((id) => { console.log ( `Profile ${dataToSave.email} updated---------.`)});
           }
         }
 
       }
     });
   }
+
+  // TODO: fetch all profiles
+  // Will fetch local profiles from the api
+  async fetchProfiles() {}
+
+  // Syncs all local profiles to the api
+  async syncProfiles() {
+    const profiles = await this.profilesDataService.retrieveProfiles();
+    return profiles?.forEach(async(profile) => {
+      delete profile.id;
+      if (profile.onlineRef) {
+        // remove fields without values so that they aren't sent to the api
+        for (const [key, value] of Object.entries(profile)) {
+          if (value === null || value === undefined || value === '') {
+            delete profile[key];
+          }
+        }
+
+        profile.userId = profile?.onlineRef;
+        const profileToUpload: ProfileSyncData = profile;
+        return this.apiService.post('accounts/profile', profileToUpload).subscribe((response: CreateProfileResponse) => {
+          if (response?.status === 'OK') {
+            console.log(`Profile ${profile.email} synced.`, response);
+          } else {
+            console.log(`Failed to sync profile ${profile.email} to the api`);
+            console.error(`Failed to sync profile ${profile.email} to the api`, response);
+          }
+        });
+      } else {
+        // register user to the api
+        // update online ref
+      }
+    });
+  }
+
+  syncBankAccounts() {}
+  syncBeneficiaries() {}
+
 }

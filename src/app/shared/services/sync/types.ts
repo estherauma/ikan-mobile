@@ -278,3 +278,34 @@ export interface ProfileData {
   isVerified:           boolean;
   lastLogin:            string;
 }
+
+export interface CreateProfileResponse {
+  status: string;
+  data:   ProfileData;
+}
+
+export interface ProfileSyncData {
+  userId?:            string;
+  deleted?:              boolean;
+  updatedAt?:            string;
+  deletedAt?:            string;
+  createdBy?:            string;
+  updatedBy?:            string;
+  deletedBy?:            string;
+  email?:                string;
+  firstName?:            string;
+  lastName?:             string;
+  telephone?:            string;
+  mobile?:               string;
+  addressLine1?:         string;
+  addressLine2?:         string;
+  addressLine3?:         string;
+  city?:                 string;
+  country?:              string;
+  postalCode?:           string;
+  profileImage?:         string;
+  registrationNumber?:   string;
+  passportNumber?:       string;
+  position?:             string;
+  isActive?:             boolean;
+}

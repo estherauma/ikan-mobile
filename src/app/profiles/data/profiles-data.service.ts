@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { SQLite, SQLiteObject } from '@awesome-cordova-plugins/sqlite/ngx';
 import { Platform } from '@ionic/angular';
 import { BehaviorSubject } from 'rxjs';
+import { SharedmethodsService } from 'src/app/shared/services/sharedmethods/sharedmethods.service';
 
 @Injectable({
   providedIn: 'root'
@@ -13,6 +14,7 @@ export class ProfilesDataService {
   constructor(
     private platform: Platform,
     private sqlite: SQLite,
+    private sharedMethods: SharedmethodsService,
   ) {
     this.platform.ready().then(async() => {
       this.sqlite.create({
@@ -68,6 +70,7 @@ export class ProfilesDataService {
         }
       }
       this.profiles.next(profiles);
+      console.log('Profiles retrieved from local db', profiles)
       return profiles;
     }).catch((e) => {
       console.error(e);
@@ -126,6 +129,7 @@ export class ProfilesDataService {
   }
 
   update(data) {
+    console.log('Updating profile', data)
     const query = 'UPDATE profiles SET first_name = ?, last_name = ?, telephone = ?, mobile = ?, \
       address_line_1 = ?, address_line_2 = ?, address_line_3 = ?, city = ?, country = ?, postal_code = ?, \
       profile_image = ?, registration_number = ?, passport_number = ?, position = ?, is_active = ?, is_verified = ?, \
@@ -137,6 +141,18 @@ export class ProfilesDataService {
       data.position, data.isActive, data.isVerified, data.lastLogin, data.userRole,
       data.updatedAt, data.updatedBy, data.email];
     
+    return this.db.executeSql(query, params).then(async(result) => {
+      await this.retrieveProfiles();
+      return result;
+    }).catch((e) => {
+      console.error(e);
+      return null;
+    });
+  }
+
+  async updateProfileOnlineRef(email: string, onlineRef: string) {
+    const query = 'UPDATE profiles SET online_ref = ? WHERE email = ?';
+    const params = [onlineRef, email];
     return this.db.executeSql(query, params).then(async(result) => {
       await this.retrieveProfiles();
       return result;
