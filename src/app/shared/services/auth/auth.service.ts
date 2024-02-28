@@ -88,4 +88,18 @@ export class AuthService {
     })
     return finalMenu;
   }
+
+  async checkAcessTokenValidity() {
+    const value = await this.sharedMethods.readDataFromStorage(StorageKeys.apiToken);
+    if (!value) {
+      return false;
+    }
+
+    const now = new Date().toUTCString();
+    if ( this.tokenExpiryDate < new Date(now)) {
+      return false;
+    }
+
+    return true;
+  }
 }
