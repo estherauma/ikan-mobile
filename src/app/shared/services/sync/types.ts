@@ -309,3 +309,75 @@ export interface ProfileSyncData {
   position?:             string;
   isActive?:             boolean;
 }
+
+export interface GetBankAccountsResponse {
+  status:     number;
+  statusText: string;
+  url:        string;
+  ok:         boolean;
+  type:       number;
+  body:       BankAccountResponseBody;
+}
+
+export interface BankAccountResponseBody {
+  status: string;
+  data:   ApiBankAccount[];
+  errors: any[];
+}
+
+export interface ApiBankAccount {
+  id:           string;
+  deleted:      boolean;
+  createdAt:    string;
+  updatedAt:    string;
+  deletedAt:    string | null;
+  createdBy:    string;
+  updatedBy:    string;
+  deletedBy:    string | null;
+  appRef:       string;
+  accountName:  string;
+  accountNumber: string;
+  routingNumber: string;
+  swiftCode:   string;
+  bankName:    string;
+  bankBranch:  string;
+  isActive:    boolean;
+  user:        string;
+}
+
+export interface GetBeneficiaryResponse {
+  status:     number;
+  statusText: string;
+  url:        string;
+  ok:         boolean;
+  type:       number;
+  body:       BeneficiaryResponseBody;
+}
+
+export interface BeneficiaryResponseBody {
+  status: string;
+  data:   ApiBeneficiary[];
+  errors: any[];
+}
+
+export interface ApiBeneficiary {
+  id:           string;
+  deleted:      boolean;
+  createdAt:    string;
+  updatedAt:    string;
+  deletedAt:    string | null;
+  createdBy:    string;
+  updatedBy:    string;
+  deletedBy:    string | null;
+  appRef:       string;
+  fName:        string;
+  lName:        string;
+  accountName:  string;
+  accountNumber: string;
+  routingNumber: string;
+  swiftCode:   string;
+  bankName:    string;
+  bankBranch:  string;
+  isActive:    boolean;
+  user:        string;
+}

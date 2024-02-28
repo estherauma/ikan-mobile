@@ -70,7 +70,6 @@ export class ProfilesDataService {
         }
       }
       this.profiles.next(profiles);
-      console.log('Profiles retrieved from local db', profiles)
       return profiles;
     }).catch((e) => {
       console.error(e);
@@ -78,13 +77,19 @@ export class ProfilesDataService {
     });
   }
 
-  getProfilesByRole(userRole: string) {
-    return this.profiles.getValue().filter((prof) => prof.userRole === userRole);
+  async getProfilesByRole(userRole: string) {
+    const profiles = await this.retrieveProfiles();
+    return profiles?.filter((prof) => prof.userRole === userRole);
   }
 
   async getSingleProfile(email: string) {
-    const profile = await this.profiles.getValue().find((p) => p.email === email);
-    return profile;
+    const profiles = await this.retrieveProfiles();
+    return profiles?.find((p) => p.email === email);
+  }
+  
+  async getProfileByOnlineRef(onlineRef: string) {
+    const profiles = await this.retrieveProfiles();
+    return profiles?.find((p) => p.onlineRef === onlineRef);
   }
 
   async create(data) {
@@ -129,7 +134,6 @@ export class ProfilesDataService {
   }
 
   update(data) {
-    console.log('Updating profile', data)
     const query = 'UPDATE profiles SET first_name = ?, last_name = ?, telephone = ?, mobile = ?, \
       address_line_1 = ?, address_line_2 = ?, address_line_3 = ?, city = ?, country = ?, postal_code = ?, \
       profile_image = ?, registration_number = ?, passport_number = ?, position = ?, is_active = ?, is_verified = ?, \
