@@ -13,7 +13,7 @@ module.exports.generateEnvironmentFiles = (buildType) => {
                 type: 'staging',
                 apiUrl: '${process.env.STAGING_API_URL}',
                 baseUrl: '${process.env.STAGING_BASE_URL}',
-                environment: '${process.env.ENVIRONMENT}',
+                environment: 'staging',
                 pushNotificationApi: '${process.env.STAGING_PUSH_NOTIFICATION_URL}',
                 sentryDSN: '${process.env.SENTRY_DSN}'
             };
@@ -25,7 +25,7 @@ module.exports.generateEnvironmentFiles = (buildType) => {
                 type: 'production',
                 apiUrl: '${process.env.PRODUCTION_API_URL}',
                 baseUrl: '${process.env.PRODUCTION_BASE_URL}',
-                environment: '${process.env.ENVIRONMENT}',
+                environment: 'production',
                 pushNotificationApi: '${process.env.PROD_PUSH_NOTIFICATION_URL}',
                 sentryDSN: '${process.env.SENTRY_DSN}'
             };
@@ -37,7 +37,7 @@ module.exports.generateEnvironmentFiles = (buildType) => {
             type: 'debug',
             apiUrl: '${process.env.API_URL}',
             baseUrl: '${process.env.BASE_URL}',
-            environment: '${process.env.ENVIRONMENT}',
+            environment: 'development',
             pushNotificationApi: '${process.env.DEV_PUSH_NOTIFICATION_URL}',
             sentryDSN: '${process.env.SENTRY_DSN}'
         };
