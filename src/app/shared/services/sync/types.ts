@@ -236,6 +236,20 @@ export interface VesselsBody {
   commissioningDate: string;
 }
 
+export interface GetUsersResponse {
+  status:     number;
+  statusText: string;
+  url:        string;
+  ok:         boolean;
+  type:       number;
+  body:       GetUsersBody;
+}
+
+export interface GetUsersBody {
+  status:   string;
+  data:     ProfileData[];
+}
+
 export interface GetProfileResponse {
   status:     number;
   statusText: string;
@@ -277,6 +291,7 @@ export interface ProfileData {
   isActive:             boolean;
   isVerified:           boolean;
   lastLogin:            string;
+  role:                 string;
 }
 
 export interface CreateProfileResponse {
