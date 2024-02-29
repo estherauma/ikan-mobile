@@ -440,7 +440,6 @@ export class SyncService {
 
   async syncBankAccounts(userId, userOnlineRef ) {
     const accounts = await this.paymentsDataService.getUserBankAccounts(userId);
-    console.log('accts....syncBankAccounts...', accounts);
     accounts.forEach(async(account) => {
       delete account.id;
       account.userId = userOnlineRef;
