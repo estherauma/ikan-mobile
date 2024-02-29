@@ -345,6 +345,11 @@ export interface ApiBankAccount {
   user:        string;
 }
 
+export interface CreateBankAccountResponse {
+  status: string;
+  data:   ApiBankAccount;
+}
+
 export interface GetBeneficiaryResponse {
   status:     number;
   statusText: string;
@@ -380,4 +385,9 @@ export interface ApiBeneficiary {
   bankBranch:  string;
   isActive:    boolean;
   user:        string;
+}
+
+export interface CreateBeneficiaryResponse {
+  status: string;
+  data:   ApiBeneficiary;
 }

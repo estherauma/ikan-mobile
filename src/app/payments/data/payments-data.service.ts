@@ -134,6 +134,12 @@ export class PaymentsDataService {
     return activeAcct;
   }
 
+  async getUserBankAccounts(userId) {
+    const bankAccounts = await this.retrieveBankAccounts();
+    const userBankAccounts = bankAccounts.filter((acct) => acct.userId === userId);
+    return userBankAccounts;
+  }
+
   createBankAccount(data) {
     const query = 'INSERT INTO user_bank_accounts (app_ref, online_ref, user_id, \
       account_name, account_number, routing_number, swift_code, bank_name, bank_branch, \
@@ -212,6 +218,12 @@ export class PaymentsDataService {
     const beneficiaries = await this.retrieveBeneficiaries();
     const beneficiary = beneficiaries.find((beneficiary) => beneficiary.userId === userId && beneficiary.isActive);
     return beneficiary;
+  }
+
+  async getUserBeneficiaries(userId) {
+    const beneficiaries = await this.retrieveBeneficiaries();
+    const userBeneficiaries = beneficiaries.filter((beneficiary) => beneficiary.userId === userId);
+    return userBeneficiaries;
   }
 
   createBeneficiary(data) {

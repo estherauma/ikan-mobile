@@ -19,6 +19,8 @@ import {
   ProfileSyncData,
   GetBankAccountsResponse,
   GetBeneficiaryResponse,
+  CreateBankAccountResponse,
+  CreateBeneficiaryResponse,
 } from './types';
 import { VesselsDataService } from 'src/app/vessels/data/vessels-data.service';
 import { ContractDataService } from 'src/app/contracts/data/contract-data.service';
@@ -275,8 +277,8 @@ export class SyncService {
     await this.fetchProfile();
     await this.syncProfiles();
 
-    // const user = '-Ne7V0lC-YkjfcR6l7I9'
-    // this.fetchBankAccounts(user);
+    const user = '-Ne7V0lC-YkjfcR6l7I9'
+    this.fetchBankAccounts(user);
     // this.fetchBeneficiaries(user);
   }
 
@@ -353,9 +355,11 @@ export class SyncService {
     return this.apiService.get('accounts/bank-details', false, {user_id: userId}).subscribe((response: GetBankAccountsResponse) => {
       if (response.status === 200 && response.body.data.length > 0) {
         response.body.data.forEach((bankAccount) => {
+          console.log('bank accountvvvv...................', bankAccount);
           this.dbService.checkIfEntryExists('user_bank_accounts', bankAccount.appRef).then(async(exists) => {
             if (!exists) {
               const profile = await this.profilesDataService.getProfileByOnlineRef(bankAccount.user);
+              console.log('profilevvvv...................', profile)
               if (profile) {
                 bankAccount.createdBy = bankAccount.createdBy ?? profile.id;
                 bankAccount.updatedBy = bankAccount.updatedBy ?? profile.id;
@@ -371,7 +375,26 @@ export class SyncService {
     });
   }
 
-  syncBankAccounts() {}
+  async syncBankAccounts(userId, userOnlineRef ) {
+    const accounts = await this.paymentsDataService.getUserBankAccounts(userId);
+    console.log('accts....syncBankAccounts...', accounts);
+    accounts.forEach(async(account) => {
+      delete account.id;
+      account.userId = userOnlineRef;
+      if (!account.onlineRef || account.onlineRef.length < 5) {
+        this.apiService.post('accounts/bank-details', account).subscribe((response: CreateBankAccountResponse) => {
+          if (response?.status === 'OK') {
+            console.log(`Bank account ${account.accountNumber} synced.`);
+            this.dbService.updateDatabaseField('user_bank_accounts', 'online_ref', response?.data?.id, account.appRef);
+          } else {
+            console.error(`Failed to sync bank account ${account.accountNumber} to the api`, response);
+          }
+        });
+      } else {
+        // update api record
+      }
+    });
+  }
 
   fetchBeneficiaries(userId) {
     return this.apiService.get('accounts/beneficiaries-bank-details', false, {user_id: userId}).subscribe((response: GetBeneficiaryResponse) => {
@@ -395,6 +418,24 @@ export class SyncService {
     });
   }
 
-  syncBeneficiaries() {}
+  async syncBeneficiaries(userId, userOnlineRef) {
+    const beneficiaries = await this.paymentsDataService.getUserBeneficiaries(userId);
+    beneficiaries.forEach(async(beneficiary) => {
+      delete beneficiary.id;
+      beneficiary.userId = userOnlineRef;
+      if (!beneficiary.onlineRef || beneficiary.onlineRef.length < 5) {
+        this.apiService.post('accounts/beneficiaries-bank-details', beneficiary).subscribe((response: CreateBeneficiaryResponse) => {
+          if (response?.status === 'OK') {
+            console.log(`Beneficiary ${beneficiary.fName} synced.`);
+            this.dbService.updateDatabaseField('user_beneficiaries', 'online_ref', response?.data?.id, beneficiary.appRef);
+          } else {
+            console.error(`Failed to sync beneficiary ${beneficiary.fName} to the api`, response);
+          }
+        });
+      } else {
+        // update api record
+      }
+    });
+  }
 
 }
