@@ -291,7 +291,7 @@ export interface ProfileData {
   isActive:             boolean;
   isVerified:           boolean;
   lastLogin:            string;
-  role:                 string;
+  roles:                 string[];
 }
 
 export interface CreateProfileResponse {

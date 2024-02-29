@@ -287,7 +287,8 @@ export class SyncService {
       if (response.status === 200 && response.body.data) {
         const user = await this.sharedMethods.getUserData();
         const now = this.sharedMethods.getCurrentDateTime();
-        const dataToSave = {...response.body.data, userRole: user.role};
+        const role = response.body.data?.roles?.length ? response.body.data?.roles.join(',') : '';
+        const dataToSave = {...response.body.data, userRole: role};
         dataToSave.createdAt = dataToSave.createdAt ??  now;
         dataToSave.updatedAt = dataToSave.updatedAt ??  now;
         dataToSave.createdBy = dataToSave.createdBy ?? user?.id;
@@ -331,7 +332,8 @@ export class SyncService {
             response.body.data.forEach(async(profile) => {
               const user: UserData = await this.sharedMethods.getUserData();
               const now = this.sharedMethods.getCurrentDateTime();
-              const dataToSave = {...profile};
+              const role = profile?.roles?.length ? profile?.roles.join(',') : '';
+              const dataToSave = {...profile, userRole: role};
               dataToSave.createdAt = dataToSave.createdAt ??  now;
               dataToSave.updatedAt = dataToSave.updatedAt ??  now;
               dataToSave.createdBy = dataToSave.createdBy ?? user?.id;
