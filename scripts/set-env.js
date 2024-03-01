@@ -3,7 +3,7 @@ require('dotenv').config()
 
 module.exports.generateEnvironmentFiles = (buildType) => {
     console.info(`Building for ${buildType}`);
-  
+
     let environmentFile;
 
     switch (buildType) {
@@ -32,7 +32,7 @@ module.exports.generateEnvironmentFiles = (buildType) => {
             `;
             break;
         default:
-          environmentFile = `export const env = {
+            environmentFile = `export const env = {
             production: false,
             type: 'debug',
             apiUrl: '${process.env.API_URL}',
@@ -42,11 +42,11 @@ module.exports.generateEnvironmentFiles = (buildType) => {
             sentryDSN: '${process.env.SENTRY_DSN}'
         };
         `;
-        break;
+            break;
     }
 
     const envDir = './src/environments';
-    if (!fs.existsSync(envDir)){
+    if (!fs.existsSync(envDir)) {
         fs.mkdirSync(envDir);
     }
 
