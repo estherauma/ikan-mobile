@@ -85,9 +85,6 @@ export class PaymentsPage extends BaseformPage implements OnInit {
       if (entry.isRequired) {
         validators.push(Validators.required);
       }
-      if (entry.key === 'accountNumber') {
-        entry.inputmode = 'numeric';
-      }
 
       const value = this.isEditingAcct ? (this.acctData?.[entry.key] || '') : '';
       this.acctGroup[entry.key] = new FormControl(value, validators);
@@ -109,9 +106,6 @@ export class PaymentsPage extends BaseformPage implements OnInit {
       const validators = [];
       if (entry.isRequired) {
         validators.push(Validators.required);
-      }
-      if (entry.key === 'accountNumber') {
-        entry.inputmode = 'numeric';
       }
 
       const value = this.isEditingBeneficiary ? (this.beneficiaryData?.[entry.key] || '') : '';
