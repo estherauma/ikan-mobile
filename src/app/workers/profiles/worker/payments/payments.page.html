@@ -13,7 +13,7 @@
     >
     </app-form>
     <div *ngIf="isViewAcct" class="view">
-      <ion-row>
+      <ion-row class="title-row">
         <ion-col size="12">
           <h4>{{ acctPageTitle }}</h4>
         </ion-col>
@@ -23,7 +23,7 @@
         </ion-col>
       </ion-row>
       <ion-row *ngIf="acctData?.accountName">
-        <ion-col size="12" class="label-col">
+        <ion-col size="12">
           <ion-label class="label">{{ acctPageText?.nameOnAccount }}</ion-label>
         </ion-col>
         <ion-col size="12">
@@ -31,7 +31,7 @@
         </ion-col>
       </ion-row>
       <ion-row *ngIf="acctData?.accountNumber">
-        <ion-col size="12" class="label-col">
+        <ion-col size="12">
           <ion-label class="label">{{ acctPageText?.accountNumber }}</ion-label>
         </ion-col>
         <ion-col size="12">
@@ -39,7 +39,7 @@
         </ion-col>
       </ion-row>
       <ion-row *ngIf="acctData?.bankName">
-        <ion-col size="12" class="label-col">
+        <ion-col size="12">
           <ion-label class="label">{{ acctPageText?.bankName }}</ion-label>
         </ion-col>
         <ion-col size="12">
@@ -47,7 +47,7 @@
         </ion-col>
       </ion-row>
       <ion-row *ngIf="acctData?.bankBranch">
-        <ion-col size="12" class="label-col">
+        <ion-col size="12">
           <ion-label class="label">{{ acctPageText?.bankBranch }}</ion-label>
         </ion-col>
         <ion-col size="12">
@@ -55,7 +55,7 @@
         </ion-col>
       </ion-row>
       <ion-row *ngIf="acctData?.swiftCode">
-        <ion-col size="12" class="label-col">
+        <ion-col size="12">
           <ion-label class="label">{{ acctPageText?.sortCode }}</ion-label>
         </ion-col>
         <ion-col size="12">
@@ -63,7 +63,7 @@
         </ion-col>
       </ion-row>
       <ion-row *ngIf="acctData?.routingNumber">
-        <ion-col size="12" class="label-col">
+        <ion-col size="12">
           <ion-label class="label">{{ acctPageText?.routingNumber }}</ion-label>
         </ion-col>
         <ion-col size="12">
@@ -86,7 +86,7 @@
     >
     </app-form>
     <div *ngIf="isViewBeneficiary" class="view">
-      <ion-row>
+      <ion-row class="title-row">
         <ion-col size="12">
           <h4>{{ beneficiaryPageTitle }}</h4>
         </ion-col>
@@ -96,7 +96,7 @@
         </ion-col>
       </ion-row>
       <ion-row *ngIf="beneficiaryData?.fName">
-        <ion-col size="12" class="label-col">
+        <ion-col size="12">
           <ion-label class="label">{{ benficiaryPageText?.fName }}</ion-label>
         </ion-col>
         <ion-col size="12">
@@ -104,7 +104,7 @@
         </ion-col>
       </ion-row>
       <ion-row *ngIf="beneficiaryData?.lname">
-        <ion-col size="12" class="label-col">
+        <ion-col size="12">
           <ion-label class="label">{{ benficiaryPageText?.surname }}</ion-label>
         </ion-col>
         <ion-col size="12">
@@ -112,7 +112,7 @@
         </ion-col>
       </ion-row>
       <ion-row *ngIf="beneficiaryData?.accountName">
-        <ion-col size="12" class="label-col">
+        <ion-col size="12">
           <ion-label class="label">{{ benficiaryPageText?.nameOnAccount }}</ion-label>
         </ion-col>
         <ion-col size="12">
@@ -120,7 +120,7 @@
         </ion-col>
       </ion-row>
       <ion-row *ngIf="beneficiaryData?.accountNumber">
-        <ion-col size="12" class="label-col">
+        <ion-col size="12">
           <ion-label class="label">{{ benficiaryPageText?.accountNumber }}</ion-label>
         </ion-col>
         <ion-col size="12">
@@ -128,7 +128,7 @@
         </ion-col>
       </ion-row>
       <ion-row *ngIf="beneficiaryData?.bankName">
-        <ion-col size="12" class="label-col">
+        <ion-col size="12">
           <ion-label class="label">{{ benficiaryPageText?.bankName }}</ion-label>
         </ion-col>
         <ion-col size="12">
@@ -136,7 +136,7 @@
         </ion-col>
       </ion-row>
       <ion-row *ngIf="beneficiaryData?.bankBranch">
-        <ion-col size="12" class="label-col">
+        <ion-col size="12">
           <ion-label class="label">{{ benficiaryPageText?.bankBranch }}</ion-label>
         </ion-col>
         <ion-col size="12">
@@ -144,7 +144,7 @@
         </ion-col>
       </ion-row>
       <ion-row *ngIf="beneficiaryData?.swiftCode">
-        <ion-col size="12" class="label-col">
+        <ion-col size="12">
           <ion-label class="label">{{ benficiaryPageText?.sortCode }}</ion-label>
         </ion-col>
         <ion-col size="12">
@@ -152,7 +152,7 @@
         </ion-col>
       </ion-row>
       <ion-row *ngIf="beneficiaryData?.routingNumber">
-        <ion-col size="12" class="label-col">
+        <ion-col size="12">
           <ion-label class="label">{{ benficiaryPageText?.routingNumber }}</ion-label>
         </ion-col>
         <ion-col size="12">

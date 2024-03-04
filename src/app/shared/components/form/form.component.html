@@ -29,7 +29,12 @@
           <ion-grid>
             <ion-row>
               <ion-col size="12">
-                <ion-label text-wrap> {{question.label}} </ion-label>
+                <ion-label
+                  text-wrap
+                  [class]="question?.label && question?.isRequired ? 'asterisk' : ''"
+                >
+                  {{question.label}}
+                </ion-label>
               </ion-col>
               <ion-col size="12">
                 <ion-input
@@ -51,7 +56,12 @@
           <ion-grid>
             <ion-row>
               <ion-col size="12">
-                <ion-label text-wrap> {{question.label}} </ion-label>
+                <ion-label
+                  text-wrap
+                  [class]="question?.label && question?.isRequired ? 'asterisk' : ''"
+                >
+                  {{question.label}}
+                </ion-label>
               </ion-col>
               <ion-col size="12">
                 <ion-input
@@ -73,7 +83,12 @@
           <ion-grid>
             <ion-row>
               <ion-col size="12">
-                <ion-label text-wrap> {{question.label}} </ion-label>
+                <ion-label
+                  text-wrap
+                  [class]="question?.label && question?.isRequired ? 'asterisk' : ''"
+                >
+                  {{question.label}}
+                </ion-label>
               </ion-col>
               <ion-col size="12">
                 <ion-input
@@ -94,7 +109,12 @@
           <ion-grid>
             <ion-row>
               <ion-col size="12">
-                <ion-label text-wrap> {{question.label}} </ion-label>
+                <ion-label
+                  text-wrap
+                  [class]="question?.label && question?.isRequired ? 'asterisk' : ''"
+                >
+                  {{question.label}}
+                </ion-label>
               </ion-col>
               <ion-col size="12">
                 <ion-textarea
@@ -142,7 +162,12 @@
           <ion-grid>
             <ion-row>
               <ion-col size="12">
-                <ion-label text-wrap> {{question.label}} </ion-label>
+                <ion-label
+                  text-wrap
+                  [class]="question?.label && question?.isRequired ? 'asterisk' : ''"
+                >
+                  {{question.label}}
+                </ion-label>
               </ion-col>
               <ion-col size="12">
                 <ion-input
@@ -162,7 +187,12 @@
           <ion-grid>
             <ion-row>
               <ion-col size="12">
-                <ion-label text-wrap> {{question?.label}} </ion-label>
+                <ion-label
+                  text-wrap
+                  [class]="question?.label && question?.isRequired ? 'asterisk' : ''"
+                >
+                  {{question?.label}}
+                </ion-label>
               </ion-col>
               <ion-col size="12">
                 <ion-select
@@ -189,7 +219,12 @@
           <ion-grid>
             <ion-row>
               <ion-col size="12">
-                <ion-label text-wrap> {{question.label}} </ion-label>
+                <ion-label
+                  text-wrap
+                  [class]="question?.label && question?.isRequired ? 'asterisk' : ''"
+                >
+                  {{question.label}}
+                </ion-label>
               </ion-col>
               <ion-col size="12">
                 <ion-input
@@ -238,7 +273,12 @@
                 </div>
               </ion-col>
               <ion-col size="9">
-                <ion-text>{{question.label}}</ion-text>
+                <ion-text
+                  text-wrap
+                  [class]="question?.label && question?.isRequired ? 'asterisk' : ''"
+                >
+                  {{question.label}}
+                </ion-text>
               </ion-col>
             </ion-row>
           </div>
@@ -249,7 +289,12 @@
           <ion-grid >
             <ion-row>
               <ion-col size="12">
-                <ion-label text-wrap> {{question.label}} </ion-label>
+                <ion-label
+                  text-wrap
+                  [class]="question?.label && question?.isRequired ? 'asterisk' : ''"
+                >
+                  {{question.label}}
+                </ion-label>
               </ion-col>
             </ion-row>
             <ion-row *ngIf="selectedDocuments[question.key]" class="upload-wrapper">
@@ -274,7 +319,12 @@
           <ion-grid >
             <ion-row>
               <ion-col size="12">
-                <ion-label text-wrap> {{question.label}} </ion-label>
+                <ion-label
+                  text-wrap
+                  [class]="question?.label && question?.isRequired ? 'asterisk' : ''"
+                >
+                  {{question.label}}
+                </ion-label>
               </ion-col>
             </ion-row>
             <ion-row *ngIf="selectedImages[question.key]" class="image">
@@ -305,7 +355,12 @@
           <ion-grid >
             <ion-row>
               <ion-col size="12">
-                <ion-label text-wrap> {{question?.label}} </ion-label>
+                <ion-label
+                  text-wrap
+                  [class]="question?.label && question?.isRequired ? 'asterisk' : ''"
+                >
+                  {{question?.label}}
+                </ion-label>
               </ion-col>
               <ion-col size="12">
                 <ion-select
@@ -333,7 +388,12 @@
           <ion-grid >
             <ion-row>
               <ion-col size="12">
-                <ion-label text-wrap> {{question?.label || question?.question}} </ion-label>
+                <ion-label
+                  text-wrap
+                  [class]="question?.label && question?.isRequired ? 'asterisk' : ''"
+                >
+                  {{question?.label || question?.question}}
+                </ion-label>
               </ion-col>
               <ion-col size="12">
                 <div>
@@ -380,7 +440,12 @@
               <ion-grid>
                 <ion-row>
                   <ion-col size="12">
-                    <ion-label text-wrap> {{question.followUpQuestion.question}} </ion-label>
+                    <ion-label
+                      text-wrap
+                      [class]="question?.label && question?.isRequired ? 'asterisk' : ''"
+                    >
+                      {{question.followUpQuestion.question}}
+                    </ion-label>
                   </ion-col>
                   <ion-col size="12">
                     <ion-input
@@ -401,7 +466,12 @@
               <ion-grid>
                 <ion-row>
                   <ion-col size="12">
-                    <ion-label text-wrap> {{question.followUpQuestion.question}} </ion-label>
+                    <ion-label
+                      text-wrap
+                      [class]="question?.label && question?.isRequired ? 'asterisk' : ''"
+                    >
+                      {{question.followUpQuestion.question}}
+                    </ion-label>
                   </ion-col>
                   <ion-col size="12">
                     <ion-textarea
@@ -422,7 +492,12 @@
               <ion-grid>
                 <ion-row>
                   <ion-col size="12">
-                    <ion-label text-wrap> {{question.followUpQuestion.question}} </ion-label>
+                    <ion-label
+                      text-wrap
+                      [class]="question?.label && question?.isRequired ? 'asterisk' : ''"
+                    >
+                      {{question.followUpQuestion.question}}
+                    </ion-label>
                   </ion-col>
                   <ion-col size="12">
                     <ion-input
@@ -442,7 +517,12 @@
               <ion-grid>
                 <ion-row>
                   <ion-col size="12">
-                    <ion-label text-wrap> {{question.followUpQuestion.question}} </ion-label>
+                    <ion-label
+                      text-wrap
+                      [class]="question?.label && question?.isRequired ? 'asterisk' : ''"
+                    >
+                      {{question.followUpQuestion.question}}
+                    </ion-label>
                   </ion-col>
                   <ion-col size="12">
                     <ion-select
@@ -469,7 +549,12 @@
               <ion-grid>
                 <ion-row>
                   <ion-col size="12">
-                    <ion-label text-wrap> {{question.followUpQuestion.question}} </ion-label>
+                    <ion-label
+                      text-wrap
+                      [class]="question?.label && question?.isRequired ? 'asterisk' : ''"
+                    >
+                      {{question.followUpQuestion.question}}
+                    </ion-label>
                   </ion-col>
                   <ion-col size="12">
                     <ion-input
@@ -529,7 +614,12 @@
               <ion-grid >
                 <ion-row>
                   <ion-col size="12">
-                    <ion-label text-wrap> {{question.followUpQuestion.question}} </ion-label>
+                    <ion-label
+                      text-wrap
+                      [class]="question?.label && question?.isRequired ? 'asterisk' : ''"
+                    >
+                      {{question.followUpQuestion.question}}
+                    </ion-label>
                   </ion-col>
                 </ion-row>
                 <ion-row *ngIf="selectedDocuments[question.followUpQuestion.key]" class="upload-wrapper">
@@ -554,7 +644,12 @@
               <ion-grid >
                 <ion-row>
                   <ion-col size="12">
-                    <ion-label text-wrap> {{question.followUpQuestion.question}} </ion-label>
+                    <ion-label
+                      text-wrap
+                      [class]="question?.label && question?.isRequired ? 'asterisk' : ''"
+                    >
+                      {{question.followUpQuestion.question}}
+                    </ion-label>
                   </ion-col>
                 </ion-row>
                 <ion-row *ngIf="selectedImages[question.followUpQuestion.key]" class="image">
@@ -585,7 +680,12 @@
               <ion-grid >
                 <ion-row>
                   <ion-col size="12">
-                    <ion-label text-wrap> {{question.followUpQuestion.question}} </ion-label>
+                    <ion-label
+                      text-wrap
+                      [class]="question?.label && question?.isRequired ? 'asterisk' : ''"
+                    >
+                      {{question.followUpQuestion.question}}
+                    </ion-label>
                   </ion-col>
                   <ion-col size="12">
                     <ion-select
@@ -613,7 +713,12 @@
               <ion-grid >
                 <ion-row>
                   <ion-col size="12">
-                    <ion-label text-wrap> {{question.followUpQuestion.question}} </ion-label>
+                    <ion-label
+                      text-wrap
+                      [class]="question?.label && question?.isRequired ? 'asterisk' : ''"
+                    >
+                      {{question.followUpQuestion.question}}
+                    </ion-label>
                   </ion-col>
                   <ion-col size="12">
                     <div>
