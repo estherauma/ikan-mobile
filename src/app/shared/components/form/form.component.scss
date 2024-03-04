@@ -103,6 +103,12 @@ ion-select {
   color: #A0ABCC !important;
 }
 
+ion-label.asterisk::after {
+  content: "*";
+  color: red;
+  font-size: 15px !important;
+}
+
 :host.create-contract,
 :host.create-clause,
 :host.create-clause-detail,

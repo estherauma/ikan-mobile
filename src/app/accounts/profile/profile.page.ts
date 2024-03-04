@@ -65,16 +65,17 @@ export class ProfilePage extends BaseformPage implements OnInit {
         return;
       }
 
-      const value = this.profileData?.[entry.key] || this.userData?.[entry.key] || '';
-      this.group[entry.key] = new FormControl(value, [Validators.required]);
-
+      const validators = [];
+      if (entry.isRequired) {
+        validators.push(Validators.required);
+      }
       if (entry.key === 'email') {
         entry.questionType = 'email';
-        this.group[entry.key] = new FormControl(value, [Validators.required, Validators.email]);
+        validators.push(Validators.email);
       }
-      if (entry.key === 'lastName' || entry.key === 'addressLine2' || entry.key === 'addressLine3' || entry.key === 'postalCode' || entry.key === 'mobile') {
-        this.group[entry.key] = new FormControl(value, []);
-      }
+
+      const value = this.profileData?.[entry.key] || this.userData?.[entry.key] || '';
+      this.group[entry.key] = new FormControl(value, validators);
     });
     this.pageFormGroup = new FormGroup(this.group);
 
@@ -90,8 +91,13 @@ export class ProfilePage extends BaseformPage implements OnInit {
         return;
       }
 
+      const validators = [];
+      if (entry.isRequired) {
+        validators.push(Validators.required);
+      }
+
       const value = this.profileData?.[entry.key] || '';
-      this.regGroup[entry.key] = new FormControl(value, []);
+      this.regGroup[entry.key] = new FormControl(value, validators);
     });
     this.regFormGroup = new FormGroup(this.regGroup);
   }

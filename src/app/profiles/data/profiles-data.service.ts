@@ -9,7 +9,8 @@ import { SharedmethodsService } from 'src/app/shared/services/sharedmethods/shar
 })
 export class ProfilesDataService {
   db: SQLiteObject
-  profiles = new BehaviorSubject([]);
+  profiles: any = [];
+  profilesObs = new BehaviorSubject([]);
 
   constructor(
     private platform: Platform,
@@ -25,10 +26,14 @@ export class ProfilesDataService {
         this.retrieveProfiles();
       }).catch(e => console.log(e));
     });
+
+    this.getAll().subscribe((data) => {
+      this.profiles = data;
+    });
   }
 
   getAll() {
-    return this.profiles.asObservable();
+    return this.profilesObs.asObservable();
   }
 
   retrieveProfiles() {
@@ -69,7 +74,7 @@ export class ProfilesDataService {
           });
         }
       }
-      this.profiles.next(profiles);
+      this.profilesObs.next(profiles);
       return profiles;
     }).catch((e) => {
       console.error(e);
@@ -78,18 +83,16 @@ export class ProfilesDataService {
   }
 
   async getProfilesByRole(userRole: string) {
-    const profiles = await this.retrieveProfiles();
-    return profiles?.filter((prof) => prof.userRole === userRole);
-  }
-
-  async getSingleProfile(email: string) {
-    const profiles = await this.retrieveProfiles();
-    return profiles?.find((p) => p.email === email);
+    return this.profiles?.filter((prof) => prof.userRole === userRole);
   }
   
   async getProfileByOnlineRef(onlineRef: string) {
-    const profiles = await this.retrieveProfiles();
-    return profiles?.find((p) => p.onlineRef === onlineRef);
+    return this.profiles?.find((p) => p.onlineRef === onlineRef);
+  }
+
+  async getSingleProfile(email: string) {
+    const profile = this.profiles.find((p) => p.email === email);
+    return profile;
   }
 
   async create(data) {
@@ -167,8 +170,7 @@ export class ProfilesDataService {
   }
 
   async checkIfProfileExists(email: string) {
-    const profiles = await this.retrieveProfiles();
-    const profileExists = profiles.some((prof) => prof.email === email);
+    const profileExists = this.profiles.some((prof) => prof.email === email);
     return profileExists;
   }
 
