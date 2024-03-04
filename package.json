@@ -12,7 +12,10 @@
     "e2e": "ng e2e",
     "android-livereload": "ionic cap run android -l --external --consolelogs",
     "ios-livereload": "ionic cap run ios -l --external --consolelogs",
-    "create-migration": "node scripts/migrations.js"
+    "create-migration": "node scripts/migrations.js",
+    "build-staging": "ionic build --configuration=staging",
+    "build-production":"ionic build --configuration=production"
+
   },
   "private": true,
   "dependencies": {

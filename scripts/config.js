@@ -3,14 +3,19 @@ const setEnv = require('./set-env');
 const buildContent = require('./build-content');
 
 module.exports = (cts) => {
-  let buildType = cts.argv.find((item)=>item.includes('--configuration=production')) ? 'release' : 'debug';
+  let buildType = '';
+  const foundStaging = cts.argv.includes('--configuration=staging');
+  const foundProduction = cts.argv.includes('--configuration=production');
   let buildDir = './build';
 
-  if (!fs.existsSync(buildDir)){
-    buildDir = './build'
-    buildType = 'debug'
+  if (foundStaging) {
+    buildType = 'staging';
+  } else if (foundProduction) {
+    buildType = 'production';
+  } else {
+    buildType = 'debug';
   }
 
-  setEnv.generateEnvironmentFiles();
+  setEnv.generateEnvironmentFiles(buildType);
   buildContent.generateContentFiles(buildDir, buildType);
 };
