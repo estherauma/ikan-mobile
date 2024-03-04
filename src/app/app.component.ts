@@ -25,6 +25,7 @@ import { LocalNotifications  } from '@capacitor/local-notifications';
 export class AppComponent implements OnInit, OnDestroy {
   public appPages = [];
   networkListener: PluginListenerHandle;
+  userData: UserData;
   userEmail: string;
   appSetupComplete = false;
   watchContent: Subscription;
@@ -52,6 +53,17 @@ export class AppComponent implements OnInit, OnDestroy {
     this.localNotifications.scheduleNotifications();
     this.contentService.menuContent.subscribe((data) => {
       if (data && Object.keys(data).length > 0) {
+        // TODO: add item to prismic
+        data.push({
+          enabled: false,
+          icon: 'swap-horizontal-outline',
+          label : 'Change Role',
+          last: false,
+          position: 704,
+          roles: 'all',
+          title: 'Change Role',
+          url: '/select-role'
+        })
         data?.sort((a, b) => a.position - b.position);
 
         // identify last item in a menu section
@@ -69,6 +81,11 @@ export class AppComponent implements OnInit, OnDestroy {
             }
           }
         });
+
+        // show change role based on number of user roles
+        if (this.userData?.roles?.length > 1) {
+          data.find((el) => el.url === '/select-role').enabled = true;
+        }
   
         this.appPages = this.authService.alterMenuBasedOnRole(data);
       }
@@ -95,6 +112,7 @@ export class AppComponent implements OnInit, OnDestroy {
         }
     }));
     this.commonText = this.contentService.commonText;
+    this.userData = this.authService.userData;
     this.userEmail = this.authService.userData?.email;
     await this.contentService.saveSurveyCategories();
   }
@@ -122,6 +140,11 @@ export class AppComponent implements OnInit, OnDestroy {
             await this.pushNotifications.setSaveUploadPushNotificationData();
             // TODO: Service isn't returning role and is returning
             // Ensure auth service returns role immediately
+
+            const isRoleSet = await this.sharedMethods.readDataFromStorage(StorageKeys.isRoleSet);
+            if (!isRoleSet) {
+              return this.router.navigate(['/select-role']);
+            }
            
             this.router.navigate([this.authService.getCurrentUserBaseUrlFromRole(user?.role)]);
           }

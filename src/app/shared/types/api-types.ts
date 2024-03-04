@@ -82,6 +82,7 @@ export enum StorageKeys {
   survey = 'survey',
   surveyCategories = 'surveyCategories',
   watchedTFAVideo = 'watchedTFAVideo',
+  isRoleSet = 'isRoleSet',
 }
 
 export interface UserData {
@@ -90,6 +91,7 @@ export interface UserData {
   lastName: string;
   email: string;
   role: UserRole;
+  roles?: UserRole[];
 }
 export interface LoginSuccessReponse {
   status: string;
@@ -137,7 +139,6 @@ export enum Icons {
   iconEyeOpen = 'assets/icon/password/eye-cross.svg'
 }
 
-type UserRoleValue = UserRole;
 
 export interface PushNotificationData {
   appId: string;
