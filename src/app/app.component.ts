@@ -53,17 +53,6 @@ export class AppComponent implements OnInit, OnDestroy {
     this.localNotifications.scheduleNotifications();
     this.contentService.menuContent.subscribe((data) => {
       if (data && Object.keys(data).length > 0) {
-        // TODO: add item to prismic
-        data.push({
-          enabled: false,
-          icon: 'swap-horizontal-outline',
-          label : 'Change Role',
-          last: false,
-          position: 704,
-          roles: 'all',
-          title: 'Change Role',
-          url: '/select-role'
-        })
         data?.sort((a, b) => a.position - b.position);
 
         // identify last item in a menu section
