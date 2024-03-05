@@ -9,7 +9,7 @@ android {
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 1003
-        versionName "1.0.3-01"
+        versionName "1.0.3-03"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         aaptOptions {
              // Files and dirs to omit from the packaged assets dir, modified to accommodate modern web apps.
@@ -34,7 +34,7 @@ android {
           resValue "string", "title_activity_main", "IKAN(Dev)"
           namespace "com.fiftyeight.tuna.dev"
           firebaseAppDistribution {
-            releaseNotes="Refactor validation for required fields"
+            releaseNotes="Select role after login"
             groups="scrum,other-departments"
             serviceCredentialsFile=file("google-services-credentials.json")
           }
