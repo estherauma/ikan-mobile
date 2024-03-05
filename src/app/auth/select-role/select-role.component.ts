@@ -30,17 +30,13 @@ export class SelectRoleComponent  implements OnInit {
     const userData: UserData = await this.sharedMethods.getUserData();
     this.currentRole = userData?.role;
     this.selectRoleOptions = this.generateSelectRoleOptions(userData?.roles);
-    console.log('this.selectRoleOptions', this.selectRoleOptions);
   }
 
-  // TODO: fetch from prismic
   generateSelectRoleOptions(userRoles: UserRole[]) {
-    console.log('userRoles', userRoles);
     return userRoles.map((role) => {
-      const key = Object.keys(UserRole).find(key => UserRole[key] === role)
+      const key = Object.keys(UserRole).find(key => UserRole[key] === role);
       return {
-        // label: key, // from prismic
-        label: role,
+        label: this.commonText?.[key]|| role,
         value: role,
       };
     });

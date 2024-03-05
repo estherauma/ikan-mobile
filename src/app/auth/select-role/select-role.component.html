@@ -1,13 +1,9 @@
-<!-- TODO: check if from mmodal & not show header -->
-<!-- translate text -->
-<app-header pageTitle="Change Role"></app-header>
+<app-header [pageTitle]="commonText?.changeRole"></app-header>
 <ion-content>
   <div class="content-wrapper">
     <ion-row>
-      <!-- TODO: add to prismic -->
-      <ion-label class="title" text-wrap>Please select a role you would like to login with:</ion-label>
+      <ion-label class="title" text-wrap>{{ commonText?.selectRolePrompt }}</ion-label>
     </ion-row>
-    <!-- remove value -->
     <ion-radio-group (ionChange)="changeRole($event)">
       <ion-row *ngFor="let item of selectRoleOptions" class="label-row">
         <ion-col size="12">
