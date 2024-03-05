@@ -52,9 +52,6 @@ export class SelectRoleComponent  implements OnInit {
     await this.sharedMethods.saveDataToStorage(StorageKeys.userData, userData);
     await this.sharedMethods.saveDataToStorage(StorageKeys.isRoleSet, true);
     this.contentService.contentObs.next(true);
-    this.modalController?.dismiss({
-      selectedRole: event?.detail?.value
-    });
     this.router.navigate([this.authService.getCurrentUserBaseUrlFromRole(event?.detail?.value)], {replaceUrl: true});
   }
 }

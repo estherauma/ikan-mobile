@@ -142,7 +142,7 @@ export class AppComponent implements OnInit, OnDestroy {
             // Ensure auth service returns role immediately
 
             const isRoleSet = await this.sharedMethods.readDataFromStorage(StorageKeys.isRoleSet);
-            if (!isRoleSet) {
+            if (user?.roles?.length > 1 && !isRoleSet) {
               return this.router.navigate(['/select-role']);
             }
            

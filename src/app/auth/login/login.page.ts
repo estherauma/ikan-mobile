@@ -100,7 +100,7 @@ export class LoginPage extends BaseformPage implements OnInit {
           }
           // select role if user has multiple roles
           if (res.data.userData?.roles?.length > 1) {
-            return await this.selectRole(res.data.userData?.roles);
+            return this.router.navigate(['select-role'], { replaceUrl: true });
           }
 
           await this.sharedMethods.saveDataToStorage(StorageKeys.isRoleSet, true);
@@ -113,14 +113,6 @@ export class LoginPage extends BaseformPage implements OnInit {
     );
   }
 
-  async selectRole(roles: UserRole[]) {
-    const modal = await this.modalController.create({
-      component: SelectRoleComponent,
-      cssClass: 'select-role-modal',
-      backdropDismiss: false,
-    });
-    await modal.present();
-  }
 
   async handleRedirection(role) {
     const helpScreens = await this.sharedMethods.readDataFromStorage(StorageKeys.isFirstLogin);
