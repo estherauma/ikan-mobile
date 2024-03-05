@@ -296,7 +296,6 @@ export class SyncService {
         const profileExists = await this.profilesDataService.checkIfProfileExists(dataToSave.email);
         if (!profileExists) {
           await this.profilesDataService.saveOnlineProfile(dataToSave).then(async(id) => {
-            console.log ( `Profile ${dataToSave.email} saved with id ${id}`);
             await this.fetchBankAccounts(dataToSave.id);
             await this.fetchBeneficiaries(dataToSave.id);
           }).catch((e) => console.error(e));
@@ -311,7 +310,6 @@ export class SyncService {
           }
           if (currentDate < newDate) {
             await this.profilesDataService.update(dataToSave).then(async(id) => {
-              console.log ( `Profile ${dataToSave.email} updated.`);
               await this.fetchBankAccounts(dataToSave.id);
               await this.fetchBeneficiaries(dataToSave.id);
             });
@@ -341,7 +339,6 @@ export class SyncService {
               const profileExists = await this.profilesDataService.checkIfProfileExists(dataToSave.email);
               if (!profileExists) {
                 await this.profilesDataService.saveOnlineProfile(dataToSave).then(async(id) => {
-                  console.log ( `Profile ${dataToSave.email} saved with id ${id}`);
                   await this.fetchBankAccounts(dataToSave.id);
                   await this.fetchBeneficiaries(dataToSave.id);
                 }).catch((e) => console.error(e));
@@ -355,7 +352,6 @@ export class SyncService {
                 }
                 if (currentDate < newDate) {
                   await this.profilesDataService.update(dataToSave).then(async(id) => {
-                    console.log ( `Profile ${dataToSave.email} updated.`);
                     await this.fetchBankAccounts(dataToSave.id);
                     await this.fetchBeneficiaries(dataToSave.id);
                   });
@@ -384,7 +380,7 @@ export class SyncService {
     }
   }
 
-  // Syncs all local profiles to the api
+  // Syncs all local profiles to the API
   async syncProfiles() {
     const profiles = await this.profilesDataService.retrieveProfiles();
     return profiles?.forEach(async(profile) => {
@@ -402,7 +398,6 @@ export class SyncService {
         const profileToUpload: ProfileSyncData = profile;
         return this.apiService.post('accounts/profile', profileToUpload).subscribe(async(response: CreateProfileResponse) => {
           if (response?.status === 'OK') {
-            console.log(`Profile ${profile.email} synced.`);
             await this.syncBankAccounts(userId, response?.data?.id);
             await this.syncBeneficiaries(userId, response?.data?.id);
           } else {
@@ -429,9 +424,7 @@ export class SyncService {
                 bankAccount.createdBy = bankAccount.createdBy ?? profile.id;
                 bankAccount.updatedBy = bankAccount.updatedBy ?? profile.id;
                 const dataToSave = {...bankAccount, userId: profile.id, onlineRef: bankAccount.id};
-                await this.paymentsDataService.createBankAccount(dataToSave).then((id) => {
-                  console.log ( `Bank account ${dataToSave.accountNumber} saved with id ${id}`)
-                });
+                await this.paymentsDataService.createBankAccount(dataToSave).then(() => {});
               }
             }
           });
@@ -448,7 +441,6 @@ export class SyncService {
       if (!account.onlineRef) {
         this.apiService.post('accounts/bank-details', account).subscribe((response: CreateBankAccountResponse) => {
           if (response?.status === 'OK') {
-            console.log(`Bank account ${account.accountNumber} synced.`);
             this.dbService.updateDatabaseField('user_bank_accounts', 'online_ref', response?.data?.id, account.appRef);
           } else {
             console.error(`Failed to sync bank account ${account.accountNumber} to the api`, response);
@@ -471,9 +463,7 @@ export class SyncService {
                 beneficiary.createdBy = beneficiary.createdBy ?? profile.id;
                 beneficiary.updatedBy = beneficiary.updatedBy ?? profile.id;
                 const dataToSave = {...beneficiary, userId: profile.id, onlineRef: beneficiary.id};
-                await this.paymentsDataService.createBeneficiary(dataToSave).then((id) => {
-                  console.log ( `Beneficiary ${dataToSave.fName} saved with id ${id}`)
-                });
+                await this.paymentsDataService.createBeneficiary(dataToSave).then(() => {});
               }
             }
           });
@@ -490,7 +480,6 @@ export class SyncService {
       if (!beneficiary.onlineRef) {
         this.apiService.post('accounts/beneficiaries-bank-details', beneficiary).subscribe((response: CreateBeneficiaryResponse) => {
           if (response?.status === 'OK') {
-            console.log(`Beneficiary ${beneficiary.fName} synced.`);
             this.dbService.updateDatabaseField('user_beneficiaries', 'online_ref', response?.data?.id, beneficiary.appRef);
           } else {
             console.error(`Failed to sync beneficiary ${beneficiary.fName} to the api`, response);
