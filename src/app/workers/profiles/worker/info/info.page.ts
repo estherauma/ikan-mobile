@@ -8,7 +8,7 @@ import { ProfileData } from 'src/app/shared/services/sync/types';
 import { UserData } from 'src/app/shared/types/api-types';
 
 @Component({
-  selector: 'app-info',
+  selector: 'app-profiles-info',
   templateUrl: './info.page.html',
   styleUrls: ['./info.page.scss'],
 })

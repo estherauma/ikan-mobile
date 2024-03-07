@@ -2,11 +2,11 @@ ion-content {
   width: 100%;
   height: 100%;
   background: var(--ikan_skyblue_100);
+  --background: var(--ikan_skyblue_100);
   
   .profile-preview {
-    height: 220px;
     background: var(--ikan_skyblue_100);
-    padding: 0 20px;
+    padding: 0 20px 30px;
 
     .img-wrapper {
       display: flex;
@@ -29,19 +29,21 @@ ion-content {
     
   }
   
-  .tabContent {
+  .segments-wrapper {
     width: 100%;
+    background: var(--ikan_skyblue_100);
 
-    ion-tab-bar {
-      top: 220px;
-      position: relative;
-      border: unset;
-      border-radius: 20px 20px 0 0;
+    .segments {
       width: 80%;
       margin: 0 auto;
     }
 
-    ion-tab-button {
+    ion-segment{
+      border: unset;
+      border-radius: 20px 20px 0 0;
+    }
+
+    ion-segment-button {
       --color: var(--ikan_deep_gray);
       --color-selected: white;
       background: var(--ikan_light_gray);
@@ -60,7 +62,7 @@ ion-content {
       }
     }
 
-    .tab-selected {
+    .segment-button-checked {
       background: var(--ion-color-primary);
       --background: var(--ion-color-primary);
       ion-item {
