@@ -8,9 +8,12 @@ import { BehaviorSubject } from 'rxjs';
 })
 export class PaymentsDataService {
   db: SQLiteObject;
-  payments = new BehaviorSubject([]);
-  bankAccounts = new BehaviorSubject([]);
-  beneficiaries = new BehaviorSubject([]);
+  payments: any;
+  bankAccounts: any;
+  beneficiaries: any;
+  paymentsObs = new BehaviorSubject([]);
+  bankAccountsObs = new BehaviorSubject([]);
+  beneficiariesObs = new BehaviorSubject([]);
 
   constructor(
     public platform: Platform,
@@ -26,6 +29,16 @@ export class PaymentsDataService {
         this.retrieveBankAccounts();
         this.retrieveBeneficiaries();
       }).catch(e => console.log(e));
+    });
+
+    this.getAll().subscribe((payments) => {
+      this.payments = payments;
+    });
+    this.getAllBankAccounts().subscribe((bankAccounts) => {
+      this.bankAccounts = bankAccounts;
+    });
+    this.getAllBeneficiaries().subscribe((beneficiaries) => {
+      this.beneficiaries = beneficiaries;
     });
   }
 
@@ -57,12 +70,12 @@ export class PaymentsDataService {
           });
         }
       }
-      this.payments.next(payments);
+      this.paymentsObs.next(payments);
     }).catch((e) => console.log(e));
   }
 
   getAll() {
-    return this.payments.asObservable();
+    return this.paymentsObs.asObservable();
   }
 
   async create(data) {
@@ -116,7 +129,7 @@ export class PaymentsDataService {
           });
         }
       }
-      this.bankAccounts.next(bankAccounts);
+      this.bankAccountsObs.next(bankAccounts);
       return bankAccounts;
     }).catch((e) => {
       console.log(e);
@@ -125,13 +138,15 @@ export class PaymentsDataService {
   }
 
   getAllBankAccounts() {
-    return this.bankAccounts.asObservable();
+    return this.bankAccountsObs.asObservable();
   }
 
   async getActiveBankAccount(userId) {
-    const bankAccounts = await this.retrieveBankAccounts();
-    const activeAcct = bankAccounts.find((acct) => acct.userId === userId && acct.isActive);
-    return activeAcct;
+    return this.bankAccounts.find((acct) => acct.userId === userId && acct.isActive);
+  }
+
+  async getUserBankAccounts(userId) {
+    return this.bankAccounts.filter((acct) => acct.userId === userId);
   }
 
   createBankAccount(data) {
@@ -164,9 +179,7 @@ export class PaymentsDataService {
   }
 
   async checkIfBankAccountExists(userId: string, accountNumber: string) {
-    const bankAccounts = await this.retrieveBankAccounts();
-    const acctExists = bankAccounts.some((acct) => acct.userId === userId && acct.accountNumber === accountNumber);
-    return acctExists;
+    return this.bankAccounts.some((acct) => acct.userId === userId && acct.accountNumber === accountNumber);
   }
 
   retrieveBeneficiaries() {
@@ -196,7 +209,7 @@ export class PaymentsDataService {
           });
         }
       }
-      this.beneficiaries.next(beneficiaries);
+      this.beneficiariesObs.next(beneficiaries);
       return beneficiaries;
     }).catch((e) => {
       console.log(e);
@@ -205,13 +218,15 @@ export class PaymentsDataService {
   }
 
   getAllBeneficiaries() {
-    return this.beneficiaries.asObservable();
+    return this.beneficiariesObs.asObservable();
   }
 
   async getActiveBeneficiary(userId) {
-    const beneficiaries = await this.retrieveBeneficiaries();
-    const beneficiary = beneficiaries.find((beneficiary) => beneficiary.userId === userId && beneficiary.isActive);
-    return beneficiary;
+    return this.beneficiaries.find((beneficiary) => beneficiary.userId === userId && beneficiary.isActive);
+  }
+
+  async getUserBeneficiaries(userId) {
+    return this.beneficiaries.filter((beneficiary) => beneficiary.userId === userId);
   }
 
   createBeneficiary(data) {
@@ -247,9 +262,7 @@ export class PaymentsDataService {
   }
 
   async checkIfBeneficiaryExists(userId, accountNumber: string) {
-    const beneficiaries = await this.retrieveBeneficiaries();
-    const beneficiaryExists = beneficiaries.some((beneficiary) => (beneficiary.userId === userId && beneficiary.accountNumber === accountNumber));
-    return beneficiaryExists;
+    return this.beneficiaries.some((beneficiary) => (beneficiary.userId === userId && beneficiary.accountNumber === accountNumber));
   }
 
   deactivateOldAccounts(accountNumber: string, userId: string, table: string) {

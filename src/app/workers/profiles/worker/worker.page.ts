@@ -11,6 +11,7 @@ export class WorkerPage implements OnInit {
   commonText: any;
   pageTitle: string = 'My Profile'
   imageUrl: string = '';
+  activeSegment: string = 'info';
 
   constructor(
     public contentService: ContentService,
@@ -22,6 +23,8 @@ export class WorkerPage implements OnInit {
     this.pageTitle = this.commonText?.myProfile || this.pageTitle;
   }
 
-  saveProfile() {}
+  onSegmentChange(e) {
+    this.activeSegment = e?.detail?.value;
+  }
 
 }

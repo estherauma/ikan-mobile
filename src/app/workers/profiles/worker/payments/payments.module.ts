@@ -5,8 +5,6 @@ import { FormsModule } from '@angular/forms';
 import { IonicModule } from '@ionic/angular';
 
 import { PaymentsPageRoutingModule } from './payments-routing.module';
-
-import { PaymentsPage } from './payments.page';
 import { SharedModule } from 'src/app/shared/shared.modules';
 
 @NgModule({
@@ -17,6 +15,5 @@ import { SharedModule } from 'src/app/shared/shared.modules';
     PaymentsPageRoutingModule,
     SharedModule
   ],
-  declarations: [PaymentsPage]
 })
 export class PaymentsPageModule {}

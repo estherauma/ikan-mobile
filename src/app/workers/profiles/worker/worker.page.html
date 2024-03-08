@@ -2,7 +2,6 @@
 
 <ion-content [fullscreen]="true">
   <div class="profile-preview">
-
     <ion-row class="ion-padding-bottom title">
       <app-title [isBlue]="true" [title]="pageTitle"></app-title>
     </ion-row>
@@ -12,29 +11,38 @@
           <ion-icon *ngIf="!imageUrl" class="image icon" name="person-circle-outline" />
           <img *ngIf="imageUrl" class="image img" [src]="imageUrl || '/assets/icon/ellipse_profile.svg'" />
       </ion-col>
-      <!-- <ion-col size="9">
-          <app-button class="worker-prof-save-btn" (onClick)="saveProfile()" [title]="commonText?.save"></app-button>
-      </ion-col> -->
     </ion-row>
   </div>
 
-  <div class="tabContent">
-    <ion-tabs class="worker-ion-tabs">
-      <ion-tab-bar slot="top">
-        <ion-tab-button tab="info">
+  <div class="segments-wrapper">
+    <div class="segments">
+      <ion-segment (ionChange)="onSegmentChange($event)" [value]="activeSegment">
+        <ion-segment-button value="info">
           <ion-item lines="none">
             <ion-icon item-start name="person-circle-outline"></ion-icon>
             <ion-label>{{ commonText?.info }}</ion-label>
         </ion-item>
-        </ion-tab-button>
-
-        <ion-tab-button tab="payments">
+        </ion-segment-button>
+        <ion-segment-button value="payments">
           <ion-item lines="none">
             <ion-icon name="wallet-outline"></ion-icon>
             <ion-label>{{ commonText?.payment }}</ion-label>
           </ion-item>
-        </ion-tab-button>
-      </ion-tab-bar>
-    </ion-tabs>
+        </ion-segment-button>
+      </ion-segment>
+    </div>
+
+    <div class="segment-content">
+      <app-profiles-info
+        *ngIf="activeSegment === 'info'"
+        class="segement-info"
+      >
+      </app-profiles-info>
+      <app-payments
+        *ngIf="activeSegment === 'payments'"
+        class="segment-payments"
+      >
+      </app-payments>
+    </div>
   </div>
 </ion-content>
