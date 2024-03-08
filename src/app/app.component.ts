@@ -55,13 +55,9 @@ export class AppComponent implements OnInit, OnDestroy {
       if (data && Object.keys(data).length > 0) {
         data?.sort((a, b) => a.position - b.position);
 
-        // show change role based on number of user roles
-        data.forEach((el, index) => {
-          if(this.userData?.roles?.length > 1 && el.url === '/select-role') {
-            el.enabled = true;
-          }
 
-          // identify last item in a menu section
+        // identify last item in a menu section
+        data.forEach((el, index) => {
           if (index === data.length - 1 ) {
             el.last = false
           } else {
