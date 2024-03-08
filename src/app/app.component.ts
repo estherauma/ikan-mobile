@@ -55,8 +55,13 @@ export class AppComponent implements OnInit, OnDestroy {
       if (data && Object.keys(data).length > 0) {
         data?.sort((a, b) => a.position - b.position);
 
-        // identify last item in a menu section
+        // show change role based on number of user roles
         data.forEach((el, index) => {
+          if(this.userData?.roles?.length > 1 && el.url === '/select-role') {
+            el.enabled = true;
+          }
+
+          // identify last item in a menu section
           if (index === data.length - 1 ) {
             el.last = false
           } else {
@@ -70,11 +75,6 @@ export class AppComponent implements OnInit, OnDestroy {
             }
           }
         });
-
-        // show change role based on number of user roles
-        if (this.userData?.roles?.length > 1) {
-          data.find((el) => el.url === '/select-role').enabled = true;
-        }
   
         this.appPages = this.authService.alterMenuBasedOnRole(data);
       }
