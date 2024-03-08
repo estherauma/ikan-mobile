@@ -236,6 +236,20 @@ export interface VesselsBody {
   commissioningDate: string;
 }
 
+export interface GetUsersResponse {
+  status:     number;
+  statusText: string;
+  url:        string;
+  ok:         boolean;
+  type:       number;
+  body:       GetUsersBody;
+}
+
+export interface GetUsersBody {
+  status:   string;
+  data:     ProfileData[];
+}
+
 export interface GetProfileResponse {
   status:     number;
   statusText: string;
@@ -277,4 +291,118 @@ export interface ProfileData {
   isActive:             boolean;
   isVerified:           boolean;
   lastLogin:            string;
+  roles:                 string[];
+}
+
+export interface CreateProfileResponse {
+  status: string;
+  data:   ProfileData;
+}
+
+export interface ProfileSyncData {
+  userId?:            string;
+  deleted?:              boolean;
+  updatedAt?:            string;
+  deletedAt?:            string;
+  createdBy?:            string;
+  updatedBy?:            string;
+  deletedBy?:            string;
+  email?:                string;
+  firstName?:            string;
+  lastName?:             string;
+  telephone?:            string;
+  mobile?:               string;
+  addressLine1?:         string;
+  addressLine2?:         string;
+  addressLine3?:         string;
+  city?:                 string;
+  country?:              string;
+  postalCode?:           string;
+  profileImage?:         string;
+  registrationNumber?:   string;
+  passportNumber?:       string;
+  position?:             string;
+  isActive?:             boolean;
+}
+
+export interface GetBankAccountsResponse {
+  status:     number;
+  statusText: string;
+  url:        string;
+  ok:         boolean;
+  type:       number;
+  body:       BankAccountResponseBody;
+}
+
+export interface BankAccountResponseBody {
+  status: string;
+  data:   ApiBankAccount[];
+  errors: any[];
+}
+
+export interface ApiBankAccount {
+  id:           string;
+  deleted:      boolean;
+  createdAt:    string;
+  updatedAt:    string;
+  deletedAt:    string | null;
+  createdBy:    string;
+  updatedBy:    string;
+  deletedBy:    string | null;
+  appRef:       string;
+  accountName:  string;
+  accountNumber: string;
+  routingNumber: string;
+  swiftCode:   string;
+  bankName:    string;
+  bankBranch:  string;
+  isActive:    boolean;
+  user:        string;
+}
+
+export interface CreateBankAccountResponse {
+  status: string;
+  data:   ApiBankAccount;
+}
+
+export interface GetBeneficiaryResponse {
+  status:     number;
+  statusText: string;
+  url:        string;
+  ok:         boolean;
+  type:       number;
+  body:       BeneficiaryResponseBody;
+}
+
+export interface BeneficiaryResponseBody {
+  status: string;
+  data:   ApiBeneficiary[];
+  errors: any[];
+}
+
+export interface ApiBeneficiary {
+  id:           string;
+  deleted:      boolean;
+  createdAt:    string;
+  updatedAt:    string;
+  deletedAt:    string | null;
+  createdBy:    string;
+  updatedBy:    string;
+  deletedBy:    string | null;
+  appRef:       string;
+  fName:        string;
+  lName:        string;
+  accountName:  string;
+  accountNumber: string;
+  routingNumber: string;
+  swiftCode:   string;
+  bankName:    string;
+  bankBranch:  string;
+  isActive:    boolean;
+  user:        string;
+}
+
+export interface CreateBeneficiaryResponse {
+  status: string;
+  data:   ApiBeneficiary;
 }

@@ -1,14 +1,3 @@
-.worker-ion-tabs {
-  .tabs-inner {
-    position: relative;
-    top: 220px;
-  }
-  .ion-page {
-    // The subtracted value is the offset of the tab bar
-    height: calc(100% - 220px);
-  }
-}
-
 app-payments {
   app-title {
     .title {
