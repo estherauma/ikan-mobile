@@ -78,6 +78,10 @@ export class AuthService {
   alterMenuBasedOnRole(menuItems: Array<any>) {
     let finalMenu = [];
     menuItems.forEach((menuItem) => {
+      // show change role based on number of user roles
+      if(this.userData?.roles?.length > 1 && menuItem.url === '/select-role') {
+        menuItem.enabled = true;
+      }
       if (menuItem?.roles == null) {
         return;
       }

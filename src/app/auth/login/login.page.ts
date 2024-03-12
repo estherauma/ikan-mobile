@@ -2,7 +2,7 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { MenuController } from '@ionic/angular';
+import { MenuController, ModalController } from '@ionic/angular';
 import { AuthService } from 'src/app/shared/services/auth/auth.service';
 import { BaseformPage } from 'src/app/shared/components/baseform/baseform.page';
 import { ApiService } from 'src/app/shared/services/api/api.service';
@@ -13,6 +13,7 @@ import { DBService } from 'src/app/shared/services/database/db.service';
 import { SyncService } from 'src/app/shared/services/sync/sync.service';
 import { LocalNotificationsService } from 'src/app/shared/services/local-notifications/local-notifications.service';
 import { LocalNotifications  } from '@capacitor/local-notifications';
+import { SelectRoleComponent } from '../select-role/select-role.component';
 
 @Component({
   selector: 'app-login',
@@ -35,6 +36,7 @@ export class LoginPage extends BaseformPage implements OnInit {
     public dbService: DBService,
     public syncService: SyncService,
     public localNotifications: LocalNotificationsService,
+    public modalController: ModalController,
   ) {
     super(contentService);
   }
@@ -96,6 +98,12 @@ export class LoginPage extends BaseformPage implements OnInit {
           if (this.testEmails.includes(res.data.userData?.email)) {
             this.dbService.checkDbPlatformAndRunMigration(true);
           }
+          // select role if user has multiple roles
+          if (res.data.userData?.roles?.length > 1) {
+            return this.router.navigate(['select-role'], { replaceUrl: true });
+          }
+
+          await this.sharedMethods.saveDataToStorage(StorageKeys.isRoleSet, true);
           this.handleRedirection(res.data.userData?.role);
         }
       }, (err: HttpErrorResponse) => {
@@ -104,6 +112,7 @@ export class LoginPage extends BaseformPage implements OnInit {
       }
     );
   }
+
 
   async handleRedirection(role) {
     const helpScreens = await this.sharedMethods.readDataFromStorage(StorageKeys.isFirstLogin);

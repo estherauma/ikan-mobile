@@ -45,6 +45,10 @@ const routes: Routes = [
     loadChildren: () => import('./auth/register-success/register-success.module').then( m => m.RegisterSuccessModule)
   },
   {
+    path: 'select-role',
+    loadChildren: () => import('./auth/select-role/select-role.module').then( m => m.SelectRoleModule)
+  },
+  {
     path: 'login',
     loadChildren: () => import('./auth/login/login.module').then( m => m.LoginPageModule)
   },

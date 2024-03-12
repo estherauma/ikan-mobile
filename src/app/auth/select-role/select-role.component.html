@@ -1,0 +1,18 @@
+<app-header [pageTitle]="commonText?.changeRole"></app-header>
+<ion-content>
+  <div class="content-wrapper">
+    <ion-row>
+      <ion-label class="title" text-wrap>{{ commonText?.selectRolePrompt }}</ion-label>
+    </ion-row>
+    <ion-radio-group (ionChange)="changeRole($event)">
+      <ion-row *ngFor="let item of selectRoleOptions" class="label-row">
+        <ion-col size="12">
+          <ion-item fill="clear" lines="none">
+            <h3 class="label" text-wrap>{{ item?.label }}</h3>
+            <ion-radio slot="end" value="{{ item?.value }}"></ion-radio>
+          </ion-item>
+        </ion-col>
+      </ion-row>
+    </ion-radio-group>
+  </div>
+</ion-content>

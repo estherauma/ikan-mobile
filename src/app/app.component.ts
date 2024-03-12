@@ -25,6 +25,7 @@ import { LocalNotifications  } from '@capacitor/local-notifications';
 export class AppComponent implements OnInit, OnDestroy {
   public appPages = [];
   networkListener: PluginListenerHandle;
+  userData: UserData;
   userEmail: string;
   appSetupComplete = false;
   watchContent: Subscription;
@@ -53,6 +54,7 @@ export class AppComponent implements OnInit, OnDestroy {
     this.contentService.menuContent.subscribe((data) => {
       if (data && Object.keys(data).length > 0) {
         data?.sort((a, b) => a.position - b.position);
+
 
         // identify last item in a menu section
         data.forEach((el, index) => {
@@ -95,6 +97,7 @@ export class AppComponent implements OnInit, OnDestroy {
         }
     }));
     this.commonText = this.contentService.commonText;
+    this.userData = this.authService.userData;
     this.userEmail = this.authService.userData?.email;
     await this.contentService.saveSurveyCategories();
   }
@@ -122,6 +125,11 @@ export class AppComponent implements OnInit, OnDestroy {
             await this.pushNotifications.setSaveUploadPushNotificationData();
             // TODO: Service isn't returning role and is returning
             // Ensure auth service returns role immediately
+
+            const isRoleSet = await this.sharedMethods.readDataFromStorage(StorageKeys.isRoleSet);
+            if (user?.roles?.length > 1 && !isRoleSet) {
+              return this.router.navigate(['/select-role']);
+            }
            
             this.router.navigate([this.authService.getCurrentUserBaseUrlFromRole(user?.role)]);
           }
