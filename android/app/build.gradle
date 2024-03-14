@@ -25,6 +25,7 @@ android {
             resValue "string", "app_name", "IKAN"
             resValue "string", "title_activity_main", "IKAN"
             namespace "com.fiftyeight.tuna"
+            signingConfig signingConfigs.debug
         }
         debug {
           minifyEnabled false
