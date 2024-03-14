@@ -44,3 +44,5 @@ App/output
 local.notes.md
 
 **/all-content.json
+auth-keys
+**-info.plist
