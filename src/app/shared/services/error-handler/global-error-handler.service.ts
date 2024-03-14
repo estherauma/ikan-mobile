@@ -14,7 +14,7 @@ export class GlobalErrorHandlerService implements ErrorHandler {
       const newOptions: Sentry.BrowserOptions = {
         release: info?.version,
       };
-      const currentOptions = Sentry.getCurrentHub().getClient().getOptions();
+      const currentOptions = Sentry.getCurrentHub().getClient()?.getOptions();
       const updatedOptions: Sentry.BrowserOptions = { ...currentOptions, ...newOptions };
       Sentry.init(updatedOptions);
     });
