@@ -1,9 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { ContentService } from 'src/app/shared/services/content/content.service';
+import { LocalNotificationsService } from 'src/app/shared/services/local-notifications/local-notifications.service';
 import { PushNotificationsService } from 'src/app/shared/services/push-notifications/push-notifications.service';
 import { SharedmethodsService } from 'src/app/shared/services/sharedmethods/sharedmethods.service';
 import { UserData, StorageKeys } from 'src/app/shared/types/api-types';
+import { env } from 'src/environments/environment';
 
 @Component({
   selector: 'app-worker',
@@ -14,6 +16,7 @@ export class WorkerPage implements OnInit {
   commonText: any;
   user: UserData;
   name: string = '';
+  isProduction = env.production;
 
   sLists = [
     {title: 'Contracts', icon: '/assets/icon/offers.svg',  url: '/contracts/home'},
@@ -29,6 +32,7 @@ export class WorkerPage implements OnInit {
     public contentService: ContentService,
     public sharedmethods: SharedmethodsService,
     public router: Router,
+    public localNotifications: LocalNotificationsService,
   ) {
     this.contentService.watchContent().subscribe(async(resp) => {
       if (resp) {
@@ -64,5 +68,10 @@ export class WorkerPage implements OnInit {
 
   goToWorkerProfile() {
     this.router.navigate(['/worker/profile']);
+  }
+
+  // For testing purposes
+  triggerNotifications() {
+    this.localNotifications.triggerTestNotification();
   }
 }
