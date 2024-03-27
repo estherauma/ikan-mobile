@@ -8,8 +8,8 @@
       <ion-row *ngFor="let item of selectRoleOptions" class="label-row">
         <ion-col size="12">
           <ion-item fill="clear" lines="none">
-            <h3 class="label" text-wrap>{{ item?.label }}</h3>
-            <ion-radio slot="end" value="{{ item?.value }}"></ion-radio>
+            <ion-label class="label" text-wrap>{{ item?.label }}</ion-label>
+            <ion-radio mode="md" slot="end" value="{{ item?.value }}"></ion-radio>
           </ion-item>
         </ion-col>
       </ion-row>
