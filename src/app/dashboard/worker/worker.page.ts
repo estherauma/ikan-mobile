@@ -66,14 +66,8 @@ export class WorkerPage implements OnInit {
         });
       });
 
-    const allowedTestUsers = [
-      'jjnakitto@gmail.com',
-      'justinenakitto@fiftyeight.io',
-      'davidcouper@fiftyeight.io',
-      'valentinalai@fiftyeight.io',
-      'samsonkapeyi@fiftyeight.io',
-      'budi+technology@fiftyeight.io'
-    ];
+    const splitString = /\s*,\s*|\s*,\s*/; // split by comma and remove spaces
+    const allowedTestUsers = this.commonText?.allowedTestUsers ? this.commonText?.allowedTestUsers.split(splitString) : [];
     if (!this.isProduction && allowedTestUsers.includes(this.user?.email)) {
       this.showTriggerButton = true;
     }
