@@ -1,3 +1,9 @@
+#cancel-btn {
+  ion-button::part(native) {
+    background: #A0ABCC;
+  }
+}
+
 app-payments {
   app-title {
     .title {

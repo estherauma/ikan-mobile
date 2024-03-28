@@ -99,10 +99,6 @@ ion-select {
   }
 }
 
-.cancel-btn {
-  color: #A0ABCC !important;
-}
-
 ion-label.asterisk::after {
   content: "*";
   color: red;
@@ -131,7 +127,6 @@ ion-label.asterisk::after {
 
 :host.training-video-form {
   form {
-    margin: 10px;
 
     ion-radio-group {
       ion-item {
