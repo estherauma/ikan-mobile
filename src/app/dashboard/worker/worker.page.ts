@@ -17,6 +17,7 @@ export class WorkerPage implements OnInit {
   user: UserData;
   name: string = '';
   isProduction = env.production;
+  showTriggerButton: boolean = false;
 
   sLists = [
     {title: 'Contracts', icon: '/assets/icon/offers.svg',  url: '/contracts/home'},
@@ -64,6 +65,18 @@ export class WorkerPage implements OnInit {
           }
         });
       });
+
+    const allowedTestUsers = [
+      'jjnakitto@gmail.com',
+      'justinenakitto@fiftyeight.io',
+      'davidcouper@fiftyeight.io',
+      'valentinalai@fiftyeight.io',
+      'samsonkapeyi@fiftyeight.io',
+      'budi+technology@fiftyeight.io'
+    ];
+    if (!this.isProduction && allowedTestUsers.includes(this.user?.email)) {
+      this.showTriggerButton = true;
+    }
   }
 
   goToWorkerProfile() {

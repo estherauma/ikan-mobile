@@ -10,7 +10,7 @@
   >
   </app-dashboardelcomesection>
 
-  <div *ngIf="!isProduction" class="notif-btn-wrapper">
+  <div *ngIf="showTriggerButton" class="notif-btn-wrapper">
     <ion-button class="notif-btn" (click)="triggerNotifications()">Trigger Notifications</ion-button>
   </div>
 
