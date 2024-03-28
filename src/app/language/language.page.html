@@ -7,10 +7,8 @@
         <ion-row *ngFor="let item of availableLanguages">
           <ion-col size="12">
             <ion-item *ngIf="item.key" fill="clear">
-              <div id="middle_section">
-                <h2 class="secondary" text-wrap>{{ item?.label }}</h2>
-              </div>
-              <ion-radio slot="end" value="{{item?.localeCode}}"></ion-radio>
+              <ion-label text-wrap>{{ item?.label }}</ion-label>
+              <ion-radio mode="md" slot="end" value="{{item?.localeCode}}"></ion-radio>
             </ion-item>
           </ion-col>
         </ion-row>
