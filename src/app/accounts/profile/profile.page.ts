@@ -163,4 +163,11 @@ export class ProfilePage extends BaseformPage implements OnInit {
   editProfile() {
     this.isViewProfile = false;
   }
+
+  getCountryValueTranslation(value) {
+    if (!value) {
+      return '';
+    }
+    return this.formQuestions.find((el) => el.key === 'country')?.options?.find((opt) => opt.value === value)?.label || '';
+  }
 }
