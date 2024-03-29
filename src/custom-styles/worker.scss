@@ -30,10 +30,7 @@ app-info {
   .worker-profile-payment-acct,
   .worker-profile-payment-beneficiary {
     ion-col[size="6"] #app-btn {
-
-      // ion-button {
-        width: 100%;
-      // }
+      width: 100%;
     }
     ion-button::part(native) {
       background: white !important;
