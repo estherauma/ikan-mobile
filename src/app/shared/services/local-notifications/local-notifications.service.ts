@@ -116,12 +116,34 @@ export class LocalNotificationsService {
         const user = await this.sharedMethods.getUserData();
         const notifications = allNotifications.filter((notif) => notif?.extra?.roles?.includes(user?.role) || !notif.extra?.roles);
       
-        await LocalNotifications.schedule({
-          notifications: notifications,
-        });
+        if (notifications.length > 0) {
+          await LocalNotifications.schedule({
+            notifications: notifications,
+          });
+        }
       }
     } catch (error) {
       this.globalErrorHandler.handleError(error, 'Error in local-notifications.service.ts at scheduleNotifications(). Failed to schedule local notifications');
+    }
+  }
+
+  async triggerTestNotification() {
+    try {
+      await LocalNotifications.schedule({
+        notifications: [
+          {
+            title: 'Survey - This is a test notification',
+            body: 'A quick survey checking on you',
+            id: 10,
+            schedule: { 
+              at: new Date(Date.now() + 1000), 
+            },
+            actionTypeId: 'survey',
+          },
+        ],
+      });
+    } catch (error) {
+      this.globalErrorHandler.handleError(error, 'Error in local-notifications.service.ts at triggerNotification(). Failed to trigger local notifications');
     }
   }
 
