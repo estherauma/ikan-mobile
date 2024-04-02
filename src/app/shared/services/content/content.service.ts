@@ -24,14 +24,18 @@ export class ContentService {
     public authService: AuthService
   ) {
     this.setUpAppData();
-    this.watchContentSubscription = this.watchContent().subscribe((res) => {
+    this.watchContentSubscription = this.watchContent().subscribe(async(res) => {
       if (res) {
-        this.updateCommonText();
-        this.setAppContent();
-        this.updateSideMenu();
+        await this.updateAllContent();
       }
     });
     this.saveSurveyCategories();
+  }
+
+  async updateAllContent() {
+    await this.setAppContent();
+    await this.updateCommonText();
+    await this.updateSideMenu();
   }
 
   async setUpAppData() {
