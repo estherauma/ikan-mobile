@@ -80,13 +80,37 @@ export class ViewPage implements OnInit {
               id: entry.id,
               kind: entry.kind,
               entry: entry,
-              data: entry.content
+              data: entry.content,
+              order: this.addOrderDataToClause(entry.kind)
             })
           }
         });
+        console.info(this.contractClauses);
+        // order contractClauses by order
+        this.contractClauses = this.contractClauses.sort((a, b) => a.order - b.order);
       });
     });
+    
     this.pageSetup();
+  }
+
+  addOrderDataToClause(clauseKind: string) {
+    // TODO: Update the clause save logic and the respective table to save order and then sort by order
+    const clauseOrder = {
+      'contract-clauses-parties-requirement-vessel': 0,
+      'contract-clauses-contract-validity':1,
+      'contract-clauses-wage-benefits': 2,
+      'contract-clauses-accident-medical-and-life-insurance': 3,
+      'contract-clauses-transportation-severance-food-accomodation': 4,
+      'contract-clauses-working-hours-rest-and-leave': 5,
+      'contract-clauses-labor-protection-and-benefits': 6,
+      'contract-clause-requirements-that-party-b-must-comply-with': 7,
+      'contract-clauses-means-to-address-breach-of-contract': 8,
+      'contract-clauses-dispute-settlement': 9,
+      'contract-clauses-miscellaneous': 10,
+      'contract-clauses-attachments': 11,
+    }
+    return clauseOrder[clauseKind];
   }
 
   async createClause() {
