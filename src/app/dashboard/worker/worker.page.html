@@ -10,6 +10,10 @@
   >
   </app-dashboardelcomesection>
 
+  <div *ngIf="showTriggerButton" class="notif-btn-wrapper">
+    <ion-button class="notif-btn" (click)="triggerNotifications()">Trigger Notifications</ion-button>
+  </div>
+
     <!-- <div class="user-notification">
       <div class="user-section">
         <ion-icon class="user-icon" name="person-circle-outline"></ion-icon>
