@@ -36,7 +36,7 @@ android {
           namespace "com.fiftyeight.tuna.dev"
           firebaseAppDistribution {
             releaseNotes="Update menu after login and changing role"
-            groups="scrum,other-departments"
+            groups="scrum,other-departments,staging-testers"
             serviceCredentialsFile=file("google-services-credentials.json")
           }
         }
