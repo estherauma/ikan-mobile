@@ -85,7 +85,6 @@ export class ViewPage implements OnInit {
             })
           }
         });
-        console.info(this.contractClauses);
         // order contractClauses by order
         this.contractClauses = this.contractClauses.sort((a, b) => a.order - b.order);
       });
