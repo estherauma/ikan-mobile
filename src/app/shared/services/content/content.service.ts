@@ -220,6 +220,7 @@ export class ContentService {
     const savedCategories = await this.sharedMethods.readDataFromStorage(StorageKeys.surveyCategories);
     if(!savedCategories || !savedCategories?.length) {
       const categories = Object.keys(surveyData);
+      categories.sort((a, b) => a.localeCompare(b, undefined, { numeric: true }));
       await this.sharedMethods.saveDataToStorage(StorageKeys.surveyCategories, categories);
       return categories;
     }
@@ -240,13 +241,17 @@ export class ContentService {
     
     return surveyData[category].map((qn) => ({
       category: null,
-      displayquestion: true,
+      displayquestion: qn?.displayquestion,
       helpText: qn?.helpText ?? null,
       key: qn.key,
       label: qn.question ?? '',
       placeholder: qn?.placeholder ?? null,
       questionType: qn.questionType,
-      options: (qn.options ?? []).map(x => ({ label: x.option, value: x.option, ...x })),
+      options: qn.options?.length ? qn.options.map(x => ({
+        label: x.option,
+        value: x.option,
+        ...x 
+      })) : [],
     })) ?? [];
   }
 }
