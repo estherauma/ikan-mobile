@@ -84,7 +84,8 @@ export class LoginPage extends BaseformPage implements OnInit {
           
           // set api headers for sync service that requires saved token
           await this.apiServices.setApiRequestHeaders();
-          this.authService.currentUser.next(res.data.userData);
+          await this.authService.setUpAuthData();
+          await this.contentService.updateAllContent();
           this.sharedMethods.hideLoader();
 
           // setup/reset local notifications
