@@ -38,8 +38,7 @@ module.exports.generateEnvironmentFiles = (buildType) => {
             apiUrl: '${process.env.API_URL}',
             baseUrl: '${process.env.BASE_URL}',
             environment: 'development',
-            pushNotificationApi: '${process.env.DEV_PUSH_NOTIFICATION_URL}',
-            sentryDSN: '${process.env.SENTRY_DSN}'
+            pushNotificationApi: '${process.env.DEV_PUSH_NOTIFICATION_URL}'
         };
         `;
             break;
