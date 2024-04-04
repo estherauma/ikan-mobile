@@ -99,4 +99,8 @@ export class TrainingVideoComponent extends BaseformPage  implements OnInit {
     this.sharedMethods?.hideLoader();
     this.modalCtrl.dismiss();
   }
+
+  onCancel() {
+    this.modalCtrl?.dismiss();
+  }
 }

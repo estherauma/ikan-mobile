@@ -184,8 +184,7 @@ export class AppComponent implements OnInit, OnDestroy {
     const modal = await this.modalController.create({
       component: TrainingVideoComponent,
       cssClass: 'tfa-training-video',
-      // commented out because it's messing with the back button navigation
-      // backdropDismiss: false,
+      backdropDismiss: true,
     });
     modal.present();
   }
