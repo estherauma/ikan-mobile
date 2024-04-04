@@ -534,8 +534,8 @@
                       [cancelText]="commonText?.cancel"
                       textWrap
                     >
-                      <ion-select-option text-wrap *ngFor="let opt of question.followUpQuestion.options" value="{{opt.value}}">
-                        {{opt.label}}
+                      <ion-select-option text-wrap *ngFor="let opt of question.followUpQuestion.options" value="{{opt.value || opt.text}}">
+                        {{opt.label || opt.text}}
                       </ion-select-option>
                     </ion-select>
                   </ion-col>
@@ -698,8 +698,8 @@
                       multiple
                       text-wrap
                     >
-                      <ion-select-option text-wrap *ngFor="let opt of question.followUpQuestion.options" value="{{opt.value}}">
-                        {{opt.label}}
+                      <ion-select-option text-wrap *ngFor="let opt of question.followUpQuestion.options" value="{{opt.value || opt.text}}">
+                        {{opt.label || opt.text}}
                       </ion-select-option>
                     </ion-select>
                   </ion-col>
