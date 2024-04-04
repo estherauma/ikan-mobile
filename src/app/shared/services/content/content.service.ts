@@ -203,7 +203,7 @@ export class ContentService {
     if (!content) return {};
     
     const allDocs: Array<any> = Object.values(content);
-    const contentDocs = allDocs?.filter((doc) => (doc?.type === 'create_content_area' && !isNaN(doc?.pageName)));
+    const contentDocs = allDocs?.filter((doc) => ((doc?.type === 'create_content_area' && (!isNaN(parseFloat(doc?.pageName)) || doc?.pageName.includes('ikan-feedback')))));
 
     let result = {};
     contentDocs?.forEach((item) => {
