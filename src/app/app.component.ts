@@ -52,33 +52,19 @@ export class AppComponent implements OnInit, OnDestroy {
     this.pushNotifications.setup();
     this.localNotifications.scheduleNotifications();
     this.contentService.menuContent.subscribe((data) => {
-      if (data && Object.keys(data).length > 0) {
-        data?.sort((a, b) => a.position - b.position);
-
-
-        // identify last item in a menu section
-        data.forEach((el, index) => {
-          if (index === data.length - 1 ) {
-            el.last = false
-          } else {
-            const nextItem = data[index + 1]
-            const nextSection = nextItem?.position - nextItem?.position % 100;
-            const currentSection = el.position - el.position % 100;
-            if (currentSection !== nextSection) {
-              el.last = true;
-            } else {
-              el.last = false;
-            }
-          }
-        });
-  
-        this.appPages = this.authService.alterMenuBasedOnRole(data);
-      }
+      this.setupMenu(data);
     });
-    this.contentService.watchContent().subscribe((resp) => {
+    this.contentService.watchContent().subscribe(async(resp) => {
       if (resp) {
         this.checkSetupComplete();
         this.contentService.saveSurveyCategories();
+        await this.contentService.updateAllContent();
+      }
+    });
+    this.authService.currentUser.subscribe((data) => {
+      if (data && Object.keys(data).length > 0) {
+        this.userData = data;
+        this.userEmail = data.email;
       }
     });
     this.setupDB();
@@ -100,6 +86,30 @@ export class AppComponent implements OnInit, OnDestroy {
     this.userData = this.authService.userData;
     this.userEmail = this.authService.userData?.email;
     await this.contentService.saveSurveyCategories();
+  }
+
+  setupMenu(menuData) {
+    if (menuData && Object.keys(menuData).length > 0) {
+      menuData?.sort((a, b) => a.position - b.position);
+
+      // identify last item in a menu section
+      menuData.forEach((el, index) => {
+        if (index === menuData.length - 1 ) {
+          el.last = false
+        } else {
+          const nextItem = menuData[index + 1]
+          const nextSection = nextItem?.position - nextItem?.position % 100;
+          const currentSection = el.position - el.position % 100;
+          if (currentSection !== nextSection) {
+            el.last = true;
+          } else {
+            el.last = false;
+          }
+        }
+      });
+
+      this.appPages = this.authService.alterMenuBasedOnRole(menuData);
+    }
   }
 
   checkSetupComplete() {
@@ -176,8 +186,7 @@ export class AppComponent implements OnInit, OnDestroy {
     const modal = await this.modalController.create({
       component: TrainingVideoComponent,
       cssClass: 'tfa-training-video',
-      // commented out because it's messing with the back button navigation
-      backdropDismiss: false,
+      backdropDismiss: true,
     });
     modal.present();
   }

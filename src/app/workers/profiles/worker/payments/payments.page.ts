@@ -44,8 +44,8 @@ export class PaymentsPage extends BaseformPage implements OnInit {
     super(contentService);
   }
 
-  ngOnInit() {
-    this.pageSetup();
+  async ngOnInit() {
+    await this.pageSetup();
   }
 
   async pageSetup() {
@@ -56,13 +56,13 @@ export class PaymentsPage extends BaseformPage implements OnInit {
     if (profData?.id) {
       this.profileData = profData;
     }
-    const acctData = await this.paymentsDataService.getActiveBankAccount(this.profileData?.id);
-    if (acctData?.id) {
+    const acctData = await this.paymentsDataService.getActiveBankAccount(userData?.id);
+    if (acctData?.userId) {
       this.isViewAcct = true;
       this.acctData = acctData;
     }
-    const beneficiaryData = await this.paymentsDataService.getActiveBeneficiary(this.profileData?.id);
-    if (beneficiaryData?.id) {
+    const beneficiaryData = await this.paymentsDataService.getActiveBeneficiary(userData?.id);
+    if (beneficiaryData?.userId) {
       this.isViewBeneficiary = true;
       this.beneficiaryData = beneficiaryData;
     }

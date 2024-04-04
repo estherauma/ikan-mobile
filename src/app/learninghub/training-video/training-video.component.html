@@ -33,10 +33,12 @@
     <app-form
       class="training-video-form"
       btnFill="solid"
+      [showCancelButton]="true"
       [tunaFormGroup]="pageFormGroup"
       [tunaFormquestions]="formQuestions"
       [submitButtonText]="commonText?.submit"
       (formValue)="onSubmit($event)"
+      (cancel)="onCancel()"
     >
     </app-form>
   </div>

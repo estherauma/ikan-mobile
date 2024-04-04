@@ -1,3 +1,9 @@
+#cancel-btn {
+  ion-button::part(native) {
+    background: #A0ABCC;
+  }
+}
+
 app-payments {
   app-title {
     .title {
@@ -7,24 +13,39 @@ app-payments {
   }
 }
 
+// worker profile
+// refer to app-profile for other roles' profiles
+app-profiles-info,
 app-payments,
 app-info {
   app-button {
     ion-button::part(native) {
-      background: white;
+      background: var(--ion-color-primary) !important;
+      color: white !important;
       margin: 10px 0;
     }
   }
+
+  .worker-profile-info,
+  .worker-profile-payment-acct,
+  .worker-profile-payment-beneficiary {
+    ion-col[size="6"] #app-btn {
+      width: 100%;
+    }
+    ion-button::part(native) {
+      background: white !important;
+      color: var(--ion-color-primary) !important;
+    }
+  }
+
   .edit-profile {
     #app-btn {
-      background: var(--ion-color-primary);
       min-width: 100px !important;
       text-transform: none;
       height: 30px;
       border-radius: 25px;
     }
     ion-button::part(native) {
-      background: unset;
       margin: unset;
     }
   }
@@ -53,6 +74,8 @@ app-profile {
   }
 }
 
+// VO, buyer, agent profile
+// Refer to app-profile-info for worker profile
 app-profile {
   app-button {
     #app-btn {

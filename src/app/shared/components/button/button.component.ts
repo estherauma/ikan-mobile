@@ -17,7 +17,7 @@ export class ButtonComponent implements OnInit {
   @Input() color = 'transparent';
   @Input() iconPosition = 'left';
   @Input() iconName = '';
-  @Input() type = '';
+  @Input() type = 'button';
 
   @Output() onClick = new EventEmitter<any>();
 

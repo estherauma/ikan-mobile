@@ -108,4 +108,11 @@ export class InfoPage extends BaseformPage implements OnInit {
   editInfo() {
     this.isViewInfo = false;
   }
+
+  getCountryValueTranslation(value) {
+    if (!value) {
+      return '';
+    }
+    return this.formQuestions.find((el) => el.key === 'country')?.options?.find((opt) => opt.value === value)?.label || '';
+  }
 }

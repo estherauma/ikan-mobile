@@ -20,7 +20,6 @@
 #app-btn {
     --padding-start: 20px;
     --padding-end: 20px;
-    text-wrap: wrap;
     max-width: 100%;
     span {
         max-width: 80%;
@@ -41,5 +40,18 @@
 :host.form-btn {
     #app-btn {
         min-width: 140px;
+    }
+}
+
+:host.form-btn-one,
+:host.form-btn-two {
+    #app-btn {
+        width: 100%;
+        --padding-start: 5px;
+        --padding-end: 5px;
+        span {
+            width: 100%;
+            margin: 0;
+        }
     }
 }

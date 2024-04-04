@@ -757,7 +757,9 @@
   <ion-row class="buttons" *ngIf="!useCustomSubmitButton">
     <ion-col *ngIf="showCancelButton" size="6">
       <app-button
+        id="cancel-btn"
         class="form-btn cancel-btn"
+        [class.form-btn-one]="showCancelButton"
         [config]="btnConfig"
         [fill]="btnFill"
         [title]="commonText?.cancel.toUpperCase()"
@@ -767,6 +769,7 @@
     <ion-col [size]="showCancelButton ? '6' : '12'">
       <app-button
         class="form-btn"
+        [class.form-btn-two]="showCancelButton"
         type="submit"
         [config]="btnConfig"
         [fill]="btnFill"
