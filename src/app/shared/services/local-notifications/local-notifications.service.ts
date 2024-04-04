@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { ActionPerformed, LocalNotificationSchema, LocalNotifications, Weekday } from '@capacitor/local-notifications';
-import { NotificationActionId, SurveySources } from '../../types/api-types';
+import { NotificationActionId, SurveySources, UserRole } from '../../types/api-types';
 import { SharedmethodsService } from '../sharedmethods/sharedmethods.service';
 import { GlobalErrorHandlerService } from '../error-handler/global-error-handler.service';
 import { env } from 'src/environments/environment';
@@ -81,7 +81,7 @@ export class LocalNotificationsService {
               }, // Notification will run every Sunday
             actionTypeId: NotificationActionId.survey,
             extra: {
-              roles: ['worker',]
+              roles: [UserRole.worker,]
             }
           },
   
@@ -123,7 +123,7 @@ export class LocalNotificationsService {
             },
             actionTypeId: NotificationActionId.survey,
             extra: {
-              roles: ['worker',],
+              roles: [UserRole.worker,],
               topic: presetTopics?.[i] || ''
             }
           };
