@@ -215,28 +215,36 @@ export class ContentService {
     return result;
   }
 
-  async saveSurveyCategories() {
+  async getAllCategories() {
     const surveyData = this.getSurveyData();
+    const categories = Object.keys(surveyData);
+    categories.sort((a, b) => a.localeCompare(b, undefined, { numeric: true }));
+    return categories;
+  }
+
+  async saveSurveyCategories() {
     const savedCategories = await this.sharedMethods.readDataFromStorage(StorageKeys.surveyCategories);
     if(!savedCategories || !savedCategories?.length) {
-      const categories = Object.keys(surveyData);
-      categories.sort((a, b) => a.localeCompare(b, undefined, { numeric: true }));
+      const categories = await this.getAllCategories();
       await this.sharedMethods.saveDataToStorage(StorageKeys.surveyCategories, categories);
-      return categories;
     }
   }
 
-  async getSurveyQuestions() {
-    let allCategories;
-    allCategories = await this.sharedMethods.readDataFromStorage(StorageKeys.surveyCategories);
-    if(!allCategories?.length) {
-      allCategories = await this.saveSurveyCategories();
+  async getSurveyQuestions(surveyTopic: string = '') {
+    let category = surveyTopic;
+    if (!category) {
+      let allCategories;
+      allCategories = await this.sharedMethods.readDataFromStorage(StorageKeys.surveyCategories);
+      if(!allCategories?.length) {
+        allCategories = this.getAllCategories();
+        await this.saveSurveyCategories();
+      }
+      
+      // get random category
+      // const randomIndex = Math.floor(Math.random() * allCategories.length);
+      // const randomCategory = allCategories[randomIndex];
+       category = allCategories[0];
     }
-    
-    // get random category
-    // const randomIndex = Math.floor(Math.random() * allCategories.length);
-    // const randomCategory = allCategories[randomIndex];
-    const category = allCategories[0];
     const surveyData =  this.getSurveyData();
     
     return surveyData[category].map((qn) => ({
