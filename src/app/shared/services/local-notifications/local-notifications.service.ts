@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { ActionPerformed, LocalNotificationSchema, LocalNotifications, Weekday } from '@capacitor/local-notifications';
-import { SurveySources } from '../../types/api-types';
+import { NotificationActionId, SurveySources } from '../../types/api-types';
 import { SharedmethodsService } from '../sharedmethods/sharedmethods.service';
 import { GlobalErrorHandlerService } from '../error-handler/global-error-handler.service';
 import { env } from 'src/environments/environment';
@@ -9,6 +9,7 @@ import { AuthService } from '../auth/auth.service';
 import { Platform } from '@ionic/angular';
 import { App, AppState } from '@capacitor/app';
 import { Plugins, } from '@capacitor/core';
+import { ContentService } from '../content/content.service';
 const coreApp = Plugins.App;
 
 @Injectable({
@@ -17,6 +18,7 @@ const coreApp = Plugins.App;
 export class LocalNotificationsService {
 
   appActive = false;
+  commonText: any;
 
   constructor(
     public router: Router,
@@ -24,8 +26,9 @@ export class LocalNotificationsService {
     public globalErrorHandler: GlobalErrorHandlerService,
     public platform: Platform,
     public authService: AuthService,
+    public contentService: ContentService,
   ) {
-
+    this.commonText = this.contentService?.commonText;
     this.platform.ready().then(() => {
       App.addListener('appStateChange', (state: AppState) => {
         this.appActive = state.isActive;
@@ -33,7 +36,6 @@ export class LocalNotificationsService {
 
     this.scheduleNotifications();
     this.addListeners();
-  
     });
   }
 
@@ -61,7 +63,8 @@ export class LocalNotificationsService {
       const isProduction = env.production;
       const permissionsGranted = await this.requestNotificationPermission();
       if (permissionsGranted) {
-        const allNotifications: LocalNotificationSchema[] = [
+        // Regular Notifications to run every Sunday
+        const regularNotifications: LocalNotificationSchema[] = [
           {
             // TODO: add to prismic
             title: 'Survey' + (isProduction ? '' : ' (Development)'),
@@ -76,51 +79,73 @@ export class LocalNotificationsService {
                   minute: 0,
                 }
               }, // Notification will run every Sunday
-            actionTypeId: 'survey',
+            actionTypeId: NotificationActionId.survey,
             extra: {
               roles: ['worker',]
             }
           },
-
-          // FOR TEST PURPOSES
-          // {
-          //     title: 'Test Notification' + (isProduction ? '' : ' (Development)'),
-          //     body: 'This is a test notification.',
-          //     id: 2,
-          //     schedule: { 
-          //       at: new Date(Date.now() + 1000), 
-          //       repeats: true,
-          //       every: "minute", //runs every minute
-          //     },
-          //     actionTypeId: 'survey',
-          //   },
-
-          // TO BE REMOVED
-          // Testing purposes
-          // Uncomment the code block below (& in addListeners()) to run the notification every minute
-          // {
-          //   title: 'Another Test Notification' + (isProduction ? '' : ' (Development)'),
-          //   body: 'This is another test notification.',
-          //   id: 2,
-          //   schedule: { 
-          //     at: new Date(Date.now() + 1000), 
-          //     repeats: true,
-          //     every: "minute" //runs every minute
-          //   },
-          //   actionTypeId: 'test',
-          // },
   
           // ADD NOTIFICATIONS HERE
         ];
   
         const user = await this.sharedMethods.getUserData();
-        const notifications = allNotifications.filter((notif) => notif?.extra?.roles?.includes(user?.role) || !notif.extra?.roles);
+        const userNotifications = regularNotifications.filter((notif) => notif?.extra?.roles?.includes(user?.role) || !notif.extra?.roles);
       
-        if (notifications.length > 0) {
-          await LocalNotifications.schedule({
-            notifications: notifications,
-          });
+        if (userNotifications.length > 0) {
+          await LocalNotifications.schedule({ notifications: userNotifications});
+        } else {
+          // cancel any existing notifications
+          await LocalNotifications.cancel({ notifications: userNotifications });
         }
+
+
+        // Preset Notifications to run every week from the given date within given time frame
+        let presetNotifications: LocalNotificationSchema[] = [];
+        const presetTopics = await this.contentService?.getAllCategories();
+        const notificationsStartDate = this.commonText?.notificationsStartDate ? new Date(this.commonText?.notificationsStartDate) : undefined;
+        const notificationsTimeFrame = this.commonText?.notificationsTimeFrame ? Number(this.commonText?.notificationsTimeFrame) : undefined;
+
+        if (!notificationsStartDate || !notificationsTimeFrame) {
+          return;
+        }
+
+        for (let i = 0; i < notificationsTimeFrame; i++) {
+          const notificationDate = new Date(notificationsStartDate);
+          notificationDate.setDate(notificationDate.getDate() + (i * 7));
+          notificationDate.setHours(18, 0, 0, 0);
+
+          const prestNotif = {
+            title: 'Survey',
+            body: 'A quick survey checking on you',
+            id: i + 1,
+            schedule: { 
+              at: notificationDate, 
+            },
+            actionTypeId: NotificationActionId.survey,
+            extra: {
+              roles: ['worker',],
+              topic: presetTopics?.[i] || ''
+            }
+          };
+          presetNotifications.push(prestNotif);
+        }
+
+        const currentDate = new Date();
+        const dateInRange = this.sharedMethods.isDateWithinTimeFrame(currentDate, notificationsTimeFrame, notificationsStartDate);
+        if (dateInRange) {
+          // cancel existing regular notifications so that they's no clash
+          await LocalNotifications.cancel({ notifications: userNotifications});
+          
+          // schedule the preset notificationsconst
+          const userPresetNotifications = presetNotifications.filter((notif) => notif?.extra?.roles?.includes(user?.role) || !notif.extra?.roles);
+          if (userPresetNotifications.length > 0) {
+            await LocalNotifications.schedule({ notifications: userPresetNotifications});
+          } else {
+            // cancel any existing notifications
+            await LocalNotifications.cancel({ notifications: userPresetNotifications });
+          }
+        }
+  
       }
     } catch (error) {
       this.globalErrorHandler.handleError(error, 'Error in local-notifications.service.ts at scheduleNotifications(). Failed to schedule local notifications');
@@ -138,7 +163,7 @@ export class LocalNotificationsService {
             schedule: { 
               at: new Date(Date.now() + 1000), 
             },
-            actionTypeId: 'survey',
+            actionTypeId: NotificationActionId.survey,
           },
         ],
       });
@@ -160,7 +185,7 @@ export class LocalNotificationsService {
           const notification: LocalNotificationSchema = notificationAction?.notification;
           switch (notificationAction?.actionId) {
             case 'tap':
-              if (notification?.actionTypeId === 'survey') {
+              if (notification?.actionTypeId === NotificationActionId.survey) {
                 if (!this.appActive) {
                   return setTimeout(async() => {
                     await this.router.navigate([ 'survey' ], { queryParams: { surveySource: SurveySources.notification }});
@@ -170,7 +195,7 @@ export class LocalNotificationsService {
               }
               // TO BE REMOVED
               // for testing purposes
-              if (notification?.actionTypeId === 'test') {
+              if (notification?.actionTypeId === NotificationActionId.test) {
                 this.router.navigate([ 'survey' ], { queryParams: { surveySource: SurveySources.notification }});
               }
               break;
