@@ -1,0 +1,33 @@
+ion-card{
+    border-radius: 20px;
+}
+
+.is-no-border-shadow {
+    box-shadow: none !important;
+}
+
+.transparent-bg {
+    background: transparent;
+}
+
+.icon{
+    width: 62px;
+    height: 60px;
+}
+
+.title{
+    color: var(--ikan_darkblue_100);
+}
+
+.text-label{
+    color: var(--ikan_deep_gray);
+}
+
+.text-value{
+    color: var(--ikan_blue_100);
+}
+
+.vessel-image-container{
+    border-radius: 10px;
+    height: 150px;
+}

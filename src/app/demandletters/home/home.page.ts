@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { ModalController } from '@ionic/angular';
 import { CreatePage } from '../create/create.page';
+import { SharedmethodsService } from 'src/app/shared/services/sharedmethods/sharedmethods.service';
+import { DemandlettersDataService } from 'src/app/demandletter/data/demandletters-data.service';
 
 
 export interface DemandLetter {
@@ -19,43 +21,7 @@ export interface DemandLetter {
 })
 export class HomePage implements OnInit {
   pageTitle='Demand Letters';
-  bannerImage='https://cdn.pixabay.com/photo/2016/11/30/20/44/computer-1873831_1280.png';
-
-  filterDataSet = [
-    {
-      name: 'Demand letter one',
-      internalRef: 'IJSWERWXDWER',
-      appRef: 'XXX-XXX-XXX',
-      dateOpened: '2022-10-23',
-      status: 'Open',
-      image: 'https://cdn.pixabay.com/photo/2015/07/17/22/43/student-849825_1280.jpg',
-    },
-    {
-      name: 'Demand letter two',
-      internalRef: 'IJSWERWXDWER',
-      appRef: 'XXX-XXX-XXX',
-      dateOpened: '2022-10-23',
-      status: 'Open',
-      image: 'https://cdn.pixabay.com/photo/2015/07/17/22/43/student-849825_1280.jpg',
-    },
-    {
-      name: 'Demand letter three',
-      internalRef: 'IJSWERWXDWER',
-      appRef: 'XXX-XXX-XXX',
-      dateOpened: '2022-10-23',
-      status: 'Open',
-      image: 'https://cdn.pixabay.com/photo/2015/07/17/22/43/student-849825_1280.jpg',
-    },
-    {
-      name: 'Demand letter one',
-      internalRef: 'IJSWERWXDWER',
-      appRef: 'XXX-XXX-XXX',
-      dateOpened: '2022-10-23',
-      status: 'closed',
-      image: 'https://cdn.pixabay.com/photo/2015/07/17/22/43/student-849825_1280.jpg',
-    }
-  ];
-
+  filterDataSet = [];
   demandLetters = [...this.filterDataSet];
 
   filterOptions = [
@@ -65,8 +31,14 @@ export class HomePage implements OnInit {
 
   constructor(
     public modalCtrl: ModalController,
-    private router: Router
-  ) { }
+    private router: Router,
+    public sharedMethods: SharedmethodsService,
+    public demandLettersDataService: DemandlettersDataService,
+  ) {
+    this.demandLettersDataService.getAll().subscribe((data) => {
+      this.demandLetters = data;
+    });
+  }
 
   ngOnInit() {
   }
@@ -82,11 +54,15 @@ export class HomePage implements OnInit {
     modal.onDidDismiss().then((data) => {});
   }
 
-  viewDeatils(demandLetter: DemandLetter) {
+  viewDetails(demandLetter: DemandLetter) {
     this.router.navigate(['/demandletters/view', { demandLetter: JSON.stringify(demandLetter) }]);
   }
 
-  filterResult(result){
+  filterResult(result) {
+    this.demandLetters = result;
+  }
+
+  searchResult(result) {
     this.demandLetters = result;
   }
 

@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import { ContentService } from 'src/app/shared/services/content/content.service';
 
 @Component({
   selector: 'app-details',
@@ -7,39 +8,61 @@ import { ActivatedRoute } from '@angular/router';
   styleUrls: ['./details.page.scss'],
 })
 export class DetailsPage implements OnInit {
+  commonText: any;
+  payslipText = 'Payslip';
   payment: any;
-
-  breakDown = [
+  paymentBreakdowns: any = [
     {
-      type: 'Bank Transfer:',
-      amount: '£ XXX.XX',
-      date: 'Date: xx/xx/xxxx',
-      status: 'Confirmed'
+      type: 'Cash',
+      madeOn: '30/09/2022',
+      confirmedOn: '30/09/2022',
+      confirmed: false,
+      status: '',
+      amount: '$999.0',
     },
     {
-      type: 'Cash:',
-      amount: '£ XXX.XX',
-      date: 'Date: xx/xx/xxxx',
-      status: 'Confirmed'
+      type: 'Beneficiary',
+      madeOn: '30/09/2022',
+      confirmedOn: '30/09/2022',
+      confirmed: false,
+      status: '',
+      amount: '$999.0',
     },
     {
-      type: 'Beneficiery:',
-      amount: '£ XXX.XX',
-      date: 'Date: xx/xx/xxxx',
-      status: 'Confirmed'
+      type: 'Bank transfer',
+      madeOn: '30/09/2022',
+      confirmedOn: '',
+      confirmed: false,
+      status: '',
+      amount: '$999.0',
     }
   ];
 
   constructor(
-    public activatedRoute: ActivatedRoute
+    public activatedRoute: ActivatedRoute,
+    public contentService: ContentService,
   ) { }
 
   ngOnInit() {
+    this.commonText = this.contentService?.commonText;
+    this.payslipText = this.commonText?.payslip;
     this.activatedRoute.params.subscribe((data) => {
       if (data) {
         this.payment = data;
+        this.generatePaymentBreakdown(data);
       }
     });
+
+    // Testing
+    if (this.contentService?.currentLanguage === 'qm-zh') {
+      this.paymentBreakdowns[0].type = '現金';
+      this.paymentBreakdowns[1].type = '受益人';
+      this.paymentBreakdowns[2].type = '銀行轉帳';
+    }
+  }
+
+  generatePaymentBreakdown(payment) {
+
   }
 
 }

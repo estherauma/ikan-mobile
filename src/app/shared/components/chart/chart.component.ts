@@ -15,7 +15,14 @@ export class ChartComponent implements OnInit, AfterViewInit {
   @Input() chartLabels: string[] = [];
   @Input() chartDatasets: any[] = [];
   @Input() chartOptions = {};
-  @Input() chartHeight: number|string = '100%';
+  @Input() chartHeight: number | string = '100%';
+  @Input() centerText = '';
+  @Input() centerIcon = '';
+  @Input() centerValueColor: 'white' | 'blue' = 'blue';
+  @Input() chartVariant: 'white' | 'blue' = 'blue';
+  @Input() isCustomBgColors = false;
+  @Input() indexAxis: 'y' | 'x' = 'x';
+  backgroundColors = {};
   chartId = uuidv4();
 
   public chart: any;
@@ -23,9 +30,39 @@ export class ChartComponent implements OnInit, AfterViewInit {
   constructor() { }
 
   ngOnInit() {
+    if (this.chartVariant === 'blue') {
+      this.backgroundColors = {
+        backgroundColor: [
+          'rgba(53, 101, 255, 0.8)',
+          'rgba(53, 101, 255, 0.5)',
+          'rgba(53, 101, 255, 0.3)',
+        ]
+      };
+    }
+
+    if (this.chartVariant === 'white') {
+      this.backgroundColors = {
+        backgroundColor: [
+          'rgba(255, 255, 255, 1)',
+          'rgba(255, 255, 255, 0.8)',
+          'rgba(255, 255, 255, 0.5)',
+        ]
+      };
+    }
+
+    if (!this.isCustomBgColors) {
+      this.chartDatasets = [
+        {
+          ...this.chartDatasets[0],
+          ...{
+            ...this.backgroundColors
+          }
+        }
+      ];
+    }
   }
 
-  ngAfterViewInit(){
+  ngAfterViewInit() {
     this.createChart({
       id: this.chartId,
       type: this.chartType,
@@ -34,16 +71,40 @@ export class ChartComponent implements OnInit, AfterViewInit {
     });
   }
 
-  createChart({ id, type, labels, datasets }){
+  createChart({ id, type, labels, datasets }) {
     this.chart = new Chart(id, {
       type,
 
       data: {
         labels,
-	       datasets
+        datasets
       },
       options: {
-        ...this.chartOptions
+        ...this.chartOptions,
+        ...{
+          indexAxis: this.indexAxis,
+        },
+        ...{
+          plugins: {
+            legend: {
+              display: false
+            }
+          },
+          scales: {
+            x: {
+              display: false,
+              title: {
+                display: false
+              }
+            },
+            y: {
+              display: false,
+              title: {
+              display: false
+            }
+            }
+          }
+        }
       }
     });
   }

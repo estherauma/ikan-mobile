@@ -1,0 +1,40 @@
+<ion-card class="notification-card-body">
+  <div  class="notification-card-content">
+    <div
+      class="ion-padding ion-margin-top">
+      <img class="image" [src]="notification.icon" />
+    </div>
+    <div class="wo-card-section">
+      <div class="status-container-parent">
+        <div [class]="statusContainer + ' status-container'">
+          <div class="status-wrapper">
+            <span>{{status}}</span>
+          </div>
+        </div>
+      </div>
+      <div class="title-section ion-margin-vertical ion-padding-end">
+        <ion-card-title 
+        [ngClass]="{
+          'deep-blue': titleColor === 'deep-blue',
+          'color-blue': titleColor === 'blue'
+        }"
+        >{{notification.title}}</ion-card-title>
+        <p>{{notification.text}}</p>
+        <app-audio-player 
+        *ngIf="notification.hasAttachment && notification.attachmentType === 'audio'"
+        [audioSrc]=""
+        size="thin"
+        variant = 'gray-bg'
+        ></app-audio-player>
+        <div *ngIf="notification.hasAttachment && notification.attachmentType === 'pdf'">
+          <app-attachment
+          [pdfInfo]="notification.pdfInfo"
+          [pdfName]="notification.pdfTitle"
+          variant="gray"
+          ></app-attachment>
+          <!-- <p class="link">Click to visit external <a>link</a></p> -->
+        </div>
+      </div>
+    </div>
+  </div>
+</ion-card>

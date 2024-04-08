@@ -2,13 +2,14 @@ apply plugin: 'com.android.application'
 apply plugin: 'com.google.firebase.appdistribution'
 
 android {
+    namespace "com.fiftyeight.tuna"
     compileSdkVersion rootProject.ext.compileSdkVersion
     defaultConfig {
-        applicationId "com.fiftyeight.tuna.dev"
+        applicationId "com.fiftyeight"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 1
-        versionName "0.0.4"
+        versionCode 1005
+        versionName "1.0.5"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         aaptOptions {
              // Files and dirs to omit from the packaged assets dir, modified to accommodate modern web apps.
@@ -20,13 +21,23 @@ android {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            applicationIdSuffix ".tuna"
+            resValue "string", "app_name", "IKAN"
+            resValue "string", "title_activity_main", "IKAN"
+            namespace "com.fiftyeight.tuna"
+            signingConfig signingConfigs.debug
         }
         debug {
           minifyEnabled false
           debuggable true
+          applicationIdSuffix ".tuna.dev"
+          resValue "string", "app_name", "IKAN(Dev)"
+          resValue "string", "title_activity_main", "IKAN(Dev)"
+          namespace "com.fiftyeight.tuna.dev"
           firebaseAppDistribution {
-              releaseNotes="Adds more UI screens to the application"
-              serviceCredentialsFile="google-application-credentials.json"
+            releaseNotes="Update store apps"
+            groups="scrum,other-departments"
+            serviceCredentialsFile=file("google-services-credentials.json")
           }
         }
     }
@@ -37,11 +48,11 @@ android {
     }
 }
 
- repositories {
-     flatDir{
-         dirs '../capacitor-cordova-android-plugins/src/main/libs', 'libs'
-     }
- }
+repositories {
+  flatDir{
+    dirs '../capacitor-cordova-android-plugins/src/main/libs', 'libs'
+  }
+}
 
 dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')

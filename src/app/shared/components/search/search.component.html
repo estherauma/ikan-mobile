@@ -1,1 +1,5 @@
-<ion-searchbar placeholder="Enter search value" (ionChange)="onSearchTextChanged($event)"></ion-searchbar>
+<ion-searchbar
+  [placeholder]="commonText?.enterSearchValue"
+  (ionChange)="onSearchTextChanged($event)"
+  (ionClear)="onClear()">
+</ion-searchbar>

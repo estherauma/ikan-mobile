@@ -1,0 +1,41 @@
+<ion-card class="wo-card-body" (click)="onClick(wo)">
+  <div  class="wo-card-content">
+    <div
+      class="wo-card-image-section">
+      <img src="/assets/icon/workorders.svg" />
+    </div>
+    <div class="wo-card-section">
+      <div style="position: relative;">
+        <div class="wo-status-container">
+          <div class="status-wrapper">
+            <span >{{wo.status}}</span>
+          </div>
+        </div>
+      </div>
+      <div class="ion-padding ion-margin-vertical wo-card-details">
+        <ion-card-title class="blue-text truncate-text">{{wo.name}}</ion-card-title>
+        <div class="truncate-text">
+          <ion-label>
+            <!-- TODo: Add this after adding vessels -->
+            <!-- <ion-text class="gray-text">Vessel Owner ref: </ion-text> -->
+          
+          </ion-label> <br>
+        </div>
+        <div class="truncate-text">
+          <ion-label>
+            <ion-text class="gray-text">{{ commonText?.appRef }}: </ion-text>
+            <ion-text class="blue-text"> {{wo.appRef}}</ion-text>
+          </ion-label> <br>
+        </div>
+        <ion-label>
+          <ion-text class="gray-text">{{ commonText?.dateCreated }}: </ion-text>
+          <ion-text class="blue-text">{{wo.createdAt}}</ion-text>
+        </ion-label> <br>
+        <ion-label>
+          <ion-text class="gray-text">{{ commonText?.status }}: </ion-text>
+          <ion-text class="blue-text">{{wo.status}}</ion-text>
+        </ion-label> <br>
+      </div>
+    </div>
+  </div>
+</ion-card>

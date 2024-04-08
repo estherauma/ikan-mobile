@@ -1,9 +1,14 @@
 <app-header [pageTitle]="">
 </app-header>
 
-<ion-content>
-  <app-dashboardelcomesection message="Welcome back. Here’s a bespoke message on entry. Could also include a"
-    name="Cici" link=""></app-dashboardelcomesection>
+<ion-content class="content-skyblue-bg ion-content-custom-position">
+  <app-contentwrapper>
+  <app-dashboardelcomesection
+    message="Welcome back."
+    name="Cici"
+    (onProfileClick)="goToProfile()"
+  >
+  </app-dashboardelcomesection>
     <div>
       <ion-card>
         <ion-card-content>
@@ -59,4 +64,5 @@
       </ion-card-content>
     </ion-card>
   </div>
+</app-contentwrapper>
 </ion-content>

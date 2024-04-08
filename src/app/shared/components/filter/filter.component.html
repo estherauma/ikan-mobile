@@ -1,0 +1,10 @@
+<ion-select
+  (ionChange)="onChange($event)"
+  [class]="customCss + ' filter-border'"
+  [placeholder]="commonText?.all"
+  [okText]="commonText?.ok"
+  [cancelText]="commonText?.cancel"
+>
+  <ion-select-option *ngFor="let option of options" [value]="option.value">{{option.title}}</ion-select-option>
+</ion-select>
+

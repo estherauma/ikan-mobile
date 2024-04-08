@@ -1,0 +1,9 @@
+<div 
+class="block" 
+[ngClass]="{'completed': variant === 'completed', 'default': variant === 'default', 'pending': variant === 'pending'}"
+>
+  <div class="icon-wrapper icon-wrapper-colors">
+    <ion-img src="/assets/icon/tick_box_rounded_blue.svg"></ion-img>
+  </div>
+  <span>{{title}}</span>
+</div>

@@ -1,0 +1,11 @@
+<app-header [isBackButton]="true"></app-header>
+
+<ion-content [fullscreen]="true">
+  <ion-text>
+    <app-title [isBlue]="true" [title]="pageTitle"></app-title>
+  </ion-text>
+
+  <div class="content-section">
+    <div [innerHtml]="pageContent"></div>
+  </div>
+</ion-content>

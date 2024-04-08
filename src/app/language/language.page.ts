@@ -1,7 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { ContentService } from '../shared/services/content/content.service';
 import { SharedmethodsService } from '../shared/services/sharedmethods/sharedmethods.service';
-import { StorageKeys } from '../shared/types/api-types';
+import { StorageKeys, UserData } from '../shared/types/api-types';
+import { Router } from '@angular/router';
+import { AuthService } from '../shared/services/auth/auth.service';
 
 @Component({
   selector: 'app-language',
@@ -14,7 +16,9 @@ export class LanguagePage implements OnInit {
   pageTitle: string;
 
   constructor(
-    public cotentServ: ContentService,
+    public contentServ: ContentService,
+    public router: Router,
+    public authService: AuthService,
     public sharedMethods: SharedmethodsService
   ) {
     this.getAvailableLanguages();
@@ -30,15 +34,20 @@ export class LanguagePage implements OnInit {
   }
 
   getAvailableLanguages() {
-    const data = this.cotentServ.getAvailableLanguages();
+    const data = this.contentServ.getAvailableLanguages();
     const {languages, pageTitle} = data;
     this.pageTitle = pageTitle;
     this.availableLanguages = languages;
+    this.contentServ.compareContent();
   }
 
 
-  changeLanguage(selectedLanguage) {
-    this.sharedMethods.saveDataToStorage(StorageKeys.currentLanguage,selectedLanguage?.detail?.value);
-    this.cotentServ.updateCurrentLanguage();
+  async changeLanguage(selectedLanguage) {
+    await this.sharedMethods.saveDataToStorage(StorageKeys.currentLanguage,selectedLanguage?.detail?.value);
+    await this.contentServ.updateCurrentLanguage();
+    this.contentServ.contentObs.next(true);
+    
+    const user: UserData = await this.sharedMethods.readDataFromStorage(StorageKeys.userData);
+    this.router.navigate([this.authService.getCurrentUserBaseUrlFromRole(user.role)], {replaceUrl: true});
   }
 }

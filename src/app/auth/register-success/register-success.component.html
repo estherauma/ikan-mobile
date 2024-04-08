@@ -1,0 +1,23 @@
+<ion-content class="content-skyblue-bg">
+  <div class="ion-padding">
+    <div class="logo-container">
+      <app-badge imageUrl="/assets/icon/ikan_monogram.svg"></app-badge>
+    </div>
+    <div class="text-center">
+      <ion-text>
+        <app-title
+          class="title"
+          [isBlue]="true"
+          [title]="pageText?.registrationSuccess"
+          
+        ></app-title>
+      </ion-text>
+      <ion-text>
+        <p>{{ pageText?.accountCreatedSuccessfully }}</p>
+      </ion-text>
+      <ion-text>
+        <p>{{ pageText?.checkEmailForVerification }}</p>
+      </ion-text>
+    </div>
+  </div>
+</ion-content>

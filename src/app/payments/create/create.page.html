@@ -1,19 +1,19 @@
 <app-header [pageTitle]="pageTitle" ></app-header>
 
-<ion-content>
+<ion-content class="ion-padding content-skyblue-bg">
   <ion-grid>
     <ion-row>
-      <ion-col size="9">
+      <ion-col size="7">
         <ion-icon name="expand-outline" size="large"></ion-icon>
       </ion-col>
-      <ion-col size="3">
-        <ion-button color="light">Cancel</ion-button>
+      <ion-col size="5">
+        <ion-button color="light" (click) ="addDeduction()">{{commonText?.addDeduction }}</ion-button>
       </ion-col>
     </ion-row>
     <ion-row>
       <ion-col>
         <ion-text>
-          <h1>New Payment</h1>
+          <h1>{{  commonText?.newPayment }}</h1>
         </ion-text>
       </ion-col>
     </ion-row>
@@ -23,6 +23,7 @@
     [tunaFormGroup]="pageFormGroup"
     [tunaFormquestions]="formQuestions"
     [submitButtonText]="submitButtonText"
+    uploadDocIcon="assets/icon/single_payment.svg"
     (formValue)="onSubmit($event)"
   >
   </app-form>

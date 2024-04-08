@@ -40,3 +40,21 @@ ion-card{
         }
     }
 }
+
+.hub-content {
+    border-radius: 20px;
+    min-height: 150px;
+}
+
+.card-title {
+    color: #3565FF;
+    font-family: GatwickBold;
+    font-weight: 700;
+    font-size: 1rem;
+}
+
+.notif-btn-wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}

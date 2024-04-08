@@ -1,0 +1,21 @@
+<div class="ion-padding" style="display: flex; flex-direction:column; align-items:center; border-radius: 16px !important; margin: 16px !important;">
+  <h1>{{title ? title : "Modal title"}}</h1>
+  <div class="ion-padding-vertical">
+    <ion-radio-group *ngIf="actionByRadio"  (ionChange)="radioChangeHandler($event)" style="display: flex;">
+      <div style="display: flex; flex-direction:column; margin-right: 16px;">
+        <ion-radio value="yes"></ion-radio>
+        <ion-label>Yes</ion-label>
+      </div>
+      <div style="display: flex; flex-direction:column;">
+        <ion-radio value="no"></ion-radio>
+        <ion-label>No</ion-label>
+      </div>
+    </ion-radio-group>
+    <div *ngIf="actionByButton">
+      <ion-button (click)="btnClickHandler('yes')">Yes</ion-button>
+      <ion-button (click)="btnClickHandler('no')">No</ion-button>
+    </div>
+  </div>
+  <p class="ion-text-center">{{description ? description : '' }}</p>
+  <a *ngIf="link">link here</a>
+</div>

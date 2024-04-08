@@ -1,16 +1,26 @@
 
-<ion-content class="ion-padding">
-  <div class="logo-container">
-    <ion-thumbnail class="logo">
-      <ion-img [src]=""></ion-img>
-    </ion-thumbnail>
+<ion-content>
+  <app-authbgpaper></app-authbgpaper>
+  <div class="ion-padding center-content">
+    <div>
+      <ion-row class="ion-justify-content-center">
+        <ion-img class="icon" src="/assets/imgs/logo_svg.svg"></ion-img>
+      </ion-row>
+    </div>
+    <div class="ion-padding-vertical">
+      <app-button
+        config="ikan-light-outline" 
+        [title]="inviteCodeAuth" 
+        (click)="toInviteCodeScreen()"
+        class="login-method"
+      ></app-button>
+    </div>
+    <app-button
+      config="ikan-light-outline" 
+      [title]="usernameAuth" 
+      (click)="loginWithUsername()"
+      class="login-method"
+    ></app-button>
+    <!-- <a class="ion-padding-vertical how-to-link" routerLink="/auth/how-to-signup">{{ pageText?.createAccount }}</a> -->
   </div>
-
-  <ion-button (click)="toInviteCodeScreen()" expand="full">
-    I have an invite code
-  </ion-button>
-  <ion-button (click)="loginWithUsername()" class="ion-margin-top" expand="full">
-    Login with username/email
-  </ion-button>
-  <a routerLink="/auth/how-to-signup">Create account</a>
 </ion-content>

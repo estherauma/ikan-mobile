@@ -71,11 +71,28 @@ export interface FormQuestion {
 export enum StorageKeys {
   appContent = 'appContent',
   currentLanguage = 'currentLanguage',
-  apiToken = 'apiToken',
   isFirstLogin = 'isFirstLogin',
-  authData = 'authData'
+  apiToken = 'apiToken',
+  userData = 'userData',
+  apiTokenExpiry = 'apiTokenExpiry',
+  pushNotificationData = 'pushNotificationData',
+  pushNotificationTopics = 'pushNotificationTopics',
+  pushNotificationDataUploaded = 'pushNotificationDataUploaded',
+  showPNsPermissionsPrompt = 'showPNsPermissionsPrompt',
+  survey = 'survey',
+  surveyCategories = 'surveyCategories',
+  watchedTFAVideo = 'watchedTFAVideo',
+  isRoleSet = 'isRoleSet',
 }
 
+export interface UserData {
+  id: string;
+  firstName: string;
+  lastName: string;
+  email: string;
+  role: UserRole;
+  roles?: UserRole[];
+}
 export interface LoginSuccessReponse {
   status: string;
   data:   Data;
@@ -84,12 +101,64 @@ export interface LoginSuccessReponse {
 export interface Data {
   token:        string;
   isFirstLogin: boolean;
+  userData: UserData;
 }
 
 export enum UserRole {
-  vesselOwner = 'taien',
-  taiwaneseAgent = 'cici',
-  indonesianAgent = 'farah',
-  worker = 'budi',
-  buyer = 'tony'
+  vesselOwner = 'vessel_owner',
+  taiwaneseAgent = 'taiwanese_agent',
+  indonesianAgent = 'indonesian_agent',
+  worker = 'worker',
+  buyer = 'buyer'
+}
+
+export interface Blameable {
+  id: number;
+  onlineRef: string;
+  createdAt: string;
+  updatedAt: string;
+  createdBy: number;
+  updatedBy: number;
+}
+
+export type TPaymentStatus = 'default' | 'warning' | 'success' | 'failed';
+
+export interface IPaymentsSummary {
+  amount: string;
+  status: TPaymentStatus;
+  text: string;
+}
+
+export enum FieldType{
+  text =  'text',
+  password = 'password',
+}
+
+export enum Icons {
+  iconEyeClosed =  'assets/icon/password/eye.svg',
+  iconEyeOpen = 'assets/icon/password/eye-cross.svg'
+}
+
+
+export interface PushNotificationData {
+  appId: string;
+  userRole: string; // fix type
+  language?: string;
+  locale?: string;
+  // age?: string;
+  // sectors?: Array<string>;
+  // gender?: string;
+  // organisation?: string;
+  // factoryFarm?: string;
+  registrationToken: string;
+  messagingRepos?: Array<string>;
+}
+
+export interface IPasswordResetResp {
+  status: string;
+  message: string;
+}
+
+export enum SurveySources {
+  notification = 'notification',
 }

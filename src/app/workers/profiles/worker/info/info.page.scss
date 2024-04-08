@@ -1,0 +1,39 @@
+.content-wrapper {
+
+  .view-info {
+    background: var(--ikan_skyblue_100);
+    background: rgba(211, 218, 238, 0.7);
+    width: 100%;
+    min-height: 80%;
+    padding: 20px;
+    ion-col {
+      padding: 2px 5px;
+    }
+    .ion-row {
+      margin: 15px 0 0 0;
+    }
+    .btn-row {
+      margin: 0;
+    }
+
+    .label {
+      font-family: interRegular;
+      font-size: 0.95rem;
+      color: #3565FF;
+      --color: #3565FF;
+    }
+
+    .value {
+      font-size: 1.2rem;
+    }
+
+    .address {
+      ion-label {
+        margin: 0 0 0 5px;
+      }
+      .value {
+        margin: 0 0 15px 5px;
+      }
+    }
+  }
+}

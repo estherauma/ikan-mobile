@@ -1,0 +1,76 @@
+<app-header [pageTitle]="" [isBackButton]="true"></app-header>
+<ion-content>
+  <div class="content-wrapper">
+    <div
+      class="image-section" 
+      [ngStyle]="{'background': 'url(' + imgUrl +') no-repeat fixed center / cover'}"
+    >
+    <app-title [title]="allPageContent?.pageTitle" [isBig]="true" [isLightBlue]="true"></app-title>
+    </div>
+    <!-- <div class="audio-section">
+      <div>
+        <app-audio-player
+          variant="gray-bg" 
+          size="thin"
+          [audioSrc]="allPageContent?.pageTitleAudio?.mediaData?.url || ''"
+        ></app-audio-player>
+      </div>
+    </div> -->
+    <div class="content-section">
+      <div *ngFor="let section of pageContent">
+        <shared-text-area
+          *ngIf="section?.type === 'text_area'"
+          [data]="section"
+          styles="textarea"
+        ></shared-text-area>
+        
+        <!-- <app-questiontitlecard *ngIf="section?.type === 'question'"></app-questiontitlecard> -->
+    
+        <app-audio-player
+          *ngIf="section?.type === 'audio'"
+          [title]="section?.title || ''"
+          [audioSrc]="section?.mediaData?.url || ''"
+          variant="white-bg-title" 
+        ></app-audio-player>
+    
+        <shared-case-study
+          *ngIf="section?.type === 'case_study'"
+          [data]="section"
+          [icons]="caseStudyInputs?.icons"
+          [styles]="caseStudyInputs?.styles || ''"
+          (onCaseStudyClick)="handleCaseStudyClick(section)"
+        >
+        </shared-case-study>
+    
+        <shared-warning-box
+          *ngIf="section?.type === 'warning_box'"
+          [data]="section"
+          defaultIcon="assets/icon/warning-2.svg"
+          styles="warning-box"
+        >
+        </shared-warning-box>
+        
+        <shared-image
+          *ngIf="section?.type === 'image'"
+          [data]="section"
+        >
+        </shared-image>
+      </div>
+    </div>
+  </div>
+  <div
+    *ngIf="upNextContent"
+    class="up-next-section"
+    (click)="goToNextChapter()"
+  >
+  <ion-label text-wrap>{{ contentService?.commonText?.upNext }}...</ion-label>
+    <app-maincard
+      class="upnext"
+      [imageUrl]="upNextContent?.icon"
+      [title]="upNextContent?.name"
+      [text]="upNextContent?.description"
+      (click)="goToNextChapter()"
+    >
+    </app-maincard>
+  </div>
+</ion-content>

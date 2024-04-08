@@ -1,65 +1,45 @@
-<app-header></app-header>
+<app-header [isBackButton]="true"></app-header>
 
-<ion-content>
-  <ion-card>
-    <ion-card-content>
-      <ion-grid>
-          <ion-row>
-            <ion-col style="text-align:center">
-              <ion-icon name="expand-outline" size="large"></ion-icon>
-            </ion-col>
-            <ion-col size="12" style="text-align: center">
-              <ion-text>
-                <strong><h2>£123.98</h2></strong>
-              </ion-text>
-            </ion-col>
-            <ion-col size="12" style="text-align: center;">
-              <ion-text>
-                <h2>Budi Surname</h2>
-              </ion-text>
-            </ion-col>
-            <ion-col size="12" style="text-align: center;">
-              <ion-text>
-                <h2>Status: Awaiting confirmation</h2>
-              </ion-text>
-            </ion-col>
-          </ion-row>
-      </ion-grid>
-    </ion-card-content>
-  </ion-card>
+<ion-content class="content-skyblue-bg ion-content-custom-position">
+  <app-contentwrapper>
+      <app-paymentssummarycard
+        status="{{payment.status}}"
+        title="{{payment.totalAmount}}"
+        text="Taien"
+      >
+      </app-paymentssummarycard>
+      <div class="ion-padding-horizontal ion-margin-bottom">
+        <app-title [isBlue]="true" [title]="commonText?.paymentBreakdown" variant="h3"></app-title>
+      </div>
 
-  <ion-text>
-    <strong> <h3 style="margin-left: 20px;">Payment breakdown</h3></strong>
-  </ion-text>
+      <app-paymentbreakdowncard
+        *ngFor="let paymentBreakdown of paymentBreakdowns"
+        [type]="paymentBreakdown.type"
+        [isConfirmable]="paymentBreakdown.confirmed"
+        [madeOn]="paymentBreakdown.madeOn"
+        [confirmedOn]="paymentBreakdown.confirmedOn"
+        [amount]="paymentBreakdown.amount"
+        [status]="paymentBreakdown.status"
+      ></app-paymentbreakdowncard>
 
-  <ion-card *ngFor="let br of breakDown">
-    <ion-grid>
-      <ion-row>
-        <ion-col size="2">
-          <ion-icon name="expand-outline" size="large"></ion-icon>
-        </ion-col>
-        <ion-col size="6">
-          <strong>{{br.type}}</strong> <br>
-          <strong> {{br.amount}} </strong>
-        </ion-col>
-      </ion-row>
-    </ion-grid>
-  </ion-card>
-
-
-  <ion-card style="margin-top: 50px;">
-    <ion-grid>
-      <ion-row>
-        <ion-col size="2">
-          <ion-icon name="expand-outline" size="large"></ion-icon>
-        </ion-col>
-        <ion-col size="6">
-          <strong>Payment Slip</strong> <br>
-          <strong> xx/xx/xxxx </strong>
-        </ion-col>
-      </ion-row>
-    </ion-grid>
-  </ion-card>
-
-  <ion-button color="light" expand="full">Make a new payment to this person</ion-button>
+    <div class="ion-padding-horizontal">
+      <div class="ion-margin-bottom">
+        <app-attachment
+          [pdfName]="payslipText"
+          pdfInfo="05/10/2022"
+          docLink="/assets/imgs/zila1.jpeg"
+          backUrl="/workers/details/info"
+        ></app-attachment>
+      </div>
+      <div class="ion-margin-bottom">
+        <app-attachment
+          [pdfName]="payslipText"
+          pdfInfo="05/10/2022"
+          docLink="/assets/imgs/zila1.jpeg"
+          backUrl="/workers/details/info"
+        ></app-attachment>
+      </div>
+      <app-button [title]="commonText?.makePaymentToThisPerson"></app-button>
+    </div>
+  </app-contentwrapper>
 </ion-content>

@@ -4,6 +4,19 @@
   "env": {
     "es6": true
   },
+  "parser": "@typescript-eslint/parser",
+  "parserOptions": {
+    "sourceType": "module",
+    "project": ["tsconfig.json", "e2e/tsconfig.json"],
+    "ecmaVersion": 2020,
+    "ecmaFeatures": {
+      "modules": true
+    }
+  },
+  "extends": [
+    "eslint:recommended",
+    "plugin:@typescript-eslint/recommended"
+  ],
   "overrides": [
     {
       "files": ["*.ts"],
@@ -38,7 +51,12 @@
             "prefix": "app",
             "style": "camelCase"
           }
-        ]
+        ],
+        "space-before-function-paren": ["error", "never"],
+        "space-before-blocks": ["error", "always"],
+        "keyword-spacing": ["error", {
+          "before": true,
+          "after": true }]
       }
     },
     {

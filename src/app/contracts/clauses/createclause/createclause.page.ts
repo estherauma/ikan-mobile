@@ -1,0 +1,78 @@
+import { Component, OnInit } from '@angular/core';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
+import { ModalController } from '@ionic/angular';
+import { BaseformPage } from 'src/app/shared/components/baseform/baseform.page';
+import { ApiService } from 'src/app/shared/services/api/api.service';
+import { ContentService } from 'src/app/shared/services/content/content.service';
+import { SharedmethodsService } from 'src/app/shared/services/sharedmethods/sharedmethods.service';
+import { ContractDataService } from '../../data/contract-data.service';
+
+@Component({
+  selector: 'app-createclause',
+  templateUrl: './createclause.page.html',
+  styleUrls: ['./createclause.page.scss'],
+})
+export class CreateclausePage extends BaseformPage implements OnInit {
+  contractId: any;
+  clauseExistsText: string = 'This clause already exists in the contract';
+  clauseMapping = {
+    'Parties to this contract - Party A': 'contract-clauses-parties-requirement-vessel',
+    'Parties to this contract - Party B': 'contract-clauses-parties-requirement-fishers',
+    'Article 1 Period of validity': 'contract-clauses-contract-validity',
+    'Article 2 Wage benefits and means of payment': 'contract-clauses-wage-benefits',
+    'Article 5 Working hours rest and leave': 'contract-clauses-working-hours-rest-and-leave',
+    'Article 6 Labor protection and benefits': 'contract-clauses-labor-protection-and-benefits',
+    'Attachments': 'contract-clauses-attachments',
+  }
+
+  constructor(
+    public contentService: ContentService,
+    public router: Router,
+    public apiService: ApiService,
+    public sharedMethods: SharedmethodsService,
+    public modalCtrl: ModalController,
+    public contractDataService: ContractDataService
+  ) {
+    super(contentService);
+   }
+
+  ngOnInit() {
+    this.commonText = this.contentService?.commonText;
+    this.pageSetup();
+  }
+
+  pageSetup(){
+    const pageData = this.contentService.getContentByPropertyName('contract-create-clause');
+    this.formQuestions = pageData.formQuestions;
+    this.pageTitle = pageData?.pageTitle;
+    this.pageText = this.sharedMethods.convertAdditionalTextToObj(pageData?.additionalText);
+    this.submitButtonText = this.pageText?.submitButtonText;
+    this.clauseExistsText = this.pageText?.clauseExistsText;
+    this.formQuestions.forEach((entry) => {
+      this.group[entry.key] = new FormControl('', [Validators.required]);
+    });
+    this.pageFormGroup = new FormGroup(this.group);
+  }
+
+  async onSubmit(formData) {
+    formData.contractId = this.contractId;
+    // if the clause kind selected exists, don't add again
+    let clauseExists = await this.checkIfClauseExists(this.contractId, this.clauseMapping[formData['clause-type'].trim()]);
+    if (clauseExists) {
+      this.modalCtrl.dismiss();
+      this.sharedMethods.showToast(this.clauseExistsText);
+      return;
+    } 
+    this.modalCtrl.dismiss();
+    this.router.navigate(['/contracts/createdetails', formData]);
+  }
+
+  async checkIfClauseExists(contractId, clauseKind) {
+    const response = await this.contractDataService.retrieveContractClauses(contractId);
+    const clauseExists = response.some((entry) => {
+      return entry.kind === clauseKind;
+    });
+    return clauseExists;
+  }
+}

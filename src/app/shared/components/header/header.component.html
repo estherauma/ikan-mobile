@@ -1,15 +1,18 @@
-<ion-header [translucent]="true">
-  <ion-toolbar>
-    <ion-buttons slot="start">
-      <ion-back-button *ngIf="isBackButton" defaultHref="" color="primary" text="" icon="arrow-back-outline"></ion-back-button>
-    </ion-buttons>
-    
-    <ion-title>{{pageTitle}}</ion-title>
-
-    <ion-buttons slot="end">
-      <ion-menu-button *ngIf="isMenuButton" slot="end"></ion-menu-button>
-    </ion-buttons>
+<ion-header class="ion-no-border">
+  <ion-toolbar class="header-toolbar ion-no-border sky-blue-bg" [ngClass]="{'light-blue': isLightBlueBg}" color="transparent" no-border mode="ios">
+    <div class="header-content-container">
+      <div class="section-one">
+        <div *ngIf="isBackButton" class="back-section">
+          <ion-back-button [text]="backText" [defaultHref]="defaultHref" icon="arrow-back-outline">
+          </ion-back-button>
+        </div>
+        <ion-title>{{pageTitle}}</ion-title>
+      </div>
+      <div class="section-two">
+        <ion-menu-button  *ngIf="isMenuButton">
+          <img src='/assets/icon/menu-icon.svg'>
+        </ion-menu-button>
+      </div>
+    </div>
   </ion-toolbar>
 </ion-header>
-
-

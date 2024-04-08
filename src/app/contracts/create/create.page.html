@@ -1,0 +1,11 @@
+<div class="inner-content">
+  <app-genericmodal [title] = "pageTitle">
+    <app-form
+      class="create-contract"
+      [tunaFormGroup]="pageFormGroup"
+      [tunaFormquestions]="formQuestions"
+      [submitButtonText]="submitButtonText"
+      (formValue)="onSubmit($event)">
+    </app-form>
+  </app-genericmodal>
+</div>

@@ -30,9 +30,11 @@
                 "output": "./svg"
               }
             ],
-            "styles": ["src/theme/variables.scss", "src/global.scss"],
+            "styles": [
+              "src/theme/variables.scss",
+              "src/global.scss"
+            ],
             "scripts": [],
-            "aot": false,
             "vendorChunk": true,
             "extractLicenses": false,
             "buildOptimizer": false,
@@ -42,12 +44,23 @@
           },
           "configurations": {
             "production": {
-              "fileReplacements": [
+              "optimization": true,
+              "outputHashing": "all",
+              "sourceMap": false,
+              "namedChunks": false,
+              "aot": true,
+              "extractLicenses": true,
+              "vendorChunk": false,
+              "buildOptimizer": true,
+              "budgets": [
                 {
-                  "replace": "src/environments/environment.ts",
-                  "with": "src/environments/environment.prod.ts"
+                  "type": "initial",
+                  "maximumWarning": "2mb",
+                  "maximumError": "5mb"
                 }
-              ],
+              ]
+            },
+            "staging": {
               "optimization": true,
               "outputHashing": "all",
               "sourceMap": false,
@@ -77,6 +90,9 @@
           "configurations": {
             "production": {
               "browserTarget": "app:build:production"
+            },
+            "staging": {
+              "browserTarget": "app:build:staging"
             },
             "ci": {
               "progress": false
@@ -136,6 +152,9 @@
           "configurations": {
             "production": {
               "devServerTarget": "app:serve:production"
+            },
+            "staging": {
+              "devServerTarget": "app:serve:staging"
             },
             "ci": {
               "devServerTarget": "app:serve:ci"

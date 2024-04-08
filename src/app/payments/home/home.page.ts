@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { ContentService } from 'src/app/shared/services/content/content.service';
 
 @Component({
   selector: 'app-home',
@@ -7,27 +8,49 @@ import { Router } from '@angular/router';
   styleUrls: ['./home.page.scss'],
 })
 export class HomePage implements OnInit {
+  commonText: any;
   filterDataSet =  [
     {
-      name: 'Name of Vessel Company',
+      name: 'Vessel Company One',
       status: 'Opened',
 
     },
     {
-      name: 'Name2 of Vessel Company',
+      name: 'Vessel Company Two',
       status: 'Closed',
     },
     {
-      name: 'Name3 of Vessel Company',
+      name: 'Vessel Company Three',
       status: 'Opened',
     },
     {
-      name: 'Name4 of Vessel Company',
+      name: 'Vessel Company Four',
       status: 'Closed',
     }
   ];
-  pageTitle = 'Payments';
+  chineseFilterDataSet =  [
+    {
+      name: '船隻公司',
+      status: 'Opened',
 
+    },
+    {
+      name: '船隻公司第二',
+      status: 'Closed',
+    },
+    {
+      name: '船隻公司三',
+      status: 'Opened',
+    },
+    {
+      name: '船隻公司四',
+      status: 'Closed',
+    }
+  ];
+  vesselCompanyText = 'Details about this vessel company';
+  chineseVesselCompanyText = '有關該船隻公司的詳細信息';
+
+  pageTitle = 'Payments';
   organizations = [...this.filterDataSet];
 
   filterOptions = [
@@ -37,23 +60,37 @@ export class HomePage implements OnInit {
 
 
   constructor(
-    public router: Router
+    public router: Router,
+    public contentService: ContentService,
   ) { }
 
   ngOnInit() {
+    this.commonText = this.contentService?.commonText;
+    this.pageTitle = this.commonText?.payments;
+    this.filterOptions = [
+      {title: this.commonText?.closed, value: 'closed'},
+      {title: this.commonText?.opened, value: 'opened'}
+    ];
+
+    // For testing purposes
+    if (this.contentService?.currentLanguage === 'qm-zh') {
+      this.organizations = [...this.chineseFilterDataSet];
+      this.vesselCompanyText = this.chineseVesselCompanyText;
+    }
   }
 
   searchResult(data) {
     this.organizations = data;
   }
 
-  filterResult(result){
+  filterResult(result) {
     this.organizations = result;
   }
 
 
   viewDetails(organization) {
-    this.router.navigate(['payments/view/company', organization]);
+    const queryParams = organization
+    this.router.navigate(['payments/view/company', organization], { queryParams });
   }
 
 }

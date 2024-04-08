@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { File } from '@capawesome/capacitor-file-picker';
+// import { File } from '@capawesome/capacitor-file-picker';
 import { ModalController } from '@ionic/angular';
-import { UploadService } from 'src/app/services/upload/upload.service';
+import { UploadService } from 'src/app/shared/services/upload/upload.service';
 import { DemandLetter } from '../home/home.page';
 
 @Component({
@@ -14,7 +14,7 @@ export class ViewPage implements OnInit {
   pageTitle = 'View Demand Letter';
   demandLetter: DemandLetter;
   ifReviewDemandLetter = false;
-  cooperationAgreementFile: File | null = null;
+  // cooperationAgreementFile: File | null = null;
 
   workOrders = [];
 
@@ -22,7 +22,7 @@ export class ViewPage implements OnInit {
     private activatedRoute: ActivatedRoute,
     public modalCtrl: ModalController,
     public router: Router,
-    public chooser: UploadService
+    public uploadService: UploadService,
   ) { }
 
   ngOnInit() {
@@ -30,7 +30,7 @@ export class ViewPage implements OnInit {
     this.pageTitle = demandLetter.name;
     this.demandLetter = demandLetter;
 
-    if(demandLetter.workOrders){
+    if (demandLetter.workOrders) {
       this.workOrders = demandLetter.workOrders;
     }
   }
@@ -48,12 +48,12 @@ export class ViewPage implements OnInit {
   }
 
   async uploadCopAgreement() {
-    const chosencooperationAgreement = await this.chooser.choseFile();
-    this.cooperationAgreementFile = chosencooperationAgreement;
+    const chosencooperationAgreement = await this.uploadService.chooseFile();
+    // this.cooperationAgreementFile = chosencooperationAgreement;
   }
 
   showReviewButton() {
-    return !this.ifReviewDemandLetter && this.workOrders.length && this.cooperationAgreementFile;
+    // return !this.ifReviewDemandLetter && this.workOrders.length && this.cooperationAgreementFile;
   }
 
 }

@@ -1,0 +1,15 @@
+<ion-toolbar>
+  <ion-title>
+    <div class="title-text">{{pageTitle}}</div>
+  </ion-title>
+</ion-toolbar>
+
+<div class="inner-content">
+  <app-form
+    class="create-worker"
+    [tunaFormGroup]="pageFormGroup"
+    [tunaFormquestions]="formQuestions"
+    [submitButtonText]="submitButtonText"
+    (formValue)="onSubmit($event)">
+  </app-form>
+</div>

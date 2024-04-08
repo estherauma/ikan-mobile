@@ -1,7 +1,11 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { Data, Router } from '@angular/router';
 import { MenuController, ModalController } from '@ionic/angular';
 import { SteponePage } from '../create/stepone/stepone.page';
+import { VesselsDataService } from '../data/vessels-data.service';
+import { ContentService } from 'src/app/shared/services/content/content.service';
+import { DBService } from 'src/app/shared/services/database/db.service';
+import { SharedmethodsService } from 'src/app/shared/services/sharedmethods/sharedmethods.service';
 
 @Component({
   selector: 'app-home',
@@ -11,44 +15,33 @@ import { SteponePage } from '../create/stepone/stepone.page';
 export class HomePage implements OnInit {
   //TODO: Use translated text from prisimic
   pageTitle = 'Vessels';
-
-  vessels = [
-    {
-      name: 'Vessel 1',
-      regNo: 'XWERS-WWER',
-      status: 'Active Duty',
-      type: 'Type 2',
-      imgUrl: '/assets/imgs/vessel.jpeg',
-      capacity: 30,
-      age: 10
-    },
-    {
-      name: 'Vessel 2',
-      regNo: 'XWERS-WWER',
-      status: 'Active Duty',
-      type: 'Type 1',
-      imgUrl: '/assets/imgs/vessel.jpeg',
-      capacity: 40,
-      age: 11
-    },
-    {
-      name: 'Vessel 3',
-      regNo: 'XWERS-WWER',
-      status: 'Active Duty',
-      type: 'Type 1',
-      imgUrl: '/assets/imgs/vessel.jpeg',
-      capacity: 30,
-      age: 16
-    }
+  vessels = [];
+  unFilteredData = [];
+  filterOptions = [
+    {title:'Active Duty', value:'Active Duty'},
+    {title:'', value:'opened'}
   ];
+  filterText = 'Filter';
+  newText = 'New';
 
   constructor(
     public menuCtrl: MenuController,
     public router: Router,
-    public modalController: ModalController
-  ) { }
+    public modalController: ModalController,
+    public vesselsDataService: VesselsDataService,
+    public contentService: ContentService,
+    public dbService: DBService,
+    public sharedMethods: SharedmethodsService
+  ) {
+    this.vesselsDataService.getAll().subscribe((data) => {
+      this.vessels = this.unFilteredData = data;
+    });
+  }
 
   ngOnInit() {
+    this.filterText = this.contentService.commonText?.filter;
+    this.pageTitle = this.contentService.commonText?.vessels;
+    this.newText = this.contentService.commonText?.new;
   }
 
   ionViewWillEnter() {
@@ -58,7 +51,7 @@ export class HomePage implements OnInit {
   async createVessel() {
     const modal = await this.modalController.create({
       component: SteponePage,
-      cssClass: 'tuna-modal'
+      cssClass: 'notification-modal'
     });
 
     modal.present();
@@ -67,7 +60,15 @@ export class HomePage implements OnInit {
     });
   }
 
-  viewDetails(vessel) {
-    this.router.navigate(['vessels/view', vessel]);
+  searchResult(result) {
+    this.vessels = result;
+  }
+
+  clearSearchResult() {
+    this.vessels = this.unFilteredData;
+  }
+
+  filterResult(result) {
+    this.vessels = result;
   }
 }

@@ -1,15 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { ModalController } from '@ionic/angular';
+import { CreatePage } from '../create/create.page';
+import { ContractDataService } from '../data/contract-data.service';
+import { ContentService } from '../../shared/services/content/content.service';
+import { formatDate } from "@angular/common";
+import { AuthService } from 'src/app/shared/services/auth/auth.service';
 
-
-export interface IContracts {
-  name: string
-  companyName: string
-  date: string
-  vesselName: string
-  image: string
-  ref: string
-}
 
 @Component({
   selector: 'app-home',
@@ -17,73 +14,62 @@ export interface IContracts {
   styleUrls: ['./home.page.scss'],
 })
 export class HomePage implements OnInit {
-  //TODO: Use translated text from prismic
   pageTitle = 'Contracts';
-
-  contracts: IContracts[] = [
-    {
-      name: 'Budi Surname',
-      companyName: 'Talents company name',
-      vesselName: 'Vessel Name',
-      date: '2022-10-23',
-      ref: 'Contract1234567',
-      image: "https://cdn.pixabay.com/photo/2015/07/17/22/43/student-849825_1280.jpg",
-    },
-    {
-      name: 'Budi Surname',
-      companyName: 'Talents company name',
-      vesselName: 'Vessel Name',
-      date: '2022-10-23',
-      ref: 'Contract1234567',
-      image: "https://cdn.pixabay.com/photo/2015/07/17/22/43/student-849825_1280.jpg",
-    },
-    {
-      name: 'Budi Surname',
-      companyName: 'Talents company name',
-      vesselName: 'Vessel Name',
-      date: '2022-10-23',
-      ref: 'Contract1234567',
-      image: "https://cdn.pixabay.com/photo/2015/07/17/22/43/student-849825_1280.jpg",
-    },
-    {
-      name: 'Budi Surname',
-      companyName: 'Talents company name',
-      vesselName: 'Vessel Name',
-      date: '2022-10-23',
-      ref: 'Contract1234567',
-      image: "https://cdn.pixabay.com/photo/2015/07/17/22/43/student-849825_1280.jpg",
-    },
-    {
-      name: 'Budi Surname',
-      companyName: 'Talents company name',
-      vesselName: 'Vessel Name',
-      date: '2022-10-23',
-      ref: 'Contract1234567',
-      image: "https://cdn.pixabay.com/photo/2015/07/17/22/43/student-849825_1280.jpg",
-    },
-    {
-      name: 'Budi Surname',
-      companyName: 'Talents company name',
-      vesselName: 'Vessel Name',
-      date: '2022-10-23',
-      ref: 'Contract1234567',
-      image: "https://cdn.pixabay.com/photo/2015/07/17/22/43/student-849825_1280.jpg",
-    }
-  ]
+  commonText: any;
+  contracts = [];
+  unfilteredData = [];
+  filterOptions = [];
 
   constructor(
-    public router: Router
-  ) { }
+    public router: Router,
+    public contractsDataService: ContractDataService,
+    public modalCtrl: ModalController,
+    public contentService: ContentService,
+    public authService: AuthService
+
+  ) {
+    this.contractsDataService.getAll().subscribe((data) => {
+      this.contracts = this.unfilteredData = data;
+      this.pageTitle = this.commonText?.contracts;
+    });
+  }
 
   ngOnInit() {
+    this.commonText = this.contentService?.commonText;
+    this.pageTitle = this.commonText?.contracts;
   }
 
 
-  viewDeatils(demandLetter:IContracts) {
-    this.router.navigate(["/contracts/view", demandLetter])
+  viewDeatils(demandLetter) {
+    this.router.navigate(['/contracts/view', demandLetter]);
   }
 
   searchResult(searchResultData) {
+    this.contracts = searchResultData;
+  }
 
+  clearSearchResult() {
+    this.contracts = this.unfilteredData;
+  }
+
+  async createContract() {
+    const modal = await this.modalCtrl.create({
+      component: CreatePage,
+      cssClass: 'notification-modal'
+    });
+    modal.present();
+  }
+
+  filterResult(result) {
+    this.contracts = result;
+  }
+
+  // TODO: Move to sharedMethods
+  // Todo: Our locales apart from english through an error. Setting this here to english for now.
+  getContractDates(contract) {
+    const locale = this.contentService.currentLanguage;
+    const start = formatDate(contract?.startDate, 'dd/MM/yyyy', 'en-us');
+    const end = formatDate(contract?.endDate, 'dd/MM/yyyy', 'en-us');
+    return `${start} - ${end}`;
   }
 }

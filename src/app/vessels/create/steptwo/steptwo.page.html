@@ -2,8 +2,13 @@
 
 </app-header>
 
-<ion-content>
-  <app-form [tunaFormGroup]="pageFormGroup" [tunaFormquestions]="formQuestions" [submitButtonText]="submitButtonText"
+<ion-content class="ion-padding">
+  <app-form
+    class="create-vessel-step-2"
+    [tunaFormGroup]="pageFormGroup"
+    [tunaFormquestions]="formQuestions"
+    [submitButtonText]="submitButtonText"
+    uploadPictureIcon="assets/icon/gallery.svg"
     (formValue)="onSubmit($event)">
   </app-form>
 </ion-content>

@@ -1,15 +1,20 @@
 <div class="welcome-section">
   <div class="user-notification">
     <div class="user-section">
-      <ion-icon class="user-icon" name="person-circle-outline"></ion-icon>
+      <ion-icon
+        class="user-icon"
+        name="person-circle-outline"
+        (click)="onIconClick()"
+      >
+      </ion-icon>
       <div>
-        <ion-text><h1>Hi {{name}}</h1></ion-text>
-        <ion-text><p>Welcome back!</p></ion-text>
+        <ion-text><h1>{{name}}</h1></ion-text>
+        <ion-text><p>{{message}}</p></ion-text>
       </div>
     </div>
     <ion-icon class="notification-icon" name="notifications-outline"></ion-icon>
   </div>
   <ion-text>
-    <h1>{{message}} <a [href]="link">link</a>.</h1>
+    <h1>{{message1}}</h1>
   </ion-text>
 </div>

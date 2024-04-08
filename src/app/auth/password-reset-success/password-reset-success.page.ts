@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { ContentService } from 'src/app/shared/services/content/content.service';
+import { SharedmethodsService } from 'src/app/shared/services/sharedmethods/sharedmethods.service';
 
 @Component({
   selector: 'app-password-reset-success',
@@ -7,17 +9,23 @@ import { Router } from '@angular/router';
   styleUrls: ['./password-reset-success.page.scss'],
 })
 export class PasswordResetSuccessPage implements OnInit {
-  title = "New password sent"
-  description = "feugiat id volutpat eu, laoreet ac orci. Phasellus sodales feugiat luctus. Sed hendrerit neque ut ante imperdiet"
+  commonText: any;
+  pageText: any;
+
   constructor(
-    public router: Router
+    public router: Router,
+    public contentService: ContentService,
+    public sharedMethods: SharedmethodsService,
   ) { }
 
   ngOnInit() {
+    this.commonText = this.contentService?.commonText;
+    const pageData = this.contentService.getContentByPropertyName('reset-password-success');
+    this.pageText = this.sharedMethods.convertAdditionalTextToObj(pageData?.additionalText);
   }
 
-  toLogin(){
-    this.router.navigate(["login"])
+  toLogin() {
+    this.router.navigate(['login'], {replaceUrl: true});
   }
 
 }

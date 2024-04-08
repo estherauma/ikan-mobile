@@ -1,0 +1,27 @@
+.deep-blue{
+    color : var(--ikan_darkblue_100);
+    --placeholder-color: var(--ikan_darkblue_100);
+    background-color : #ffffff;
+}
+
+.deep_blue_90{
+    color : #ffffff;
+    --placeholder-color: #ffffff;
+    background-color : var(--ikan_blue_90);
+}
+
+.light-blue{
+    color : var(--ikan_blue_100);
+    --placeholder-color: var(--ikan_blue_100);
+    background-color : #ffffff;
+}
+
+.default{
+    color : #ffffff;
+    --placeholder-color: #ffffff;
+    background-color : var(--ikan_blue_100);
+}
+
+.filter-border{
+    border-radius: 10px;
+}

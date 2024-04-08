@@ -8,3 +8,24 @@
         margin-top: 64px;
     }
 }
+
+.center-content{
+    display: flex; 
+    flex-direction: column; 
+    justify-content: center; 
+    height: 100%;
+}
+
+.icon{
+    height:42.26px;
+    width:175px;
+    margin-bottom: 70px;
+}
+
+.page-title{
+    color: #ffffff;
+    font-family: GatwickBold;
+    margin: 10px 20px;
+    text-align: center;
+    font-size: 1.3rem;
+}

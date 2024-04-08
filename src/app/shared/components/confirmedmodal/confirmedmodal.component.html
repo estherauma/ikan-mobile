@@ -1,0 +1,14 @@
+<div class="ion-padding" style="display: flex; flex-direction:column; align-items:center; border-radius: 16px !important; margin: 16px !important;">
+  <h1>{{title ? title : "Modal title"}}</h1>
+  <div class="ion-padding-vertical">
+    <div *ngIf=" status==='failed' " style="background-color: #fbc3c3; height: 60px; width: 60px; border-radius: 50px; display: flex; justify-content:center; align-items: center;">
+      <ion-icon style="color: red;" size="large" name="close-circle-outline"></ion-icon>
+    </div>
+    <div *ngIf=" status==='success' " style="background-color: #c7fdbb; height: 60px; width: 60px; border-radius: 50px; display: flex; justify-content:center; align-items: center;">
+      <ion-icon style="color: green;" size="large" name="checkmark-circle-outline"></ion-icon>
+    </div>
+  </div>
+  <p class="ion-text-center">{{msg ? msg : '' }}</p>
+  <a *ngIf="link">link here</a>
+  <ion-button (click)="onModalClose()">{{btnTitle}}</ion-button>
+</div>

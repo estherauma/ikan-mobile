@@ -1,0 +1,20 @@
+.image-select{
+    padding: 8px;
+
+    .content {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-around;
+        width: 100%;
+    }
+    
+    .section{
+        display: flex;
+        flex-direction: column;
+        margin-top: 8px;
+        ion-img{
+            height: 70px;
+            height: 70px;
+        }
+    }
+}

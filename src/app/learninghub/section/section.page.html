@@ -1,0 +1,42 @@
+<app-header [pageTitle]="" [isBackButton]="true"></app-header>
+
+<ion-content>
+  <div>
+    <div 
+    class="image-section" 
+    [ngStyle]="{'background': 'linear-gradient( rgba(255, 255, 255, 0.6) 100%, rgba(53, 101, 255, 0.6)100%),url(' + imgUrl +')'}"
+    >
+    <div class="title-section">
+      <app-title title="Sebelum kamu pergi" [isBig]="true"></app-title>
+    </div>
+    </div>
+    <div class="audio-section">
+      <div>
+        <app-audio-player 
+        title="name of audio file"
+        variant="white-bg-title" 
+        ></app-audio-player>
+      </div>
+    </div>
+    <div class="content-section" 
+    >
+    <div class="question-title">
+      <app-questiontitlecard
+      *ngFor="let question of questions"
+      [type]="question.type"
+      ></app-questiontitlecard>
+    </div>
+    <div class="bottom-section" 
+    >
+    // TODO: TRANSLATE
+    <h3>Up next ...</h3>
+    <app-maincard
+    [imageUrl]="learningHub.image"
+    imageShape="circle"
+    [title]="learningHub.name"
+    [text]="learningHub.description"
+    ></app-maincard>
+    </div>
+    </div>
+  </div>
+</ion-content>

@@ -1,17 +1,17 @@
-<app-header [pageTitle] = "" [isBackButton]="true" [isMenuButton]="false"></app-header>
-
-<ion-content class="ion-padding">
+<ion-content class="content-skyblue-bg">
+  <div class="ion-padding">
     <div class="logo-container">
-        <ion-thumbnail class="logo">
-          <ion-img [src]=""></ion-img>
-        </ion-thumbnail>
-      </div>
-      
+      <app-badge imageUrl="/assets/icon/ikan_monogram.svg"></app-badge>
+    </div>
     <ion-text>
-        <h1>{{title}}</h1>
+      <app-title class="title" [isBlue]="true" [title]="title"></app-title>
     </ion-text>
     <ion-text>
-        <p>{{description}}</p>
+      <p>{{description}}</p>
     </ion-text>
-    <a>Link to external resource</a>
+    <a [href]="externalResourceLink" target="_blank">{{ pageText?.linkToExternalResource }}</a> 
+    <div class="ok-btn">
+      <app-button (onClick)="onCreateLogin()" size="small" title="OK"></app-button>
+    </div>
+  </div>
 </ion-content>

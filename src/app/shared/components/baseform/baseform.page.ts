@@ -8,16 +8,23 @@ import { ContentService } from '../../services/content/content.service';
   styleUrls: ['./baseform.page.scss'],
 })
 export class BaseformPage implements OnInit {
+  commonText: any;
+  pageCommonText: any;
   pageFormGroup: FormGroup;
   formQuestions = [ ];
   group =  { };
   pageTitle: string;
   submitButtonText: string;
+  pageText: any;
 
-  constructor( public contentService: ContentService) { }
+  constructor(
+    public contentService: ContentService
+  ) { }
 
   ngOnInit() {
+    this.commonText = this.contentService?.commonText;
     this.pageFormGroup = new FormGroup(this.group);
+    this.submitButtonText = this.contentService.commonText?.create;
   }
 
   //TODO: Set the pageTitle using this function for the different pages

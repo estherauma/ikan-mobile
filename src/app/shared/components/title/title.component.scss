@@ -1,0 +1,28 @@
+
+.title{
+  font-family: GatwickBold;
+}
+
+.is-blue{
+  color: #3565FF !important;
+}
+
+.is-lightblue {
+  color: #80D8FE !important;
+}
+
+.small{
+  font-size: 16px !important;
+}
+
+.big{
+  font-size: 36px !important;
+}
+
+:host.view-clause {
+  h1 {
+    color: #3565FF;
+    font-size: 1.6rem !important;
+    line-height: 36px;
+  }
+}

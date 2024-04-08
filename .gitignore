@@ -34,7 +34,15 @@ npm-debug.log*
 # Google services
 **google-services.json
 **google-application-credentials.json
+**google-services-credentials.json
 
 
-/src/environments/environment.ts
+/src/environments/*
 .env
+App/output
+/build/*
+local.notes.md
+
+**/all-content.json
+auth-keys
+**-info.plist

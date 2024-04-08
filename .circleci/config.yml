@@ -3,7 +3,7 @@ version: 2.1
 jobs:
   build-apk:
     docker:
-      - image: circleci/android:api-28-node
+      - image: cimg/android:2023.06.1-node
     environment:
         JVM_OPTS: -Xmx3200m
     steps:
@@ -19,13 +19,20 @@ jobs:
       - run:
           name: Install dependencies
           command: |
+            node -v
             npm install
             sudo npm i -g @ionic/cli
             sudo npm install -g codecov
       - run:
           name: Ionic Build
           command: |
-            ionic build
+            if [ "$CIRCLE_BRANCH" = "refs/heads/main" ]; then
+              ionic build --configuration=production
+            elif [ "$CIRCLE_BRANCH" = "refs/heads/staging" ]; then
+              ionic build --configuration=staging
+            else
+              ionic build
+            fi
             npx cap sync android
       - run:
           name: Store Google Services Account
@@ -41,13 +48,13 @@ jobs:
           name: Build debug APK
           command: |
             cd android
-            ./gradlew :app:assemble
+            ./gradlew :app:assembleDebug
       - store_artifacts:
           path: android/app/build/outputs/apk/debug
 
   build-and-release-apk:
     docker:
-      - image: circleci/android:api-28-node
+      - image: cimg/android:2023.06.1-node
     environment:
         JVM_OPTS: -Xmx3200m
     steps:
@@ -76,6 +83,7 @@ jobs:
           command: |
             cd android/app
             echo $GOOGLE_SERVICES_ACCOUNT | base64 -d > google-services.json
+            echo $GOOGLE_APPLICATION_CREDENTIALS_CONTENT | base64 -d > google-services-credentials.json
       - run:
           name: Download Dependencies
           command: |
@@ -85,7 +93,7 @@ jobs:
           name: Build debug APK
           command: |
             cd android
-            ./gradlew :app:assemble
+            ./gradlew :app:assembleDebug
       - store_artifacts:
           path: android/app/build/outputs/apk/debug
 
@@ -93,7 +101,7 @@ jobs:
           name: Publish debug apk to Firebase Distribution
           command: |
             cd android/
-            echo $GOOGLE_APPLICATION_CREDENTIALS_CONTENT | base64 -d > google-application-credentials.json
+            echo $GOOGLE_APPLICATION_CREDENTIALS_CONTENT | base64 -d > google-services-credentials.json
             ./gradlew assembleDebug appDistributionUploadDebug
 
 workflows:
@@ -104,6 +112,7 @@ workflows:
           filters:
             branches:
               ignore:
+                - dev
                 - staging
                 - main
 
@@ -113,7 +122,6 @@ workflows:
           filters:
             branches:
               only:
+                - dev
                 - staging
                 - main
-              ignore:
-                - dev

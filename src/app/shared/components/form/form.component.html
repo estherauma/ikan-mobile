@@ -1,97 +1,300 @@
-<form [formGroup]="tunaFormGroup" (ngSubmit)="onSubmit($event)">
+<form
+  *ngIf="tunaFormGroup"
+  [formGroup]="tunaFormGroup"
+  (ngSubmit)="onSubmit($event)"
+  class="transparent-bg"
+  [ngClass]="{'text-blue': isTextBlue}"
+  [autocomplete]="autocomplete"
+>
   <div *ngFor="let question of tunaFormquestions">
 
     <div [ngSwitch]="question.questionType">
-      <div *ngSwitchCase="'textBox'">
-        <ion-item *ngIf="question.displayquestion" lines="none">
+      <div *ngSwitchCase="'h4'">
+        <div class="text-section" [ngClass]="{'text-darkblue': isTitleDarkBlue}" *ngIf="question.displayquestion" lines="none" class="transparent-bg">
+          <app-title variant="h4" [title]="question.label"></app-title>
+        </div>
+      </div>
+      <div *ngSwitchCase="'h5'">
+        <div class="text-section" [ngClass]="{'text-darkblue': isTitleDarkBlue}" *ngIf="question.displayquestion" lines="none" class="transparent-bg">
+          <app-title variant="h5" [title]="question.label"></app-title>
+        </div>
+      </div>
+      <div *ngSwitchCase="'p'">
+        <div *ngIf="question.displayquestion" [ngClass]="{'text-darkblue': isOtherDarkBlue}" lines="none" class="transparent-bg">
+          <p class="text-section">{{question.label}}</p>
+        </div>
+      </div>
+      <div *ngSwitchCase="question.questionType === 'textBox' || question.questionType  === 'text' ? question.questionType : '' ">
+        <div *ngIf="question.displayquestion" lines="none" class="transparent-bg">
           <ion-grid>
             <ion-row>
               <ion-col size="12">
-                <ion-label text-wrap> {{question.label}} </ion-label>
+                <ion-label
+                  text-wrap
+                  [class]="question?.label && question?.isRequired ? 'asterisk' : ''"
+                >
+                  {{question.label}}
+                </ion-label>
               </ion-col>
               <ion-col size="12">
-                <ion-input type="text" placeholder="Type here" formControlName="{{question.key}}"></ion-input>
+                <ion-input
+                  class="ion-padding-start form-input"
+                  type="text"
+                  placeholder="{{question?.placeholder || typeHereText}}"
+                  formControlName="{{question.key}}"
+                  inputmode="{{question.inputmode || undefined}}"
+                ></ion-input>
               </ion-col>
 
             </ion-row>
           </ion-grid>
-        </ion-item>
+        </div>
+      </div>
+
+      <div *ngSwitchCase="question.questionType === 'email' ? question.questionType : '' ">
+        <div *ngIf="question.displayquestion" lines="none" class="transparent-bg">
+          <ion-grid>
+            <ion-row>
+              <ion-col size="12">
+                <ion-label
+                  text-wrap
+                  [class]="question?.label && question?.isRequired ? 'asterisk' : ''"
+                >
+                  {{question.label}}
+                </ion-label>
+              </ion-col>
+              <ion-col size="12">
+                <ion-input
+                  class="ion-padding-start form-input"
+                  type="email"
+                  placeholder="{{question?.placeholder || typeHereText}}"
+                  formControlName="{{question.key}}"
+                ></ion-input>
+              </ion-col>
+
+            </ion-row>
+          </ion-grid>
+        </div>
+      </div>
+
+      
+      <div *ngSwitchCase="question.questionType === 'tel' || question.questionType  === 'telephone' ? question.questionType : '' ">
+        <div *ngIf="question.displayquestion" lines="none" class="transparent-bg">
+          <ion-grid>
+            <ion-row>
+              <ion-col size="12">
+                <ion-label
+                  text-wrap
+                  [class]="question?.label && question?.isRequired ? 'asterisk' : ''"
+                >
+                  {{question.label}}
+                </ion-label>
+              </ion-col>
+              <ion-col size="12">
+                <ion-input
+                  class="ion-padding-start form-input"
+                  type="tel"
+                  placeholder="888-888-8888"
+                  formControlName="{{question.key}}"
+                ></ion-input>
+              </ion-col>
+
+            </ion-row>
+          </ion-grid>
+        </div>
+      </div>
+
+      <div *ngSwitchCase="question.questionType === 'textArea' || question.questionType  === 'textarea' ? question.questionType : ''">
+        <div *ngIf="question.displayquestion" lines="none" class="transparent-bg">
+          <ion-grid>
+            <ion-row>
+              <ion-col size="12">
+                <ion-label
+                  text-wrap
+                  [class]="question?.label && question?.isRequired ? 'asterisk' : ''"
+                >
+                  {{question.label}}
+                </ion-label>
+              </ion-col>
+              <ion-col size="12">
+                <ion-textarea
+                  class="ion-padding-start form-input" 
+                  type="text" 
+                  placeholder="{{question?.placeholder || typeHereText}}"
+                  formControlName="{{question.key}}"
+                ></ion-textarea>
+              </ion-col>
+
+            </ion-row>
+          </ion-grid>
+        </div>
       </div>
 
       <div *ngSwitchCase="'password'">
-        <ion-item *ngIf="question.displayquestion" lines="none">
+        <div *ngIf="question.displayquestion" lines="none">
           <ion-grid>
             <ion-row>
               <ion-col size="12">
                 <ion-label text-wrap> {{question.label}} </ion-label>
               </ion-col>
               <ion-col size="12">
-                <ion-input type="password" placeholder="Type here" formControlName="{{question.key}}"></ion-input>
+                <ion-item class="password-wrapper">
+                  <ion-input
+                    class="ion-padding-start form-input"
+                    type="{{passwordFieldType}}"
+                    placeholder="{{question?.placeholder || typeHereText}}"
+                    formControlName="{{question.key}}"
+                  ></ion-input>
+                  <ion-icon
+                    slot="end"
+                    src="{{passwordEyeIcon}}"
+                    (click)="changePasswordState()"
+                  ></ion-icon>
+                </ion-item>
               </ion-col>
-
             </ion-row>
           </ion-grid>
-        </ion-item>
+        </div>
       </div>
 
       <div *ngSwitchCase="'number'">
-        <ion-item *ngIf="question.displayquestion" lines="none">
+          <div *ngIf="question.displayquestion" lines="none" class="transparent-bg">
           <ion-grid>
             <ion-row>
               <ion-col size="12">
-                <ion-label text-wrap> {{question.label}} </ion-label>
+                <ion-label
+                  text-wrap
+                  [class]="question?.label && question?.isRequired ? 'asterisk' : ''"
+                >
+                  {{question.label}}
+                </ion-label>
               </ion-col>
               <ion-col size="12">
-                <ion-input type="number" placeholder="Type here" formControlName="{{question.key}}"></ion-input>
+                <ion-input
+                class="ion-padding-start form-input"
+                type="number"
+                placeholder="{{question?.placeholder || typeHereText}}"
+                formControlName="{{question.key}}"
+              ></ion-input>
               </ion-col>
-
             </ion-row>
           </ion-grid>
-        </ion-item>
+       </div>
       </div>
 
       <div *ngSwitchCase="'select'">
-        <ion-item *ngIf="question.displayquestion" lines="none">
+          <div *ngIf="question.displayquestion" lines="none" class="transparent-bg">
           <ion-grid>
             <ion-row>
               <ion-col size="12">
-                <ion-label text-wrap> {{question.label}} </ion-label>
+                <ion-label
+                  text-wrap
+                  [class]="question?.label && question?.isRequired ? 'asterisk' : ''"
+                >
+                  {{question?.label}}
+                </ion-label>
               </ion-col>
               <ion-col size="12">
-                <ion-select  formControlName="{{question.key }}" textWrap interface="action-sheet" placeholder="Please Select">
-                  <ion-select-option text-wrap *ngFor="let opt of question.options" value="{{opt.toLowerCase()}}">
-                    {{opt}}
+                <ion-select
+                  class="form-input"
+                  formControlName="{{question.key }}"
+                  interface="action-sheet"
+                  [placeholder]="question?.placeholder || commonText?.pleaseSelect"
+                  [okText]="commonText?.ok"
+                  [cancelText]="commonText?.cancel"
+                  textWrap
+                >
+                  <ion-select-option text-wrap *ngFor="let opt of question.options" value="{{opt.value}}">
+                    {{opt.label}}
                   </ion-select-option>
                 </ion-select>
               </ion-col>
-
             </ion-row>
           </ion-grid>
-        </ion-item>
+        </div>
       </div>
 
       <div *ngSwitchCase="'date'">
-        <ion-item *ngIf="question.displayquestion" lines="none">
-          <ion-grid >
-            <ion-row >
+        <div *ngIf="question.displayquestion" lines="none">
+          <ion-grid>
+            <ion-row>
               <ion-col size="12">
-                <ion-label text-wrap> {{question.label}} </ion-label>
+                <ion-label
+                  text-wrap
+                  [class]="question?.label && question?.isRequired ? 'asterisk' : ''"
+                >
+                  {{question.label}}
+                </ion-label>
               </ion-col>
               <ion-col size="12">
-                <ion-datetime  displayFormat="DDDD MMM D, YYYY" min="2015" max="2060" formControlName="{{question.key}}"
-                  value="" preferWheel="true" presentation="date"></ion-datetime>
+                <ion-input
+                  class="ion-padding-start form-input"
+                  [id]="question.key"
+                  [value]="tunaFormGroup.controls[question.key].value | date"
+                  [placeholder]="question.placeholder || selectDateText"
+                  [ngClass]="(tunaFormGroup.controls[question.key].invalid && isSubmitting) ? 'invalid-input' : '' "
+                  [disabled]="tunaFormGroup.controls[question.key].disabled"
+                ></ion-input>
+                <ion-modal
+                  [trigger]="!tunaFormGroup.controls[question.key].disabled && question.key"
+                  [backdropDismiss]="false"
+                  [initialBreakpoint]="0.45"
+                  [breakpoints]="[0.45, 0.6]"
+                  handleBehavior="cycle"
+                  class="date-modal"
+                >
+                  <ng-template>
+                    <ion-datetime
+                      id="{{'datetime-' + question.key}}"
+                      presentation="date"
+                      formControlName="{{question.key}}"
+                      min="1950"
+                      max="2060"
+                      [cancelText]="commonText?.cancel"
+                      [doneText]="commonText?.done"
+                      preferWheel
+                      showDefaultButtons
+                    ></ion-datetime>
+                  </ng-template>
+                </ion-modal>
               </ion-col>
+
             </ion-row>
           </ion-grid>
-        </ion-item>
+        </div>
+      </div>
+
+      <div *ngSwitchCase="'audio'">
+          <div class="ion-padding-horizontal">
+            <ion-row (click)="onRecord(question)" class="ion-align-items-center">
+              <ion-col size="3">
+                <div style="background-color: #e5e5e5; height: 60px; width: 60px; border-radius: 50px; display: flex; justify-content:center; align-items: center;">
+                  <ion-icon size="large" name="mic-outline"></ion-icon>
+                </div>
+              </ion-col>
+              <ion-col size="9">
+                <ion-text
+                  text-wrap
+                  [class]="question?.label && question?.isRequired ? 'asterisk' : ''"
+                >
+                  {{question.label}}
+                </ion-text>
+              </ion-col>
+            </ion-row>
+          </div>
       </div>
 
       <div *ngSwitchCase="'pdfDocument'">
-        <ion-item *ngIf="question.displayquestion" lines="none">
+        <ion-item *ngIf="question.displayquestion" lines="none" class="pdf-container">
           <ion-grid >
             <ion-row>
               <ion-col size="12">
-                <ion-label text-wrap> {{question.label}} </ion-label>
+                <ion-label
+                  text-wrap
+                  [class]="question?.label && question?.isRequired ? 'asterisk' : ''"
+                >
+                  {{question.label}}
+                </ion-label>
               </ion-col>
             </ion-row>
             <ion-row *ngIf="selectedDocuments[question.key]" class="upload-wrapper">
@@ -102,21 +305,26 @@
             </ion-row>
             <ion-row *ngIf="!selectedDocuments[question.key]" class="upload-wrapper">
               <div (click)="onUpload(question.key)">
-                <ion-icon name="document-text-outline"></ion-icon>
-                <p>Upload document</p>
+                <ion-icon [src]="uploadDocIcon"></ion-icon>
+                <p>{{ question.placeholder || uploadDocText}}</p>
               </div>
             </ion-row>
-        
+
           </ion-grid>
         </ion-item>
       </div>
 
       <div *ngSwitchCase="'imageBox'">
-        <ion-item *ngIf="question.displayquestion" lines="none">
+          <div *ngIf="question.displayquestion" lines="none" class="transparent-bg">
           <ion-grid >
             <ion-row>
               <ion-col size="12">
-                <ion-label text-wrap> {{question.label}} </ion-label>
+                <ion-label
+                  text-wrap
+                  [class]="question?.label && question?.isRequired ? 'asterisk' : ''"
+                >
+                  {{question.label}}
+                </ion-label>
               </ion-col>
             </ion-row>
             <ion-row *ngIf="selectedImages[question.key]" class="image">
@@ -126,23 +334,448 @@
                 <img>
               </div>
             </ion-row>
-            <ion-row *ngIf="!selectedImages[question.key]" class="upload-wrapper">
+            <ion-row *ngIf="!selectedImages[question.key] && !question.value" class="upload-wrapper">
               <div (click)="takePicture(question.key)">
-                <ion-icon name="camera-outline"></ion-icon>
-                <p>Upload picture</p>
+                <ion-icon [src]="uploadPictureIcon"></ion-icon>
+                <p>{{ question.placeholder || uploadPictureText}}</p>
               </div>
             </ion-row>
-        
+            <ion-row *ngIf="question.value" class="image-preview">
+              <img *ngIf="sharedMethods.isIos" [src]="question.value | safeurl" />
+              <img *ngIf="!sharedMethods.isIos" [src]="question.value" />
+              <ion-icon class="trash-icon" name="trash-outline" (click)="handleDeleteImage($event, question.key)"></ion-icon>
+            </ion-row>
+
           </ion-grid>
-        </ion-item>
+        </div>
+      </div>
+
+      <div *ngSwitchCase="question.questionType === 'multiple-select' || question.questionType === 'multi-select' ? question.questionType : ''">
+        <div *ngIf="question.displayquestion" lines="none" class="transparent-bg">
+          <ion-grid >
+            <ion-row>
+              <ion-col size="12">
+                <ion-label
+                  text-wrap
+                  [class]="question?.label && question?.isRequired ? 'asterisk' : ''"
+                >
+                  {{question?.label}}
+                </ion-label>
+              </ion-col>
+              <ion-col size="12">
+                <ion-select
+                  class="form-input"
+                  [formControlName]="question.key"
+                  [placeholder]="question?.placeholder || commonText?.pleaseSelect"
+                  [okText]="commonText?.ok"
+                  [cancelText]="commonText?.cancel"
+                  interface="action-sheet"
+                  multiple
+                  text-wrap
+                >
+                  <ion-select-option text-wrap *ngFor="let opt of question.options" value="{{opt.value}}">
+                    {{opt.label}}
+                  </ion-select-option>
+                </ion-select>
+              </ion-col>
+            </ion-row>
+          </ion-grid>
+        </div>
+      </div>
+
+      <div *ngSwitchCase="question.questionType === 'radioGroup' || question.questionType  === 'radio' ? question.questionType : '' ">
+        <div lines="none">
+          <ion-grid >
+            <ion-row>
+              <ion-col size="12">
+                <ion-label
+                  text-wrap
+                  [class]="question?.label && question?.isRequired ? 'asterisk' : ''"
+                >
+                  {{question?.label || question?.question}}
+                </ion-label>
+              </ion-col>
+              <ion-col size="12">
+                <div>
+                  <ion-radio-group class="radio-group" formControlName="{{question.key}}">
+                    <ion-item lines="none" *ngFor="let item of question.options">
+                      <!-- refactor item(option) to value/label -->
+                      <ion-radio mode="md" value="{{item.value || item.option }}" class="custom-control-input"></ion-radio>
+                      <label class="custom-control-label">{{item.label || item.option }}</label>
+                    </ion-item>
+                  </ion-radio-group>
+                </div>
+              </ion-col>
+            </ion-row>
+          </ion-grid>
+        </div>
+      </div>
+
+      <!-- TODO use reusable component -->
+      <!-- Followup Question Section -->
+      <div
+        lines="none"
+        id="follow-up"
+        *ngIf="question?.options && question?.hasFollowUpQuestion"
+        class="content_background"
+        >
+        <div [ngSwitch]="question.followUpQuestion.questionType">
+          <div *ngSwitchCase="'h4'">
+            <div class="text-section" [ngClass]="{'text-darkblue': isTitleDarkBlue}" lines="none" class="transparent-bg">
+              <app-title variant="h4" [title]="question.followUpQuestion.question"></app-title>
+            </div>
+          </div>
+          <div *ngSwitchCase="'h5'">
+            <div class="text-section" [ngClass]="{'text-darkblue': isTitleDarkBlue}" lines="none" class="transparent-bg">
+              <app-title variant="h5" [title]="question.followUpQuestion.question"></app-title>
+            </div>
+          </div>
+          <div *ngSwitchCase="'p'">
+            <div [ngClass]="{'text-darkblue': isOtherDarkBlue}" lines="none" class="transparent-bg">
+              <p class="text-section">{{question.followUpQuestion.question}}</p>
+            </div>
+          </div>
+          <div *ngSwitchCase="question.followUpQuestion.questionType === 'textBox' || question.followUpQuestion.questionType  === 'text' ? question.followUpQuestion.questionType : '' ">
+            <div lines="none" class="transparent-bg">
+              <ion-grid>
+                <ion-row>
+                  <ion-col size="12">
+                    <ion-label
+                      text-wrap
+                      [class]="question?.label && question?.isRequired ? 'asterisk' : ''"
+                    >
+                      {{question.followUpQuestion.question}}
+                    </ion-label>
+                  </ion-col>
+                  <ion-col size="12">
+                    <ion-input
+                      class="ion-padding-start form-input"
+                      type="text"
+                      placeholder="{{question?.placeholder || typeHereText}}"
+                      formControlName="{{question.followUpQuestion.key}}"
+                    ></ion-input>
+                  </ion-col>
+    
+                </ion-row>
+              </ion-grid>
+            </div>
+          </div>
+    
+          <div *ngSwitchCase="question.followUpQuestion.questionType === 'textArea' || question.followUpQuestion.questionType  === 'textarea' ? question.followUpQuestion.questionType : ''">
+            <div lines="none" class="transparent-bg">
+              <ion-grid>
+                <ion-row>
+                  <ion-col size="12">
+                    <ion-label
+                      text-wrap
+                      [class]="question?.label && question?.isRequired ? 'asterisk' : ''"
+                    >
+                      {{question.followUpQuestion.question}}
+                    </ion-label>
+                  </ion-col>
+                  <ion-col size="12">
+                    <ion-textarea
+                      class="ion-padding-start form-input" 
+                      type="text" 
+                      placeholder="{{question?.followUpQuestion.placeholder || typeHereText}}"
+                      formControlName="{{question.followUpQuestion.key}}"
+                    ></ion-textarea>
+                  </ion-col>
+    
+                </ion-row>
+              </ion-grid>
+            </div>
+          </div>
+    
+          <div *ngSwitchCase="'number'">
+              <div lines="none" class="transparent-bg">
+              <ion-grid>
+                <ion-row>
+                  <ion-col size="12">
+                    <ion-label
+                      text-wrap
+                      [class]="question?.label && question?.isRequired ? 'asterisk' : ''"
+                    >
+                      {{question.followUpQuestion.question}}
+                    </ion-label>
+                  </ion-col>
+                  <ion-col size="12">
+                    <ion-input
+                    class="ion-padding-start form-input"
+                    type="number"
+                    placeholder="{{question?.followUpQuestion.placeholder || typeHereText}}"
+                    formControlName="{{question.followUpQuestion.key}}"
+                  ></ion-input>
+                  </ion-col>
+                </ion-row>
+              </ion-grid>
+           </div>
+          </div>
+    
+          <div *ngSwitchCase="'select'">
+              <div lines="none" class="transparent-bg">
+              <ion-grid>
+                <ion-row>
+                  <ion-col size="12">
+                    <ion-label
+                      text-wrap
+                      [class]="question?.label && question?.isRequired ? 'asterisk' : ''"
+                    >
+                      {{question.followUpQuestion.question}}
+                    </ion-label>
+                  </ion-col>
+                  <ion-col size="12">
+                    <ion-select
+                      class="form-input"
+                      formControlName="{{question.followUpQuestion.key }}"
+                      interface="action-sheet"
+                      [placeholder]="question?.followUpQuestion?.placeholder ||commonText?.pleaseSelect"
+                      [okText]="commonText?.ok"
+                      [cancelText]="commonText?.cancel"
+                      textWrap
+                    >
+                      <ion-select-option text-wrap *ngFor="let opt of question.followUpQuestion.options" value="{{opt.value}}">
+                        {{opt.label}}
+                      </ion-select-option>
+                    </ion-select>
+                  </ion-col>
+                </ion-row>
+              </ion-grid>
+            </div>
+          </div>
+    
+          <div *ngSwitchCase="'date'">
+            <div lines="none">
+              <ion-grid>
+                <ion-row>
+                  <ion-col size="12">
+                    <ion-label
+                      text-wrap
+                      [class]="question?.label && question?.isRequired ? 'asterisk' : ''"
+                    >
+                      {{question.followUpQuestion.question}}
+                    </ion-label>
+                  </ion-col>
+                  <ion-col size="12">
+                    <ion-input
+                      class="ion-padding-start form-input"
+                      [id]="question.followUpQuestion.key"
+                      [value]="tunaFormGroup.controls[question.followUpQuestion.key].value | date"
+                      [placeholder]="question.followUpQuestion.placeholder || selectDateText"
+                      [ngClass]="(tunaFormGroup.controls[question.followUpQuestion.key].invalid && isSubmitting) ? 'invalid-input' : '' "
+                      [disabled]="tunaFormGroup.controls[question.followUpQuestion.key].disabled"
+                    ></ion-input>
+                    <ion-modal
+                      [trigger]="!tunaFormGroup.controls[question.followUpQuestion.key].disabled && question.followUpQuestion.key"
+                      [backdropDismiss]="false"
+                      [initialBreakpoint]="0.45"
+                      [breakpoints]="[0.45, 0.6]"
+                      handleBehavior="cycle"
+                      class="date-modal"
+                    >
+                      <ng-template>
+                        <ion-datetime
+                          id="{{'datetime-' + question.followUpQuestion.key}}"
+                          presentation="date"
+                          formControlName="{{question.followUpQuestion.key}}"
+                          min="2015"
+                          max="2060"
+                          [cancelText]="commonText?.cancel"
+                          [doneText]="commonText?.done"
+                          preferWheel
+                          showDefaultButtons
+                        ></ion-datetime>
+                      </ng-template>
+                    </ion-modal>
+                  </ion-col>
+    
+                </ion-row>
+              </ion-grid>
+            </div>
+          </div>
+    
+          <div *ngSwitchCase="'audio'">
+              <div class="ion-padding-horizontal">
+                <ion-row (click)="onRecord(question)" class="ion-align-items-center">
+                  <ion-col size="3">
+                    <div style="background-color: #e5e5e5; height: 60px; width: 60px; border-radius: 50px; display: flex; justify-content:center; align-items: center;">
+                      <ion-icon size="large" name="mic-outline"></ion-icon>
+                    </div>
+                  </ion-col>
+                  <ion-col size="9">
+                    <ion-text>{{question.followUpQuestion.question}}</ion-text>
+                  </ion-col>
+                </ion-row>
+              </div>
+          </div>
+    
+          <div *ngSwitchCase="'pdfDocument'">
+            <ion-item lines="none">
+              <ion-grid >
+                <ion-row>
+                  <ion-col size="12">
+                    <ion-label
+                      text-wrap
+                      [class]="question?.label && question?.isRequired ? 'asterisk' : ''"
+                    >
+                      {{question.followUpQuestion.question}}
+                    </ion-label>
+                  </ion-col>
+                </ion-row>
+                <ion-row *ngIf="selectedDocuments[question.followUpQuestion.key]" class="upload-wrapper">
+                  <div>
+                    <ion-icon style="color: red;" (click)="removeDocument(question.followUpQuestion.key)" name="trash-outline"></ion-icon>
+                    <p>{{selectedDocuments[question.followUpQuestion.key].name}}</p>
+                  </div>
+                </ion-row>
+                <ion-row *ngIf="!selectedDocuments[question.followUpQuestion.key]" class="upload-wrapper">
+                  <div (click)="onUpload(question.followUpQuestion.key)">
+                    <ion-icon [src]="uploadDocIcon"></ion-icon>
+                    <p>{{ question.followUpQuestion.placeholder || uploadDocText}}</p>
+                  </div>
+                </ion-row>
+    
+              </ion-grid>
+            </ion-item>
+          </div>
+    
+          <div *ngSwitchCase="'imageBox'">
+              <div  lines="none" class="transparent-bg">
+              <ion-grid >
+                <ion-row>
+                  <ion-col size="12">
+                    <ion-label
+                      text-wrap
+                      [class]="question?.label && question?.isRequired ? 'asterisk' : ''"
+                    >
+                      {{question.followUpQuestion.question}}
+                    </ion-label>
+                  </ion-col>
+                </ion-row>
+                <ion-row *ngIf="selectedImages[question.followUpQuestion.key]" class="image">
+                  <div>
+                    <img [src]="selectedImages[question.followUpQuestion.key].path" />
+                    <ion-icon class="trash-icon" (click)="removePicture(question.followUpQuestion.key)" name="trash-outline"></ion-icon>
+                    <img>
+                  </div>
+                </ion-row>
+                <ion-row *ngIf="!selectedImages[question.followUpQuestion.key] && !question.followUpQuestion.value" class="upload-wrapper">
+                  <div (click)="takePicture(question.followUpQuestion.key)">
+                    <ion-icon [src]="uploadPictureIcon"></ion-icon>
+                    <p>{{ question.followUpQuestion.placeholder || uploadPictureText}}</p>
+                  </div>
+                </ion-row>
+                <ion-row *ngIf="question.followUpQuestion.value" class="image-preview">
+                  <img *ngIf="sharedMethods.isIos" [src]="question.followUpQuestion.value | safeurl" />
+                  <img *ngIf="!sharedMethods.isIos" [src]="question.followUpQuestion.value" />
+                  <ion-icon class="trash-icon" name="trash-outline" (click)="handleDeleteImage($event, question.followUpQuestion.key)"></ion-icon>
+                </ion-row>
+    
+              </ion-grid>
+            </div>
+          </div>
+    
+          <div *ngSwitchCase="question.followUpQuestion.questionType === 'multiple-select' || question.followUpQuestion.questionType === 'multi-select' ? question.followUpQuestion.questionType : ''">
+            <div lines="none" class="transparent-bg">
+              <ion-grid >
+                <ion-row>
+                  <ion-col size="12">
+                    <ion-label
+                      text-wrap
+                      [class]="question?.label && question?.isRequired ? 'asterisk' : ''"
+                    >
+                      {{question.followUpQuestion.question}}
+                    </ion-label>
+                  </ion-col>
+                  <ion-col size="12">
+                    <ion-select
+                      class="form-input"
+                      [formControlName]="question.followUpQuestion.key"
+                      [placeholder]="question?.followUpQuestion?.placeholder || commonText?.pleaseSelect"
+                      [okText]="commonText?.ok"
+                      [cancelText]="commonText?.cancel"
+                      interface="action-sheet"
+                      multiple
+                      text-wrap
+                    >
+                      <ion-select-option text-wrap *ngFor="let opt of question.followUpQuestion.options" value="{{opt.value}}">
+                        {{opt.label}}
+                      </ion-select-option>
+                    </ion-select>
+                  </ion-col>
+                </ion-row>
+              </ion-grid>
+            </div>
+          </div>
+    
+          <div *ngSwitchCase="question.followUpQuestion.questionType === 'radioGroup' || question.followUpQuestion.questionType  === 'radio' ? question.followUpQuestion.questionType : '' ">
+            <div lines="none">
+              <ion-grid >
+                <ion-row>
+                  <ion-col size="12">
+                    <ion-label
+                      text-wrap
+                      [class]="question?.label && question?.isRequired ? 'asterisk' : ''"
+                    >
+                      {{question.followUpQuestion.question}}
+                    </ion-label>
+                  </ion-col>
+                  <ion-col size="12">
+                    <div>
+                      <ion-radio-group class="radio-group" formControlName="{{question.followUpQuestion.key}}">
+                        <ion-item lines="none" *ngFor="let item of question.followUpQuestion.options">
+                          <!-- refactor item(option) to value/label -->
+                          <ion-radio mode="md" value="{{item.value || item.option }}" class="custom-control-input"></ion-radio>
+                          <label class="custom-control-label">{{item.label || item.option }}</label>
+                        </ion-item>
+                      </ion-radio-group>
+                    </div>
+                  </ion-col>
+                </ion-row>
+              </ion-grid>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div *ngIf="question?.helpText && question?.displayquestion" class="help-text-wrapper">
+        <div [ngClass]="{'text-darkblue': isOtherDarkBlue}" lines="none" class="transparent-bg">
+          <p class="text-section">{{question.helpText}}</p>
+        </div>
+      </div>
+
+      <div *ngIf="fieldErrors[question.key]" >
+        <p class="error-text">{{ fieldErrors[question.key] }}</p>
       </div>
 
     </div>
+    <div *ngIf="nonFieldErrors">
+      <p class="error-text" *ngFor="let err of nonFieldErrors">{{err}}</p>
+    </div>
   </div>
 
-  <ion-grid class="buttons">
-    <ion-col size="5">
-      <ion-button expand="block" type="submit" class="submit-button" [disabled]="!tunaFormGroup.valid"> {{submitButtonText | uppercase}} </ion-button>
+  <ion-row class="buttons" *ngIf="!useCustomSubmitButton">
+    <ion-col *ngIf="showCancelButton" size="6">
+      <app-button
+        id="cancel-btn"
+        class="form-btn cancel-btn"
+        [class.form-btn-one]="showCancelButton"
+        [config]="btnConfig"
+        [fill]="btnFill"
+        [title]="commonText?.cancel.toUpperCase()"
+        (onClick)="onCancel()"
+      ></app-button>
     </ion-col>
-  </ion-grid>
+    <ion-col [size]="showCancelButton ? '6' : '12'">
+      <app-button
+        class="form-btn"
+        [class.form-btn-two]="showCancelButton"
+        type="submit"
+        [config]="btnConfig"
+        [fill]="btnFill"
+        [disabled]="!tunaFormGroup.valid || isSubmitting"
+        [title]="submitButtonText?.toUpperCase()"
+      ></app-button>
+    </ion-col>
+  </ion-row>
 </form>

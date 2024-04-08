@@ -1,0 +1,23 @@
+<ion-content class="content-skyblue-bg">
+  <div class="ion-padding">
+    <div class="logo-container">
+      <app-badge imageUrl="/assets/icon/ikan_monogram.svg"></app-badge>
+    </div>
+    <ion-text>
+      <app-title class="title" [isBlue]="true" [title]="title"></app-title>
+    </ion-text>
+    <ion-text>
+      <p>{{description}}</p>
+    </ion-text>
+    <app-form
+      btnConfig="default"
+      btnFill="solid"
+      [tunaFormGroup]="pageFormGroup"
+      [tunaFormquestions]="formQuestions"
+      [submitButtonText]="submitButtonText"
+      [fieldErrors]="fieldErrors"
+      [isSubmitting]="isLoading"
+      (formValue)="onSubmit($event)">
+    </app-form>
+  </div>
+</ion-content>

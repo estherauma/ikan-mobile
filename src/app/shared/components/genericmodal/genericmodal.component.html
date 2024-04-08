@@ -1,0 +1,20 @@
+<div class="modal-container">
+  <div class="header">
+    <div class="title-container">
+      <h4 class="title">{{title}}</h4>
+    </div>
+    <ion-img class="cancel-img" *ngIf="isCancel" (click)="onCanceled()" src="/assets/icon/cross_thin.svg"></ion-img>
+  </div>
+  <p *ngIf="textContent" class="text-center">{{textContent}}</p>
+  <div class="content">
+    <ng-content></ng-content>
+  </div>
+  <div class="modal-buttons-cancel-ok" [ngClass]="{'modal-buttons-confirm': isConfirm}">
+    <div class="button" *ngIf="isConfirm || isOk">
+      <app-button (onClick)="onOk()" title="ok"></app-button>
+    </div>
+    <div class="button" *ngIf="isConfirm || isCancel">
+      <app-button (onClick)="onCanceled()" title="cancel"></app-button>
+    </div>
+  </div>
+</div>

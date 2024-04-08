@@ -2,7 +2,11 @@
 </app-header>
 
 <ion-content>
-  <app-dashboardelcomesection message="Welcome back. See notifications for latest updates." name="Tony" link="">
+  <app-dashboardelcomesection
+    message="Welcome back. See notifications for latest updates."
+    name="Tony"
+    (onProfileClick)="goToProfile()"
+  >
   </app-dashboardelcomesection>
   <div>
     <ion-card>
@@ -136,9 +140,7 @@
               <a routerLink="">All Reports</a>
             </ion-col>
             <ion-col size="12">
-              <ion-button (click)="generateNewReport()">
-                Generate New Report
-              </ion-button>
+              <app-button config="ikan-deepblue" title="Generate New Report" (click)="generateNewReport()"></app-button>
             </ion-col>
           </ion-row>
         </ion-grid>

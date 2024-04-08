@@ -1,34 +1,55 @@
-<app-header [pageTitle]="pageTitle"></app-header>
+<app-header [isBackButton]="true" [pageTitle]="" [isLightBlueBg]="true"></app-header>
 
-<ion-content>
-  <ion-card *ngFor="let vessel of vessels">
-    <img alt="vessel image" src="assets/imgs/vessel.jpeg" />
+<ion-content class="content-skyblue-bg ion-content-custom-position">
+  <app-contentwrapper>
 
-    <ion-card-content>
+  <div>
+    <ion-grid>
+      <ion-row class="ion-justify-content-between ion-align-items-baseline">
+        <ion-col>
+          <img src="/assets/icon/workorders_blue.svg" width="20" height="40" />
+        </ion-col>
+        <ion-col>
+          <ion-row class="ion-justify-content-end">
+            <div>
+              <app-button (onClick)="createVessel()" iconName="add-outline" title="{{newText}}"></app-button>
+            </div>
+          </ion-row>
+        </ion-col>
+      </ion-row>
+      <ion-row class="title">
+        <app-title [isBlue]="true" [title]="pageTitle"></app-title>
+      </ion-row>
+    </ion-grid>
+
+    <!-- search and filters -->
+    <div>
+      <app-search
+        [searchDataSet]="vessels"
+        (searchResult)="searchResult($event)"
+        (clear)="clearSearchResult()"></app-search>
       <ion-grid>
         <ion-row>
-          <ion-col size="4">
-            <ion-icon name="expand-outline" size="large"></ion-icon>
-            <ion-card-subtitle>{{vessel.type}}</ion-card-subtitle>
+          <ion-text class="filter-title">{{filterText}}</ion-text>
+        </ion-row>
+        <ion-row>
+          <ion-col>
+            <app-filter type="deep-blue-90" filterProperty="status" [options]="filterOptions"
+              [filterDataSet]="vessels" (filterResult)="filterResult($event)"></app-filter>
           </ion-col>
 
-          <ion-col size="7">
-            <ion-card-title> {{vessel.name}}</ion-card-title>
-            <ion-card-subtitle><strong>Registration Number: {{vessel.regNo}}</strong></ion-card-subtitle>
-            <ion-card-subtitle><strong>Status: {{vessel.status}}</strong></ion-card-subtitle>
-          </ion-col>
-
-          <ion-col size="1" style="text-align: center; padding-top: 15%" (click)="viewDetails(vessel)">
-            <ion-icon name="chevron-forward-outline" size="large"></ion-icon>
+          <ion-col>
+            <app-filter type="deep-blue-90" filterProperty="status" [options]="filterOptions"
+              [filterDataSet]="vessels" (filterResult)="filterResult($event)"></app-filter>
           </ion-col>
         </ion-row>
       </ion-grid>
-    </ion-card-content>
-  </ion-card>
+    </div>
+  </div>
 
-  <ion-fab vertical="bottom" horizontal="end" slot="fixed">
-    <ion-fab-button (click)="createVessel()">
-      <ion-icon name="add-circle-outline"></ion-icon>
-    </ion-fab-button>
-  </ion-fab>
+  <div *ngFor="let vessel of vessels">
+    <app-vesselownercard [vessel]="vessel"></app-vesselownercard>
+  </div>
+
+  </app-contentwrapper>
 </ion-content>

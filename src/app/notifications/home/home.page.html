@@ -1,52 +1,36 @@
 <app-header></app-header>
 
-<ion-content>
-  <div *ngFor="let item of notifications" style="margin-left: 10px;">
-    <ion-text> <strong>{{item.title}}</strong></ion-text>
-    <ion-item-sliding *ngFor="let notif of item.content">
-      <ion-item>
-        <ion-card>
-          <ion-card-content>
-            <ion-grid>
-              <ion-row>
-                <ion-col size="2">
-                  <ion-icon name="expand-outline"></ion-icon>
-                </ion-col>
-                <ion-col size="10">
-                  <ion-text>
-                    <ion-grid>
-                      <ion-row>
-                        <ion-col size="8">
-                          <h2>{{notif.title}}</h2>
-                        </ion-col>
-                        <ion-col size="4">
-                          <p>{{notif.daysAgo}}</p>
-                        </ion-col>
-                      </ion-row>
-                    </ion-grid>
-
-                    <p>{{notif.text}}</p>
-                  </ion-text>
-                  <div *ngIf="notif.attachmentType === 'pdf'" style="background: #D9D9D9; padding: 10px 10px 10px 10px">
-                    <h6>Attachment.pdf</h6>
-                  </div>
-
-                  <audio controls style="width: 90%;" *ngIf="notif.attachmentType === 'audio'">
-                    <source src="horse.ogg" type="audio/ogg">
-                    Your browser does not support the audio tag.
-                  </audio>
-                </ion-col>
-              </ion-row>
-            </ion-grid>
-          </ion-card-content>
-        </ion-card>
-      </ion-item>
-    
-      <ion-item-options side="end">
-        <ion-item-option color="danger">
-          <ion-icon slot="icon-only" name="trash"></ion-icon>
-        </ion-item-option>
-      </ion-item-options>
-    </ion-item-sliding>
-  </div>
+<ion-content class="content-skyblue-bg ion-content-custom-position">
+  <app-contentwrapper>
+    <div class="ion-padding">
+      <div>
+        <app-title [isBig]="true" [isBlue]="true" title="{{pageTitle}}"></app-title>
+      </div>
+      <div *ngFor="let item of notifications" class="ion-margin-top">
+        <ion-text *ngIf="item.title !== 'New'" class="ion-padding-bottom"> <strong>{{item.title}}</strong></ion-text>
+        <ion-badge *ngIf="item.title === 'New'" class="ion-margin-bottom" slot="start">{{item.title}}</ion-badge>
+        <ion-list>
+          <ion-item-sliding *ngFor="let notif of item.content">
+            <ion-item lines="none" fill="solid">
+              <app-notificationcard
+               [notification]="notif"
+               titleColor="blue"
+               [status]="notif.status"
+               ></app-notificationcard>
+            </ion-item>
+            <ion-item-options side="end">
+              <ion-item-option class="ion-item-option-first">
+                <ion-icon name="ellipsis-horizontal-circle"></ion-icon>
+                <p>{{moreText}}</p>
+              </ion-item-option>
+              <ion-item-option class="ion-item-option-second" color="danger">
+                <ion-icon slot="icon-only" name="trash"></ion-icon>
+                <p>Delete</p>
+              </ion-item-option>
+            </ion-item-options>
+          </ion-item-sliding>
+        </ion-list>
+      </div>
+    </div>
+  </app-contentwrapper>
 </ion-content>

@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
+import { PushNotificationsService } from 'src/app/shared/services/push-notifications/push-notifications.service';
 
 @Component({
   selector: 'app-indonesianagent',
@@ -18,18 +20,22 @@ export class IndonesianagentPage implements OnInit {
     title: 'Overall performace',
     datasets: [{
       label: '',
-      data: [65, 59, 80],
-      backgroundColor: [
-        'rgba(255, 99, 132, 0.5)',
-        'rgba(54, 162, 235, 0.2)',
-        'rgba(255, 206, 86, 0.2)',
-      ],
+      data: [65, 59, 80]
     }]
   };
 
-  constructor() { }
+  constructor(
+    public pushNotifications: PushNotificationsService,
+    public router: Router,
+  ) { }
 
   ngOnInit() {
+    if (!this.pushNotifications.preventSecondNotificationPrompt) {
+      this.pushNotifications.checkAndroidPNsPermissions();
+    }
   }
 
+  goToProfile() {
+    this.router.navigate(['profile']);
+  }
 }

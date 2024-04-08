@@ -1,0 +1,57 @@
+.ikan-light-btn{
+    color: var(--ikan_blue_100);
+    background: white;
+}
+
+.ikan-deepblue-btn{
+    color: #ffffff; 
+    background: var(--ikan_darkblue_100);
+}
+
+.ikan-yellow-btn {
+    color: #ffffff; 
+    background: var(--ikan_yellow_100);
+}
+
+.rounded{
+    border-radius: 64px;
+}
+
+#app-btn {
+    --padding-start: 20px;
+    --padding-end: 20px;
+    max-width: 100%;
+    span {
+        max-width: 80%;
+        margin: 7px 0;
+    }
+}
+
+
+:host.login-method {
+    #app-btn {
+        width: 100%;
+        white-space: normal;
+        color: white !important;
+        --color: white !important;
+    }
+}
+
+:host.form-btn {
+    #app-btn {
+        min-width: 140px;
+    }
+}
+
+:host.form-btn-one,
+:host.form-btn-two {
+    #app-btn {
+        width: 100%;
+        --padding-start: 5px;
+        --padding-end: 5px;
+        span {
+            width: 100%;
+            margin: 0;
+        }
+    }
+}

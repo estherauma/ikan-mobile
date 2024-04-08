@@ -1,0 +1,233 @@
+.learning-home {
+  width: 100%;
+
+  .content-area {
+    width: 100%;
+    .title-wrapper {
+      text-align: center;
+      display: flex;
+      align-items: center;
+      padding: 0px 25px;
+      height: 150px;
+    }
+    .cards-wrapper {
+      width: 100%;
+      padding: 0px 25px 20px 25px;
+    }
+  }
+
+  ion-card {
+    width: 100%;
+    margin: 10px 0px 25px 0px;
+    app-title {
+      h1 {
+        font-weight: 800;
+        font-size: 1.125rem;
+      }
+    }
+    ion-text {
+      color: #A0ABCC;
+      font-size: 0.875rem;
+    }
+    .progress-with-text {
+      ion-progress-bar {
+        width: 100%;
+        margin-right: 8px;
+      }
+    }
+  }
+}
+
+app-variant {
+  .content-section {
+    padding-top: 60px !important;
+    ion-card {
+      width: 100%;
+      margin: 10px 0px 12px 0px;
+
+      .text-section {
+        app-title {
+          h1 {
+            font-weight: 800;
+            font-size: 1.125rem;
+            font-family: 'interRegular' !important;
+          }
+        }
+        ion-text {
+          color: #A0ABCC;
+          font-size: 0.875rem;
+        }
+      }
+    }
+  }
+}
+
+app-subchapter,
+app-get-help {
+  ion-content {
+    background-color: #EAEDF6;
+    --background: #EAEDF6;
+    .content-wrapper {
+      position: relative;
+      width: 100%;
+      min-height: 80%;
+      background-color: #EAEDF6;
+      font-family: 'GatwickBold' !important;
+
+      .image-section {
+        app-title {
+          h1 {
+            color: #191970 !important;
+            font-size: 1.8rem !important;
+            text-align: center;
+          }
+        }
+      }
+      .textarea {
+        --background: #EAEDF6;
+        color: #000000;
+        p {
+          font-family: 'interRegular' !important;
+          font-size: 1rem !important;
+          line-height: 24px;
+        }
+        a {
+          font-family: inherit !important;
+          font-size: inherit !important;
+          line-height: inherit;
+        }
+        strong {
+          font-family: inherit !important;
+          font-size: inherit !important;
+          line-height: inherit;
+        }
+        h2 {
+          font-family: 'GatwickUltraLight' !important;
+          font-family: 'GatwickBold' !important;
+          color: #3565FF !important;
+        }
+        div:first-child {
+          width: 100%;
+        }
+
+      }
+      .sections {
+        margin-bottom: 10px;
+      }
+      .case-study {
+        #case_study_details {
+          align-items: center;
+          padding: 30px 20px;
+          background-color: white;
+          border-radius: 0 0 30px 30px;
+          box-shadow: 0.5px 9px 10px #dcd6d626;
+      
+          .audio-icon {
+            margin-top: 10px;
+          }
+      
+          #bookmark_icon {
+            height: 30px;
+            width: 30px;
+            margin-top: 10px;
+            margin-left: 15px;
+          }
+          #arrow-icon {
+            font-size: 1.8rem;
+            // color: #191970;
+            color: red;
+            float: right;
+          }
+          h2 {
+            font-family: 'GatwickBold' !important;
+            color: #3565FF !important;
+          }
+          p {
+            font-family: 'interRegular' !important;
+            font-size: 1rem !important;
+            line-height: 24px;
+          }
+        }
+      }
+      .warning-box {
+        #warning-wrapper {
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+        }
+      }
+      app-audio-player {
+        margin: 20px;
+        .white-bg-title {
+          margin: 0px 20px 20px;
+          h2 {
+            font-size: 1.2rem;
+          }
+        }
+      }
+      shared-image {
+        .image-wrapper {
+          background-color: #EAEDF6;
+          --background: #EAEDF6;
+        }
+      }
+    }
+    .up-next-section {
+      background-color: #191970;
+      margin: 15px 0px 0px 0px;
+      padding: 20px;
+      border-radius: 20px 20px 0px 0px;
+      position: static;
+    
+      ion-label {
+        color: #80D8FE;
+        font-size: 1rem;
+        font-weight: bold;
+        margin-bottom: 10px;
+      }
+      ion-card {
+        margin: 10px 0px 0px;
+      }
+      app-title {
+        h1 {
+          color: #3565FF;
+          font-weight: 800;
+          font-size: 1.1rem;
+          font-family: 'interRegular' !important;
+        }
+      }
+      ion-text {
+        color: #A0ABCC;
+        font-size: 0.875rem;
+      }
+    }
+  }
+}
+
+app-get-help {
+  ion-content {
+    .content-section {
+      margin-bottom: 100px;
+      .textarea {
+        p {
+          margin-bottom: 10px !important;
+        }
+
+        h4 {
+          font-size: 18px;
+          margin-top: 40px;
+          margin-bottom: 5px
+        }
+
+        h3 {
+          margin-top: 60px;
+        }
+
+        h2 {
+          margin-top: 70px;
+          font-size: 20px
+        }
+      }
+    }
+  }
+}

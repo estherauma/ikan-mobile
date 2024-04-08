@@ -1,34 +1,234 @@
-<app-header [pageTitle]="pageTitle"></app-header>
+<app-header [isBackButton]="true"></app-header>
 
-<ion-content>
-  <div class="tabContent">
-    <ion-tabs>
-      <ion-tab-bar slot="bottom">
-        <ion-tab-button tab="info">
-          <ion-icon name="person-circle-outline"></ion-icon>
-          <ion-label>info</ion-label>
-        </ion-tab-button>
+<ion-content class="content-skyblue-bg ion-content-custom-position">
+  <app-pageprofilecontainer
+    (clickedMenuItem)="onClickedMenu($event)"
+    [active]="activeNavItem"
+    [navItems]="navItems"
+    [status]="workerInfo?.status"
+    [title]="workerInfo?.fname + ' ' + workerInfo?.lname"
+    [isResendInviteBtn]="isResendInviteBtn && workerInfo?.status?.toLowerCase().includes('pending')"
+    [imageUrl]="workerInfo?.profile_img_url || '/assets/icon/ellipse_profile.svg'"
+  ></app-pageprofilecontainer>
 
-        <ion-tab-button tab="payment">
-          <ion-icon name="wallet-outline"></ion-icon>
-          <ion-label>Payment Info</ion-label>
-        </ion-tab-button>
-
-        <ion-tab-button tab="placement">
-          <ion-icon name="file-tray-stacked-outline"></ion-icon>
-          <ion-label>Placements</ion-label>
-        </ion-tab-button>
-
-        <ion-tab-button tab="docs">
-          <ion-icon name="document-text-outline"></ion-icon>
-          <ion-label>Docs</ion-label>
-        </ion-tab-button>
-
-        <ion-tab-button tab="training">
-          <ion-icon name="stats-chart-outline"></ion-icon>
-          <ion-label>Training Status</ion-label>
-        </ion-tab-button>
-      </ion-tab-bar>
-    </ion-tabs>
+<div class="contents ion-padding">
+  <div *ngIf="activeNavItem.id === 1">
+    <div>
+      <div class="text-icon">
+        <div class="icon">
+          <ion-img src="assets/icon/email_blue.svg"></ion-img>
+        </div>
+        <p>{{workerInfo?.email}}</p>
+      </div>
+      <div class="text-icon">
+        <div class="icon">
+          <ion-img src="assets/icon/phone_blue.svg"></ion-img>
+        </div>
+        <p>{{workerInfo?.phone}}</p>
+      </div>
+      <div class="liner">
+        <div class="icon">
+          <ion-img src="assets/icon/office_blue.svg"></ion-img>
+        </div>
+        <div>
+          <p>{{workerInfo?.addressLine2}}</p>
+          <p>{{workerInfo?.addressLine3}}</p>
+          <p>{{workerInfo?.county}}</p>
+          <p>{{workerInfo?.addressLine1}}</p>
+          <p>{{workerInfo?.zipCode}}</p>
+          <p>{{workerInfo?.country}}</p>
+        </div>
+      </div>
+      <!-- <div class="edit-btn-container">
+        <app-button (onClick)="onEdit()" [title]="commonText?.edit" size="small"></app-button>
+      </div> -->
+    </div>
   </div>
+
+  <div *ngIf="activeNavItem.id === 2">
+    <div class="title-wrapper">
+      <app-title [title]="commonText?.accountInfo" variant="h5"></app-title>
+      <!-- <app-button [title]="commonText?.save" size="small"></app-button> -->
+    </div>
+
+    <app-title [title]="'[' + commonText?.comingSoon + ']'" variant="h6"></app-title>
+    <!-- <app-form
+      [tunaFormGroup]="pageFormGroup"
+      [tunaFormquestions]="formQuestions"
+      [submitButtonText]="commonText?.submit"
+      (formValue)="onSubmit($event)"
+      [isTextBlue]="true"
+      [isOtherDarkBlue]="true"
+      [isTitleDarkBlue]="true"
+      btnFill="solid"
+    >
+    </app-form>-->   
+  </div>
+
+  <div *ngIf="activeNavItem.id === 3">
+    <div>
+      <div class="ion-margin-top">
+
+        <div>
+          <app-titleblock variant="pending" [title]="commonText?.placementOpportunity"></app-titleblock>
+          <app-title [title]="'[' + commonText?.comingSoon + ']'" variant="h6"></app-title>
+          <!-- <div class="ion-padding list-content">
+            <div>
+              <p>{{ commonText?.status }}:<span> {{ commonText?.sent }}</span> <a class="placement-link">{{ commonText?.viewPlacementOffer }}</a></p>
+              <h5 class="placement-title">{{ commonText?.associatedWorkOrder }}</h5>
+            </div>
+            <div>
+              <app-workordercard 
+              [wo]="wo"
+              >
+              </app-workordercard>
+              <div class="send-reminder-btn">
+                <app-button size="small" [title]="commonText?.sendreminder"></app-button>
+              </div>
+            </div>
+          </div> -->
+        </div>
+
+        <!-- <div>
+          <app-titleblock [title]="commonText?.placementOpportunity"></app-titleblock>
+          <div class="ion-padding list-content">
+            <div>
+              <p>{{ commonText?.status }}:<span> {{ commonText?.notStarted }}</span></p>
+            </div>
+            <div>
+              <p>{{ commonText?.placementOpportunitiesSendingText }} </p>
+              <a routerLink="">{{ commonText?.clickHereToSeeDemandLetters }}</a>
+            </div>
+          </div>
+        </div>
+
+        <div>
+          <app-titleblock [title]="commonText?.placementAgreement"></app-titleblock>
+          <div class="ion-padding list-content">
+          </div>
+        </div>
+      
+        <div>
+          <app-titleblock [title]="commonText?.jobOrderAndServiceOpportunity"></app-titleblock>
+          <div class="ion-padding list-content">
+          </div>
+        </div>
+
+        <div>
+          <app-titleblock [title]="commonText?.departure"></app-titleblock>
+          <div class="ion-padding">
+          </div>
+        </div> -->
+
+      </div>
+    </div>
+  </div>
+
+  <div *ngIf="activeNavItem.id === 4">
+    <div class="ion-margin-top">
+      <div class="ion-margin">
+        <app-title [title]="commonText?.accountInfo" variant="h5"></app-title>
+      </div>
+      <app-title [title]="'[' + commonText?.comingSoon + ']'" variant="h6"></app-title>
+      
+      <!-- <div>
+        <app-titleblock variant="completed" [title]="commonText?.passport"></app-titleblock>
+        <div class="ion-padding ion-margin-bottom">
+          <app-attachment
+            [pdfName]="commonText?.passport"
+            [pdfInfo]="commonText?.clickToViewAndEditUploadedPassportPicture"
+            docLink="/assets/imgs/zila1.jpeg"
+            backUrl="/workers/details/info"
+          ></app-attachment>
+        </div>
+      </div>
+      <div>
+        <app-titleblock variant="pending" [title]="commonText?.visa"></app-titleblock>
+        <div class="ion-margin-vertical">
+          <app-documentupload type="upload" [name]="commonText?.uploadVisa" [isTransparent]="true"></app-documentupload>
+        </div>
+      </div>
+      <div>
+        <app-titleblock variant="pending" [title]="commonText?.signedEmploymentAgreement"></app-titleblock>
+        <div class="ion-padding">
+          <div class="send-reminder-btn">
+            <app-button size="small" [title]="commonText?.sendreminder"></app-button>
+          </div>
+        </div>
+      </div> -->
+    </div>
+  </div>
+
+  <div *ngIf="activeNavItem.id === 5">
+    <div>
+      <!-- TODO: use training data -->
+      <app-title title="Training status" variant="h5"></app-title>
+      <app-title [title]="'[' + commonText?.comingSoon + ']'" variant="h6"></app-title>
+      <!-- <div>
+        <div class="ion-padding-bottom">
+          <app-progressbar title="Title of completion bar" value="76"></app-progressbar>
+          <app-progressbar title="Title of completion bar"></app-progressbar>
+          <app-progressbar title="Title of completion bar"></app-progressbar>
+          <div class="send-reminder-btn">
+            <app-button size="small" [title]="commonText?.sendreminder"></app-button>
+          </div>
+          <app-progressbar title="Title of completion bar" value="76"></app-progressbar>
+        </div>
+
+        <div class="ion-padding-bottom">
+          <app-title [title]="commonText?.BP2miTrainingDocument" variant="h5"></app-title>
+          <app-documentupload iconUrl="/assets/icon/documents_blue_lg.svg" type="upload" name="{{ commonText?.uploadSignedBP2mi }}"></app-documentupload>
+        </div> -->
+
+          <!-- TODO: use leaning hub data -->
+        <!-- <div class="ion-padding-bottom">
+          <app-title title="Knowledge base" variant="h5"></app-title>
+          <app-progressbar title="Title of completion bar" value="76"></app-progressbar>
+          <app-progressbar title="During Employment"></app-progressbar>
+          <div class="send-reminder-btn">
+            <app-button size="small" [title]="commonText?.sendreminder"></app-button>
+          </div>
+
+          <app-progressbar title="Post Employment" value="76"></app-progressbar>
+          <div class="send-reminder-btn">
+            <app-button size="small" [title]="commonText?.sendreminder"></app-button>
+          </div>
+        </div> -->
+
+        <!-- Audio Notes -->
+        <!-- <div class="ion-padding"  style="background-color: #F5F5F5;">
+          <ion-text><h1>{{ commonText?.audioNotes }}</h1></ion-text>
+          <div (click)="onRecord()">
+            <ion-row class="ion-align-items-center">
+              <ion-col size="3">
+                <div style="background-color: #e5e5e5; height: 60px; width: 60px; border-radius: 50px; display: flex; justify-content:center; align-items: center;">
+                  <ion-icon size="large" name="mic-outline"></ion-icon>
+                </div>
+              </ion-col>
+              <ion-col size="9">
+                <ion-text>{{ commonText?.recordNewNote }}</ion-text>
+              </ion-col>
+            </ion-row>
+          </div>
+          <div class="ion-padding-vertical">
+            <ion-row *ngFor="let audioRecording of audioRecordings" class="ion-justify-content-between ion-align-items-center">
+              <ion-col size="12"><ion-label>{{audioRecording.name}}</ion-label></ion-col>
+              <ion-col size="6">
+                  <div>
+                    <audio controls autobuffer="autobuffer">
+                      <source [src]="audioRecording.file">
+                      {{ commonText?.browserDoesnotSupportAudioTag }}
+                    </audio>
+                  </div>
+              </ion-col>
+              <ion-col size="2">
+                <ion-icon (click)="onDelete(audioRecording.uniqueName)" size="large" name="trash-outline"></ion-icon>
+              </ion-col>
+            </ion-row>
+          </div>
+        </div>
+      </div> -->
+    </div>
+  </div>
+</div>
 </ion-content>

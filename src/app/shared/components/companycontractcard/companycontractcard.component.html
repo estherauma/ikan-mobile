@@ -1,0 +1,32 @@
+<div>
+  <ion-card (click)="viewContract()">
+    <ion-card-content>
+      <ion-row>
+        <ion-col size="3" class="left-side-section center">
+          <div class="logo-section">
+            <ion-img class="icon" src="/assets/icon/contract.svg"></ion-img>
+          </div>
+        </ion-col>
+        <ion-col size="9" class="card-section center">
+          <div class="ion-padding content-wrapper">
+            <div class="contents-section-container">
+              <ion-card-title class="title blue-dark">{{title}}</ion-card-title>
+              <ion-label>
+                <ion-text class="gray-text">{{ commonText?.contract }}: </ion-text>
+                <ion-text class="blue-text">{{contract?.appRef}}</ion-text>
+              </ion-label> <br>
+              <!-- <ion-label>
+                <ion-text class="gray-text">{{ commonText?.vessel }}: </ion-text>
+                <ion-text class="blue-text">{{vessel}}</ion-text>
+              </ion-label> <br> -->
+              <ion-label>
+                <ion-text class="gray-text">{{ commonText?.dates }}: </ion-text>
+                <ion-text class="blue-text">{{dates}}</ion-text>
+              </ion-label> <br>
+            </div>
+          </div>
+        </ion-col>
+      </ion-row>
+    </ion-card-content>
+  </ion-card>
+</div>

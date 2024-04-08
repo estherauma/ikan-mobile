@@ -1,0 +1,51 @@
+.title{
+    color: var(--ikan_blue_100);
+    text-align: center;
+}
+
+.modal-container{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+}
+
+.content {
+    width: 100%;
+}
+
+.text-center{
+    text-align: center;
+}
+
+.button {
+    min-width: 100px;
+}
+
+.modal-buttons-confirm{
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+}
+
+.modal-buttons-cancel-ok{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.header{
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    .title-container{
+        flex: 1;
+    }
+}
+
+.cancel-img{
+    width: 18px;
+    height: 18px;
+}
