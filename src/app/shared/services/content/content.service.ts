@@ -253,7 +253,7 @@ export class ContentService {
     }
     const surveyData =  this.getSurveyData();
     
-    return surveyData[category].map((qn) => ({
+    return surveyData[category]?.map((qn) => ({
       category: null,
       displayquestion: qn?.displayquestion,
       helpText: qn?.helpText ?? null,
