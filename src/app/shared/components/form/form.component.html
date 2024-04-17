@@ -421,22 +421,22 @@
         >
         <div [ngSwitch]="question.followUpQuestion.questionType">
           <div *ngSwitchCase="'h4'">
-            <div class="text-section" [ngClass]="{'text-darkblue': isTitleDarkBlue}" lines="none" class="transparent-bg">
+            <div *ngIf="question?.followUpQuestion?.displayquestion" class="text-section" [ngClass]="{'text-darkblue': isTitleDarkBlue}" lines="none" class="transparent-bg">
               <app-title variant="h4" [title]="question.followUpQuestion.question"></app-title>
             </div>
           </div>
           <div *ngSwitchCase="'h5'">
-            <div class="text-section" [ngClass]="{'text-darkblue': isTitleDarkBlue}" lines="none" class="transparent-bg">
+            <div *ngIf="question?.followUpQuestion?.displayquestion" class="text-section" [ngClass]="{'text-darkblue': isTitleDarkBlue}" lines="none" class="transparent-bg">
               <app-title variant="h5" [title]="question.followUpQuestion.question"></app-title>
             </div>
           </div>
           <div *ngSwitchCase="'p'">
-            <div [ngClass]="{'text-darkblue': isOtherDarkBlue}" lines="none" class="transparent-bg">
+            <div *ngIf="question?.followUpQuestion?.displayquestion" [ngClass]="{'text-darkblue': isOtherDarkBlue}" lines="none" class="transparent-bg">
               <p class="text-section">{{question.followUpQuestion.question}}</p>
             </div>
           </div>
           <div *ngSwitchCase="question.followUpQuestion.questionType === 'textBox' || question.followUpQuestion.questionType  === 'text' ? question.followUpQuestion.questionType : '' ">
-            <div lines="none" class="transparent-bg">
+            <div *ngIf="question?.followUpQuestion?.displayquestion" lines="none" class="transparent-bg">
               <ion-grid>
                 <ion-row>
                   <ion-col size="12">
@@ -462,7 +462,7 @@
           </div>
     
           <div *ngSwitchCase="question.followUpQuestion.questionType === 'textArea' || question.followUpQuestion.questionType  === 'textarea' ? question.followUpQuestion.questionType : ''">
-            <div lines="none" class="transparent-bg">
+            <div *ngIf="question?.followUpQuestion?.displayquestion" lines="none" class="transparent-bg">
               <ion-grid>
                 <ion-row>
                   <ion-col size="12">
@@ -488,7 +488,7 @@
           </div>
     
           <div *ngSwitchCase="'number'">
-              <div lines="none" class="transparent-bg">
+              <div *ngIf="question?.followUpQuestion?.displayquestion" lines="none" class="transparent-bg">
               <ion-grid>
                 <ion-row>
                   <ion-col size="12">
@@ -513,7 +513,7 @@
           </div>
     
           <div *ngSwitchCase="'select'">
-              <div lines="none" class="transparent-bg">
+              <div *ngIf="question?.followUpQuestion?.displayquestion" lines="none" class="transparent-bg">
               <ion-grid>
                 <ion-row>
                   <ion-col size="12">
@@ -534,8 +534,8 @@
                       [cancelText]="commonText?.cancel"
                       textWrap
                     >
-                      <ion-select-option text-wrap *ngFor="let opt of question.followUpQuestion.options" value="{{opt.value}}">
-                        {{opt.label}}
+                      <ion-select-option text-wrap *ngFor="let opt of question.followUpQuestion.options" value="{{opt.value || opt.text}}">
+                        {{opt.label || opt.text}}
                       </ion-select-option>
                     </ion-select>
                   </ion-col>
@@ -545,7 +545,7 @@
           </div>
     
           <div *ngSwitchCase="'date'">
-            <div lines="none">
+            <div *ngIf="question?.followUpQuestion?.displayquestion" lines="none">
               <ion-grid>
                 <ion-row>
                   <ion-col size="12">
@@ -595,7 +595,7 @@
           </div>
     
           <div *ngSwitchCase="'audio'">
-              <div class="ion-padding-horizontal">
+              <div *ngIf="question?.followUpQuestion?.displayquestion" class="ion-padding-horizontal">
                 <ion-row (click)="onRecord(question)" class="ion-align-items-center">
                   <ion-col size="3">
                     <div style="background-color: #e5e5e5; height: 60px; width: 60px; border-radius: 50px; display: flex; justify-content:center; align-items: center;">
@@ -610,7 +610,7 @@
           </div>
     
           <div *ngSwitchCase="'pdfDocument'">
-            <ion-item lines="none">
+            <ion-item *ngIf="question?.followUpQuestion?.displayquestion" lines="none">
               <ion-grid >
                 <ion-row>
                   <ion-col size="12">
@@ -640,7 +640,7 @@
           </div>
     
           <div *ngSwitchCase="'imageBox'">
-              <div  lines="none" class="transparent-bg">
+              <div *ngIf="question?.followUpQuestion?.displayquestion" lines="none" class="transparent-bg">
               <ion-grid >
                 <ion-row>
                   <ion-col size="12">
@@ -676,7 +676,7 @@
           </div>
     
           <div *ngSwitchCase="question.followUpQuestion.questionType === 'multiple-select' || question.followUpQuestion.questionType === 'multi-select' ? question.followUpQuestion.questionType : ''">
-            <div lines="none" class="transparent-bg">
+            <div *ngIf="question?.followUpQuestion?.displayquestion" lines="none" class="transparent-bg">
               <ion-grid >
                 <ion-row>
                   <ion-col size="12">
@@ -698,8 +698,8 @@
                       multiple
                       text-wrap
                     >
-                      <ion-select-option text-wrap *ngFor="let opt of question.followUpQuestion.options" value="{{opt.value}}">
-                        {{opt.label}}
+                      <ion-select-option text-wrap *ngFor="let opt of question.followUpQuestion.options" value="{{opt.value || opt.text}}">
+                        {{opt.label || opt.text}}
                       </ion-select-option>
                     </ion-select>
                   </ion-col>
@@ -709,7 +709,7 @@
           </div>
     
           <div *ngSwitchCase="question.followUpQuestion.questionType === 'radioGroup' || question.followUpQuestion.questionType  === 'radio' ? question.followUpQuestion.questionType : '' ">
-            <div lines="none">
+            <div *ngIf="question?.followUpQuestion?.displayquestion" lines="none">
               <ion-grid >
                 <ion-row>
                   <ion-col size="12">

@@ -17,6 +17,7 @@ import { SurveyDataService } from './data/survey-data.service';
 export class SurveyComponent extends BaseformPage  implements OnInit {
   attemptedFollowUpQtnKeys = {};
   surveySource = '';
+  surveyTopic: string = '';
 
   constructor(
     public contentService: ContentService,
@@ -38,7 +39,7 @@ export class SurveyComponent extends BaseformPage  implements OnInit {
     await this.getSurveySource();
 
     if (this.surveySource === SurveySources.notification) {
-      this.formQuestions = await this.contentService.getSurveyQuestions();
+      this.formQuestions = await this.contentService.getSurveyQuestions(this.surveyTopic);
     } else {
       this.formQuestions = pageData?.formQuestions;
     }
@@ -76,6 +77,7 @@ export class SurveyComponent extends BaseformPage  implements OnInit {
     return this.activatedRoute.queryParams.subscribe((queryParams: Params) => {
       if (queryParams && Object.keys(queryParams).length > 0) {
         this.surveySource = queryParams?.surveySource || '';
+        this.surveyTopic = queryParams?.surveyTopic || '';
       }
     });
   }

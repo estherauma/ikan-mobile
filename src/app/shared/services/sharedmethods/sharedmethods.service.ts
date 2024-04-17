@@ -218,4 +218,20 @@ export class SharedmethodsService {
         return 'profile';
     }
   }
+
+  /**
+   * Check if a date is within a time frame
+   * @param dateToCheck The date to check
+   * @param timeFrameInWeeks The timeframe in weeks
+   * @param startDate The date to start the time frame from
+   * @returns True if the date is within the time frame, false otherwise
+   * @example
+   * isDateWithinTimeFrame(new Date('2021-01-01'), 1, new Date('2021-01-01')) // true
+    */
+  isDateWithinTimeFrame(dateToCheck: Date, timeFrameInWeeks = 0, startDate = new Date()) {
+    const endDate = new Date(startDate);
+    endDate.setDate(endDate.getDate() + (timeFrameInWeeks * 7));
+
+    return dateToCheck >= startDate && dateToCheck <= endDate;
+  }
 }

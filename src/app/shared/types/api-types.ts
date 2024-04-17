@@ -161,4 +161,11 @@ export interface IPasswordResetResp {
 
 export enum SurveySources {
   notification = 'notification',
+  fromMenu = 'fromMenu',
+}
+
+export enum NotificationActionId {
+  feeeback = 'feedback',
+  survey = 'survey',
+  test = 'test',
 }

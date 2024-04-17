@@ -125,7 +125,8 @@ ion-label.asterisk::after {
   }
 }
 
-:host.training-video-form {
+:host.training-video-form,
+:host.survey-form {
   form {
 
     ion-radio-group {
