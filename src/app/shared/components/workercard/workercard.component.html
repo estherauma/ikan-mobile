@@ -4,7 +4,7 @@
       <div class="status">
         <!-- TODO: translate worker statuses -->
         <span [ngClass]="sharedMethods.getStatusClass(worker?.status)">
-          {{worker?.isActive ? commonText?.active : commonText?.inactive}}
+          {{ sharedMethods.generateWorkerStatus(worker?.isActive, worker?.isVerified) }}
         </span>
       </div>
     </ion-col>

@@ -6,7 +6,7 @@
     (clickedMenuItem)="onClickedMenu($event)"
     [active]="activeNavItem"
     [navItems]="navItems"
-    [status]="workerInfo?.isActive ? 'Active' : 'Inactive'"
+    [status]="sharedMethods.generateWorkerStatus(workerInfo?.isActive, workerInfo?.isVerified)"
     [title]="workerInfo?.firstName + ' ' + workerInfo?.lastName"
     [isResendInviteBtn]="isResendInviteBtn && workerInfo?.status?.toLowerCase().includes('pending')"
     [imageUrl]="workerInfo?.profile_img_url || '/assets/icon/ellipse_profile.svg'"

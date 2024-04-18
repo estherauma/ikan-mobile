@@ -206,6 +206,16 @@ export class SharedmethodsService {
       '';
   }
 
+  generateWorkerStatus(isActive=false, isVerified=false) {
+    if (!isVerified) {
+      return 'Pending';
+    }
+    if (!isActive) {
+      return 'Inactive';
+    }
+    return 'Active';
+  }
+
   generateAppRef() {
     return uuidv4();
   }
