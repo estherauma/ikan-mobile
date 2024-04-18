@@ -1,12 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, Validators, FormGroup } from '@angular/forms';
-import { StatusType } from 'src/app/shared/components/pageprofilecontainer/pageprofilecontainer.component';
 import { ContentService } from 'src/app/shared/services/content/content.service';
 import { BaseformPage } from 'src/app/shared/components/baseform/baseform.page';
 import { ActivatedRoute, Params, Router } from '@angular/router';
 import { WorkersDataService } from '../data/workers-data.service';
 import { DomSanitizer } from '@angular/platform-browser';
 import { AudioService } from 'src/app/shared/services/audio/audio.service';
+import { SharedmethodsService } from 'src/app/shared/services/sharedmethods/sharedmethods.service';
 
 @Component({
   selector: 'app-detail',
@@ -74,6 +74,7 @@ export class DetailPage extends BaseformPage implements OnInit {
     public workersDataService: WorkersDataService,
     public sanitizer: DomSanitizer,
     public audioService: AudioService,
+    public sharedMethods: SharedmethodsService,
   ) {
     super(contentService);
     const pageData = this.contentService.getContentByPropertyName('createplacementinfo');

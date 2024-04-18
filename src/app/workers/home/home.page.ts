@@ -6,6 +6,7 @@ import { UserRole } from 'src/app/shared/types/api-types';
 import { CreatePage } from '../create/create.page';
 import { WorkersDataService } from '../data/workers-data.service';
 import { ContentService } from 'src/app/shared/services/content/content.service';
+import { ProfilesDataService } from 'src/app/profiles/data/profiles-data.service';
 
 @Component({
   selector: 'app-home',
@@ -26,9 +27,14 @@ export class HomePage implements OnInit {
     public workersDataService: WorkersDataService,
     public sharedMethods: SharedmethodsService,
     public contentService: ContentService,
+    public profilesDataService: ProfilesDataService,
   ) {
-    this.workersDataService.getAll().subscribe((data) => {
-      this.workers = this.unFilteredData = data;
+   
+    this.profilesDataService.getAll().subscribe(async(data) => {
+      const currentUser = await this.sharedMethods.getUserData();
+      // return workers created by current user 
+      // remove current user from workers; applies to user with multiple roles
+      this.workers = this.unFilteredData = data?.filter((worker) => worker?.createdBy === currentUser?.id && (worker?.email !== currentUser?.email));
     });
   }
 
