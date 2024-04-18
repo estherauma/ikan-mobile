@@ -2,9 +2,8 @@
   <ion-row>
     <ion-col size="12" class="status-wrapper">
       <div class="status">
-        <!-- TODO: translate worker statuses -->
         <span [ngClass]="sharedMethods.getStatusClass(worker?.status)">
-          {{ sharedMethods.generateWorkerStatus(worker?.isActive, worker?.isVerified) }}
+          {{ sharedMethods.generateWorkerStatus(commonText, worker?.isActive, worker?.isVerified) }}
         </span>
       </div>
     </ion-col>

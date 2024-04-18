@@ -1,12 +1,11 @@
 <app-header [isBackButton]="true"></app-header>
 
 <ion-content class="content-skyblue-bg ion-content-custom-position">
-  <!-- TODO: update worker statuses -->
   <app-pageprofilecontainer
     (clickedMenuItem)="onClickedMenu($event)"
     [active]="activeNavItem"
     [navItems]="navItems"
-    [status]="sharedMethods.generateWorkerStatus(workerInfo?.isActive, workerInfo?.isVerified)"
+    [status]="workerStatus"
     [title]="workerInfo?.firstName + ' ' + workerInfo?.lastName"
     [isResendInviteBtn]="isResendInviteBtn && workerInfo?.status?.toLowerCase().includes('pending')"
     [imageUrl]="workerInfo?.profile_img_url || '/assets/icon/ellipse_profile.svg'"

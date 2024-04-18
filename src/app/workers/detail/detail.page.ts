@@ -58,6 +58,7 @@ export class DetailPage extends BaseformPage implements OnInit {
   audioRecordings: any = [];
   workerId: string;
   workerInfo: any;
+  workerStatus: string;
 
   wo = {
     name: 'Work order 2',
@@ -89,6 +90,7 @@ export class DetailPage extends BaseformPage implements OnInit {
   async ngOnInit() {
     this.commonText = this.contentService?.commonText;
     await this.getWorkerInfo();
+    this.workerStatus = this.sharedMethods.generateWorkerStatus(this.commonText, this.workerInfo?.isActive, this.workerInfo?.isVerified);
   }
 
   async getWorkerInfo() {

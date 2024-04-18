@@ -206,14 +206,15 @@ export class SharedmethodsService {
       '';
   }
 
-  generateWorkerStatus(isActive=false, isVerified=false) {
+  generateWorkerStatus(commonText, isActive=false, isVerified=false) {
+    let status = 'active';
     if (!isVerified) {
-      return 'Pending';
+      status = 'pending';
+    } else if (!isActive) {
+      status = 'inactive';
     }
-    if (!isActive) {
-      return 'Inactive';
-    }
-    return 'Active';
+  
+    return commonText?.[status];
   }
 
   generateAppRef() {
