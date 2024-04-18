@@ -101,6 +101,8 @@ export class ProfilesDataService {
       registration_number, passport_number, position, is_active, is_verified, last_login, user_role, \
       created_at, updated_at, created_by, updated_by) \
       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)';
+    data.isActive = data.isActive ?? false;
+    data.isVerified = data.isVerified ?? false;
     const params = [data?.email, data?.firstName, data?.lastName, data?.telephone, data?.mobile,
       data?.addressLine1, data?.addressLine2, data?.addressLine3, data?.city, data?.country,
       data?.postalCode, data?.profileImage, data?.registrationNumber, data?.passportNumber,

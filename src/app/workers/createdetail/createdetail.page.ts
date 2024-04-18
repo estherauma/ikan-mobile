@@ -5,7 +5,8 @@ import { AlertController, ModalController } from '@ionic/angular';
 import { BaseformPage } from 'src/app/shared/components/baseform/baseform.page';
 import { ContentService } from 'src/app/shared/services/content/content.service';
 import { SharedmethodsService } from 'src/app/shared/services/sharedmethods/sharedmethods.service';
-import { WorkersDataService } from '../data/workers-data.service';
+import { UserRole } from 'src/app/shared/types/api-types';
+import { ProfilesDataService } from 'src/app/profiles/data/profiles-data.service';
 
 @Component({
   selector: 'app-create',
@@ -24,9 +25,9 @@ export class CreateDetailPage extends BaseformPage implements OnInit {
     public activatedRoute: ActivatedRoute,
     public router: Router,
     public sharedMethods: SharedmethodsService,
-    public workerDataService: WorkersDataService,
     public modalCtrl: ModalController,
     public alertCtrl: AlertController,
+    public profileDataService: ProfilesDataService,
   ) {
     super(contentService);
    }
@@ -60,10 +61,12 @@ export class CreateDetailPage extends BaseformPage implements OnInit {
   async onSubmit(formData) {
     this.sharedMethods.showLoader(this.contentService.commonText?.saving);
     const now = this.sharedMethods.getCurrentDateTime();
-    formData.created_at = formData.updated_at = now;
     const userData = await this.sharedMethods.getUserData();
-    formData.created_by = formData.updated_by = userData?.id;
-    const insertId = await this.workerDataService.create(formData);
+    formData.createdAt = formData.updatedAt = now;
+    formData.createdBy = formData.updatedBy = userData?.id;
+    formData.userRole = UserRole.worker;
+    formData.isActive = true;
+    const insertId = await this.profileDataService.create(formData);
     this.modalCtrl.dismiss();
     if (insertId) {
       this.modalCtrl.dismiss();
@@ -78,7 +81,7 @@ export class CreateDetailPage extends BaseformPage implements OnInit {
 
   async showInviteSentAlert(formData) {
     // TODO: Add message to prismic
-    const message = `A new invitation has been sent to ${formData.f_name} ${formData.l_name} to join IKAN. \
+    const message = `A new invitation has been sent to ${formData.firstName} ${formData.lastName} to join IKAN. \
       Once they have accepted, you will see them in the workers' area of the app`;
     const alert = await this.alertCtrl.create({
       cssClass: 'tuna-alert invite-success-alert',

@@ -34,7 +34,10 @@ export class HomePage implements OnInit {
       const currentUser = await this.sharedMethods.getUserData();
       // return workers created by current user 
       // remove current user from workers; applies to user with multiple roles
-      this.workers = this.unFilteredData = data?.filter((worker) => worker?.createdBy === currentUser?.id && (worker?.email !== currentUser?.email));
+      console.log('data', data)
+      this.workers = this.unFilteredData = data?.filter((worker) => worker?.createdBy === currentUser?.id &&
+        (worker.userRole?.includes('worker')) && 
+          (worker?.email !== currentUser?.email));
     });
   }
 
