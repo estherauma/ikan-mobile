@@ -19,40 +19,41 @@ export class DetailPage extends BaseformPage implements OnInit {
     {
       name: this.commonText?.info,
       url: 'workers/info',
-      id: 1,
+      id: 'workers-info',
       activeIcon:`${this.iconBase}/profile_info_blue.svg` ,
       inActiveIcon:`${this.iconBase}/profile_info_white.svg`
     },
     {
       name: this.commonText?.payment,
       url: 'workers/payment',
-      id: 2,
+      id: 'workers-paymnet',
       activeIcon:`${this.iconBase}/single_payment_blue.svg` ,
       inActiveIcon: `${this.iconBase}/single_payment_white.svg`
     },
     {
       name: this.commonText?.placement,
       url: 'workers/placement',
-      id: 3,
+      id: 'workers-placement',
       activeIcon:`${this.iconBase}/placements_blue.svg` ,
       inActiveIcon:`${this.iconBase}/placements_white.svg`
     },
     {
       name: this.commonText?.documents,
       url: 'workers/documents',
-      id: 4, activeIcon:`${this.iconBase}/documents_blue.svg` ,
+      id: 'workers-documents',
+      activeIcon:`${this.iconBase}/documents_blue.svg` ,
       inActiveIcon:`${this.iconBase}/documents_white.svg`
     },
     {
       name: this.commonText?.training,
       url: 'workers/training',
-      id: 5,
+      id: 'workers-training',
       activeIcon:`${this.iconBase}/training_blue.svg` ,
       inActiveIcon:`${this.iconBase}/training_white.svg`
     }
   ];
   activeNavItem = this.navItems[0];
-  isResendInviteBtn = this.activeNavItem.id === 1;
+  isResendInviteBtn = this.activeNavItem.id === 'workers-info';
   // TODO: after saving & fetching audioRecordings from the db
   // map through audioRecordings to generate file from filepath
   audioRecordings: any = [];

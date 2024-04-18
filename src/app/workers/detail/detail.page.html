@@ -12,7 +12,7 @@
   ></app-pageprofilecontainer>
 
 <div class="contents ion-padding">
-  <div *ngIf="activeNavItem.id === 1">
+  <div *ngIf="activeNavItem.id === 'workers-info'">
     <!-- TODO: fix styles -->
     <div>
       <ion-row>
@@ -51,7 +51,7 @@
     </div>
   </div>
 
-  <div *ngIf="activeNavItem.id === 2">
+  <div *ngIf="activeNavItem.id === 'workers-paymnet'">
     <div class="title-wrapper">
       <app-title [title]="commonText?.accountInfo" variant="h5"></app-title>
       <!-- <app-button [title]="commonText?.save" size="small"></app-button> -->
@@ -71,7 +71,7 @@
     </app-form>-->   
   </div>
 
-  <div *ngIf="activeNavItem.id === 3">
+  <div *ngIf="activeNavItem.id === 'workers-placement'">
     <div>
       <div class="ion-margin-top">
 
@@ -130,7 +130,7 @@
     </div>
   </div>
 
-  <div *ngIf="activeNavItem.id === 4">
+  <div *ngIf="activeNavItem.id === 'workers-documents'">
     <div class="ion-margin-top">
       <div class="ion-margin">
         <app-title [title]="commonText?.accountInfo" variant="h5"></app-title>
@@ -165,7 +165,7 @@
     </div>
   </div>
 
-  <div *ngIf="activeNavItem.id === 5">
+  <div *ngIf="activeNavItem.id === 'workers-training'">
     <div>
       <!-- TODO: use training data -->
       <app-title title="Training status" variant="h5"></app-title>
