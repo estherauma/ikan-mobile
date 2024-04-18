@@ -60,6 +60,7 @@ export class DetailPage extends BaseformPage implements OnInit {
   workerId: string;
   workerInfo: any;
   workerStatus: string;
+  nameInputs: any;
 
   wo = {
     name: 'Work order 2',
@@ -86,6 +87,10 @@ export class DetailPage extends BaseformPage implements OnInit {
       this.group[entry.key] = new FormControl('', [Validators.required]);
     });
     this.pageFormGroup = new FormGroup(this.group);
+
+    // get name inputs, for editing form
+    const nameInputsData = this.contentService.getContentByPropertyName('createworkerprofile');
+    this.nameInputs = nameInputsData?.formQuestions;
   }
 
   async ngOnInit() {
@@ -127,8 +132,10 @@ export class DetailPage extends BaseformPage implements OnInit {
 
   onSubmit(data) {}
 
-  onEdit() {
-    this.router.navigate(['/workers/createdetail']);
+  onEdit(workerInfo) {
+    const data = JSON.stringify(workerInfo);
+    const questions = JSON.stringify(this.nameInputs);
+    this.router.navigate(['/workers/createdetail', {data, questions}]);
   }
 
   onRecord() {

@@ -27,7 +27,7 @@ export class CreateDetailPage extends BaseformPage implements OnInit {
     public sharedMethods: SharedmethodsService,
     public modalCtrl: ModalController,
     public alertCtrl: AlertController,
-    public profileDataService: ProfilesDataService,
+    public profilesDataService: ProfilesDataService,
   ) {
     super(contentService);
    }
@@ -65,17 +65,33 @@ export class CreateDetailPage extends BaseformPage implements OnInit {
     formData.createdAt = formData.updatedAt = now;
     formData.createdBy = formData.updatedBy = userData?.id;
     formData.userRole = UserRole.worker;
-    formData.isActive = true;
-    const insertId = await this.profileDataService.create(formData);
-    this.modalCtrl.dismiss();
-    if (insertId) {
-      this.modalCtrl.dismiss();
-      this.router.navigate(['workers/home', formData]);
-      // show invite success alert
-      // Commented out because it is not implemented yet
-      // await this.showInviteSentAlert(formData);
+
+    const profileExists = await this.profilesDataService.checkIfProfileExists(formData.email);
+    if (!profileExists) {
+      formData.createdAt = now;
+      formData.createdBy = userData?.id;
+      const insertId = await this.profilesDataService.create(formData);
+      if (insertId) {
+        this.modalCtrl.dismiss();
+        this.router.navigate(['workers/home', formData]);
+        // show invite success alert
+        // Commented out because it is not implemented yet
+        // await this.showInviteSentAlert(formData);
+      } else {
+        this.modalCtrl.dismiss();
+        this.sharedMethods.showLoader(this.contentService.commonText?.error);
+      }
     } else {
-      this.sharedMethods.showLoader(this.contentService.commonText?.error);
+      const currentProfileData = await this.profilesDataService.getSingleProfile(formData.email);
+      formData = { ...currentProfileData, ...formData };
+      const result = await this.profilesDataService.update(formData);
+      if (result?.rowsAffected > 0) {
+        this.modalCtrl.dismiss();
+        this.router.navigate(['workers/home', formData]);
+      } else {
+        this.modalCtrl.dismiss();
+        this.sharedMethods.showLoader(this.contentService.commonText?.error);
+      }
     }
   }
 
