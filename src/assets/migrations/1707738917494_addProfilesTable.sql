@@ -26,4 +26,4 @@ CREATE TABLE IF NOT EXISTS profiles (
   updated_by VARCHAR(255) NOT NULL,
   deleted_by VARCHAR(255),
   user_role VARCHAR(255) NOT NULL
-)
+);
