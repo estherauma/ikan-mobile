@@ -141,12 +141,18 @@ export class PaymentsDataService {
     return this.bankAccountsObs.asObservable();
   }
 
-  async getActiveBankAccount(userId) {
-    return this.bankAccounts.find((acct) => acct.userId === userId && acct.isActive);
+  async getActiveBankAccount(profileId) {
+    const allProfileBankAccounts = await this.getUserBankAccounts(profileId);
+    if (!allProfileBankAccounts.length) {
+      return null;
+    }
+    const filtered = await allProfileBankAccounts.filter((acct) => acct.isActive === true);
+    const sorted = await filtered.sort((a, b) => Date.parse(b.createdAt) - Date.parse(a.createdAt));
+    return sorted?.[0] || null;
   }
 
-  async getUserBankAccounts(userId) {
-    return this.bankAccounts.filter((acct) => acct.userId === userId);
+  async getUserBankAccounts(profileId) {
+    return this.bankAccounts.filter((acct) => acct.userId === profileId);
   }
 
   createBankAccount(data) {
@@ -178,8 +184,8 @@ export class PaymentsDataService {
     });
   }
 
-  async checkIfBankAccountExists(userId: string, accountNumber: string) {
-    return this.bankAccounts.some((acct) => acct.userId === userId && acct.accountNumber === accountNumber);
+  async checkIfBankAccountExists(profileId: string, accountNumber: string) {
+    return this.bankAccounts.some((acct) => acct.id === parseFloat(profileId) && acct.accountNumber === accountNumber);
   }
 
   retrieveBeneficiaries() {
@@ -221,12 +227,18 @@ export class PaymentsDataService {
     return this.beneficiariesObs.asObservable();
   }
 
-  async getActiveBeneficiary(userId) {
-    return this.beneficiaries.find((beneficiary) => beneficiary.userId === userId && beneficiary.isActive);
+  async getActiveBeneficiary(profileId) {
+    const allProfileBeneficiaries = await this.getUserBeneficiaries(profileId);
+    if (!allProfileBeneficiaries.length) {
+      return null;
+    }
+    const filtered = allProfileBeneficiaries.filter((beneficiary) => beneficiary.isActive === true);
+    const sorted = filtered.sort((a, b) => Date.parse(b.createdAt) - Date.parse(a.createdAt));
+    return sorted?.[0] || null;
   }
 
-  async getUserBeneficiaries(userId) {
-    return this.beneficiaries.filter((beneficiary) => beneficiary.userId === userId);
+  async getUserBeneficiaries(profileId) {
+    return this.beneficiaries.filter((beneficiary) => beneficiary.userId === profileId);
   }
 
   createBeneficiary(data) {
@@ -261,8 +273,8 @@ export class PaymentsDataService {
     });
   }
 
-  async checkIfBeneficiaryExists(userId, accountNumber: string) {
-    return this.beneficiaries.some((beneficiary) => (beneficiary.userId === userId && beneficiary.accountNumber === accountNumber));
+  async checkIfBeneficiaryExists(profileId, accountNumber: string) {
+    return this.beneficiaries.some((beneficiary) => (beneficiary.id === parseFloat(profileId) && beneficiary.accountNumber === accountNumber));
   }
 
   deactivateOldAccounts(accountNumber: string, userId: string, table: string) {

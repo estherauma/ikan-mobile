@@ -384,8 +384,7 @@ export class SyncService {
   async syncProfiles() {
     const profiles = await this.profilesDataService.retrieveProfiles();
     return profiles?.forEach(async(profile) => {
-      const userId = profile.id;
-      delete profile.id;
+      const profileId = profile.id;
       if (profile.onlineRef) {
         // remove fields without values so that they aren't sent to the api
         for (const [key, value] of Object.entries(profile)) {
@@ -393,22 +392,30 @@ export class SyncService {
             delete profile[key];
           }
         }
-
         profile.userId = profile?.onlineRef;
-        const profileToUpload: ProfileSyncData = profile;
-        return this.apiService.post('accounts/profile', profileToUpload).subscribe(async(response: CreateProfileResponse) => {
+        const profileToUpload = profile;
+        delete profileToUpload.id;
+        return this.apiService.post('accounts/profile', profileToUpload, false, {user_id: profile?.onlineRef}).subscribe(async(response: CreateProfileResponse) => {
           if (response?.status === 'OK') {
-            await this.syncBankAccounts(userId, response?.data?.id);
-            await this.syncBeneficiaries(userId, response?.data?.id);
-          } else {
+            await this.syncBankAccounts(profileId, response?.data?.id);
+            await this.syncBeneficiaries(profileId, response?.data?.id);
+          } else {   
             console.error(`Failed to sync profile ${profile.email} to the api`, response);
           }
         });
       } else {
-        // register user to the api
-        // update online ref
-        // sync bank accounts
-        // sync beneficiaries
+        // register user to the api 
+        const profileToRegister = profile;
+        delete profileToRegister.id;
+        return this.apiService.post('accounts/profile', profileToRegister, false, {register: 'register'}).subscribe(async(response: CreateProfileResponse) => {
+          if (response?.status === 'OK') {
+            await this.profilesDataService.updateProfileOnlineRef(profile.email, response?.data?.id);
+            await this.syncBankAccounts(profileId, response?.data?.id);
+            await this.syncBeneficiaries(profileId, response?.data?.id);
+          } else { 
+            console.error(`Failed to sync/register profile ${profile.email} to the api`, response);
+          }
+        });
       }
     });
   }
@@ -433,13 +440,14 @@ export class SyncService {
     });
   }
 
-  async syncBankAccounts(userId, userOnlineRef ) {
-    const accounts = await this.paymentsDataService.getUserBankAccounts(userId);
+  async syncBankAccounts(profileId, userOnlineRef ) {
+    const accounts = await this.paymentsDataService.getUserBankAccounts(profileId);
     accounts.forEach(async(account) => {
-      delete account.id;
-      account.userId = userOnlineRef;
-      if (!account.onlineRef) {
-        this.apiService.post('accounts/bank-details', account).subscribe((response: CreateBankAccountResponse) => {
+      const acctToUpload = account;
+      delete acctToUpload.id; 
+      acctToUpload.userId = userOnlineRef;
+      if (!acctToUpload.onlineRef) {
+        this.apiService.post('accounts/bank-details', acctToUpload).subscribe((response: CreateBankAccountResponse) => {
           if (response?.status === 'OK') {
             this.dbService.updateDatabaseField('user_bank_accounts', 'online_ref', response?.data?.id, account.appRef);
           } else {
@@ -472,13 +480,14 @@ export class SyncService {
     });
   }
 
-  async syncBeneficiaries(userId, userOnlineRef) {
-    const beneficiaries = await this.paymentsDataService.getUserBeneficiaries(userId);
+  async syncBeneficiaries(profileId, userOnlineRef) {
+    const beneficiaries = await this.paymentsDataService.getUserBeneficiaries(profileId);
     beneficiaries.forEach(async(beneficiary) => {
-      delete beneficiary.id;
-      beneficiary.userId = userOnlineRef;
-      if (!beneficiary.onlineRef) {
-        this.apiService.post('accounts/beneficiaries-bank-details', beneficiary).subscribe((response: CreateBeneficiaryResponse) => {
+      const dataToUpload = beneficiary;
+      delete dataToUpload.id;
+      dataToUpload.userId = userOnlineRef;
+      if (!dataToUpload.onlineRef) {
+        this.apiService.post('accounts/beneficiaries-bank-details', dataToUpload).subscribe((response: CreateBeneficiaryResponse) => {
           if (response?.status === 'OK') {
             this.dbService.updateDatabaseField('user_beneficiaries', 'online_ref', response?.data?.id, beneficiary.appRef);
           } else {
