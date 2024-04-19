@@ -392,8 +392,8 @@ export class SyncService {
             delete profile[key];
           }
         }
-        profile.userId = profile?.onlineRef;
-        const profileToUpload = profile;
+        const profileToUpload = Object.assign({}, profile);
+        profileToUpload.userId = profile?.onlineRef;
         delete profileToUpload.id;
         return this.apiService.post('accounts/profile', profileToUpload, false, {user_id: profile?.onlineRef}).subscribe(async(response: CreateProfileResponse) => {
           if (response?.status === 'OK') {
@@ -405,7 +405,7 @@ export class SyncService {
         });
       } else {
         // register user to the api 
-        const profileToRegister = profile;
+        const profileToRegister = Object.assign({}, profile);
         delete profileToRegister.id;
         return this.apiService.post('accounts/profile', profileToRegister, false, {register: 'register'}).subscribe(async(response: CreateProfileResponse) => {
           if (response?.status === 'OK') {
@@ -427,10 +427,12 @@ export class SyncService {
           this.dbService.checkIfEntryExists('user_bank_accounts', bankAccount.appRef).then(async(exists) => {
             if (!exists) {
               const profile = await this.profilesDataService.getProfileByOnlineRef(bankAccount.user);
-              if (profile) {
+              if (profile?.id) {
                 bankAccount.createdBy = bankAccount.createdBy ?? profile.id;
                 bankAccount.updatedBy = bankAccount.updatedBy ?? profile.id;
-                const dataToSave = {...bankAccount, userId: profile.id, onlineRef: bankAccount.id};
+                const data = Object.assign({}, bankAccount);
+                delete data.id;
+                const dataToSave = {...data, userId: profile.id, onlineRef: bankAccount.id};
                 await this.paymentsDataService.createBankAccount(dataToSave).then(() => {});
               }
             }
@@ -443,7 +445,7 @@ export class SyncService {
   async syncBankAccounts(profileId, userOnlineRef ) {
     const accounts = await this.paymentsDataService.getUserBankAccounts(profileId);
     accounts.forEach(async(account) => {
-      const acctToUpload = account;
+      const acctToUpload = Object.assign({}, account);
       delete acctToUpload.id; 
       acctToUpload.userId = userOnlineRef;
       if (!acctToUpload.onlineRef) {
@@ -467,10 +469,12 @@ export class SyncService {
           this.dbService.checkIfEntryExists('user_beneficiaries', beneficiary.appRef).then(async(exists) => {
             if (!exists) {
               const profile = await this.profilesDataService.getProfileByOnlineRef(beneficiary.user);
-              if (profile) {
+              if (profile?.id) {
                 beneficiary.createdBy = beneficiary.createdBy ?? profile.id;
                 beneficiary.updatedBy = beneficiary.updatedBy ?? profile.id;
-                const dataToSave = {...beneficiary, userId: profile.id, onlineRef: beneficiary.id};
+                const data = Object.assign({}, beneficiary);
+                delete data.id;
+                const dataToSave = {...data, userId: profile.id, onlineRef: beneficiary.id};
                 await this.paymentsDataService.createBeneficiary(dataToSave).then(() => {});
               }
             }
@@ -483,7 +487,7 @@ export class SyncService {
   async syncBeneficiaries(profileId, userOnlineRef) {
     const beneficiaries = await this.paymentsDataService.getUserBeneficiaries(profileId);
     beneficiaries.forEach(async(beneficiary) => {
-      const dataToUpload = beneficiary;
+      const dataToUpload = Object.assign({}, beneficiary);
       delete dataToUpload.id;
       dataToUpload.userId = userOnlineRef;
       if (!dataToUpload.onlineRef) {
