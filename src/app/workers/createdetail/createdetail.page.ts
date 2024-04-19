@@ -18,6 +18,7 @@ export class CreateDetailPage extends BaseformPage implements OnInit {
   createWorkerFormGroup;
   prevQuestions;
   prevData;
+  isEditing: boolean = false;
 
 
   constructor(
@@ -35,12 +36,16 @@ export class CreateDetailPage extends BaseformPage implements OnInit {
   async ngOnInit() {
     super.ngOnInit();
     await this.getPageParams();
+    if (this.isEditing) {
+      this.submitButtonText = this.commonText.edit;
+    }
     const pageData = this.contentService.getContentByPropertyName('createworkers');
     this.pageTitle = pageData?.pageTitle;
     this.formQuestions = this.prevQuestions.concat(pageData?.formQuestions);
     this.formQuestions.forEach((entry) => {
       if (entry.key in this.prevData) {
-        this.group[entry.key] = new FormControl(this.prevData[entry.key], [Validators.required]);
+        const validators = entry.isRequired ? [Validators.required] : [];
+        this.group[entry.key] = new FormControl(this.prevData[entry.key], validators);
       } else {
         this.group[entry.key] = new FormControl('', []);
       }
@@ -55,6 +60,7 @@ export class CreateDetailPage extends BaseformPage implements OnInit {
       const { data, questions } = params;
       this.prevQuestions = JSON.parse(questions);
       this.prevData = JSON.parse(data);
+      this.isEditing = this.prevData.isEditing ?? false;
     });
   }
 

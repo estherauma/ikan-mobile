@@ -133,7 +133,7 @@ export class DetailPage extends BaseformPage implements OnInit {
   onSubmit(data) {}
 
   onEdit(workerInfo) {
-    const data = JSON.stringify(workerInfo);
+    const data = JSON.stringify({...workerInfo, isEditing: true});
     const questions = JSON.stringify(this.nameInputs);
     this.router.navigate(['/workers/createdetail', {data, questions}]);
   }
