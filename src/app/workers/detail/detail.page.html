@@ -13,41 +13,47 @@
 
 <div class="contents">
   <div *ngIf="activeNavItem.id === 'workers-info'">
-    <!-- TODO: fix styles -->
-    <div>
+    <div class="row-container">
       <ion-row>
-        <ion-col size="2">
+        <ion-col size="2" class="icon-container">
           <ion-img src="assets/icon/email_blue.svg"></ion-img>
         </ion-col>
-        <ion-col size="10">
+        <ion-col size="10" class="value-container">
           <p>{{workerInfo?.email}}</p>
         </ion-col>
       </ion-row>
       <ion-row>
-        <ion-col size="2">
+        <ion-col size="2" class="icon-container">
           <ion-img src="assets/icon/phone_blue.svg"></ion-img>
         </ion-col>
-        <ion-col size="10">
+        <ion-col size="10" class="value-container">
         <p>{{workerInfo?.telephone || workerInfo?.mobile}}</p>
         <p *ngIf="workerInfo?.telephone && workerInfo?.mobile">{{workerInfo?.mobile}}</p>
         </ion-col>
       </ion-row>
       <ion-row>
-        <ion-col size="2">
+        <ion-col size="2" class="icon-container">
           <ion-img src="assets/icon/office_blue.svg"></ion-img>
         </ion-col>
-        <ion-col size="10">
-          <p>{{workerInfo?.addressLine1}}</p>
-          <p>{{workerInfo?.addressLine2}}</p>
-          <p>{{workerInfo?.addressLine3}}</p>
-          <p>{{workerInfo?.city}}</p>
-          <p>{{workerInfo?.country}}</p> TODO: use country code && test test
-          <p>{{workerInfo?.postalCode}}</p>
+        <ion-col size="10" class="value-container">
+          <p *ngIf="workerInfo?.addressLine1">{{workerInfo?.addressLine1}}</p>
+          <p *ngIf="workerInfo?.addressLine2">{{workerInfo?.addressLine2}}</p>
+          <p *ngIf="workerInfo?.addressLine3">{{workerInfo?.addressLine3}}</p>
+          <p *ngIf="workerInfo?.city">{{workerInfo?.city}}</p>
+          <p *ngIf="workerInfo?.country">{{workerInfo?.country}}</p>
+          <p *ngIf="workerInfo?.postalCode">{{workerInfo?.postalCode}}</p>
         </ion-col>
       </ion-row>
-      <div class="edit-btn-container">
-        <app-button (onClick)="onEdit(workerInfo)" [title]="commonText?.edit" size="small"></app-button>
-      </div>
+      <ion-row>
+        <ion-col size="12"class="edit-btn-container">
+          <app-button
+            class="info-edit-btn"
+            (onClick)="onEdit(workerInfo)"
+            [title]="commonText?.edit"
+            size="small"
+          ></app-button>
+        </ion-col>
+      </ion-row>
     </div>
   </div>
 
