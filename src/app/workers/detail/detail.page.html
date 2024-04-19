@@ -6,7 +6,7 @@
     [active]="activeNavItem"
     [navItems]="navItems"
     [status]="workerStatus"
-    [title]="workerInfo?.firstName + ' ' + workerInfo?.lastName"
+    [title]="workerInfo?.firstName || '' + ' ' + workerInfo?.lastName || ''"
     [isResendInviteBtn]="isResendInviteBtn && workerInfo?.status?.toLowerCase().includes('pending')"
     [imageUrl]="workerInfo?.profile_img_url || '/assets/icon/ellipse_profile.svg'"
   ></app-pageprofilecontainer>
@@ -51,8 +51,7 @@
     </div>
   </div>
 
-  <div *ngIf="activeNavItem.id === 'workers-paymnet'">
-    <!-- dont forget page type -->
+  <div *ngIf="activeNavItem.id === 'workers-payment'">
     <app-payments
       page="vo-workers-payments"
       [workerInfo]="workerInfo"
