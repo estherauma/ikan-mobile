@@ -11,7 +11,7 @@
     [imageUrl]="workerInfo?.profile_img_url || '/assets/icon/ellipse_profile.svg'"
   ></app-pageprofilecontainer>
 
-<div class="contents ion-padding">
+<div class="contents">
   <div *ngIf="activeNavItem.id === 'workers-info'">
     <!-- TODO: fix styles -->
     <div>
@@ -52,23 +52,11 @@
   </div>
 
   <div *ngIf="activeNavItem.id === 'workers-paymnet'">
-    <div class="title-wrapper">
-      <app-title [title]="commonText?.accountInfo" variant="h5"></app-title>
-      <!-- <app-button [title]="commonText?.save" size="small"></app-button> -->
-    </div>
-
-    <app-title [title]="'[' + commonText?.comingSoon + ']'" variant="h6"></app-title>
-    <!-- <app-form
-      [tunaFormGroup]="pageFormGroup"
-      [tunaFormquestions]="formQuestions"
-      [submitButtonText]="commonText?.submit"
-      (formValue)="onSubmit($event)"
-      [isTextBlue]="true"
-      [isOtherDarkBlue]="true"
-      [isTitleDarkBlue]="true"
-      btnFill="solid"
-    >
-    </app-form>-->   
+    <!-- dont forget page type -->
+    <app-payments
+      page="vo-workers-payments"
+      [workerInfo]="workerInfo"
+    ></app-payments>
   </div>
 
   <div *ngIf="activeNavItem.id === 'workers-placement'">
@@ -133,7 +121,7 @@
   <div *ngIf="activeNavItem.id === 'workers-documents'">
     <div class="ion-margin-top">
       <div class="ion-margin">
-        <app-title [title]="commonText?.accountInfo" variant="h5"></app-title>
+        <app-title [title]="commonText?.documents" variant="h5"></app-title>
       </div>
       <app-title [title]="'[' + commonText?.comingSoon + ']'" variant="h6"></app-title>
       
