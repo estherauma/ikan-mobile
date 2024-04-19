@@ -26,7 +26,7 @@ export class DetailPage extends BaseformPage implements OnInit {
     {
       name: this.commonText?.payment,
       url: 'workers/payment',
-      id: 'workers-paymnet',
+      id: 'workers-payment',
       activeIcon:`${this.iconBase}/single_payment_blue.svg` ,
       inActiveIcon: `${this.iconBase}/single_payment_white.svg`
     },
