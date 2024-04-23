@@ -26,7 +26,6 @@ export class CompaniesDataService {
     });
 
     this.getAll().subscribe((companies) => {
-      console.log('Companies Data:', companies);
       this.companies = companies;
     });
   }
