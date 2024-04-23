@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { ContentService } from '../../shared/services/content/content.service';
 import { ModalController } from '@ionic/angular';
@@ -6,7 +6,7 @@ import { CreateclausePage } from '../clauses/createclause/createclause.page';
 import { ContractDataService } from '../data/contract-data.service';
 import { SharedmethodsService } from 'src/app/shared/services/sharedmethods/sharedmethods.service';
 import { AuthService } from 'src/app/shared/services/auth/auth.service';
-import { StorageKeys } from 'src/app/shared/types/api-types';
+import { CompaniesDataService } from 'src/app/companies/data/companies-data.service';
 
 @Component({
   selector: 'app-view',
@@ -45,6 +45,7 @@ export class ViewPage implements OnInit {
     public contractDataService: ContractDataService,
     public sharedMethods: SharedmethodsService,
     public authService: AuthService,
+    public companiesDataService: CompaniesDataService,
   ) {}
 
   ngOnInit() {
@@ -89,7 +90,7 @@ export class ViewPage implements OnInit {
         this.contractClauses = this.contractClauses.sort((a, b) => a.order - b.order);
       });
     });
-    
+
     this.pageSetup();
   }
 
@@ -110,6 +111,15 @@ export class ViewPage implements OnInit {
       'contract-clauses-attachments': 11,
     }
     return clauseOrder[clauseKind];
+  }
+
+  getCompanyName(companyId) {
+    const companies = this.companiesDataService.companies;
+    if (!companies.length) {
+      return '';
+    }
+    const company = companies.find((entry) => entry.id === parseFloat(companyId));
+    return company?.name || '';
   }
 
   async createClause() {
