@@ -28,8 +28,13 @@
     <ion-text class="block"><span class="gray">{{ commonText?.dates }}:</span> {{contract.startDate | date: 'dd/MM/yyy'}} - {{contract.endDate |  date: 'dd/MM/yyy'}}</ion-text>
     <br />
 
-    <ion-text class="block"><span class="gray">{{ commonText?.taiwaneseRepresentative }}:</span> {{contract.taiwaneseCompany}} </ion-text>
-    <ion-text class="block"><span class="gray">{{ commonText?.indonesianRepresentative }}:</span> {{contract.indonesianCompany}} <p></p>
+    <ion-text class="block">
+      <span class="gray">{{ commonText?.taiwaneseRepresentative }}:</span>
+      {{ getCompanyName(contract.taiwaneseCompany) }}
+    </ion-text>
+    <ion-text class="block">
+      <span class="gray">{{ commonText?.indonesianRepresentative }}:</span>
+      {{ getCompanyName(contract.indonesianCompany) }} <p></p>
     </ion-text>
 
   </div>

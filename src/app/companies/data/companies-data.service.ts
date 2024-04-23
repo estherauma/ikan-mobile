@@ -7,7 +7,8 @@ import { BehaviorSubject } from 'rxjs';
   providedIn: 'root'
 })
 export class CompaniesDataService {
-  companies = new BehaviorSubject([]);
+  companies: Array<any> = [];
+  companiesObs = new BehaviorSubject([]);
   db: SQLiteObject;
 
   constructor(
@@ -22,6 +23,10 @@ export class CompaniesDataService {
         this.db = _db;
         await this.retriveCompanies();
       }).catch(e => console.log(e));
+    });
+
+    this.getAll().subscribe((companies) => {
+      this.companies = companies;
     });
   }
 
@@ -52,12 +57,12 @@ export class CompaniesDataService {
           });
         }
       }
-      this.companies.next(companies);
+      this.companiesObs.next(companies);
     }).catch((e) => console.log(e));
   }
 
   getAll() {
-    return this.companies.asObservable();
+    return this.companiesObs.asObservable();
   }
 
   async create(data) {
