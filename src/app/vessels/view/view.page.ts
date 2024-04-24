@@ -49,7 +49,7 @@ export class ViewPage implements OnInit {
   getParams() {
     this.activatedRoute.params.subscribe((params) => {
       this.vessel = params;
-      const status = this.contentService.getStatusTranslation('vessels-createsteptwo', this.vessel.status);
+      const status = this.contentService.getFormOptionTranslation('vessels-createsteptwo', 'status', this.vessel.status);
       this.title = `${this.commonText?.status}: ${status}`;
     });
   }

@@ -40,7 +40,7 @@ export class HomePage implements OnInit {
     this.filterText = this.commonText?.filter;
     this.pageTitle = this.commonText?.vessels;
     this.newText = this.commonText?.new;
-    this.filterOptions = this.contentService.getStatusOptions('vessels-createsteptwo');
+    this.filterOptions = this.contentService.getFormOptions('vessels-createsteptwo', 'status');
   }
 
   ionViewWillEnter() {

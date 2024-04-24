@@ -22,7 +22,7 @@ export class VesselownercardComponent implements OnInit {
 
   ngOnInit() {
     this.commonText = this.contentService.commonText;
-     this.vesselStatus = this.contentService.getStatusTranslation('vessels-createsteptwo', this.vessel.status);
+    this.vesselStatus = this.contentService.getFormOptionTranslation('vessels-createsteptwo', 'status', this.vessel.status);
   }
 
   viewDetails(vessel) {

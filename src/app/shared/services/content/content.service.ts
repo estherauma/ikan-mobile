@@ -275,15 +275,15 @@ export class ContentService {
     return pageData?.formQuestions;
   }
 
-  getStatusOptions(pageName: string, statusKey: string = 'status') {
+  getFormOptions(pageName: string, inputKey: string) {
     const formQuestions = this.getPageFormQuestions(pageName);
-    const statusQuestion = formQuestions.find(x => x.key === statusKey);
-    return statusQuestion?.options ?? [];
+    const formQtn = formQuestions.find(x => x.key === inputKey);
+    return formQtn?.options ?? [];
   }
 
-  getStatusTranslation(pageName: string, status: string, statusKey: string = 'status') {
-    const options = this.getStatusOptions(pageName, statusKey);
-    const statusOption = options.find(x => x.value === status);
-    return statusOption?.label ?? status;
+  getFormOptionTranslation(pageName: string, inputKey: string, optionValue: string) {
+    const options = this.getFormOptions(pageName, inputKey);
+    const opt = options.find(x => x.value === optionValue);
+    return opt?.label ?? optionValue;
   }
 }
