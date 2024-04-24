@@ -268,4 +268,22 @@ export class ContentService {
       })) : [],
     })) ?? [];
   }
+
+  getPageFormQuestions(pageName: string) {
+    const content = this.appContent?.[`${this.currentLanguage}`];
+    const pageData = content?.[pageName];
+    return pageData?.formQuestions;
+  }
+
+  getStatusOptions(pageName: string, statusKey: string = 'status') {
+    const formQuestions = this.getPageFormQuestions(pageName);
+    const statusQuestion = formQuestions.find(x => x.key === statusKey);
+    return statusQuestion?.options ?? [];
+  }
+
+  getStatusTranslation(pageName: string, status: string, statusKey: string = 'status') {
+    const options = this.getStatusOptions(pageName, statusKey);
+    const statusOption = options.find(x => x.value === status);
+    return statusOption?.label ?? status;
+  }
 }
