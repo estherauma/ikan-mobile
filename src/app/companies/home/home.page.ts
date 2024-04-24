@@ -12,11 +12,11 @@ import { SharedmethodsService } from 'src/app/shared/services/sharedmethods/shar
   styleUrls: ['./home.page.scss'],
 })
 export class HomePage implements OnInit {
-  // ToDo: Add localization
   pageTitle = 'Companies';
   companies = [];
   unFilteredData = [];
   newText = 'New';
+  commonText;
 
   constructor(
     public modalCtrl: ModalController,
@@ -38,9 +38,10 @@ export class HomePage implements OnInit {
     });
   }
 
-  ngOnInit() { 
-    this.newText = this.contentService.commonText?.new;
-    this.pageTitle = this.contentService.commonText?.companies;
+  ngOnInit() {
+    this.commonText = this.contentService.commonText;
+    this.newText = this.commonText?.new;
+    this.pageTitle = this.commonText?.companies;
   }
 
   async createCompany() {
