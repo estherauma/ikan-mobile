@@ -13,7 +13,6 @@ import { SharedmethodsService } from 'src/app/shared/services/sharedmethods/shar
   styleUrls: ['./home.page.scss'],
 })
 export class HomePage implements OnInit {
-  //TODO: Use translated text from prisimic
   pageTitle = 'Vessels';
   vessels = [];
   unFilteredData = [];
@@ -23,6 +22,7 @@ export class HomePage implements OnInit {
   ];
   filterText = 'Filter';
   newText = 'New';
+  commonText;
 
   constructor(
     public menuCtrl: MenuController,
@@ -39,9 +39,10 @@ export class HomePage implements OnInit {
   }
 
   ngOnInit() {
-    this.filterText = this.contentService.commonText?.filter;
-    this.pageTitle = this.contentService.commonText?.vessels;
-    this.newText = this.contentService.commonText?.new;
+    this.commonText = this.contentService.commonText;
+    this.filterText = this.commonText?.filter;
+    this.pageTitle = this.commonText?.vessels;
+    this.newText = this.commonText?.new;
   }
 
   ionViewWillEnter() {
