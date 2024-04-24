@@ -16,10 +16,7 @@ export class HomePage implements OnInit {
   pageTitle = 'Vessels';
   vessels = [];
   unFilteredData = [];
-  filterOptions = [
-    {title:'Active Duty', value:'Active Duty'},
-    {title:'', value:'opened'}
-  ];
+  filterOptions = [];
   filterText = 'Filter';
   newText = 'New';
   commonText;
@@ -43,6 +40,7 @@ export class HomePage implements OnInit {
     this.filterText = this.commonText?.filter;
     this.pageTitle = this.commonText?.vessels;
     this.newText = this.commonText?.new;
+    this.filterOptions = this.contentService.getStatusOptions('vessels-createsteptwo');
   }
 
   ionViewWillEnter() {
