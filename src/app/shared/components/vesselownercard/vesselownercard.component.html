@@ -20,8 +20,8 @@
 
         <ion-col size="9">
           <ion-card-title class="title"> {{vessel.name}}</ion-card-title>
-          <p class="text-label">Registration No: <span class="text-value">{{vessel.regNo}}</span></p>
-          <p class="text-label">Status: <span class="text-value">{{vessel.status}}</span></p>
+          <p class="text-label">{{ commonText?.registrationNumber }}: <span class="text-value">{{vessel.regNo}}</span></p>
+          <p class="text-label">{{ commonText?.status }}: <span class="text-value">{{vesselStatus}}</span></p>
         </ion-col>
       </ion-row>
     </ion-grid>

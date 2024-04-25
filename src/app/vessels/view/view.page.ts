@@ -16,6 +16,7 @@ export class ViewPage implements OnInit {
   woTitle = '';
   editBtnText = '';
   archivedBtnText = '';
+  commonText;
 
   workOrders = [
     {
@@ -37,17 +38,19 @@ export class ViewPage implements OnInit {
   ) { }
 
   async ngOnInit() {
-    await this.getParams();
+    this.commonText = this.contentService.commonText;
+    this.editBtnText = this.commonText?.edit;
+    this.woTitle = this.commonText?.activeWoTitle;
+    this.archivedBtnText = this.commonText?.archivedBtnText;
 
-    this.editBtnText = this.contentService.commonText?.edit;
-    this.woTitle = this.contentService.commonText?.activeWoTitle;
-    this.archivedBtnText = this.contentService.commonText?.archivedBtnText;
+    this.getParams();
   }
 
   getParams() {
     this.activatedRoute.params.subscribe((params) => {
       this.vessel = params;
-      this.title = `Status: ${this.vessel.status}`;
+      const status = this.contentService.getFormOptionTranslation('vessels-createsteptwo', 'status', this.vessel.status);
+      this.title = `${this.commonText?.status}: ${status}`;
     });
   }
 
