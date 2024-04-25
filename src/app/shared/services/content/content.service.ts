@@ -283,6 +283,8 @@ export class ContentService {
 
   getFormOptionTranslation(pageName: string, inputKey: string, optionValue: string) {
     const options = this.getFormOptions(pageName, inputKey);
+    if (!options.length) return optionValue;
+    
     const opt = options.find(x => x.value === optionValue);
     return opt?.label ?? optionValue;
   }
