@@ -3,7 +3,7 @@
     <ion-col size="12" class="status-wrapper">
       <div class="status">
         <span [ngClass]="sharedMethods.getStatusClass(worker?.status)">
-          {{worker.status}}
+          {{ sharedMethods.generateWorkerStatus(commonText, worker?.isActive, worker?.isVerified) }}
         </span>
       </div>
     </ion-col>
@@ -19,9 +19,9 @@
     <ion-col size="9" class="card-section-wrapper">
       <div class="card-section">
         <div class="ion-padding">
-          <ion-card-title class="title-text">{{worker.fname}} {{worker.lname}}</ion-card-title>
-          <ion-label><span class="sub-text">{{ commonText?.telephone }}: {{worker.phone}}</span></ion-label> <br>
-          <ion-label><span class="sub-text">{{ commonText?.country }}: {{worker.country}}</span></ion-label> <br>
+          <ion-card-title class="title-text">{{worker?.firstName}} {{worker?.lastName}}</ion-card-title>
+          <ion-label><span class="sub-text">{{ commonText?.telephone }}: {{worker?.telephone || worker?.mobile}}</span></ion-label> <br>
+          <ion-label><span class="sub-text">{{ commonText?.country }}: {{worker?.country}}</span></ion-label> <br>
         </div>
       </div>
     </ion-col>

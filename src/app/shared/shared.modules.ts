@@ -43,6 +43,8 @@ import { CompaniescardComponent } from './components/companiescard/companiescard
 import { CompanycontractcardComponent } from './components/companycontractcard/companycontractcard.component';
 import { SelectLanguageComponent } from './components/select-language/select-language/select-language.component';
 import { SafeurlPipe } from './pipes/safeurl/safeurl.pipe';
+import { PaymentsPage } from '../workers/profiles/worker/payments/payments.page';
+import { InfoPage as WorkerProfile } from '../workers/profiles/worker/info/info.page';
 
 
 @NgModule({
@@ -94,6 +96,8 @@ import { SafeurlPipe } from './pipes/safeurl/safeurl.pipe';
     CompaniescardComponent,
     CompanycontractcardComponent,
     SelectLanguageComponent,
+    PaymentsPage,
+    WorkerProfile,
   ],
   exports: [
     SafeurlPipe,
@@ -136,6 +140,8 @@ import { SafeurlPipe } from './pipes/safeurl/safeurl.pipe';
     FeedbackStatCardComponent,
     CompaniescardComponent,
     CompanycontractcardComponent,
+    PaymentsPage,
+    WorkerProfile,
   ]
 })
 

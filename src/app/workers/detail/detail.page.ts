@@ -1,12 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, Validators, FormGroup } from '@angular/forms';
-import { StatusType } from 'src/app/shared/components/pageprofilecontainer/pageprofilecontainer.component';
 import { ContentService } from 'src/app/shared/services/content/content.service';
 import { BaseformPage } from 'src/app/shared/components/baseform/baseform.page';
 import { ActivatedRoute, Params, Router } from '@angular/router';
 import { WorkersDataService } from '../data/workers-data.service';
 import { DomSanitizer } from '@angular/platform-browser';
 import { AudioService } from 'src/app/shared/services/audio/audio.service';
+import { SharedmethodsService } from 'src/app/shared/services/sharedmethods/sharedmethods.service';
 
 @Component({
   selector: 'app-detail',
@@ -19,45 +19,48 @@ export class DetailPage extends BaseformPage implements OnInit {
     {
       name: this.commonText?.info,
       url: 'workers/info',
-      id: 1,
+      id: 'workers-info',
       activeIcon:`${this.iconBase}/profile_info_blue.svg` ,
       inActiveIcon:`${this.iconBase}/profile_info_white.svg`
     },
     {
       name: this.commonText?.payment,
       url: 'workers/payment',
-      id: 2,
+      id: 'workers-payment',
       activeIcon:`${this.iconBase}/single_payment_blue.svg` ,
       inActiveIcon: `${this.iconBase}/single_payment_white.svg`
     },
     {
       name: this.commonText?.placement,
       url: 'workers/placement',
-      id: 3,
+      id: 'workers-placement',
       activeIcon:`${this.iconBase}/placements_blue.svg` ,
       inActiveIcon:`${this.iconBase}/placements_white.svg`
     },
     {
       name: this.commonText?.documents,
       url: 'workers/documents',
-      id: 4, activeIcon:`${this.iconBase}/documents_blue.svg` ,
+      id: 'workers-documents',
+      activeIcon:`${this.iconBase}/documents_blue.svg` ,
       inActiveIcon:`${this.iconBase}/documents_white.svg`
     },
     {
       name: this.commonText?.training,
       url: 'workers/training',
-      id: 5,
+      id: 'workers-training',
       activeIcon:`${this.iconBase}/training_blue.svg` ,
       inActiveIcon:`${this.iconBase}/training_white.svg`
     }
   ];
   activeNavItem = this.navItems[0];
-  isResendInviteBtn = this.activeNavItem.id === 1;
+  isResendInviteBtn = this.activeNavItem.id === 'workers-info';
   // TODO: after saving & fetching audioRecordings from the db
   // map through audioRecordings to generate file from filepath
   audioRecordings: any = [];
   workerId: string;
   workerInfo: any;
+  workerStatus: string;
+  nameInputs: any;
 
   wo = {
     name: 'Work order 2',
@@ -74,6 +77,7 @@ export class DetailPage extends BaseformPage implements OnInit {
     public workersDataService: WorkersDataService,
     public sanitizer: DomSanitizer,
     public audioService: AudioService,
+    public sharedMethods: SharedmethodsService,
   ) {
     super(contentService);
     const pageData = this.contentService.getContentByPropertyName('createplacementinfo');
@@ -83,11 +87,16 @@ export class DetailPage extends BaseformPage implements OnInit {
       this.group[entry.key] = new FormControl('', [Validators.required]);
     });
     this.pageFormGroup = new FormGroup(this.group);
+
+    // get name inputs, for editing form
+    const nameInputsData = this.contentService.getContentByPropertyName('createworkerprofile');
+    this.nameInputs = nameInputsData?.formQuestions;
   }
 
   async ngOnInit() {
     this.commonText = this.contentService?.commonText;
     await this.getWorkerInfo();
+    this.workerStatus = this.sharedMethods.generateWorkerStatus(this.commonText, this.workerInfo?.isActive, this.workerInfo?.isVerified);
   }
 
   async getWorkerInfo() {
@@ -123,8 +132,10 @@ export class DetailPage extends BaseformPage implements OnInit {
 
   onSubmit(data) {}
 
-  onEdit() {
-    this.router.navigate(['/workers/createdetail']);
+  onEdit(workerInfo) {
+    const data = JSON.stringify({...workerInfo, isEditing: true});
+    const questions = JSON.stringify(this.nameInputs);
+    this.router.navigate(['/workers/createdetail', {data, questions}]);
   }
 
   onRecord() {

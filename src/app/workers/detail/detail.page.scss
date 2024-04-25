@@ -30,8 +30,10 @@
 }
 
 .edit-btn-container{
-    width: 60px;
-    margin-top: 32px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
 }
 
 .list-content {
@@ -53,4 +55,33 @@
     min-width: 150px;
     max-width: 80%;
     margin-top: 8px;
+}
+
+.row-container{
+    ion-row {
+        border-bottom: 1px solid #dfe2eb;
+        margin: 10px 15px;
+        padding: 0 0 10px 0;
+        
+        .icon-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .value-container {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: flex-start;
+
+            p {
+                margin: 3px;
+            }
+        }
+    }
+}
+
+.row-container ion-row:nth-last-child(2) {
+    border-bottom: none;
 }

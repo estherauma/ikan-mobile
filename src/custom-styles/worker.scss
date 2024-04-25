@@ -114,3 +114,13 @@ app-viewclause {
     border-radius: 20px;
   }
 }
+
+app-detail {
+  .info-edit-btn {
+    ion-button::part(native) {
+      background: #191970 !important;
+      color: white !important;
+      text-transform: none;
+    }
+  }
+}
