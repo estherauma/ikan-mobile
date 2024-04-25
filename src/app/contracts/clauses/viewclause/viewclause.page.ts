@@ -145,6 +145,12 @@ export class ViewclausePage implements OnInit {
       const vessel = this.allVessels.find((vessel) => vessel.appRef === value);
       this.vesselDetails = vessel;
       return vessel?.name;
+    } else if (this.pageName === 'contract-clauses-parties-to-this-contract-content' && key === 'crewMemberRole') {
+      return this.contentService.getFormOptionTranslation('contract-clauses-parties-requirement-fishers', key, value);
+    } else if (this.pageName === 'contract-clauses-wage-benefits-content' && (key === 'paymentFrequency' || key === 'paymentMethod')) {
+      return this.contentService.getFormOptionTranslation('contract-clauses-wage-benefits', key, value);
+    } else if (this.pageName === 'contract-clauses-attachments-content' && key === 'isCrewMemberAccount') {
+      return this.contentService.getFormOptionTranslation('contract-clauses-attachments', key, value);
     }
 
     return value;
