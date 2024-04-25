@@ -49,12 +49,12 @@ export class ApiService {
    * @param requestData
    * Return the data from a post request
    */
-  post(resourceUrl, requestData, excludeHeaders=false) {
+  post(resourceUrl, requestData, excludeHeaders=false, params={}) {
     //TODO: Consider checking status of the request from here and also passing interface for the expected data
     if (excludeHeaders) {
-      return this.http.post(`${env.apiUrl}/${resourceUrl}`, requestData);
+      return this.http.post(`${env.apiUrl}/${resourceUrl}`, requestData, { params });
     }
-    return this.http.post(`${env.apiUrl}/${resourceUrl}`, requestData, {headers: this.headers});
+    return this.http.post(`${env.apiUrl}/${resourceUrl}`, requestData, { headers: this.headers, params });
   }
 
   /**

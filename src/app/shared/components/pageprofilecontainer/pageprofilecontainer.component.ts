@@ -3,7 +3,6 @@ import { ContentService } from '../../services/content/content.service';
 import { SharedmethodsService } from '../../services/sharedmethods/sharedmethods.service';
 
 
-export type StatusType = 'pending' | 'active';
 @Component({
   selector: 'app-pageprofilecontainer',
   templateUrl: './pageprofilecontainer.component.html',
@@ -16,7 +15,7 @@ export class PageprofilecontainerComponent implements OnInit {
   @Input() imageUrl = '';
   @Input() navItems = [];
   @Input() active = this.navItems.length && this.navItems[0];
-  @Input() status: StatusType = 'pending';
+  @Input() status = 'Pending'; // TODO: add translation
   @Input() title = '';
   @Input() isResendInviteBtn = false;
   @Input() withinNav = true;

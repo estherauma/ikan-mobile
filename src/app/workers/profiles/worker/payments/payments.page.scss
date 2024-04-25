@@ -46,25 +46,30 @@
         font-size: 0.95rem;
       }
     }
-    ion-col {
-      padding: 2px 5px;
-    }
     .ion-row {
       margin: 15px 0 0 0;
     }
     .title-row {
-      margin: 0;
+      margin: 0 0 20px 0;
     }
 
-    .label {
-      font-family: interRegular;
-      font-size: 0.95rem;
-      color: #3565FF;
-      --color: #3565FF;
+    .label-container {
+      padding-bottom: 0;
+
+      .label {
+        font-family: interRegular;
+        font-size: 0.95rem;
+        color: #3565FF;
+        --color: #3565FF;
+      }
     }
 
-    .value {
-      font-size: 1.2rem;
+    .value-container{
+      padding-top: 0;
+
+      .value {
+        font-size: 1.2rem;
+      }
     }
   }
 }

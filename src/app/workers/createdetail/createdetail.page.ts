@@ -5,7 +5,8 @@ import { AlertController, ModalController } from '@ionic/angular';
 import { BaseformPage } from 'src/app/shared/components/baseform/baseform.page';
 import { ContentService } from 'src/app/shared/services/content/content.service';
 import { SharedmethodsService } from 'src/app/shared/services/sharedmethods/sharedmethods.service';
-import { WorkersDataService } from '../data/workers-data.service';
+import { UserRole } from 'src/app/shared/types/api-types';
+import { ProfilesDataService } from 'src/app/profiles/data/profiles-data.service';
 
 @Component({
   selector: 'app-create',
@@ -17,6 +18,7 @@ export class CreateDetailPage extends BaseformPage implements OnInit {
   createWorkerFormGroup;
   prevQuestions;
   prevData;
+  isEditing: boolean = false;
 
 
   constructor(
@@ -24,9 +26,9 @@ export class CreateDetailPage extends BaseformPage implements OnInit {
     public activatedRoute: ActivatedRoute,
     public router: Router,
     public sharedMethods: SharedmethodsService,
-    public workerDataService: WorkersDataService,
     public modalCtrl: ModalController,
     public alertCtrl: AlertController,
+    public profilesDataService: ProfilesDataService,
   ) {
     super(contentService);
    }
@@ -34,12 +36,16 @@ export class CreateDetailPage extends BaseformPage implements OnInit {
   async ngOnInit() {
     super.ngOnInit();
     await this.getPageParams();
+    if (this.isEditing) {
+      this.submitButtonText = this.commonText.edit;
+    }
     const pageData = this.contentService.getContentByPropertyName('createworkers');
     this.pageTitle = pageData?.pageTitle;
     this.formQuestions = this.prevQuestions.concat(pageData?.formQuestions);
     this.formQuestions.forEach((entry) => {
       if (entry.key in this.prevData) {
-        this.group[entry.key] = new FormControl(this.prevData[entry.key], [Validators.required]);
+        const validators = entry.isRequired ? [Validators.required] : [];
+        this.group[entry.key] = new FormControl(this.prevData[entry.key], validators);
       } else {
         this.group[entry.key] = new FormControl('', []);
       }
@@ -54,31 +60,50 @@ export class CreateDetailPage extends BaseformPage implements OnInit {
       const { data, questions } = params;
       this.prevQuestions = JSON.parse(questions);
       this.prevData = JSON.parse(data);
+      this.isEditing = this.prevData.isEditing ?? false;
     });
   }
 
   async onSubmit(formData) {
     this.sharedMethods.showLoader(this.contentService.commonText?.saving);
     const now = this.sharedMethods.getCurrentDateTime();
-    formData.created_at = formData.updated_at = now;
     const userData = await this.sharedMethods.getUserData();
-    formData.created_by = formData.updated_by = userData?.id;
-    const insertId = await this.workerDataService.create(formData);
-    this.modalCtrl.dismiss();
-    if (insertId) {
-      this.modalCtrl.dismiss();
-      this.router.navigate(['workers/home', formData]);
-      // show invite success alert
-      // Commented out because it is not implemented yet
-      // await this.showInviteSentAlert(formData);
+    formData.createdAt = formData.updatedAt = now;
+    formData.createdBy = formData.updatedBy = userData?.id;
+    formData.userRole = UserRole.worker;
+
+    const profileExists = await this.profilesDataService.checkIfProfileExists(formData.email);
+    if (!profileExists) {
+      formData.createdAt = now;
+      formData.createdBy = userData?.id;
+      const insertId = await this.profilesDataService.create(formData);
+      if (insertId) {
+        this.modalCtrl.dismiss();
+        this.router.navigate(['workers/home', formData]);
+        // show invite success alert
+        // Commented out because it is not implemented yet
+        // await this.showInviteSentAlert(formData);
+      } else {
+        this.modalCtrl.dismiss();
+        this.sharedMethods.showLoader(this.contentService.commonText?.error);
+      }
     } else {
-      this.sharedMethods.showLoader(this.contentService.commonText?.error);
+      const currentProfileData = await this.profilesDataService.getSingleProfile(formData.email);
+      formData = { ...currentProfileData, ...formData };
+      const result = await this.profilesDataService.update(formData);
+      if (result?.rowsAffected > 0) {
+        this.modalCtrl.dismiss();
+        this.router.navigate(['workers/home', formData]);
+      } else {
+        this.modalCtrl.dismiss();
+        this.sharedMethods.showLoader(this.contentService.commonText?.error);
+      }
     }
   }
 
   async showInviteSentAlert(formData) {
     // TODO: Add message to prismic
-    const message = `A new invitation has been sent to ${formData.f_name} ${formData.l_name} to join IKAN. \
+    const message = `A new invitation has been sent to ${formData.firstName} ${formData.lastName} to join IKAN. \
       Once they have accepted, you will see them in the workers' area of the app`;
     const alert = await this.alertCtrl.create({
       cssClass: 'tuna-alert invite-success-alert',

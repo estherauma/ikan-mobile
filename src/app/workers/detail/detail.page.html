@@ -5,67 +5,66 @@
     (clickedMenuItem)="onClickedMenu($event)"
     [active]="activeNavItem"
     [navItems]="navItems"
-    [status]="workerInfo?.status"
-    [title]="workerInfo?.fname + ' ' + workerInfo?.lname"
+    [status]="workerStatus"
+    [title]="workerInfo?.firstName || '' + ' ' + workerInfo?.lastName || ''"
     [isResendInviteBtn]="isResendInviteBtn && workerInfo?.status?.toLowerCase().includes('pending')"
     [imageUrl]="workerInfo?.profile_img_url || '/assets/icon/ellipse_profile.svg'"
   ></app-pageprofilecontainer>
 
-<div class="contents ion-padding">
-  <div *ngIf="activeNavItem.id === 1">
-    <div>
-      <div class="text-icon">
-        <div class="icon">
+<div class="contents">
+  <div *ngIf="activeNavItem.id === 'workers-info'">
+    <div class="row-container">
+      <ion-row>
+        <ion-col size="2" class="icon-container">
           <ion-img src="assets/icon/email_blue.svg"></ion-img>
-        </div>
-        <p>{{workerInfo?.email}}</p>
-      </div>
-      <div class="text-icon">
-        <div class="icon">
+        </ion-col>
+        <ion-col size="10" class="value-container">
+          <p>{{workerInfo?.email}}</p>
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col size="2" class="icon-container">
           <ion-img src="assets/icon/phone_blue.svg"></ion-img>
-        </div>
-        <p>{{workerInfo?.phone}}</p>
-      </div>
-      <div class="liner">
-        <div class="icon">
+        </ion-col>
+        <ion-col size="10" class="value-container">
+        <p>{{workerInfo?.telephone || workerInfo?.mobile}}</p>
+        <p *ngIf="workerInfo?.telephone && workerInfo?.mobile">{{workerInfo?.mobile}}</p>
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col size="2" class="icon-container">
           <ion-img src="assets/icon/office_blue.svg"></ion-img>
-        </div>
-        <div>
-          <p>{{workerInfo?.addressLine2}}</p>
-          <p>{{workerInfo?.addressLine3}}</p>
-          <p>{{workerInfo?.county}}</p>
-          <p>{{workerInfo?.addressLine1}}</p>
-          <p>{{workerInfo?.zipCode}}</p>
-          <p>{{workerInfo?.country}}</p>
-        </div>
-      </div>
-      <!-- <div class="edit-btn-container">
-        <app-button (onClick)="onEdit()" [title]="commonText?.edit" size="small"></app-button>
-      </div> -->
+        </ion-col>
+        <ion-col size="10" class="value-container">
+          <p *ngIf="workerInfo?.addressLine1">{{workerInfo?.addressLine1}}</p>
+          <p *ngIf="workerInfo?.addressLine2">{{workerInfo?.addressLine2}}</p>
+          <p *ngIf="workerInfo?.addressLine3">{{workerInfo?.addressLine3}}</p>
+          <p *ngIf="workerInfo?.city">{{workerInfo?.city}}</p>
+          <p *ngIf="workerInfo?.country">{{workerInfo?.country}}</p>
+          <p *ngIf="workerInfo?.postalCode">{{workerInfo?.postalCode}}</p>
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col size="12"class="edit-btn-container">
+          <app-button
+            class="info-edit-btn"
+            (onClick)="onEdit(workerInfo)"
+            [title]="commonText?.edit"
+            size="small"
+          ></app-button>
+        </ion-col>
+      </ion-row>
     </div>
   </div>
 
-  <div *ngIf="activeNavItem.id === 2">
-    <div class="title-wrapper">
-      <app-title [title]="commonText?.accountInfo" variant="h5"></app-title>
-      <!-- <app-button [title]="commonText?.save" size="small"></app-button> -->
-    </div>
-
-    <app-title [title]="'[' + commonText?.comingSoon + ']'" variant="h6"></app-title>
-    <!-- <app-form
-      [tunaFormGroup]="pageFormGroup"
-      [tunaFormquestions]="formQuestions"
-      [submitButtonText]="commonText?.submit"
-      (formValue)="onSubmit($event)"
-      [isTextBlue]="true"
-      [isOtherDarkBlue]="true"
-      [isTitleDarkBlue]="true"
-      btnFill="solid"
-    >
-    </app-form>-->   
+  <div *ngIf="activeNavItem.id === 'workers-payment'">
+    <app-payments
+      page="vo-workers-payments"
+      [workerInfo]="workerInfo"
+    ></app-payments>
   </div>
 
-  <div *ngIf="activeNavItem.id === 3">
+  <div *ngIf="activeNavItem.id === 'workers-placement'">
     <div>
       <div class="ion-margin-top">
 
@@ -124,10 +123,10 @@
     </div>
   </div>
 
-  <div *ngIf="activeNavItem.id === 4">
+  <div *ngIf="activeNavItem.id === 'workers-documents'">
     <div class="ion-margin-top">
       <div class="ion-margin">
-        <app-title [title]="commonText?.accountInfo" variant="h5"></app-title>
+        <app-title [title]="commonText?.documents" variant="h5"></app-title>
       </div>
       <app-title [title]="'[' + commonText?.comingSoon + ']'" variant="h6"></app-title>
       
@@ -159,7 +158,7 @@
     </div>
   </div>
 
-  <div *ngIf="activeNavItem.id === 5">
+  <div *ngIf="activeNavItem.id === 'workers-training'">
     <div>
       <!-- TODO: use training data -->
       <app-title title="Training status" variant="h5"></app-title>
