@@ -90,11 +90,7 @@ export class PaymentsPage extends BaseformPage implements OnInit {
         return;
       }
 
-      const validators = [];
-      if (entry.isRequired) {
-        validators.push(Validators.required);
-      }
-
+      const validators = this.sharedMethods.getFormValidators(entry);
       const value = this.isEditingAcct ? (this.acctData?.[entry.key] || '') : '';
       this.acctGroup[entry.key] = new FormControl(value, validators);
     });
@@ -112,11 +108,7 @@ export class PaymentsPage extends BaseformPage implements OnInit {
         return;
       }
 
-      const validators = [];
-      if (entry.isRequired) {
-        validators.push(Validators.required);
-      }
-
+      const validators = this.sharedMethods.getFormValidators(entry);
       const value = this.isEditingBeneficiary ? (this.beneficiaryData?.[entry.key] || '') : '';
       this.beneficiaryGroup[entry.key] = new FormControl(value, validators);
     });

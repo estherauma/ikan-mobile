@@ -45,7 +45,7 @@ export class HomePage implements OnInit {
   }
 
   ionViewWillEnter() {
-    this.menuCtrl.enable(true);
+    this.menuCtrl.enable(true); 
   }
 
   async createVessel() {

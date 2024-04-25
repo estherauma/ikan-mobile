@@ -3,6 +3,7 @@ import { FormControl, Validators, FormGroup } from '@angular/forms';
 import { BaseformPage } from '../shared/components/baseform/baseform.page';
 import { ContentService } from '../shared/services/content/content.service';
 import { IPaymentsSummary } from '../shared/types/api-types';
+import { SharedmethodsService } from '../shared/services/sharedmethods/sharedmethods.service';
 
 @Component({
   selector: 'app-sandbox',
@@ -106,13 +107,15 @@ export class SandboxPage extends BaseformPage implements OnInit {
 
   constructor(
     public contentService: ContentService,
+    public sharedMethods: SharedmethodsService,
   ) {
     super(contentService);
     const pageData = this.contentService.getContentByPropertyName('createworkerprofile');
     this.pageTitle = pageData?.pageTitle;
     this.formQuestions = pageData?.formQuestions;
     this.formQuestions.forEach((entry) => {
-      this.group[entry.key] = new FormControl('', [Validators.required]);
+      const validators = this.sharedMethods.getFormValidators(entry);
+      this.group[entry.key] = new FormControl('', validators);
     });
     this.pageFormGroup = new FormGroup(this.group);
   }

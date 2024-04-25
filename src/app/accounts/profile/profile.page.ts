@@ -65,15 +65,7 @@ export class ProfilePage extends BaseformPage implements OnInit {
         return;
       }
 
-      const validators = [];
-      if (entry.isRequired) {
-        validators.push(Validators.required);
-      }
-      if (entry.key === 'email') {
-        entry.questionType = 'email';
-        validators.push(Validators.email);
-      }
-
+      const validators = this.sharedMethods.getFormValidators(entry);
       const value = this.profileData?.[entry.key] || this.userData?.[entry.key] || '';
       this.group[entry.key] = new FormControl(value, validators);
     });
@@ -91,11 +83,7 @@ export class ProfilePage extends BaseformPage implements OnInit {
         return;
       }
 
-      const validators = [];
-      if (entry.isRequired) {
-        validators.push(Validators.required);
-      }
-
+      const validators = this.sharedMethods.getFormValidators(entry);
       const value = this.profileData?.[entry.key] || '';
       this.regGroup[entry.key] = new FormControl(value, validators);
     });
@@ -168,6 +156,6 @@ export class ProfilePage extends BaseformPage implements OnInit {
     if (!value) {
       return '';
     }
-    return this.formQuestions.find((el) => el.key === 'country')?.options?.find((opt) => opt.value === value)?.label || '';
+    return this.formQuestions?.find((el) => el.key === 'country')?.options?.find((opt) => opt.value === value)?.label || '';
   }
 }

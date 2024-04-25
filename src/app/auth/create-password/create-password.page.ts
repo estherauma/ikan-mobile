@@ -36,7 +36,8 @@ export class CreatePasswordPage extends BaseformPage implements OnInit {
     this.submitButtonText = this.pageText?.submitButtonText;
     this.description = this.pageText?.description;
     this.formQuestions.forEach((entry) => {
-      this.group[entry.key] = new FormControl('', [Validators.required]);
+      const validators = this.sharedMethods.getFormValidators(entry);
+      this.group[entry.key] = new FormControl('', validators);
     });
     this.pageFormGroup = new FormGroup(this.group);
   }
