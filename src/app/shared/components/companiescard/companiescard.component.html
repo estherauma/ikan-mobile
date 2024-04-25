@@ -8,14 +8,14 @@
       <div style="position: relative;">
         <div class="status-container">
           <div class="status-wrapper">
-            <span >{{company.status}}</span>
+            <span >{{ status }}</span>
           </div>
         </div>
       </div>
       <div class="ion-padding ion-margin-vertical">
-        <ion-card-title class="blue-text">{{company.name}}</ion-card-title>
-        <ion-label><span class="gray-text">Tel: {{company.telephone}}</span></ion-label> <br>
-        <ion-label><span class="gray-text">Country: {{company.country}}</span></ion-label> <br>
+        <ion-card-title class="blue-text">{{company?.name}}</ion-card-title>
+        <ion-label><span class="gray-text">{{ commonText?.telephone }}: {{company?.telephone}}</span></ion-label> <br>
+        <ion-label><span class="gray-text">{{ commonText?.country }}: {{ country }}</span></ion-label> <br>
       </div>
     </div>
   </div>

@@ -268,4 +268,24 @@ export class ContentService {
       })) : [],
     })) ?? [];
   }
+
+  getPageFormQuestions(pageName: string) {
+    const content = this.appContent?.[`${this.currentLanguage}`];
+    const pageData = content?.[pageName];
+    return pageData?.formQuestions;
+  }
+
+  getFormOptions(pageName: string, inputKey: string) {
+    const formQuestions = this.getPageFormQuestions(pageName);
+    const formQtn = formQuestions.find(x => x.key === inputKey);
+    return formQtn?.options ?? [];
+  }
+
+  getFormOptionTranslation(pageName: string, inputKey: string, optionValue: string) {
+    const options = this.getFormOptions(pageName, inputKey);
+    if (!options.length) return optionValue;
+    
+    const opt = options.find(x => x.value === optionValue);
+    return opt?.label ?? optionValue;
+  }
 }

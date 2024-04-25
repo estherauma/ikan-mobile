@@ -5,6 +5,6 @@
   [okText]="commonText?.ok"
   [cancelText]="commonText?.cancel"
 >
-  <ion-select-option *ngFor="let option of options" [value]="option.value">{{option.title}}</ion-select-option>
+  <ion-select-option *ngFor="let option of options" [value]="option.value">{{ option?.title || option?.label}}</ion-select-option>
 </ion-select>
 
