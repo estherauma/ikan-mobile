@@ -4,6 +4,7 @@
   [placeholder]="commonText?.all"
   [okText]="commonText?.ok"
   [cancelText]="commonText?.cancel"
+  [label]="filterLabel"
 >
   <ion-select-option *ngFor="let option of options" [value]="option.value">{{ option?.title || option?.label}}</ion-select-option>
 </ion-select>

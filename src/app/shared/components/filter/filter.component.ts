@@ -14,6 +14,7 @@ export class FilterComponent implements OnInit {
   @Input() filterProperty = '';
   @Input() type: 'deep-blue-filter' | 'light-blue-filter' | 'deep-blue-90' | '' = '';
   @Input() customCss='';
+  @Input() filterLabel = '';
 
   @Output() filterResult: EventEmitter<any> = new EventEmitter<any>();
 

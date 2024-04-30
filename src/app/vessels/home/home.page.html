@@ -30,17 +30,26 @@
         (clear)="clearSearchResult()"></app-search>
       <ion-grid>
         <ion-row>
-          <ion-text class="filter-title">{{filterText}}</ion-text>
-        </ion-row>
-        <ion-row>
-          <ion-col>
-            <app-filter type="deep-blue-90" filterProperty="status" [options]="filterOptions"
-              [filterDataSet]="vessels" (filterResult)="filterResult($event)"></app-filter>
+          <ion-col size="6" size-sm="12">
+            <app-filter
+              type="deep-blue-90"
+              filterProperty="status"
+              [options]="filterOptions"
+              [filterDataSet]="vessels"
+              (filterResult)="filterResult($event)"
+              [filterLabel]="statusFilterLabel"
+            ></app-filter>
           </ion-col>
 
-          <ion-col>
-            <app-filter type="deep-blue-90" filterProperty="status" [options]="filterOptions"
-              [filterDataSet]="vessels" (filterResult)="filterResult($event)"></app-filter>
+          <ion-col size="6" size-sm="12">
+            <app-filter
+              type="deep-blue-90"
+              filterProperty="status"
+              [options]="filterOptions"
+              [filterDataSet]="vessels"
+              (filterResult)="filterResult($event)"
+              [filterLabel]="statusFilterLabel"
+            ></app-filter>
           </ion-col>
         </ion-row>
       </ion-grid>

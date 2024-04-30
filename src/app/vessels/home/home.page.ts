@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Data, Router } from '@angular/router';
+import { Router } from '@angular/router';
 import { MenuController, ModalController } from '@ionic/angular';
 import { SteponePage } from '../create/stepone/stepone.page';
 import { VesselsDataService } from '../data/vessels-data.service';
@@ -20,6 +20,7 @@ export class HomePage implements OnInit {
   filterText = 'Filter';
   newText = 'New';
   commonText;
+  statusFilterLabel = 'Filter by status';
 
   constructor(
     public menuCtrl: MenuController,
@@ -40,6 +41,7 @@ export class HomePage implements OnInit {
     this.filterText = this.commonText?.filter;
     this.pageTitle = this.commonText?.vessels;
     this.newText = this.commonText?.new;
+    this.statusFilterLabel = this.commonText?.filterByStatus ?? this.statusFilterLabel;
     this.filterOptions = this.contentService.getFormOptions('vessels-createsteptwo', 'status');
   }
 
