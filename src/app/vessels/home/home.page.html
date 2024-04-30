@@ -35,23 +35,24 @@
               type="deep-blue-90"
               filterProperty="status"
               [options]="filterOptions"
-              [filterDataSet]="vessels"
+              [filterDataSet]="unFilteredData"
               (filterResult)="filterResult($event)"
               [filterLabel]="statusFilterLabel"
             ></app-filter>
           </ion-col>
 
-          <ion-col size="6" size-sm="12">
+          <!-- <ion-col size="6" size-sm="12">
             <app-filter
               type="deep-blue-90"
               filterProperty="status"
               [options]="filterOptions"
-              [filterDataSet]="vessels"
+              [filterDataSet]="unFilteredData"
               (filterResult)="filterResult($event)"
               [filterLabel]="statusFilterLabel"
             ></app-filter>
-          </ion-col>
+          </ion-col> -->
         </ion-row>
+        <!-- fix filter refresh unfiltered data -->
       </ion-grid>
     </div>
   </div>
