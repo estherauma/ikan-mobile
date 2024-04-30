@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { ContentService } from 'src/app/shared/services/content/content.service';
 
 @Component({
   selector: 'app-home',
@@ -7,6 +8,7 @@ import { Router } from '@angular/router';
   styleUrls: ['./home.page.scss'],
 })
 export class HomePage implements OnInit {
+  commonText: any;
   reports =  new Array(10).fill(
     {
       name: 'Report Name',
@@ -18,11 +20,14 @@ export class HomePage implements OnInit {
     {title:'time', value:'14:07'},
     {title:'time', value:'14:07'}
   ];
+  
   constructor(
-    public router: Router
+    public router: Router,
+    public contentService: ContentService,
   ) { }
 
   ngOnInit() {
+    this.commonText = this.contentService?.commonText;
   }
 
   filterResult(data) {}

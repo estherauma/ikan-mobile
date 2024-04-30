@@ -33,8 +33,14 @@
         </ion-row>
         <ion-row>
           <ion-col>
-            <app-filter type="deep-blue-90" filterProperty="status" [options]="filterOptions"
-              [filterDataSet]="workers" (filterResult)="filterResult($event)"></app-filter>
+            <app-filter
+              type="deep-blue-90"
+              filterProperty="status"
+              [options]="filterOptions"
+              [filterDataSet]="workers"
+              (filterResult)="filterResult($event)"
+              [filterLabel]="commonText?.filterByStatus"
+            ></app-filter>
           </ion-col>
 
           <ion-col>
@@ -44,6 +50,7 @@
               [options]="filterOptions"
               [filterDataSet]="workers"
               (filterResult)="filterResult($event)"
+              [filterLabel]="commonText?.filterByStatus"
             ></app-filter>
           </ion-col>
         </ion-row>

@@ -7,5 +7,11 @@
   [label]="filterLabel"
   multiple
 >
-  <ion-select-option *ngFor="let option of options" [value]="option.value">{{ option?.title || option?.label}}</ion-select-option>
+  <ion-select-option
+    *ngFor="let option of options"
+    [value]="option.value"
+  >
+    {{ option?.title || option?.label}}
+  </ion-select-option>
 </ion-select>
+<!-- remove all -->

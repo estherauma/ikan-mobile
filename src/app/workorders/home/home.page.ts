@@ -11,13 +11,13 @@ import { WorkordersDataService } from '../data/workorders-data.service';
   styleUrls: ['./home.page.scss'],
 })
 export class HomePage implements OnInit {
+  commonText: any;
   select = false;
   //TODO: Use translated text from prismic
   pageTitle = 'Work Orders';
   workOrders = [];
   unFilteredData = [];
   noWorkOrdersText = 'No ';
-
   selectText = '';
   cancelText = '';
 
@@ -41,6 +41,7 @@ export class HomePage implements OnInit {
     }
 
   ngOnInit() {
+    this.commonText = this.contentService.commonText;
     this.noWorkOrdersText = this.contentService.commonText?.noWorkOrdersText;
     this.cancelText = this.contentService.commonText?.cancel;
     this.selectText = this.contentService.commonText?.select;
