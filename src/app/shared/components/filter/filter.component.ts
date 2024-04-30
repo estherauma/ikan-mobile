@@ -36,10 +36,15 @@ export class FilterComponent implements OnInit {
   }
 
   onChange(eventData) {
-    const selectedValue = eventData.detail.value.trim();
+    const selectedValues = eventData.detail.value;
+    if (!selectedValues?.length) {
+      this.filterResult.emit(this.filterDataSet);
+      return;
+    }
+
     const filtered = this.filterDataSet.filter(data => {
       const currentProperty = this.filterProperty ? this.filterProperty : 'name';
-      return data[currentProperty].toString().toLowerCase() === selectedValue.toLowerCase();
+      return selectedValues.includes(data[currentProperty]);
     });
 
     this.filterResult.emit(filtered);
