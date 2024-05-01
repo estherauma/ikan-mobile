@@ -19,6 +19,7 @@ export type SelectValue = {
 })
 export class FilterComponent implements OnInit {
   commonText: any;
+  noData: boolean = false;
 
   @Input() filterDataSet: any[] = [];
   @Input() options: any[] = [];
@@ -64,6 +65,8 @@ export class FilterComponent implements OnInit {
         return dataItem[selectResult.filterProperty] === selectResult.value.toString();
       });
     });
+
+    this.noData = !filtered.length? true: false;
 
     this.filterResult.emit(filtered);
   }
