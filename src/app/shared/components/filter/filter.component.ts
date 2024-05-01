@@ -1,6 +1,17 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { ContentService } from '../../services/content/content.service';
 
+export type GroupedOption = {
+  groupLabel: string;
+  groupOptions: any[];
+  filterProperty: string;
+};
+export type SelectValue = {
+  value: string;
+  filterProperty: string;
+};
+
+
 @Component({
   selector: 'app-filter',
   templateUrl: './filter.component.html',
@@ -11,10 +22,11 @@ export class FilterComponent implements OnInit {
 
   @Input() filterDataSet: any[] = [];
   @Input() options: any[] = [];
-  @Input() filterProperty = '';
+  @Input() filterProperty: string = '';
   @Input() type: 'deep-blue-filter' | 'light-blue-filter' | 'deep-blue-90' | '' = '';
   @Input() customCss='';
   @Input() filterLabel = '';
+  @Input() groupedOptions: Array<GroupedOption> = [];
 
   @Output() filterResult: EventEmitter<any> = new EventEmitter<any>();
 
@@ -36,15 +48,16 @@ export class FilterComponent implements OnInit {
   }
 
   onChange(eventData) {
-    const selectedValues = eventData.detail.value;
+    const selectedValues: SelectValue[] = eventData.detail.value;
     if (!selectedValues?.length) {
       this.filterResult.emit(this.filterDataSet);
       return;
     }
 
-    const filtered = this.filterDataSet.filter(data => {
-      const currentProperty = this.filterProperty ? this.filterProperty : 'name';
-      return selectedValues.includes(data[currentProperty]);
+    const filtered = this.filterDataSet.filter(dataItem => {
+      return selectedValues.some(val => {
+        return dataItem[val.filterProperty] === val.value.toString();
+      });
     });
 
     this.filterResult.emit(filtered);
