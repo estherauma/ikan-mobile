@@ -52,6 +52,7 @@ export class FilterComponent implements OnInit {
   onChange(eventData) {
     const selectedValues: SelectValue[] = eventData.detail.value;
     if (!selectedValues?.length) {
+      this.noData = false;
       this.filterResult.emit(this.filterDataSet);
       return;
     }
