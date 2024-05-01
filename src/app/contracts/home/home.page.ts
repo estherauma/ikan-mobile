@@ -45,7 +45,7 @@ export class HomePage implements OnInit {
   }
   
   // TODO: add filter by vessel
-  getGroupedFilterOptions() {
+  getGroupedFilterOptions(): GroupedOption[]{
     const group1Label = this.commonText?.filterByTaiwaneseCompanies;
     const group1Options = this.companiesDataService.getCountryCompanyOptions('Taiwan');
     const group2Label = this.commonText?.filterByIndonesianCompanies;

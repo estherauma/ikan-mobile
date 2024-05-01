@@ -32,25 +32,14 @@
           <ion-text class="filter-title">{{ commonText?.filter }}</ion-text>
         </ion-row>
         <ion-row>
-          <ion-col>
+          <ion-col size="12">
             <app-filter
               type="deep-blue-90"
-              filterProperty="status"
-              [options]="filterOptions"
-              [filterDataSet]="workers"
+              page="V0-workers"
+              [groupedOptions]="groupedFilterOptions"
+              [filterDataSet]="unFilteredData"
               (filterResult)="filterResult($event)"
-              [filterLabel]="commonText?.filterByStatus"
-            ></app-filter>
-          </ion-col>
-
-          <ion-col>
-            <app-filter
-              type="deep-blue-90"
-              filterProperty="status"
-              [options]="filterOptions"
-              [filterDataSet]="workers"
-              (filterResult)="filterResult($event)"
-              [filterLabel]="commonText?.filterByStatus"
+              [filterLabel]="commonText?.filterWorkers" 
             ></app-filter>
           </ion-col>
         </ion-row>

@@ -27,6 +27,7 @@ export class FilterComponent implements OnInit {
   @Input() customCss='';
   @Input() filterLabel = '';
   @Input() groupedOptions: Array<GroupedOption> = [];
+  @Input() page: string = '';
 
   @Output() filterResult: EventEmitter<any> = new EventEmitter<any>();
 
@@ -55,8 +56,12 @@ export class FilterComponent implements OnInit {
     }
 
     const filtered = this.filterDataSet.filter(dataItem => {
-      return selectedValues.some(val => {
-        return dataItem[val.filterProperty] === val.value.toString();
+      return selectedValues.every(selectResult => {
+        if (this.page === 'V0-workers' && selectResult.filterProperty === 'isActive') {
+          const comparator = !dataItem?.isVerified ? 'pending' : dataItem?.isActive? 'active' :'inactive';
+          return comparator === selectResult.value;
+        };
+        return dataItem[selectResult.filterProperty] === selectResult.value.toString();
       });
     });
 
