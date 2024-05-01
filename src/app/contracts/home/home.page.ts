@@ -6,6 +6,8 @@ import { ContractDataService } from '../data/contract-data.service';
 import { ContentService } from '../../shared/services/content/content.service';
 import { formatDate } from "@angular/common";
 import { AuthService } from 'src/app/shared/services/auth/auth.service';
+import { CompaniesDataService } from 'src/app/companies/data/companies-data.service';
+import { GroupedOption } from 'src/app/shared/components/filter/filter.component';
 
 
 @Component({
@@ -19,13 +21,15 @@ export class HomePage implements OnInit {
   contracts = [];
   unfilteredData = [];
   filterOptions = [];
+  groupedFilterOptions: GroupedOption[] = [];
 
   constructor(
     public router: Router,
     public contractsDataService: ContractDataService,
     public modalCtrl: ModalController,
     public contentService: ContentService,
-    public authService: AuthService
+    public authService: AuthService,
+    public companiesDataService: CompaniesDataService,
 
   ) {
     this.contractsDataService.getAll().subscribe((data) => {
@@ -37,6 +41,23 @@ export class HomePage implements OnInit {
   ngOnInit() {
     this.commonText = this.contentService?.commonText;
     this.pageTitle = this.commonText?.contracts;
+    this.groupedFilterOptions = this.getGroupedFilterOptions();
+  }
+  
+  // TODO: add filter by vessel
+  getGroupedFilterOptions() {
+    const group1Label = this.commonText?.filterByTaiwaneseCompanies;
+    const group1Options = this.companiesDataService.getCountryCompanyOptions('Taiwan');
+    const group2Label = this.commonText?.filterByIndonesianCompanies;
+    const group2Options = this.companiesDataService.getCountryCompanyOptions('Indonesia');
+    const typeGroupLabel = this.commonText?.filterByType;
+    const typeGroupOptions = this.contentService.getFormOptions('companies-createcontract', 'type');
+    
+    return [
+      { groupLabel: group1Label, groupOptions: group1Options, filterProperty: 'taiwaneseCompany' },
+      { groupLabel: group2Label, groupOptions: group2Options, filterProperty: 'indonesianCompany' },
+      { groupLabel: typeGroupLabel, groupOptions: typeGroupOptions, filterProperty: 'kind' }
+    ];
   }
 
 

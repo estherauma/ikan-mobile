@@ -111,4 +111,11 @@ export class CompaniesDataService {
       // this.retriveCompanies();
     }).catch((e) => console.log(e));
   }
+
+  getCountryCompanyOptions(country: 'Taiwan' | 'Indonesia') {
+    const companies = this.companies.filter((entry) => entry.country === country);
+    return companies.map((entry) => {
+      return { label: entry.name, value: entry.id };
+    });
+  }
 }
