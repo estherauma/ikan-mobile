@@ -43,7 +43,8 @@ export class SignupPage extends BaseformPage implements OnInit {
     this.description = this.pageText?.signupDescription;
     this.submitButtonText = this.pageText?.submitButtonText;
     this.formQuestions.forEach((entry) => {
-      this.group[entry.key] = new FormControl('', [Validators.required]);
+      const validators = this.sharedMethods.getFormValidators(entry);
+      this.group[entry.key] = new FormControl('', validators);
     });
     this.pageFormGroup = new FormGroup(this.group);
   }

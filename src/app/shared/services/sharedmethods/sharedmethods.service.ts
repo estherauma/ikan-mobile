@@ -8,6 +8,7 @@ import { StorageKeys } from '../../types/api-types';
 import { Device } from '@capacitor/device';
 import {v4 as uuidv4} from 'uuid';
 import { UserRole } from '../../types/api-types';
+import { Validators } from '@angular/forms';
 
 
 @Injectable({
@@ -244,5 +245,16 @@ export class SharedmethodsService {
     endDate.setDate(endDate.getDate() + (timeFrameInWeeks * 7));
 
     return dateToCheck >= startDate && dateToCheck <= endDate;
+  }
+
+  getFormValidators(entry) {
+    const validators = [];
+    if (entry.isRequired) {
+      validators.push(Validators.required);
+    }
+    if (entry.questionType === 'email' || entry.questionType === 'emailAddress') {
+      validators.push(Validators.email);
+    }
+    return validators;
   }
 }

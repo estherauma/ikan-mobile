@@ -33,7 +33,8 @@ export class CreatePage extends BaseformPage implements OnInit {
     this.pageText = this.sharedMethods.convertAdditionalTextToObj(pageData.additionalText);
     this.formQuestions = pageData?.formQuestions;
     this.formQuestions.forEach((entry) => {
-      this.group[entry.key] = new FormControl('');
+      const validators = this.sharedMethods.getFormValidators(entry);
+      this.group[entry.key] = new FormControl('', validators);
     });
     this.pageFormGroup = new FormGroup(this.group);
   }

@@ -24,7 +24,8 @@ export class NotecreatePage extends BaseformPage implements OnInit {
     const deductionsData = this.contentService.getContentByPropertyName('createaudionote');
     this.formQuestions = deductionsData?.formQuestions;
     this.formQuestions.forEach((q) => {
-      this.group[q.key] = new FormControl('', [Validators.required]);
+      const validators = this.sharedMethods.getFormValidators(q);
+      this.group[q.key] = new FormControl('', validators);
     });
     this.pageFormGroup = new FormGroup(this.group);
   }

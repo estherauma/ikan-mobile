@@ -45,7 +45,8 @@ export class SurveyComponent extends BaseformPage  implements OnInit {
     }
 
     this.formQuestions.forEach(entry => {
-      this.group[entry.key] = new FormControl('', []);
+      const validators = this.sharedMethods.getFormValidators(entry);
+      this.group[entry.key] = new FormControl('', validators);
 
       if (entry?.options) {
         this.group[entry.key].valueChanges.subscribe((value) => {
@@ -60,7 +61,8 @@ export class SurveyComponent extends BaseformPage  implements OnInit {
           if (currentOption?.[0]?.followUpQuestion) {
             entry.hasFollowUpQuestion = true;
             entry.followUpQuestion = currentOption?.[0]?.followUpQuestion;
-            this.group[entry.followUpQuestion.key] = new FormControl('', []);
+            const followupValidators = this.sharedMethods.getFormValidators(entry.followUpQuestion);
+            this.group[entry.followUpQuestion.key] = new FormControl('', followupValidators);
             this.attemptedFollowUpQtnKeys[entry.key] = currentOption?.[0]?.followUpQuestion.key;
           } else {
             entry.hasFollowUpQuestion = false;
