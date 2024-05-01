@@ -43,11 +43,11 @@ export class CreateDetailPage extends BaseformPage implements OnInit {
     this.pageTitle = pageData?.pageTitle;
     this.formQuestions = this.prevQuestions.concat(pageData?.formQuestions);
     this.formQuestions.forEach((entry) => {
+      const validators = this.sharedMethods.getFormValidators(entry);
       if (entry.key in this.prevData) {
-        const validators = entry.isRequired ? [Validators.required] : [];
         this.group[entry.key] = new FormControl(this.prevData[entry.key], validators);
       } else {
-        this.group[entry.key] = new FormControl('', []);
+        this.group[entry.key] = new FormControl('', validators);
       }
 
     });

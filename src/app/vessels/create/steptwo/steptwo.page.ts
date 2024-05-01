@@ -49,10 +49,11 @@ export class SteptwoPage extends BaseformPage implements OnInit {
     this.pageText = this.sharedMethods.convertAdditionalTextToObj(pageData?.additionalText);
     this.formQuestions = this.prevQuestions.concat(pageData?.formQuestions);
     this.formQuestions.forEach((entry) => {
+      const validators = this.sharedMethods.getFormValidators(entry);
       if (entry.key in this.prevData) {
-        this.group[entry.key] = new FormControl(this.prevData[entry.key], [Validators.required]);
+        this.group[entry.key] = new FormControl(this.prevData[entry.key], validators);
       } else {
-        this.group[entry.key] = new FormControl('', [Validators.required]);
+        this.group[entry.key] = new FormControl('', validators);
       }
 
     });

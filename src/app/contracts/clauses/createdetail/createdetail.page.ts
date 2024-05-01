@@ -74,7 +74,8 @@ export class CreatedetailPage extends BaseformPage implements OnInit {
     this.noVesselsText = this.pageText?.noVesselsText || this.noVesselsText;
     this.formQuestions = pageData?.formQuestions;
     this.formQuestions.forEach((entry) => {
-      this.group[entry.key] = new FormControl('', []);
+      const validators = this.sharedMethods.getFormValidators(entry);
+      this.group[entry.key] = new FormControl('', validators);
       // add change listener to payment frequency
       if (entry.key === 'paymentFrequency') {
         this.group[entry.key].valueChanges.subscribe((value) => {
