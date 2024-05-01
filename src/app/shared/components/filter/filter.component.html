@@ -20,7 +20,7 @@
   <ng-container *ngIf="groupedOptions?.length">
     <ng-container *ngFor="let group of groupedOptions">
       <ng-container *ngIf="group?.groupOptions?.length">
-        <ion-select-option disabled class="option-group-custom">{{ group?.groupLabel }}</ion-select-option>
+        <ion-select-option disabled class="select-group-label">{{ group?.groupLabel }}</ion-select-option>
         <ion-select-option
           *ngFor="let opt of group?.groupOptions"
           [value]="{filterProperty: group?.filterProperty, value: opt.value}"
