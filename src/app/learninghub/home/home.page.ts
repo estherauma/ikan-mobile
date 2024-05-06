@@ -4,7 +4,7 @@ import { ModalController } from '@ionic/angular';
 import { ContentService } from 'src/app/shared/services/content/content.service';
 import { TrainingVideoComponent } from '../training-video/training-video.component';
 import { SharedmethodsService } from 'src/app/shared/services/sharedmethods/sharedmethods.service';
-import { StorageKeys } from 'src/app/shared/types/api-types';
+import { StorageKeys, UserRole } from 'src/app/shared/types/api-types';
 
 @Component({
   selector: 'app-home',
@@ -43,7 +43,7 @@ export class HomePage implements OnInit {
     const user = await this.sharedMethods.readDataFromStorage(StorageKeys.userData);
     const watchedTFAVideo = await this.sharedMethods.readDataFromStorage(StorageKeys.watchedTFAVideo);
     // show training video to workers only
-    if (user?.role === 'worker' && !watchedTFAVideo) {
+    if (user?.role === UserRole.worker && !watchedTFAVideo) {
       await this.showTrainingVideo();
     }
   }
