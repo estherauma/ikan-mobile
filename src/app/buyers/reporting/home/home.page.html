@@ -20,11 +20,23 @@
         <ion-grid>
           <ion-row>
             <ion-col>
-              <app-filter filterProperty="status" [options]="filterOptions" [filterDataSet]="reports" (filterResult)="filterResult($event)"></app-filter>
+              <app-filter
+                filterProperty="status"
+                [options]="filterOptions"
+                [filterDataSet]="reports"
+                (filterResult)="filterResult($event)"
+                [filterLabel]="commonText?.filterByStatus"
+              ></app-filter>
             </ion-col>
 
             <ion-col>
-              <app-filter filterProperty="status" [options]="filterOptions" [filterDataSet]="reports" (filterResult)="filterResult($event)"></app-filter>
+              <app-filter
+                filterProperty="status"
+                [options]="filterOptions"
+                [filterDataSet]="reports"
+                (filterResult)="filterResult($event)"
+                [filterLabel]="commonText?.filterByStatus"
+              ></app-filter>
             </ion-col>
           </ion-row>
         </ion-grid>

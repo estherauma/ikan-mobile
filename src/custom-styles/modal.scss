@@ -207,3 +207,18 @@ ion-modal.workers-create-modal {
     }
   }
 }
+
+
+.select-group-label {
+  .alert-button-inner {
+    opacity: 1 !important;
+  }
+  .alert-checkbox-icon {
+    display: none;
+  }
+
+  .alert-checkbox-label {
+    color: var(--ion-color-primary);
+    padding: 15px 15px 0 15px;
+  }
+}

@@ -7,6 +7,7 @@ import { CreatePage } from '../create/create.page';
 import { WorkersDataService } from '../data/workers-data.service';
 import { ContentService } from 'src/app/shared/services/content/content.service';
 import { ProfilesDataService } from 'src/app/profiles/data/profiles-data.service';
+import { GroupedOption } from 'src/app/shared/components/filter/filter.component';
 
 @Component({
   selector: 'app-home',
@@ -18,7 +19,7 @@ export class HomePage implements OnInit {
   workerCount = 0;
   workers = [];
   unFilteredData = [];
-  filterOptions = [];
+  groupedFilterOptions: GroupedOption[] = [];
   commonText: any;
 
   constructor(
@@ -44,6 +45,24 @@ export class HomePage implements OnInit {
   ngOnInit() {
     this.commonText = this.contentService?.commonText;
     this.pageTitle = this.commonText?.recruits;
+    this.groupedFilterOptions = this.getGroupedFilterOptions();
+  }
+
+  // TODO: add filter by vessel, company
+  getGroupedFilterOptions(): GroupedOption[] {
+    const countryGroupLabel = this.commonText?.filterByCountry;
+    const countryOptions = this.contentService.getFormOptions('createworkers', 'country');
+    const statusLabel = this.commonText?.filterByStatus;
+    const statusOptions = [
+      { value: 'active', label: 'Active' },
+      { value: 'inactive', label: 'Inactive' },
+      { value: 'pending', label: 'Pending'}
+    ];
+
+    return [
+      { groupLabel: countryGroupLabel, groupOptions: countryOptions, filterProperty: 'country' },
+      { groupLabel: statusLabel, groupOptions: statusOptions, filterProperty: 'isActive' },
+    ];
   }
 
   viewDetails(worker) {

@@ -58,6 +58,7 @@ export class HomePage implements OnInit {
     {title:'opened', value:'opened'}
   ];
 
+  // TODO: fix filtering
 
   constructor(
     public router: Router,
