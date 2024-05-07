@@ -10,7 +10,7 @@ import { AuthService } from '../../services/auth/auth.service';
 })
 export class HeaderComponent implements OnInit {
   @Input() pageTitle: string;
-  @Input() isBackButton = false;
+  @Input() isBackButton = true;
   @Input() isMenuButton = true;
   @Input() backBtnText = '';
   @Input() isLightBlueBg = false;
@@ -29,6 +29,7 @@ export class HeaderComponent implements OnInit {
     const user = await this.sharedMethods.getUserData();
     if (user) {
       const dashboard = this.authService.getCurrentUserBaseUrlFromRole(user?.role);
+      console.log('dashboard------', dashboard)
       this.defaultHref = dashboard ?? this.defaultHref;
     }
 
