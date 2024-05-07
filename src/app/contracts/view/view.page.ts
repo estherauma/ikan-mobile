@@ -150,5 +150,31 @@ export class ViewPage implements OnInit {
     this.editContractText = this.pageText?.editContract ?? this.editContractText;
   }
 
-  async editContract() {}
+  async editContract() {
+    const contractDetails = {
+      ...this.contract,
+      id: parseFloat(this.contract.id),
+      app_ref: this.contract.appRef,
+      internal_ref: this.contract.internalRef,
+      start_date: this.contract.startDate,
+      end_date: this.contract.endDate,
+      online_ref: this.contract.onlineRef,
+      type: this.contract.kind,
+      taiwanese_company_id: this.contract.taiwaneseCompany,
+      indonesian_company_id: this.contract.indonesianCompany,
+    };
+
+    const modal = await this.modalController.create({
+      cssClass: 'notification-modal',
+      component: CreatePage,
+      componentProps: {
+        contractDetails,
+        isEditing: true,
+      }
+    });
+    modal.present();
+    modal.onDidDismiss().then((data) => {
+      this.contract = data.data?.contractDetails;
+    });
+  }
 }

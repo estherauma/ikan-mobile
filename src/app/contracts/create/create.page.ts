@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { Router } from '@angular/router';
-import { ModalController } from '@ionic/angular';
+import { ActivatedRoute, Router } from '@angular/router';
+import { ModalController, NavParams } from '@ionic/angular';
 import { CompaniesDataService } from 'src/app/companies/data/companies-data.service';
 import { BaseformPage } from 'src/app/shared/components/baseform/baseform.page';
 import { ContentService } from 'src/app/shared/services/content/content.service';
@@ -18,6 +18,8 @@ export class CreatePage extends BaseformPage implements OnInit {
   taiwaneseCompanies = [];
   indonesianCompanies = [];
   pageText: any;
+  isEditing = false;
+  contractDetails: any;
 
   constructor(
     public companiesDataService: CompaniesDataService,
@@ -25,18 +27,11 @@ export class CreatePage extends BaseformPage implements OnInit {
     public sharedMethods: SharedmethodsService,
     public router: Router,
     public contractsDataService: ContractDataService,
-    public modalCtrl: ModalController
+    public modalCtrl: ModalController,
+    public activatedRoute: ActivatedRoute,
+    public navParams: NavParams,
   ) {
     super(contentService);
-    const pageData = this.contentService.getContentByPropertyName('companies-createcontract');
-    this.pageTitle = pageData?.pageTitle;
-    this.pageText = this.sharedMethods.convertAdditionalTextToObj(pageData.additionalText);
-    this.formQuestions = pageData?.formQuestions;
-    this.formQuestions.forEach((entry) => {
-      const validators = this.sharedMethods.getFormValidators(entry);
-      this.group[entry.key] = new FormControl('', validators);
-    });
-    this.pageFormGroup = new FormGroup(this.group);
   }
 
   updateSelectOptions() {
@@ -51,7 +46,30 @@ export class CreatePage extends BaseformPage implements OnInit {
   }
 
   ngOnInit() {
-    this.submitButtonText = this.contentService.commonText?.create;
+    this.commonText = this.contentService?.commonText;
+    this.isEditing = this.navParams.get('isEditing');
+    this.contractDetails = this.navParams.get('contractDetails');
+    this.submitButtonText = this.isEditing ? this.commonText?.update :this.commonText?.create;
+    
+    this.pageSetup();
+  }
+
+  pageSetup() {
+    const pageData = this.contentService.getContentByPropertyName('companies-createcontract');
+    this.pageText = this.sharedMethods.convertAdditionalTextToObj(pageData.additionalText);
+    // TODO: translate
+    this.pageTitle = this.isEditing ? (this.pageText?.editContract || 'Edit Contract') : pageData?.pageTitle;
+    this.formQuestions = pageData?.formQuestions;
+    this.formQuestions.forEach((entry) => {
+      const validators = this.sharedMethods.getFormValidators(entry);
+      if (this.isEditing && this.contractDetails[entry.key]) {
+        this.group[entry.key] = new FormControl(this.contractDetails[entry.key], validators);
+      } else {
+        this.group[entry.key] = new FormControl('', validators);
+      }
+    });
+    this.pageFormGroup = new FormGroup(this.group);
+    
     this.companiesDataService.getAll().subscribe((data) => {
       data.forEach((entry) => {
         if (entry.country === ' Taiwan' || entry.country === 'Taiwan') {
@@ -71,27 +89,41 @@ export class CreatePage extends BaseformPage implements OnInit {
     const userData = await this.sharedMethods.getUserData();
     const now = this.sharedMethods.getCurrentDateTime();
     formData.internal_ref = formData.app_ref;
-    formData.created_by = userData.id;
     formData.updated_by = userData.id;
-    formData.created_at = formData.updated_at = now;
-    const insertId =  await this.contractsDataService.create(formData);
-    if (insertId) {
-      if (formData?.file_url?.webPath) {
-        const contractData = {
-          contract_id: insertId,
-          name: formData?.file_url.uniqueName, // TODO: change to actual name not generated one
-          url: formData?.file_url.webPath,
-          status: '', // TODO: update status
-        };
-        const docInsertId = await this.contractsDataService.createContractDocument(contractData);
-        if (!docInsertId) {
-          this.sharedMethods.showLoader(this.pageText?.errSavingDocument);
+    formData.updated_at = now;
+
+    if (!this.isEditing) {
+      formData.created_by = userData.id;
+      formData.created_at = now;
+      const insertId =  await this.contractsDataService.create(formData);
+      if (insertId) {
+        if (formData?.file_url?.webPath) {
+          const contractData = {
+            contract_id: insertId,
+            name: formData?.file_url.uniqueName, // TODO: change to actual name not generated one
+            url: formData?.file_url.webPath,
+            status: '', // TODO: update status
+          };
+          const docInsertId = await this.contractsDataService.createContractDocument(contractData);
+          if (!docInsertId) {
+            this.sharedMethods.showLoader(this.pageText?.errSavingDocument);
+          }
         }
+        await this.createStaticContractClauses(insertId);
+        this.modalCtrl.dismiss();
+      } else {
+        this.sharedMethods.showLoader(this.pageText?.errCreatingContract);
       }
-      await this.createStaticContractClauses(insertId);
-      this.modalCtrl.dismiss();
     } else {
-      this.sharedMethods.showLoader(this.pageText?.errCreatingContract);
+      formData.id = this.contractDetails.id;
+      const result = await this.contractsDataService.update(formData);
+      if (result?.rowsAffected > 0) {
+        const contractDetails = result?.contract;
+        this.modalCtrl.dismiss({contractDetails, isEditing: false});
+      } else {
+        // TODO translate
+        this.sharedMethods.showLoader(this.pageText?.errUpdatingContract);
+      }
     }
   }
 
