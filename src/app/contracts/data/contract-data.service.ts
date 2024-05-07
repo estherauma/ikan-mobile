@@ -9,7 +9,8 @@ import { SharedmethodsService } from 'src/app/shared/services/sharedmethods/shar
 })
 export class ContractDataService {
   db: SQLiteObject;
-  contracts = new BehaviorSubject([]);
+  contractsObs = new BehaviorSubject([]);
+  contracts = [];
 
   constructor(
     private platform: Platform,
@@ -25,12 +26,16 @@ export class ContractDataService {
         this.retrieveContracts();
       }).catch(e => console.log(e));
     });
+
+    this.getAll().subscribe((data) => {
+      this.contracts = data;
+    });
   }
 
-  retrieveContracts() {
+  async retrieveContracts() {
     const query = 'SELECT * FROM contracts';
     // TODO: Add a join to the vessel owner company later
-    this.db.executeSql(query, []).then((data) => {
+    return this.db.executeSql(query, []).then((data) => {
       const contracts = [];
       if (data.rows.length > 0) {
         for (let i = 0; i < data.rows.length; i++) {
@@ -55,17 +60,17 @@ export class ContractDataService {
         }
       }
       contracts.reverse();
-      this.contracts.next(contracts);
+      this.contractsObs.next(contracts);
     }).catch((e) => console.log(e));
   }
 
   getAll() {
-    return this.contracts.asObservable();
+    return this.contractsObs.asObservable();
   }
 
   getSingleContract(contractId) {
     let contract = {};
-    this.contracts.getValue().forEach((entry) => {
+    this.contractsObs.getValue().forEach((entry) => {
       if (entry.id == contractId) {
         contract = entry;
         return;
@@ -76,7 +81,7 @@ export class ContractDataService {
 
   getContractByField(field, value) {
     let contract = null;
-    this.contracts.getValue().forEach((entry) => {
+    this.contractsObs.getValue().forEach((entry) => {
       if (entry[field].toString() === value.toString()) {
         contract = entry;
         return false;  // Exit the loop once the condition is met
@@ -119,7 +124,26 @@ export class ContractDataService {
     });
   }
 
-  update(data) { }
+  update(data) {
+    const query = 'UPDATE contracts SET name = ?, app_ref = ?, internal_ref = ?, start_date = ?, \
+      end_date = ?, description = ?, taiwanese_company_id = ?, indonesian_company_id = ?, type = ?,\
+      updated_at = ?, updated_by = ? WHERE id = ?';
+    const params = [data.name, data.app_ref, data.internal_ref, data.start_date, data.end_date,
+      data.description, data.taiwanese_company_id, data.indonesian_company_id, data.type,
+      data.updated_at, data.updated_by, data.id];
+    
+      return this.db.executeSql(query, params).then(async(result) => {
+      await this.retrieveContracts();
+      const contract = await this.getSingleContract(data.id);
+      return {
+        rowsAffected: result.rowsAffected,
+        contract,
+      };
+    }).catch((e) => {
+      console.log(e);
+      return null;
+    });
+  }
 
   delete(id) {
     const query = 'DELETE FROM contracts WHERE id = ?';
