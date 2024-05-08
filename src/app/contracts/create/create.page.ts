@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { ActivatedRoute, Router } from '@angular/router';
+import { FormControl, FormGroup } from '@angular/forms';
+import { Router } from '@angular/router';
 import { ModalController, NavParams } from '@ionic/angular';
 import { CompaniesDataService } from 'src/app/companies/data/companies-data.service';
 import { BaseformPage } from 'src/app/shared/components/baseform/baseform.page';
@@ -28,7 +28,6 @@ export class CreatePage extends BaseformPage implements OnInit {
     public router: Router,
     public contractsDataService: ContractDataService,
     public modalCtrl: ModalController,
-    public activatedRoute: ActivatedRoute,
     public navParams: NavParams,
   ) {
     super(contentService);
