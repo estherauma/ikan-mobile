@@ -244,8 +244,24 @@ export class ContractDataService {
     });
   }
 
+  updateContractClause(clauseId, clauseData) {
+    const query = 'UPDATE contract_clauses SET content = ?, updated_at = ?, updated_by = ? WHERE id = ?'; 
+    const params = [clauseData.content, clauseData.updated_at, clauseData.updated_by, clauseId];
+    
+    return this.db.executeSql(query, params).then(async(result) => {
+      const clause = await this.retrieveClauseDetails(clauseId);
+      clause.data = clauseData.content;
+      return {
+        rowsAffected: result.rowsAffected,
+        clause,
+      };
+    }).catch((e) => {
+      console.log(e);
+      return null;
+    });
+  }
+
   saveOnlineContractClause(contractId, clauseData) {
-    console.log(clauseData);
     const query = 'INSERT INTO contract_clauses (online_ref, contract_id, app_ref, \
       name, kind, content, created_at, updated_at, created_by, updated_by) \
       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)';
@@ -260,14 +276,15 @@ export class ContractDataService {
     });
   }
 
+  // returns clause object
   retrieveClauseDetails(clauseId) {
     const query = 'SELECT * FROM contract_clauses WHERE id = ?';
     const params = [clauseId];
     return this.db.executeSql(query, params).then((data) => {
-      const clause = [];
+      const result = [];
       if (data.rows.length > 0) {
         for (let i = 0; i < data.rows.length; i++) {
-          clause.push({
+          result.push({
             id: data.rows.item(i).id,
             appRef: data.rows.item(i).app_ref,
             name: data.rows.item(i).name,
@@ -281,7 +298,7 @@ export class ContractDataService {
           });
         }
       }
-      return clause;
+      return result[0];
     });
   }
 }
