@@ -193,6 +193,7 @@ export class ViewclausePage implements OnInit {
 
   async getAlert() {
     return await this.alertController.create({
+      cssClass: 'parties-edit-alert',
       buttons: [
         {
           //translate

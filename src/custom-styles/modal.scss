@@ -222,3 +222,46 @@ ion-modal.workers-create-modal {
     padding: 15px 15px 0 15px;
   }
 }
+
+.parties-edit-alert .alert-wrapper {
+  width: 100%;
+  margin: 20px;
+  padding: 20px;
+  border-radius: 30px;
+  background-color: white;
+  max-width: 100% !important;
+  min-width: 80% !important;
+  .alert-head, .alert-message {
+    display: none;
+  }
+  .alert-button-group{
+    justify-content: center;
+  }
+  .alert-button {
+    flex: none;
+    font-weight: bold;
+    color: white !important;
+    text-transform: capitalize;
+    display: flex;
+    justify-content: center;
+    margin-top: 10px;
+    .alert-button-inner {
+      justify-content: center;
+      border-radius: 20px;
+      background-color: #3565FF;
+      width: 200px;
+      height: 50px;
+    }
+  }
+  .alert-button:last-child {
+    color: #191970 !important;
+    justify-content: flex-end;
+    padding: 0;
+    text-transform: uppercase;
+    .alert-button-inner {
+      justify-content: flex-end;
+      background-color: white;
+      height: unset;
+    }
+  }
+}
