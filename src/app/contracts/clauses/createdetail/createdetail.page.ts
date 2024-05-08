@@ -25,6 +25,7 @@ export class CreatedetailPage extends BaseformPage implements OnInit {
   objectTolookup: string;
   contractId: any;
   isPartyBForm: boolean = false;
+  isPartyAForm: boolean = false;
   vessels: any = [];
   noVesselsText: string = 'No vessels found. Please add a vessel first';
   isEditing = false;
@@ -76,6 +77,8 @@ export class CreatedetailPage extends BaseformPage implements OnInit {
     const pageName = pageData?.pageName;
     if (pageName === 'contract-clauses-parties-requirement-fishers') {
       this.isPartyBForm = true;
+    } else if (pageName === 'contract-clauses-parties-requirement-vessel') {
+      this.isPartyAForm = true;
     }
 
     this.vesselsDataService.getAll().subscribe((data) => {
@@ -145,7 +148,7 @@ export class CreatedetailPage extends BaseformPage implements OnInit {
       this.contractDataServ.saveContractClause(this.contractId, formData)
       .then((result) => {
       this.sharedMethods.showToast(this.contentService.commonText?.clauseSaved);
-      this.router.navigate(['/contracts/view', {id: this.contractId}]);
+      this.router.navigate(['/contracts/view', {id: this.contractId}], { replaceUrl: true });
       });
     } else {
       // We are basically updating only the content
@@ -160,7 +163,20 @@ export class CreatedetailPage extends BaseformPage implements OnInit {
       if (result) {
         // translate
         this.sharedMethods.showToast(this.contentService.commonText?.clauseUpdated || 'yap not trans');
-        this.router.navigate(['/contracts/clauses/viewclause/', result.clause])
+
+        if (this.isPartyBForm){
+          // Party A and B clause are displayed together
+          // So we navigate to party A clause and in turn party B will be fetched
+          const partyAId = this.clauseDetails?.partyAId;
+          const partyAClause = await this.contractDataServ.retrieveClauseDetails(partyAId);
+          partyAClause.partyB = this.clauseDetails.id;
+          this.router.navigate(['/contracts/clauses/viewclause/', partyAClause], { replaceUrl: true });
+          return;
+        } else if (this.isPartyAForm) {
+          result.clause.partyB = this.clauseDetails.partyB;
+        }
+        
+        this.router.navigate(['/contracts/clauses/viewclause/', result.clause], { replaceUrl: true })
       } else {
         // translate
         this.sharedMethods.showToast(this.contentService.commonText?.error || 'ooppssy');

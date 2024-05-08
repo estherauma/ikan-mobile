@@ -291,6 +291,7 @@ export class ContractDataService {
             kind: data.rows.item(i).kind,
             onlineRef: data.rows.item(i).online_ref,
             content: data.rows.item(i).content,
+            data: data.rows.item(i).content,
             createdAt: data.rows.item(i).created_at,
             updatedAt: data.rows.item(i).updated_at,
             createdBy: data.rows.item(i).created_by,

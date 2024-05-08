@@ -4,6 +4,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { ContentService } from 'src/app/shared/services/content/content.service';
 import { formatDate } from '@angular/common';
 import { VesselsDataService } from 'src/app/vessels/data/vessels-data.service';
+import { AlertController } from '@ionic/angular';
 
 @Component({
   selector: 'app-viewclause',
@@ -48,6 +49,7 @@ export class ViewclausePage implements OnInit {
   pageName: string = '';
   allVessels: any = [];
   vesselDetails: any;
+  commonText: any;
 
   constructor(
     public contractDataService: ContractDataService,
@@ -55,12 +57,12 @@ export class ViewclausePage implements OnInit {
     public contentService: ContentService,
     public vesselsDataService: VesselsDataService,
     public router: Router,
+    public alertController: AlertController,
   ) { }
 
   ngOnInit() {
     this.activatedRoute.params.subscribe((params) => {
       this.clauseDetails = params;
-      console.log('this.clausedetaisss', this.clauseDetails)
       this.pageSetup();
     });
   }
@@ -70,6 +72,7 @@ export class ViewclausePage implements OnInit {
       this.allVessels = data;
     });
     this.isEditable = this.editableClauses.includes(this.clauseDetails?.kind);
+    this.commonText = this.contentService?.commonText;
     this.pageData = this.contentService.getContentByPropertyName(this.clauseContentObjectMapping[this.clauseDetails?.kind]);
     this.pageName = this.pageData?.pageName;
     // TODO: translate
@@ -179,7 +182,45 @@ export class ViewclausePage implements OnInit {
   }
 
   async editContractClause() {
-    const clauseDetails = JSON.stringify(this.clauseDetails);
-    this.router.navigate(['/contracts/createdetails', {clauseDetails}], { queryParams: { isEditing: true } });
+    if (this.clauseDetails?.kind === 'contract-clauses-parties-requirement-vessel') {
+      const alert = await this.getAlert();
+      await alert.present();
+    } else {
+      const clauseDetails = JSON.stringify(this.clauseDetails);
+      this.router.navigate(['/contracts/createdetails', {clauseDetails}], { queryParams: { isEditing: true } });
+    }
+  }
+
+  async getAlert() {
+    return await this.alertController.create({
+      buttons: [
+        {
+          //translate
+          text: 'Edit Party A',
+          cssClass: 'edit-btn',
+          handler: () => {
+            const partyAClauseDetails = JSON.stringify(this.clauseDetails);
+            this.router.navigate(['/contracts/createdetails', {clauseDetails: partyAClauseDetails}], { queryParams: { isEditing: true } });
+          }
+        },
+        {
+          //translate
+          text: 'Edit Party B',
+          cssClass: 'edit-btn',
+          handler: async() => {
+            const partyBClause = await this.contractDataService.retrieveClauseDetails(this.clauseDetails?.partyB);
+            partyBClause.data = partyBClause.content;
+            partyBClause.partyAId = this.clauseDetails?.id;
+            const partyBClauseDetails = JSON.stringify(partyBClause);
+            this.router.navigate(['/contracts/createdetails', {clauseDetails: partyBClauseDetails}], { queryParams: { isEditing: true } });
+          }
+        },
+        {
+          text: this.commonText?.cancel,
+          role: 'cancel',
+          cssClass: 'cancel-btn',
+        }
+      ]
+    });
   }
 }
