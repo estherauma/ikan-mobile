@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ContractDataService } from '../../data/contract-data.service';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { ContentService } from 'src/app/shared/services/content/content.service';
 import { formatDate } from '@angular/common';
 import { VesselsDataService } from 'src/app/vessels/data/vessels-data.service';
@@ -26,6 +26,21 @@ export class ViewclausePage implements OnInit {
     'contract-clauses-dispute-settlement': 'contract-clauses-dispute-settlement-content',
     'contract-clauses-miscellaneous': 'contract-clauses-miscellaneous-content'
   }
+
+  // 
+  clauseMapping = {
+    'Parties to this contract - Party A': 'contract-clauses-parties-requirement-vessel',
+    'Parties to this contract - Party B': 'contract-clauses-parties-requirement-fishers',
+    'Article 1 Period of validity': 'contract-clauses-contract-validity',
+    'Article 2 Wage benefits and means of payment': 'contract-clauses-wage-benefits',
+    'Article 5 Working hours rest and leave': 'contract-clauses-working-hours-rest-and-leave',
+    'Article 6 Labor protection and benefits': 'contract-clauses-labor-protection-and-benefits',
+    'Attachments': 'contract-clauses-attachments',
+  }
+
+  editableClauses = Object.values(this.clauseMapping);
+  isEditable: boolean = false;
+  editBtnText: string = 'Edit Clause';
   clauseDetails: any;
   clauseContent: any;
   pageData: any;
@@ -39,11 +54,13 @@ export class ViewclausePage implements OnInit {
     public activatedRoute: ActivatedRoute,
     public contentService: ContentService,
     public vesselsDataService: VesselsDataService,
+    public router: Router,
   ) { }
 
   ngOnInit() {
     this.activatedRoute.params.subscribe((params) => {
       this.clauseDetails = params;
+      console.log('this.clausedetaisss', this.clauseDetails)
       this.pageSetup();
     });
   }
@@ -52,11 +69,16 @@ export class ViewclausePage implements OnInit {
     this.vesselsDataService.getAll().subscribe((data) => {
       this.allVessels = data;
     });
+    this.isEditable = this.editableClauses.includes(this.clauseDetails?.kind);
     this.pageData = this.contentService.getContentByPropertyName(this.clauseContentObjectMapping[this.clauseDetails?.kind]);
     this.pageName = this.pageData?.pageName;
+    // TODO: translate
+    this.editBtnText = 'Edit Clause';
+    
     let pageContent = this.pageData?.pageContent;
-    let pageTextArray = pageContent[0]?.description;
+    let pageTextArray = pageContent?.[0]?.description;
     let textHtml = '';
+    
     pageTextArray.forEach((element, idx) => {
       if (idx === 0) {
         textHtml += element?.paragraph;
@@ -102,7 +124,7 @@ export class ViewclausePage implements OnInit {
     // clause one has two entries, so we need to add the second entry
     if  (this.clauseDetails?.partyB !== undefined || this.clauseDetails?.partyB !== null) {
       let partyBClauseDetails = await this.contractDataService.retrieveClauseDetails(this.clauseDetails?.partyB);
-      let partyBDetails = JSON.parse(partyBClauseDetails[0]?.content);
+      let partyBDetails = JSON.parse(partyBClauseDetails?.content);
       for (const [key, value] of Object.entries(partyBDetails)) {
         const formattedValue  = this.formatClauseValues(key, value);
         response.push(formattedValue);
@@ -154,5 +176,10 @@ export class ViewclausePage implements OnInit {
     }
 
     return value;
+  }
+
+  async editContractClause() {
+    const clauseDetails = JSON.stringify(this.clauseDetails);
+    this.router.navigate(['/contracts/createdetails', {clauseDetails}], { queryParams: { isEditing: true } });
   }
 }
