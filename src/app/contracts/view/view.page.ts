@@ -174,7 +174,7 @@ export class ViewPage implements OnInit {
     });
     modal.present();
     modal.onDidDismiss().then((data) => {
-      if (Object.keys(data.data?.contractDetails).length) {
+      if (data?.data?.contractDetails && Object.keys(data.data.contractDetails)?.length) {
         this.contract = data.data?.contractDetails;
       }
     });
