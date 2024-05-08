@@ -28,7 +28,6 @@ export class ViewclausePage implements OnInit {
     'contract-clauses-miscellaneous': 'contract-clauses-miscellaneous-content'
   }
 
-  // 
   clauseMapping = {
     'Parties to this contract - Party A': 'contract-clauses-parties-requirement-vessel',
     'Parties to this contract - Party B': 'contract-clauses-parties-requirement-fishers',
@@ -75,8 +74,7 @@ export class ViewclausePage implements OnInit {
     this.commonText = this.contentService?.commonText;
     this.pageData = this.contentService.getContentByPropertyName(this.clauseContentObjectMapping[this.clauseDetails?.kind]);
     this.pageName = this.pageData?.pageName;
-    // TODO: translate
-    this.editBtnText = 'Edit Clause';
+    this.editBtnText = this.commonText?.editClause;
     
     let pageContent = this.pageData?.pageContent;
     let pageTextArray = pageContent?.[0]?.description;
@@ -196,8 +194,7 @@ export class ViewclausePage implements OnInit {
       cssClass: 'parties-edit-alert',
       buttons: [
         {
-          //translate
-          text: 'Edit Party A',
+          text: this.commonText?.editPartyADetails,
           cssClass: 'edit-btn',
           handler: () => {
             const partyAClauseDetails = JSON.stringify(this.clauseDetails);
@@ -205,8 +202,7 @@ export class ViewclausePage implements OnInit {
           }
         },
         {
-          //translate
-          text: 'Edit Party B',
+          text: this.commonText?.editPartyBDetails,
           cssClass: 'edit-btn',
           handler: async() => {
             const partyBClause = await this.contractDataService.retrieveClauseDetails(this.clauseDetails?.partyB);

@@ -146,7 +146,6 @@ export class ViewPage implements OnInit {
     }
     this.pageText = this.sharedMethods.convertAdditionalTextToObj(pageData?.additionalText);
     this.createClauseText = this.pageText?.addNewClause;
-    // TODO: translate
     this.editContractText = this.pageText?.editContract ?? this.editContractText;
   }
 

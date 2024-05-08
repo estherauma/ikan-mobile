@@ -85,8 +85,7 @@ export class CreatedetailPage extends BaseformPage implements OnInit {
       this.vessels = data;
     });
 
-    // translate
-    this.editClauseText = 'Edit Clause';
+    this.editClauseText = this.commonText?.editClause;
     this.pageTitle = pageData?.pageTitle;
     this.pageText = this.sharedMethods.convertAdditionalTextToObj(pageData?.additionalText);
     this.noVesselsText = this.pageText?.noVesselsText || this.noVesselsText;
@@ -161,8 +160,7 @@ export class CreatedetailPage extends BaseformPage implements OnInit {
 
       const result = await this.contractDataServ.updateContractClause(editObj.id, editObj);
       if (result) {
-        // translate
-        this.sharedMethods.showToast(this.contentService.commonText?.clauseUpdated || 'yap not trans');
+        this.sharedMethods.showToast(this.contentService.commonText?.clauseUpdated);
 
         if (this.isPartyBForm){
           // Party A and B clause are displayed together
@@ -178,8 +176,7 @@ export class CreatedetailPage extends BaseformPage implements OnInit {
         
         this.router.navigate(['/contracts/clauses/viewclause/', result.clause], { replaceUrl: true })
       } else {
-        // translate
-        this.sharedMethods.showToast(this.contentService.commonText?.error || 'ooppssy');
+        this.sharedMethods.showToast(this.contentService.commonText?.errorUpdatingClause);
       }
     }
   }

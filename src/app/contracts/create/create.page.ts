@@ -56,8 +56,7 @@ export class CreatePage extends BaseformPage implements OnInit {
   pageSetup() {
     const pageData = this.contentService.getContentByPropertyName('companies-createcontract');
     this.pageText = this.sharedMethods.convertAdditionalTextToObj(pageData.additionalText);
-    // TODO: translate
-    this.pageTitle = this.isEditing ? (this.pageText?.editContract || 'Edit Contract') : pageData?.pageTitle;
+    this.pageTitle = this.isEditing ? this.pageText?.editContract : pageData?.pageTitle;
     this.formQuestions = pageData?.formQuestions;
     this.formQuestions.forEach((entry) => {
       const validators = this.sharedMethods.getFormValidators(entry);
@@ -84,7 +83,8 @@ export class CreatePage extends BaseformPage implements OnInit {
 
 
   async onSubmit(formData) {
-    this.sharedMethods.showLoader(this.pageText?.savingContract);
+    const submittingText = this.isEditing ? this.pageText?.updatingContract : this.pageText?.savingContract;
+    this.sharedMethods.showLoader(submittingText);
     const userData = await this.sharedMethods.getUserData();
     const now = this.sharedMethods.getCurrentDateTime();
     formData.internal_ref = formData.app_ref;
@@ -105,23 +105,23 @@ export class CreatePage extends BaseformPage implements OnInit {
           };
           const docInsertId = await this.contractsDataService.createContractDocument(contractData);
           if (!docInsertId) {
-            this.sharedMethods.showLoader(this.pageText?.errSavingDocument);
+            this.sharedMethods.showToast(this.pageText?.errSavingDocument);
           }
         }
         await this.createStaticContractClauses(insertId);
         this.modalCtrl.dismiss();
       } else {
-        this.sharedMethods.showLoader(this.pageText?.errCreatingContract);
+        this.sharedMethods.showToast(this.pageText?.errCreatingContract);
       }
     } else {
+      // TODO: add doc edit logic
       formData.id = this.contractDetails.id;
       const result = await this.contractsDataService.update(formData);
       if (result?.rowsAffected > 0) {
         const contractDetails = result?.contract;
         this.modalCtrl.dismiss({contractDetails, isEditing: false});
       } else {
-        // TODO translate
-        this.sharedMethods.showLoader(this.pageText?.errUpdatingContract);
+        this.sharedMethods.showToast(this.pageText?.errUpdatingContract);
       }
     }
   }
