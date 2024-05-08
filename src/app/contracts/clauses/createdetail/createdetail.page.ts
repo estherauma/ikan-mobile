@@ -27,7 +27,10 @@ export class CreatedetailPage extends BaseformPage implements OnInit {
   isPartyBForm: boolean = false;
   vessels: any = [];
   noVesselsText: string = 'No vessels found. Please add a vessel first';
-  
+  isEditing = false;
+  clauseDetails: any;
+  formValues: any;
+  editClauseText: string = 'Edit Clause';
 
   constructor(
     public contentService: ContentService,
@@ -41,20 +44,31 @@ export class CreatedetailPage extends BaseformPage implements OnInit {
   }
 
   ngOnInit() {
+    this.activatedRoute.queryParams.subscribe((queryParams) => {
+      if (queryParams?.isEditing) {
+        this.isEditing = true;
+      }
+    });
     this.activatedRoute.params.subscribe((params) => {
-      // we use this to search the content by the key to load the form we need.
-      this.objectTolookup = params['clause-type']; 
-      // remove whitespace from beginning and end of string
-      this.objectTolookup = this.objectTolookup.trim();
-      this.contractId = params['contractId'];
-      // TODO: Add a check to see if the contract clause exists
-      // We should be able to fetch it and display it for the user to edit
+      if (!this.isEditing) {
+        // we use this to search the content by the key to load the form we need.
+        this.objectTolookup = params?.['clause-type'];
+        // remove whitespace from beginning and end of string
+        this.objectTolookup = this.objectTolookup?.trim();
+        this.contractId = params?.['contractId'];
+        // TODO: Add a check to see if the contract clause exists
+        // We should be able to fetch it and display it for the user to edit
+      } else {
+        this.clauseDetails = JSON.parse(params.clauseDetails);
+        this.formValues = JSON.parse(this.clauseDetails?.data);
+      }
       this.pageSetup();
     });
   }
 
   pageSetup(){
-    const pageData = this.contentService.getContentByPropertyName(this.clauseMapping[this.objectTolookup]);
+    const property = this.isEditing ? this.clauseDetails['kind'] : this.clauseMapping[this.objectTolookup];
+    const pageData = this.contentService.getContentByPropertyName(property);
     if (!pageData) {
       this.sharedMethods.showToast(this.commonText?.somethingWentWrong);
       return;
@@ -64,18 +78,24 @@ export class CreatedetailPage extends BaseformPage implements OnInit {
       this.isPartyBForm = true;
     }
 
-
     this.vesselsDataService.getAll().subscribe((data) => {
       this.vessels = data;
     });
 
+    // translate
+    this.editClauseText = 'Edit Clause';
     this.pageTitle = pageData?.pageTitle;
     this.pageText = this.sharedMethods.convertAdditionalTextToObj(pageData?.additionalText);
     this.noVesselsText = this.pageText?.noVesselsText || this.noVesselsText;
     this.formQuestions = pageData?.formQuestions;
     this.formQuestions.forEach((entry) => {
       const validators = this.sharedMethods.getFormValidators(entry);
-      this.group[entry.key] = new FormControl('', validators);
+      if (this.isEditing && this.formValues[entry.key]) {
+        this.group[entry.key] = new FormControl(this.formValues[entry.key], validators);
+      } else {
+        this.group[entry.key] = new FormControl('', validators);
+      }
+      
       // add change listener to payment frequency
       if (entry.key === 'paymentFrequency') {
         this.group[entry.key].valueChanges.subscribe((value) => {
@@ -112,19 +132,40 @@ export class CreatedetailPage extends BaseformPage implements OnInit {
   async onSubmit(formData) {
     const userData = await this.sharedMethods.getUserData();
     const now = this.sharedMethods.getCurrentDateTime();
-    // We need this information before we append meta data
-    formData.content = JSON.stringify(formData);
-    formData.app_ref = this.sharedMethods.generateAppRef();
-    formData.created_by = userData.id;
-    formData.updated_by = userData.id;
-    formData.created_at = formData.updated_at = now;
-    formData.kind = this.clauseMapping[this.objectTolookup];
-    formData.name = this.pageTitle;
-    this.contractDataServ.saveContractClause(this.contractId, formData)
-    .then((result) => {
-     this.sharedMethods.showToast(this.contentService.commonText?.clauseSaved);
-     this.router.navigate(['/contracts/view', {id: this.contractId}]);
-    })
+
+    if (!this.isEditing) {
+      // We need this information before we append meta data
+      formData.content = JSON.stringify(formData);
+      formData.app_ref = this.sharedMethods.generateAppRef();
+      formData.created_by = userData.id;
+      formData.updated_by = userData.id;
+      formData.created_at = formData.updated_at = now;
+      formData.kind = this.clauseMapping[this.objectTolookup];
+      formData.name = this.pageTitle;
+      this.contractDataServ.saveContractClause(this.contractId, formData)
+      .then((result) => {
+      this.sharedMethods.showToast(this.contentService.commonText?.clauseSaved);
+      this.router.navigate(['/contracts/view', {id: this.contractId}]);
+      });
+    } else {
+      // We are basically updating only the content
+      const editObj = {
+        content: JSON.stringify(formData),
+        updated_by: userData.id,
+        updated_at: now,
+        id: parseFloat(this.clauseDetails.id),
+      }
+
+      const result = await this.contractDataServ.updateContractClause(editObj.id, editObj);
+      if (result) {
+        // translate
+        this.sharedMethods.showToast(this.contentService.commonText?.clauseUpdated || 'yap not trans');
+        this.router.navigate(['/contracts/clauses/viewclause/', result.clause])
+      } else {
+        // translate
+        this.sharedMethods.showToast(this.contentService.commonText?.error || 'ooppssy');
+      }
+    }
   }
 
   paymentFrequencyChanged(value) {
