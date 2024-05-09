@@ -8,14 +8,19 @@
         <ion-col>
           <ion-row class="ion-justify-content-end">
             <div>
-              <!-- TODO: Add logic for clause translation -->
-              <app-button *ngIf="authService.userRole === 'vessel_owner'" (onClick)="createClause()" iconName="add-outline" [title]="createButtonText"></app-button>
+              <app-button
+                class="edit-contract-btn"
+                *ngIf="authService.userRole === 'vessel_owner'"
+                [title]="editContractText"
+                (onClick)="editContract()"
+              >
+              </app-button>
             </div>
           </ion-row>
         </ion-col>
       </ion-row>
     </ion-grid>
-    <ion-text><span class="gray">{{ commonText?.appRef }}:</span> {{contract.internalRef}}</ion-text>
+    <ion-text><span class="gray">{{ commonText?.appRef }}:</span> {{contract.appRef}}</ion-text>
     <ion-text>
       <h1 class="name">{{contract.name}}</h1>
     </ion-text>
@@ -43,6 +48,19 @@
       <div class="clause-sub-title">
         <app-title title="Clauses" [isSmall]="false" [isBlue]="true"></app-title>
       </div>
+
+      <ion-grid *ngIf="contractClauses?.length">
+        <ion-row class="ion-justify-content-between ion-align-items-baseline">
+          <ion-col>
+            <ion-row class="ion-justify-content-end">
+              <div>
+                <app-button *ngIf="authService.userRole === 'vessel_owner'" (onClick)="createClause()" iconName="add-outline" [title]="createClauseText"></app-button>
+              </div>
+            </ion-row>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+      
       <app-placementoffercard
         *ngFor="let clause of contractClauses; let i=index"
         class="placement-card"
@@ -59,7 +77,7 @@
       ></app-placementoffercard>
     </div>
     <div class="ion-margin-vertical" [ngClass]="{'action-buttons': !done}">
-      <app-button (onClick)="createClause()" *ngIf="!done" [title]="createButtonText" size="small" iconName="add-outline"></app-button>
+      <app-button (onClick)="createClause()" *ngIf="!done" [title]="createClauseText" size="small" iconName="add-outline"></app-button>
     </div>
   </div>
 </ion-content>
