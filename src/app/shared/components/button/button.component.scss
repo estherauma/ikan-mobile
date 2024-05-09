@@ -79,3 +79,25 @@
         }
     }
 }
+
+:host.edit-contract-btn {
+    #app-btn {
+        width: 190px;
+        --padding-start: 5px;
+        --padding-end: 5px;
+        span {
+            margin: 0;
+        }
+    }
+}
+
+:host.edit-clause-btn {
+    #app-btn {
+        width: 160px;
+        --padding-start: 5px;
+        --padding-end: 5px;
+        span {
+            margin: 0;
+        }
+    }
+}
