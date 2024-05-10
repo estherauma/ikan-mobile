@@ -50,16 +50,38 @@ export class CreatePage extends BaseformPage implements OnInit {
   }
 
   async onSubmit(formData) {
-    this.sharedMethods.showLoader(this.contentService.commonText?.saving || 'Saving');
+    // translate
+    const submittingText = this.isEditing ? this.pageText?.updatingCompany : this.pageText?.SavingCompany;
+    this.sharedMethods.showLoader(submittingText || 'Submitting...');
     const userData = await this.sharedMethods.getUserData();
     const now = this.sharedMethods.getCurrentDateTime();
-    formData.created_by = userData.id;
     formData.updated_by = userData.id;
-    formData.created_at = formData.updated_at = now;
-    formData.logo_url = '';
-    formData.app_ref = this.sharedMethods.generateAppRef();
-    const insertId =  await this.companiesDataService.create(formData);
-    this.modalCtrl.dismiss();
+    formData.updated_at = now;
+    formData.logo_url = ''; // Not yet implemented
+
+    if (!this.isEditing) {
+      formData.created_by = userData.id;
+      formData.created_at = now;
+      formData.app_ref = this.sharedMethods.generateAppRef();
+      const insertId =  await this.companiesDataService.create(formData);
+      this.modalCtrl.dismiss();
+      this.sharedMethods.hideLoader();
+      //translate
+      this.sharedMethods.showToast(this.pageText?.companyCreated || 'Company created successfully');
+    } else {
+      const id = parseFloat(this.companyDetails.id);
+      const result = await this.companiesDataService.update(formData, id);
+      if (result?.rowsAffected) {
+        this.modalCtrl.dismiss({ company: result.company, isEditing: false});
+        this.sharedMethods.hideLoader();
+        //translate
+        this.sharedMethods.showToast(this.pageText?.companyUpdated || 'Company updated successfully');
+      } else {
+        this.sharedMethods.hideLoader();
+        //translate
+        this.sharedMethods.showToast(this.pageText?.companyUpdateError || 'Error updating company');
+      }
+    }
   }
 
 }

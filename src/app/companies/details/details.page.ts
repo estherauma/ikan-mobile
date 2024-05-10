@@ -48,5 +48,10 @@ export class DetailsPage implements OnInit {
       }
     });
     modal.present();
+    modal.onDidDismiss().then((data) => {
+      if (data?.data?.company &&  Object.keys(data.data.company)?.length) {
+        this.company = data.data.company;
+      }
+    });
   }
 }
