@@ -4,13 +4,27 @@
   <app-contentwrapper>
     <div class="title-container ion-padding">
       <div class="title-section">
-      <app-title
-        class="view-clause"
-        [isBig]="true"
-        [title]="pageData?.pageTitle"
-      ></app-title>
+        <app-title
+          class="view-clause"
+          [isBig]="true"
+          [title]="pageData?.pageTitle"
+        ></app-title>
+      </div>
+
+      <div *ngIf="isEditable" class="btn-section">
+        <ion-row class="ion-justify-end">
+          <ion-col>
+            <app-button
+              class="edit-clause-btn"
+              [title]="editBtnText"
+              (onClick)="editContractClause()"
+            >
+            </app-button>
+          </ion-col>
+        </ion-row>
       </div>
     </div>
+    
     <div class="ion-padding bottom-section">
       <div [innerHtml]="htmlContent">
       </div>
