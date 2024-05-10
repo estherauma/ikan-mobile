@@ -35,8 +35,8 @@ export class CreatePage extends BaseformPage implements OnInit {
     this.commonText = this.contentService.commonText;
     this.submitButtonText = this.isEditing ? this.commonText?.update : this.commonText?.create;
     const pageData = this.contentService.getContentByPropertyName('company-create');
-    // translate
-    this.pageTitle = this.isEditing ? 'Edit Company' : pageData?.pageTitle;
+    this.pageText = this.sharedMethods.convertAdditionalTextToObj(pageData?.additionalText);
+    this.pageTitle = this.isEditing ? this.pageText?.editCompany : pageData?.pageTitle;
     this.formQuestions = pageData?.formQuestions;
     this.formQuestions.forEach((entry) => {
       const validators = this.sharedMethods.getFormValidators(entry);
@@ -50,8 +50,7 @@ export class CreatePage extends BaseformPage implements OnInit {
   }
 
   async onSubmit(formData) {
-    // translate
-    const submittingText = this.isEditing ? this.pageText?.updatingCompany : this.pageText?.SavingCompany;
+    const submittingText = this.isEditing ? this.pageText?.updatingCompanyDetails : this.pageText?.SavingCompanyDetails;
     this.sharedMethods.showLoader(submittingText || 'Submitting...');
     const userData = await this.sharedMethods.getUserData();
     const now = this.sharedMethods.getCurrentDateTime();
@@ -64,21 +63,23 @@ export class CreatePage extends BaseformPage implements OnInit {
       formData.created_at = now;
       formData.app_ref = this.sharedMethods.generateAppRef();
       const insertId =  await this.companiesDataService.create(formData);
-      this.modalCtrl.dismiss();
-      this.sharedMethods.hideLoader();
-      //translate
-      this.sharedMethods.showToast(this.pageText?.companyCreated || 'Company created successfully');
+      if (insertId) {
+        this.modalCtrl.dismiss();
+        this.sharedMethods.hideLoader();
+        this.sharedMethods.showToast(this.pageText?.companyCreated || 'Company created successfully');
+      } else {
+        this.sharedMethods.hideLoader();
+        this.sharedMethods.showToast(this.pageText?.companyCreateError || 'Error creating company');
+      }
     } else {
       const id = parseFloat(this.companyDetails.id);
       const result = await this.companiesDataService.update(formData, id);
       if (result?.rowsAffected) {
         this.modalCtrl.dismiss({ company: result.company, isEditing: false});
         this.sharedMethods.hideLoader();
-        //translate
         this.sharedMethods.showToast(this.pageText?.companyUpdated || 'Company updated successfully');
       } else {
         this.sharedMethods.hideLoader();
-        //translate
         this.sharedMethods.showToast(this.pageText?.companyUpdateError || 'Error updating company');
       }
     }
