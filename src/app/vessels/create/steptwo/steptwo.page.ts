@@ -17,6 +17,7 @@ export class SteptwoPage extends BaseformPage implements OnInit {
   prevQuestions: any;
   prevData: any;
   pageText: any;
+  isEditing: boolean = false;
 
   constructor(
     public sharedMethods: SharedmethodsService,
@@ -35,6 +36,9 @@ export class SteptwoPage extends BaseformPage implements OnInit {
       this.prevQuestions = JSON.parse(questions);
       this.prevData = JSON.parse(data);
     });
+    this.activatedRoute.queryParams.subscribe((queryParams) => {
+      this.isEditing = queryParams.isEditing === 'true';
+    });
   }
 
   async ngOnInit() {
@@ -44,9 +48,9 @@ export class SteptwoPage extends BaseformPage implements OnInit {
       'vessels-createsteptwo'
     );
     this.commonText = this.contentService.commonText;
-    this.submitButtonText = this.commonText?.save;
-    this.pageTitle = pageData?.pageTitle;
+    this.submitButtonText = this.isEditing ? this.commonText?.update : this.commonText?.save;
     this.pageText = this.sharedMethods.convertAdditionalTextToObj(pageData?.additionalText);
+    this.pageTitle = this.isEditing ? this.pageText?.editVessel : pageData?.pageTitle;
     this.formQuestions = this.prevQuestions.concat(pageData?.formQuestions);
     this.formQuestions.forEach((entry) => {
       const validators = this.sharedMethods.getFormValidators(entry);
@@ -55,7 +59,6 @@ export class SteptwoPage extends BaseformPage implements OnInit {
       } else {
         this.group[entry.key] = new FormControl('', validators);
       }
-
     });
 
     this.pageFormGroup = new FormGroup(this.group);
@@ -64,27 +67,44 @@ export class SteptwoPage extends BaseformPage implements OnInit {
   async onSubmit(formData) {
     this.sharedMethods.showLoader(this.pageText?.savingVessel);
     const now = this.sharedMethods.getCurrentDateTime();
-    formData.created_at = formData.updated_at = now;
     const userData = await this.sharedMethods.getUserData();
-    formData.created_by = formData.updated_by = userData.id;
-    formData.app_ref = this.sharedMethods.generateAppRef();
-    const insertId = await this.vesselDataService.create(formData);
+    formData.updated_at = now;
+    formData.updated_by = userData.id;
     
-    if (insertId) {
-      const imageData = {
-        vessel_id: insertId,
-        image_url: formData?.image_url,
-        description: '', // TODO: update description
-      };
-      const imageInsertId = await this.vesselDataService.createVesselImage(imageData);
-      if (!imageInsertId) {
-        this.sharedMethods.showLoader(this.pageText?.errSavingImage);
+    if (!this.isEditing) {
+      formData.created_at = formData.updated_at = now;
+      formData.created_by = formData.updated_by = userData.id;
+      formData.app_ref = this.sharedMethods.generateAppRef();
+      
+      const insertId = await this.vesselDataService.create(formData);
+      
+      if (insertId) {
+        // TODO: save vessel image
+        const imageData = {
+          vessel_id: insertId,
+          image_url: formData?.image_url,
+          description: '', // TODO: update description
+        };
+        const imageInsertId = await this.vesselDataService.createVesselImage(imageData);
+        if (!imageInsertId) {
+          this.sharedMethods.showLoader(this.pageText?.errSavingImage);
+        }
+        this.modalCtrl.dismiss();
+        this.router.navigate(['vessels/view', formData], { replaceUrl: true });
+      } else {
+        this.sharedMethods.showLoader(this.pageText?.errCreatingVessel);
       }
-      this.modalCtrl.dismiss();
-      this.router.navigate(['vessels/view', formData], { replaceUrl: true });
     } else {
-
-      this.sharedMethods.showLoader(this.pageText?.errCreatingVessel);
+      formData.app_ref = this.prevData?.app_ref;
+      formData.id = parseFloat(this.prevData.id);
+      const result = await this.vesselDataService.update(formData);
+      if (result?.rowsAffected > 0) {
+        // TODO: update vessel image
+        this.modalCtrl.dismiss();
+        this.router.navigate(['vessels/view', result?.vessel], { replaceUrl: true });
+      } else {
+        this.sharedMethods.showLoader(this.pageText?.errUpdatingVessel);
+      }
     }
   }
 }

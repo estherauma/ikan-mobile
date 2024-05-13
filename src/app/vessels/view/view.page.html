@@ -1,32 +1,39 @@
 <app-header [isBackButton]="true"></app-header>
 
-<ion-content class="content-skyblue-bg ion-content-custom-position">
-  <app-contentwrapper>
-  <ion-grid>
+<ion-content class="content-skyblue-bg ion-content-custom-position" fullscreen>
+  <div>
     <ion-row>
       <ion-col size="12">
         <p class="top-title"><span>{{ commonText?.appRef }}:</span> {{vessel.regNo}}</p>
       </ion-col>
     </ion-row>
     <ion-row class="ion-justify-content-end">
-      <ion-col size="3">
-        <app-button [title]="editBtnText" size="small"></app-button>
+      <ion-col size="5">
+        <app-button
+          class="vessel-edit-btn"
+          size="small"
+          [title]="editBtnText"
+          (onClick)="editVessel()"
+        >
+        </app-button>
       </ion-col>
     </ion-row>
-  </ion-grid>
+  </div>
 
-  <app-vesselownercard background="transparent" [isNoBorderShadow]="true" [vessel]="vessel"></app-vesselownercard>
+  <div>
+    <app-vesselownercard background="transparent" [isNoBorderShadow]="true" [vessel]="vessel"></app-vesselownercard>
+  </div>
 
   <div class="wo-section">
     <div class="wo-titles">
-      <app-title [title]="title" variant="h5" [isBlue]="true"></app-title>
+      <!-- TODO: change status to WO status -->
+      <!-- <app-title [title]="title" variant="h5" [isBlue]="true"></app-title> -->
       <h5 class="wo-title">{{woTitle}}</h5>
+      <p>{{  commonText?.comingSoon }}</p>
     </div>
-    <app-workordercard *ngFor="let wo of workOrders" [wo]="wo"></app-workordercard>
+    <!-- <app-workordercard *ngFor="let wo of workOrders" [wo]="wo"></app-workordercard>
     <div class="archive-btn">
       <app-button (click)="viewArchieved()" [title]="archivedBtnText" size="small"></app-button>
-    </div>
+    </div> -->
   </div>
-
-  </app-contentwrapper>
 </ion-content>

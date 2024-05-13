@@ -68,6 +68,18 @@
     }
 }
 
+:host.vessel-edit-btn {
+    #app-btn {
+        min-width: 100px;
+        --padding-start: 5px;
+        --padding-end: 5px;
+        max-width: 95%;
+        span {
+            margin: 0;
+        }
+    }
+}
+
 :host.edit-contract-btn {
     #app-btn {
         width: 190px;
