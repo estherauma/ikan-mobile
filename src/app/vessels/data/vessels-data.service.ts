@@ -9,7 +9,8 @@ import { SharedmethodsService } from 'src/app/shared/services/sharedmethods/shar
 })
 export class VesselsDataService {
   db: SQLiteObject;
-  vessels = new BehaviorSubject([]);
+  vesselsObs = new BehaviorSubject([]);
+  vessels = [];
 
   constructor(
     public platform: Platform,
@@ -25,13 +26,17 @@ export class VesselsDataService {
         this.retriveVessels();
       }).catch(e => console.log(e));
     });
+
+    this.getAll().subscribe((data) => {
+      this.vessels = data;
+    });
   }
 
-  retriveVessels() {
+  async retriveVessels() {
     const query = 'SELECT vessels.*, vessel_images.image_url \
       FROM vessels \
       LEFT JOIN vessel_images ON vessels.id = vessel_images.vessel_id';
-    this.db.executeSql(query, []).then(async(data) => {
+    return this.db.executeSql(query, []).then(async(data) => {
       const vessels = [];
       if (data.rows.length > 0) {
         for (let i = 0; i < data.rows.length; i++) {
@@ -53,12 +58,17 @@ export class VesselsDataService {
           });
         }
       }
-      this.vessels.next(vessels);
+      this.vesselsObs.next(vessels);
     }).catch((e) => console.log(e));
   }
 
   getAll() {
-    return this.vessels.asObservable();
+    return this.vesselsObs.asObservable();
+  }
+
+  async getVesselById(id) {
+    const vessel = this.vessels.find((entry) => entry.id === id);
+    return vessel;
   }
 
   async create(data) {
@@ -85,8 +95,24 @@ export class VesselsDataService {
     }).catch(e => console.log(e));
   }
 
-  update() {
-
+  update(data) {
+    const query = 'UPDATE vessels SET name = ?, reg_no = ?, type = ?, status = ?, \
+      capacity = ?, commissioning_date = ?, updated_at = ?, updated_by = ? \
+      WHERE id = ?';
+    const params = [data.name, data.reg_no, data.type, data.status, data.capacity,
+      data.commissioning_date, data.updated_at, data.updated_by, data.id];
+    
+    return this.db.executeSql(query, params).then(async(result) => {
+      await this.retriveVessels();
+      const vessel = await this.getVesselById(data.id);
+      return {
+        rowsAffected: result.rowsAffected,
+        vessel
+      };
+    }).catch(e => {
+      console.log(e);
+      return null;
+    });
   }
 
   delete(id) {
