@@ -257,4 +257,10 @@ export class SharedmethodsService {
     }
     return validators;
   }
+
+  convertCamelToSnakeCase(text: string) {
+    return text.replace(/(?:^|\.?)([A-Z0-9])/g,  (x, y) => {
+      return "_" + y.toLowerCase();
+    }).replace(/^_/, "");
+  }
 }
