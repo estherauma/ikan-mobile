@@ -66,7 +66,12 @@ export class CompaniesDataService {
   }
 
   async getCompanyById(id) {
-    return await this.companies.find((entry) => entry.id === id);
+    try {
+      return await this.companies.find((entry) => entry.id === id);
+    } catch (e) {
+      console.log(e);
+      return null;
+    }
   }
 
   async create(data) {
