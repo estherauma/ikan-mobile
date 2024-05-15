@@ -1,70 +1,47 @@
 <app-header [pageTitle]=""></app-header>
 
 <ion-content>
-  <div class="toggle-nav-buttons ion-padding">
-    <div class="active-btn" (click)="onGoToEssentials()">Essentials</div>
-    <div class="inactive-btn" (click)="onGoToFiles()">My Files</div>
+  <div class="title-container">
+    <ion-row class="ion-padding title">
+      <ion-col size="12">
+        <app-title [isBlue]="true" [title]="pageTitle"></app-title>
+      </ion-col>
+    </ion-row>
   </div>
-  <div class="ion-padding-vertical">
-    <div class="image-upload ion-margin-horizontal" (click)="onCreateVisa()">
-      <ion-thumbnail class="image">
-        <ion-img [src]=""></ion-img>
-      </ion-thumbnail>
-      <div style="display: flex; align-items: center;">
-        <ion-icon size="medium" name="add-outline"></ion-icon>
-        <ion-text><h5>Add Passport</h5></ion-text>
-      </div>
+  
+  <div class="segments-wrapper">
+    <div class="segments">
+      <ion-segment (ionChange)="onSegmentChange($event)" [value]="activeSegment">
+        <ion-segment-button value="essentials">
+          <ion-item lines="none">
+            <!--TODO: change icon -->
+            <ion-icon item-start name="person-circle-outline"></ion-icon>
+            <!--TODO: translate -->
+            <ion-label>{{ commonText?.essentials || 'Essentials' }}</ion-label>
+        </ion-item>
+        </ion-segment-button>
+        <ion-segment-button value="myfiles">
+          <ion-item lines="none">
+            <!--TODO: change icon -->
+            <ion-icon name="wallet-outline"></ion-icon>
+            <!--TODO: translate -->
+            <ion-label>{{ commonText?.myFiles || 'My Files' }}</ion-label>
+          </ion-item>
+        </ion-segment-button>
+      </ion-segment>
     </div>
-    <ion-card>
-      <ion-card-content>
-        <ion-grid>
-          <ion-row class="ion-align-items-center" (click)="onViewDocument('documentUrl')">
-            <ion-col size="2">
-              <ion-thumbnail>
-                <ion-img [src]=""></ion-img>
-              </ion-thumbnail>
-            </ion-col>
-            <ion-col size="9">
-              <ion-card-title>Visa</ion-card-title>
-              <ion-label>Uploaded xx/xx/xxxx</ion-label>
-            </ion-col>
-            <ion-col size="1">
-              <ion-icon name="checkmark-circle-outline"></ion-icon>
-              <ion-icon name="chevron-forward-outline"></ion-icon>
-            </ion-col>
-          </ion-row>
-        </ion-grid>
-      </ion-card-content>
-    </ion-card>
-    <div class="image-upload ion-margin-horizontal">
-      <ion-thumbnail class="image">
-        <ion-img [src]=""></ion-img>
-      </ion-thumbnail>
-      <div style="display: flex; align-items: center;">
-        <ion-icon size="medium" name="add-outline"></ion-icon>
-        <ion-text><h5>Add Document Name</h5></ion-text>
-      </div>
+
+    <div class="segment-content">
+      <app-essentials
+        *ngIf="activeSegment === 'essentials'"
+        class="segement-essentials"
+      >
+      </app-essentials>
+      <app-files
+        *ngIf="activeSegment === 'myfiles'"
+        class="segment-files"
+      >
+      </app-files>
     </div>
-    <ion-card>
-      <ion-card-content>
-        <ion-grid>
-          <ion-row class="ion-align-items-center">
-            <ion-col size="2">
-              <ion-thumbnail>
-                <ion-img [src]=""></ion-img>
-              </ion-thumbnail>
-            </ion-col>
-            <ion-col size="9">
-              <ion-card-title>Seaman's book</ion-card-title>
-              <ion-label>Uploaded xx/xx/xxxx</ion-label>
-            </ion-col>
-            <ion-col size="1">
-              <ion-icon name="checkmark-circle-outline"></ion-icon>
-              <ion-icon name="chevron-forward-outline"></ion-icon>
-            </ion-col>
-          </ion-row>
-        </ion-grid>
-      </ion-card-content>
-    </ion-card>
   </div>
 </ion-content>
