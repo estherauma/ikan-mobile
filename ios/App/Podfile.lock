@@ -8,6 +8,9 @@ PODS:
   - CapacitorCommunityFcm (5.0.1):
     - Capacitor
     - Firebase/Messaging
+  - CapacitorCommunityFirebaseAnalytics (6.0.0):
+    - Capacitor
+    - FirebaseAnalytics
   - CapacitorCordova (5.2.3)
   - CapacitorDevice (5.0.6):
     - Capacitor
@@ -44,6 +47,24 @@ PODS:
   - Firebase/Messaging (9.1.0):
     - Firebase/CoreOnly
     - FirebaseMessaging (~> 9.1.0)
+  - FirebaseAnalytics (9.1.0):
+    - FirebaseAnalytics/AdIdSupport (= 9.1.0)
+    - FirebaseCore (~> 9.0)
+    - FirebaseInstallations (~> 9.0)
+    - GoogleUtilities/AppDelegateSwizzler (~> 7.7)
+    - GoogleUtilities/MethodSwizzler (~> 7.7)
+    - GoogleUtilities/Network (~> 7.7)
+    - "GoogleUtilities/NSData+zlib (~> 7.7)"
+    - nanopb (< 2.30910.0, >= 2.30908.0)
+  - FirebaseAnalytics/AdIdSupport (9.1.0):
+    - FirebaseCore (~> 9.0)
+    - FirebaseInstallations (~> 9.0)
+    - GoogleAppMeasurement (= 9.1.0)
+    - GoogleUtilities/AppDelegateSwizzler (~> 7.7)
+    - GoogleUtilities/MethodSwizzler (~> 7.7)
+    - GoogleUtilities/Network (~> 7.7)
+    - "GoogleUtilities/NSData+zlib (~> 7.7)"
+    - nanopb (< 2.30910.0, >= 2.30908.0)
   - FirebaseCore (9.1.0):
     - FirebaseCoreDiagnostics (~> 9.0)
     - FirebaseCoreInternal (~> 9.0)
@@ -70,6 +91,26 @@ PODS:
     - GoogleUtilities/Reachability (~> 7.7)
     - GoogleUtilities/UserDefaults (~> 7.7)
     - nanopb (< 2.30910.0, >= 2.30908.0)
+  - GoogleAppMeasurement (9.1.0):
+    - GoogleAppMeasurement/AdIdSupport (= 9.1.0)
+    - GoogleUtilities/AppDelegateSwizzler (~> 7.7)
+    - GoogleUtilities/MethodSwizzler (~> 7.7)
+    - GoogleUtilities/Network (~> 7.7)
+    - "GoogleUtilities/NSData+zlib (~> 7.7)"
+    - nanopb (< 2.30910.0, >= 2.30908.0)
+  - GoogleAppMeasurement/AdIdSupport (9.1.0):
+    - GoogleAppMeasurement/WithoutAdIdSupport (= 9.1.0)
+    - GoogleUtilities/AppDelegateSwizzler (~> 7.7)
+    - GoogleUtilities/MethodSwizzler (~> 7.7)
+    - GoogleUtilities/Network (~> 7.7)
+    - "GoogleUtilities/NSData+zlib (~> 7.7)"
+    - nanopb (< 2.30910.0, >= 2.30908.0)
+  - GoogleAppMeasurement/WithoutAdIdSupport (9.1.0):
+    - GoogleUtilities/AppDelegateSwizzler (~> 7.7)
+    - GoogleUtilities/MethodSwizzler (~> 7.7)
+    - GoogleUtilities/Network (~> 7.7)
+    - "GoogleUtilities/NSData+zlib (~> 7.7)"
+    - nanopb (< 2.30910.0, >= 2.30908.0)
   - GoogleDataTransport (9.1.4):
     - GoogleUtilities/Environment (~> 7.7)
     - nanopb (< 2.30910.0, >= 2.30908.0)
@@ -82,6 +123,8 @@ PODS:
     - PromisesObjC (< 3.0, >= 1.2)
   - GoogleUtilities/Logger (7.7.0):
     - GoogleUtilities/Environment
+  - GoogleUtilities/MethodSwizzler (7.7.0):
+    - GoogleUtilities/Logger
   - GoogleUtilities/Network (7.7.0):
     - GoogleUtilities/Logger
     - "GoogleUtilities/NSData+zlib"
@@ -103,6 +146,7 @@ DEPENDENCIES:
   - "CapacitorApp (from `../../node_modules/@capacitor/app`)"
   - "CapacitorCamera (from `../../node_modules/@capacitor/camera`)"
   - "CapacitorCommunityFcm (from `../../node_modules/@capacitor-community/fcm`)"
+  - "CapacitorCommunityFirebaseAnalytics (from `../../node_modules/@capacitor-community/firebase-analytics`)"
   - "CapacitorCordova (from `../../node_modules/@capacitor/ios`)"
   - "CapacitorDevice (from `../../node_modules/@capacitor/device`)"
   - "CapacitorFilesystem (from `../../node_modules/@capacitor/filesystem`)"
@@ -123,11 +167,13 @@ DEPENDENCIES:
 SPEC REPOS:
   trunk:
     - Firebase
+    - FirebaseAnalytics
     - FirebaseCore
     - FirebaseCoreDiagnostics
     - FirebaseCoreInternal
     - FirebaseInstallations
     - FirebaseMessaging
+    - GoogleAppMeasurement
     - GoogleDataTransport
     - GoogleUtilities
     - nanopb
@@ -142,6 +188,8 @@ EXTERNAL SOURCES:
     :path: "../../node_modules/@capacitor/camera"
   CapacitorCommunityFcm:
     :path: "../../node_modules/@capacitor-community/fcm"
+  CapacitorCommunityFirebaseAnalytics:
+    :path: "../../node_modules/@capacitor-community/firebase-analytics"
   CapacitorCordova:
     :path: "../../node_modules/@capacitor/ios"
   CapacitorDevice:
@@ -180,6 +228,7 @@ SPEC CHECKSUMS:
   CapacitorApp: 16e189e0463976060ccf34868e3083858c977e2b
   CapacitorCamera: 084b0b228bba7d00587910337b1c89e93b1d32ab
   CapacitorCommunityFcm: e52d5e7ec224742bb703aeb09f3ef8d9ce717f4f
+  CapacitorCommunityFirebaseAnalytics: dd31faa0a3e6f4d00624080ee5b9439b484cd092
   CapacitorCordova: 35def3ebfdef491f0a7b652816eb873ff4b20bbf
   CapacitorDevice: 2c968f98a1ec4d22357418c1521e7ddc46c675e6
   CapacitorFilesystem: 5efb77d5dc1c8c05bce5e19f0e7bfdf72363fb43
@@ -197,16 +246,18 @@ SPEC CHECKSUMS:
   CapawesomeCapacitorFilePicker: 4a27a464c569de315738fcb7bdd3ad544ef3c7c2
   CordovaPlugins: c827c43ee083cc93359979c28157033eca2082a1
   Firebase: 91c243d75573ac6e7c9735ec859b72bffb61347d
+  FirebaseAnalytics: bf11064790ac96804df1df9ddc0ae45af950d9fc
   FirebaseCore: b7bfc258e996eada23b3666bd6b9a22ca092acb8
   FirebaseCoreDiagnostics: 2dabba3412b23b524823325739f45e520f67d1e7
   FirebaseCoreInternal: cb966328b6985dbd6f535e1461291063e1c4a00f
   FirebaseInstallations: a91c74276b544524ce144c8315d8cdbce2dbe30b
   FirebaseMessaging: 0bf5caa621182ccc66ba3be3b15e68d800d98e9f
+  GoogleAppMeasurement: 8ecc717f2abe3f9ee95a5d38db08827852894acc
   GoogleDataTransport: 5fffe35792f8b96ec8d6775f5eccd83c998d5a3b
   GoogleUtilities: e0913149f6b0625b553d70dae12b49fc62914fd1
   nanopb: b552cce312b6c8484180ef47159bc0f65a1f0431
   PromisesObjC: 99b6f43f9e1044bd87a95a60beff28c2c44ddb72
 
-PODFILE CHECKSUM: 7476259b95a40fa69e2154f4ecb7bad4d2b02be4
+PODFILE CHECKSUM: 05fddb67c78857d18cdd5e06642561e6552e2d53
 
 COCOAPODS: 1.15.2
