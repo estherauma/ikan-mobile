@@ -29,7 +29,6 @@ export class HeaderComponent implements OnInit {
     const user = await this.sharedMethods.getUserData();
     if (user) {
       const dashboard = this.authService.getCurrentUserBaseUrlFromRole(user?.role);
-      console.log('dashboard------', dashboard)
       this.defaultHref = dashboard ?? this.defaultHref;
     }
 
