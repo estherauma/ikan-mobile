@@ -1,9 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { ModalController } from '@ionic/angular';
+import { AlertController, ModalController, Platform } from '@ionic/angular';
 import { ConfirmmodalComponent } from 'src/app/shared/components/confirmmodal/confirmmodal.component';
 import { DocumentactionsComponent } from 'src/app/shared/components/documentactions/documentactions.component';
 import { DocumentselectedactionComponent } from 'src/app/shared/components/documentselectedaction/documentselectedaction.component';
+import { ContentService } from 'src/app/shared/services/content/content.service';
+import { SharedmethodsService } from 'src/app/shared/services/sharedmethods/sharedmethods.service';
+import { Document } from 'src/app/shared/types/types';
 
 @Component({
   selector: 'app-files',
@@ -17,17 +20,51 @@ export class FilesPage implements OnInit {
   allActionModal;
   documentSelectedModal;
   confirmModal;
-  files = new Array(20).fill({
-    name:'FileName.jpg',
-    date: 'xx/xx/xxx',
-    size:'412kb'
+  documents: Document[] = new Array(3).fill({
+    name:'TestImage.jpg',
+    date: '2024-05-15T13:43:17.714788+03:00',
+    size:'412kb',
+    id: Math.random(),
+    userId: 1,
+    type: 'image',
+    url: 'assets/icon/boat_with_blue_bg.svg',
+    createdAt: '2024-05-15T13:43:17.714788+03:00',
+    createdBy: 3,
+    updatedAt: '2024-05-15T13:43:17.714788+03:00',
+    updatedBy: 3,
   });
+
+
+  isEditing = false;
+  selectedDocuments: Document[] = [];
+  commonText: any;
+  
   constructor(
     public modalCtrl: ModalController,
-    public router: Router
+    public router: Router,
+    public platform: Platform,
+    public sharedMethods: SharedmethodsService,
+    public contentService: ContentService,
+    public alertController: AlertController,
+    // public fileOpener: FileOpener,
   ) { }
 
   ngOnInit() {
+    this.commonText = this.contentService.commonText;
+    const otherDocs = new Array(4).fill({
+      name:'TestPdf.jpg',
+      date: '2024-05-15T13:43:17.714788+03:00',
+      size:'412kb',
+      id: Math.random(),
+      userId: 1,
+      type: 'pdf',
+      url: 'assets/icon/boat_with_blue_bg.svg',
+      createdAt: '2024-05-15T13:43:17.714788+03:00',
+      createdBy: 3,
+      updatedAt: '2024-05-15T13:43:17.714788+03:00',
+      updatedBy: 3,
+    });
+    this.documents = [...this.documents, ...otherDocs]
   }
   searchResult(data) {}
 
@@ -100,12 +137,49 @@ export class FilesPage implements OnInit {
     }
   }
 
-  onGoToEssentials() {
-    this.router.navigate(['mydocuments/home']);
+  viewImage(doc: Document) {}
+
+  viewFile(doc) {}
+
+  editDocuments() {
+    this.isEditing = !this.isEditing;
+    this.selectedDocuments = [];
   }
 
-  onGoToFiles() {
-    this.router.navigate(['mydocuments/files']);
+  selectDocument(doc) {
+    const index = this.selectedDocuments.indexOf(doc);
+    if (index === -1) {
+      this.selectedDocuments.push(doc);
+    } else {
+      this.selectedDocuments.splice(index, 1);
+    }
   }
 
+  unSelectDocument(doc) {
+    const index = this.selectedDocuments.indexOf(doc);
+    this.selectedDocuments.splice(index, 1);
+  }
+
+  async openDelAlert() {
+    const alertProps = {
+      cssClass: 'del-doc-alert',
+      header: this.commonText?.delete + ` ${this.selectedDocuments.length} ` + this.commonText?.imageOrDoc || 'Delete docs',
+      backdropDismiss: false,
+      buttons: [ {
+        text: this.commonText?.cancel?.toUpperCase(),
+        role: 'cancel',
+      },
+      {
+        text: this.commonText?.delete?.toUpperCase(),
+        handler: async() => {}
+      }, ]
+    };
+
+    const alert = await this.alertController.create(alertProps);
+    await alert.present();
+  }
+
+  async shareDocs() {}
+
+  async deleteDocs(docs: Document[]) {}
 }

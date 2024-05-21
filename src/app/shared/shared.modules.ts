@@ -45,6 +45,8 @@ import { SelectLanguageComponent } from './components/select-language/select-lan
 import { SafeurlPipe } from './pipes/safeurl/safeurl.pipe';
 import { PaymentsPage } from '../workers/profiles/worker/payments/payments.page';
 import { InfoPage as WorkerProfile } from '../workers/profiles/worker/info/info.page';
+import { FilesPage } from '../mydocuments/files/files.page';
+import { EssentialsComponent } from '../mydocuments/essentials/essentials.component';
 
 
 @NgModule({
@@ -98,6 +100,8 @@ import { InfoPage as WorkerProfile } from '../workers/profiles/worker/info/info.
     SelectLanguageComponent,
     PaymentsPage,
     WorkerProfile,
+    FilesPage,
+    EssentialsComponent
   ],
   exports: [
     SafeurlPipe,
@@ -142,6 +146,8 @@ import { InfoPage as WorkerProfile } from '../workers/profiles/worker/info/info.
     CompanycontractcardComponent,
     PaymentsPage,
     WorkerProfile,
+    FilesPage,
+    EssentialsComponent,
   ]
 })
 

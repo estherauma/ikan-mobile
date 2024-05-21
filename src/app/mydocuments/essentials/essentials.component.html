@@ -1,0 +1,124 @@
+<div class="essentials-container">
+  <ion-grid>
+    <!-- add passport -->
+    <ion-card
+      ngClass="{'dotted': noPassport}"
+      (click)="addPassport()"
+    >
+      <ion-card-content>
+        <ion-row>
+          <ion-col size="3" class="img-col">
+            <div class="img-wrapper">
+              <ion-img></ion-img>
+            </div>
+          </ion-col>
+          <ion-col size="9" class="details-col">
+            <!-- translate -->
+            <ion-label>
+              <span>
+                <ion-icon name="add"></ion-icon>
+              </span>
+              {{ 'Add Passport' }}
+            </ion-label>
+            <!-- <p>
+              <span>{{ commonText?.uploaded }}: 
+              </span>
+              date
+            </p> -->
+          </ion-col>
+        </ion-row>
+      </ion-card-content>
+    </ion-card>
+    
+    <!-- add visa -->
+    <ion-card
+      ngClass="{'dotted': noVisa}"
+      (click)="addVisa()"
+    >
+      <ion-card-content>
+        <ion-row>
+          <ion-col size="3" class="img-col">
+            <div class="img-wrapper">
+              <ion-img></ion-img>
+            </div>
+          </ion-col>
+          <ion-col size="9" class="details-col">
+            <!-- translate -->
+            <ion-label>
+              <span>
+                <ion-icon name="add"></ion-icon>
+              </span>
+              {{ 'Add Visa' }}
+            </ion-label>
+            <!-- <p>
+              <span>{{ commonText?.uploaded }}: 
+              </span>
+              date
+            </p> -->
+          </ion-col>
+        </ion-row>
+      </ion-card-content>
+    </ion-card>
+    
+    <!-- add seamans book -->
+    <ion-card
+      ngClass="{'dotted': noSeaMansBook}"
+      (click)="addSeamansBook()"
+    >
+      <ion-card-content>
+        <ion-row>
+          <ion-col size="3" class="img-col">
+            <div class="img-wrapper">
+              <ion-img></ion-img>
+            </div>
+          </ion-col>
+          <ion-col size="9" class="details-col">
+            <!-- translate -->
+            <ion-label>
+              <span>
+                <ion-icon name="add"></ion-icon>
+              </span>
+              {{ "Add Seaman's book" }}
+            </ion-label>
+            <!-- <p>
+              <span>{{ commonText?.uploaded }}: 
+              </span>
+              date
+            </p> -->
+          </ion-col>
+        </ion-row>
+      </ion-card-content>
+    </ion-card>
+    
+    <!-- add document -->
+    <ion-card
+      ngClass="{'dotted': noDocument}"
+      (click)="addDocument()"
+    >
+      <ion-card-content>
+        <ion-row>
+          <ion-col size="3" class="img-col">
+            <div class="img-wrapper">
+              <ion-img></ion-img>
+            </div>
+          </ion-col>
+          <ion-col size="9" class="details-col">
+            <!-- translate -->
+            <ion-label>
+              <span>
+                <ion-icon name="add"></ion-icon>
+              </span>
+              {{ 'Add Document' }}
+            </ion-label>
+            <!-- <p>
+              <span>{{ commonText?.uploaded }}: 
+              </span>
+              date
+            </p> -->
+          </ion-col>
+        </ion-row>
+      </ion-card-content>
+    </ion-card>
+
+  </ion-grid>
+</div>

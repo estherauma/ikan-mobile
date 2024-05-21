@@ -258,6 +258,7 @@ const routes: Routes = [
     loadChildren: () => import('./buyers/reporting/create/create.module').then( m => m.CreatePageModule)
   },
   {
+    // TOD0: change path on prismic, remove unnecessary paths
     path: 'mydocuments/home',
     loadChildren: () => import('./mydocuments/home/home.module').then( m => m.HomePageModule)
   },
