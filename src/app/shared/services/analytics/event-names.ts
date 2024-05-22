@@ -1,3 +1,11 @@
-export const loginPage = 'login_page';
-export const homePage = 'home_page';
-export const changeLanguage = 'change_language';
+export enum pageEventNames {
+    login = 'page_login',
+    register = 'page_register',
+    forgotPassword = 'page_forgot_password',
+    privacyPolicy = 'page_privacy_policy',
+    termsOfUse = 'page_terms_of_use',
+}
+
+export enum appEventNames {
+
+}
