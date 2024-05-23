@@ -6,8 +6,11 @@ import { DocumentactionsComponent } from 'src/app/shared/components/documentacti
 import { DocumentselectedactionComponent } from 'src/app/shared/components/documentselectedaction/documentselectedaction.component';
 import { ContentService } from 'src/app/shared/services/content/content.service';
 import { SharedmethodsService } from 'src/app/shared/services/sharedmethods/sharedmethods.service';
-import { Document } from 'src/app/shared/types/types';
+import { DocumentType } from 'src/app/shared/types/types';
+import { FileOpener } from '@awesome-cordova-plugins/file-opener/ngx';
 import { ViewImageComponent } from '../view-image/view-image.component';
+import { UploadService } from 'src/app/shared/services/upload/upload.service';
+import { DocumentsDataService } from '../data/documents-data.service';
 
 @Component({
   selector: 'app-files',
@@ -22,24 +25,9 @@ export class FilesPage implements OnInit {
   allActionModal;
   documentSelectedModal;
   confirmModal;
-  documents: Document[] = new Array(3).fill({
-    name:'TestImage.jpg',
-    date: '2024-05-15T13:43:17.714788+03:00',
-    size:'412kb',
-    id: Math.random(),
-    userId: 1,
-    type: 'image',
-    // url: 'assets/icon/boat_with_blue_bg.svg',
-    url: 'assets/imgs/zila1.jpeg',
-    createdAt: '2024-05-15T13:43:17.714788+03:00',
-    createdBy: 3,
-    updatedAt: '2024-05-15T13:43:17.714788+03:00',
-    updatedBy: 3,
-  });
-
-
+  documents: DocumentType[] = [];
   isEditing = false;
-  selectedDocuments: Document[] = [];
+  selectedDocuments: DocumentType[] = [];
   commonText: any;
   
   constructor(
@@ -49,25 +37,14 @@ export class FilesPage implements OnInit {
     public sharedMethods: SharedmethodsService,
     public contentService: ContentService,
     public alertController: AlertController,
-    // private fileOpener: FileOpener,
+    public fileOpener: FileOpener,
+    public documentsDataService: DocumentsDataService,
+    public uploadService: UploadService,
   ) { }
 
   ngOnInit() {
     this.commonText = this.contentService.commonText;
-    const otherDocs = new Array(4).fill({
-      name:'Test Pdf',
-      date: '2024-05-15T13:43:17.714788+03:00',
-      size:'412kb',
-      id: Math.random(),
-      userId: 1,
-      type: 'pdf',
-      url: 'assets/documents/sample-pdf-file.pdf',
-      createdAt: '2024-05-15T13:43:17.714788+03:00',
-      createdBy: 3,
-      updatedAt: '2024-05-15T13:43:17.714788+03:00',
-      updatedBy: 3,
-    });
-    this.documents = [...this.documents, ...otherDocs]
+    this.documents = this.documentsDataService.documents;
   }
   searchResult(data) {}
 
@@ -140,7 +117,76 @@ export class FilesPage implements OnInit {
     }
   }
 
-  async viewImage(doc: Document) {
+  async addDocument() {
+    const alert = await this.alertController.create({
+      cssClass: 'add-file-alert',
+      buttons: [
+        {
+          // translate
+          text: 'Add image',
+          cssClass: 'add-img-btn',
+          handler: async() => {
+            const fileData = await this.uploadService.takePicture();
+            console.log('fileData', fileData)
+            return { fileData };
+          }
+        },
+        {
+          // translate
+          text: 'Add document',
+          cssClass: 'add-doc-btn',
+          handler: async() => {
+            const fileData = await this.uploadService.choosePdfFile();
+            // const fileData = await this.uploadService.chooseFile();
+            console.log('fileData', fileData)
+            return { fileData };
+          }
+        },
+        {
+          // translate
+          text: 'Cancel',
+          role: 'cancel',
+          cssClass: 'cancel-btn',
+        }
+      ]
+    });
+    alert.present();
+    alert.onDidDismiss().then(async(data) => {
+      console.log('data', data)
+      if ( data.role !== 'cancel' && data?.data?.fileData && Object.keys(data?.data?.fileData).length) {
+        const userData = await this.sharedMethods.getUserData();
+        const now = this.sharedMethods.getCurrentDateTime();
+        const appRef = this.sharedMethods.generateAppRef();
+        const { fileData } = data?.data;
+        const dataToSave = {
+          appRef,
+          userId: userData.id,
+          fileName: fileData.fileName,
+          fileUrl: fileData.docType === 'image' ? fileData.webPath : fileData.uriPath,
+          fileSize: fileData.fileSize,
+          docType: fileData.docType,
+          isEssential: false,
+          createdAt: now,
+          updatedAt: now,
+          createdBy: userData.id,
+          updatedBy: userData.id,
+        };
+
+        const insertId = await this.documentsDataService.create(dataToSave);
+        if (insertId) {
+          const newDoc = {
+            id: insertId,
+            ...dataToSave,
+          };
+          this.documents = [newDoc, ...this.documents];
+        } else {
+          this.sharedMethods.showToast('Failed to save document');
+        }
+      }
+    });
+  }
+
+  async viewImage(doc: DocumentType) {
     if (!this.isEditing) {
       const modal = await this.modalCtrl.create({
         cssClass: 'notification-modal view-image',
@@ -154,7 +200,17 @@ export class FilesPage implements OnInit {
     }
   }
 
-  viewFile(doc) {}
+  viewFile(doc: DocumentType) {
+    if (!this.isEditing) {
+      if (this.sharedMethods.currentPlatform === 'web') {
+        window.open(doc.fileUrl, '_blank');
+      } else {
+        this.fileOpener.open(doc.fileUrl, 'application/pdf')
+        .then(() => console.log('File is opened'))
+        .catch(e => console.log('Error opening file', e));
+      }
+    }
+  }
 
   editDocuments() {
     this.isEditing = !this.isEditing;

@@ -18,6 +18,7 @@ export class SharedmethodsService {
   public deviceUuid: any;
   networkListener: PluginListenerHandle;
   isIos = false;
+  currentPlatform: string = '';
 
   constructor(
     public loadingCtrl: LoadingController,
@@ -26,6 +27,7 @@ export class SharedmethodsService {
     if (this.platform.is('ios')) {
       this.isIos = true;
     }
+    this.currentPlatform = this.getCurrentPlatform();
   }
 
   async showLoader(message: string, duration = 5000) {
@@ -262,5 +264,15 @@ export class SharedmethodsService {
     return text.replace(/(?:^|\.?)([A-Z0-9])/g,  (x, y) => {
       return "_" + y.toLowerCase();
     }).replace(/^_/, "");
+  }
+
+  getCurrentPlatform() {
+    if (this.platform.is('desktop') || this.platform.is('mobileweb') ) {
+      return 'web';
+    } else if (this.platform.is('ios')) {
+      return 'ios';
+    } else if (this.platform.is('android')) {
+      return 'android';
+    }
   }
 }
