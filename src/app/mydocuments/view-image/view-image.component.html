@@ -1,10 +1,10 @@
 <div class="image-view-wrapper" >
   <ion-icon name="close" (click)="closeImage()"></ion-icon>
   <div class="img-wrapper">
-    <img *ngIf="sharedMethods.isIos" [src]="imageFile.url | safeurl" alt="{{ imageFile.name }}" />
-    <img *ngIf="!sharedMethods.isIos" [src]="imageFile.url" alt="{{ imageFile.name }}" />
+    <img *ngIf="sharedMethods.isIos" [src]="imageFile.fileUrl | safeurl" alt="{{ imageFile.fileName }}" />
+    <img *ngIf="!sharedMethods.isIos" [src]="imageFile.fileUrl" alt="{{ imageFile.fileName }}" />
   </div>
   <div class="name-wrapper">
-    <p>{{ imageFile.name }}</p>
+    <p>{{ imageFile.fileName }}</p>
   </div>
 </div>
