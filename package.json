@@ -14,8 +14,7 @@
     "ios-livereload": "ionic cap run ios -l --external --consolelogs",
     "create-migration": "node scripts/migrations.js",
     "build-staging": "ionic build --configuration=staging",
-    "build-production":"ionic build --configuration=production"
-
+    "build-production": "ionic build --configuration=production"
   },
   "private": true,
   "dependencies": {
@@ -25,7 +24,9 @@
     "@angular/platform-browser": "^16.1.7",
     "@angular/platform-browser-dynamic": "^16.1.7",
     "@angular/router": "^16.1.7",
+    "@awesome-cordova-plugins/chooser": "^6.7.0",
     "@awesome-cordova-plugins/core": "^6.3.0",
+    "@awesome-cordova-plugins/file-opener": "^6.3.0",
     "@awesome-cordova-plugins/sqlite": "^6.2.0",
     "@capacitor-community/fcm": "^5.0.1",
     "@capacitor/android": "^5.0.0",
@@ -52,6 +53,8 @@
     "capacitor-native-settings": "^5.0.0",
     "capacitor-voice-recorder": "^5.0.0",
     "chart.js": "^3.9.1",
+    "cordova-plugin-chooser": "^1.3.2",
+    "cordova-plugin-file-opener2": "^4.0.0",
     "cordova-sqlite-storage": "^6.0.0",
     "date-fns": "^2.30.0",
     "howler": "^2.2.3",

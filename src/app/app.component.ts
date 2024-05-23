@@ -16,6 +16,7 @@ import { ModalController, Platform } from '@ionic/angular';
 import { App } from '@capacitor/app';
 import { Location } from '@angular/common';
 import { LocalNotifications  } from '@capacitor/local-notifications';
+import { DocumentsDataService } from './mydocuments/data/documents-data.service';
 
 @Component({
   selector: 'app-root',
@@ -43,6 +44,8 @@ export class AppComponent implements OnInit, OnDestroy {
     public modalController: ModalController,
     public platform: Platform,
     public location: Location,
+    // check y I have to inject it here
+    public docsSrev: DocumentsDataService,
   ) {
     this.authService.setUpAuthData();
     this.contentService.setUpAppData().then(() => {

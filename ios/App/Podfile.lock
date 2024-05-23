@@ -1,43 +1,43 @@
 PODS:
-  - Capacitor (5.2.3):
+  - Capacitor (5.7.5):
     - CapacitorCordova
   - CapacitorApp (5.0.0):
     - Capacitor
-  - CapacitorCamera (5.0.7):
+  - CapacitorCamera (5.0.9):
     - Capacitor
-  - CapacitorCommunityFcm (5.0.1):
+  - CapacitorCommunityFcm (5.0.3):
     - Capacitor
     - Firebase/Messaging
-  - CapacitorCordova (5.2.3)
-  - CapacitorDevice (5.0.6):
+  - CapacitorCordova (5.7.5)
+  - CapacitorDevice (5.0.7):
     - Capacitor
-  - CapacitorFilesystem (5.1.2):
+  - CapacitorFilesystem (5.2.1):
     - Capacitor
   - CapacitorHaptics (5.0.0):
     - Capacitor
   - CapacitorKeyboard (5.0.0):
     - Capacitor
-  - CapacitorLocalNotifications (5.0.6):
+  - CapacitorLocalNotifications (5.0.7):
     - Capacitor
-  - CapacitorNativeSettings (5.0.0):
+  - CapacitorNativeSettings (5.0.1):
     - Capacitor
-  - CapacitorNetwork (5.0.6):
+  - CapacitorNetwork (5.0.7):
     - Capacitor
-  - CapacitorPreferences (5.0.6):
+  - CapacitorPreferences (5.0.7):
     - Capacitor
-  - CapacitorPushNotifications (5.0.6):
+  - CapacitorPushNotifications (5.1.1):
     - Capacitor
-  - CapacitorSplashScreen (5.0.6):
+  - CapacitorSplashScreen (5.0.7):
     - Capacitor
-  - CapacitorStatusBar (5.0.6):
+  - CapacitorStatusBar (5.0.7):
     - Capacitor
-  - CapacitorToast (5.0.6):
+  - CapacitorToast (5.0.7):
     - Capacitor
   - CapacitorVoiceRecorder (5.0.0):
     - Capacitor
-  - CapawesomeCapacitorFilePicker (5.1.1):
+  - CapawesomeCapacitorFilePicker (5.3.0):
     - Capacitor
-  - CordovaPlugins (5.5.1):
+  - CordovaPlugins (5.7.5):
     - CapacitorCordova
   - Firebase/CoreOnly (9.1.0):
     - FirebaseCore (= 9.1.0)
@@ -176,26 +176,26 @@ EXTERNAL SOURCES:
     :path: "../capacitor-cordova-ios-plugins"
 
 SPEC CHECKSUMS:
-  Capacitor: 6f44cbc33839b8a4202b8eac97041fe584083417
+  Capacitor: 7d42085cb786b2d3ea9ac8a17ebd7e3305be7b72
   CapacitorApp: 16e189e0463976060ccf34868e3083858c977e2b
-  CapacitorCamera: 084b0b228bba7d00587910337b1c89e93b1d32ab
-  CapacitorCommunityFcm: e52d5e7ec224742bb703aeb09f3ef8d9ce717f4f
-  CapacitorCordova: 35def3ebfdef491f0a7b652816eb873ff4b20bbf
-  CapacitorDevice: 2c968f98a1ec4d22357418c1521e7ddc46c675e6
-  CapacitorFilesystem: 5efb77d5dc1c8c05bce5e19f0e7bfdf72363fb43
+  CapacitorCamera: 4892c5c392f60039d853dde78bc50ba19fbd113e
+  CapacitorCommunityFcm: 3e42b0f0460c791aa5f2b142113db2e94dcbb797
+  CapacitorCordova: c946a6052b547e1e185fc46862003f7b9130ead1
+  CapacitorDevice: fc91bdb484dc0e70755e9b621cd557afe642613a
+  CapacitorFilesystem: 9f3e3c7fea2fff12f46dd5b07a2914f2103e4cfc
   CapacitorHaptics: a7d1a6be8d84bcb2749bad57230a8b9e8cdcef7c
   CapacitorKeyboard: 8a25a4241b74f69d457a7e81220a54c22214a679
-  CapacitorLocalNotifications: c2d8b14794064fd4814b1d6c4ddbac8029afa295
-  CapacitorNativeSettings: 1bfca11cd2d3920ad0e319d6e4d81a99fc53255f
-  CapacitorNetwork: d80b3e79bef6ec37640ee2806c19771f07ff2d0c
-  CapacitorPreferences: f03954bcb0ff09c792909e46bff88e3183c16b10
-  CapacitorPushNotifications: 7eb70469f1fcc3dec07126336d4896520e4991db
-  CapacitorSplashScreen: 5fa2ab5e46cf5cc530cf16a51c80c7a986579ccd
-  CapacitorStatusBar: 565c0a1ebd79bb40d797606a8992b4a105885309
-  CapacitorToast: bb0d79b78d9c27c0199b57f735dd50b8fc363489
+  CapacitorLocalNotifications: c58afadd159f6bc540ef9b3cbdbc82510a2bf112
+  CapacitorNativeSettings: 6e94ed3c0465206756f320df18efc52f053ce3c7
+  CapacitorNetwork: 81ef9728aa7a65cac8c1181ce79e578162b57b57
+  CapacitorPreferences: 77ac427e98db83bace772455f8ba447430382c4c
+  CapacitorPushNotifications: 2327900bc002f5ff49ee6d2231796d0635b4a1b0
+  CapacitorSplashScreen: dd3de3f3644710fa2a697cfb91ec262eece4d242
+  CapacitorStatusBar: f390fbb49b82ffb754ea4b3cf71dc8b048baf3e7
+  CapacitorToast: c8bb89eeb59a23c1fc298f138cc06c8ff4d90ac1
   CapacitorVoiceRecorder: 872ea857b497ce2c71afe3e4eb5de0a74290c0db
-  CapawesomeCapacitorFilePicker: 4a27a464c569de315738fcb7bdd3ad544ef3c7c2
-  CordovaPlugins: c827c43ee083cc93359979c28157033eca2082a1
+  CapawesomeCapacitorFilePicker: 41f486cb4a89c6a7c8a4f5d683dbf96658894182
+  CordovaPlugins: 7156767395773ea3ac434eb62b53cafdba3ca4f8
   Firebase: 91c243d75573ac6e7c9735ec859b72bffb61347d
   FirebaseCore: b7bfc258e996eada23b3666bd6b9a22ca092acb8
   FirebaseCoreDiagnostics: 2dabba3412b23b524823325739f45e520f67d1e7
