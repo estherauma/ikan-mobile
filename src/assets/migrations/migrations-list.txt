@@ -15,3 +15,4 @@
 1701768285812_addSurveysTable.sql
 1707738917494_addProfilesTable.sql
 1707910192206_addAccountInformationTable.sql
+1716447304379_addDocumentsTable.sql
