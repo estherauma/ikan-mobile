@@ -18,6 +18,11 @@ export class EssentialsComponent  implements OnInit {
   userData: any;
   userPassportDetails: any;
   passportImageUrl: string = '';
+  userVisaDetails: any;
+  visaImageUrl: string = '';
+  userSeamansBookDetails: any;
+  seamansBookImageUrl: string = '';
+  essentialDocuments: any = [];
 
   constructor(
     public router: Router,
@@ -35,6 +40,12 @@ export class EssentialsComponent  implements OnInit {
     if (this.userPassportDetails && this.userPassportDetails.imageUrl) {
       this.passportImageUrl = this.userPassportDetails.imageUrl;
     }
+
+    this.essentialDocuments = this.getEssentialDocuments();
+    this.userVisaDetails = this.essentialDocuments.find((doc) => doc.fileName === 'ikan-my-visa');
+    this.visaImageUrl = this.userVisaDetails?.fileUrl || '';
+    this.userSeamansBookDetails = this.essentialDocuments.find((doc) => doc.fileName === 'ikan-my-seamans-book');
+    this.seamansBookImageUrl = this.userSeamansBookDetails?.fileUrl || '';
   }
 
   async addPassport() {
@@ -48,9 +59,62 @@ export class EssentialsComponent  implements OnInit {
     });
   }
 
-  addVisa() {}
+  async addVisa() {
+    const image = await this.uploadService.takePicture();
+    const now = this.sharedMethods.getCurrentDateTime();
+    const visaSaveObj = {
+      appRef: this.sharedMethods.generateAppRef(),
+      userId: this.userData.id,
+      fileName: 'ikan-my-visa',
+      fileUrl: image.webPath,
+      fileSize:  '',
+      docType: image.docType,
+      isEssential: true,
+      createdAt: now,
+      updatedAt: now,
+      createdBy: this.userData.id,
+      updatedBy: this.userData.id,
+    };
+    const docInsertId = await this.documentsDataService.create(visaSaveObj);
+    if (docInsertId) {
+      this.ngOnInit();
+    } else {
+      // translate
+      this.sharedMethods.showToast('Failed to save visa');
+    }
+  }
 
-  addSeamansBook() {}
+  getEssentialDocuments() {
+    const allDocs = this.documentsDataService.documents;
+    return allDocs.filter((doc) => doc.isEssential);
+  }
+
+  async addSeamansBook() {
+    const image = await this.uploadService.takePicture();
+    const now = this.sharedMethods.getCurrentDateTime();
+    const saveObj = {
+      appRef: this.sharedMethods.generateAppRef(),
+      userId: this.userData.id,
+      fileName: 'ikan-my-seamans-book',
+      fileUrl: image.webPath,
+      fileSize:  '',
+      docType: image.docType,
+      isEssential: true,
+      createdAt: now,
+      updatedAt: now,
+      createdBy: this.userData.id,
+      updatedBy: this.userData.id,
+    };
+    const docInsertId = await this.documentsDataService.create(saveObj);
+    if (docInsertId) {
+      this.ngOnInit();
+    } else {
+      // translate
+      this.sharedMethods.showToast('Failed to save seamans book');
+    }
+  }
+  
+  viewSeamansBook() {}
 
   addDocument() {}
 }
