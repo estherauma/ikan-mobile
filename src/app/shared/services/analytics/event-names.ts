@@ -6,7 +6,7 @@ export enum pageEventNames {
     // agents pages
     createAgent = 'page_create_agent',
     viewAgent = 'page_view_agent',
-    agentList = 'page_agent_list',
+    listAgent = 'page_agent_list',
 
     // Auth pages
     login = 'page_login',
@@ -21,13 +21,29 @@ export enum pageEventNames {
     registerSuccess = 'page_register_success',
     requestPasswordReset = 'page_request_password_reset',
     signup = 'page_signup',
+    loginMethod = 'page_login_method',
 
     // companies
-    companyList = 'page_company_list',
+    createCompany = 'page_company_create',
+    listCompany = 'page_company_list',
+    viewCompany = 'page_company_list',
 
     // contracts
+    createContract = 'page_contract_create',
+    listContracts = 'page_contract_list',
+    viewContracts = 'page_contract_view',
+
+    // contract clauses
+    createClause = 'page_clause_create',
+    createClauseDetails = 'page_clause_create_details',
+    viewClause = 'page_clause_view',
 
     // dashboards
+    viewBuyerDashboard = 'page_buyer_dashboard',
+    viewIndonesianDashboard = 'page_indonesian_dashboard',
+    viewTaiwaneseDashboard = 'page_taiwanese_dashboard',
+    viewVesselOwnerDashboard = 'page_vessel_owner_dashboard',
+    viewWorkerDashboard = 'page_worker_dashboard',
 
     // get help
 

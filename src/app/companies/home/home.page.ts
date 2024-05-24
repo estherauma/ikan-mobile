@@ -5,6 +5,8 @@ import { CreatePage } from '../create/create.page';
 import { CompaniesDataService } from '../data/companies-data.service';
 import { ContentService } from 'src/app/shared/services/content/content.service';
 import { SharedmethodsService } from 'src/app/shared/services/sharedmethods/sharedmethods.service';
+import { AnalyticsService } from 'src/app/shared/services/analytics/analytics.service';
+import { pageEventNames } from 'src/app/shared/services/analytics/event-names';
 
 @Component({
   selector: 'app-home',
@@ -23,7 +25,8 @@ export class HomePage implements OnInit {
     public companiesDataService: CompaniesDataService,
     public router: Router,
     public contentService: ContentService,
-    public sharedMethods: SharedmethodsService
+    public sharedMethods: SharedmethodsService,
+    public analytics: AnalyticsService
   ) {
     this.companiesDataService.getAll().subscribe((data) => {
       // We'll need to remove this eventually. But for now, if there are any records that have no app ref,
@@ -42,6 +45,7 @@ export class HomePage implements OnInit {
     this.commonText = this.contentService.commonText;
     this.newText = this.commonText?.new;
     this.pageTitle = this.commonText?.companies;
+    this.analytics.trackEvent(pageEventNames.listCompany);
   }
 
   async createCompany() {

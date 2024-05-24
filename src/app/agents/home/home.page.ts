@@ -37,7 +37,7 @@ export class HomePage implements OnInit {
     this.commonText = this.contentService?.commonText;
     this.newText = this.commonText?.new;
     this.pageTitle = this.commonText?.manningAgents;
-    this.analytics.trackEvent(pageEventNames.agentList, this.sharedMethods.analyticsEventParams);
+    this.analytics.trackEvent(pageEventNames.listAgent, this.sharedMethods.analyticsEventParams);
   }
 
   searchResult(searchResult) {

@@ -6,6 +6,8 @@ import { ContentService } from 'src/app/shared/services/content/content.service'
 import { SharedmethodsService } from 'src/app/shared/services/sharedmethods/sharedmethods.service';
 import { ContractDataService } from '../../data/contract-data.service';
 import { VesselsDataService } from 'src/app/vessels/data/vessels-data.service';
+import { AnalyticsService } from 'src/app/shared/services/analytics/analytics.service';
+import { pageEventNames } from 'src/app/shared/services/analytics/event-names';
 
 @Component({
   selector: 'app-createdetail',
@@ -40,6 +42,7 @@ export class CreatedetailPage extends BaseformPage implements OnInit {
     private contractDataServ: ContractDataService,
     public router: Router,
     public vesselsDataService: VesselsDataService,
+    public analytics: AnalyticsService
   ) { 
     super(contentService)
   }
@@ -65,6 +68,7 @@ export class CreatedetailPage extends BaseformPage implements OnInit {
       }
       this.pageSetup();
     });
+    this.analytics.trackEvent(pageEventNames.createClauseDetails, this.sharedMethods.analyticsEventParams);
   }
 
   pageSetup(){
