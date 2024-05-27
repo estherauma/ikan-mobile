@@ -48,7 +48,7 @@ export class DocumentsDataService {
             fileUrl: data.rows.item(i).file_url,
             fileSize: data.rows.item(i).file_size,
             docType: data.rows.item(i).doc_type,
-            isEssential: (data.rows.item(i).is_essential || data.rows.item(i).is_essential === 'true') ? true : false,
+            isEssential: this.getIsEssentialValue(data.rows.item(i).is_essential),
             createdAt: data.rows.item(i).created_at,
             updatedAt: data.rows.item(i).updated_at,
             createdBy: data.rows.item(i).created_by,
@@ -57,12 +57,27 @@ export class DocumentsDataService {
         }
       }
       console.log('DOCUMENTSSSSSS---retrieve', documents);
+      documents.sort((a, b) => {
+        return new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime();
+      });
       this.documentsObs.next(documents);
       return documents;
     }).catch((e) => {
       console.log(e);
       return [];
     });
+  }
+
+  getIsEssentialValue(value) {
+    if (typeof value === 'boolean') {
+      return value;
+    } else if (typeof value === 'number' && value > 0) {
+      return true;
+    } else if(typeof value === 'string' && value === 'true') {
+      return true;
+    } else{
+      return false;
+    }
   }
 
   getAll() {
@@ -76,8 +91,8 @@ export class DocumentsDataService {
     const params = [data.appRef, data.userId, data.fileName, data.fileUrl,
       data.fileSize, data.docType, data.isEssential, data.createdAt, data.updatedAt,
       data.createdBy, data.updatedBy];
-    return this.db.executeSql(query, params).then((result) => {
-      this.retriveDocuments();
+    return this.db.executeSql(query, params).then(async(result) => {
+      await this.retriveDocuments();
       return result.insertId;
     }).catch((e) => {
       console.log(e);

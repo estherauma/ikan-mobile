@@ -74,9 +74,13 @@
         <ion-card-content>
           <ion-row>
             <ion-col size="3" class="img-col">
-              <div class="img-wrapper">
-                <img *ngIf="sharedMethods.isIos" [src]="visaImageUrl | safeurl" />
-                <img *ngIf="!sharedMethods.isIos" [src]="visaImageUrl" />
+              <div *ngIf="userVisaDetails.docType === 'image'" class="img-wrapper">
+                <img *ngIf="sharedMethods.isIos" [src]="userVisaDetails.fileUrl | safeurl" />
+                <img *ngIf="!sharedMethods.isIos" [src]="userVisaDetails.fileUrl" />
+              </div>
+              <div *ngIf="userVisaDetails.docType === 'pdf'" class="pdf-icon-wrapper">
+                <!-- translate -->
+                <img src="assets/icon/documents.svg" alt="pdf-icon">
               </div>
             </ion-col>
             <ion-col size="9" class="details-col">
@@ -120,9 +124,13 @@
         <ion-card-content>
           <ion-row>
             <ion-col size="3" class="img-col">
-              <div class="img-wrapper">
-                <img *ngIf="sharedMethods.isIos" [src]="seamansBookImageUrl | safeurl" />
-                <img *ngIf="!sharedMethods.isIos" [src]="seamansBookImageUrl" />
+              <div *ngIf="userSeamansBookDetails.docType === 'image'" class="img-wrapper">
+                <img *ngIf="sharedMethods.isIos" [src]="userSeamansBookDetails.fileUrl | safeurl" />
+                <img *ngIf="!sharedMethods.isIos" [src]="userSeamansBookDetails.fileUrl" />
+              </div>
+              <div *ngIf="userSeamansBookDetails.docType === 'pdf'" class="pdf-icon-wrapper">
+                <!-- translate -->
+                <img src="assets/icon/documents.svg" alt="pdf-icon">
               </div>
             </ion-col>
             <ion-col size="9" class="details-col">
@@ -150,8 +158,8 @@
             <ion-row>
               <ion-col size="3" class="img-col">
                 <div *ngIf="doc.docType === 'image'" class="img-wrapper">
-                  <img *ngIf="sharedMethods.isIos" [src]="doc.imageUrl | safeurl" />
-                  <img *ngIf="!sharedMethods.isIos" [src]="doc.imageUrl" />
+                  <img *ngIf="sharedMethods.isIos" [src]="doc.fileUrl | safeurl" />
+                  <img *ngIf="!sharedMethods.isIos" [src]="doc.fileUrl" />
                 </div>
                 <div *ngIf="doc.docType === 'pdf'" class="pdf-icon-wrapper">
                   <!-- translate -->
@@ -174,7 +182,7 @@
       </ng-container>
     </div>
 
-    <!-- add document -->
+    <!-- add essential document -->
     <ion-card (click)="addEssentialDocument()">
       <ion-card-content>
         <ion-row>

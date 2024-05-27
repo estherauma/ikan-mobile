@@ -346,4 +346,62 @@ export class SharedmethodsService {
     });
     return alert;
   }
+
+  async addDocument(commonText, alertController, uploadService, documentsDataService, isEssential: boolean = false) {
+    let newDoc = null;
+    const alert = await this.getSelectImageOrPdfAlert(commonText, alertController, uploadService);
+    await alert.present();
+    await alert.onDidDismiss().then(async(data) => {
+      if ( data.role !== 'cancel' && data?.data?.fileData && Object.keys(data?.data?.fileData).length) {
+        const addFileNameAlert = await this.getFileNameAlert(commonText, alertController);
+        addFileNameAlert.present().then(() => {
+          const firstInput: any = document.querySelector('ion-alert input');
+          firstInput.focus();
+          return;
+        });
+        addFileNameAlert.onDidDismiss().then(async(fileNameData) => {
+          const { fileData } = data?.data;
+          let fileName = fileData.fileName;
+          if (fileNameData.role !== 'cancel' && fileNameData?.data.fileName) {
+            fileName = fileNameData?.data.fileName;
+          }
+
+          const userData = await this.getUserData();
+          const now = this.getCurrentDateTime();
+          const appRef = this.generateAppRef();
+          const dataToSave = {
+            appRef,
+            userId: userData.id,
+            fileName,
+            fileUrl: fileData.docType === 'image' ? fileData.webPath : fileData.uriPath,
+            fileSize: fileData.fileSize,
+            docType: fileData.docType,
+            isEssential,
+            createdAt: now,
+            updatedAt: now,
+            createdBy: userData.id,
+            updatedBy: userData.id,
+          };
+
+          const insertId = await documentsDataService.create(dataToSave);
+          if (insertId) {
+            const insertedDoc = {
+              id: insertId,
+              ...dataToSave,
+            };
+            newDoc = insertedDoc;
+          } else {
+            if (isEssential) {
+              // translate
+              this.showToast(`Failed to save essential document`);
+            } else {
+              // translate
+              this.showToast(`Failed to save document`);
+            }
+          }
+        });
+      }
+    });
+    return newDoc;
+  }
 }

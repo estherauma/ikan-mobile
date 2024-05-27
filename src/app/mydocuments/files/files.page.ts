@@ -45,6 +45,7 @@ export class FilesPage implements OnInit {
   ngOnInit() {
     this.commonText = this.contentService.commonText;
     this.documents = this.documentsDataService.documents;
+    this.documents = this.documents.filter((doc) => !doc.isEssential) || this.documents;
   }
   searchResult(data) {}
 
@@ -117,73 +118,13 @@ export class FilesPage implements OnInit {
     }
   }
 
+  // TODO: new doc not reflecting. Need to refactor
   async addDocument() {
-    const alert = await this.alertController.create({
-      cssClass: 'add-file-alert',
-      buttons: [
-        {
-          // translate
-          text: 'Add image',
-          cssClass: 'add-img-btn',
-          handler: async() => {
-            const fileData = await this.uploadService.takePicture();
-            console.log('fileData', fileData)
-            return { fileData };
-          }
-        },
-        {
-          // translate
-          text: 'Add document',
-          cssClass: 'add-doc-btn',
-          handler: async() => {
-            const fileData = await this.uploadService.choosePdfFile();
-            // const fileData = await this.uploadService.chooseFile();
-            console.log('fileData', fileData)
-            return { fileData };
-          }
-        },
-        {
-          // translate
-          text: 'Cancel',
-          role: 'cancel',
-          cssClass: 'cancel-btn',
-        }
-      ]
-    });
-    alert.present();
-    alert.onDidDismiss().then(async(data) => {
-      console.log('data', data)
-      if ( data.role !== 'cancel' && data?.data?.fileData && Object.keys(data?.data?.fileData).length) {
-        const userData = await this.sharedMethods.getUserData();
-        const now = this.sharedMethods.getCurrentDateTime();
-        const appRef = this.sharedMethods.generateAppRef();
-        const { fileData } = data?.data;
-        const dataToSave = {
-          appRef,
-          userId: userData.id,
-          fileName: fileData.fileName,
-          fileUrl: fileData.docType === 'image' ? fileData.webPath : fileData.uriPath,
-          fileSize: fileData.fileSize,
-          docType: fileData.docType,
-          isEssential: false,
-          createdAt: now,
-          updatedAt: now,
-          createdBy: userData.id,
-          updatedBy: userData.id,
-        };
-
-        const insertId = await this.documentsDataService.create(dataToSave);
-        if (insertId) {
-          const newDoc = {
-            id: insertId,
-            ...dataToSave,
-          };
-          this.documents = [newDoc, ...this.documents];
-        } else {
-          this.sharedMethods.showToast('Failed to save document');
-        }
-      }
-    });
+    const newDoc = await this.sharedMethods.addDocument(this.commonText, this.alertController, this.uploadService, this.documentsDataService, false);
+    if (newDoc) {
+      this.documents = [newDoc, ...this.documents];
+      await this.ngOnInit();
+    }
   }
 
   async viewImage(doc: DocumentType) {

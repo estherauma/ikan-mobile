@@ -45,7 +45,7 @@ export class EssentialsComponent  implements OnInit {
 
     this.allEssentialDocuments = this.getEssentialDocuments();
     // excludes passport, visa & seamans book as they are displayed separately
-    this.otherEssentialDocuments = this.allEssentialDocuments.filter((doc) => doc.fileName !== 'ikan-my-passport' && doc.fileName !== 'ikan-my-visa' && doc.fileName !== 'ikan-my-seamans-book');
+    this.otherEssentialDocuments = this.getOtherEssentialDocuments();
     console.log('this.otherEssentialDocuments', this.otherEssentialDocuments);
     
     this.userVisaDetails = this.allEssentialDocuments.find((doc) => doc.fileName === 'ikan-my-visa');
@@ -96,6 +96,12 @@ export class EssentialsComponent  implements OnInit {
     const allDocs = this.documentsDataService.documents;
     return allDocs.filter((doc) => doc.isEssential);
   }
+  
+  getOtherEssentialDocuments() {
+    const allEssentialDocuments = this.getEssentialDocuments();
+    // excludes passport, visa & seamans book as they are displayed separately
+    return allEssentialDocuments.filter((doc) => doc.fileName !== 'ikan-my-passport' && doc.fileName !== 'ikan-my-visa' && doc.fileName !== 'ikan-my-seamans-book');
+  }
 
   async addSeamansBook() {
     const image = await this.uploadService.takePicture();
@@ -122,53 +128,14 @@ export class EssentialsComponent  implements OnInit {
     }
   }
 
+  // TODO: new doc not reflecting.
   async addEssentialDocument() {
-    const alert = await this.sharedMethods.getSelectImageOrPdfAlert(this.commonText, this.alertController, this.uploadService);
-    alert.present();
-    alert.onDidDismiss().then(async(data) => {
-      if ( data.role !== 'cancel' && data?.data?.fileData && Object.keys(data?.data?.fileData).length) {
-        const addFileNameAlert = await this.sharedMethods.getFileNameAlert(this.commonText, this.alertController);
-        addFileNameAlert.present().then(() => {
-          const firstInput: any = document.querySelector('ion-alert input');
-          firstInput.focus();
-          return;
-        });
-        addFileNameAlert.onDidDismiss().then(async(fileNameData) => {
-          const { fileData } = data?.data;
-          let fileName = fileData.fileName;
-          if (fileNameData.role !== 'cancel' && fileNameData?.data.fileName) {
-            fileName = fileNameData?.data.fileName;
-          }
-
-          const userData = await this.sharedMethods.getUserData();
-          const now = this.sharedMethods.getCurrentDateTime();
-          const appRef = this.sharedMethods.generateAppRef();
-          const dataToSave = {
-            appRef,
-            userId: userData.id,
-            fileName,
-            fileUrl: fileData.docType === 'image' ? fileData.webPath : fileData.uriPath,
-            fileSize: fileData.fileSize,
-            docType: fileData.docType,
-            isEssential: true,
-            createdAt: now,
-            updatedAt: now,
-            createdBy: userData.id,
-            updatedBy: userData.id,
-          };
-
-          const insertId = await this.documentsDataService.create(dataToSave);
-          if (insertId) {
-            const newDoc = {
-              id: insertId,
-              ...dataToSave,
-            };
-            this.otherEssentialDocuments = [newDoc, ...this.otherEssentialDocuments];
-          } else {
-            this.sharedMethods.showToast('Failed to save document');
-          }
-        });
-      }
-    });
+    const newDoc = await this.sharedMethods.addDocument(this.commonText, this.alertController, this.uploadService, this.documentsDataService, true);
+    if (newDoc) {
+      const aaaaaa = [newDoc, ...this.otherEssentialDocuments];
+      this.otherEssentialDocuments = this.getOtherEssentialDocuments();
+      console.log('this.otherEssentialDocuments', this.otherEssentialDocuments);
+      // await this.ngOnInit();
+    }
   }
 }
