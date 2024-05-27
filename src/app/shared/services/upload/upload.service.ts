@@ -46,11 +46,11 @@ export class UploadService {
     return false;
   }
 
-  async takePicture() {
+  async uploadPicture(source: CameraSource) {
     try {
       const image = await Camera.getPhoto({
         quality: 100,
-        source: CameraSource.Prompt,
+        source,
         width: 600,
         resultType: this.isPlatformWeb() ? CameraResultType.DataUrl : CameraResultType.Uri,
         saveToGallery: true,
