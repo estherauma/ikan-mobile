@@ -29,6 +29,7 @@ export class FilesPage implements OnInit {
   isEditing = false;
   selectedDocuments: DocumentType[] = [];
   commonText: any;
+  docsCommonText: any;
   
   constructor(
     public modalCtrl: ModalController,
@@ -44,6 +45,8 @@ export class FilesPage implements OnInit {
 
   ngOnInit() {
     this.commonText = this.contentService.commonText;
+    const docsPageData = this.contentService.getContentByPropertyName('my-documents-common-text');
+    this.docsCommonText = this.sharedMethods.convertAdditionalTextToObj(docsPageData?.additionalText);
     this.documents = this.documentsDataService.documents;
     this.documents = this.documents.filter((doc) => !doc.isEssential) || this.documents;
   }

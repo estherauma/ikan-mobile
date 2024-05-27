@@ -4,8 +4,7 @@
     <ion-col size="8" class="add-col">
       <ion-button (click)="addDocument()">
         <ion-icon slot="icon-only" name="add"></ion-icon>
-        <!-- translate -->
-        Add Document
+        {{ docsCommonText?.addDocument }}
       </ion-button>
     </ion-col>
     <ion-col size="4" *ngIf="documents.length" class="ion-justify-content-end select-col">
@@ -38,10 +37,9 @@
           [alt]="doc.fileName"
         />
         <div *ngIf="doc.docType === 'pdf'" class="img doc-icon-wrapper">
-          <!-- translate -->
           <img
             src="assets/icon/documents.svg"
-            [alt]="commonText?.pdfAltText || 'pdf file icon'"
+            [alt]="docsCommonText?.documentsIcon"
           />
         </div>
         <p *ngIf="doc.fileName" class="file-name">{{ doc.fileName }}</p>

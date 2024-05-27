@@ -19,7 +19,6 @@ export class WorkerPage implements OnInit {
   isProduction = env.production;
   showTriggerButton: boolean = false;
 
-  // TODO: translate titles
   sLists = [
     {
       title: 'My Documents',

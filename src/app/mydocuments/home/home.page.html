@@ -14,18 +14,14 @@
       <ion-segment (ionChange)="onSegmentChange($event)" [value]="activeSegment">
         <ion-segment-button value="essentials">
           <ion-item lines="none">
-            <!--TODO: change icon -->
-            <ion-icon item-start name="person-circle-outline"></ion-icon>
-            <!--TODO: translate -->
-            <ion-label>{{ commonText?.essentials || 'Essentials' }}</ion-label>
+            <ion-icon item-start name="document"></ion-icon>
+            <ion-label>{{ docsCommonText?.essentials }}</ion-label>
         </ion-item>
         </ion-segment-button>
         <ion-segment-button value="myfiles">
           <ion-item lines="none">
-            <!--TODO: change icon -->
-            <ion-icon name="wallet-outline"></ion-icon>
-            <!--TODO: translate -->
-            <ion-label>{{ commonText?.myFiles || 'My Files' }}</ion-label>
+            <ion-icon name="folder"></ion-icon>
+            <ion-label>{{ docsCommonText?.myFiles }}</ion-label>
           </ion-item>
         </ion-segment-button>
       </ion-segment>

@@ -15,6 +15,7 @@ import { UploadService } from 'src/app/shared/services/upload/upload.service';
 export class EssentialsComponent  implements OnInit {
 
   commonText: any;
+  docsCommonText: any;
   userData: any;
   userPassportDetails: any;
   passportImageUrl: string = '';
@@ -37,6 +38,8 @@ export class EssentialsComponent  implements OnInit {
 
   async ngOnInit() {
     this.commonText = this.contentService.commonText;
+    const docsPageData = this.contentService.getContentByPropertyName('my-documents-common-text');
+    this.docsCommonText = this.sharedMethods.convertAdditionalTextToObj(docsPageData?.additionalText);
     this.userData = await this.sharedMethods.getUserData();
     this.userPassportDetails = await this.documentsDataService.getUserPassport(this.userData.id);
     if (this.userPassportDetails && this.userPassportDetails.imageUrl) {
@@ -46,7 +49,6 @@ export class EssentialsComponent  implements OnInit {
     this.allEssentialDocuments = this.getEssentialDocuments();
     // excludes passport, visa & seamans book as they are displayed separately
     this.otherEssentialDocuments = this.getOtherEssentialDocuments();
-    console.log('this.otherEssentialDocuments', this.otherEssentialDocuments);
     
     this.userVisaDetails = this.allEssentialDocuments.find((doc) => doc.fileName === 'ikan-my-visa');
     this.visaImageUrl = this.userVisaDetails?.fileUrl || '';
@@ -91,8 +93,7 @@ export class EssentialsComponent  implements OnInit {
         if (docInsertId) {
           this.ngOnInit();
         } else {
-          // translate
-          this.sharedMethods.showToast('Failed to save visa');
+          this.sharedMethods.showToast(this.docsCommonText?.saveVisaError);
         }
       }
     });
@@ -133,8 +134,7 @@ export class EssentialsComponent  implements OnInit {
         if (docInsertId) {
           this.ngOnInit();
         } else {
-          // translate
-          this.sharedMethods.showToast('Failed to save seamans book');
+          this.sharedMethods.showToast(this.docsCommonText?.saveSeamansBookError);
         }
       }
     });

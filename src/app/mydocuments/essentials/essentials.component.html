@@ -13,8 +13,7 @@
                 <span>
                   <ion-icon name="add"></ion-icon>
                 </span>
-                <!-- translate -->
-                {{ "Add Passport" }}
+                {{ docsCommonText?.addPassport }}
               </ion-label>
             </ion-col>
           </ion-row>
@@ -32,11 +31,9 @@
             </ion-col>
             <ion-col size="9" class="details-col">
               <ion-label>
-                <!-- translate -->
-                {{ "Passport" }}
+                {{ docsCommonText?.passport }}
               </ion-label>
               <p>
-                <!-- translate -->
                 <span>{{ commonText?.uploaded }}: </span>
                 {{
                   userPassportDetails?.updatedAt ||
@@ -62,8 +59,7 @@
                 <span>
                   <ion-icon name="add"></ion-icon>
                 </span>
-                <!-- translate -->
-                {{ "Add Visa" }}
+                {{ docsCommonText?.addVisa }}
               </ion-label>
             </ion-col>
           </ion-row>
@@ -79,17 +75,14 @@
                 <img *ngIf="!sharedMethods.isIos" [src]="userVisaDetails.fileUrl" />
               </div>
               <div *ngIf="userVisaDetails.docType === 'pdf'" class="pdf-icon-wrapper">
-                <!-- translate -->
-                <img src="assets/icon/documents.svg" alt="pdf-icon">
+                <img src="assets/icon/documents.svg" [alt]="docsCommonText?.documentsIcon">
               </div>
             </ion-col>
             <ion-col size="9" class="details-col">
               <ion-label>
-                <!-- translate -->
-                {{ "Visa" }}
+                {{ docsCommonText?.visa }}
               </ion-label>
               <p>
-                <!-- translate -->
                 <span>{{ commonText?.uploaded }}: </span>
                 {{ userVisaDetails.updatedAt || userVisaDetails.createdAt | date : "dd/MM/yyyy" }}
               </p>
@@ -112,8 +105,7 @@
                 <span>
                   <ion-icon name="add"></ion-icon>
                 </span>
-                <!-- translate -->
-                {{ "Add Seaman's book" }}
+                {{ docsCommonText?.addSeamansBook }}
               </ion-label>
             </ion-col>
           </ion-row>
@@ -129,17 +121,14 @@
                 <img *ngIf="!sharedMethods.isIos" [src]="userSeamansBookDetails.fileUrl" />
               </div>
               <div *ngIf="userSeamansBookDetails.docType === 'pdf'" class="pdf-icon-wrapper">
-                <!-- translate -->
-                <img src="assets/icon/documents.svg" alt="pdf-icon">
+                <img src="assets/icon/documents.svg" [alt]="docsCommonText?.documentsIcon">
               </div>
             </ion-col>
             <ion-col size="9" class="details-col">
               <ion-label>
-                <!-- translate -->
-                {{ "Seaman's book" }}
+                {{ docsCommonText?.seamansBook }}
               </ion-label>
               <p>
-                <!-- translate -->
                 <span>{{ commonText?.uploaded }}: 
                 </span>
                 {{ userSeamansBookDetails.updatedAt || userSeamansBookDetails.createdAt | date : "dd/MM/yyyy" }}
@@ -162,8 +151,7 @@
                   <img *ngIf="!sharedMethods.isIos" [src]="doc.fileUrl" />
                 </div>
                 <div *ngIf="doc.docType === 'pdf'" class="pdf-icon-wrapper">
-                  <!-- translate -->
-                  <img src="assets/icon/documents.svg" alt="pdf-icon">
+                  <img src="assets/icon/documents.svg" [alt]="docsCommonText?.documentsIcon">
                 </div>
               </ion-col>
               <ion-col size="9" class="details-col">
@@ -171,7 +159,6 @@
                   {{ doc.fileName }}
                 </ion-label>
                 <p>
-                  <!-- translate -->
                   <span>{{ commonText?.uploaded }}: </span>
                   {{ doc.updatedAt || doc.createdAt | date : "dd/MM/yyyy" }}
                 </p>
@@ -195,8 +182,7 @@
               <span>
                 <ion-icon name="add"></ion-icon>
               </span>
-              <!-- translate -->
-              {{ "Add Essential Document" }}
+              {{ docsCommonText?.addEssentialDocument }}
             </ion-label>
           </ion-col>
         </ion-row>
