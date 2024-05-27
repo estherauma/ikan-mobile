@@ -68,28 +68,34 @@ export class EssentialsComponent  implements OnInit {
   }
 
   async addVisa() {
-    const image = await this.uploadService.takePicture();
-    const now = this.sharedMethods.getCurrentDateTime();
-    const visaSaveObj = {
-      appRef: this.sharedMethods.generateAppRef(),
-      userId: this.userData.id,
-      fileName: 'ikan-my-visa',
-      fileUrl: image.webPath,
-      fileSize:  '',
-      docType: image.docType,
-      isEssential: true,
-      createdAt: now,
-      updatedAt: now,
-      createdBy: this.userData.id,
-      updatedBy: this.userData.id,
-    };
-    const docInsertId = await this.documentsDataService.create(visaSaveObj);
-    if (docInsertId) {
-      this.ngOnInit();
-    } else {
-      // translate
-      this.sharedMethods.showToast('Failed to save visa');
-    }
+    const alert =  await this.sharedMethods.getSelectImageOrPdfAlert(this.commonText, this.alertController, this.uploadService);
+    await alert.present();
+    await alert.onDidDismiss().then(async (data) => {
+      if (data.role !== 'cancel' && data.data?.fileData && Object.keys(data?.data?.fileData).length) {
+        const { fileData } = data?.data;
+        const now = this.sharedMethods.getCurrentDateTime();
+        const visaSaveObj = {
+          appRef: this.sharedMethods.generateAppRef(),
+          userId: this.userData.id,
+          fileName: 'ikan-my-visa',
+          fileUrl: fileData.docType === 'image' ? fileData.webPath : fileData.uriPath,
+          fileSize:  '',
+          docType: fileData.docType,
+          isEssential: true,
+          createdAt: now,
+          updatedAt: now,
+          createdBy: this.userData.id,
+          updatedBy: this.userData.id,
+        };
+        const docInsertId = await this.documentsDataService.create(visaSaveObj);
+        if (docInsertId) {
+          this.ngOnInit();
+        } else {
+          // translate
+          this.sharedMethods.showToast('Failed to save visa');
+        }
+      }
+    });
   }
 
   getEssentialDocuments() {
@@ -104,28 +110,34 @@ export class EssentialsComponent  implements OnInit {
   }
 
   async addSeamansBook() {
-    const image = await this.uploadService.takePicture();
-    const now = this.sharedMethods.getCurrentDateTime();
-    const saveObj = {
-      appRef: this.sharedMethods.generateAppRef(),
-      userId: this.userData.id,
-      fileName: 'ikan-my-seamans-book',
-      fileUrl: image.webPath,
-      fileSize:  '',
-      docType: image.docType,
-      isEssential: true,
-      createdAt: now,
-      updatedAt: now,
-      createdBy: this.userData.id,
-      updatedBy: this.userData.id,
-    };
-    const docInsertId = await this.documentsDataService.create(saveObj);
-    if (docInsertId) {
-      this.ngOnInit();
-    } else {
-      // translate
-      this.sharedMethods.showToast('Failed to save seamans book');
-    }
+    const alert = await this.sharedMethods.getSelectImageOrPdfAlert(this.commonText, this.alertController, this.uploadService);
+    await alert.present();
+    await alert.onDidDismiss().then(async (data) => {
+      if (data.role !== 'cancel' && data.data?.fileData && Object.keys(data?.data?.fileData).length) {
+        const { fileData } = data?.data;
+        const now = this.sharedMethods.getCurrentDateTime();
+        const saveObj = {
+          appRef: this.sharedMethods.generateAppRef(),
+          userId: this.userData.id,
+          fileName: 'ikan-my-seamans-book',
+          fileUrl: fileData.docType === 'image' ? fileData.webPath : fileData.uriPath,
+          fileSize:  '',
+          docType: fileData.docType,
+          isEssential: true,
+          createdAt: now,
+          updatedAt: now,
+          createdBy: this.userData.id,
+          updatedBy: this.userData.id,
+        };
+        const docInsertId = await this.documentsDataService.create(saveObj);
+        if (docInsertId) {
+          this.ngOnInit();
+        } else {
+          // translate
+          this.sharedMethods.showToast('Failed to save seamans book');
+        }
+      }
+    });
   }
 
   // TODO: new doc not reflecting.

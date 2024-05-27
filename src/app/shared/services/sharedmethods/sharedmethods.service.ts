@@ -9,6 +9,7 @@ import { Device } from '@capacitor/device';
 import {v4 as uuidv4} from 'uuid';
 import { UserRole } from '../../types/api-types';
 import { Validators } from '@angular/forms';
+import { Camera, CameraSource } from '@capacitor/camera';
 
 
 @Injectable({
@@ -282,16 +283,25 @@ export class SharedmethodsService {
       buttons: [
         {
           // translate
-          text: 'Add image',
+          text: 'Take a picture',
           cssClass: 'add-img-btn',
           handler: async() => {
-            const fileData = await uploadService.takePicture();
+            const fileData = await uploadService.uploadPicture(CameraSource.Camera);
             return { fileData };
           }
         },
         {
           // translate
-          text: 'Add pdf document',
+          text: 'Select image from photos',
+          cssClass: 'add-img-btn',
+          handler: async() => {
+            const fileData = await uploadService.uploadPicture(CameraSource.Photos);
+            return { fileData };
+          }
+        },
+        {
+          // translate
+          text: 'Upload pdf document',
           cssClass: 'add-doc-btn',
           handler: async() => {
             // const fileData = await uploadService.choosePdfFile();
@@ -347,7 +357,13 @@ export class SharedmethodsService {
     return alert;
   }
 
-  async addDocument(commonText, alertController, uploadService, documentsDataService, isEssential: boolean = false) {
+  async addDocument(
+    commonText,
+    alertController,
+    uploadService,
+    documentsDataService,
+    isEssential: boolean = false,
+  ) {
     let newDoc = null;
     const alert = await this.getSelectImageOrPdfAlert(commonText, alertController, uploadService);
     await alert.present();
