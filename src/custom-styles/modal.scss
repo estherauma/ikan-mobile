@@ -267,6 +267,13 @@ ion-modal.workers-create-modal {
   }
 }
 
+.add-file-alert .alert-wrapper {
+  .alert-button-inner {
+    min-width: 230px;
+    max-width: 100%;
+  }
+}
+
 .add-file-name-alert .alert-wrapper {
   min-width: 80%;
   max-width: 90%;
