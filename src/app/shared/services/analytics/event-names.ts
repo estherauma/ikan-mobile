@@ -46,10 +46,37 @@ export enum pageEventNames {
     viewWorkerDashboard = 'page_worker_dashboard',
 
     // get help
+    viewGetHelp = 'page_get_help',
 
     // language
+    changeLanguage = 'page_change_language',
 
     // learninghub
+
+    // vessels
+    createVessel = 'page_vessel_create',
+    createVessel2 = 'page_vessel_create_2',
+    listVessels = 'page_vessel_list',
+    viewVessel = 'page_vessel_view',
+
+    // workers
+    createWorker = 'page_worker_create',
+    createWorkerDetails = 'page_worker_create_details',
+    listWorkers = 'page_worker_list',
+    viewWorker = 'page_worker_view',
+
+    // worker details
+    // these pages below aren't being used
+    workerDocs = 'page_worker_docs',
+    workerInfo = 'page_worker_info',
+    workerPayment = 'page_worker_payment',
+    workerPlacement = 'page_worker_placement',
+    workerTraining = 'page_worker_training',
+
+    // worker profile pages
+    workerProfileinfo = 'page_worker_profile_info',
+    workerProfilePayments = 'page_worker_profile_payments',
+
 }
 
 export enum appEventNames {
