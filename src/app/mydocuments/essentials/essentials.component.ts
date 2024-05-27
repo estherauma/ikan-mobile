@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { ModalController } from '@ionic/angular';
+import { AlertController, ModalController } from '@ionic/angular';
 import { CreatepassportPage } from '../createpassport/createpassport.page';
 import { DocumentsDataService } from '../data/documents-data.service';
 import { SharedmethodsService } from 'src/app/shared/services/sharedmethods/sharedmethods.service';
@@ -22,7 +22,8 @@ export class EssentialsComponent  implements OnInit {
   visaImageUrl: string = '';
   userSeamansBookDetails: any;
   seamansBookImageUrl: string = '';
-  essentialDocuments: any = [];
+  allEssentialDocuments: any = [];
+  otherEssentialDocuments: any = []; // excludes passport, visa & seamans book as they are displayed separately
 
   constructor(
     public router: Router,
@@ -31,6 +32,7 @@ export class EssentialsComponent  implements OnInit {
     public sharedMethods: SharedmethodsService,
     public contentService: ContentService,
     public uploadService: UploadService,
+    public alertController: AlertController,
   ) { }
 
   async ngOnInit() {
@@ -41,13 +43,19 @@ export class EssentialsComponent  implements OnInit {
       this.passportImageUrl = this.userPassportDetails.imageUrl;
     }
 
-    this.essentialDocuments = this.getEssentialDocuments();
-    this.userVisaDetails = this.essentialDocuments.find((doc) => doc.fileName === 'ikan-my-visa');
+    this.allEssentialDocuments = this.getEssentialDocuments();
+    // excludes passport, visa & seamans book as they are displayed separately
+    this.otherEssentialDocuments = this.allEssentialDocuments.filter((doc) => doc.fileName !== 'ikan-my-passport' && doc.fileName !== 'ikan-my-visa' && doc.fileName !== 'ikan-my-seamans-book');
+    console.log('this.otherEssentialDocuments', this.otherEssentialDocuments);
+    
+    this.userVisaDetails = this.allEssentialDocuments.find((doc) => doc.fileName === 'ikan-my-visa');
     this.visaImageUrl = this.userVisaDetails?.fileUrl || '';
-    this.userSeamansBookDetails = this.essentialDocuments.find((doc) => doc.fileName === 'ikan-my-seamans-book');
+    this.userSeamansBookDetails = this.allEssentialDocuments.find((doc) => doc.fileName === 'ikan-my-seamans-book');
     this.seamansBookImageUrl = this.userSeamansBookDetails?.fileUrl || '';
   }
 
+  // TODO: add edit passport
+  // TODO: add passport, visa, seamans book and other essential docs view
   async addPassport() {
     const modal = await this.modalController.create({
       cssClass: 'notification-modal',
@@ -113,8 +121,54 @@ export class EssentialsComponent  implements OnInit {
       this.sharedMethods.showToast('Failed to save seamans book');
     }
   }
-  
-  viewSeamansBook() {}
 
-  addDocument() {}
+  async addEssentialDocument() {
+    const alert = await this.sharedMethods.getSelectImageOrPdfAlert(this.commonText, this.alertController, this.uploadService);
+    alert.present();
+    alert.onDidDismiss().then(async(data) => {
+      if ( data.role !== 'cancel' && data?.data?.fileData && Object.keys(data?.data?.fileData).length) {
+        const addFileNameAlert = await this.sharedMethods.getFileNameAlert(this.commonText, this.alertController);
+        addFileNameAlert.present().then(() => {
+          const firstInput: any = document.querySelector('ion-alert input');
+          firstInput.focus();
+          return;
+        });
+        addFileNameAlert.onDidDismiss().then(async(fileNameData) => {
+          const { fileData } = data?.data;
+          let fileName = fileData.fileName;
+          if (fileNameData.role !== 'cancel' && fileNameData?.data.fileName) {
+            fileName = fileNameData?.data.fileName;
+          }
+
+          const userData = await this.sharedMethods.getUserData();
+          const now = this.sharedMethods.getCurrentDateTime();
+          const appRef = this.sharedMethods.generateAppRef();
+          const dataToSave = {
+            appRef,
+            userId: userData.id,
+            fileName,
+            fileUrl: fileData.docType === 'image' ? fileData.webPath : fileData.uriPath,
+            fileSize: fileData.fileSize,
+            docType: fileData.docType,
+            isEssential: true,
+            createdAt: now,
+            updatedAt: now,
+            createdBy: userData.id,
+            updatedBy: userData.id,
+          };
+
+          const insertId = await this.documentsDataService.create(dataToSave);
+          if (insertId) {
+            const newDoc = {
+              id: insertId,
+              ...dataToSave,
+            };
+            this.otherEssentialDocuments = [newDoc, ...this.otherEssentialDocuments];
+          } else {
+            this.sharedMethods.showToast('Failed to save document');
+          }
+        });
+      }
+    });
+  }
 }

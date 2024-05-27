@@ -275,4 +275,75 @@ export class SharedmethodsService {
       return 'android';
     }
   }
+
+  async getSelectImageOrPdfAlert(commonText, alertController, uploadService) {
+    const alert = await alertController.create({
+      cssClass: 'add-file-alert',
+      buttons: [
+        {
+          // translate
+          text: 'Add image',
+          cssClass: 'add-img-btn',
+          handler: async() => {
+            const fileData = await uploadService.takePicture();
+            return { fileData };
+          }
+        },
+        {
+          // translate
+          text: 'Add pdf document',
+          cssClass: 'add-doc-btn',
+          handler: async() => {
+            // const fileData = await uploadService.choosePdfFile();
+            const fileData = await uploadService.chooseFile();
+            return { fileData };
+          }
+        },
+        {
+          text: commonText?.cancel,
+          role: 'cancel',
+          cssClass: 'cancel-btn',
+        }
+      ]
+    });
+    return alert;
+  }
+
+  async getFileNameAlert(commonText, alertController) {
+    const alert = await alertController.create({
+      cssClass: 'add-file-name-alert',
+      backdropDismiss: false,
+      // translate
+      header: 'Please enter file name',
+      // translate
+      message: 'If the file name is not provided, the file will be saved with a default name.',
+      inputs: [
+        {
+          name: 'fileName',
+          type: 'text',
+          // translate
+          placeholder: 'eg. CV, Birth Certificate, etc.',
+          value: '',
+        }
+      ],
+      buttons: [
+        {
+          // translate
+          text: commonText?.cancel || 'Cancel',
+          role: 'cancel',
+          cssClass: 'cancel-btn',
+        },
+        {
+          // translate
+          text: commonText?.save || 'Save',
+          cssClass: 'save-btn',
+          handler: (data) => {
+            return { fileName: data.fileName};
+          }
+        }
+      ],
+      
+    });
+    return alert;
+  }
 }

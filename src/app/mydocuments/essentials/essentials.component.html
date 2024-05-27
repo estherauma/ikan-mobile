@@ -116,7 +116,7 @@
         </ion-card-content>
       </ion-card>
 
-      <ion-card *ngIf="seamansBookImageUrl" (click)="viewSeamansBook()" class="has-value">
+      <ion-card *ngIf="seamansBookImageUrl" class="has-value">
         <ion-card-content>
           <ion-row>
             <ion-col size="3" class="img-col">
@@ -142,28 +142,54 @@
       </ion-card>
     </div>
 
+    <!-- list of essential documents -->
+    <div *ngIf="otherEssentialDocuments.length" class="essential-docs-list">
+      <ng-container *ngFor="let doc of otherEssentialDocuments">
+        <ion-card class="has-value">
+          <ion-card-content>
+            <ion-row>
+              <ion-col size="3" class="img-col">
+                <div *ngIf="doc.docType === 'image'" class="img-wrapper">
+                  <img *ngIf="sharedMethods.isIos" [src]="doc.imageUrl | safeurl" />
+                  <img *ngIf="!sharedMethods.isIos" [src]="doc.imageUrl" />
+                </div>
+                <div *ngIf="doc.docType === 'pdf'" class="pdf-icon-wrapper">
+                  <!-- translate -->
+                  <img src="assets/icon/documents.svg" alt="pdf-icon">
+                </div>
+              </ion-col>
+              <ion-col size="9" class="details-col">
+                <ion-label>
+                  {{ doc.fileName }}
+                </ion-label>
+                <p>
+                  <!-- translate -->
+                  <span>{{ commonText?.uploaded }}: </span>
+                  {{ doc.updatedAt || doc.createdAt | date : "dd/MM/yyyy" }}
+                </p>
+              </ion-col>
+            </ion-row>
+          </ion-card-content>
+        </ion-card>
+      </ng-container>
+    </div>
+
     <!-- add document -->
-    <ion-card ngClass="{'dotted': noDocument}" (click)="addDocument()">
+    <ion-card (click)="addEssentialDocument()">
       <ion-card-content>
         <ion-row>
           <ion-col size="3" class="img-col">
             <div class="img-wrapper">
-              <ion-img></ion-img>
             </div>
           </ion-col>
           <ion-col size="9" class="details-col">
-            <!-- translate -->
             <ion-label>
               <span>
                 <ion-icon name="add"></ion-icon>
               </span>
-              {{ "Add Document" }}
+              <!-- translate -->
+              {{ "Add Essential Document" }}
             </ion-label>
-            <!-- <p>
-              <span>{{ commonText?.uploaded }}: 
-              </span>
-              date
-            </p> -->
           </ion-col>
         </ion-row>
       </ion-card-content>

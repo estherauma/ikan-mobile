@@ -14,7 +14,6 @@
     ion-button {
       color: white;
       --background: var(--ion-color-primary);
-      opacity: 0.8;
       text-transform: none;
       --border-radius: 15px;
 
@@ -33,6 +32,7 @@
   }
   ion-col {
     min-height: 200px;
+    max-height: 300px;
     position: relative;
 
     .ellipse {
