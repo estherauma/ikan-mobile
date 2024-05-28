@@ -363,12 +363,12 @@ export class SharedmethodsService {
     await alert.onDidDismiss().then(async(data) => {
       if ( data.role !== 'cancel' && data?.data?.fileData && Object.keys(data?.data?.fileData).length) {
         const addFileNameAlert = await this.getFileNameAlert(commonText, alertController, docsCommonText);
-        addFileNameAlert.present().then(() => {
+        await addFileNameAlert.present().then(() => {
           const firstInput: any = document.querySelector('ion-alert input');
           firstInput.focus();
           return;
         });
-        addFileNameAlert.onDidDismiss().then(async(fileNameData) => {
+        await addFileNameAlert.onDidDismiss().then(async(fileNameData) => {
           const { fileData } = data?.data;
           let fileName = fileData.fileName;
           if (fileNameData.role !== 'cancel' && fileNameData?.data.fileName) {

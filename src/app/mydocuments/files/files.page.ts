@@ -44,6 +44,10 @@ export class FilesPage implements OnInit {
     this.commonText = this.contentService.commonText;
     const docsPageData = this.contentService.getContentByPropertyName('my-documents-common-text');
     this.docsCommonText = this.sharedMethods.convertAdditionalTextToObj(docsPageData?.additionalText);
+    this.getDocuments();
+  }
+
+  getDocuments() {
     this.documents = this.documentsDataService.documents;
     this.documents = this.documents.filter((doc) => !doc.isEssential) || this.documents;
   }
@@ -54,8 +58,7 @@ export class FilesPage implements OnInit {
   async addDocument() {
     const newDoc = await this.sharedMethods.addDocument(this.commonText, this.alertController, this.uploadService, this.documentsDataService, this.docsCommonText, false);
     if (newDoc) {
-      this.documents = [newDoc, ...this.documents];
-      await this.ngOnInit();
+      this.getDocuments();
     }
   }
 

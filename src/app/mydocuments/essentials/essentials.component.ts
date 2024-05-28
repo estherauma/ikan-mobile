@@ -41,6 +41,10 @@ export class EssentialsComponent  implements OnInit {
     const docsPageData = this.contentService.getContentByPropertyName('my-documents-common-text');
     this.docsCommonText = this.sharedMethods.convertAdditionalTextToObj(docsPageData?.additionalText);
     this.userData = await this.sharedMethods.getUserData();
+    await this.getDocDetails();
+  }
+
+  async getDocDetails() {
     this.userPassportDetails = await this.documentsDataService.getUserPassport(this.userData.id);
     if (this.userPassportDetails && this.userPassportDetails.imageUrl) {
       this.passportImageUrl = this.userPassportDetails.imageUrl;
@@ -65,7 +69,7 @@ export class EssentialsComponent  implements OnInit {
     });
     modal.present();
     modal.onDidDismiss().then((data) => {
-      this.ngOnInit();
+      this.getDocDetails();
     });
   }
 
@@ -91,7 +95,7 @@ export class EssentialsComponent  implements OnInit {
         };
         const docInsertId = await this.documentsDataService.create(visaSaveObj);
         if (docInsertId) {
-          this.ngOnInit();
+          this.getDocDetails();
         } else {
           this.sharedMethods.showToast(this.docsCommonText?.saveVisaError);
         }
@@ -132,7 +136,7 @@ export class EssentialsComponent  implements OnInit {
         };
         const docInsertId = await this.documentsDataService.create(saveObj);
         if (docInsertId) {
-          this.ngOnInit();
+          this.getDocDetails();
         } else {
           this.sharedMethods.showToast(this.docsCommonText?.saveSeamansBookError);
         }
@@ -140,14 +144,10 @@ export class EssentialsComponent  implements OnInit {
     });
   }
 
-  // TODO: new doc not reflecting.
   async addEssentialDocument() {
     const newDoc = await this.sharedMethods.addDocument(this.commonText, this.alertController, this.uploadService, this.documentsDataService, this.docsCommonText, true);
     if (newDoc) {
-      const aaaaaa = [newDoc, ...this.otherEssentialDocuments];
       this.otherEssentialDocuments = this.getOtherEssentialDocuments();
-      console.log('this.otherEssentialDocuments', this.otherEssentialDocuments);
-      // await this.ngOnInit();
     }
   }
 }
