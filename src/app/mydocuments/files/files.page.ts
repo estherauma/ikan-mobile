@@ -1,9 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { AlertController, ModalController, Platform } from '@ionic/angular';
-import { ConfirmmodalComponent } from 'src/app/shared/components/confirmmodal/confirmmodal.component';
-import { DocumentactionsComponent } from 'src/app/shared/components/documentactions/documentactions.component';
-import { DocumentselectedactionComponent } from 'src/app/shared/components/documentselectedaction/documentselectedaction.component';
 import { ContentService } from 'src/app/shared/services/content/content.service';
 import { SharedmethodsService } from 'src/app/shared/services/sharedmethods/sharedmethods.service';
 import { DocumentType } from 'src/app/shared/types/types';
@@ -50,76 +47,8 @@ export class FilesPage implements OnInit {
     this.documents = this.documentsDataService.documents;
     this.documents = this.documents.filter((doc) => !doc.isEssential) || this.documents;
   }
+
   searchResult(data) {}
-
-  onSelect() {
-    this.select = true;
-  }
-  async onClick() {
-    this.actionClicked = true;
-    if (!this.select) {
-      this.allActionModal = await this.modalCtrl.create({
-        component: DocumentactionsComponent,
-        cssClass: 'my-own-class',
-      });
-
-      this.allActionModal.present();
-
-      this.allActionModal.onDidDismiss().then((data) => {
-        const view = data.data.view;
-
-        if (view === 'icons') {
-          this.display = 'icon';
-          return;
-        }
-        if (view === 'list') {
-          this.display = 'list';
-          return;
-        }
-      });
-      return;
-    }
-
-    this.documentSelectedModal = await this.modalCtrl.create({
-      component: DocumentselectedactionComponent,
-      cssClass: 'my-own-class',
-    });
-
-    this.documentSelectedModal.present();
-
-    this.documentSelectedModal.onDidDismiss().then( async(data) => {
-      const action = data.data.action;
-
-      if (action === 'delete') {
-        this.confirmModal = await this.modalCtrl.create({
-          component: ConfirmmodalComponent,
-          componentProps: {
-            title: 'Permanently delete?',
-            description: 'Lorem ipsum',
-          },
-          cssClass: 'tuna-modal'
-        });
-        this.confirmModal.present();
-
-        this.confirmModal.onDidDismiss().then(async(confirmModalData) => {
-          //TODO: handle action on confirm deletion
-        });
-      };
-    });
-  }
-
-  onCancel() {
-    this.select = false;
-  }
-
-  onDismiss() {
-    this.actionClicked = false;
-    if (!this.select) {
-      this.allActionModal.dismiss();
-    } else {
-      this.documentSelectedModal.dismiss();
-    }
-  }
 
   // TODO: new doc not reflecting. Need to refactor
   async addDocument() {
