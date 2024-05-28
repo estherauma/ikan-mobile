@@ -277,13 +277,12 @@ export class SharedmethodsService {
     }
   }
 
-  async getSelectImageOrPdfAlert(commonText, alertController, uploadService) {
+  async getSelectImageOrPdfAlert(commonText, alertController, uploadService, docsCommonText) {
     const alert = await alertController.create({
       cssClass: 'add-file-alert',
       buttons: [
         {
-          // translate
-          text: 'Take a picture',
+          text: docsCommonText?.takeAPicture,
           cssClass: 'add-img-btn',
           handler: async() => {
             const fileData = await uploadService.uploadPicture(CameraSource.Camera);
@@ -291,8 +290,7 @@ export class SharedmethodsService {
           }
         },
         {
-          // translate
-          text: 'Select image from photos',
+          text: docsCommonText?.selectImagesFromPhotos,
           cssClass: 'add-img-btn',
           handler: async() => {
             const fileData = await uploadService.uploadPicture(CameraSource.Photos);
@@ -300,8 +298,7 @@ export class SharedmethodsService {
           }
         },
         {
-          // translate
-          text: 'Upload pdf document',
+          text: docsCommonText?.uploadPdfFile,
           cssClass: 'add-doc-btn',
           handler: async() => {
             // const fileData = await uploadService.choosePdfFile();
@@ -319,33 +316,28 @@ export class SharedmethodsService {
     return alert;
   }
 
-  async getFileNameAlert(commonText, alertController) {
+  async getFileNameAlert(commonText, alertController, docsCommonText) {
     const alert = await alertController.create({
       cssClass: 'add-file-name-alert',
       backdropDismiss: false,
-      // translate
-      header: 'Please enter file name',
-      // translate
-      message: 'If the file name is not provided, the file will be saved with a default name.',
+      header: docsCommonText?.enterFileName,
+      message: docsCommonText?.fileNameSubText,
       inputs: [
         {
           name: 'fileName',
           type: 'text',
-          // translate
-          placeholder: 'eg. CV, Birth Certificate, etc.',
+          placeholder: docsCommonText?.fileNamePlaceholder,
           value: '',
         }
       ],
       buttons: [
         {
-          // translate
-          text: commonText?.cancel || 'Cancel',
+          text: commonText?.cancel,
           role: 'cancel',
           cssClass: 'cancel-btn',
         },
         {
-          // translate
-          text: commonText?.save || 'Save',
+          text: commonText?.save,
           cssClass: 'save-btn',
           handler: (data) => {
             return { fileName: data.fileName};
@@ -362,14 +354,15 @@ export class SharedmethodsService {
     alertController,
     uploadService,
     documentsDataService,
+    docsCommonText,
     isEssential: boolean = false,
   ) {
     let newDoc = null;
-    const alert = await this.getSelectImageOrPdfAlert(commonText, alertController, uploadService);
+    const alert = await this.getSelectImageOrPdfAlert(commonText, alertController, uploadService, docsCommonText);
     await alert.present();
     await alert.onDidDismiss().then(async(data) => {
       if ( data.role !== 'cancel' && data?.data?.fileData && Object.keys(data?.data?.fileData).length) {
-        const addFileNameAlert = await this.getFileNameAlert(commonText, alertController);
+        const addFileNameAlert = await this.getFileNameAlert(commonText, alertController, docsCommonText);
         addFileNameAlert.present().then(() => {
           const firstInput: any = document.querySelector('ion-alert input');
           firstInput.focus();
@@ -408,11 +401,9 @@ export class SharedmethodsService {
             newDoc = insertedDoc;
           } else {
             if (isEssential) {
-              // translate
-              this.showToast(`Failed to save essential document`);
+              this.showToast(docsCommonText?.essentialDocSaveFailure);
             } else {
-              // translate
-              this.showToast(`Failed to save document`);
+              this.showToast(docsCommonText?.docSaveFailure);
             }
           }
         });

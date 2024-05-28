@@ -123,7 +123,7 @@ export class FilesPage implements OnInit {
 
   // TODO: new doc not reflecting. Need to refactor
   async addDocument() {
-    const newDoc = await this.sharedMethods.addDocument(this.commonText, this.alertController, this.uploadService, this.documentsDataService, false);
+    const newDoc = await this.sharedMethods.addDocument(this.commonText, this.alertController, this.uploadService, this.documentsDataService, this.docsCommonText, false);
     if (newDoc) {
       this.documents = [newDoc, ...this.documents];
       await this.ngOnInit();
@@ -151,7 +151,10 @@ export class FilesPage implements OnInit {
       } else {
         this.fileOpener.open(doc.fileUrl, 'application/pdf')
         .then(() => console.log('File is opened'))
-        .catch(e => console.log('Error opening file', e));
+        .catch(e => {
+          console.log('Error opening file', e);
+          this.sharedMethods.showToast(this.docsCommonText?.errorOpeningFile);
+        });
       }
     }
   }

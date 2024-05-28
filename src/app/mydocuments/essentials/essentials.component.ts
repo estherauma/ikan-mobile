@@ -70,7 +70,7 @@ export class EssentialsComponent  implements OnInit {
   }
 
   async addVisa() {
-    const alert =  await this.sharedMethods.getSelectImageOrPdfAlert(this.commonText, this.alertController, this.uploadService);
+    const alert =  await this.sharedMethods.getSelectImageOrPdfAlert(this.commonText, this.alertController, this.uploadService, this.docsCommonText);
     await alert.present();
     await alert.onDidDismiss().then(async (data) => {
       if (data.role !== 'cancel' && data.data?.fileData && Object.keys(data?.data?.fileData).length) {
@@ -111,7 +111,7 @@ export class EssentialsComponent  implements OnInit {
   }
 
   async addSeamansBook() {
-    const alert = await this.sharedMethods.getSelectImageOrPdfAlert(this.commonText, this.alertController, this.uploadService);
+    const alert = await this.sharedMethods.getSelectImageOrPdfAlert(this.commonText, this.alertController, this.uploadService, this.docsCommonText);
     await alert.present();
     await alert.onDidDismiss().then(async (data) => {
       if (data.role !== 'cancel' && data.data?.fileData && Object.keys(data?.data?.fileData).length) {
@@ -142,7 +142,7 @@ export class EssentialsComponent  implements OnInit {
 
   // TODO: new doc not reflecting.
   async addEssentialDocument() {
-    const newDoc = await this.sharedMethods.addDocument(this.commonText, this.alertController, this.uploadService, this.documentsDataService, true);
+    const newDoc = await this.sharedMethods.addDocument(this.commonText, this.alertController, this.uploadService, this.documentsDataService, this.docsCommonText, true);
     if (newDoc) {
       const aaaaaa = [newDoc, ...this.otherEssentialDocuments];
       this.otherEssentialDocuments = this.getOtherEssentialDocuments();

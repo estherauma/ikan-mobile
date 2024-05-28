@@ -23,9 +23,9 @@ export class CreatepassportPage extends BaseformPage implements OnInit {
     public documentsDataService: DocumentsDataService
   ) {
     super(contentService);
-    const pageData =
-      this.contentService.getContentByPropertyName('createpassport');
+    const pageData = this.contentService.getContentByPropertyName('createpassport');
     this.pageTitle = pageData?.pageTitle;
+    this.pageText = this.sharedMethods.convertAdditionalTextToObj(pageData?.additionalText);
     this.formQuestions = pageData?.formQuestions;
     this.formQuestions.forEach((entry) => {
       const validators = this.sharedMethods.getFormValidators(entry);
@@ -74,7 +74,6 @@ export class CreatepassportPage extends BaseformPage implements OnInit {
       if (passportInsertId) {
         this.modalCtrl.dismiss({ passportData });
       } else {
-        // translate
         this.sharedMethods.showToast(this.pageText?.errSavingPassport || 'Error saving passport');
       }
     } else {
