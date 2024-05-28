@@ -7,6 +7,8 @@ import { BaseformPage } from 'src/app/shared/components/baseform/baseform.page';
 import { ContentService } from 'src/app/shared/services/content/content.service';
 import { SharedmethodsService } from 'src/app/shared/services/sharedmethods/sharedmethods.service';
 import { ContractDataService } from '../data/contract-data.service';
+import { AnalyticsService } from 'src/app/shared/services/analytics/analytics.service';
+import { pageEventNames } from 'src/app/shared/services/analytics/event-names';
 
 @Component({
   selector: 'app-create',
@@ -29,6 +31,7 @@ export class CreatePage extends BaseformPage implements OnInit {
     public contractsDataService: ContractDataService,
     public modalCtrl: ModalController,
     public navParams: NavParams,
+    public analytics: AnalyticsService
   ) {
     super(contentService);
   }
@@ -51,6 +54,7 @@ export class CreatePage extends BaseformPage implements OnInit {
     this.submitButtonText = this.isEditing ? this.commonText?.update :this.commonText?.create;
     
     this.pageSetup();
+    this.analytics.trackEvent(pageEventNames.createContract, this.sharedMethods.analyticsEventParams);
   }
 
   pageSetup() {

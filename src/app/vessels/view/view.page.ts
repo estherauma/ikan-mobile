@@ -3,6 +3,9 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { ModalController } from '@ionic/angular';
 import { ContentService } from 'src/app/shared/services/content/content.service';
 import { ArchivedWoPage } from '../archived-wo/archived-wo.page';
+import { AnalyticsService } from 'src/app/shared/services/analytics/analytics.service';
+import { pageEventNames } from 'src/app/shared/services/analytics/event-names';
+import { SharedmethodsService } from 'src/app/shared/services/sharedmethods/sharedmethods.service';
 
 @Component({
   selector: 'app-view',
@@ -38,6 +41,8 @@ export class ViewPage implements OnInit {
     public modalCtrl: ModalController,
     public contentService: ContentService,
     public router: Router,
+    public analytics: AnalyticsService,
+    public sharedMethods: SharedmethodsService
   ) { }
 
   async ngOnInit() {
@@ -51,6 +56,7 @@ export class ViewPage implements OnInit {
     // For editing form
     const stepOneData = this.contentService.getContentByPropertyName('vessels-createstepone');
     this.stepOneQtns = stepOneData?.formQuestions;
+    this.analytics.trackEvent(pageEventNames.viewVessel, this.sharedMethods.analyticsEventParams);
   }
 
   getParams() {

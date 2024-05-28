@@ -14,6 +14,8 @@ import { SyncService } from 'src/app/shared/services/sync/sync.service';
 import { LocalNotificationsService } from 'src/app/shared/services/local-notifications/local-notifications.service';
 import { LocalNotifications  } from '@capacitor/local-notifications';
 import { SelectRoleComponent } from '../select-role/select-role.component';
+import { AnalyticsService } from 'src/app/shared/services/analytics/analytics.service';
+import { pageEventNames } from 'src/app/shared/services/analytics/event-names';
 
 @Component({
   selector: 'app-login',
@@ -37,12 +39,14 @@ export class LoginPage extends BaseformPage implements OnInit {
     public syncService: SyncService,
     public localNotifications: LocalNotificationsService,
     public modalController: ModalController,
+    public analytics: AnalyticsService
   ) {
     super(contentService);
   }
 
   ngOnInit() {
     this.pageSetup();
+    this.analytics.trackEvent(pageEventNames.login, this.sharedMethods.analyticsEventParams);
   }
 
   pageSetup() {

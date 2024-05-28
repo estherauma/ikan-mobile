@@ -5,6 +5,9 @@ import { ContentService } from 'src/app/shared/services/content/content.service'
 import { formatDate } from '@angular/common';
 import { VesselsDataService } from 'src/app/vessels/data/vessels-data.service';
 import { AlertController } from '@ionic/angular';
+import { AnalyticsService } from 'src/app/shared/services/analytics/analytics.service';
+import { pageEventNames } from 'src/app/shared/services/analytics/event-names';
+import { SharedmethodsService } from 'src/app/shared/services/sharedmethods/sharedmethods.service';
 
 @Component({
   selector: 'app-viewclause',
@@ -57,6 +60,8 @@ export class ViewclausePage implements OnInit {
     public vesselsDataService: VesselsDataService,
     public router: Router,
     public alertController: AlertController,
+    public analytics: AnalyticsService,
+    public sharedMethods: SharedmethodsService
   ) { }
 
   ngOnInit() {
@@ -64,6 +69,7 @@ export class ViewclausePage implements OnInit {
       this.clauseDetails = params;
       this.pageSetup();
     });
+    this.analytics.trackEvent(pageEventNames.viewClause, this.sharedMethods.analyticsEventParams);
   }
 
   async pageSetup() {

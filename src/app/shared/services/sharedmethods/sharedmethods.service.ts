@@ -4,7 +4,7 @@ import { Network } from '@capacitor/network';
 import { Toast } from '@capacitor/toast';
 import { Preferences } from '@capacitor/preferences';
 import { PluginListenerHandle } from '@capacitor/core';
-import { StorageKeys } from '../../types/api-types';
+import { StorageKeys, analyticsEventsData } from '../../types/api-types';
 import { Device } from '@capacitor/device';
 import {v4 as uuidv4} from 'uuid';
 import { UserRole } from '../../types/api-types';
@@ -19,6 +19,8 @@ export class SharedmethodsService {
   public deviceUuid: any;
   networkListener: PluginListenerHandle;
   isIos = false;
+  isAndroid = false;
+  public analyticsEventParams: analyticsEventsData;
   currentPlatform: string = '';
 
   constructor(
@@ -27,8 +29,13 @@ export class SharedmethodsService {
   ) {
     if (this.platform.is('ios')) {
       this.isIos = true;
+      this.isAndroid = false;
+    } else {
+      this.isIos = false;
+      this.isAndroid = true;
     }
     this.currentPlatform = this.getCurrentPlatform();
+    this.setAnalyticsEventParams();
   }
 
   async showLoader(message: string, duration = 5000) {
@@ -36,7 +43,7 @@ export class SharedmethodsService {
       message,
       duration
     });
-    await loading.present();
+    await loading.present()
   }
 
   async hideLoader() {
@@ -265,6 +272,20 @@ export class SharedmethodsService {
     return text.replace(/(?:^|\.?)([A-Z0-9])/g,  (x, y) => {
       return "_" + y.toLowerCase();
     }).replace(/^_/, "");
+  }
+
+  async setAnalyticsEventParams() {
+    const user = await this.readDataFromStorage(StorageKeys.userData);
+    const language = await this.readDataFromStorage(StorageKeys.currentLanguage);
+    let params:analyticsEventsData = {
+      appLanguage: language,
+      role: user?.role,
+      isIos: this.isIos,
+      isAndroid: this.isAndroid,
+      accountId: user?.id?.slice(-8) || null,
+      deviceId: this.deviceUuid?.slice(-8) || null
+    };
+    this.analyticsEventParams = params;
   }
 
   getCurrentPlatform() {

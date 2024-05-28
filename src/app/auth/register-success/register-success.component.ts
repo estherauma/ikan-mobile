@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { AnalyticsService } from 'src/app/shared/services/analytics/analytics.service';
+import { pageEventNames } from 'src/app/shared/services/analytics/event-names';
 import { ContentService } from 'src/app/shared/services/content/content.service';
 import { SharedmethodsService } from 'src/app/shared/services/sharedmethods/sharedmethods.service';
 
@@ -13,11 +15,13 @@ export class RegisterSuccessComponent  implements OnInit {
   constructor(
     public contentService: ContentService,
     public sharedMethods: SharedmethodsService,
+    public analyitics: AnalyticsService
   ) { }
 
   ngOnInit() {
     const pageData = this.contentService.getContentByPropertyName('signup-sucess');
     this.pageText = this.sharedMethods.convertAdditionalTextToObj(pageData?.additionalText);
+    this.analyitics.trackEvent(pageEventNames.registerSuccess, this.sharedMethods.analyticsEventParams)
   }
 
 }

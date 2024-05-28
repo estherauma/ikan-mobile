@@ -7,6 +7,8 @@ import { ContentService } from 'src/app/shared/services/content/content.service'
 import { SharedmethodsService } from 'src/app/shared/services/sharedmethods/sharedmethods.service';
 import { UserRole } from 'src/app/shared/types/api-types';
 import { ProfilesDataService } from 'src/app/profiles/data/profiles-data.service';
+import { AnalyticsService } from 'src/app/shared/services/analytics/analytics.service';
+import { pageEventNames } from 'src/app/shared/services/analytics/event-names';
 
 @Component({
   selector: 'app-create',
@@ -29,6 +31,7 @@ export class CreateDetailPage extends BaseformPage implements OnInit {
     public modalCtrl: ModalController,
     public alertCtrl: AlertController,
     public profilesDataService: ProfilesDataService,
+    public analytics: AnalyticsService
   ) {
     super(contentService);
    }
@@ -53,6 +56,7 @@ export class CreateDetailPage extends BaseformPage implements OnInit {
     });
 
     this.pageFormGroup = new FormGroup(this.group);
+    this.analytics.trackEvent(pageEventNames.createWorkerDetails, this.sharedMethods.analyticsEventParams)
   }
 
   async getPageParams() {

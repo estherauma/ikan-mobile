@@ -2,6 +2,8 @@ import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { FormControl, Validators, FormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
 import { BaseformPage } from 'src/app/shared/components/baseform/baseform.page';
+import { AnalyticsService } from 'src/app/shared/services/analytics/analytics.service';
+import { pageEventNames } from 'src/app/shared/services/analytics/event-names';
 import { ApiService } from 'src/app/shared/services/api/api.service';
 import { ContentService } from 'src/app/shared/services/content/content.service';
 import { SharedmethodsService } from 'src/app/shared/services/sharedmethods/sharedmethods.service';
@@ -25,6 +27,7 @@ export class SignupPage extends BaseformPage implements OnInit {
     public apiService: ApiService,
     public sharedMethods: SharedmethodsService,
     public cdr: ChangeDetectorRef,
+    public analytics: AnalyticsService
   ) {
     super(contentService);
   }
@@ -32,6 +35,7 @@ export class SignupPage extends BaseformPage implements OnInit {
   ngOnInit() {
     this.commonText = this.contentService?.commonText;
     this.pageSetup();
+    this.analytics.trackEvent(pageEventNames.signup, this.sharedMethods.analyticsEventParams);
   }
 
   pageSetup() {
