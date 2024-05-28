@@ -24,13 +24,11 @@ export class UploadService {
   
       if (types[0] === 'application/pdf'){
         const file = result.files[0];
-        //change name
         const fileName = file?.name;
     
         return await this.saveFile(file?.path, fileName, 'pdf');
       } else {
         const file = result.files[0];
-        //change name
         const fileName = file?.name;
     
         return await this.saveFile(file?.path, fileName, 'image');
@@ -57,7 +55,6 @@ export class UploadService {
       });
 
       const lastSlashIndex = image?.path?.lastIndexOf('/');
-      // change filename
       const fileName = image?.path?.substring(lastSlashIndex + 1);
 
       return await this.saveFile(image?.path, fileName, 'image');
@@ -82,19 +79,16 @@ export class UploadService {
         path: fileName
       });
       const webPath = Capacitor.convertFileSrc(fileUri.uri);
-      // const fileSize = webPath;
   
       if (type === 'image') {
         return {
           fileName,
-          // fileSize,
           webPath,
           docType: type
         }
       } else if (type === 'pdf') {
         return {
           fileName,
-          // fileSize,
           uriPath: fileUri.uri,
           docType: type
         }
@@ -108,7 +102,6 @@ export class UploadService {
   async choosePdfFile() {
     try {
       const result = await this.chooser.getFile({mimeTypes: 'application/pdf'});
-      // change name
       const fileName = result.name;
 
       return await this.saveFile(result.path, fileName, 'pdf');

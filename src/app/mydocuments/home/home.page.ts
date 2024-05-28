@@ -23,11 +23,9 @@ export class HomePage implements OnInit {
 
   ngOnInit() {
     this.commonText = this.contentService?.commonText;
-    console.log('commonText----', this.commonText);
     this.pageTitle = this.commonText?.documents;
     const docsPageData = this.contentService.getContentByPropertyName('my-documents-common-text');
     this.docsCommonText = this.sharedMethods.convertAdditionalTextToObj(docsPageData?.additionalText);
-    console.log('docsCommonText----', this.docsCommonText);
   }
 
   onSegmentChange(e) {
