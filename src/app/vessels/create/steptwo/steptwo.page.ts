@@ -6,6 +6,8 @@ import { BaseformPage } from 'src/app/shared/components/baseform/baseform.page';
 import { ContentService } from 'src/app/shared/services/content/content.service';
 import { SharedmethodsService } from 'src/app/shared/services/sharedmethods/sharedmethods.service';
 import { VesselsDataService } from '../../data/vessels-data.service';
+import { AnalyticsService } from 'src/app/shared/services/analytics/analytics.service';
+import { pageEventNames } from 'src/app/shared/services/analytics/event-names';
 
 @Component({
   selector: 'app-steptwo',
@@ -25,7 +27,8 @@ export class SteptwoPage extends BaseformPage implements OnInit {
     public activatedRoute: ActivatedRoute,
     public vesselDataService: VesselsDataService,
     public modalCtrl: ModalController,
-    public router: Router
+    public router: Router,
+    public analytics: AnalyticsService
   ) {
     super(contentService);
   }
@@ -62,6 +65,7 @@ export class SteptwoPage extends BaseformPage implements OnInit {
     });
 
     this.pageFormGroup = new FormGroup(this.group);
+    this.analytics.trackEvent(pageEventNames.createVessel2, this.sharedMethods.analyticsEventParams);
   }
 
   async onSubmit(formData) {

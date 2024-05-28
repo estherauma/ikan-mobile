@@ -7,6 +7,8 @@ import { ApiService } from 'src/app/shared/services/api/api.service';
 import { ContentService } from 'src/app/shared/services/content/content.service';
 import { SharedmethodsService } from 'src/app/shared/services/sharedmethods/sharedmethods.service';
 import { ContractDataService } from '../../data/contract-data.service';
+import { AnalyticsService } from 'src/app/shared/services/analytics/analytics.service';
+import { pageEventNames } from 'src/app/shared/services/analytics/event-names';
 
 @Component({
   selector: 'app-createclause',
@@ -32,7 +34,8 @@ export class CreateclausePage extends BaseformPage implements OnInit {
     public apiService: ApiService,
     public sharedMethods: SharedmethodsService,
     public modalCtrl: ModalController,
-    public contractDataService: ContractDataService
+    public contractDataService: ContractDataService,
+    public analytics: AnalyticsService
   ) {
     super(contentService);
    }
@@ -40,6 +43,7 @@ export class CreateclausePage extends BaseformPage implements OnInit {
   ngOnInit() {
     this.commonText = this.contentService?.commonText;
     this.pageSetup();
+    this.analytics.trackEvent(pageEventNames.createClause, this.sharedMethods.analyticsEventParams);
   }
 
   pageSetup(){

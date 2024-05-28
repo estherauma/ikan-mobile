@@ -1,5 +1,7 @@
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { AnalyticsService } from 'src/app/shared/services/analytics/analytics.service';
+import { pageEventNames } from 'src/app/shared/services/analytics/event-names';
 import { ContentService } from 'src/app/shared/services/content/content.service';
 import { PushNotificationsService } from 'src/app/shared/services/push-notifications/push-notifications.service';
 import { SharedmethodsService } from 'src/app/shared/services/sharedmethods/sharedmethods.service';
@@ -47,6 +49,7 @@ export class VesselownerPage implements OnInit {
     public sharedmethods: SharedmethodsService,
     public router: Router,
     public cdr: ChangeDetectorRef,
+    public analytics: AnalyticsService
   ) {
     this.menuContent = this.contentService.getMenuContent();
     this.setupPage();
@@ -64,6 +67,7 @@ export class VesselownerPage implements OnInit {
       this.pushNotifications.checkAndroidPNsPermissions();
     }
     await this.setupPage();
+    this.analytics.trackEvent(pageEventNames.viewVesselOwnerDashboard, this.sharedmethods.analyticsEventParams)
   }
 
   async setupPage() {

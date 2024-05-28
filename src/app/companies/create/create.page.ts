@@ -5,6 +5,8 @@ import { BaseformPage } from 'src/app/shared/components/baseform/baseform.page';
 import { ContentService } from 'src/app/shared/services/content/content.service';
 import { SharedmethodsService } from 'src/app/shared/services/sharedmethods/sharedmethods.service';
 import { CompaniesDataService } from '../data/companies-data.service';
+import { AnalyticsService } from 'src/app/shared/services/analytics/analytics.service';
+import { pageEventNames } from 'src/app/shared/services/analytics/event-names';
 
 @Component({
   selector: 'app-create',
@@ -21,12 +23,14 @@ export class CreatePage extends BaseformPage implements OnInit {
     public companiesDataService: CompaniesDataService,
     public modalCtrl: ModalController,
     public navParams: NavParams,
+    public analytics: AnalyticsService
   ) {
     super(contentService);
   }
 
   ngOnInit() {
     this.pageSetup();
+    this.analytics.trackEvent(pageEventNames.createCompany, this.sharedMethods.analyticsEventParams);
   }
 
   pageSetup() {
