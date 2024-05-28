@@ -279,7 +279,7 @@ export class SharedmethodsService {
       role: user?.role,
       isIos: this.isIos,
       isAndroid: this.isAndroid,
-      accountId: user?.accountId?.slice(-8) || null,
+      accountId: user?.id?.slice(-8) || null,
       deviceId: this.deviceUuid?.slice(-8) || null
     };
     this.analyticsEventParams = params;

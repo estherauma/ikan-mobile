@@ -45,7 +45,7 @@ export class HomePage implements OnInit {
     this.commonText = this.contentService.commonText;
     this.newText = this.commonText?.new;
     this.pageTitle = this.commonText?.companies;
-    this.analytics.trackEvent(pageEventNames.listCompany);
+    this.analytics.trackEvent(pageEventNames.listCompany, this.sharedMethods.analyticsEventParams);
   }
 
   async createCompany() {
