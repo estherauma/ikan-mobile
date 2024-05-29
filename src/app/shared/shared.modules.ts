@@ -46,6 +46,7 @@ import { InfoPage as WorkerProfile } from '../workers/profiles/worker/info/info.
 import { FilesPage } from '../mydocuments/files/files.page';
 import { EssentialsComponent } from '../mydocuments/essentials/essentials.component';
 import { ViewImageComponent } from '../mydocuments/view-image/view-image.component';
+import { ViewPassportComponent } from '../mydocuments/view-passport/view-passport.component';
 
 
 @NgModule({
@@ -100,6 +101,7 @@ import { ViewImageComponent } from '../mydocuments/view-image/view-image.compone
     FilesPage,
     EssentialsComponent,
     ViewImageComponent,
+    ViewPassportComponent,
   ],
   exports: [
     SafeurlPipe,
@@ -145,6 +147,7 @@ import { ViewImageComponent } from '../mydocuments/view-image/view-image.compone
     FilesPage,
     EssentialsComponent,
     ViewImageComponent,
+    ViewPassportComponent,
   ]
 })
 

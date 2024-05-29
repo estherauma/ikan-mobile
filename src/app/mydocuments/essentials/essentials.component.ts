@@ -30,6 +30,7 @@ export class EssentialsComponent  implements OnInit {
   allEssentialDocuments: any = [];
   otherEssentialDocuments: any = []; // excludes passport, visa & seamans book as they are displayed separately
   isEditing: boolean = false;
+  passportViewData: any = {};
 
   constructor(
     public router: Router,
@@ -48,6 +49,7 @@ export class EssentialsComponent  implements OnInit {
     this.docsCommonText = this.sharedMethods.convertAdditionalTextToObj(docsPageData?.additionalText);
     this.userData = await this.sharedMethods.getUserData();
     await this.getDocDetails();
+    this.passportViewData = this.getPassportViewData();
   }
 
   async getDocDetails() {
@@ -184,5 +186,27 @@ export class EssentialsComponent  implements OnInit {
         });
       }
     }
+  }
+
+  async viewPassportDetails() {
+    const modal = await this.modalController.create({
+      cssClass: 'notification-modal view-passport',
+      component: ViewPassportComponent,
+      componentProps: {
+        userPassportDetails: this.userPassportDetails,
+        passportViewData: this.passportViewData,
+      }
+    });
+    await modal.present();
+  }
+
+  getPassportViewData() {
+    const passportPageData = this.contentService.getContentByPropertyName('createpassport');
+    const passportFormQuestions = passportPageData?.formQuestions;
+    const viewData = {};
+    passportFormQuestions?.forEach((entry) => {
+      viewData[entry.key] = entry?.label;
+    });
+    return viewData;
   }
 }
