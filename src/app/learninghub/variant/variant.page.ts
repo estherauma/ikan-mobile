@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import { AnalyticsService } from 'src/app/shared/services/analytics/analytics.service';
 import { ContentService } from 'src/app/shared/services/content/content.service';
 import { SharedmethodsService } from 'src/app/shared/services/sharedmethods/sharedmethods.service';
 
@@ -19,6 +20,7 @@ export class VariantPage implements OnInit {
     public contentService: ContentService,
     public activatedRoute: ActivatedRoute,
     public sharedmethods: SharedmethodsService,
+    public analytics: AnalyticsService
   ) {
     this.activatedRoute.params.subscribe(async params => {
       this.chapterId = params?.chapterId;
@@ -27,7 +29,6 @@ export class VariantPage implements OnInit {
 
   async ngOnInit() {
     this.pageContent =  await this.contentService.getContentByPropertyName(this.chapterId);
-    console.log('page-content', this.pageContent);
     const clickableList = (this.pageContent?.pageContent?.find((e) => e.type === 'clickable_list'));
     const subChapters = clickableList?.list;
     this.bgImgUrl = this.sharedmethods.getChapterBackground(this.chapterId);
@@ -40,9 +41,15 @@ export class VariantPage implements OnInit {
       page: subChapter?.page,
       };
     });
+    if (this.pageContent.analyticsEventName) {
+      this.analytics.trackEvent(this.pageContent.analyticsEventName, this.sharedmethods.analyticsEventParams);
+    } else {
+      console.log('No analytics event name found for this page')
+    }
   }
 
   viewDetials(item) {
+    console.log(item)
     this.router.navigate([ 'learninghub/chapters', this.chapterId, item?.page?.uid ]);
   }
 }
