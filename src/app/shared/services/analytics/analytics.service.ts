@@ -13,6 +13,7 @@ export class AnalyticsService {
   }
 
   async trackEvent(eventName: string, params?: any) {
+    console.info(params)
     await FirebaseAnalytics.logEvent({
       name: eventName,
       params: params
