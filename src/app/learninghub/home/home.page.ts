@@ -53,7 +53,6 @@ export class HomePage implements OnInit {
   }
 
   onClick(item) {
-    console.log('item', item);
     this.router.navigate(['learninghub/chapters', item?.page?.uid]);
   }
 

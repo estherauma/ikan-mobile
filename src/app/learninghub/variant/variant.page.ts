@@ -49,7 +49,6 @@ export class VariantPage implements OnInit {
   }
 
   viewDetials(item) {
-    console.log(item)
     this.router.navigate([ 'learninghub/chapters', this.chapterId, item?.page?.uid ]);
   }
 }
