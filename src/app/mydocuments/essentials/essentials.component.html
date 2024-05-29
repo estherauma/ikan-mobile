@@ -69,7 +69,11 @@
       <ion-card *ngIf="visaImageUrl" class="has-value">
         <ion-card-content>
           <ion-row>
-            <ion-col size="3" class="img-col">
+            <ion-col
+              size="3"
+              class="img-col"
+              (click)="userVisaDetails.docType === 'image' ? viewImage(userVisaDetails) : viewFile(userVisaDetails)"
+            >
               <div *ngIf="userVisaDetails.docType === 'image'" class="img-wrapper">
                 <img *ngIf="sharedMethods.isIos" [src]="userVisaDetails.fileUrl | safeurl" />
                 <img *ngIf="!sharedMethods.isIos" [src]="userVisaDetails.fileUrl" />
@@ -115,7 +119,11 @@
       <ion-card *ngIf="seamansBookImageUrl" class="has-value">
         <ion-card-content>
           <ion-row>
-            <ion-col size="3" class="img-col">
+            <ion-col
+              size="3"
+              class="img-col"
+              (click)="userSeamansBookDetails.docType === 'image' ? viewImage(userSeamansBookDetails) : viewFile(userSeamansBookDetails)"
+            >
               <div *ngIf="userSeamansBookDetails.docType === 'image'" class="img-wrapper">
                 <img *ngIf="sharedMethods.isIos" [src]="userSeamansBookDetails.fileUrl | safeurl" />
                 <img *ngIf="!sharedMethods.isIos" [src]="userSeamansBookDetails.fileUrl" />
@@ -145,7 +153,11 @@
         <ion-card class="has-value">
           <ion-card-content>
             <ion-row>
-              <ion-col size="3" class="img-col">
+              <ion-col
+                size="3"
+                class="img-col"
+                (click)="doc.docType === 'image' ? viewImage(doc) : viewFile(doc)"
+              >
                 <div *ngIf="doc.docType === 'image'" class="img-wrapper">
                   <img *ngIf="sharedMethods.isIos" [src]="doc.fileUrl | safeurl" />
                   <img *ngIf="!sharedMethods.isIos" [src]="doc.fileUrl" />

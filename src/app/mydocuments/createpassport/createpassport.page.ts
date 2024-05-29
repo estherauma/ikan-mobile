@@ -50,6 +50,7 @@ export class CreatepassportPage extends BaseformPage implements OnInit {
       createdBy: userData.id,
       updatedBy: userData.id,
     };
+
     const docInsertId = await this.documentsDataService.create(docSaveObj);
     if (docInsertId) {
       const passportData = {
