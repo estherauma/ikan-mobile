@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ModalController } from '@ionic/angular';
 import { BaseformPage } from 'src/app/shared/components/baseform/baseform.page';
+import { AnalyticsService } from 'src/app/shared/services/analytics/analytics.service';
+import { appEventNames, pageEventNames } from 'src/app/shared/services/analytics/event-names';
 import { ApiService } from 'src/app/shared/services/api/api.service';
 import { ContentService } from 'src/app/shared/services/content/content.service';
 import { SharedmethodsService } from 'src/app/shared/services/sharedmethods/sharedmethods.service';
@@ -25,6 +27,7 @@ export class TrainingVideoComponent extends BaseformPage  implements OnInit {
     public modalCtrl: ModalController,
     public apiService: ApiService,
     public surveysDataService: SurveyDataService,
+    public analyticsService: AnalyticsService
   ) {
     super(contentService)
   }
@@ -46,6 +49,7 @@ export class TrainingVideoComponent extends BaseformPage  implements OnInit {
       entry.options[1] = { ...entry.options[1], value: 'False' };
     });
     this.pageFormGroup = new FormGroup(this.group);
+    this.analyticsService.trackEvent(pageEventNames.tfaVideo, this.sharedMethods.analyticsEventParams)
   }
 
   getFormQuestions(data) {
@@ -96,12 +100,13 @@ export class TrainingVideoComponent extends BaseformPage  implements OnInit {
     }
 
     await this.sharedMethods.saveDataToStorage(StorageKeys.watchedTFAVideo, true);
-
+    this.analyticsService.trackEvent(appEventNames.submitTrainingVideo, this.sharedMethods.analyticsEventParams)
     this.sharedMethods?.hideLoader();
     this.modalCtrl.dismiss();
   }
 
   onCancel() {
+    this.analyticsService.trackEvent(appEventNames.cancelTrainingVideo, this.sharedMethods.analyticsEventParams)
     this.modalCtrl?.dismiss();
   }
 }
