@@ -33,7 +33,11 @@ export class VesselsDataService {
   }
 
   async retriveVessels() {
-    const query = 'SELECT vessels.*, vessel_images.image_url \
+    const query = 'SELECT \
+      vessels.*, \
+      json_object(\
+        "webPath", vessel_images.image_url \
+      ) as image_file \
       FROM vessels \
       LEFT JOIN vessel_images ON vessels.id = vessel_images.vessel_id';
     return this.db.executeSql(query, []).then(async(data) => {
@@ -53,8 +57,8 @@ export class VesselsDataService {
             updatedAt: data.rows.item(i).updated_at,
             createdBy: data.rows.item(i).created_by,
             updatedBy: data.rows.item(i).updated_by,
-            imgUrl: data.rows.item(i).image_url || 'assets/imgs/vessel.jpeg',
             onlineRef: data.rows.item(i).online_ref,
+            imageFile: data.rows.item(i).image_file ? JSON.parse(data.rows.item(i).image_file) : null,
           });
         }
       }
@@ -170,8 +174,25 @@ export class VesselsDataService {
       return result.insertId;
     }).catch(e => console.log(e));
   }
-
-  updateVesselImage() { }
+  
+  async updateVesselImage(data) {
+    const query = 'UPDATE vessel_images SET image_url = ?, description = ?, \
+      updated_at = ?, updated_by = ? WHERE id = ?';
+    const now = this.sharedMethods.getCurrentDateTime();
+    const user = await this.sharedMethods.getUserData();
+    const params = [data?.image_url, data?.description, now, user?.id, data?.id];
+    return this.db.executeSql(query, params).then(async(result) => {
+      await this.retriveVessels();
+      const image = await this.getVesselImageByVesselId(data.vessel_id);
+      return {
+        rowsAffected: result.rowsAffected,
+        image
+      };
+    }).catch(e => {
+      console.log(e);
+      return null;
+    });
+  }
 
   deleteVesselImage() { }
 }
