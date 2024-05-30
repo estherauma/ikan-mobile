@@ -100,14 +100,14 @@ export class CreatePage extends BaseformPage implements OnInit {
       formData.created_at = now;
       const insertId =  await this.contractsDataService.create(formData);
       if (insertId) {
-        if (formData?.file_url?.webPath) {
-          const contractData = {
+        if (formData?.file?.uriPath || formData?.file?.fileUrl) {
+          const contractFileData = {
             contract_id: insertId,
-            name: formData?.file_url.uniqueName, // TODO: change to actual name not generated one
-            url: formData?.file_url.webPath,
+            name: formData?.file.fileName, // TODO: change to actual name not generated one
+            url: formData?.file.uriPath || formData?.file.fileUrl,
             status: '', // TODO: update status
           };
-          const docInsertId = await this.contractsDataService.createContractDocument(contractData);
+          const docInsertId = await this.contractsDataService.createContractDocument(contractFileData);
           if (!docInsertId) {
             this.sharedMethods.showToast(this.pageText?.errSavingDocument);
           }
@@ -121,8 +121,57 @@ export class CreatePage extends BaseformPage implements OnInit {
       // TODO: add doc edit logic
       formData.id = this.contractDetails.id;
       const result = await this.contractsDataService.update(formData);
-      if (result?.rowsAffected > 0) {
-        const contractDetails = result?.contract;
+      if (result?.rowsAffected > 0) { 
+        let contractDetails = result?.contract;
+          if (await this.contractsDataService.contractDocumentExists(this.contractDetails.id)) {
+            const fileEditData = {
+              contract_id: formData.id,
+              name: formData?.file.fileName, // TODO: change to actual name not generated one
+              url: formData?.file.uriPath || formData?.file.fileUrl,
+              status: '', // TODO: update status
+            };
+            const result = await this.contractsDataService.updateContractDocument(formData.id, fileEditData);
+            if (result?.rowsAffected <= 0) {
+              // translate
+              // also translate helper text 
+              this.sharedMethods.showToast(this.pageText?.errSavingDocument || 'Failed to update document');
+            } else {
+              contractDetails = {
+                ...contractDetails,
+                file: {
+                  uriPath: result.doc.url,
+                  fileUrl: result.doc.url,
+                  fileName: result.doc.name,
+                  docType: 'pdf'
+                }
+              };
+            }
+          } else {
+            if (formData?.file?.uriPath || formData?.file?.fileUrl) {
+              const contractFileData = {
+                contract_id: formData.id,
+                name: formData?.file.fileName, // TODO: change to actual name not generated one
+                url: formData?.file.uriPath || formData?.file.fileUrl,
+                status: '', // TODO: update status
+              };
+              const savedDocId = await this.contractsDataService.createContractDocument(contractFileData);
+              if (!savedDocId) {
+                this.sharedMethods.showToast(this.pageText?.errSavingDocument);
+              } else {
+                const savedDoc = await this.contractsDataService.getContractDocumentById(savedDocId);
+                contractDetails = {
+                  ...contractDetails,
+                  file: {
+                    uriPath: savedDoc.url,
+                    fileUrl: savedDoc.url,
+                    fileName: savedDoc.name,
+                    docType: 'pdf'
+                  }
+                };
+              }
+            }
+          }
+
         this.modalCtrl.dismiss({contractDetails, isEditing: false});
       } else {
         this.sharedMethods.showToast(this.pageText?.errUpdatingContract);
