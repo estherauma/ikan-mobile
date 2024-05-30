@@ -1,12 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { AlertController, ModalController, Platform } from '@ionic/angular';
-import { ConfirmmodalComponent } from 'src/app/shared/components/confirmmodal/confirmmodal.component';
-import { DocumentactionsComponent } from 'src/app/shared/components/documentactions/documentactions.component';
-import { DocumentselectedactionComponent } from 'src/app/shared/components/documentselectedaction/documentselectedaction.component';
 import { ContentService } from 'src/app/shared/services/content/content.service';
 import { SharedmethodsService } from 'src/app/shared/services/sharedmethods/sharedmethods.service';
-import { Document } from 'src/app/shared/types/types';
+import { DocumentType } from 'src/app/shared/types/types';
+import { FileOpener } from '@awesome-cordova-plugins/file-opener/ngx';
+import { ViewImageComponent } from '../view-image/view-image.component';
+import { UploadService } from 'src/app/shared/services/upload/upload.service';
+import { DocumentsDataService } from '../data/documents-data.service';
 
 @Component({
   selector: 'app-files',
@@ -16,28 +17,16 @@ import { Document } from 'src/app/shared/types/types';
 export class FilesPage implements OnInit {
   select = false;
   actionClicked = false;
+  // TODO: add display logic
   display: 'list' | 'icon' = 'list';
   allActionModal;
   documentSelectedModal;
   confirmModal;
-  documents: Document[] = new Array(3).fill({
-    name:'TestImage.jpg',
-    date: '2024-05-15T13:43:17.714788+03:00',
-    size:'412kb',
-    id: Math.random(),
-    userId: 1,
-    type: 'image',
-    url: 'assets/icon/boat_with_blue_bg.svg',
-    createdAt: '2024-05-15T13:43:17.714788+03:00',
-    createdBy: 3,
-    updatedAt: '2024-05-15T13:43:17.714788+03:00',
-    updatedBy: 3,
-  });
-
-
+  documents: DocumentType[] = [];
   isEditing = false;
-  selectedDocuments: Document[] = [];
+  selectedDocuments: DocumentType[] = [];
   commonText: any;
+  docsCommonText: any;
   
   constructor(
     public modalCtrl: ModalController,
@@ -46,100 +35,61 @@ export class FilesPage implements OnInit {
     public sharedMethods: SharedmethodsService,
     public contentService: ContentService,
     public alertController: AlertController,
-    // public fileOpener: FileOpener,
+    public fileOpener: FileOpener,
+    public documentsDataService: DocumentsDataService,
+    public uploadService: UploadService,
   ) { }
 
   ngOnInit() {
     this.commonText = this.contentService.commonText;
-    const otherDocs = new Array(4).fill({
-      name:'TestPdf.jpg',
-      date: '2024-05-15T13:43:17.714788+03:00',
-      size:'412kb',
-      id: Math.random(),
-      userId: 1,
-      type: 'pdf',
-      url: 'assets/icon/boat_with_blue_bg.svg',
-      createdAt: '2024-05-15T13:43:17.714788+03:00',
-      createdBy: 3,
-      updatedAt: '2024-05-15T13:43:17.714788+03:00',
-      updatedBy: 3,
-    });
-    this.documents = [...this.documents, ...otherDocs]
+    const docsPageData = this.contentService.getContentByPropertyName('my-documents-common-text');
+    this.docsCommonText = this.sharedMethods.convertAdditionalTextToObj(docsPageData?.additionalText);
+    this.getDocuments();
   }
+
+  getDocuments() {
+    this.documents = this.documentsDataService.documents;
+    this.documents = this.documents.filter((doc) => !doc.isEssential) || this.documents;
+  }
+
   searchResult(data) {}
 
-  onSelect() {
-    this.select = true;
-  }
-  async onClick() {
-    this.actionClicked = true;
-    if (!this.select) {
-      this.allActionModal = await this.modalCtrl.create({
-        component: DocumentactionsComponent,
-        cssClass: 'my-own-class',
-      });
-
-      this.allActionModal.present();
-
-      this.allActionModal.onDidDismiss().then((data) => {
-        const view = data.data.view;
-
-        if (view === 'icons') {
-          this.display = 'icon';
-          return;
-        }
-        if (view === 'list') {
-          this.display = 'list';
-          return;
-        }
-      });
-      return;
-    }
-
-    this.documentSelectedModal = await this.modalCtrl.create({
-      component: DocumentselectedactionComponent,
-      cssClass: 'my-own-class',
-    });
-
-    this.documentSelectedModal.present();
-
-    this.documentSelectedModal.onDidDismiss().then( async(data) => {
-      const action = data.data.action;
-
-      if (action === 'delete') {
-        this.confirmModal = await this.modalCtrl.create({
-          component: ConfirmmodalComponent,
-          componentProps: {
-            title: 'Permanently delete?',
-            description: 'Lorem ipsum',
-          },
-          cssClass: 'tuna-modal'
-        });
-        this.confirmModal.present();
-
-        this.confirmModal.onDidDismiss().then(async(confirmModalData) => {
-          //TODO: handle action on confirm deletion
-        });
-      };
-    });
-  }
-
-  onCancel() {
-    this.select = false;
-  }
-
-  onDismiss() {
-    this.actionClicked = false;
-    if (!this.select) {
-      this.allActionModal.dismiss();
-    } else {
-      this.documentSelectedModal.dismiss();
+  // TODO: new doc not reflecting. Need to refactor
+  async addDocument() {
+    const newDoc = await this.sharedMethods.addDocument(this.commonText, this.alertController, this.uploadService, this.documentsDataService, this.docsCommonText, false);
+    if (newDoc) {
+      this.getDocuments();
     }
   }
 
-  viewImage(doc: Document) {}
+  async viewImage(doc: DocumentType) {
+    if (!this.isEditing) {
+      const modal = await this.modalCtrl.create({
+        cssClass: 'notification-modal view-image',
+        component: ViewImageComponent,
+        componentProps: {
+          imageFile: doc,
+        }
+      });
 
-  viewFile(doc) {}
+      modal.present();
+    }
+  }
+
+  viewFile(doc: DocumentType) {
+    if (!this.isEditing) {
+      if (this.sharedMethods.currentPlatform === 'web') {
+        window.open(doc.fileUrl, '_blank');
+      } else {
+        this.fileOpener.open(doc.fileUrl, 'application/pdf')
+        .then(() => console.log('File is opened'))
+        .catch(e => {
+          console.log('Error opening file', e);
+          this.sharedMethods.showToast(this.docsCommonText?.errorOpeningFile);
+        });
+      }
+    }
+  }
 
   editDocuments() {
     this.isEditing = !this.isEditing;
@@ -161,22 +111,23 @@ export class FilesPage implements OnInit {
   }
 
   async openDelAlert() {
-    const alertProps = {
-      cssClass: 'del-doc-alert',
-      header: this.commonText?.delete + ` ${this.selectedDocuments.length} ` + this.commonText?.imageOrDoc || 'Delete docs',
-      backdropDismiss: false,
-      buttons: [ {
-        text: this.commonText?.cancel?.toUpperCase(),
-        role: 'cancel',
-      },
-      {
-        text: this.commonText?.delete?.toUpperCase(),
-        handler: async() => {}
-      }, ]
-    };
+    // TODO: to refactor
+    // const alertProps = {
+    //   cssClass: 'del-doc-alert',
+    //   header: this.commonText?.delete + ` ${this.selectedDocuments.length} ` + this.commonText?.imageOrDoc || 'Delete docs',
+    //   backdropDismiss: false,
+    //   buttons: [ {
+    //     text: this.commonText?.cancel?.toUpperCase(),
+    //     role: 'cancel',
+    //   },
+    //   {
+    //     text: this.commonText?.delete?.toUpperCase(),
+    //     handler: async() => {}
+    //   }, ]
+    // };
 
-    const alert = await this.alertController.create(alertProps);
-    await alert.present();
+    // const alert = await this.alertController.create(alertProps);
+    // await alert.present();
   }
 
   async shareDocs() {}

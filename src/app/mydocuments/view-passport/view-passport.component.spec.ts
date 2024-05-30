@@ -1,19 +1,19 @@
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { IonicModule } from '@ionic/angular';
 
-import { DocumentactionsComponent } from './documentactions.component';
+import { ViewPassportComponent } from './view-passport.component';
 
-describe('DocumentactionsComponent', () => {
-  let component: DocumentactionsComponent;
-  let fixture: ComponentFixture<DocumentactionsComponent>;
+describe('ViewPassportComponent', () => {
+  let component: ViewPassportComponent;
+  let fixture: ComponentFixture<ViewPassportComponent>;
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      declarations: [ DocumentactionsComponent ],
+      declarations: [ ViewPassportComponent ],
       imports: [IonicModule.forRoot()]
     }).compileComponents();
 
-    fixture = TestBed.createComponent(DocumentactionsComponent);
+    fixture = TestBed.createComponent(ViewPassportComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   }));

@@ -114,7 +114,8 @@ ion-label.asterisk::after {
 :host.create-vessel-step-2,
 :host.create-worker,
 :host.create-note,
-:host.training-video-form {
+:host.training-video-form,
+:host.create-passport-form {
   .form-input {
     background: #EAEDF6;
   }

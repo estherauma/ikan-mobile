@@ -1,19 +1,19 @@
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { IonicModule } from '@ionic/angular';
 
-import { DocumentselectedactionComponent } from './documentselectedaction.component';
+import { ViewImageComponent } from './view-image.component';
 
-describe('DocumentselectedactionComponent', () => {
-  let component: DocumentselectedactionComponent;
-  let fixture: ComponentFixture<DocumentselectedactionComponent>;
+describe('ViewImageComponent', () => {
+  let component: ViewImageComponent;
+  let fixture: ComponentFixture<ViewImageComponent>;
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      declarations: [ DocumentselectedactionComponent ],
+      declarations: [ ViewImageComponent ],
       imports: [IonicModule.forRoot()]
     }).compileComponents();
 
-    fixture = TestBed.createComponent(DocumentselectedactionComponent);
+    fixture = TestBed.createComponent(ViewImageComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   }));

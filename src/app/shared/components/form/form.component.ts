@@ -119,8 +119,6 @@ export class FormComponent implements OnInit {
 
   async takePicture(key) {
     try {
-      await this.audioService.checkDevicePermissions();
-
       const modal = await this.modalCtrl.create({
         component: ImageselectComponent,
         cssClass: 'notification-modal'
@@ -129,9 +127,9 @@ export class FormComponent implements OnInit {
 
       modal.onDidDismiss().then((data) => {
         if (data?.data?.imageData) {
-          const val = data?.data?.imageData?.webPath;
-
+          const val = data?.data?.imageData;
           this.updateFieldValue(key, val);
+          return data?.data?.imageData;
         }
       });
 
