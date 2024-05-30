@@ -1,14 +1,14 @@
-import { Component, OnInit, Output, EventEmitter, Input, ChangeDetectorRef } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter, Input } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { AlertController, ModalController } from '@ionic/angular';
 import { UploadService } from 'src/app/shared/services/upload/upload.service';
-import { CreatePage } from 'src/app/workorders/create/create.page';
 import { ImageselectComponent } from '../imageselect/imageselect.component';
 import { RecordoptionmodalComponent } from '../recordoptionmodal/recordoptionmodal.component';
 import { ContentService } from '../../services/content/content.service';
 import { FieldType, Icons } from '../../types/api-types';
 import { SharedmethodsService } from '../../services/sharedmethods/sharedmethods.service';
 import { AudioService } from '../../services/audio/audio.service';
+import { FileOpener } from '@awesome-cordova-plugins/file-opener/ngx';
 
 @Component({
   selector: 'app-form',
@@ -44,13 +44,14 @@ export class FormComponent implements OnInit {
   @Output() dataFromCustomButton = new EventEmitter<any>();
 
   selectedImages = {};
-  selectedDocuments = {};
+  // selectedDocuments = {};
 
   formKeysToRemove = [];
   typesToExclude = ['h1','h2','h3','h4','h5','h6','p'];
   typeHereText = 'Type here';
   selectDateText = 'Select a date'; // TODO: add to prismic
   commonText: any;
+  docsCommonText: any;
 
   constructor(
     public uploadService: UploadService,
@@ -59,10 +60,13 @@ export class FormComponent implements OnInit {
     public sharedMethods: SharedmethodsService,
     public audioService: AudioService,
     public alertController: AlertController,
+    public fileOpener: FileOpener,
   ) { }
 
   ngOnInit() {
     this.commonText = this.contentService?.commonText;
+    const docsPageData = this.contentService.getContentByPropertyName('my-documents-common-text');
+    this.docsCommonText = this.sharedMethods.convertAdditionalTextToObj(docsPageData?.additionalText);
     this.typeHereText = this.commonText?.typeHere;
     this.uploadPictureText = this.commonText?.uploadPicture;
     this.uploadDocText = this.commonText?.uploadDocument;
@@ -113,8 +117,6 @@ export class FormComponent implements OnInit {
     this.tunaFormGroup.patchValue({
       [key]: file
     });
-
-    this.selectedDocuments = {...this.selectedDocuments, [key]:file };
   }
 
   async takePicture(key) {
@@ -156,10 +158,6 @@ export class FormComponent implements OnInit {
       }
       return el;
     });
-  }
-
-  removeDocument(key) {
-    delete this.selectedDocuments[key];
   }
 
   removePicture(key) {
@@ -210,5 +208,19 @@ export class FormComponent implements OnInit {
       ]
     });
     await alert.present();
+  }
+
+  viewPdf(doc) {
+    doc.fileUrl = doc.uriPath || doc.fileUrl;
+    if (this.sharedMethods.currentPlatform === 'web') {
+      window.open(doc.fileUrl, '_blank');
+    } else {
+      this.fileOpener.open(doc.fileUrl, 'application/pdf')
+      .then(() => console.log('File is opened'))
+      .catch(e => {
+        console.log('Error opening file', e);
+        this.sharedMethods.showToast(this.docsCommonText?.errorOpeningFile);
+      });
+    }
   }
 }

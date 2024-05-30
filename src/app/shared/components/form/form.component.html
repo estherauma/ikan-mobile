@@ -297,17 +297,20 @@
                 </ion-label>
               </ion-col>
             </ion-row>
-            <ion-row *ngIf="selectedDocuments[question.key]" class="upload-wrapper">
-              <div>
-                <ion-icon style="color: red;" (click)="removeDocument(question.key)" name="trash-outline"></ion-icon>
-                <p>{{selectedDocuments[question.key].name}}</p>
-              </div>
-            </ion-row>
-            <ion-row *ngIf="!selectedDocuments[question.key]" class="upload-wrapper">
+            <ion-row *ngIf="!tunaFormGroup.controls[question.key].value" class="upload-wrapper">
               <div (click)="onUpload(question.key)">
                 <ion-icon [src]="uploadDocIcon"></ion-icon>
                 <p>{{ question.placeholder || uploadDocText}}</p>
               </div>
+            </ion-row>
+            <ion-row *ngIf="tunaFormGroup.controls[question.key].value"  class="pdf-preview">
+              <img
+                src="assets/icon/documents.svg"
+                [alt]="docsCommonText?.documentsIcon"
+                (click)="viewPdf(tunaFormGroup.controls[question.key].value)"
+              />
+              <p>{{ tunaFormGroup.controls[question.key].value.fileName }}</p>
+              <ion-icon class="trash-icon" name="trash-outline" (click)="handleDeleteImage($event, question.key)"></ion-icon>
             </ion-row>
 
           </ion-grid>
@@ -622,19 +625,21 @@
                     </ion-label>
                   </ion-col>
                 </ion-row>
-                <ion-row *ngIf="selectedDocuments[question.followUpQuestion.key]" class="upload-wrapper">
-                  <div>
-                    <ion-icon style="color: red;" (click)="removeDocument(question.followUpQuestion.key)" name="trash-outline"></ion-icon>
-                    <p>{{selectedDocuments[question.followUpQuestion.key].name}}</p>
-                  </div>
-                </ion-row>
-                <ion-row *ngIf="!selectedDocuments[question.followUpQuestion.key]" class="upload-wrapper">
+                <ion-row *ngIf="!tunaFormGroup.controls[question.followUpQuestion.key].value" class="upload-wrapper">
                   <div (click)="onUpload(question.followUpQuestion.key)">
                     <ion-icon [src]="uploadDocIcon"></ion-icon>
                     <p>{{ question.followUpQuestion.placeholder || uploadDocText}}</p>
                   </div>
                 </ion-row>
-    
+                <ion-row *ngIf="tunaFormGroup.controls[question.followUpQuestion.key].value"  class="pdf-preview">
+                  <img
+                    src="assets/icon/documents.svg"
+                    [alt]="docsCommonText?.documentsIcon"
+                    (click)="viewPdf(tunaFormGroup.controls[question.followUpQuestion.key].value)"
+                  />
+                  <p>{{ tunaFormGroup.controls[question.followUpQuestion.key].value.fileName }}</p>
+                  <ion-icon class="trash-icon" name="trash-outline" (click)="handleDeleteImage($event, question.key)"></ion-icon>
+                </ion-row>
               </ion-grid>
             </ion-item>
           </div>
