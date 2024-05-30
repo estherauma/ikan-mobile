@@ -330,22 +330,15 @@
                 </ion-label>
               </ion-col>
             </ion-row>
-            <ion-row *ngIf="selectedImages[question.key]" class="image">
-              <div>
-                <img [src]="selectedImages[question.key].path" />
-                <ion-icon class="trash-icon" (click)="removePicture(question.key)" name="trash-outline"></ion-icon>
-                <img>
-              </div>
-            </ion-row>
-            <ion-row *ngIf="!selectedImages[question.key] && !question.value" class="upload-wrapper">
+            <ion-row *ngIf="!tunaFormGroup.controls[question.key].value" class="upload-wrapper">
               <div (click)="takePicture(question.key)">
                 <ion-icon [src]="uploadPictureIcon"></ion-icon>
                 <p>{{ question.placeholder || uploadPictureText}}</p>
               </div>
             </ion-row>
-            <ion-row *ngIf="question.value" class="image-preview">
-              <img *ngIf="sharedMethods.isIos" [src]="question.value.webPath | safeurl" />
-              <img *ngIf="!sharedMethods.isIos" [src]="question.value.webPath" />
+            <ion-row *ngIf="tunaFormGroup.controls[question.key].value" class="image-preview">
+              <img *ngIf="sharedMethods.isIos" [src]="tunaFormGroup.controls[question.key].value.webPath | safeurl" />
+              <img *ngIf="!sharedMethods.isIos" [src]="tunaFormGroup.controls[question.key].value.webPath" />
               <ion-icon class="trash-icon" name="trash-outline" (click)="handleDeleteImage($event, question.key)"></ion-icon>
             </ion-row>
 
@@ -657,22 +650,15 @@
                     </ion-label>
                   </ion-col>
                 </ion-row>
-                <ion-row *ngIf="selectedImages[question.followUpQuestion.key]" class="image">
-                  <div>
-                    <img [src]="selectedImages[question.followUpQuestion.key].path" />
-                    <ion-icon class="trash-icon" (click)="removePicture(question.followUpQuestion.key)" name="trash-outline"></ion-icon>
-                    <img>
-                  </div>
-                </ion-row>
-                <ion-row *ngIf="!selectedImages[question.followUpQuestion.key] && !question.followUpQuestion.value" class="upload-wrapper">
+                <ion-row *ngIf="!tunaFormGroup.controls[question.followUpQuestion.key].value" class="upload-wrapper">
                   <div (click)="takePicture(question.followUpQuestion.key)">
                     <ion-icon [src]="uploadPictureIcon"></ion-icon>
                     <p>{{ question.followUpQuestion.placeholder || uploadPictureText}}</p>
                   </div>
                 </ion-row>
-                <ion-row *ngIf="question.followUpQuestion.value" class="image-preview">
-                  <img *ngIf="sharedMethods.isIos" [src]="question.followUpQuestion.value.webPath | safeurl" />
-                  <img *ngIf="!sharedMethods.isIos" [src]="question.followUpQuestion.value.webPath" />
+                <ion-row *ngIf="tunaFormGroup.controls[question.followUpQuestion.key].value" class="image-preview">
+                  <img *ngIf="sharedMethods.isIos" [src]="tunaFormGroup.controls[question.followUpQuestion.key].value.webPath | safeurl" />
+                  <img *ngIf="!sharedMethods.isIos" [src]="tunaFormGroup.controls[question.followUpQuestion.key].value.webPath" />
                   <ion-icon class="trash-icon" name="trash-outline" (click)="handleDeleteImage($event, question.followUpQuestion.key)"></ion-icon>
                 </ion-row>
     
