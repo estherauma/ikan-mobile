@@ -8,8 +8,6 @@ import { SearchComponent } from './components/search/search.component';
 import { DashboardelcomesectionComponent } from './dashboardelcomesection/dashboardelcomesection.component';
 import { ChartComponent } from './components/chart/chart.component';
 import { FilterComponent } from './components/filter/filter.component';
-import { DocumentactionsComponent } from './components/documentactions/documentactions.component';
-import { DocumentselectedactionComponent } from './components/documentselectedaction/documentselectedaction.component';
 import { ConfirmmodalComponent } from './components/confirmmodal/confirmmodal.component';
 import { ConfirmedmodalComponent } from './components/confirmedmodal/confirmedmodal.component';
 import { RecordoptionmodalComponent } from './components/recordoptionmodal/recordoptionmodal.component';
@@ -47,6 +45,8 @@ import { PaymentsPage } from '../workers/profiles/worker/payments/payments.page'
 import { InfoPage as WorkerProfile } from '../workers/profiles/worker/info/info.page';
 import { FilesPage } from '../mydocuments/files/files.page';
 import { EssentialsComponent } from '../mydocuments/essentials/essentials.component';
+import { ViewImageComponent } from '../mydocuments/view-image/view-image.component';
+import { ViewPassportComponent } from '../mydocuments/view-passport/view-passport.component';
 
 
 @NgModule({
@@ -64,8 +64,6 @@ import { EssentialsComponent } from '../mydocuments/essentials/essentials.compon
     DashboardelcomesectionComponent,
     ChartComponent,
     FilterComponent,
-    DocumentactionsComponent,
-    DocumentselectedactionComponent,
     ConfirmmodalComponent,
     ConfirmedmodalComponent,
     RecordoptionmodalComponent,
@@ -101,7 +99,9 @@ import { EssentialsComponent } from '../mydocuments/essentials/essentials.compon
     PaymentsPage,
     WorkerProfile,
     FilesPage,
-    EssentialsComponent
+    EssentialsComponent,
+    ViewImageComponent,
+    ViewPassportComponent,
   ],
   exports: [
     SafeurlPipe,
@@ -111,8 +111,6 @@ import { EssentialsComponent } from '../mydocuments/essentials/essentials.compon
     DashboardelcomesectionComponent,
     ChartComponent,
     FilterComponent,
-    DocumentactionsComponent,
-    DocumentselectedactionComponent,
     ConfirmmodalComponent,
     ConfirmedmodalComponent,
     RecordoptionmodalComponent,
@@ -148,6 +146,8 @@ import { EssentialsComponent } from '../mydocuments/essentials/essentials.compon
     WorkerProfile,
     FilesPage,
     EssentialsComponent,
+    ViewImageComponent,
+    ViewPassportComponent,
   ]
 })
 

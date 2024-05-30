@@ -1,12 +1,20 @@
 <div class="content-wrapper">
   <!-- <app-search [searchDataSet]="[]" (searchResult)="searchResult($event)"></app-search> -->
-  <ion-row *ngIf="documents.length" class="ion-justify-content-end select-row">
-    <p
-      class="select"
-      (click)="editDocuments()"
-    >
-      {{ commonText?.select }}
-    </p>
+  <ion-row class="add-select-row">
+    <ion-col size="8" class="add-col">
+      <ion-button (click)="addDocument()">
+        <ion-icon slot="icon-only" name="add"></ion-icon>
+        {{ docsCommonText?.addDocument }}
+      </ion-button>
+    </ion-col>
+    <ion-col size="4" *ngIf="documents.length" class="ion-justify-content-end select-col">
+      <p
+        class="select"
+        (click)="editDocuments()"
+      >
+        {{ commonText?.select }}
+      </p>
+    </ion-col>
   </ion-row>
 
   <div *ngIf="documents.length > 0" class="documents-wrapper">
@@ -15,29 +23,28 @@
         class="ion-padding"
         size="6"
         *ngFor="let doc of documents; let i = index"
-        (click)="doc.type === 'image' ? viewImage(doc) : viewFile(doc)"
+        (click)="doc.docType === 'image' ? viewImage(doc) : viewFile(doc)"
       >
         <img
-          *ngIf="doc.type === 'image' && sharedMethods.isIos"
-          [src]="doc.url | safeurl"
-          [alt]="doc.name"
+          *ngIf="doc.docType === 'image' && sharedMethods.isIos"
+          [src]="doc.fileUrl | safeurl"
+          [alt]="doc.fileName"
         />
 
         <img
-          *ngIf="doc.type === 'image' && !sharedMethods.isIos"
-          [src]="doc.url"
-          [alt]="doc.name"
+          *ngIf="doc.docType === 'image' && !sharedMethods.isIos"
+          [src]="doc.fileUrl"
+          [alt]="doc.fileName"
         />
-        <div *ngIf="doc.type === 'pdf'" class="img doc-icon-wrapper">
-          <!-- translate -->
+        <div *ngIf="doc.docType === 'pdf'" class="img doc-icon-wrapper">
           <img
             src="assets/icon/documents.svg"
-            [alt]="commonText?.pdfAltText || 'pdf file icon'"
+            [alt]="docsCommonText?.documentsIcon"
           />
         </div>
-        <p *ngIf="doc.name" class="file-name">{{ doc.name }}</p>
+        <p *ngIf="doc.fileName" class="file-name">{{ doc.fileName }}</p>
         <p *ngIf="doc.updatedAt || doc.createdAt">{{ doc.updatedAt || doc.createdAt | date:'dd/MM/yyy' }}</p>
-        <p *ngIf="doc.size">{{ doc.size }}</p>
+        <p *ngIf="doc.fileSize">{{ doc.fileSize }}</p>
         <ion-icon
           *ngIf="isEditing"
           class="ellipse"

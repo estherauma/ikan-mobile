@@ -21,12 +21,17 @@ export class WorkerPage implements OnInit {
   isProduction = env.production;
   showTriggerButton: boolean = false;
 
-  // TODO: translate titles
-  // TODO: Change path on prismic
-  // To test uncomment line 26, my docs object
   sLists = [
-    // {title: 'My Documents', icon: '/assets/icon/documents.svg', url: '/mydocuments/home'}, // TODO: Change path on prismic
-    {title: 'Contracts', icon: '/assets/icon/offers.svg',  url: '/contracts/home'},
+    {
+      title: 'My Documents',
+      icon: '/assets/icon/documents.svg',
+      url: '/mydocuments'
+    },
+    {
+      title: 'Contracts',
+      icon: '/assets/icon/offers.svg', 
+      url: '/contracts/home'
+    },
     // {title: 'Placement'},
     // {title: 'To Do'},
     // {title: 'Training'},

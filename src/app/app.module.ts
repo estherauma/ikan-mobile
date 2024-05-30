@@ -17,6 +17,8 @@ import { SharedComponentsModule } from '@fiftyeight/shared-components';
 import * as Sentry from '@sentry/angular-ivy';
 import { GlobalErrorHandlerService } from './shared/services/error-handler/global-error-handler.service';
 import { GlobalHttpInterceptor } from './shared/services/error-handler/global-http-interceptor/global-http-interceptor';
+import { FileOpener } from '@awesome-cordova-plugins/file-opener/ngx';
+import { Chooser } from '@awesome-cordova-plugins/chooser/ngx';
 
 @NgModule({
   declarations: [ AppComponent, RedElDirective ],
@@ -42,6 +44,8 @@ import { GlobalHttpInterceptor } from './shared/services/error-handler/global-ht
     { provide: APP_INITIALIZER, useFactory: () => () => { }, deps: [Sentry.TraceService], multi: true },
     { provide: HTTP_INTERCEPTORS, useClass: GlobalHttpInterceptor, multi: true },
     { provide: ErrorHandler, useClass: GlobalErrorHandlerService },
+    Chooser,
+    FileOpener,
   ],
   bootstrap: [AppComponent],
   schemas: [ CUSTOM_ELEMENTS_SCHEMA ]

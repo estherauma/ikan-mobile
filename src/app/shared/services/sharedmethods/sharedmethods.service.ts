@@ -9,6 +9,7 @@ import { Device } from '@capacitor/device';
 import {v4 as uuidv4} from 'uuid';
 import { UserRole } from '../../types/api-types';
 import { Validators } from '@angular/forms';
+import { Camera, CameraSource } from '@capacitor/camera';
 
 
 @Injectable({
@@ -20,6 +21,7 @@ export class SharedmethodsService {
   isIos = false;
   isAndroid = false;
   public analyticsEventParams: analyticsEventsData;
+  currentPlatform: string = '';
 
   constructor(
     public loadingCtrl: LoadingController,
@@ -32,6 +34,7 @@ export class SharedmethodsService {
       this.isIos = false;
       this.isAndroid = true;
     }
+    this.currentPlatform = this.getCurrentPlatform();
     this.setAnalyticsEventParams();
   }
 
@@ -40,7 +43,7 @@ export class SharedmethodsService {
       message,
       duration
     });
-    await loading.present();
+    await loading.present()
   }
 
   async hideLoader() {
@@ -283,5 +286,150 @@ export class SharedmethodsService {
       deviceId: this.deviceUuid?.slice(-8) || null
     };
     this.analyticsEventParams = params;
+  }
+
+  getCurrentPlatform() {
+    if (this.platform.is('desktop') || this.platform.is('mobileweb') ) {
+      return 'web';
+    } else if (this.platform.is('ios')) {
+      return 'ios';
+    } else if (this.platform.is('android')) {
+      return 'android';
+    }
+  }
+
+  async getSelectImageOrPdfAlert(commonText, alertController, uploadService, docsCommonText) {
+    const alert = await alertController.create({
+      cssClass: 'add-file-alert',
+      buttons: [
+        {
+          text: docsCommonText?.takeAPicture,
+          cssClass: 'add-img-btn',
+          handler: async() => {
+            const fileData = await uploadService.uploadPicture(CameraSource.Camera);
+            return { fileData };
+          }
+        },
+        {
+          text: docsCommonText?.selectImagesFromPhotos,
+          cssClass: 'add-img-btn',
+          handler: async() => {
+            const fileData = await uploadService.uploadPicture(CameraSource.Photos);
+            return { fileData };
+          }
+        },
+        {
+          text: docsCommonText?.uploadPdfFile,
+          cssClass: 'add-doc-btn',
+          handler: async() => {
+            // const fileData = await uploadService.choosePdfFile();
+            const fileData = await uploadService.chooseFile();
+            return { fileData };
+          }
+        },
+        {
+          text: commonText?.cancel,
+          role: 'cancel',
+          cssClass: 'cancel-btn',
+        }
+      ]
+    });
+    return alert;
+  }
+
+  async getFileNameAlert(commonText, alertController, docsCommonText) {
+    const alert = await alertController.create({
+      cssClass: 'add-file-name-alert',
+      backdropDismiss: false,
+      header: docsCommonText?.enterFileName,
+      message: docsCommonText?.fileNameSubText,
+      inputs: [
+        {
+          name: 'fileName',
+          type: 'text',
+          placeholder: docsCommonText?.fileNamePlaceholder,
+          value: '',
+        }
+      ],
+      buttons: [
+        {
+          text: commonText?.cancel,
+          role: 'cancel',
+          cssClass: 'cancel-btn',
+        },
+        {
+          text: commonText?.save,
+          cssClass: 'save-btn',
+          handler: (data) => {
+            return { fileName: data.fileName};
+          }
+        }
+      ],
+      
+    });
+    return alert;
+  }
+
+  async addDocument(
+    commonText,
+    alertController,
+    uploadService,
+    documentsDataService,
+    docsCommonText,
+    isEssential: boolean = false,
+  ) {
+    let newDoc = null;
+    const alert = await this.getSelectImageOrPdfAlert(commonText, alertController, uploadService, docsCommonText);
+    await alert.present();
+    await alert.onDidDismiss().then(async(data) => {
+      if ( data.role !== 'cancel' && data?.data?.fileData && Object.keys(data?.data?.fileData).length) {
+        const addFileNameAlert = await this.getFileNameAlert(commonText, alertController, docsCommonText);
+        await addFileNameAlert.present().then(() => {
+          const firstInput: any = document.querySelector('ion-alert input');
+          firstInput.focus();
+          return;
+        });
+        await addFileNameAlert.onDidDismiss().then(async(fileNameData) => {
+          const { fileData } = data?.data;
+          let fileName = fileData.fileName;
+          if (fileNameData.role !== 'cancel' && fileNameData?.data.fileName) {
+            fileName = fileNameData?.data.fileName;
+          }
+
+          const userData = await this.getUserData();
+          const now = this.getCurrentDateTime();
+          const appRef = this.generateAppRef();
+          const dataToSave = {
+            appRef,
+            userId: userData.id,
+            fileName,
+            fileUrl: fileData.docType === 'image' ? fileData.webPath : fileData.uriPath,
+            fileSize: fileData.fileSize,
+            docType: fileData.docType,
+            isEssential,
+            createdAt: now,
+            updatedAt: now,
+            createdBy: userData.id,
+            updatedBy: userData.id,
+          };
+
+          const insertId = await documentsDataService.create(dataToSave);
+          if (insertId) {
+            const insertedDoc = {
+              id: insertId,
+              ...dataToSave,
+            };
+            newDoc = insertedDoc;
+          } else {
+            if (isEssential) {
+              this.showToast(docsCommonText?.essentialDocSaveFailure);
+            } else {
+              this.showToast(docsCommonText?.docSaveFailure);
+            }
+          }
+        });
+      }
+    });
+    return newDoc;
   }
 }
