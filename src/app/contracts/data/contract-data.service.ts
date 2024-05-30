@@ -210,7 +210,37 @@ export class ContractDataService {
     });
   }
 
-  updateContractDocument(id, data) { }
+  async getContractDocumentById(id) {
+    const contractDocuments = await this.retrieveContractDocuments();
+    const doc = contractDocuments.find(doc => doc.id === id);
+    return doc;
+  }
+
+  // check if the contract has a document
+  async contractDocumentExists(contractId) {
+    const docs = await this.retrieveContractDocuments();
+    return docs.some(doc => doc.contract_id === contractId);
+  }
+
+  async updateContractDocument(id, data) {
+    const query = 'UPDATE contract_documents SET name = ?, url = ?, status = ?, \
+      updated_at = ?, updated_by = ? WHERE id = ?';
+    const now = this.sharedMethods.getCurrentDateTime();
+    const user = await this.sharedMethods.getUserData();
+    const params = [data.name, data.url, data.status, now, user?.id, id];
+    
+    return this.db.executeSql(query, params).then(async(result) => {
+      await this.retrieveContractDocuments();
+      const doc = await this.getContractDocumentById(id);
+      return {
+        rowsAffected: result.rowsAffected,
+        doc,
+      };
+    }).catch((e) => {
+      console.log(e);
+      return null;
+    });
+  }
 
   deleteContractDocument(id) { }
 
