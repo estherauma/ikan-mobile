@@ -33,7 +33,18 @@ export class ContractDataService {
   }
 
   async retrieveContracts() {
-    const query = 'SELECT * FROM contracts';
+    const query = 'SELECT \
+      a.*, \
+        json_object(\
+          "fileId", b.id,\
+          "fileName", b.name,\
+          "fileUrl", b.url,\
+          "docType", "pdf"\
+      ) AS file\
+      FROM \
+        contracts a\
+      LEFT JOIN \
+        contract_documents b ON a.id = b.contract_id';
     // TODO: Add a join to the vessel owner company later
     return this.db.executeSql(query, []).then((data) => {
       const contracts = [];
@@ -55,13 +66,19 @@ export class ContractDataService {
             createdAt: data.rows.item(i).created_at,
             updatedAt: data.rows.item(i).updated_at,
             createdBy: data.rows.item(i).created_by,
-            updatedBy: data.rows.item(i).updated_by
+            updatedBy: data.rows.item(i).updated_by,
+            file: this.getFile(data.rows.item(i).file),
           });
         }
       }
       contracts.reverse();
       this.contractsObs.next(contracts);
     }).catch((e) => console.log(e));
+  }
+
+  getFile(data) {
+    const file = JSON.parse(data);
+    return Object.values(file).every(value => value !== null) ? file : null;
   }
 
   getAll() {
