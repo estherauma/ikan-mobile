@@ -118,7 +118,6 @@ export class CreatePage extends BaseformPage implements OnInit {
         this.sharedMethods.showToast(this.pageText?.errCreatingContract);
       }
     } else {
-      // TODO: add doc edit logic
       formData.id = this.contractDetails.id;
       const result = await this.contractsDataService.update(formData);
       if (result?.rowsAffected > 0) { 
