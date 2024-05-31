@@ -1,10 +1,14 @@
-.reports-image{
-    height: 70px; 
-    width: 70px;
-}
+ion-content{
+    --background: #F5F5F5;
 
-.reports-card-item{
-    border-bottom: 1px dashed gray; 
-    padding-bottom: 8px;
-    margin-bottom: 8px;
+    .reports-image{
+        height: 70px; 
+        width: 70px;
+    }
+
+    .reports-card-item{
+        border-bottom: 1px dashed gray; 
+        padding-bottom: 8px;
+        margin-bottom: 8px;
+    }
 }
