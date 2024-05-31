@@ -23,9 +23,16 @@ export class WorkerPage implements OnInit {
     public profileDataService: ProfilesDataService,
   ) { }
 
-  ngOnInit() {
+  async ngOnInit() {
     this.commonText = this.contentService?.commonText;
     this.pageTitle = this.commonText?.myProfile || this.pageTitle;
+    this.profileDataService.getAll().subscribe(async(data) => {
+      const user = await this.sharedMethods.getUserData();
+      const userProfile = data.find((profile) => profile.email === user?.email);
+      if (userProfile?.profileImage) {
+        this.imageUrl = userProfile?.profileImage;
+      }
+    });
   }
 
   onSegmentChange(e) {

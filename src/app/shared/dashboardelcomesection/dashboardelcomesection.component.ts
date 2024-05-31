@@ -8,6 +8,7 @@ import { ProfilesDataService } from 'src/app/profiles/data/profiles-data.service
   styleUrls: ['./dashboardelcomesection.component.scss'],
 })
 export class DashboardelcomesectionComponent implements OnInit {
+  userProfile: any;
 
   @Input() name: string;
   @Input() greeting: string;
@@ -22,10 +23,13 @@ export class DashboardelcomesectionComponent implements OnInit {
 
   async ngOnInit() {
     const user = await this.sharedMethods.getUserData();
-    const userProfile = await this.profileDataService.getSingleProfile(user?.email);
-    if (userProfile?.profile_image) {
-      this.profileImageUrl = userProfile?.profile_image;
-    }
+    this.profileDataService.getAll().subscribe((data) => {
+      this.userProfile = data.find((profile) => profile.email === user?.email);
+      if (this.userProfile?.profileImage) {
+        this.profileImageUrl = this.userProfile?.profileImage;
+      }
+    });
+    
   }
 
   onIconClick() {
