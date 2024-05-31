@@ -1,4 +1,7 @@
 import { Component, OnInit } from '@angular/core';
+import { ModalController } from '@ionic/angular';
+import { ProfilesDataService } from 'src/app/profiles/data/profiles-data.service';
+import { ImageselectComponent } from 'src/app/shared/components/imageselect/imageselect.component';
 import { ContentService } from 'src/app/shared/services/content/content.service';
 import { SharedmethodsService } from 'src/app/shared/services/sharedmethods/sharedmethods.service';
 
@@ -16,6 +19,8 @@ export class WorkerPage implements OnInit {
   constructor(
     public contentService: ContentService,
     public sharedMethods: SharedmethodsService,
+    public modalController: ModalController,
+    public profileDataService: ProfilesDataService,
   ) { }
 
   ngOnInit() {
@@ -27,4 +32,21 @@ export class WorkerPage implements OnInit {
     this.activeSegment = e?.detail?.value;
   }
 
+  async changePhoto() {
+    const modal = await this.modalController.create({
+      component: ImageselectComponent,
+      cssClass: 'notification-modal',
+    });
+    await modal.present();
+    await modal.onDidDismiss().then(async(data) => {
+      if (data?.data?.imageData && data?.data?.imageData.webPath) {
+        this.imageUrl = data?.data?.imageData.webPath;
+        const user = await this.sharedMethods.getUserData();
+        this.profileDataService.updateProfilesField(user?.email, 'profile_image', this.imageUrl);
+      } else if (data.role !== 'cancel') {
+        // translate
+        this.sharedMethods.showToast('Failed to updated profile picture.')
+      }
+    });
+  }
 }
