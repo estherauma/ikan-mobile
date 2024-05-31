@@ -188,4 +188,16 @@ export class ProfilesDataService {
       return null;
     });
   }
+
+  async updateProfilesField(email: string, field: string, value: any) {
+    const query = `UPDATE profiles SET ${field} = ? WHERE email = ?`;
+    const params = [value, email];
+    return this.db.executeSql(query, params).then(async(result) => {
+      await this.retrieveProfiles();
+      return result;
+    }).catch((e) => {
+      console.error(e);
+      return null;
+    });
+  }
 }
