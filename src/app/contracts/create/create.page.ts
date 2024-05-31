@@ -131,9 +131,7 @@ export class CreatePage extends BaseformPage implements OnInit {
             };
             const result = await this.contractsDataService.updateContractDocument(formData.id, fileEditData);
             if (result?.rowsAffected <= 0) {
-              // translate
-              // also translate helper text 
-              this.sharedMethods.showToast(this.pageText?.errSavingDocument || 'Failed to update document');
+              this.sharedMethods.showToast(this.pageText?.errSavingDocument);
             } else {
               contractDetails = {
                 ...contractDetails,

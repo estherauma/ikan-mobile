@@ -13,6 +13,7 @@ import { ProfilesDataService } from 'src/app/profiles/data/profiles-data.service
 })
 export class PageprofilecontainerComponent implements OnInit {
   commonText: any;
+  docsCommonText: any;
   reSendInviteBtnTitle = 'Re-send invite';
 
   @Input() imageUrl = '';
@@ -35,6 +36,8 @@ export class PageprofilecontainerComponent implements OnInit {
 
   ngOnInit() {
     this.commonText = this.contentService?.commonText;
+    const docsPageData = this.contentService.getContentByPropertyName('my-documents-common-text');
+    this.docsCommonText = this.sharedMethods.convertAdditionalTextToObj(docsPageData?.additionalText);
     this.reSendInviteBtnTitle = this.commonText?.resendInvite;
   }
 
@@ -53,8 +56,7 @@ export class PageprofilecontainerComponent implements OnInit {
         this.imageUrl = data?.data?.imageData.webPath;
         this.profilesDataService.updateProfilesField(worker?.email, 'profile_image', this.imageUrl);
       } else if (data?.role !== 'backdrop') {
-        // translate
-        this.sharedMethods.showToast('Failed to updated profile picture.')
+        this.sharedMethods.showToast(this.docsCommonText?.profilePictureUpdateFailure);
       }
     });
   }

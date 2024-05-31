@@ -28,6 +28,7 @@ export class ProfilePage extends BaseformPage implements OnInit {
   isAgent: boolean = false;
   isViewProfile: boolean = false;
   viewData: any = {};
+  docsCommonText: any;
 
   constructor(
     public contentService: ContentService,
@@ -53,6 +54,8 @@ export class ProfilePage extends BaseformPage implements OnInit {
 
   async pageSetup() {
     this.commonText = await this.contentService?.commonText;
+    const docsPageData = this.contentService.getContentByPropertyName('my-documents-common-text');
+    this.docsCommonText = this.sharedMethods.convertAdditionalTextToObj(docsPageData?.additionalText);
     this.pageTitle = this.commonText?.myProfile || this.pageTitle;
     this.submitButtonText = this.commonText?.save;
     this.userData = await this.sharedMethods.getUserData();
@@ -184,9 +187,8 @@ export class ProfilePage extends BaseformPage implements OnInit {
         this.imageUrl = data?.data?.imageData.webPath;
         const user = await this.sharedMethods.getUserData();
         this.profilesDataService.updateProfilesField(user?.email, 'profile_image', this.imageUrl);
-      } else if (data.role !== 'cancel') {
-        // translate
-        this.sharedMethods.showToast('Failed to updated profile picture.')
+      } else if (data?.role !== 'backdrop') {
+        this.sharedMethods.showToast(this.docsCommonText?.profilePictureUpdateFailure);
       }
     });
   }

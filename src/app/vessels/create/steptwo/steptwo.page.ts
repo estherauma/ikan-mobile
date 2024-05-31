@@ -123,7 +123,6 @@ export class SteptwoPage extends BaseformPage implements OnInit {
           };
           const imageResult = await this.vesselDataService.updateVesselImage(imageData);
           if (imageResult?.rowsAffected === 0) {
-            // translate
             this.sharedMethods.showLoader(this.pageText?.errUpdatingImage);
           } else {
             vesselDetails = { ...vesselDetails, imageFile: {webPath: imageResult.image.image_url} };

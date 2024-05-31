@@ -22,7 +22,6 @@ export class CreateDetailPage extends BaseformPage implements OnInit {
   prevData;
   isEditing: boolean = false;
 
-
   constructor(
     public contentService: ContentService,
     public activatedRoute: ActivatedRoute,
@@ -40,11 +39,11 @@ export class CreateDetailPage extends BaseformPage implements OnInit {
     super.ngOnInit();
     await this.getPageParams();
     const pageData = this.contentService.getContentByPropertyName('createworkers');
+    this.pageText = this.sharedMethods.convertAdditionalTextToObj(pageData?.additionalText);
     this.pageTitle = pageData?.pageTitle;
     if (this.isEditing) {
       this.submitButtonText = this.commonText.edit;
-      // translate editworker
-      this.pageTitle = this.commonText.editWorker;
+      this.pageTitle = this.pageText?.editWorker;
     }
     this.formQuestions = this.prevQuestions.concat(pageData?.formQuestions);
     this.formQuestions.forEach((entry) => {
