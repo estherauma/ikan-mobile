@@ -91,7 +91,7 @@ export class ProfilesDataService {
   }
 
   async getSingleProfile(email: string) {
-    const profile = this.profiles.find((p) => p.email === email);
+    const profile = await this.profiles.find((p) => p.email === email);
     return profile;
   }
 
