@@ -1,6 +1,9 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { ContentService } from '../../services/content/content.service';
 import { SharedmethodsService } from '../../services/sharedmethods/sharedmethods.service';
+import { ImageselectComponent } from '../imageselect/imageselect.component';
+import { ModalController } from '@ionic/angular';
+import { ProfilesDataService } from 'src/app/profiles/data/profiles-data.service';
 
 
 @Component({
@@ -19,12 +22,15 @@ export class PageprofilecontainerComponent implements OnInit {
   @Input() title = '';
   @Input() isResendInviteBtn = false;
   @Input() withinNav = true;
+  @Input() worker;
 
   @Output() clickedMenuItem = new EventEmitter<any>();
 
   constructor(
     public contentService: ContentService,
     public sharedMethods: SharedmethodsService,
+    public modalController: ModalController,
+    public profilesDataService: ProfilesDataService,
   ) { }
 
   ngOnInit() {
@@ -34,6 +40,23 @@ export class PageprofilecontainerComponent implements OnInit {
 
   onClickedMenu(data) {
     this.clickedMenuItem.emit(data);
+  }
+
+  async changePhoto(worker) {
+    const modal = await this.modalController.create({
+      component: ImageselectComponent,
+      cssClass: 'notification-modal',
+    });
+    await modal.present();
+    await modal.onDidDismiss().then(async(data) => {
+      if (data?.data?.imageData && data?.data?.imageData.webPath) {
+        this.imageUrl = data?.data?.imageData.webPath;
+        this.profilesDataService.updateProfilesField(worker?.email, 'profile_image', this.imageUrl);
+      } else if (data?.role !== 'backdrop') {
+        // translate
+        this.sharedMethods.showToast('Failed to updated profile picture.')
+      }
+    });
   }
 
 }
