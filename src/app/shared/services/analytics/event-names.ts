@@ -77,8 +77,13 @@ export enum pageEventNames {
     workerProfileinfo = 'page_worker_profile_info',
     workerProfilePayments = 'page_worker_profile_payments',
 
+    // learning hub
+    learningHubHome = 'page_learning_hub_home',
+    tfaVideo = 'page_tfa_video',
 }
 
 export enum appEventNames {
-
+    // TFA video
+    cancelTrainingVideo = 'cancel_training_video',
+    submitTrainingVideo = 'submit_training_video_resp',
 }

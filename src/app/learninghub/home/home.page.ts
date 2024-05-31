@@ -5,6 +5,8 @@ import { ContentService } from 'src/app/shared/services/content/content.service'
 import { TrainingVideoComponent } from '../training-video/training-video.component';
 import { SharedmethodsService } from 'src/app/shared/services/sharedmethods/sharedmethods.service';
 import { StorageKeys } from 'src/app/shared/types/api-types';
+import { AnalyticsService } from 'src/app/shared/services/analytics/analytics.service';
+import { pageEventNames } from 'src/app/shared/services/analytics/event-names';
 
 @Component({
   selector: 'app-home',
@@ -22,6 +24,7 @@ export class HomePage implements OnInit {
     public activatedRoute: ActivatedRoute,
     public modalCtrl: ModalController,
     public sharedMethods: SharedmethodsService,
+    public analyticsService: AnalyticsService
   ) { }
 
   async ngOnInit() {
@@ -46,6 +49,7 @@ export class HomePage implements OnInit {
     if (user?.role === 'worker' && !watchedTFAVideo) {
       await this.showTrainingVideo();
     }
+    this.analyticsService.trackEvent(pageEventNames.learningHubHome, this.sharedMethods.analyticsEventParams)
   }
 
   onClick(item) {
