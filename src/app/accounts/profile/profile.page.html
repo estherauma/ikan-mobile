@@ -2,24 +2,35 @@
 
 <ion-content [fullscreen]="true">
   <div class="profile-image">
-    <ion-row class="ion-padding-bottom title">
-      <app-title [isBlue]="true" [title]="pageTitle"></app-title>
+    <ion-row class="title-wrapper">
+      <h1>{{ pageTitle }}</h1>
     </ion-row>
 
     <ion-row>
-      <ion-col size="3" class="img-wrapper">
-          <ion-icon *ngIf="!imageUrl" class="image icon" name="person-circle-outline" />
-          <img *ngIf="imageUrl" class="image img" [src]="imageUrl || '/assets/icon/ellipse_profile.svg'" />
-      </ion-col>
-      <ion-col *ngIf="isViewProfile" size="9">
-        <app-button
-          class="edit-profile"
-          config=""
-          fill="solid"
-          [title]="commonText?.edit"
-          (onClick)="editProfile()"
-        >
-        </app-button>
+      <ion-col size="12">
+        <div class="img-wrapper">
+          <ion-icon
+            *ngIf="!imageUrl"
+            class="image icon"
+            name="person-circle-outline"
+          />
+          <img
+            *ngIf="sharedMethods.isIos && imageUrl"
+            class="image img"
+            [src]="imageUrl | safeurl"
+          />
+          <img
+            *ngIf="sharedMethods.isAndroid && imageUrl"
+            class="image img"
+            [src]="imageUrl"
+          />
+          <ion-icon
+            class="edit-icon"
+            [ngClass]="{ 'edit-icon-default-img': !imageUrl }"
+            name="pencil"
+            (click)="changePhoto()"
+          ></ion-icon>
+        </div>
       </ion-col>
     </ion-row>
   </div>
@@ -46,6 +57,15 @@
   </div>
 
   <div *ngIf="isViewProfile" class="view">
+    <div class="edit-btn-wrapper">
+      <ion-button
+        class="edit-profile"
+        fill="solid"
+        (click)="editProfile()"
+      >
+        {{ commonText?.edit }}
+      </ion-button>
+    </div>
     <div class="profile-view">
       <ion-row *ngIf="profileData?.firstName">
         <ion-col size="12">

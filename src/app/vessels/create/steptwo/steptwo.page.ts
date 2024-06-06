@@ -56,6 +56,7 @@ export class SteptwoPage extends BaseformPage implements OnInit {
     this.pageTitle = this.isEditing ? this.pageText?.editVessel : pageData?.pageTitle;
     this.formQuestions = this.prevQuestions.concat(pageData?.formQuestions);
     this.formQuestions.forEach((entry) => {
+      if (entry.displayquestion === false) return;
       const validators = this.sharedMethods.getFormValidators(entry);
       if (entry.key in this.prevData) {
         this.group[entry.key] = new FormControl(this.prevData[entry.key], validators);
@@ -83,18 +84,25 @@ export class SteptwoPage extends BaseformPage implements OnInit {
       const insertId = await this.vesselDataService.create(formData);
       
       if (insertId) {
-        // TODO: save vessel image
-        const imageData = {
-          vessel_id: insertId,
-          image_url: formData?.image_url,
-          description: '', // TODO: update description
-        };
-        const imageInsertId = await this.vesselDataService.createVesselImage(imageData);
-        if (!imageInsertId) {
-          this.sharedMethods.showLoader(this.pageText?.errSavingImage);
+        if (formData?.image_url?.webPath) {
+          const imageData = {
+            vessel_id: insertId,
+            image_url: formData?.image_url?.webPath,
+            description: '', // TODO: update description
+          };
+          const imageInsertId = await this.vesselDataService.createVesselImage(imageData);
+          if (!imageInsertId) {
+            this.sharedMethods.showLoader(this.pageText?.errSavingImage);
+          }
         }
+        
+        const vesselDetails = {
+          ...formData,
+          imageFile: formData?.image_url,
+          regNo: formData?.reg_no,
+        };
         this.modalCtrl.dismiss();
-        this.router.navigate(['vessels/view', formData], { replaceUrl: true });
+        this.router.navigate(['vessels/view', {vessel: JSON.stringify(vesselDetails)}], { replaceUrl: true });
       } else {
         this.sharedMethods.showLoader(this.pageText?.errCreatingVessel);
       }
@@ -103,9 +111,39 @@ export class SteptwoPage extends BaseformPage implements OnInit {
       formData.id = parseFloat(this.prevData.id);
       const result = await this.vesselDataService.update(formData);
       if (result?.rowsAffected > 0) {
-        // TODO: update vessel image
+        let vesselDetails = result?.vessel;
+        const vesselImage = await this.vesselDataService.getVesselImageByVesselId(formData.id);
+        if (vesselImage) {
+          const imageData = {
+            id: vesselImage.id,
+            vessel_id: formData.id,
+            image_url: typeof formData?.image_url === 'string' ? formData?.image_url :
+           formData?.image_url?.webPath,
+            description: '', // TODO: update description
+          };
+          const imageResult = await this.vesselDataService.updateVesselImage(imageData);
+          if (imageResult?.rowsAffected === 0) {
+            this.sharedMethods.showLoader(this.pageText?.errUpdatingImage);
+          } else {
+            vesselDetails = { ...vesselDetails, imageFile: {webPath: imageResult.image.image_url} };
+          }
+        } else {
+          const imageData = {
+            vessel_id: formData.id,
+            image_url: typeof formData?.image_url === 'string' ? formData?.image_url :
+           formData?.image_url?.webPath,
+            description: '', // TODO: update description
+          };
+          const imageInsertId = await this.vesselDataService.createVesselImage(imageData);
+          if (!imageInsertId) {
+            this.sharedMethods.showLoader(this.pageText?.errSavingImage);
+          } else {
+            vesselDetails = { ...vesselDetails, imageFile: {webPath: imageData.image_url} };
+          }
+        }
+
         this.modalCtrl.dismiss();
-        this.router.navigate(['vessels/view', result?.vessel], { replaceUrl: true });
+        this.router.navigate(['vessels/view', {vessel: JSON.stringify(vesselDetails)}], { replaceUrl: true });
       } else {
         this.sharedMethods.showLoader(this.pageText?.errUpdatingVessel);
       }

@@ -5,7 +5,7 @@
 
 <ion-content>
   <app-dashboardelcomesection 
-    message="Welcome back."
+    greeting="Welcome back."
     name="Farah"
     (onProfileClick)="goToProfile()"
   >
@@ -47,7 +47,7 @@
       </ion-card-content>
     </ion-card>
   </div>
-  <div style="background-color: #F5F5F5;" class="ion-padding">
+  <div class="ion-padding">
     <ion-card *ngFor="let sList of sLists">
       <ion-card-content>
         <ion-grid>

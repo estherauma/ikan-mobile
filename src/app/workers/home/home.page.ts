@@ -4,7 +4,6 @@ import { ModalController } from '@ionic/angular';
 import { SharedmethodsService } from 'src/app/shared/services/sharedmethods/sharedmethods.service';
 import { UserRole } from 'src/app/shared/types/api-types';
 import { CreatePage } from '../create/create.page';
-import { WorkersDataService } from '../data/workers-data.service';
 import { ContentService } from 'src/app/shared/services/content/content.service';
 import { ProfilesDataService } from 'src/app/profiles/data/profiles-data.service';
 import { GroupedOption } from 'src/app/shared/components/filter/filter.component';
@@ -27,7 +26,6 @@ export class HomePage implements OnInit {
   constructor(
     public router: Router,
     public modalCtrl: ModalController,
-    public workersDataService: WorkersDataService,
     public sharedMethods: SharedmethodsService,
     public contentService: ContentService,
     public profilesDataService: ProfilesDataService,
@@ -76,7 +74,7 @@ export class HomePage implements OnInit {
       case UserRole.worker:
         return this.router.navigate(['worker/profile'], { queryParams });
       case UserRole.taiwaneseAgent:
-          return this.router.navigate(['workers/details'], { queryParams });
+        return this.router.navigate(['workers/details'], { queryParams });
       default:
         // TODO: Mak it go to default route
         return this.router.navigate(['workers/details'], { queryParams });

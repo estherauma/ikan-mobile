@@ -8,7 +8,8 @@
     [status]="workerStatus"
     [title]="workerInfo?.firstName || '' + ' ' + workerInfo?.lastName || ''"
     [isResendInviteBtn]="isResendInviteBtn && workerInfo?.status?.toLowerCase().includes('pending')"
-    [imageUrl]="workerInfo?.profile_img_url || '/assets/icon/ellipse_profile.svg'"
+    [imageUrl]="workerInfo?.profileImage"
+    [worker]="workerInfo"
   ></app-pageprofilecontainer>
 
 <div class="contents">

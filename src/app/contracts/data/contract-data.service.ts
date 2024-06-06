@@ -33,7 +33,18 @@ export class ContractDataService {
   }
 
   async retrieveContracts() {
-    const query = 'SELECT * FROM contracts';
+    const query = 'SELECT \
+      a.*, \
+        json_object(\
+          "fileId", b.id,\
+          "fileName", b.name,\
+          "fileUrl", b.url,\
+          "docType", "pdf"\
+      ) AS file\
+      FROM \
+        contracts a\
+      LEFT JOIN \
+        contract_documents b ON a.id = b.contract_id';
     // TODO: Add a join to the vessel owner company later
     return this.db.executeSql(query, []).then((data) => {
       const contracts = [];
@@ -55,13 +66,19 @@ export class ContractDataService {
             createdAt: data.rows.item(i).created_at,
             updatedAt: data.rows.item(i).updated_at,
             createdBy: data.rows.item(i).created_by,
-            updatedBy: data.rows.item(i).updated_by
+            updatedBy: data.rows.item(i).updated_by,
+            file: this.getFile(data.rows.item(i).file),
           });
         }
       }
       contracts.reverse();
       this.contractsObs.next(contracts);
     }).catch((e) => console.log(e));
+  }
+
+  getFile(data) {
+    const file = JSON.parse(data);
+    return Object.values(file).every(value => value !== null) ? file : null;
   }
 
   getAll() {
@@ -193,7 +210,37 @@ export class ContractDataService {
     });
   }
 
-  updateContractDocument(id, data) { }
+  async getContractDocumentById(id) {
+    const contractDocuments = await this.retrieveContractDocuments();
+    const doc = contractDocuments.find(doc => doc.id === id);
+    return doc;
+  }
+
+  // check if the contract has a document
+  async contractDocumentExists(contractId) {
+    const docs = await this.retrieveContractDocuments();
+    return docs.some(doc => doc.contract_id === contractId);
+  }
+
+  async updateContractDocument(id, data) {
+    const query = 'UPDATE contract_documents SET name = ?, url = ?, status = ?, \
+      updated_at = ?, updated_by = ? WHERE id = ?';
+    const now = this.sharedMethods.getCurrentDateTime();
+    const user = await this.sharedMethods.getUserData();
+    const params = [data.name, data.url, data.status, now, user?.id, id];
+    
+    return this.db.executeSql(query, params).then(async(result) => {
+      await this.retrieveContractDocuments();
+      const doc = await this.getContractDocumentById(id);
+      return {
+        rowsAffected: result.rowsAffected,
+        doc,
+      };
+    }).catch((e) => {
+      console.log(e);
+      return null;
+    });
+  }
 
   deleteContractDocument(id) { }
 

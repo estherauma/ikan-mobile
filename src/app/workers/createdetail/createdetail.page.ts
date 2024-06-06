@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormControl, Validators, FormGroup } from '@angular/forms';
+import { FormControl, FormGroup } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AlertController, ModalController } from '@ionic/angular';
 import { BaseformPage } from 'src/app/shared/components/baseform/baseform.page';
@@ -22,7 +22,6 @@ export class CreateDetailPage extends BaseformPage implements OnInit {
   prevData;
   isEditing: boolean = false;
 
-
   constructor(
     public contentService: ContentService,
     public activatedRoute: ActivatedRoute,
@@ -39,11 +38,13 @@ export class CreateDetailPage extends BaseformPage implements OnInit {
   async ngOnInit() {
     super.ngOnInit();
     await this.getPageParams();
+    const pageData = this.contentService.getContentByPropertyName('createworkers');
+    this.pageText = this.sharedMethods.convertAdditionalTextToObj(pageData?.additionalText);
+    this.pageTitle = pageData?.pageTitle;
     if (this.isEditing) {
       this.submitButtonText = this.commonText.edit;
+      this.pageTitle = this.pageText?.editWorker;
     }
-    const pageData = this.contentService.getContentByPropertyName('createworkers');
-    this.pageTitle = pageData?.pageTitle;
     this.formQuestions = this.prevQuestions.concat(pageData?.formQuestions);
     this.formQuestions.forEach((entry) => {
       const validators = this.sharedMethods.getFormValidators(entry);
@@ -64,6 +65,9 @@ export class CreateDetailPage extends BaseformPage implements OnInit {
       const { data, questions } = params;
       this.prevQuestions = JSON.parse(questions);
       this.prevData = JSON.parse(data);
+      if (this.prevData?.profileImage && typeof this.prevData?.profileImage === 'string') {
+        this.prevData = {...this.prevData, profileImage: { webPath: this.prevData?.profileImage }};
+      }
       this.isEditing = this.prevData.isEditing ?? false;
     });
   }
@@ -75,6 +79,7 @@ export class CreateDetailPage extends BaseformPage implements OnInit {
     formData.createdAt = formData.updatedAt = now;
     formData.createdBy = formData.updatedBy = userData?.id;
     formData.userRole = UserRole.worker;
+    formData.profileImage = formData.profileImage?.webPath || '';
 
     const profileExists = await this.profilesDataService.checkIfProfileExists(formData.email);
     if (!profileExists) {

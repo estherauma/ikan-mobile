@@ -2,15 +2,40 @@
 
 <ion-content [fullscreen]="true">
   <div class="profile-preview">
-    <ion-row class="ion-padding-bottom title">
-      <app-title [isBlue]="true" [title]="pageTitle"></app-title>
+    <ion-row class="title-wrapper">
+      <h1>{{ pageTitle }}</h1>
     </ion-row>
 
     <ion-row>
-      <ion-col size="3" class="img-wrapper">
-          <ion-icon *ngIf="!imageUrl" class="image icon" name="person-circle-outline" />
-          <img *ngIf="imageUrl" class="image img" [src]="imageUrl || '/assets/icon/ellipse_profile.svg'" />
+      <ion-col size="12">
+        <div class="img-wrapper">
+          <ion-icon
+            *ngIf="!imageUrl"
+            class="image icon"
+            name="person-circle-outline"
+          />
+          <img
+            *ngIf="sharedMethods.isIos && imageUrl"
+            class="image img"
+            [src]="imageUrl | safeurl"
+          />
+          <img
+            *ngIf="sharedMethods.isAndroid && imageUrl"
+            class="image img"
+            [src]="imageUrl"
+          />
+          <ion-icon
+            class="edit-icon"
+            [ngClass]="{ 'edit-icon-default-img': !imageUrl }"
+            name="pencil"
+            (click)="changePhoto()"
+          ></ion-icon>
+        </div>
       </ion-col>
+      <!-- TO BE REMOVED -->
+      <!-- <ion-col size="12">
+        <p [ngClass]="{ 'p-with-image': imageUrl}" (click)="changePhoto()">{{ 'Change Photo' }}</p>
+      </ion-col> -->
     </ion-row>
   </div>
 
