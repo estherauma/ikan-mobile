@@ -61,7 +61,7 @@ export class ViewPage implements OnInit {
 
   getParams() {
     this.activatedRoute.params.subscribe((params) => {
-      this.vessel = params;
+      this.vessel = JSON.parse(params.vessel);
       const status = this.contentService.getFormOptionTranslation('vessels-createsteptwo', 'status', this.vessel.status);
       // TODO: change status to WO status
       this.title = `${this.commonText?.status}: ${status}`;
@@ -89,11 +89,10 @@ export class ViewPage implements OnInit {
       reg_no: this.vessel.regNo,
       type: this.vessel.vesselType,
       commissioning_date: this.vessel.commissioningDate,
-      image_url: this.vessel.imgUrl,
+      image_url: this.vessel.imageFile,
       online_ref: this.vessel.onlineRef,
     });
     const questions = JSON.stringify(this.stepOneQtns);
-
     this.router.navigate([ 'vessels/create/steptwo', { data, questions } ], { replaceUrl: true, queryParams: { isEditing: true }});
   }
 }

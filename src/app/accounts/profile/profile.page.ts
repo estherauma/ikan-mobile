@@ -1,7 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, Validators, FormGroup } from '@angular/forms';
+import { ModalController } from '@ionic/angular';
 import { ProfilesDataService } from 'src/app/profiles/data/profiles-data.service';
 import { BaseformPage } from 'src/app/shared/components/baseform/baseform.page';
+import { ImageselectComponent } from 'src/app/shared/components/imageselect/imageselect.component';
 import { AnalyticsService } from 'src/app/shared/services/analytics/analytics.service';
 import { pageEventNames } from 'src/app/shared/services/analytics/event-names';
 import { ContentService } from 'src/app/shared/services/content/content.service';
@@ -26,23 +28,34 @@ export class ProfilePage extends BaseformPage implements OnInit {
   isAgent: boolean = false;
   isViewProfile: boolean = false;
   viewData: any = {};
+  docsCommonText: any;
 
   constructor(
     public contentService: ContentService,
     public sharedMethods: SharedmethodsService,
     public profilesDataService: ProfilesDataService,
-    public analytics: AnalyticsService
+    public analytics: AnalyticsService,
+    public modalController: ModalController,
   ) {
     super(contentService);
   }
 
   async ngOnInit() {
     await this.pageSetup();
-    this.analytics.trackEvent(pageEventNames.profile, this.sharedMethods.analyticsEventParams)
+    this.analytics.trackEvent(pageEventNames.profile, this.sharedMethods.analyticsEventParams);
+    this.profilesDataService.getAll().subscribe(async(data) => {
+      const user = await this.sharedMethods.getUserData();
+      const userProfile = data.find((profile) => profile.email === user?.email);
+      if (userProfile?.profileImage) {
+        this.imageUrl = userProfile?.profileImage;
+      }
+    });
   }
 
   async pageSetup() {
     this.commonText = await this.contentService?.commonText;
+    const docsPageData = this.contentService.getContentByPropertyName('my-documents-common-text');
+    this.docsCommonText = this.sharedMethods.convertAdditionalTextToObj(docsPageData?.additionalText);
     this.pageTitle = this.commonText?.myProfile || this.pageTitle;
     this.submitButtonText = this.commonText?.save;
     this.userData = await this.sharedMethods.getUserData();
@@ -161,5 +174,22 @@ export class ProfilePage extends BaseformPage implements OnInit {
       return '';
     }
     return this.formQuestions?.find((el) => el.key === 'country')?.options?.find((opt) => opt.value === value)?.label || '';
+  }
+
+  async changePhoto() {
+    const modal = await this.modalController.create({
+      component: ImageselectComponent,
+      cssClass: 'notification-modal',
+    });
+    await modal.present();
+    await modal.onDidDismiss().then(async(data) => {
+      if (data?.data?.imageData && data?.data?.imageData.webPath) {
+        this.imageUrl = data?.data?.imageData.webPath;
+        const user = await this.sharedMethods.getUserData();
+        this.profilesDataService.updateProfilesField(user?.email, 'profile_image', this.imageUrl);
+      } else if (data?.role !== 'backdrop') {
+        this.sharedMethods.showToast(this.docsCommonText?.profilePictureUpdateFailure);
+      }
+    });
   }
 }

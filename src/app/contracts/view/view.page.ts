@@ -56,7 +56,11 @@ export class ViewPage implements OnInit {
     // TODO: Consider refactoring this method to smaller functions
     this.commonText = this.contentService?.commonText;
     this.activatedRoute.params.subscribe((params) => {
-      this.contract = params;
+      const data = {
+        ...params,
+        file: JSON.parse(params.file),
+      };
+      this.contract = data;
       if (params.name === 'undefined' || params.name === undefined) {
         this.contract = this.contractDataService.getSingleContract(params.id);
       }

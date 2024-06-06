@@ -1,12 +1,12 @@
 import { Component, OnInit } from '@angular/core';
-import { FormControl, Validators, FormGroup } from '@angular/forms';
+import { FormControl, FormGroup } from '@angular/forms';
 import { ContentService } from 'src/app/shared/services/content/content.service';
 import { BaseformPage } from 'src/app/shared/components/baseform/baseform.page';
 import { ActivatedRoute, Params, Router } from '@angular/router';
-import { WorkersDataService } from '../data/workers-data.service';
 import { DomSanitizer } from '@angular/platform-browser';
 import { AudioService } from 'src/app/shared/services/audio/audio.service';
 import { SharedmethodsService } from 'src/app/shared/services/sharedmethods/sharedmethods.service';
+import { ProfilesDataService } from 'src/app/profiles/data/profiles-data.service';
 
 @Component({
   selector: 'app-detail',
@@ -74,10 +74,10 @@ export class DetailPage extends BaseformPage implements OnInit {
     public contentService: ContentService,
     public router: Router,
     public activatedRoute: ActivatedRoute,
-    public workersDataService: WorkersDataService,
     public sanitizer: DomSanitizer,
     public audioService: AudioService,
     public sharedMethods: SharedmethodsService,
+    public profilesDataService: ProfilesDataService,
   ) {
     super(contentService);
     const pageData = this.contentService.getContentByPropertyName('createplacementinfo');
@@ -106,8 +106,8 @@ export class DetailPage extends BaseformPage implements OnInit {
         // TODO: querying workerInfo from db vs from params
         if (queryParams?.previousUrl) {
           this.workerId = queryParams?.workerId;
-          const worker = await this.workersDataService.retrieveOne(Number(this.workerId));
-          this.workerInfo = worker;
+          const workers = this.profilesDataService.profiles;
+          this.workerInfo = workers.find((worker) => worker.id === Number(this.workerId));
           const file = await this.audioService.retrieveFile(queryParams?.filepath);
 
           this.audioRecordings.unshift({

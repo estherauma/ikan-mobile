@@ -10,9 +10,23 @@
   </ion-row>
 
   <ion-row class="card-content">
-    <ion-col size="3" >
+    <ion-col size="3" class="img-col">
       <div class="card-image-wrapper">
-        <img class="image" [src]="worker?.profile_img_url || '/assets/icon/ellipse_profile.svg'" />
+        <ion-icon
+          *ngIf="!worker?.profileImage"
+          class="image icon"
+          src="assets/icon/ellipse_profile.svg"
+        />
+        <img
+          *ngIf="sharedMethods.isIos && worker?.profileImage"
+          class="image img"
+          [src]="worker?.profileImage | safeurl"
+        />
+        <img
+          *ngIf="sharedMethods.isAndroid && worker?.profileImage"
+          class="image img"
+          [src]="worker?.profileImage"
+        />
       </div>
     </ion-col>
 
