@@ -5,6 +5,7 @@ import { FilePicker } from '@capawesome/capacitor-file-picker';
 import { Chooser } from '@awesome-cordova-plugins/chooser/ngx';
 import { Filesystem, Directory } from '@capacitor/filesystem';
 import { UploadType } from '../../types/types';
+import { env } from 'src/environments/environment';
 
 
 @Injectable({
@@ -130,4 +131,59 @@ export class UploadService {
       return null;
     }
   }
+
+  /**
+   * Fetches file from the server and saves it to the device's file system.
+   * @param fileUrl path to the file on the server
+   * @returns returns the file path on the device
+   */
+  async fetchAndSaveFile(fileUrl) {
+    try {
+      // _ikan_ matches the file name prefix on the api
+      const fileName = fileUrl?.split('_ikan_')[1];
+      const isPdf = fileName?.endsWith('.pdf');
+
+      const readResult = await Filesystem.readdir({
+        directory: Directory.Data,
+        path: ''
+      });
+      
+      if (!readResult?.files.some(item => item.name === fileName)) {
+        const fileData = await fetch(`${env.baseUrl}${fileUrl}`);
+
+        if (fileData.ok) {
+          const blob = await fileData.blob();  
+          const result = await this.convertBlobToBase64(blob);
+  
+          const writtenFile =  await Filesystem.writeFile({
+            path: fileName,
+            data: result as string,
+            directory: Directory.Data,
+          });
+  
+          return isPdf ? writtenFile?.uri : Capacitor.convertFileSrc(writtenFile?.uri);
+        } else {
+          console.error('Failed to fetch file', fileData);
+        }
+      } else {
+        const path = await Filesystem.getUri({
+          directory: Directory.Data,
+          path: fileName
+        });
+
+        return  isPdf ? path?.uri : Capacitor.convertFileSrc(path?.uri);
+      }
+    } catch (error) {
+      console.error('File download error', error);
+    }
+  }
+
+  convertBlobToBase64 = (blob: Blob) => new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onerror = reject;
+    reader.onload = () => {
+      resolve(reader.result);
+    };
+    reader.readAsDataURL(blob);
+  });
 }

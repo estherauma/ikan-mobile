@@ -297,6 +297,11 @@ export class SyncService {
         const profileExists = await this.profilesDataService.checkIfProfileExists(dataToSave.email);
         if (!profileExists) {
           await this.profilesDataService.saveOnlineProfile(dataToSave).then(async(id) => {
+            if (dataToSave?.profileImage) {
+              await this.uploadService.fetchAndSaveFile(dataToSave.profileImage).then(async(fileUri) => {
+                await this.profilesDataService.updateProfilesField(dataToSave.email, 'profile_image', fileUri);
+              });
+            }
             await this.fetchBankAccounts(dataToSave.id);
             await this.fetchBeneficiaries(dataToSave.id);
           }).catch((e) => console.error(e));
@@ -311,6 +316,11 @@ export class SyncService {
           }
           if (currentDate < newDate) {
             await this.profilesDataService.update(dataToSave).then(async(id) => {
+              if (dataToSave?.profileImage) {
+                await this.uploadService.fetchAndSaveFile(dataToSave.profileImage).then(async(fileUri) => {
+                  await this.profilesDataService.updateProfilesField(dataToSave.email, 'profile_image', fileUri);
+                });
+              }
               await this.fetchBankAccounts(dataToSave.id);
               await this.fetchBeneficiaries(dataToSave.id);
             });
@@ -339,6 +349,11 @@ export class SyncService {
               const profileExists = await this.profilesDataService.checkIfProfileExists(dataToSave.email);
               if (!profileExists) {
                 await this.profilesDataService.saveOnlineProfile(dataToSave).then(async(id) => {
+                  if (dataToSave?.profileImage) {
+                    await this.uploadService.fetchAndSaveFile(dataToSave.profileImage).then(async(fileUri) => {
+                      await this.profilesDataService.updateProfilesField(dataToSave.email, 'profile_image', fileUri);
+                    });
+                  }
                   await this.fetchBankAccounts(dataToSave.id);
                   await this.fetchBeneficiaries(dataToSave.id);
                 }).catch((e) => console.error(e));
@@ -352,6 +367,11 @@ export class SyncService {
                 }
                 if (currentDate < newDate) {
                   await this.profilesDataService.update(dataToSave).then(async(id) => {
+                    if (dataToSave?.profileImage) {
+                      await this.uploadService.fetchAndSaveFile(dataToSave.profileImage).then(async(fileUri) => {
+                        await this.profilesDataService.updateProfilesField(dataToSave.email, 'profile_image', fileUri);
+                      });
+                    }
                     await this.fetchBankAccounts(dataToSave.id);
                     await this.fetchBeneficiaries(dataToSave.id);
                   });
