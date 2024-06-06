@@ -48,8 +48,26 @@
         <ion-row class="image-preview">
           <img *ngIf="sharedMethods.isIos" [src]="userPassportDetails.imageUrl | safeurl" />
           <img *ngIf="!sharedMethods.isIos" [src]="userPassportDetails.imageUrl" />
-          <ion-icon class="trash-icon" name="trash-outline" (click)="handleDeleteImage($event)"></ion-icon>
+          <!-- <ion-icon class="trash-icon" name="trash-outline" (click)="handleDeleteImage($event)"></ion-icon> -->
         </ion-row>
+      </ion-col>
+    </ion-row>
+    <ion-row class="btn-row">
+      <ion-col size="6">
+        <ion-button
+          class="edit-btn"
+          (click)="editPassport(userPassportDetails)"
+        >
+          {{ commonText?.edit }}
+        </ion-button>
+      </ion-col>
+      <ion-col size="6">
+        <ion-button
+          class="del-btn"
+          (click)="deletePassport(userPassportDetails)"
+        >
+          {{ commonText?.delete }}
+        </ion-button>
       </ion-col>
     </ion-row>
   </ion-grid>
