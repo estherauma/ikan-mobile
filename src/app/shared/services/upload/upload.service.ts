@@ -4,7 +4,7 @@ import { Capacitor } from '@capacitor/core';
 import { FilePicker } from '@capawesome/capacitor-file-picker';
 import { Chooser } from '@awesome-cordova-plugins/chooser/ngx';
 import { Filesystem, Directory } from '@capacitor/filesystem';
-import { UploadType } from '../../types/types';
+import { DocumentType, UploadType } from '../../types/types';
 
 
 @Injectable({
@@ -109,6 +109,20 @@ export class UploadService {
       console.log('upload file error', error);
       console.error('Error in upload.service.ts at choosePdfFile(). Failed to select pdf file.', error);
       return null;
+    }
+  }
+
+  async deleteDocuments(docs: DocumentType[]) {
+    try {
+      const directory = Directory.Data;
+      const promises = docs.map(async doc => {
+        const fileName = doc.fileUrl.split('files/')[1];
+        await Filesystem.deleteFile({ path: fileName, directory });
+      });
+
+      await Promise.all(promises);
+    } catch (error) {
+      console.error(error);
     }
   }
 }

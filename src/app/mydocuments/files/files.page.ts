@@ -111,7 +111,48 @@ export class FilesPage implements OnInit {
     this.selectedDocuments.splice(index, 1);
   }
 
+  async openDelAlert() {
+    const alertProps = {
+      cssClass: 'del-doc-alert',
+      // translate
+      header: this.commonText?.delete + ` ${this.selectedDocuments.length} ` +   'Delete docs',
+      backdropDismiss: false,
+      buttons: [ {
+        text: this.commonText?.cancel,
+        role: 'cancel',
+      },
+      {
+        text: this.commonText?.delete,
+        handler: async() => {
+          await this.deleteDocs(this.selectedDocuments).then(async() => {
+            this.getDocuments();
+            this.isSelecting = false;
+            this.sharedMethods.showToast(
+              // translate
+              `${this.selectedDocuments.length} ` + 'doc(s) deleted', 'short'
+              );
+            this.selectedDocuments = [];
+          });
+        }
+      }, ]
+    };
 
+    const alert = await this.alertController.create(alertProps);
+    await alert.present();
+  }
+  
+  async deleteDocs(docs: DocumentType[]) {
+    for (const doc of docs) {
+      if (doc?.onlineRef) {
+        // if doc is synced, the is_deleted field is set to true
+        // Doc will be deleted from the device after online reference is deleted
+        await this.documentsDataService.updateDocumentField(doc.id, 'is_deleted', 1);
+      } else {
+        await this.documentsDataService.deleteDocument(doc.id);
+      }
+    }
+    await this.uploadService.deleteDocuments(docs);
+  }
 
   async shareDocs() {
     try {

@@ -340,9 +340,9 @@
                 <p>{{ question.placeholder || uploadPictureText}}</p>
               </div>
             </ion-row>
-            <ion-row *ngIf="question.value" class="image-preview">
-              <img *ngIf="sharedMethods.isIos" [src]="question.value.webPath | safeurl" />
-              <img *ngIf="!sharedMethods.isIos" [src]="question.value.webPath" />
+            <ion-row *ngIf="tunaFormGroup.controls[question.key].value" class="image-preview">
+              <img *ngIf="sharedMethods.isIos" [src]="tunaFormGroup.controls[question.key].value.webPath | safeurl" />
+              <img *ngIf="!sharedMethods.isIos" [src]="tunaFormGroup.controls[question.key].value.webPath" />
               <ion-icon class="trash-icon" name="trash-outline" (click)="handleDeleteImage($event, question.key)"></ion-icon>
             </ion-row>
 
