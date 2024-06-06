@@ -8,6 +8,7 @@ import { FileOpener } from '@awesome-cordova-plugins/file-opener/ngx';
 import { ViewImageComponent } from '../view-image/view-image.component';
 import { UploadService } from 'src/app/shared/services/upload/upload.service';
 import { DocumentsDataService } from '../data/documents-data.service';
+import { Filesystem, Directory } from '@capacitor/filesystem';import { SocialSharing } from '@awesome-cordova-plugins/social-sharing/ngx';
 
 @Component({
   selector: 'app-files',
@@ -23,7 +24,7 @@ export class FilesPage implements OnInit {
   documentSelectedModal;
   confirmModal;
   documents: DocumentType[] = [];
-  isEditing = false;
+  isSelecting: boolean = false;
   selectedDocuments: DocumentType[] = [];
   commonText: any;
   docsCommonText: any;
@@ -38,6 +39,7 @@ export class FilesPage implements OnInit {
     public fileOpener: FileOpener,
     public documentsDataService: DocumentsDataService,
     public uploadService: UploadService,
+    public socialSharing: SocialSharing,
   ) { }
 
   ngOnInit() {
@@ -54,7 +56,6 @@ export class FilesPage implements OnInit {
 
   searchResult(data) {}
 
-  // TODO: new doc not reflecting. Need to refactor
   async addDocument() {
     const newDoc = await this.sharedMethods.addDocument(this.commonText, this.alertController, this.uploadService, this.documentsDataService, this.docsCommonText, false);
     if (newDoc) {
@@ -63,7 +64,7 @@ export class FilesPage implements OnInit {
   }
 
   async viewImage(doc: DocumentType) {
-    if (!this.isEditing) {
+    if (!this.isSelecting) {
       const modal = await this.modalCtrl.create({
         cssClass: 'notification-modal view-image',
         component: ViewImageComponent,
@@ -77,7 +78,7 @@ export class FilesPage implements OnInit {
   }
 
   viewFile(doc: DocumentType) {
-    if (!this.isEditing) {
+    if (!this.isSelecting) {
       if (this.sharedMethods.currentPlatform === 'web') {
         window.open(doc.fileUrl, '_blank');
       } else {
@@ -91,8 +92,8 @@ export class FilesPage implements OnInit {
     }
   }
 
-  editDocuments() {
-    this.isEditing = !this.isEditing;
+  selectDocs() {
+    this.isSelecting = !this.isSelecting;
     this.selectedDocuments = [];
   }
 
@@ -110,27 +111,31 @@ export class FilesPage implements OnInit {
     this.selectedDocuments.splice(index, 1);
   }
 
-  async openDelAlert() {
-    // TODO: to refactor
-    // const alertProps = {
-    //   cssClass: 'del-doc-alert',
-    //   header: this.commonText?.delete + ` ${this.selectedDocuments.length} ` + this.commonText?.imageOrDoc || 'Delete docs',
-    //   backdropDismiss: false,
-    //   buttons: [ {
-    //     text: this.commonText?.cancel?.toUpperCase(),
-    //     role: 'cancel',
-    //   },
-    //   {
-    //     text: this.commonText?.delete?.toUpperCase(),
-    //     handler: async() => {}
-    //   }, ]
-    // };
 
-    // const alert = await this.alertController.create(alertProps);
-    // await alert.present();
+
+  async shareDocs() {
+    try {
+      const promises = this.selectedDocuments.map(async(doc) => {
+        if (doc.docType === 'image') {
+          const fileName = doc.fileUrl.split('files/')[1];
+          const path = await Filesystem.getUri({
+            directory: Directory.Data,
+            path: fileName
+          });
+          return path.uri;
+        } else {
+          return doc.fileUrl;
+        }
+      });
+
+      await Promise.all(promises).then(async docsToShare => {
+        await this.socialSharing.share(null, null, docsToShare);
+      });
+
+      this.selectedDocuments = [];
+      this.isSelecting = false;
+    } catch (error) {
+      console.error(error);
+    }
   }
-
-  async shareDocs() {}
-
-  async deleteDocs(docs: Document[]) {}
 }
