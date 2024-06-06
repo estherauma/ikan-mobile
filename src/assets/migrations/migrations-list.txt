@@ -17,3 +17,4 @@
 1707910192206_addAccountInformationTable.sql
 1716447304379_addDocumentsTable.sql
 1716469399472_addPassportsTable.sql
+1717591415567_alterDocumentsAddIsDeleted.sql
