@@ -48,7 +48,6 @@
         <ion-row class="image-preview">
           <img *ngIf="sharedMethods.isIos" [src]="userPassportDetails.imageUrl | safeurl" />
           <img *ngIf="!sharedMethods.isIos" [src]="userPassportDetails.imageUrl" />
-          <!-- <ion-icon class="trash-icon" name="trash-outline" (click)="handleDeleteImage($event)"></ion-icon> -->
         </ion-row>
       </ion-col>
     </ion-row>
