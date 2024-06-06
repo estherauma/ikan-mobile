@@ -44,6 +44,7 @@ export class FilesPage implements OnInit {
 
   ngOnInit() {
     this.commonText = this.contentService.commonText;
+    console.log('this.commonText', this.commonText);
     const docsPageData = this.contentService.getContentByPropertyName('my-documents-common-text');
     this.docsCommonText = this.sharedMethods.convertAdditionalTextToObj(docsPageData?.additionalText);
     this.getDocuments();
@@ -114,8 +115,8 @@ export class FilesPage implements OnInit {
   async openDelAlert() {
     const alertProps = {
       cssClass: 'del-doc-alert',
-      // translate
-      header: this.commonText?.delete + ` ${this.selectedDocuments.length} ` +   'Delete docs',
+      header: this.commonText?.delete + ` ${this.selectedDocuments.length} ` +  this.docsCommonText?.docPlural,
+      message: this.docsCommonText?.deletePromptPlural,
       backdropDismiss: false,
       buttons: [ {
         text: this.commonText?.cancel,
@@ -128,9 +129,9 @@ export class FilesPage implements OnInit {
             this.getDocuments();
             this.isSelecting = false;
             this.sharedMethods.showToast(
-              // translate
-              `${this.selectedDocuments.length} ` + 'doc(s) deleted', 'short'
-              );
+              `${this.selectedDocuments.length} ${this.docsCommonText?.docPlural} ${this.docsCommonText?.deleted}`,
+              'short'
+            );
             this.selectedDocuments = [];
           });
         }

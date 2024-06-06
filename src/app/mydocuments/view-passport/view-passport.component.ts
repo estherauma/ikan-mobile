@@ -56,10 +56,8 @@ export class ViewPassportComponent  implements OnInit {
   async deletePassport(passport) {
     const deleteAlert = await this.alertController.create({
       cssClass: 'del-doc-alert',
-      // translate
-      header: 'Delete Passport',
-      // translate
-      message: 'Are you sure you want to delete this document?',
+      header: this.docsCommonText?.deletePassport,
+      message: this.docsCommonText?.deletePrompt,
       backdropDismiss: false,
       buttons: [
         {
@@ -71,8 +69,7 @@ export class ViewPassportComponent  implements OnInit {
           handler: async () => {
             await this.deleteDocument(passport).then(() => {
               this.modalController.dismiss();
-              // translate
-              this.sharedMethods.showToast('Passport deleted successfully');
+              this.sharedMethods.showToast(this.docsCommonText?.passportDeletedSuccessfully);
             });
           }
         },

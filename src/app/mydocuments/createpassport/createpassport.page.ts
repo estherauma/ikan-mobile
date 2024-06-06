@@ -38,8 +38,7 @@ export class CreatepassportPage extends BaseformPage implements OnInit {
     this.submitButtonText = this.isEditing ? this.commonText?.update : this.commonText?.create;
     const pageData = this.contentService.getContentByPropertyName('createpassport');
     this.pageText = this.sharedMethods.convertAdditionalTextToObj(pageData?.additionalText);
-    // translate
-    this.pageTitle = this.isEditing ? this.pageText?.editPassport || 'edit passspoert' : pageData?.pageTitle;
+    this.pageTitle = this.isEditing ? this.pageText?.editPassport : pageData?.pageTitle;
     this.formQuestions = pageData?.formQuestions;
     this.formQuestions.forEach((entry) => {
       const validators = this.sharedMethods.getFormValidators(entry);
@@ -119,8 +118,7 @@ export class CreatepassportPage extends BaseformPage implements OnInit {
 
         this.modalCtrl.dismiss({ passportData });
       } else {
-        // translate
-        this.sharedMethods.showToast(this.pageText?.errSavingPassport || 'Error updating passport');
+        this.sharedMethods.showToast(this.pageText?.errUpdatingPassport || 'Error updating passport');
       }
     }
   }

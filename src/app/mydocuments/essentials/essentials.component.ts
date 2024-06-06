@@ -213,13 +213,11 @@ export class EssentialsComponent  implements OnInit {
     return viewData;
   }
 
-  async handleDeleteDocument(doc: DocumentType, headerText:string = 'Delete Document') {
+  async handleDeleteDocument(doc: DocumentType, headerText:string = this.docsCommonText?.deleteDocument) {
     const deleteAlert = await this.alertController.create({
       cssClass: 'del-doc-alert',
-      // translate
-      // customize header text
       header: headerText,
-      message: 'Are you sure you want to delete this document?',
+      message: this.docsCommonText?.deletePrompt,
       backdropDismiss: false,
       buttons: [
         {
@@ -231,8 +229,7 @@ export class EssentialsComponent  implements OnInit {
           handler: async () => {
             await this.deleteDocument(doc).then(() => {
               this.getDocDetails();
-              // translate
-              this.sharedMethods.showToast('Document deleted successfully');
+              this.sharedMethods.showToast(this.docsCommonText?.docDeletedSuccessfully);
             });
           }
         },
