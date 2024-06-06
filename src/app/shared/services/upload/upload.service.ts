@@ -111,4 +111,23 @@ export class UploadService {
       return null;
     }
   }
+
+  async retrieveAndReturnBlob(fileUrl) {
+    try {
+      const fileName = fileUrl.split('files/')[1];
+      const file = await Filesystem.getUri({
+        path: fileName,
+        directory: Directory.Data,
+      });
+      const fileUri = Capacitor.convertFileSrc(file.uri);
+      const fileData = await fetch(fileUri);
+      const blob = await fileData.blob();
+      const fileBlob = new Blob([blob]);
+      const fileUpload = new File([fileBlob], fileName);
+      return fileUpload;
+    } catch (error) {
+      console.error(error);
+      return null;
+    }
+  }
 }

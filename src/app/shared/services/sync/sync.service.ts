@@ -16,7 +16,6 @@ import {
   GetVesselsResponse,
   GetProfileResponse,
   CreateProfileResponse,
-  ProfileSyncData,
   GetBankAccountsResponse,
   GetBeneficiaryResponse,
   CreateBankAccountResponse,
@@ -32,6 +31,7 @@ import { ProfilesDataService } from 'src/app/profiles/data/profiles-data.service
 import { AuthService } from '../auth/auth.service';
 import { PaymentsDataService } from 'src/app/payments/data/payments-data.service';
 import { UserData, UserRole } from '../../types/api-types';
+import { UploadService } from '../upload/upload.service';
 
 @Injectable({
   providedIn: 'root'
@@ -52,6 +52,7 @@ export class SyncService {
     private profilesDataService: ProfilesDataService,
     private authService: AuthService,
     private paymentsDataService: PaymentsDataService,
+    private uploadService: UploadService,
   ) {
     this.platform.ready().then(async () => {
       this.sqlite.create({
@@ -315,7 +316,6 @@ export class SyncService {
             });
           }
         }
-
       }
     });
   }
@@ -385,6 +385,7 @@ export class SyncService {
     const profiles = await this.profilesDataService.retrieveProfiles();
     return profiles?.forEach(async(profile) => {
       const profileId = profile.id;
+      let hasProfileImage = false;
       if (profile.onlineRef) {
         // remove fields without values so that they aren't sent to the api
         for (const [key, value] of Object.entries(profile)) {
@@ -395,8 +396,15 @@ export class SyncService {
         const profileToUpload = Object.assign({}, profile);
         profileToUpload.userId = profile?.onlineRef;
         delete profileToUpload.id;
+        if (profileToUpload?.profileImage) {
+          delete profileToUpload.profileImage;
+          hasProfileImage = true;
+        }
         return this.apiService.post('accounts/profile', profileToUpload, false, {user_id: profile?.onlineRef}).subscribe(async(response: CreateProfileResponse) => {
           if (response?.status === 'OK') {
+            if (hasProfileImage) {
+              await this.postProfileImage(profile, profile?.onlineRef);
+            }
             await this.syncBankAccounts(profileId, response?.data?.id);
             await this.syncBeneficiaries(profileId, response?.data?.id);
           } else {   
@@ -407,9 +415,16 @@ export class SyncService {
         // register user to the api 
         const profileToRegister = Object.assign({}, profile);
         delete profileToRegister.id;
+        if (profileToRegister?.profileImage) {
+          delete profileToRegister.profileImage;
+          hasProfileImage = true;
+        }
         return this.apiService.post('accounts/profile', profileToRegister, false, {register: 'register'}).subscribe(async(response: CreateProfileResponse) => {
           if (response?.status === 'OK') {
             await this.profilesDataService.updateProfileOnlineRef(profile.email, response?.data?.id);
+            if (hasProfileImage) {
+              await this.postProfileImage(profile, response?.data?.id);
+            }
             await this.syncBankAccounts(profileId, response?.data?.id);
             await this.syncBeneficiaries(profileId, response?.data?.id);
           } else { 
@@ -418,6 +433,21 @@ export class SyncService {
         });
       }
     });
+  }
+
+  async postProfileImage(profile, profileOnlineRef) {
+    const imageFile = await this.uploadService.retrieveAndReturnBlob(profile.profileImage);
+    if (imageFile) {
+      const imageData = new FormData();
+      imageData.append('fileContent', imageFile);
+      imageData.append('entityType', 'profile_picture');
+      imageData.append('userId', profileOnlineRef);
+      this.apiService.post('file-upload', imageData).subscribe((res) => {
+        if (res?.['status'] !== 'OK') {
+          console.error(`Failed to sync profile image for user ${profile.email} to the api`, res);
+        }
+      });
+    }
   }
 
   async fetchBankAccounts(profileOnlineRef) {
