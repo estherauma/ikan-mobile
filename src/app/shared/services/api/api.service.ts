@@ -64,7 +64,7 @@ export class ApiService {
    * @param requestData
    */
   put(resourceUrl, resourceId, requestData) {
-    return this.http.put(`${env.apiUrl}/${resourceUrl}/${resourceId}/`, requestData, {headers: this.headers})
+    return this.http.put(`${env.apiUrl}/${resourceUrl}/${resourceId}`, requestData, {headers: this.headers})
   }
 
   /**
@@ -73,8 +73,7 @@ export class ApiService {
    * @param requestData
    */
   patch(resourceUrl, resourceId, requestData) {
-    this.http.patch(`${env.apiUrl}/${resourceUrl}/${resourceId}/`, requestData, {headers: this.headers})
-    .subscribe((response) => response);
+    return this.http.patch(`${env.apiUrl}/${resourceUrl}/${resourceId}`, requestData, {headers: this.headers});
   }
 
   delete(resourceUrl, resourceId) {
