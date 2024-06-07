@@ -451,4 +451,10 @@ export class SharedmethodsService {
 
     return true;
   }
+
+  generatePdfFileName(pdfName) {
+    let name = pdfName?.split('.pdf')[0];
+    name = name?.replace(/\s+/g, '--'); // remove spaces from name
+    return name + '.pdf';
+  }
 }

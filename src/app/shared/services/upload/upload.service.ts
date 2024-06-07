@@ -6,6 +6,7 @@ import { Chooser } from '@awesome-cordova-plugins/chooser/ngx';
 import { Filesystem, Directory } from '@capacitor/filesystem';
 import { UploadType } from '../../types/types';
 import { env } from 'src/environments/environment';
+import { SharedmethodsService } from '../sharedmethods/sharedmethods.service';
 
 
 @Injectable({
@@ -14,6 +15,7 @@ import { env } from 'src/environments/environment';
 export class UploadService {
   constructor(
     private chooser: Chooser,
+    private sharedMethods: SharedmethodsService,
   ) { }
 
 
@@ -25,7 +27,7 @@ export class UploadService {
   
       if (types[0] === 'application/pdf'){
         const file = result.files[0];
-        const fileName = file?.name;
+        const fileName = this.sharedMethods.generatePdfFileName(file?.name);
     
         return await this.saveFile(file?.path, fileName, 'pdf');
       } else {
@@ -103,7 +105,7 @@ export class UploadService {
   async choosePdfFile() {
     try {
       const result = await this.chooser.getFile({mimeTypes: 'application/pdf'});
-      const fileName = result.name;
+      const fileName = this.sharedMethods.generatePdfFileName(result.name);
 
       return await this.saveFile(result.path, fileName, 'pdf');
     } catch (error) {
@@ -156,7 +158,7 @@ export class UploadService {
           const result = await this.convertBlobToBase64(blob);
   
           const writtenFile =  await Filesystem.writeFile({
-            path: fileName,
+            path: isPdf ? this.sharedMethods?.generatePdfFileName(fileName) : fileName,
             data: result as string,
             directory: Directory.Data,
           });
