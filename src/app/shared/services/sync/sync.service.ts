@@ -178,12 +178,43 @@ export class SyncService {
   fetchVessels() {
     this.apiService.get('vessels').subscribe((response: GetVesselsResponse) => {
       if (response.status === 200 && response.body.data.length > 0) {
-        response.body.data.forEach((vessel) => {
+        forkJoin(response.body.data.map(async(vessel) => {
           this.dbService.checkIfEntryExists('vessels', vessel.appRef)
           .then((exists) => {
             if (!exists) {
-              this.vesselServ.saveOnlineVessel(vessel)
-              .then((id) => { console.log ( `Vessel ${vessel.name} saved with id ${id}`)});
+              this.vesselServ.saveOnlineVessel(vessel).then(async(id) => {
+                console.log ( `Vessel ${vessel.name} saved with id ${id}`);
+              });
+            }
+          });
+        })).subscribe(() => {
+          // fetch the vessel images after the vessels have been fetched
+          this.apiService.get('vessels-images').subscribe((response) => {
+            if (response?.['status'] === 200 && response.body.length > 0) {
+              response.body.forEach(async(image) => {
+                const vessel = await this.vesselServ.getVesselByField('onlineRef', image.vessel);
+                if (vessel) {
+                  const vesselImage = await this.vesselServ.getVesselImageByVesselId(vessel.id);
+                  if (!vesselImage) {
+                    await this.uploadService.fetchAndSaveFile(image.imageUrl).then(async(fileUri) => {
+                      const user = await this.sharedMethods.getUserData();
+                      const now = this.sharedMethods.getCurrentDateTime();
+                      const saveObj = {
+                        vesselId: vessel.id,
+                        appRef: image.appRef || this.sharedMethods.generateAppRef(),
+                        description: image.description,
+                        imageUrl: fileUri,
+                        onlineRef: image.id,
+                        createdAt: image.createdAt ??  now,
+                        updatedAt: image.updatedAt ??  now,
+                        createdBy: image.createdBy ?? user?.id,
+                        updatedBy: image.updatedBy ?? user?.id,
+                      };
+                      await this.vesselServ.saveOnlineVesselImage(saveObj).then(() => {});
+                    });
+                  }
+                }
+              });
             }
           });
         });

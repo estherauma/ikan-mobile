@@ -70,8 +70,8 @@ export class VesselsDataService {
     return this.vesselsObs.asObservable();
   }
 
-  async getVesselById(id) {
-    const vessel = this.vessels.find((entry) => entry.id === id);
+  async getVesselByField(field, value) {
+    const vessel = this.vessels.find((entry) => entry[field] === value);
     return vessel;
   }
 
@@ -108,7 +108,7 @@ export class VesselsDataService {
     
     return this.db.executeSql(query, params).then(async(result) => {
       await this.retriveVessels();
-      const vessel = await this.getVesselById(data.id);
+      const vessel = await this.getVesselByField('id', data.id);
       return {
         rowsAffected: result.rowsAffected,
         vessel
@@ -170,6 +170,19 @@ export class VesselsDataService {
       now, now, user?.id, user?.id];
     
       return this.db.executeSql(query, params).then((result) => {
+      this.getVesselImages();
+      return result.insertId;
+    }).catch(e => console.log(e));
+  }
+
+  async saveOnlineVesselImage(data) {
+    const query = 'INSERT INTO vessel_images (vessel_id, image_url, description, app_ref, \
+      created_at, updated_at, created_by, updated_by, online_ref) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)';
+    const now = this.sharedMethods.getCurrentDateTime();
+    const user = await this.sharedMethods.getUserData();
+    const params = [data?.vessel_id, data?.image_url, data?.description, data.app_ref,
+      now, now, user?.id, user?.id, data.id];
+    return this.db.executeSql(query, params).then((result) => {
       this.getVesselImages();
       return result.insertId;
     }).catch(e => console.log(e));
