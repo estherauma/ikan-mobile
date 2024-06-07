@@ -133,20 +133,46 @@ export class SyncService {
       let vessels = data;
       if (vessels.length > 0) {
         vessels.forEach((vessel) => {
-          if (!vessel.onlineRef) {
-            this.apiService.post('vessels', vessel).subscribe((response: CreateVesselResp) => {
+          const vesselId = vessel.id;
+          const vesselToUpload = Object.assign({}, vessel);
+          delete vesselToUpload.id;
+          if (!vesselToUpload.onlineRef) {
+            this.apiService.post('vessels', vesselToUpload).subscribe(async(response: CreateVesselResp) => {
               if (response?.status === 'OK') {
-                this.dbService.updateDatabaseField('vessels', 'online_ref', response?.data?.id, vessel.appRef);
+                await this.dbService.updateDatabaseField('vessels', 'online_ref', response?.data?.id, vesselToUpload.appRef);
+                await this.postVesselImage(vessel, response?.data?.id);
               }
             });
           } else {
-            // this.apiService.put('vessels', vessel.online_ref, vessel).subscribe((response) => {
-            //   console.log(response);
-            // });
+            this.apiService.put('vessels', vesselToUpload.onlineRef, vesselToUpload).subscribe(async(response) => {
+              if (response?.['status'] === 'OK') {
+                await this.postVesselImage(vessel, vesselToUpload.onlineRef);
+              }
+            });
           }
         });
       }
     });
+  }
+
+  async postVesselImage(vessel, vesselOnlineRef) {
+    if (vessel?.imageFile?.webPath) {
+      const imageFile = await this.uploadService.retrieveAndReturnBlob(vessel.imageFile.webPath);
+      if (imageFile) {
+        const vesselImage = await this.vesselServ.getVesselImageByVesselId(vessel.id);
+        const imageData = new FormData();
+        imageData.append('fileContent', imageFile);
+        imageData.append('entityType', 'vessel_image');
+        imageData.append('vesselId', vesselOnlineRef);
+        imageData.append('appRef', vesselImage.app_ref);
+        imageData.append('description', vesselImage.description);
+        this.apiService.post('file-upload', imageData).subscribe((res) => {
+          if (res?.['status'] !== 'OK') {
+            console.error(`Failed to sync vessel image for vessel ${vessel.name} to the api`, res);
+          }
+        });
+      }
+    }
   }
 
   fetchVessels() {

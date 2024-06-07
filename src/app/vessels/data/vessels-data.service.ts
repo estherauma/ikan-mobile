@@ -162,11 +162,11 @@ export class VesselsDataService {
   }
 
   async createVesselImage(data) {
-    const query = 'INSERT INTO vessel_images (vessel_id, image_url, description, \
-      created_at, updated_at, created_by, updated_by) VALUES (?, ?, ?, ?, ?, ?, ?)';
+    const query = 'INSERT INTO vessel_images (vessel_id, image_url, description, app_ref \
+      created_at, updated_at, created_by, updated_by) VALUES (?, ?, ?, ?, ?, ?, ?, ?)';
     const now = this.sharedMethods.getCurrentDateTime();
     const user = await this.sharedMethods.getUserData();
-    const params = [data?.vessel_id, data?.image_url, data?.description,
+    const params = [data?.vessel_id, data?.image_url, data?.description, data.app_ref,
       now, now, user?.id, user?.id];
     
       return this.db.executeSql(query, params).then((result) => {
