@@ -1,3 +1,7 @@
+/*
+  Document ID is nolonger used.
+  Passports are saved in their own table.
+*/
 CREATE TABLE IF NOT EXISTS passports (
   id INTEGER PRIMARY KEY AUTOINCREMENT,
   online_ref VARCHAR(255),

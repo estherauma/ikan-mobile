@@ -77,7 +77,7 @@ export class ApiService {
   }
 
   delete(resourceUrl, resourceId) {
-    // TODO: Implement later when we want to start deleting records.
+    return this.http.delete(`${env.apiUrl}/${resourceUrl}/${resourceId}`, {headers: this.headers});
   }
 
   uploadPushNotificationData(uploadDetails: PushNotificationData): any {

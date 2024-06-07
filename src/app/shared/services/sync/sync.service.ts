@@ -32,6 +32,7 @@ import { AuthService } from '../auth/auth.service';
 import { PaymentsDataService } from 'src/app/payments/data/payments-data.service';
 import { UserData, UserRole } from '../../types/api-types';
 import { UploadService } from '../upload/upload.service';
+import { DocumentsDataService } from 'src/app/mydocuments/data/documents-data.service';
 
 @Injectable({
   providedIn: 'root'
@@ -53,6 +54,7 @@ export class SyncService {
     private authService: AuthService,
     private paymentsDataService: PaymentsDataService,
     private uploadService: UploadService,
+    private documentsDataService: DocumentsDataService,
   ) {
     this.platform.ready().then(async () => {
       this.sqlite.create({
@@ -85,6 +87,7 @@ export class SyncService {
     this.syncVessels();
     this.syncContracts();
     this.syncSurveyResponses();
+    this.syncMyDocuments();
     this.fetchCompanies();
     this.fetchVessels();
     this.fetchContracts(); // clauses are fetched after contracts have been fetched in the fetchContracts method
@@ -258,7 +261,6 @@ export class SyncService {
                 await this.postContractDocument(contract);
                 await this.syncContractClauses(contract.id, contract.onlineRef);
               }
-              console.log(response);
             });
           }
         });
@@ -682,4 +684,61 @@ export class SyncService {
     });
   }
 
+  async syncMyDocuments() {
+    this.documentsDataService.retrieveAllObservable().subscribe((documents) => {
+      if (documents?.length) {
+        documents.forEach(async(document) => {
+          if (document.isDeleted && !document.onlineRef) {
+            // TODO
+            // await this.documentsDataService.deleteDocument(document.id);
+          } else if (document.isDeleted && document.onlineRef) {
+            this.apiService.delete('mydocuments', document.onlineRef).subscribe(async(response) => {
+              if (response?.['status'] === 'OK') {
+                // await this.documentsDataService.deleteDocument(document.id);
+              } else {
+                console.error(`Failed to delete document ${document.fileName} from the api`, response);
+              }
+            });
+          } else {
+            const documentId = document.id;
+            const documentToUpload = Object.assign({}, document);
+            delete documentToUpload.id;
+            delete documentToUpload.fileUrl;
+
+            const file = await this.uploadService.retrieveAndReturnBlob(document.fileUrl);
+            if (file) {
+              const docData =  new FormData();
+              docData.append('fileContent', file);
+              docData.append('entityType', 'my_document');
+              this.apiService.post('file-upload', docData).subscribe((uploadResponse) => {
+                if (uploadResponse?.['status'] === 'OK') {
+                  documentToUpload.fileUrl = uploadResponse?.['data']?.fileLocation;
+                  const dataToSave = {...documentToUpload, user: documentToUpload.userId};
+                  
+                  if (!documentToUpload.onlineRef) {
+                    this.apiService.post('mydocuments', dataToSave).subscribe((response) => {
+                      if (response?.['status'] === 'OK') {
+                        this.dbService.updateDatabaseField('documents', 'online_ref', response?.['data']?.id, documentToUpload.appRef);
+                      } else {
+                        console.error(`Failed to sync document ${document.fileName} to the api`, response);
+                      }
+                    });
+                  } else {
+                    this.apiService.put('mydocuments', documentToUpload.onlineRef, dataToSave).subscribe((response) => {
+                      if (response?.['status'] !== 'OK')  {
+                        console.error(`Failed to sync document ${document.fileName} to the api`, response);
+                      }
+                    });
+                  }
+                } else {
+                  console.error(`Failed to sync document ${document.fileName} to the api`, uploadResponse);
+                }
+              });
+            }
+          }
+        });
+        
+      }
+    });
+  }
 }
