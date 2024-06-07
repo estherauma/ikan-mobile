@@ -210,9 +210,9 @@ export class ContractDataService {
     });
   }
 
-  async getContractDocumentById(id) {
+  async getContractDocumentByField(field, value) {
     const contractDocuments = await this.retrieveContractDocuments();
-    const doc = contractDocuments.find(doc => doc.id === id);
+    const doc = contractDocuments.find(doc => doc?.[field] === value);
     return doc;
   }
 
@@ -222,16 +222,16 @@ export class ContractDataService {
     return docs.some(doc => doc.contract_id === contractId);
   }
 
-  async updateContractDocument(id, data) {
+  async updateContractDocument(contractId, data) {
     const query = 'UPDATE contract_documents SET name = ?, url = ?, status = ?, \
-      updated_at = ?, updated_by = ? WHERE id = ?';
+      updated_at = ?, updated_by = ? WHERE contract_id = ?';
     const now = this.sharedMethods.getCurrentDateTime();
     const user = await this.sharedMethods.getUserData();
-    const params = [data.name, data.url, data.status, now, user?.id, id];
+    const params = [data.name, data.url, data.status, now, user?.id, contractId];
     
     return this.db.executeSql(query, params).then(async(result) => {
       await this.retrieveContractDocuments();
-      const doc = await this.getContractDocumentById(id);
+      const doc = await this.getContractDocumentByField('contract_id', contractId);
       return {
         rowsAffected: result.rowsAffected,
         doc,

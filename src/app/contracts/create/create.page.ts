@@ -120,7 +120,7 @@ export class CreatePage extends BaseformPage implements OnInit {
     } else {
       formData.id = this.contractDetails.id;
       const result = await this.contractsDataService.update(formData);
-      if (result?.rowsAffected > 0) { 
+      if (result?.rowsAffected > 0) {
         let contractDetails = result?.contract;
           if (await this.contractsDataService.contractDocumentExists(this.contractDetails.id)) {
             const fileEditData = {
@@ -155,7 +155,7 @@ export class CreatePage extends BaseformPage implements OnInit {
               if (!savedDocId) {
                 this.sharedMethods.showToast(this.pageText?.errSavingDocument);
               } else {
-                const savedDoc = await this.contractsDataService.getContractDocumentById(savedDocId);
+                const savedDoc = await this.contractsDataService.getContractDocumentByField('id', savedDocId);
                 contractDetails = {
                   ...contractDetails,
                   file: {

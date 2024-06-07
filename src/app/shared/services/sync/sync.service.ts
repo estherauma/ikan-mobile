@@ -164,8 +164,12 @@ export class SyncService {
         imageData.append('fileContent', imageFile);
         imageData.append('entityType', 'vessel_image');
         imageData.append('vesselId', vesselOnlineRef);
-        imageData.append('appRef', vesselImage.app_ref);
+        imageData.append('appRef', vesselImage.app_ref || this.sharedMethods.generateAppRef());
         imageData.append('description', vesselImage.description);
+        imageData.append('createdAt', vesselImage.createdAt);
+        imageData.append('updatedAt', vesselImage.updatedAt);
+        imageData.append('createdBy', vesselImage.createdBy);
+        imageData.append('updatedBy', vesselImage.updatedBy);
         this.apiService.post('file-upload', imageData).subscribe((res) => {
           if (res?.['status'] !== 'OK') {
             console.error(`Failed to sync vessel image for vessel ${vessel.name} to the api`, res);
@@ -229,30 +233,57 @@ export class SyncService {
         contracts.forEach((contract) => {
           contract.startDate = new Date(contract.startDate).toISOString().split('T')[0];
           contract.endDate = new Date(contract.endDate).toISOString().split('T')[0];
+          let tempContractId = contract.id;
+          const contractToUpload = Object.assign({}, contract);
+          delete contractToUpload.id;
           if (!contract.onlineRef) {
-            let tempContractId = contract.id;
-            // delete contract.id;
-            this.apiService.post('contracts', contract).subscribe((response: CreateContractResp) => {
+            this.apiService.post('contracts', contractToUpload).subscribe(async(response: CreateContractResp) => {
               if (response?.status === 'OK') {
                 contract.id = tempContractId;
                 this.dbService.updateDatabaseField('contracts', 'online_ref', response?.data?.id, contract.appRef);
-                // start syncing the clauses at this point. 
-                // we'd avoid making a different db call to get th online_ref
-                this.syncContractClauses(tempContractId, response?.data?.id);
+                await this.postContractDocument(contract);
                 
+                // start syncing the clauses at this point.
+                // we'd avoid making a different db call to get th online_ref
+                await this.syncContractClauses(tempContractId, response?.data?.id);
               }
             });
           } else {
-            // if the contracts are synced, we want to update the contract or sync the clauses
-            // you can't sync  the clauses without the contract online_ref
-            this.syncContractClauses(contract.id, contract.onlineRef);
-            // this.apiService.put('contracts', contract.online_ref, contract).subscribe((response) => {
-            //   console.log(response);
-            // });
+            this.apiService.put('contracts', contractToUpload.onlineRef, contractToUpload).subscribe(async(response) => {
+              if (response?.['status'] === 'OK') {
+                await this.postContractDocument(contract);
+                await this.syncContractClauses(contract.id, contract.onlineRef);
+              }
+              console.log(response);
+            });
           }
         });
       }
     });
+  }
+
+  async postContractDocument(contract) {
+    if (contract?.file?.fileUrl) {
+      const docFile = await this.uploadService.retrieveAndReturnBlob(contract.file.fileUrl);
+      if (docFile) {
+        const contractDocument = await this.contractServ.getContractDocumentByField('contract_id', contract.id);
+        const docData = new FormData();
+        docData.append('fileContent', docFile);
+        docData.append('entityType', 'contract');
+        docData.append('contractId', contract.onlineRef);
+        docData.append('name', contractDocument.name);
+        docData.append('status', contractDocument.status);
+        docData.append('createdAt', contractDocument.createdAt);
+        docData.append('updatedAt', contractDocument.updatedAt);
+        docData.append('createdBy', contractDocument.createdBy);
+        docData.append('updatedBy', contractDocument.updatedBy);
+        this.apiService.post('file-upload', docData).subscribe((res) => {
+          if (res?.['status'] !== 'OK') {
+            console.error(`Failed to sync contract document for contract ${contract.name} to the api`, res);
+          }
+        });
+      }
+    }
   }
 
   async fetchContracts() {
@@ -282,7 +313,7 @@ export class SyncService {
       // replace the contract_id with the contract id online_ref
       clause.contract = contractOnlineRef;
       if (!clause.onlineRef) {
-        this.apiService.post('contracts/clauses', clause).subscribe((response: CreateContractClauseResp) => {
+        this.apiService.post('contracts-clauses', clause).subscribe((response: CreateContractClauseResp) => {
           if (response?.status === 'OK') {
             this.dbService.updateDatabaseField('contract_clauses', 'online_ref', response?.data?.id, clause.appRef);
           }
@@ -296,7 +327,7 @@ export class SyncService {
   }
 
   async fetchContractClauses() {
-    return this.apiService.get('contracts/clauses').subscribe((response:GetClausesResponse) => {
+    return this.apiService.get('contracts-clauses').subscribe((response:GetClausesResponse) => {
       if (response.status === 200 && response.body.length > 0) {
         response.body.forEach((clause) => {
           this.dbService.checkIfEntryExists('contract_clauses', clause.appRef)
