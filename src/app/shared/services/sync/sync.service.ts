@@ -173,9 +173,7 @@ export class SyncService {
         this.apiService.post('file-upload', imageData).subscribe((res) => {
           if (res?.['status'] === 'OK') {
             if (!vesselImage.onlineRef) {
-              console.log('ress......',res)
-              // TODO
-              // this.dbService.updateDatabaseField('vessel_images', 'online_ref', res?.['vesselImage']?.id, vesselImage.app_ref);
+              // this.dbService.updateDatabaseField('vessel_images', 'online_ref', res?.['data']['vesselImage']?.id, vesselImage.app_ref);
             }
           } else {
             console.error(`Failed to sync vessel image for vessel ${vessel.name} to the api`, res);

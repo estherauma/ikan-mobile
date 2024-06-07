@@ -138,6 +138,7 @@ export class VesselsDataService {
         for (let i = 0; i < data.rows.length; i++) {
           vesselImages.push({
             id: data.rows.item(i).id,
+            app_ref: data.rows.item(i).app_ref,
             vessel_id: data.rows.item(i).vessel_id,
             image_url: data.rows.item(i).image_url,
             description: data.rows.item(i).description,
@@ -163,7 +164,7 @@ export class VesselsDataService {
   }
 
   async createVesselImage(data) {
-    const query = 'INSERT INTO vessel_images (vessel_id, image_url, description, app_ref \
+    const query = 'INSERT INTO vessel_images (vessel_id, image_url, description, app_ref, \
       created_at, updated_at, created_by, updated_by) VALUES (?, ?, ?, ?, ?, ?, ?, ?)';
     const now = this.sharedMethods.getCurrentDateTime();
     const user = await this.sharedMethods.getUserData();
@@ -207,6 +208,15 @@ export class VesselsDataService {
       return null;
     });
   }
+
+  // updateVesselImageFieldByVesselId(vessel_id, field, value) {
+  //   const query = `UPDATE vessel_images SET ${field} = ? WHERE vessel_id = ?`;
+  //   const params = [value, vessel_id];
+  //   return this.db.executeSql(query, params).then((result) => {
+  //     this.getVesselImages();
+  //     return result.rowsAffected;
+  //   }).catch(e => console.log(e));
+  // }
 
   deleteVesselImage() { }
 }
