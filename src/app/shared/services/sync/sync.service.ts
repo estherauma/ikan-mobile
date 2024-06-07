@@ -91,6 +91,8 @@ export class SyncService {
     this.fetchCompanies();
     this.fetchVessels();
     this.fetchContracts(); // clauses are fetched after contracts have been fetched in the fetchContracts method
+    this.fetchMyDocuments();
+
   }
 
   syncCompanies() {
@@ -738,6 +740,33 @@ export class SyncService {
           }
         });
         
+      }
+    });
+  }
+
+  async fetchMyDocuments() {
+    return this.apiService.get('mydocuments').subscribe((response) => {
+      if (response?.['status'] === 200 && response.body.length > 0) {
+        response.body.forEach(async(doc) => {
+          this.dbService.checkIfEntryExists('documents', doc.appRef).then(async(exists) => {
+            if (!exists) {
+              await this.uploadService.fetchAndSaveFile(doc.fileUrl).then(async(fileUri) => {
+                const user = await this.sharedMethods.getUserData();
+                const now = this.sharedMethods.getCurrentDateTime();
+                const dataToSave = {
+                  ...doc,
+                  userId: doc.user,
+                  createdAt: doc.createdAt ??  now,
+                  updatedAt: doc.updatedAt ??  now,
+                  createdBy: doc.createdBy ?? user?.id,
+                  updatedBy: doc.updatedBy ?? user?.id,
+                  onlineRef: doc.id,
+                };
+                await this.documentsDataService.saveOnlineDocument(dataToSave).then(() => {});
+              });
+            }
+          });
+        });
       }
     });
   }
