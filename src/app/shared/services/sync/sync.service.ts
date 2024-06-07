@@ -171,7 +171,13 @@ export class SyncService {
         imageData.append('createdBy', vesselImage.createdBy);
         imageData.append('updatedBy', vesselImage.updatedBy);
         this.apiService.post('file-upload', imageData).subscribe((res) => {
-          if (res?.['status'] !== 'OK') {
+          if (res?.['status'] === 'OK') {
+            if (!vesselImage.onlineRef) {
+              console.log('ress......',res)
+              // TODO
+              // this.dbService.updateDatabaseField('vessel_images', 'online_ref', res?.['vesselImage']?.id, vesselImage.app_ref);
+            }
+          } else {
             console.error(`Failed to sync vessel image for vessel ${vessel.name} to the api`, res);
           }
         });
@@ -278,7 +284,12 @@ export class SyncService {
         docData.append('createdBy', contractDocument.createdBy);
         docData.append('updatedBy', contractDocument.updatedBy);
         this.apiService.post('file-upload', docData).subscribe((res) => {
-          if (res?.['status'] !== 'OK') {
+          if (res?.['status'] === 'OK') {
+            if (!contractDocument.onlineRef) {
+              // TODO
+              // this.dbService.updateDatabaseField('contract_documents', 'online_ref', res?.['contractDocument']?.id, contractDocument.appRef);
+            }
+          } else {
             console.error(`Failed to sync contract document for contract ${contract.name} to the api`, res);
           }
         });
@@ -297,11 +308,42 @@ export class SyncService {
               .then((id) => { console.log ( `Contract ${contract.name} saved with id ${id}`)});
             }
           });
-        })).subscribe(() => {
-          // fetch the contract clauses after the contracts have been fetched
-          this.fetchContractClauses();
+        })).subscribe(async() => {
+          // fetch the contract clauses & documents after the contracts have been fetched
+          await this.fetchContractDocuments();
+          await this.fetchContractClauses();
         });
+      }
+    });
+  }
 
+  async fetchContractDocuments() {
+    return this.apiService.get('contracts-documents').subscribe((response) => {
+      if (response.status === 200 && response.body.length > 0) {
+        response.body.forEach(async(doc) => {
+          const contract = this.contractServ.getContractByField('onlineRef', doc.contract);
+          if (contract) {
+            const contractDocument = await this.contractServ.getContractDocumentByField('contract_id', contract.id);
+            if (!contractDocument) {
+              await this.uploadService.fetchAndSaveFile(doc.url).then(async(fileUri) => {
+                const user = await this.sharedMethods.getUserData();
+                const now = this.sharedMethods.getCurrentDateTime();
+                const saveObj = {
+                  contractId: contract.id,
+                  name: doc.name,
+                  url: fileUri,
+                  status: doc.status,
+                  onlineRef: doc.id,
+                  createdAt: doc.createdAt ??  now,
+                  updatedAt: doc.updatedAt ??  now,
+                  createdBy: doc.createdBy ?? user?.id,
+                  updatedBy: doc.updatedBy ?? user?.id,
+                };
+                await this.contractServ.saveOnlineContractDocument(saveObj).then(() => {});
+              });
+            }
+          }
+        });
       }
     });
   }

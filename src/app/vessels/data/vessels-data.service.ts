@@ -141,6 +141,7 @@ export class VesselsDataService {
             vessel_id: data.rows.item(i).vessel_id,
             image_url: data.rows.item(i).image_url,
             description: data.rows.item(i).description,
+            onlineRef: data.rows.item(i).online_ref,
             createdAt: data.rows.item(i).created_at,
             updatedAt: data.rows.item(i).updated_at,
             createdBy: data.rows.item(i).created_by,

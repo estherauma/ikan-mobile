@@ -184,6 +184,18 @@ export class ContractDataService {
     }).catch((e) => console.log(e));
   }
 
+  async saveOnlineContractDocument(data) {
+    const query = 'INSERT INTO contract_documents (contract_id, name, url, status, online_ref, \
+      created_at, updated_at, created_by, updated_by) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)';
+    const params = [ data.contractId, data.name, data.url, data.status,
+      data.onlineRef, data.createdAt, data.updatedAt, data.createdBy, data.updatedBy ];
+    
+    return this.db.executeSql(query, params).then(async(result) => {
+      await this.retrieveContractDocuments();
+      return result.insertId;
+    }).catch((e) => console.log(e));
+  }
+
   retrieveContractDocuments() {
     const query = 'SELECT * FROM contract_documents';
     return this.db.executeSql(query, []).then((data) => {
@@ -196,6 +208,7 @@ export class ContractDataService {
             name: data.rows.item(i).name,
             url: data.rows.item(i).url,
             status: data.rows.item(i).status,
+            onlineRef: data.rows.item(i).online_ref,
             createdAt: data.rows.item(i).created_at,
             updatedAt: data.rows.item(i).updated_at,
             createdBy: data.rows.item(i).created_by,
