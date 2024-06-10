@@ -196,7 +196,6 @@ export class DocumentsDataService {
             onlineRef: data.rows.item(i).online_ref,
             appRef: data.rows.item(i).app_ref,
             userId: data.rows.item(i).user_id,
-            documentId: data.rows.item(i).document_id,
             firstName: data.rows.item(i).first_name,
             surname: data.rows.item(i).surname,
             passportNumber: data.rows.item(i).passport_number,
@@ -229,7 +228,6 @@ export class DocumentsDataService {
             onlineRef: data.rows.item(i).online_ref,
             appRef: data.rows.item(i).app_ref,
             userId: data.rows.item(i).user_id,
-            documentId: data.rows.item(i).document_id,
             firstName: data.rows.item(i).first_name,
             surname: data.rows.item(i).surname,
             passportNumber: data.rows.item(i).passport_number,
@@ -252,10 +250,10 @@ export class DocumentsDataService {
   }
 
   async createPassport(data) {
-    const query = 'INSERT INTO passports (app_ref, user_id, document_id, first_name, \
+    const query = 'INSERT INTO passports (app_ref, user_id, first_name, \
       surname, passport_number, date_of_issue, date_of_expiry, image_url, created_at, \
-      updated_at, created_by, updated_by) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?)';
-    const params = [data.appRef, data.userId, data.documentId, data.firstName,
+      updated_at, created_by, updated_by) VALUES (?,?,?,?,?,?,?,?,?,?,?,?)';
+    const params = [data.appRef, data.userId, data.firstName,
       data.surname, data.passportNumber, data.dateOfIssue, data.dateOfExpiry,
       data.imageUrl, data.createdAt, data.updatedAt, data.createdBy, data.updatedBy];
     return this.db.executeSql(query, params).then(async(result) => {
@@ -306,10 +304,10 @@ export class DocumentsDataService {
   }
 
   async saveOnlinePassport(data) {
-    const query = 'INSERT INTO passports (online_ref, app_ref, user_id, document_id, first_name, \
+    const query = 'INSERT INTO passports (online_ref, app_ref, user_id, first_name, \
       surname, passport_number, date_of_issue, date_of_expiry, image_url, created_at, \
-      updated_at, created_by, updated_by) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?)';
-    const params = [data.onlineRef, data.appRef, data.userId, data.documentId, data.firstName,
+      updated_at, created_by, updated_by) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?)';
+    const params = [data.onlineRef, data.appRef, data.userId, data.firstName,
       data.surname, data.passportNumber, data.dateOfIssue, data.dateOfExpiry,
       data.imageUrl, data.createdAt, data.updatedAt, data.createdBy, data.updatedBy];
     return this.db.executeSql(query, params).then(async(result) => {
