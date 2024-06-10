@@ -216,6 +216,7 @@ export class ContractDataService {
           });
         }
       }
+      console.log('contractDocuments',contractDocuments)
       return contractDocuments;
     }).catch((e) => {
       console.log(e);
@@ -253,6 +254,16 @@ export class ContractDataService {
       console.log(e);
       return null;
     });
+  }
+
+  async updateContractDocumentFieldByContractId(contractId, field, value) {
+    const query = `UPDATE contract_documents SET ${field} = ? WHERE contract_id = ?`;
+    const params = [value, contractId];
+    return this.db.executeSql(query, params).then((res) => {
+      this.retrieveContractDocuments();
+      this.retrieveContracts();
+      return res.rowsAffected;
+    }).catch(e => console.log(3));
   }
 
   deleteContractDocument(id) { }

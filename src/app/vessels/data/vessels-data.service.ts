@@ -24,6 +24,8 @@ export class VesselsDataService {
       }).then(async(_db: SQLiteObject) => {
         this.db = _db;
         this.retriveVessels();
+        // tr
+        // this.getVesselImages();
       }).catch(e => console.log(e));
     });
 
@@ -62,6 +64,7 @@ export class VesselsDataService {
           });
         }
       }
+      console.log('vessels',vessels)
       this.vesselsObs.next(vessels);
     }).catch((e) => console.log(e));
   }
@@ -150,6 +153,7 @@ export class VesselsDataService {
           });
         }
       }
+      console.log('vesselImages',vesselImages)
       return vesselImages;
     }).catch((e) => {
       console.log(e);
@@ -208,15 +212,6 @@ export class VesselsDataService {
       return null;
     });
   }
-
-  // updateVesselImageFieldByVesselId(vessel_id, field, value) {
-  //   const query = `UPDATE vessel_images SET ${field} = ? WHERE vessel_id = ?`;
-  //   const params = [value, vessel_id];
-  //   return this.db.executeSql(query, params).then((result) => {
-  //     this.getVesselImages();
-  //     return result.rowsAffected;
-  //   }).catch(e => console.log(e));
-  // }
 
   deleteVesselImage() { }
 }

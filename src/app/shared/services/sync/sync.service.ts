@@ -166,6 +166,7 @@ export class SyncService {
       const imageFile = await this.uploadService.retrieveAndReturnBlob(vessel.imageFile.webPath);
       if (imageFile) {
         const vesselImage = await this.vesselServ.getVesselImageByVesselId(vessel.id);
+        console.log('vicccc........', vesselImage)
         const imageData = new FormData();
         imageData.append('fileContent', imageFile);
         imageData.append('entityType', 'vessel_image');
@@ -276,6 +277,7 @@ export class SyncService {
       const docFile = await this.uploadService.retrieveAndReturnBlob(contract.file.fileUrl);
       if (docFile) {
         const contractDocument = await this.contractServ.getContractDocumentByField('contract_id', contract.id);
+        console.log('sccccddccdd',contractDocument)
         const docData = new FormData();
         docData.append('fileContent', docFile);
         docData.append('entityType', 'contract');
@@ -289,8 +291,9 @@ export class SyncService {
         this.apiService.post('file-upload', docData).subscribe((res) => {
           if (res?.['status'] === 'OK') {
             if (!contractDocument.onlineRef) {
-              // TODO
+              // TODO tr
               // this.dbService.updateDatabaseField('contract_documents', 'online_ref', res?.['contractDocument']?.id, contractDocument.appRef);
+              // this.contractServ.updateContractDocumentFieldByContractId(contractDocument.contract_id, 'online_ref', res?.['contractDocument']?.id);
             }
           } else {
             console.error(`Failed to sync contract document for contract ${contract.name} to the api`, res);
