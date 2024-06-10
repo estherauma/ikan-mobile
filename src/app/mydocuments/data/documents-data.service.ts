@@ -38,7 +38,7 @@ export class DocumentsDataService {
    * Retrieves documents excluding deleted ons
    */ 
   async retriveDocuments() {
-    const query = 'SELECT * FROM documents';
+    const query = 'SELECT * FROM documents WHERE (is_deleted IS NULL OR is_deleted = 0)';
     return this.db.executeSql(query, []).then((data) => {
       const documents = [];
       if (data.rows.length > 0) {
@@ -52,7 +52,8 @@ export class DocumentsDataService {
             fileUrl: data.rows.item(i).file_url,
             fileSize: data.rows.item(i).file_size,
             docType: data.rows.item(i).doc_type,
-            isEssential: this.getIsEssentialValue(data.rows.item(i).is_essential),
+            isEssential: this.getBooleanValue(data.rows.item(i).is_essential),
+            isDeleted: this.getBooleanValue(data.rows.item(i).is_deleted),
             createdAt: data.rows.item(i).created_at,
             updatedAt: data.rows.item(i).updated_at,
             createdBy: data.rows.item(i).created_by,
@@ -90,8 +91,8 @@ export class DocumentsDataService {
             fileUrl: data.rows.item(i).file_url,
             fileSize: data.rows.item(i).file_size,
             docType: data.rows.item(i).doc_type,
-            isEssential: this.getIsEssentialValue(data.rows.item(i).is_essential),
-            isDeleted: this.getIsEssentialValue(data.rows.item(i).is_deleted),
+            isEssential: this.getBooleanValue(data.rows.item(i).is_essential),
+            isDeleted: this.getBooleanValue(data.rows.item(i).is_deleted),
             createdAt: data.rows.item(i).created_at,
             updatedAt: data.rows.item(i).updated_at,
             createdBy: data.rows.item(i).created_by,
@@ -108,12 +109,12 @@ export class DocumentsDataService {
     });
   }
 
-  getIsEssentialValue(value) {
+  getBooleanValue(value) {
     if (typeof value === 'boolean') {
       return value;
     } else if (typeof value === 'number' && value > 0) {
       return true;
-    } else if(typeof value === 'string' && value === 'true') {
+    } else if(typeof value === 'string' && (value === 'true' || value === '1')) {
       return true;
     } else{
       return false;
@@ -160,8 +161,32 @@ export class DocumentsDataService {
     });
   }
 
+  async updateDocumentField(id, field, value) {
+    const query = `UPDATE documents SET ${field} = ? WHERE id = ?`;
+    const params = [value, id];
+    return this.db.executeSql(query, params).then(async(result) => {
+      await this.retriveDocuments();
+      return result.rowsAffected;
+    }).catch((e) => {
+      console.log(e);
+      return null;
+    });
+  }
+
+  async deleteDocument(id) {
+    const query = 'DELETE FROM documents WHERE id = ?';
+    const params = [id];
+    return this.db.executeSql(query, params).then(async(result) => {
+      await this.retriveDocuments();
+      return result.rowsAffected;
+    }).catch((e) => {
+      console.log(e);
+      return null;
+    });
+  }
+
   retrievePassports() {
-    const query = 'SELECT * FROM passports';
+    const query = 'SELECT * FROM passports WHERE (is_deleted = 0 OR is_deleted IS NULL)';
     return this.db.executeSql(query, []).then((data) => {
       const passports = [];
       if (data.rows.length > 0) {
@@ -178,7 +203,7 @@ export class DocumentsDataService {
             dateOfIssue: data.rows.item(i).date_of_issue,
             dateOfExpiry: data.rows.item(i).date_of_expiry,
             imageUrl: data.rows.item(i).image_url,
-            isDeleted: this.getIsEssentialValue(data.rows.item(i).is_deleted),
+            isDeleted: this.getBooleanValue(data.rows.item(i).is_deleted),
             createdAt: data.rows.item(i).created_at,
             updatedAt: data.rows.item(i).updated_at,
             createdBy: data.rows.item(i).created_by,
@@ -194,7 +219,7 @@ export class DocumentsDataService {
   }
 
   getUserPassport(userId) {
-    const query = 'SELECT * FROM passports WHERE user_id = ?';
+    const query = 'SELECT * FROM passports WHERE user_id = ? AND (is_deleted = 0 OR is_deleted IS NULL)';
     return this.db.executeSql(query, [userId]).then((data) => {
       const passports = [];
       if (data.rows.length > 0) {
@@ -211,6 +236,7 @@ export class DocumentsDataService {
             dateOfIssue: data.rows.item(i).date_of_issue,
             dateOfExpiry: data.rows.item(i).date_of_expiry,
             imageUrl: data.rows.item(i).image_url,
+            isDeleted: this.getBooleanValue(data.rows.item(i).is_deleted),
             createdAt: data.rows.item(i).created_at,
             updatedAt: data.rows.item(i).updated_at,
             createdBy: data.rows.item(i).created_by,
@@ -232,8 +258,47 @@ export class DocumentsDataService {
     const params = [data.appRef, data.userId, data.documentId, data.firstName,
       data.surname, data.passportNumber, data.dateOfIssue, data.dateOfExpiry,
       data.imageUrl, data.createdAt, data.updatedAt, data.createdBy, data.updatedBy];
-    return this.db.executeSql(query, params).then((result) => {
+    return this.db.executeSql(query, params).then(async(result) => {
+      await this.retrievePassports();
       return result.insertId;
+    }).catch((e) => {
+      console.log(e);
+      return null;
+    });
+  }
+
+  async updatePassport(data){
+    const query = 'UPDATE passports SET first_name = ?, surname = ?, passport_number = ?, \
+      date_of_issue = ?, date_of_expiry = ?, image_url = ?, updated_at = ?, updated_by = ? WHERE id = ?';
+    const params = [data.firstName, data.surname, data.passportNumber, data.dateOfIssue,
+      data.dateOfExpiry, data.imageUrl, data.updatedAt, data.updatedBy, data.id];
+    return this.db.executeSql(query, params).then(async(result) => {
+      await this.retrievePassports();
+      return result.rowsAffected;
+    }).catch((e) => {
+      console.log(e);
+      return null;
+    });
+  }
+
+  async updatePassportField(id, field, value) {
+    const query = `UPDATE passports SET ${field} = ? WHERE id = ?`;
+    const params = [value, id];
+    return this.db.executeSql(query, params).then(async(result) => {
+      await this.retrievePassports();
+      return result.rowsAffected;
+    }).catch((e) => {
+      console.log(e);
+      return null;
+    });
+  }
+
+  async deletePassport(id) {
+    const query = 'DELETE FROM passports WHERE id = ?';
+    const params = [id];
+    return this.db.executeSql(query, params).then(async(result) => {
+      await this.retrievePassports();
+      return result.rowsAffected;
     }).catch((e) => {
       console.log(e);
       return null;
@@ -247,7 +312,8 @@ export class DocumentsDataService {
     const params = [data.onlineRef, data.appRef, data.userId, data.documentId, data.firstName,
       data.surname, data.passportNumber, data.dateOfIssue, data.dateOfExpiry,
       data.imageUrl, data.createdAt, data.updatedAt, data.createdBy, data.updatedBy];
-    return this.db.executeSql(query, params).then((result) => {
+    return this.db.executeSql(query, params).then(async(result) => {
+      await this.retrievePassports();
       return result.insertId;
     }).catch((e) => {
       console      .log(e);

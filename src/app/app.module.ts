@@ -19,6 +19,7 @@ import { GlobalErrorHandlerService } from './shared/services/error-handler/globa
 import { GlobalHttpInterceptor } from './shared/services/error-handler/global-http-interceptor/global-http-interceptor';
 import { FileOpener } from '@awesome-cordova-plugins/file-opener/ngx';
 import { Chooser } from '@awesome-cordova-plugins/chooser/ngx';
+import { SocialSharing } from '@awesome-cordova-plugins/social-sharing/ngx';
 
 @NgModule({
   declarations: [ AppComponent, RedElDirective ],
@@ -46,6 +47,7 @@ import { Chooser } from '@awesome-cordova-plugins/chooser/ngx';
     { provide: ErrorHandler, useClass: GlobalErrorHandlerService },
     Chooser,
     FileOpener,
+    SocialSharing,
   ],
   bootstrap: [AppComponent],
   schemas: [ CUSTOM_ELEMENTS_SCHEMA ]

@@ -246,7 +246,7 @@ SPEC CHECKSUMS:
   CapacitorToast: c8bb89eeb59a23c1fc298f138cc06c8ff4d90ac1
   CapacitorVoiceRecorder: 872ea857b497ce2c71afe3e4eb5de0a74290c0db
   CapawesomeCapacitorFilePicker: 41f486cb4a89c6a7c8a4f5d683dbf96658894182
-  CordovaPlugins: 7156767395773ea3ac434eb62b53cafdba3ca4f8
+  CordovaPlugins: 5920b5d26ac40fe2ea2947f63639e647b9d9a2f4
   Firebase: 0312a2352584f782ea56f66d91606891d4607f06
   FirebaseAnalytics: ec00fe8b93b41dc6fe4a28784b8e51da0647a248
   FirebaseCore: 7ec4d0484817f12c3373955bc87762d96842d483

@@ -198,6 +198,9 @@ export class EssentialsComponent  implements OnInit {
       }
     });
     await modal.present();
+    await modal.onDidDismiss().then((data) => {
+      this.getDocDetails();
+    });
   }
 
   getPassportViewData() {
@@ -208,5 +211,42 @@ export class EssentialsComponent  implements OnInit {
       viewData[entry.key] = entry?.label;
     });
     return viewData;
+  }
+
+  async handleDeleteDocument(doc: DocumentType, headerText:string = this.docsCommonText?.deleteDocument) {
+    const deleteAlert = await this.alertController.create({
+      cssClass: 'del-doc-alert',
+      header: headerText,
+      message: this.docsCommonText?.deletePrompt,
+      backdropDismiss: false,
+      buttons: [
+        {
+          text: this.commonText?.cancel,
+          role: 'cancel',
+        },
+        {
+          text: this.commonText?.delete,
+          handler: async () => {
+            await this.deleteDocument(doc).then(() => {
+              this.getDocDetails();
+              this.sharedMethods.showToast(this.docsCommonText?.docDeletedSuccessfully);
+            });
+          }
+        },
+      ]
+    });
+    await deleteAlert.present();
+  }
+
+  async deleteDocument(doc: DocumentType) {
+    if (doc?.onlineRef) {
+      // if doc is synced, the is_deleted field is set to true
+      // Doc will be deleted from the device after online reference is deleted
+      await this.documentsDataService.updateDocumentField(doc.id, 'is_deleted', 1);
+    } else {
+      await this.documentsDataService.deleteDocument(doc.id);
+    }
+    const docs = [doc];
+    await this.uploadService.deleteDocuments(docs);
   }
 }
