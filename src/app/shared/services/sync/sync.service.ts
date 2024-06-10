@@ -88,11 +88,12 @@ export class SyncService {
     this.syncContracts();
     this.syncSurveyResponses();
     this.syncMyDocuments();
+    this.syncPassports();
     this.fetchCompanies();
     this.fetchVessels();
     this.fetchContracts(); // clauses are fetched after contracts have been fetched in the fetchContracts method
     this.fetchMyDocuments();
-
+    this.fetchPassports();
   }
 
   syncCompanies() {
@@ -756,6 +757,7 @@ export class SyncService {
                 const dataToSave = {
                   ...doc,
                   userId: doc.user,
+                  fileUrl: fileUri,
                   createdAt: doc.createdAt ??  now,
                   updatedAt: doc.updatedAt ??  now,
                   createdBy: doc.createdBy ?? user?.id,
@@ -763,6 +765,86 @@ export class SyncService {
                   onlineRef: doc.id,
                 };
                 await this.documentsDataService.saveOnlineDocument(dataToSave).then(() => {});
+              });
+            }
+          });
+        });
+      }
+    });
+  }
+
+  async syncPassports(){
+    this.documentsDataService.retrievePassports().then((passports) => {
+      if (passports.length > 0) {
+        passports.forEach((passport) => {
+          const dataToSave = Object.assign({}, passport);
+          delete dataToSave.id;
+          delete dataToSave.imageUrl;
+          dataToSave.user = passport.userId;
+          dataToSave.dateOfIssue = new Date(dataToSave.dateOfIssue).toISOString().split('T')[0];
+          dataToSave.dateOfExpiry = new Date(dataToSave.dateOfExpiry).toISOString().split('T')[0];
+          if (!dataToSave.onlineRef) {
+            this.apiService.post('passports', dataToSave).subscribe(async(response) => {
+              if (response?.['status'] === 'OK') {
+                this.dbService.updateDatabaseField('passports', 'online_ref', response?.['data']?.id, passport.appRef);
+                const file = await this.uploadService.retrieveAndReturnBlob(passport.imageUrl); 
+                if (file) {
+                  const imageData = new FormData();
+                  imageData.append('fileContent', file);
+                  imageData.append('entityType', 'passport');
+                  imageData.append('passportId', response?.['data']?.id);
+
+                  this.apiService.post('file-upload', imageData).subscribe((res) => {
+                    if (res?.['status'] !== 'OK') {
+                      console.error(`Failed to sync passport image, ${passport.appRef} to the api`, res);
+                    }
+                  });
+                };
+              }
+            });
+          } else {
+            this.apiService.put('passports', passport.onlineRef, dataToSave).subscribe(async(response) => {
+              if (response?.['status'] === 'OK') {
+                const file = await this.uploadService.retrieveAndReturnBlob(passport.imageUrl);
+                if (file) {
+                  const imageData = new FormData();
+                  imageData.append('fileContent', file);
+                  imageData.append('entityType', 'passport');
+                  imageData.append('passportId', passport.onlineRef);
+                  this.apiService.post('file-upload', imageData).subscribe((res) => {
+                    if (res?.['status'] !== 'OK') {
+                      console.error(`Failed to sync passport image, ${passport.appRef} to the api`, res);
+                    }
+                  });
+                }
+              }
+            });
+          }
+        });
+      }
+    });
+  }
+
+  async fetchPassports() {
+    return this.apiService.get('passports').subscribe((response) => {
+      if (response?.['status'] === 200 && response.body.data.length > 0) {
+        response.body.data.forEach(async(passport) => {
+          await this.dbService.checkIfEntryExists('passports', passport.appRef).then(async(exists) => {
+            if (!exists) {
+              await this.uploadService.fetchAndSaveFile(passport.imageUrl).then(async(fileUri) => {
+                const user = await this.sharedMethods.getUserData();
+                const now = this.sharedMethods.getCurrentDateTime();
+                const dataToSave = {
+                  ...passport,
+                  userId: passport.user,
+                  imageUrl: fileUri,
+                  createdAt: passport.createdAt ??  now,
+                  updatedAt: passport.updatedAt ??  now,
+                  createdBy: passport.createdBy ?? user?.id,
+                  updatedBy: passport.updatedBy ?? user?.id,
+                  onlineRef: passport.id,
+                };
+                await this.documentsDataService.saveOnlinePassport(dataToSave).then(() => {});
               });
             }
           });

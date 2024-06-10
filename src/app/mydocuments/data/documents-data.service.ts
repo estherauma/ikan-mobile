@@ -26,7 +26,6 @@ export class DocumentsDataService {
         this.db = _db;
         this.retriveDocuments();
         this.retrievePassports();
-        this.retriveAllDocuments();
       }).catch(e => console.log(e));
     });
 
@@ -179,6 +178,7 @@ export class DocumentsDataService {
             dateOfIssue: data.rows.item(i).date_of_issue,
             dateOfExpiry: data.rows.item(i).date_of_expiry,
             imageUrl: data.rows.item(i).image_url,
+            isDeleted: this.getIsEssentialValue(data.rows.item(i).is_deleted),
             createdAt: data.rows.item(i).created_at,
             updatedAt: data.rows.item(i).updated_at,
             createdBy: data.rows.item(i).created_by,
