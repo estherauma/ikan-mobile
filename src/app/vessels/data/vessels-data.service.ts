@@ -24,8 +24,7 @@ export class VesselsDataService {
       }).then(async(_db: SQLiteObject) => {
         this.db = _db;
         this.retriveVessels();
-        // tr
-        // this.getVesselImages();
+        this.getVesselImages();
       }).catch(e => console.log(e));
     });
 
@@ -64,7 +63,6 @@ export class VesselsDataService {
           });
         }
       }
-      console.log('vessels',vessels)
       this.vesselsObs.next(vessels);
     }).catch((e) => console.log(e));
   }
@@ -153,7 +151,6 @@ export class VesselsDataService {
           });
         }
       }
-      console.log('vesselImages',vesselImages)
       return vesselImages;
     }).catch((e) => {
       console.log(e);
@@ -184,10 +181,8 @@ export class VesselsDataService {
   async saveOnlineVesselImage(data) {
     const query = 'INSERT INTO vessel_images (vessel_id, image_url, description, app_ref, \
       created_at, updated_at, created_by, updated_by, online_ref) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)';
-    const now = this.sharedMethods.getCurrentDateTime();
-    const user = await this.sharedMethods.getUserData();
-    const params = [data?.vessel_id, data?.image_url, data?.description, data.app_ref,
-      now, now, user?.id, user?.id, data.id];
+    const params = [data?.vesselId, data?.imageUrl, data?.description, data.appRef,
+      data.createdAt, data.updatedAt, data.createdBy, data.updatedBy, data.id];
     return this.db.executeSql(query, params).then((result) => {
       this.getVesselImages();
       return result.insertId;

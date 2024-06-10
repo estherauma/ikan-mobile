@@ -68,8 +68,6 @@ export class EssentialsComponent  implements OnInit {
     this.seamansBookImageUrl = this.userSeamansBookDetails?.fileUrl || '';
   }
 
-  // TODO: add edit passport
-  // TODO: add passport, visa, seamans book and other essential docs view
   async addPassport() {
     const modal = await this.modalController.create({
       cssClass: 'notification-modal',

@@ -166,7 +166,6 @@ export class SyncService {
       const imageFile = await this.uploadService.retrieveAndReturnBlob(vessel.imageFile.webPath);
       if (imageFile) {
         const vesselImage = await this.vesselServ.getVesselImageByVesselId(vessel.id);
-        console.log('vicccc........', vesselImage)
         const imageData = new FormData();
         imageData.append('fileContent', imageFile);
         imageData.append('entityType', 'vessel_image');
@@ -208,7 +207,7 @@ export class SyncService {
             if (response?.['status'] === 200 && response.body.length > 0) {
               response.body.forEach(async(image) => {
                 const vessel = await this.vesselServ.getVesselByField('onlineRef', image.vessel);
-                if (vessel) {
+                if (vessel && !vessel.imageFile.webPath) {
                   const vesselImage = await this.vesselServ.getVesselImageByVesselId(vessel.id);
                   if (!vesselImage) {
                     await this.uploadService.fetchAndSaveFile(image.imageUrl).then(async(fileUri) => {
@@ -277,7 +276,6 @@ export class SyncService {
       const docFile = await this.uploadService.retrieveAndReturnBlob(contract.file.fileUrl);
       if (docFile) {
         const contractDocument = await this.contractServ.getContractDocumentByField('contract_id', contract.id);
-        console.log('sccccddccdd',contractDocument)
         const docData = new FormData();
         docData.append('fileContent', docFile);
         docData.append('entityType', 'contract');
@@ -749,8 +747,8 @@ export class SyncService {
 
   async fetchMyDocuments() {
     return this.apiService.get('mydocuments').subscribe((response) => {
-      if (response?.['status'] === 200 && response.body.length > 0) {
-        response.body.forEach(async(doc) => {
+      if (response?.['status'] === 200 && response.body.data.length > 0) {
+        response.body.data.forEach(async(doc) => {
           this.dbService.checkIfEntryExists('documents', doc.appRef).then(async(exists) => {
             if (!exists) {
               await this.uploadService.fetchAndSaveFile(doc.fileUrl).then(async(fileUri) => {

@@ -25,6 +25,7 @@ export class DocumentsDataService {
       }).then(async(_db: SQLiteObject) => {
         this.db = _db;
         this.retriveDocuments();
+        this.retriveAllDocuments();
         this.retrievePassports();
       }).catch(e => console.log(e));
     });
@@ -61,7 +62,6 @@ export class DocumentsDataService {
           });
         }
       }
-      console.log('documents.....', documents);
       documents.sort((a, b) => {
         return new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime();
       });
@@ -100,7 +100,6 @@ export class DocumentsDataService {
           });
         }
       }
-      console.log('documents....allllooll.', documents);
       this.allDocumentsObs.next(documents);
       return documents;
     }).catch((e) => {

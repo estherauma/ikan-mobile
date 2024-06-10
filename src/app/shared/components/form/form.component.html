@@ -297,7 +297,7 @@
                 </ion-label>
               </ion-col>
             </ion-row>
-            <ion-row *ngIf="!tunaFormGroup.controls[question.key].value.uriPath || !tunaFormGroup.controls[question.key].value.fileurl"
+            <ion-row *ngIf="!tunaFormGroup.controls[question.key].value.fileUrl"
               class="upload-wrapper"
             >
               <div (click)="onUpload(question.key)">
@@ -305,7 +305,7 @@
                 <p>{{ question.placeholder || uploadDocText}}</p>
               </div>
             </ion-row>
-            <ion-row *ngIf="tunaFormGroup.controls[question.key].value.uriPath || tunaFormGroup.controls[question.key].value.fileUrl"
+            <ion-row *ngIf="tunaFormGroup.controls[question.key].value.fileUrl"
               class="pdf-preview"
             >
               <img

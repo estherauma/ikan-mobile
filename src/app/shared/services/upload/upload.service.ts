@@ -131,6 +131,8 @@ export class UploadService {
 
   async retrieveAndReturnBlob(fileUrl) {
     try {
+      if (!fileUrl) return null;
+
       const fileName = fileUrl.split('files/')[1];
       const file = await Filesystem.getUri({
         path: fileName,
@@ -143,7 +145,7 @@ export class UploadService {
       const fileUpload = new File([fileBlob], fileName);
       return fileUpload;
     } catch (error) {
-      console.error(error);
+      console.log(error);
       return null;
     }
   }
