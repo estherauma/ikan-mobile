@@ -216,7 +216,6 @@ export class ContractDataService {
           });
         }
       }
-      console.log('contractDocuments',contractDocuments)
       return contractDocuments;
     }).catch((e) => {
       console.log(e);
