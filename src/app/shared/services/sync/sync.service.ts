@@ -695,12 +695,11 @@ export class SyncService {
       if (documents?.length) {
         documents.forEach(async(document) => {
           if (document.isDeleted && !document.onlineRef) {
-            // TODO
-            // await this.documentsDataService.deleteDocument(document.id);
+            await this.documentsDataService.deleteDocument(document.id);
           } else if (document.isDeleted && document.onlineRef) {
             this.apiService.delete('mydocuments', document.onlineRef).subscribe(async(response) => {
               if (response?.['status'] === 'OK') {
-                // await this.documentsDataService.deleteDocument(document.id);
+                await this.documentsDataService.deleteDocument(document.id);
               } else {
                 console.error(`Failed to delete document ${document.fileName} from the api`, response);
               }
