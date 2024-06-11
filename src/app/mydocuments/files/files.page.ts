@@ -4,11 +4,12 @@ import { AlertController, ModalController, Platform } from '@ionic/angular';
 import { ContentService } from 'src/app/shared/services/content/content.service';
 import { SharedmethodsService } from 'src/app/shared/services/sharedmethods/sharedmethods.service';
 import { DocumentType } from 'src/app/shared/types/types';
-import { FileOpener } from '@awesome-cordova-plugins/file-opener/ngx';
 import { ViewImageComponent } from '../view-image/view-image.component';
 import { UploadService } from 'src/app/shared/services/upload/upload.service';
 import { DocumentsDataService } from '../data/documents-data.service';
-import { Filesystem, Directory } from '@capacitor/filesystem';import { SocialSharing } from '@awesome-cordova-plugins/social-sharing/ngx';
+import { Filesystem, Directory } from '@capacitor/filesystem';
+import { Share } from '@capacitor/share';
+import { FileOpener } from '@capawesome-team/capacitor-file-opener';
 
 @Component({
   selector: 'app-files',
@@ -36,15 +37,12 @@ export class FilesPage implements OnInit {
     public sharedMethods: SharedmethodsService,
     public contentService: ContentService,
     public alertController: AlertController,
-    public fileOpener: FileOpener,
     public documentsDataService: DocumentsDataService,
     public uploadService: UploadService,
-    public socialSharing: SocialSharing,
   ) { }
 
   ngOnInit() {
     this.commonText = this.contentService.commonText;
-    console.log('this.commonText', this.commonText);
     const docsPageData = this.contentService.getContentByPropertyName('my-documents-common-text');
     this.docsCommonText = this.sharedMethods.convertAdditionalTextToObj(docsPageData?.additionalText);
     this.getDocuments();
@@ -78,17 +76,16 @@ export class FilesPage implements OnInit {
     }
   }
 
-  viewFile(doc: DocumentType) {
+  async viewFile(doc: DocumentType) {
     if (!this.isSelecting) {
       if (this.sharedMethods.currentPlatform === 'web') {
         window.open(doc.fileUrl, '_blank');
       } else {
-        this.fileOpener.open(doc.fileUrl, 'application/pdf')
-        .then(() => console.log('File is opened'))
-        .catch(e => {
-          console.log('Error opening file', e);
-          this.sharedMethods.showToast(this.docsCommonText?.errorOpeningFile);
-        });
+        await FileOpener.openFile({ path: doc.fileUrl, mimeType: 'application/pdf',})
+          .catch((e) => {
+            console.log('Error opening file', e);
+            this.sharedMethods.showToast(this.docsCommonText?.errorOpeningFile);
+          });
       }
     }
   }
@@ -171,7 +168,7 @@ export class FilesPage implements OnInit {
       });
 
       await Promise.all(promises).then(async docsToShare => {
-        await this.socialSharing.share(null, null, docsToShare);
+        await Share.share({ files: docsToShare });
       });
 
       this.selectedDocuments = [];

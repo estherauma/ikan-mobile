@@ -30,6 +30,8 @@ PODS:
     - Capacitor
   - CapacitorPushNotifications (5.1.1):
     - Capacitor
+  - CapacitorShare (5.0.6):
+    - Capacitor
   - CapacitorSplashScreen (5.0.7):
     - Capacitor
   - CapacitorStatusBar (5.0.7):
@@ -39,6 +41,8 @@ PODS:
   - CapacitorVoiceRecorder (5.0.0):
     - Capacitor
   - CapawesomeCapacitorFilePicker (5.3.0):
+    - Capacitor
+  - CapawesomeTeamCapacitorFileOpener (5.0.4):
     - Capacitor
   - CordovaPlugins (5.7.5):
     - CapacitorCordova
@@ -160,11 +164,13 @@ DEPENDENCIES:
   - "CapacitorNetwork (from `../../node_modules/@capacitor/network`)"
   - "CapacitorPreferences (from `../../node_modules/@capacitor/preferences`)"
   - "CapacitorPushNotifications (from `../../node_modules/@capacitor/push-notifications`)"
+  - "CapacitorShare (from `../../node_modules/@capacitor/share`)"
   - "CapacitorSplashScreen (from `../../node_modules/@capacitor/splash-screen`)"
   - "CapacitorStatusBar (from `../../node_modules/@capacitor/status-bar`)"
   - "CapacitorToast (from `../../node_modules/@capacitor/toast`)"
   - CapacitorVoiceRecorder (from `../../node_modules/capacitor-voice-recorder`)
   - "CapawesomeCapacitorFilePicker (from `../../node_modules/@capawesome/capacitor-file-picker`)"
+  - "CapawesomeTeamCapacitorFileOpener (from `../../node_modules/@capawesome-team/capacitor-file-opener`)"
   - CordovaPlugins (from `../capacitor-cordova-ios-plugins`)
 
 SPEC REPOS:
@@ -212,6 +218,8 @@ EXTERNAL SOURCES:
     :path: "../../node_modules/@capacitor/preferences"
   CapacitorPushNotifications:
     :path: "../../node_modules/@capacitor/push-notifications"
+  CapacitorShare:
+    :path: "../../node_modules/@capacitor/share"
   CapacitorSplashScreen:
     :path: "../../node_modules/@capacitor/splash-screen"
   CapacitorStatusBar:
@@ -222,6 +230,8 @@ EXTERNAL SOURCES:
     :path: "../../node_modules/capacitor-voice-recorder"
   CapawesomeCapacitorFilePicker:
     :path: "../../node_modules/@capawesome/capacitor-file-picker"
+  CapawesomeTeamCapacitorFileOpener:
+    :path: "../../node_modules/@capawesome-team/capacitor-file-opener"
   CordovaPlugins:
     :path: "../capacitor-cordova-ios-plugins"
 
@@ -241,12 +251,14 @@ SPEC CHECKSUMS:
   CapacitorNetwork: 81ef9728aa7a65cac8c1181ce79e578162b57b57
   CapacitorPreferences: 77ac427e98db83bace772455f8ba447430382c4c
   CapacitorPushNotifications: 2327900bc002f5ff49ee6d2231796d0635b4a1b0
+  CapacitorShare: cd41743331cb71d217c029de54b681cbd91e0fcc
   CapacitorSplashScreen: dd3de3f3644710fa2a697cfb91ec262eece4d242
   CapacitorStatusBar: f390fbb49b82ffb754ea4b3cf71dc8b048baf3e7
   CapacitorToast: c8bb89eeb59a23c1fc298f138cc06c8ff4d90ac1
   CapacitorVoiceRecorder: 872ea857b497ce2c71afe3e4eb5de0a74290c0db
   CapawesomeCapacitorFilePicker: 41f486cb4a89c6a7c8a4f5d683dbf96658894182
-  CordovaPlugins: 5920b5d26ac40fe2ea2947f63639e647b9d9a2f4
+  CapawesomeTeamCapacitorFileOpener: 4f6cb29ee321173263d438d23cf7dd2c2be649a2
+  CordovaPlugins: 7156767395773ea3ac434eb62b53cafdba3ca4f8
   Firebase: 0312a2352584f782ea56f66d91606891d4607f06
   FirebaseAnalytics: ec00fe8b93b41dc6fe4a28784b8e51da0647a248
   FirebaseCore: 7ec4d0484817f12c3373955bc87762d96842d483
@@ -259,6 +271,6 @@ SPEC CHECKSUMS:
   nanopb: 438bc412db1928dac798aa6fd75726007be04262
   PromisesObjC: f5707f49cb48b9636751c5b2e7d227e43fba9f47
 
-PODFILE CHECKSUM: 05fddb67c78857d18cdd5e06642561e6552e2d53
+PODFILE CHECKSUM: 239f461e42bea11582bbd3b6277117e277033bcc
 
 COCOAPODS: 1.15.2
