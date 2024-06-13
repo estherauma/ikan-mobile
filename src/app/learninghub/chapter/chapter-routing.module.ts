@@ -1,12 +1,12 @@
 import { NgModule } from '@angular/core';
-import { Routes, RouterModule } from '@angular/router';
+import { RouterModule, Routes } from '@angular/router';
 
-import { VariantPage } from './variant.page';
+import { ChapterComponent } from './chapter.component';
 
 const routes: Routes = [
   {
     path: '',
-    component: VariantPage
+    component: ChapterComponent
   },
   {
     path: ':subChapterId',
@@ -16,6 +16,6 @@ const routes: Routes = [
 
 @NgModule({
   imports: [RouterModule.forChild(routes)],
-  exports: [RouterModule],
+  exports: [RouterModule]
 })
-export class VariantPageRoutingModule {}
+export class ChapterRoutingModule { }
