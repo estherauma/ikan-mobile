@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { Camera, CameraSource, CameraResultType } from '@capacitor/camera';
 import { Capacitor } from '@capacitor/core';
 import { FilePicker } from '@capawesome/capacitor-file-picker';
+import { Chooser } from '@awesome-cordova-plugins/chooser/ngx';
 import { Filesystem, Directory } from '@capacitor/filesystem';
 import { UploadType } from '../../types/types';
 
@@ -10,7 +11,9 @@ import { UploadType } from '../../types/types';
   providedIn: 'root'
 })
 export class UploadService {
-  constructor() { }
+  constructor(
+    private chooser: Chooser,
+  ) { }
 
 
   async chooseFile(types: UploadType[] = ['application/pdf']) {
@@ -19,10 +22,17 @@ export class UploadService {
         types
       });
   
-      const file = result.files[0];
-      const fileName = file?.name;
-  
-      return await this.saveFile(file?.path, fileName);
+      if (types[0] === 'application/pdf'){
+        const file = result.files[0];
+        const fileName = file?.name;
+    
+        return await this.saveFile(file?.path, fileName, 'pdf');
+      } else {
+        const file = result.files[0];
+        const fileName = file?.name;
+    
+        return await this.saveFile(file?.path, fileName, 'image');
+      }
     } catch (error) {
       console.error('Error in upload.service.ts at chooseFile(). Failed to select file.', error);
       return null;
@@ -34,11 +44,11 @@ export class UploadService {
     return false;
   }
 
-  async takePicture() {
+  async uploadPicture(source: CameraSource) {
     try {
       const image = await Camera.getPhoto({
         quality: 100,
-        source: CameraSource.Camera,
+        source,
         width: 600,
         resultType: this.isPlatformWeb() ? CameraResultType.DataUrl : CameraResultType.Uri,
         saveToGallery: true,
@@ -47,13 +57,13 @@ export class UploadService {
       const lastSlashIndex = image?.path?.lastIndexOf('/');
       const fileName = image?.path?.substring(lastSlashIndex + 1);
 
-      return await this.saveFile(image?.path, fileName);
+      return await this.saveFile(image?.path, fileName, 'image');
     } catch (error) {
       console.error('Error in upload.service.ts at takePicture(). Failed to capture image.', error);
     }
   }
 
-  async saveFile(filePath: string, fileName: string) {
+  async saveFile(filePath: string, fileName: string, type: 'image' | 'pdf') {
     try {
       const original = await Filesystem.readFile({ path: filePath });
       await Filesystem.writeFile({
@@ -64,18 +74,40 @@ export class UploadService {
         console.log(e);
       });
   
-      const photoUri = await Filesystem.getUri({
+      const fileUri = await Filesystem.getUri({
         directory: Directory.Data,
         path: fileName
       });
-      const webPath = Capacitor.convertFileSrc(photoUri.uri);
+      const webPath = Capacitor.convertFileSrc(fileUri.uri);
   
-      return {
-        fileName,
-        webPath,
+      if (type === 'image') {
+        return {
+          fileName,
+          webPath,
+          docType: type
+        }
+      } else if (type === 'pdf') {
+        return {
+          fileName,
+          uriPath: fileUri.uri,
+          docType: type
+        }
       }
     } catch (error) {
       console.error(`Error in upload.service.ts at saveFile(). Failed to save file. ${fileName}`, error);
+      return null;
+    }
+  }
+
+  async choosePdfFile() {
+    try {
+      const result = await this.chooser.getFile({mimeTypes: 'application/pdf'});
+      const fileName = result.name;
+
+      return await this.saveFile(result.path, fileName, 'pdf');
+    } catch (error) {
+      console.log('upload file error', error);
+      console.error('Error in upload.service.ts at choosePdfFile(). Failed to select pdf file.', error);
       return null;
     }
   }

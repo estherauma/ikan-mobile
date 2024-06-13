@@ -2,6 +2,8 @@ import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Params, Router } from '@angular/router';
 import { BaseformPage } from 'src/app/shared/components/baseform/baseform.page';
+import { AnalyticsService } from 'src/app/shared/services/analytics/analytics.service';
+import { pageEventNames } from 'src/app/shared/services/analytics/event-names';
 import { ApiService } from 'src/app/shared/services/api/api.service';
 import { ContentService } from 'src/app/shared/services/content/content.service';
 import { SharedmethodsService } from 'src/app/shared/services/sharedmethods/sharedmethods.service';
@@ -28,6 +30,7 @@ export class PasswordResetPage extends BaseformPage implements OnInit {
     public sharedMethods: SharedmethodsService,
     public cdr: ChangeDetectorRef,
     public activatedRoute: ActivatedRoute,
+    public analytics: AnalyticsService
   ) {
     super(contentService);
   }
@@ -36,6 +39,7 @@ export class PasswordResetPage extends BaseformPage implements OnInit {
     this.getEmail();
     this.commonText = this.contentService?.commonText;
     this.pageSetup();
+    this.analytics.trackEvent(pageEventNames.passwordReset, this.sharedMethods.analyticsEventParams);
   }
 
   pageSetup() {

@@ -1,10 +1,34 @@
 <div class="main-container" [ngClass]="{'within-nav':withinNav}">
   <div class="image-container">
     <div>
-      <div 
-        class="profile-image"
-        [ngStyle]="{'background': 'url(' + imageUrl + ') no-repeat 0 0 / cover'}"
-      ></div>
+      <div class="profile-image">
+        <ion-row>
+          <ion-col size="12" class="img-col">
+            <div class="img-wrapper">
+              <ion-icon
+                *ngIf="!imageUrl"
+                class="image icon"
+                src="assets/icon/ellipse_profile.svg"
+              />
+              <img
+                *ngIf="sharedMethods.isIos && imageUrl"
+                class="image img"
+                [src]="imageUrl | safeurl"
+              />
+              <img
+                *ngIf="sharedMethods.isAndroid && imageUrl"
+                class="image img"
+                [src]="imageUrl"
+              />
+              <ion-icon
+                class="edit-icon"
+                name="pencil"
+                (click)="changePhoto(worker)"
+              ></ion-icon>
+            </div>
+          </ion-col>
+        </ion-row>
+      </div>
       <div class="status-container" [ngClass]="sharedMethods.getStatusClass(status)">
         <small>{{status}}</small>
       </div>

@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import { AnalyticsService } from 'src/app/shared/services/analytics/analytics.service';
 import { ContentService } from 'src/app/shared/services/content/content.service';
 import { SharedmethodsService } from 'src/app/shared/services/sharedmethods/sharedmethods.service';
 
@@ -32,6 +33,7 @@ export class SubchapterComponent  implements OnInit {
     public contentService: ContentService,
     public router: Router,
     public sharedmethods: SharedmethodsService,
+    public analytics: AnalyticsService
   ) {
     this.activatedRoute.params.subscribe(async params => {
       this.subChapterId = params?.subChapterId;
@@ -53,6 +55,11 @@ export class SubchapterComponent  implements OnInit {
       const chapterId = this.subChapterId?.split('.')[0];
       this.imgUrl = this.sharedmethods?.getChapterBackground(chapterId, 'subchapter');
       this.upNextContent = this.getNextChapterContent();
+      if (this.pageContent.analyticsEventName) {
+        this.analytics.trackEvent(this.pageContent.analyticsEventName, this.sharedmethods.analyticsEventParams);
+      } else {
+        console.log('No analytics event name found for this page')
+      }
     }
   }
 

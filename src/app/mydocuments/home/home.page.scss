@@ -1,35 +1,70 @@
 ion-content{
-    --background: #F5F5F5;
-}
+  --background: white;
 
-.toggle-nav-buttons{
-    display: flex;
-    background-color: #E6E6E6;
-    height: 60px;
-
-    .active-btn{
-        width: 100%;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        background-color: #F5F5F5;
-        ;
-    }
-
-    .inactive-btn{
+  .title-container {
+    background: var(--ikan_skyblue_100);
+    height: 100px;
+    ion-row {
+      ion-col {
         display: flex;
         align-items: center;
         justify-content: center;
-        width: 100%;
-        color: #B4B4B4;
+      }
     }
-}
+  }
 
+  .segments-wrapper {
+    width: 100%;
+    
+    .segments {
+      background: var(--ikan_skyblue_100);
+      // width: 80%;
+      // margin: 0 auto;
+    }
 
-.image-upload{
-    display: flex;
-    border: 1px dashed gray;
-    align-items: center;
-    padding: 16px;
-    background-color: #ffffff;
+    ion-segment {
+
+      width: 80%;
+      margin: 0 auto;
+      border: unset;
+      border-radius: 20px 20px 0 0;
+    }
+
+    ion-segment-button {
+      --color: var(--ikan_deep_gray);
+      --color-selected: white;
+      background: var(--ikan_light_gray);
+      --background: var(--ikan_light_gray);
+      ion-item {
+        background: var(--ikan_light_gray);
+        --background: var(--ikan_light_gray);
+        --background-activated: var(--ikan_light_gray);
+        --color: var(--ikan_deep_gray);
+        --color-activated: var(--ikan_deep_gray);
+
+        ion-icon {
+          margin-right: 5px;
+          color: var(--ikan_deep_gray);
+        }
+      }
+    }
+
+    .segment-button-checked {
+      background: white;
+      --background: white;
+      --color-checked: white;
+      ion-item {
+        background: white;
+        --background: white;
+        --background-activated: white;
+        --color: var(--ion-color-primary);
+        --color-activated: var(--ion-color-primary);
+        
+        ion-icon {
+          margin-right: 5px;
+          color: var(--ion-color-primary);
+        }
+      }
+    }
+  }
 }

@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ContentService } from '../../services/content/content.service';
 import { UploadService } from '../../services/upload/upload.service';
 import { ModalController } from '@ionic/angular';
+import { CameraSource } from '@capacitor/camera';
 
 @Component({
   selector: 'app-imageselect',
@@ -25,16 +26,13 @@ export class ImageselectComponent implements OnInit {
   }
 
   async uploadFromGallery() {
-    const imageData = await this.uploadService.chooseFile(['image/png', 'image/jpeg', 'image/jpg']);
+    const imageData = await this.uploadService.uploadPicture(CameraSource.Photos);
     this.modalController?.dismiss({ imageData });
   }
 
   async uploadFromCamera() {
-    const imageData = await this.uploadService.takePicture();
+    const imageData = await this.uploadService.uploadPicture(CameraSource.Camera);
     this.modalController?.dismiss({ imageData });
   }
 
-
-
-  
 }

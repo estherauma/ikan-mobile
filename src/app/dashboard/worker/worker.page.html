@@ -1,10 +1,11 @@
-<app-header [pageTitle]="">
+<app-header
+  [isBackButton]="false"
+>
 </app-header>
 
 <ion-content>
   <app-dashboardelcomesection 
-    [message]="commonText?.fdbkWelcomeText"
-    [message1]=""
+    [greeting]="commonText?.fdbkWelcomeText"
     [name]="name"
     (onProfileClick)="goToWorkerProfile()"
   >

@@ -4,10 +4,11 @@ import { ModalController } from '@ionic/angular';
 import { SharedmethodsService } from 'src/app/shared/services/sharedmethods/sharedmethods.service';
 import { UserRole } from 'src/app/shared/types/api-types';
 import { CreatePage } from '../create/create.page';
-import { WorkersDataService } from '../data/workers-data.service';
 import { ContentService } from 'src/app/shared/services/content/content.service';
 import { ProfilesDataService } from 'src/app/profiles/data/profiles-data.service';
 import { GroupedOption } from 'src/app/shared/components/filter/filter.component';
+import { AnalyticsService } from 'src/app/shared/services/analytics/analytics.service';
+import { pageEventNames } from 'src/app/shared/services/analytics/event-names';
 
 @Component({
   selector: 'app-home',
@@ -25,10 +26,10 @@ export class HomePage implements OnInit {
   constructor(
     public router: Router,
     public modalCtrl: ModalController,
-    public workersDataService: WorkersDataService,
     public sharedMethods: SharedmethodsService,
     public contentService: ContentService,
     public profilesDataService: ProfilesDataService,
+    public analytics: AnalyticsService
   ) {
    
     this.profilesDataService.getAll().subscribe(async(data) => {
@@ -46,6 +47,7 @@ export class HomePage implements OnInit {
     this.commonText = this.contentService?.commonText;
     this.pageTitle = this.commonText?.recruits;
     this.groupedFilterOptions = this.getGroupedFilterOptions();
+    this.analytics.trackEvent(pageEventNames.listWorkers, this.sharedMethods.analyticsEventParams)
   }
 
   // TODO: add filter by vessel, company
@@ -72,7 +74,7 @@ export class HomePage implements OnInit {
       case UserRole.worker:
         return this.router.navigate(['worker/profile'], { queryParams });
       case UserRole.taiwaneseAgent:
-          return this.router.navigate(['workers/details'], { queryParams });
+        return this.router.navigate(['workers/details'], { queryParams });
       default:
         // TODO: Mak it go to default route
         return this.router.navigate(['workers/details'], { queryParams });

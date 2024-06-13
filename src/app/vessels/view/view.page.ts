@@ -1,8 +1,11 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { ModalController } from '@ionic/angular';
 import { ContentService } from 'src/app/shared/services/content/content.service';
 import { ArchivedWoPage } from '../archived-wo/archived-wo.page';
+import { AnalyticsService } from 'src/app/shared/services/analytics/analytics.service';
+import { pageEventNames } from 'src/app/shared/services/analytics/event-names';
+import { SharedmethodsService } from 'src/app/shared/services/sharedmethods/sharedmethods.service';
 
 @Component({
   selector: 'app-view',
@@ -17,6 +20,7 @@ export class ViewPage implements OnInit {
   editBtnText = '';
   archivedBtnText = '';
   commonText;
+  stepOneQtns: any;
 
   workOrders = [
     {
@@ -30,11 +34,15 @@ export class ViewPage implements OnInit {
       updatedAt: '2023-01-30 13:09:03',
       updatedBy: '-NHx56Ppqi1o6C_qKxBJ'
     }
-];
+  ];
+  
   constructor(
     public activatedRoute: ActivatedRoute,
     public modalCtrl: ModalController,
     public contentService: ContentService,
+    public router: Router,
+    public analytics: AnalyticsService,
+    public sharedMethods: SharedmethodsService
   ) { }
 
   async ngOnInit() {
@@ -44,12 +52,18 @@ export class ViewPage implements OnInit {
     this.archivedBtnText = this.commonText?.archivedBtnText;
 
     this.getParams();
+
+    // For editing form
+    const stepOneData = this.contentService.getContentByPropertyName('vessels-createstepone');
+    this.stepOneQtns = stepOneData?.formQuestions;
+    this.analytics.trackEvent(pageEventNames.viewVessel, this.sharedMethods.analyticsEventParams);
   }
 
   getParams() {
     this.activatedRoute.params.subscribe((params) => {
-      this.vessel = params;
+      this.vessel = JSON.parse(params.vessel);
       const status = this.contentService.getFormOptionTranslation('vessels-createsteptwo', 'status', this.vessel.status);
+      // TODO: change status to WO status
       this.title = `${this.commonText?.status}: ${status}`;
     });
   }
@@ -66,5 +80,19 @@ export class ViewPage implements OnInit {
     modal.present();
     modal.onDidDismiss().then(() => {
     });
+  }
+
+  editVessel() {
+    const data = JSON.stringify({
+      ...this.vessel,
+      app_ref: this.vessel.appRef,
+      reg_no: this.vessel.regNo,
+      type: this.vessel.vesselType,
+      commissioning_date: this.vessel.commissioningDate,
+      image_url: this.vessel.imageFile,
+      online_ref: this.vessel.onlineRef,
+    });
+    const questions = JSON.stringify(this.stepOneQtns);
+    this.router.navigate([ 'vessels/create/steptwo', { data, questions } ], { replaceUrl: true, queryParams: { isEditing: true }});
   }
 }

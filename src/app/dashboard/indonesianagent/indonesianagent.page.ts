@@ -1,6 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { AnalyticsService } from 'src/app/shared/services/analytics/analytics.service';
+import { pageEventNames } from 'src/app/shared/services/analytics/event-names';
 import { PushNotificationsService } from 'src/app/shared/services/push-notifications/push-notifications.service';
+import { SharedmethodsService } from 'src/app/shared/services/sharedmethods/sharedmethods.service';
 
 @Component({
   selector: 'app-indonesianagent',
@@ -27,12 +30,15 @@ export class IndonesianagentPage implements OnInit {
   constructor(
     public pushNotifications: PushNotificationsService,
     public router: Router,
+    public sharedMethods: SharedmethodsService,
+    public analytics: AnalyticsService
   ) { }
 
   ngOnInit() {
     if (!this.pushNotifications.preventSecondNotificationPrompt) {
       this.pushNotifications.checkAndroidPNsPermissions();
     }
+    this.analytics.trackEvent(pageEventNames.viewIndonesianDashboard, this.sharedMethods.analyticsEventParams);
   }
 
   goToProfile() {

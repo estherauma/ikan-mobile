@@ -169,3 +169,12 @@ export enum NotificationActionId {
   survey = 'survey',
   test = 'test',
 }
+
+export interface analyticsEventsData{
+  appLanguage: string;
+  role: string;
+  isIos: boolean;
+  isAndroid: boolean;
+  accountId: string;
+  deviceId: string;
+}

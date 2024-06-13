@@ -258,12 +258,8 @@ const routes: Routes = [
     loadChildren: () => import('./buyers/reporting/create/create.module').then( m => m.CreatePageModule)
   },
   {
-    path: 'mydocuments/home',
+    path: 'mydocuments',
     loadChildren: () => import('./mydocuments/home/home.module').then( m => m.HomePageModule)
-  },
-  {
-    path: 'mydocuments/files',
-    loadChildren: () => import('./mydocuments/files/files.module').then( m => m.FilesPageModule)
   },
   {
     path: 'mydocuments/createpassport',

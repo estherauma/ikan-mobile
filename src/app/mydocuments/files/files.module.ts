@@ -17,6 +17,5 @@ import { SharedModule } from 'src/app/shared/shared.modules';
     FilesPageRoutingModule,
     SharedModule
   ],
-  declarations: [FilesPage]
 })
 export class FilesPageModule {}

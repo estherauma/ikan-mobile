@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import { AnalyticsService } from 'src/app/shared/services/analytics/analytics.service';
 import { ContentService } from 'src/app/shared/services/content/content.service';
 import { SharedmethodsService } from 'src/app/shared/services/sharedmethods/sharedmethods.service';
 
@@ -19,6 +20,7 @@ export class VariantPage implements OnInit {
     public contentService: ContentService,
     public activatedRoute: ActivatedRoute,
     public sharedmethods: SharedmethodsService,
+    public analytics: AnalyticsService
   ) {
     this.activatedRoute.params.subscribe(async params => {
       this.chapterId = params?.chapterId;
@@ -39,6 +41,11 @@ export class VariantPage implements OnInit {
       page: subChapter?.page,
       };
     });
+    if (this.pageContent.analyticsEventName) {
+      this.analytics.trackEvent(this.pageContent.analyticsEventName, this.sharedmethods.analyticsEventParams);
+    } else {
+      console.log('No analytics event name found for this page')
+    }
   }
 
   viewDetials(item) {

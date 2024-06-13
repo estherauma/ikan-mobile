@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { AnalyticsService } from 'src/app/shared/services/analytics/analytics.service';
+import { pageEventNames } from 'src/app/shared/services/analytics/event-names';
 import { ContentService } from 'src/app/shared/services/content/content.service';
 import { LocalNotificationsService } from 'src/app/shared/services/local-notifications/local-notifications.service';
 import { PushNotificationsService } from 'src/app/shared/services/push-notifications/push-notifications.service';
@@ -20,9 +22,17 @@ export class WorkerPage implements OnInit {
   showTriggerButton: boolean = false;
 
   sLists = [
-    {title: 'Contracts', icon: '/assets/icon/offers.svg',  url: '/contracts/home'},
+    {
+      title: 'My Documents',
+      icon: '/assets/icon/documents.svg',
+      url: '/mydocuments'
+    },
+    {
+      title: 'Contracts',
+      icon: '/assets/icon/offers.svg', 
+      url: '/contracts/home'
+    },
     // {title: 'Placement'},
-    // {title: 'My Document'},
     // {title: 'To Do'},
     // {title: 'Training'},
     // {title: 'Payments'},
@@ -34,6 +44,7 @@ export class WorkerPage implements OnInit {
     public sharedmethods: SharedmethodsService,
     public router: Router,
     public localNotifications: LocalNotificationsService,
+    public analytics: AnalyticsService
   ) {
     this.contentService.watchContent().subscribe(async(resp) => {
       if (resp) {
@@ -48,6 +59,7 @@ export class WorkerPage implements OnInit {
       this.pushNotifications.checkAndroidPNsPermissions();
     }
     this.setupPage();
+    this.analytics.trackEvent(pageEventNames.viewWorkerDashboard, this.sharedmethods.analyticsEventParams)
   }
 
   async setupPage() {

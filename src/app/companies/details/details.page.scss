@@ -26,7 +26,8 @@ ion-icon{
 }
 
 .title {
-    color: #191970; 
+    color: #191970;
+    font-weight: 600;
 }
 
 .text{
@@ -48,4 +49,16 @@ ion-icon{
     margin-top: -24px;
     background-color: var(--ikan_skyblue_100);
     padding: 32px;
+}
+
+.edit-btn-container {
+    display: flex;
+    justify-content: flex-end;
+    .edit-btn {
+        text-transform: none;
+        min-width: 100px;
+    }
+    ion-button::part(native) {
+        border-radius: 20px;
+    }
 }

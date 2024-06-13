@@ -3,6 +3,8 @@ import { FormControl, Validators, FormGroup } from '@angular/forms';
 import { PaymentsDataService } from 'src/app/payments/data/payments-data.service';
 import { ProfilesDataService } from 'src/app/profiles/data/profiles-data.service';
 import { BaseformPage } from 'src/app/shared/components/baseform/baseform.page';
+import { AnalyticsService } from 'src/app/shared/services/analytics/analytics.service';
+import { pageEventNames } from 'src/app/shared/services/analytics/event-names';
 import { ContentService } from 'src/app/shared/services/content/content.service';
 import { SharedmethodsService } from 'src/app/shared/services/sharedmethods/sharedmethods.service';
 import { ProfileData } from 'src/app/shared/services/sync/types';
@@ -43,12 +45,14 @@ export class PaymentsPage extends BaseformPage implements OnInit {
     public sharedMethods: SharedmethodsService,
     public paymentsDataService: PaymentsDataService,
     public profilesDataService: ProfilesDataService,
+    public analtyics: AnalyticsService,
   ) {
     super(contentService);
   }
 
   async ngOnInit() {
     await this.pageSetup();
+    this.analtyics.trackEvent(pageEventNames.workerProfilePayments, this.sharedMethods.analyticsEventParams);
   }
 
   async pageSetup() {

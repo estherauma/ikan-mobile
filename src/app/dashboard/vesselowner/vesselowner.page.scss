@@ -1,7 +1,11 @@
-.cards-row{
+ion-content {
+  --background: #F5F5F5;
+
+  .cards-row{
     display: flex;
-}
-.title{
+  }
+  .title{
     color: black;
     font-weight: bold;
+  }
 }

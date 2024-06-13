@@ -1,0 +1,17 @@
+CREATE TABLE IF NOT EXISTS passports (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  online_ref VARCHAR(255),
+  app_ref VARCHAR(255) NOT NULL UNIQUE,
+  user_id INTEGER NOT NULL,
+  document_id INTEGER,
+  first_name VARCHAR(255) NOT NULL,
+  surname VARCHAR(255),
+  passport_number VARCHAR(255) NOT NULL,
+  date_of_issue VARCHAR(255) NOT NULL,
+  date_of_expiry VARCHAR(255) NOT NULL,
+  image_url VARCHAR(255),
+  created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  created_by VARCHAR(255) NOT NULL,
+  updated_by VARCHAR(255) NOT NULL
+);

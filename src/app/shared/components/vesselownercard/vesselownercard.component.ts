@@ -1,6 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { ContentService } from '../../services/content/content.service';
+import { SharedmethodsService } from '../../services/sharedmethods/sharedmethods.service';
 
 @Component({
   selector: 'app-vesselownercard',
@@ -18,6 +19,7 @@ export class VesselownercardComponent implements OnInit {
   constructor(
     public router: Router,
     public contentService: ContentService,
+    public sharedMethods: SharedmethodsService,
   ) { }
 
   ngOnInit() {
@@ -26,6 +28,7 @@ export class VesselownercardComponent implements OnInit {
   }
 
   viewDetails(vessel) {
-    this.router.navigate(['vessels/view', vessel]);
+    console.log('vessel-from home', vessel)
+    this.router.navigate(['vessels/view', {vessel: JSON.stringify(vessel)}]);
   }
 }

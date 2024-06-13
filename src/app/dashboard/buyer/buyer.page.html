@@ -1,9 +1,11 @@
-<app-header [pageTitle]="">
+<app-header
+  [isBackButton]="false"
+>
 </app-header>
 
 <ion-content>
   <app-dashboardelcomesection
-    message="Welcome back. See notifications for latest updates."
+    greeting="Welcome back. See notifications for latest updates."
     name="Tony"
     (onProfileClick)="goToProfile()"
   >
@@ -45,7 +47,7 @@
       </ion-card-content>
     </ion-card>
   </div>
-  <div style="background-color: #F5F5F5;" class="ion-padding-top ion-padding-bottom">
+  <div class="ion-padding-top ion-padding-bottom">
     <ion-card *ngFor="let dashboardStat of dashboardStats">
       <ion-card-content>
         <ion-card-title>{{dashboardStat.title}}</ion-card-title>

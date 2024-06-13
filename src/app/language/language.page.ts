@@ -4,6 +4,8 @@ import { SharedmethodsService } from '../shared/services/sharedmethods/sharedmet
 import { StorageKeys, UserData } from '../shared/types/api-types';
 import { Router } from '@angular/router';
 import { AuthService } from '../shared/services/auth/auth.service';
+import { AnalyticsService } from '../shared/services/analytics/analytics.service';
+import { pageEventNames } from '../shared/services/analytics/event-names';
 
 @Component({
   selector: 'app-language',
@@ -19,7 +21,8 @@ export class LanguagePage implements OnInit {
     public contentServ: ContentService,
     public router: Router,
     public authService: AuthService,
-    public sharedMethods: SharedmethodsService
+    public sharedMethods: SharedmethodsService,
+    public analytics: AnalyticsService
   ) {
     this.getAvailableLanguages();
     this.sharedMethods.readDataFromStorage(StorageKeys.currentLanguage)
@@ -31,6 +34,7 @@ export class LanguagePage implements OnInit {
   }
 
   ngOnInit() {
+    this.analytics.trackEvent(pageEventNames.changeLanguage, this.sharedMethods.analyticsEventParams);
   }
 
   getAvailableLanguages() {

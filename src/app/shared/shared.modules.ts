@@ -8,8 +8,6 @@ import { SearchComponent } from './components/search/search.component';
 import { DashboardelcomesectionComponent } from './dashboardelcomesection/dashboardelcomesection.component';
 import { ChartComponent } from './components/chart/chart.component';
 import { FilterComponent } from './components/filter/filter.component';
-import { DocumentactionsComponent } from './components/documentactions/documentactions.component';
-import { DocumentselectedactionComponent } from './components/documentselectedaction/documentselectedaction.component';
 import { ConfirmmodalComponent } from './components/confirmmodal/confirmmodal.component';
 import { ConfirmedmodalComponent } from './components/confirmedmodal/confirmedmodal.component';
 import { RecordoptionmodalComponent } from './components/recordoptionmodal/recordoptionmodal.component';
@@ -45,6 +43,10 @@ import { SelectLanguageComponent } from './components/select-language/select-lan
 import { SafeurlPipe } from './pipes/safeurl/safeurl.pipe';
 import { PaymentsPage } from '../workers/profiles/worker/payments/payments.page';
 import { InfoPage as WorkerProfile } from '../workers/profiles/worker/info/info.page';
+import { FilesPage } from '../mydocuments/files/files.page';
+import { EssentialsComponent } from '../mydocuments/essentials/essentials.component';
+import { ViewImageComponent } from '../mydocuments/view-image/view-image.component';
+import { ViewPassportComponent } from '../mydocuments/view-passport/view-passport.component';
 
 
 @NgModule({
@@ -62,8 +64,6 @@ import { InfoPage as WorkerProfile } from '../workers/profiles/worker/info/info.
     DashboardelcomesectionComponent,
     ChartComponent,
     FilterComponent,
-    DocumentactionsComponent,
-    DocumentselectedactionComponent,
     ConfirmmodalComponent,
     ConfirmedmodalComponent,
     RecordoptionmodalComponent,
@@ -98,6 +98,10 @@ import { InfoPage as WorkerProfile } from '../workers/profiles/worker/info/info.
     SelectLanguageComponent,
     PaymentsPage,
     WorkerProfile,
+    FilesPage,
+    EssentialsComponent,
+    ViewImageComponent,
+    ViewPassportComponent,
   ],
   exports: [
     SafeurlPipe,
@@ -107,8 +111,6 @@ import { InfoPage as WorkerProfile } from '../workers/profiles/worker/info/info.
     DashboardelcomesectionComponent,
     ChartComponent,
     FilterComponent,
-    DocumentactionsComponent,
-    DocumentselectedactionComponent,
     ConfirmmodalComponent,
     ConfirmedmodalComponent,
     RecordoptionmodalComponent,
@@ -142,6 +144,10 @@ import { InfoPage as WorkerProfile } from '../workers/profiles/worker/info/info.
     CompanycontractcardComponent,
     PaymentsPage,
     WorkerProfile,
+    FilesPage,
+    EssentialsComponent,
+    ViewImageComponent,
+    ViewPassportComponent,
   ]
 })
 
