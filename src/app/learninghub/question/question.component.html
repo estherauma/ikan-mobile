@@ -41,7 +41,7 @@
               [(ngModel)]="selectedValue"
               (ionChange)="handleSelectChange($event)"
             >
-            <!-- use value -->
+            <!-- TODO: use value after getting solution for translations -->
               <ion-select-option *ngFor="let option of questionData?.options" value="{{ option?.option }}">{{ option?.option }}</ion-select-option>
             </ion-select>
           </div>
@@ -50,7 +50,7 @@
             <ion-radio-group
               [value]="questionData?.value"
             >
-            <!-- use value -->
+            <!-- TODO: use value after getting solution for translations -->
               <ion-item  *ngFor="let option of questionData?.options" lines="none">
                 <ion-radio [value]="option?.option" labelPlacement="end">{{ option?.option }}</ion-radio>
               </ion-item>
@@ -63,7 +63,7 @@
           >
             <ion-radio-group [(ngModel)]="selectedValue">
               <ion-row>
-                <!-- use value -->
+                <!-- TODO: use value after getting solution for translations -->
                 <ion-col *ngFor="let option of questionData?.options">
                   <div
                     class="option"
@@ -151,7 +151,7 @@
           [(ngModel)]="followUpSelectedValue"
           (ionChange)="handleFollowUpSelectChange($event)"
         >
-        <!-- use value -->
+        <!-- TODO: use value after getting solution for translations -->
           <ion-select-option *ngFor="let option of followupQtnData?.options" value="{{ option?.option }}">{{ option?.option }}</ion-select-option>
         </ion-select>
       </div>
@@ -171,7 +171,7 @@
           [(ngModel)]="followUpSelectedValue"
           (ionChange)="handleFollowUpSelectChange($event)"
         >
-        <!-- use value -->
+        <!-- TODO: use value after getting solution for translations -->
           <ion-select-option *ngFor="let option of followupQtnData?.options" value="{{ option?.option }}">{{ option?.option }}</ion-select-option>
         </ion-select>
       </div>
@@ -184,7 +184,7 @@
           [(ngModel)]="followUpSelectedValue"
           (ionChange)="handleFollowUpSelectChange($event)"
         >
-        <!-- use value -->
+        <!-- TODO: use value after getting solution for translations -->
           <ion-item *ngFor="let option of followupQtnData?.options" lines="none">
             <ion-radio [value]="option?.option" labelPlacement="end">{{ option?.option }}</ion-radio>
           </ion-item>

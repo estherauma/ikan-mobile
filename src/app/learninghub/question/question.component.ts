@@ -31,7 +31,7 @@ export class QuestionComponent  implements OnInit {
     });
     this.commonText = this.contentService?.commonText;
     if (this.questionData?.questionType === 'radio' || this.questionData?.questionType === 'select') {
-      // TODO: use value
+      // TODO: use value after getting solution for translations
       const values = this.questionData.options.map(obj => obj?.option?.toLowerCase());
       const containsYesNo = values.includes('yes') && values.includes('no');
       if (containsYesNo) {
@@ -71,7 +71,7 @@ export class QuestionComponent  implements OnInit {
 
   getFollowupQtn() {
     if (this.questionData?.options) {
-      // use value
+      // TODO: use value after getting solution for translations
       const selectedOption = this.questionData.options.find((opt) => opt.option === this.questionData.value);
       if (selectedOption?.followUpQuestion) {
         this.hasFollowupQtn = true;
