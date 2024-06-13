@@ -206,6 +206,7 @@ export class ContentService {
 
   getSurveyData() {
     const content = this.appContent?.[`${this.currentLanguage}`];
+    // TODO: fix error, null survey categories
     if (!content) return {};
     
     const allDocs: Array<any> = Object.values(content);
@@ -237,6 +238,7 @@ export class ContentService {
   }
 
   async getSurveyQuestions(surveyTopic: string = '') {
+    // TODO: fix error, null survey categories
     let category = surveyTopic;
     if (!category) {
       let allCategories;
@@ -263,7 +265,7 @@ export class ContentService {
       questionType: qn.questionType,
       options: qn.options?.length ? qn.options.map(x => ({
         label: x.option,
-        value: x.option,
+        value: x.option, //TODO: use english value
         ...x 
       })) : [],
     })) ?? [];
