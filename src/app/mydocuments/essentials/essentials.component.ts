@@ -7,9 +7,9 @@ import { SharedmethodsService } from 'src/app/shared/services/sharedmethods/shar
 import { ContentService } from 'src/app/shared/services/content/content.service';
 import { UploadService } from 'src/app/shared/services/upload/upload.service';
 import { DocumentType } from 'src/app/shared/types/types';
-import { FileOpener } from '@awesome-cordova-plugins/file-opener/ngx';
 import { ViewImageComponent } from '../view-image/view-image.component';
 import { ViewPassportComponent } from '../view-passport/view-passport.component';
+import { FileOpener } from '@capawesome-team/capacitor-file-opener';
 
 @Component({
   selector: 'app-essentials',
@@ -40,7 +40,6 @@ export class EssentialsComponent  implements OnInit {
     public contentService: ContentService,
     public uploadService: UploadService,
     public alertController: AlertController,
-    public fileOpener: FileOpener,
   ) { }
 
   async ngOnInit() {
@@ -171,17 +170,16 @@ export class EssentialsComponent  implements OnInit {
     }
   }
 
-  viewFile(doc: DocumentType) {
+  async viewFile(doc: DocumentType) {
     if (!this.isEditing) {
       if (this.sharedMethods.currentPlatform === 'web') {
         window.open(doc.fileUrl, '_blank');
       } else {
-        this.fileOpener.open(doc.fileUrl, 'application/pdf')
-        .then(() => console.log('File is opened'))
-        .catch(e => {
-          console.log('Error opening file', e);
-          this.sharedMethods.showToast(this.docsCommonText?.errorOpeningFile);
-        });
+        await FileOpener.openFile({ path: doc.fileUrl})
+          .catch((e) => {
+            console.log('Error opening file', e);
+            this.sharedMethods.showToast(this.docsCommonText?.errorOpeningFile);
+          });
       }
     }
   }

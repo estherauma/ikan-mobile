@@ -2,7 +2,6 @@ import { Injectable } from '@angular/core';
 import { Camera, CameraSource, CameraResultType } from '@capacitor/camera';
 import { Capacitor } from '@capacitor/core';
 import { FilePicker } from '@capawesome/capacitor-file-picker';
-import { Chooser } from '@awesome-cordova-plugins/chooser/ngx';
 import { Filesystem, Directory } from '@capacitor/filesystem';
 import { DocumentType, UploadType } from '../../types/types';
 import { env } from 'src/environments/environment';
@@ -14,7 +13,6 @@ import { SharedmethodsService } from '../sharedmethods/sharedmethods.service';
 })
 export class UploadService {
   constructor(
-    private chooser: Chooser,
     private sharedMethods: SharedmethodsService,
   ) { }
 
@@ -98,19 +96,6 @@ export class UploadService {
       }
     } catch (error) {
       console.error(`Error in upload.service.ts at saveFile(). Failed to save file. ${fileName}`, error);
-      return null;
-    }
-  }
-
-  async choosePdfFile() {
-    try {
-      const result = await this.chooser.getFile({mimeTypes: 'application/pdf'});
-      const fileName = this.sharedMethods.generatePdfFileName(result.name);
-
-      return await this.saveFile(result.path, fileName, 'pdf');
-    } catch (error) {
-      console.log('upload file error', error);
-      console.error('Error in upload.service.ts at choosePdfFile(). Failed to select pdf file.', error);
       return null;
     }
   }

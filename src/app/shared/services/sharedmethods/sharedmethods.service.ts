@@ -322,7 +322,6 @@ export class SharedmethodsService {
           text: docsCommonText?.uploadPdfFile,
           cssClass: 'add-doc-btn',
           handler: async() => {
-            // const fileData = await uploadService.choosePdfFile();
             const fileData = await uploadService.chooseFile();
             return { fileData };
           }
