@@ -1,0 +1,102 @@
+ion-content {
+  --background: var(--ikan_gray_100);
+  --padding-top: 20px;
+  --padding-bottom: 20px;
+  --padding-start: 20px;
+  --padding-end: 20px;
+
+  .qtn-label {
+    text-align: center;
+    color: var(--ion-color-primary);
+    font-family: 'GatwickBold';
+    font-weight: 700;
+  }
+
+  .value-row {
+    ion-col {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+
+      .text-container,
+      .select-container {
+        width: 100%;
+        .input {
+          --background: white;
+          --border-radius: 10px;
+          color: var(--ikan_darkblue_100);
+          --color: var(--ikan_darkblue_100);
+          width: 100%;
+          --padding-start: 10px;
+          --padding-end: 10px;
+          min-height: 55px;
+        }
+      }
+      ion-select {
+        .select-wrapper-inner {
+          width: 100%;
+        }
+      }
+      ion-select::part(icon) {
+        color: var(--ikan_darkblue_100);
+        font-size: 1rem;
+      }
+      ion-item {
+        --background: inherit;
+      }
+      .yes-no-container {
+        width: 100%;
+        ion-radio {
+          display: none;
+        }
+        ion-col {
+          .option {
+            background: var(--ikan_light_gray);
+            border-radius: 10px;
+            width: 90%;
+            ion-icon {
+              color: var(--ikan_deep_gray);
+              font-size: 2rem;
+              --ionicon-stroke-width: 40px;
+            }
+          }
+          .yes {
+            background: var(--ikan_green_100);
+            ion-icon {
+              color: white;
+            }
+          }
+          .no {
+            background: var(--ikan_red_100);
+            ion-icon {
+              color: white;
+            }
+          }
+          .other {
+            background: var(--ikan_yellow_100);
+            ion-icon {
+              color: white;
+            }
+          }
+        }
+      }
+    }
+  }
+
+  .btn-row {
+    ion-col {
+      display: flex;
+      justify-content: flex-end;
+      align-items: center;
+      ion-button { 
+        --background: var(--ikan_blue_100);
+        --border-radius: 10px;
+        --color: white;
+        --padding-start: 20px;
+        --padding-end: 20px;
+        margin-top: 20px;
+        margin-bottom: 20px;
+      }
+    }
+  }
+}

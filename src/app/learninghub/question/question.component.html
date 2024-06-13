@@ -1,3 +1,89 @@
-<p>
-  question works!
-</p>
+<app-header></app-header>
+<ion-content>
+  <ion-grid>
+    <ion-row>
+      <ion-col size="12">
+        <h3 class="qtn-label">
+        {{ questionData?.question }}
+        </h3>
+      </ion-col> 
+    </ion-row>
+    
+    <!-- TODO: add qtn audio. Not available at the moment -->
+
+    <ion-row class="value-row">
+      <ion-col size="12">
+        <div
+          *ngIf="questionData?.questionType === 'text'"
+          class="text-container"
+        >
+          <!-- translate -->
+          <ion-input
+            class="input"
+            placeholder="Type your answer here"
+            [value]="questionData?.value"
+          ></ion-input>
+        </div>
+        
+        <div
+          *ngIf="!isYesNoValue && questionData?.questionType === 'select'"
+          class="select-container"
+        >
+          <ion-select
+            class="input"
+            label-placement="stacked"
+            [placeholder]="commonText?.pleaseSelect"
+            [value]="questionData?.value"
+            [okText]="commonText?.ok"
+            [cancelText]="commonText?.cancel"
+          >
+          <!-- use value -->
+            <ion-select-option *ngFor="let option of questionData?.options" value="{{ option?.option }}">{{ option?.option }}</ion-select-option>
+          </ion-select>
+        </div>
+        
+        <div *ngIf="!isYesNoValue && questionData?.questionType === 'radio'">
+          <ion-radio-group
+            [value]="questionData?.value"
+          >
+          <!-- use value -->
+            <ion-item  *ngFor="let option of questionData?.options" lines="none">
+              <ion-radio [value]="option?.option" labelPlacement="end">{{ option?.option }}</ion-radio>
+            </ion-item>
+          </ion-radio-group>
+        </div>
+        
+        <div
+          *ngIf="isYesNoValue && (questionData?.questionType === 'radio' || questionData?.questionType === 'select')"
+          class="yes-no-container"
+        >
+          <ion-radio-group [(ngModel)]="selectedValue">
+            <ion-row>
+              <!-- use value -->
+              <ion-col *ngFor="let option of questionData?.options">
+                <div
+                  class="option"
+                  (click)="selectOption(option?.option)"
+                  [ngClass]="{
+                    'yes': (selectedValue === option?.option && selectedValue.toLowerCase() === 'yes'),
+                    'no': (selectedValue === option?.option && selectedValue.toLowerCase() === 'no'),
+                    'other': (selectedValue && selectedValue === option?.option && (selectedValue.toLowerCase() !== 'yes' && selectedValue.toLowerCase() !== 'no'))
+                  }"
+                >
+                  <ion-radio slot="start" value="{{ option?.option }}"></ion-radio>
+                  <ion-icon [name]="option?.icon"></ion-icon>
+                </div>
+              </ion-col>
+            </ion-row>
+          </ion-radio-group>
+        </div>
+      </ion-col>
+    </ion-row>
+
+    <ion-row class="btn-row">
+      <ion-col size="12">
+        <ion-button color="primary" expand="block" (click)="submitAnswer()">{{ commonText?.submit }}</ion-button>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-content>
