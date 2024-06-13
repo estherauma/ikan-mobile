@@ -84,8 +84,8 @@ export class SubchapterComponent  implements OnInit {
   getQuestionValues() {}
 
   getQuestionStatus() {
-    this.pageContent.forEach((item) => {
-      if (item.type === 'questions') {
+    this.pageContent?.forEach((item) => {
+      if (item?.type === 'questions') {
         if (!item?.value) {
           item.status = HubQuestionStatus.pending;
           item.icon = 'help';

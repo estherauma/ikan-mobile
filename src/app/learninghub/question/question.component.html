@@ -22,8 +22,9 @@
             <ion-input
               class="input"
               placeholder="Type your answer here"
-              [value]="questionData?.value"
               autofocus
+              [(ngModel)]="inputValue"
+              (ionChange)="handleInputChange($event)"
             ></ion-input>
           </div>
           
@@ -35,9 +36,10 @@
               class="input"
               label-placement="stacked"
               [placeholder]="commonText?.pleaseSelect"
-              [value]="questionData?.value"
               [okText]="commonText?.ok"
               [cancelText]="commonText?.cancel"
+              [(ngModel)]="selectedValue"
+              (ionChange)="handleSelectChange($event)"
             >
             <!-- use value -->
               <ion-select-option *ngFor="let option of questionData?.options" value="{{ option?.option }}">{{ option?.option }}</ion-select-option>
@@ -129,8 +131,9 @@
         <ion-input
           class="input"
           placeholder="Type your answer here"
-          [value]="followupQtnData?.value"
           autofocus
+          [(ngModel)]="followUpInputValue"
+          (ionChange)="handleFollowUpInputChange($event)"
         ></ion-input>
       </div>
       
@@ -143,9 +146,10 @@
           class="input"
           label-placement="stacked"
           [placeholder]="commonText?.pleaseSelect"
-          [value]="followupQtnData?.value"
           [okText]="commonText?.ok"
           [cancelText]="commonText?.cancel"
+          [(ngModel)]="followUpSelectedValue"
+          (ionChange)="handleFollowUpSelectChange($event)"
         >
         <!-- use value -->
           <ion-select-option *ngFor="let option of followupQtnData?.options" value="{{ option?.option }}">{{ option?.option }}</ion-select-option>
@@ -161,10 +165,11 @@
           class="input"
           label-placement="stacked"
           [placeholder]="commonText?.pleaseSelect"
-          [value]="followupQtnData?.value"
           [okText]="commonText?.ok"
           [cancelText]="commonText?.cancel"
           multiple
+          [(ngModel)]="followUpSelectedValue"
+          (ionChange)="handleFollowUpSelectChange($event)"
         >
         <!-- use value -->
           <ion-select-option *ngFor="let option of followupQtnData?.options" value="{{ option?.option }}">{{ option?.option }}</ion-select-option>
@@ -176,7 +181,8 @@
       >
         <p>{{ followupQtnData?.question }}</p>
         <ion-radio-group
-          [value]="followupQtnData?.value"
+          [(ngModel)]="followUpSelectedValue"
+          (ionChange)="handleFollowUpSelectChange($event)"
         >
         <!-- use value -->
           <ion-item *ngFor="let option of followupQtnData?.options" lines="none">

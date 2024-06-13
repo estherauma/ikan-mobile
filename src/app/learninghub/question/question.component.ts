@@ -12,8 +12,11 @@ export class QuestionComponent  implements OnInit {
   commonText: any;
   isYesNoValue: boolean = false;
   selectedValue = '';
+  inputValue = '';
   hasFollowupQtn: boolean = false;
   followupQtnData: any;
+  followUpSelectedValue = '';
+  followUpInputValue = '';
 
   constructor(
     public activatedRoute: ActivatedRoute,
@@ -54,6 +57,18 @@ export class QuestionComponent  implements OnInit {
     this.getFollowupQtn();
   }
 
+  handleInputChange(e) {
+    this.inputValue = e.detail.value;
+    this.questionData.value = this.inputValue;
+    this.getFollowupQtn();
+  }
+  
+  handleSelectChange(e) {
+    this.selectedValue = e.detail.value;
+    this.questionData.value = this.selectedValue;
+    this.getFollowupQtn();
+  }
+
   getFollowupQtn() {
     if (this.questionData?.options) {
       // use value
@@ -69,6 +84,16 @@ export class QuestionComponent  implements OnInit {
         this.followupQtnData = null;
       }
     }
+  }
+
+  handleFollowUpInputChange(e) {
+    this.followUpInputValue = e.detail.value;
+    this.followupQtnData.value = this.followUpInputValue;
+  }
+  
+  handleFollowUpSelectChange(e) {
+    this.followUpSelectedValue = e.detail.value;
+    this.followupQtnData.value = this.followUpSelectedValue;
   }
 
   submitAnswer() {}
