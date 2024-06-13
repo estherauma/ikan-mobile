@@ -163,4 +163,7 @@ export class SubchapterComponent  implements OnInit {
     this.router.navigate([ 'learninghub/case-studies', data?.uid, params ]);
   }
 
+  viewQuestion(data) {
+    this.router.navigate([this.router.url, 'question', data?.key , { questionData: JSON.stringify(data) }]);
+  }
 }

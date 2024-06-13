@@ -24,7 +24,11 @@
           styles="textarea"
         ></shared-text-area>
         
-        <div class="qtn-wrapper" *ngIf="section?.type === 'questions'">
+        <div
+          *ngIf="section?.type === 'questions'"
+          class="qtn-wrapper"
+          (click)="viewQuestion(section)"
+        >
           <ion-row>
             <ion-col
               size="3"
