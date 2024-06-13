@@ -7,9 +7,9 @@ import { SharedmethodsService } from 'src/app/shared/services/sharedmethods/shar
 import { ContentService } from 'src/app/shared/services/content/content.service';
 import { UploadService } from 'src/app/shared/services/upload/upload.service';
 import { DocumentType } from 'src/app/shared/types/types';
-import { FileOpener } from '@awesome-cordova-plugins/file-opener/ngx';
 import { ViewImageComponent } from '../view-image/view-image.component';
 import { ViewPassportComponent } from '../view-passport/view-passport.component';
+import { FileOpener } from '@capawesome-team/capacitor-file-opener';
 
 @Component({
   selector: 'app-essentials',
@@ -40,7 +40,6 @@ export class EssentialsComponent  implements OnInit {
     public contentService: ContentService,
     public uploadService: UploadService,
     public alertController: AlertController,
-    public fileOpener: FileOpener,
   ) { }
 
   async ngOnInit() {
@@ -173,17 +172,16 @@ export class EssentialsComponent  implements OnInit {
     }
   }
 
-  viewFile(doc: DocumentType) {
+  async viewFile(doc: DocumentType) {
     if (!this.isEditing) {
       if (this.sharedMethods.currentPlatform === 'web') {
         window.open(doc.fileUrl, '_blank');
       } else {
-        this.fileOpener.open(doc.fileUrl, 'application/pdf')
-        .then(() => console.log('File is opened'))
-        .catch(e => {
-          console.log('Error opening file', e);
-          this.sharedMethods.showToast(this.docsCommonText?.errorOpeningFile);
-        });
+        await FileOpener.openFile({ path: doc.fileUrl})
+          .catch((e) => {
+            console.log('Error opening file', e);
+            this.sharedMethods.showToast(this.docsCommonText?.errorOpeningFile);
+          });
       }
     }
   }
@@ -198,6 +196,9 @@ export class EssentialsComponent  implements OnInit {
       }
     });
     await modal.present();
+    await modal.onDidDismiss().then((data) => {
+      this.getDocDetails();
+    });
   }
 
   getPassportViewData() {
@@ -208,5 +209,42 @@ export class EssentialsComponent  implements OnInit {
       viewData[entry.key] = entry?.label;
     });
     return viewData;
+  }
+
+  async handleDeleteDocument(doc: DocumentType, headerText:string = this.docsCommonText?.deleteDocument) {
+    const deleteAlert = await this.alertController.create({
+      cssClass: 'del-doc-alert',
+      header: headerText,
+      message: this.docsCommonText?.deletePrompt,
+      backdropDismiss: false,
+      buttons: [
+        {
+          text: this.commonText?.cancel,
+          role: 'cancel',
+        },
+        {
+          text: this.commonText?.delete,
+          handler: async () => {
+            await this.deleteDocument(doc).then(() => {
+              this.getDocDetails();
+              this.sharedMethods.showToast(this.docsCommonText?.docDeletedSuccessfully);
+            });
+          }
+        },
+      ]
+    });
+    await deleteAlert.present();
+  }
+
+  async deleteDocument(doc: DocumentType) {
+    if (doc?.onlineRef) {
+      // if doc is synced, the is_deleted field is set to true
+      // Doc will be deleted from the device after online reference is deleted
+      await this.documentsDataService.updateDocumentField(doc.id, 'is_deleted', 1);
+    } else {
+      await this.documentsDataService.deleteDocument(doc.id);
+    }
+    const docs = [doc];
+    await this.uploadService.deleteDocuments(docs);
   }
 }

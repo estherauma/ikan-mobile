@@ -4,10 +4,12 @@ import { AlertController, ModalController, Platform } from '@ionic/angular';
 import { ContentService } from 'src/app/shared/services/content/content.service';
 import { SharedmethodsService } from 'src/app/shared/services/sharedmethods/sharedmethods.service';
 import { DocumentType } from 'src/app/shared/types/types';
-import { FileOpener } from '@awesome-cordova-plugins/file-opener/ngx';
 import { ViewImageComponent } from '../view-image/view-image.component';
 import { UploadService } from 'src/app/shared/services/upload/upload.service';
 import { DocumentsDataService } from '../data/documents-data.service';
+import { Filesystem, Directory } from '@capacitor/filesystem';
+import { Share } from '@capacitor/share';
+import { FileOpener } from '@capawesome-team/capacitor-file-opener';
 
 @Component({
   selector: 'app-files',
@@ -23,7 +25,7 @@ export class FilesPage implements OnInit {
   documentSelectedModal;
   confirmModal;
   documents: DocumentType[] = [];
-  isEditing = false;
+  isSelecting: boolean = false;
   selectedDocuments: DocumentType[] = [];
   commonText: any;
   docsCommonText: any;
@@ -35,7 +37,6 @@ export class FilesPage implements OnInit {
     public sharedMethods: SharedmethodsService,
     public contentService: ContentService,
     public alertController: AlertController,
-    public fileOpener: FileOpener,
     public documentsDataService: DocumentsDataService,
     public uploadService: UploadService,
   ) { }
@@ -54,7 +55,6 @@ export class FilesPage implements OnInit {
 
   searchResult(data) {}
 
-  // TODO: new doc not reflecting. Need to refactor
   async addDocument() {
     const newDoc = await this.sharedMethods.addDocument(this.commonText, this.alertController, this.uploadService, this.documentsDataService, this.docsCommonText, false);
     if (newDoc) {
@@ -63,7 +63,7 @@ export class FilesPage implements OnInit {
   }
 
   async viewImage(doc: DocumentType) {
-    if (!this.isEditing) {
+    if (!this.isSelecting) {
       const modal = await this.modalCtrl.create({
         cssClass: 'notification-modal view-image',
         component: ViewImageComponent,
@@ -76,23 +76,22 @@ export class FilesPage implements OnInit {
     }
   }
 
-  viewFile(doc: DocumentType) {
-    if (!this.isEditing) {
+  async viewFile(doc: DocumentType) {
+    if (!this.isSelecting) {
       if (this.sharedMethods.currentPlatform === 'web') {
         window.open(doc.fileUrl, '_blank');
       } else {
-        this.fileOpener.open(doc.fileUrl, 'application/pdf')
-        .then(() => console.log('File is opened'))
-        .catch(e => {
-          console.log('Error opening file', e);
-          this.sharedMethods.showToast(this.docsCommonText?.errorOpeningFile);
-        });
+        await FileOpener.openFile({ path: doc.fileUrl, mimeType: 'application/pdf',})
+          .catch((e) => {
+            console.log('Error opening file', e);
+            this.sharedMethods.showToast(this.docsCommonText?.errorOpeningFile);
+          });
       }
     }
   }
 
-  editDocuments() {
-    this.isEditing = !this.isEditing;
+  selectDocs() {
+    this.isSelecting = !this.isSelecting;
     this.selectedDocuments = [];
   }
 
@@ -111,26 +110,71 @@ export class FilesPage implements OnInit {
   }
 
   async openDelAlert() {
-    // TODO: to refactor
-    // const alertProps = {
-    //   cssClass: 'del-doc-alert',
-    //   header: this.commonText?.delete + ` ${this.selectedDocuments.length} ` + this.commonText?.imageOrDoc || 'Delete docs',
-    //   backdropDismiss: false,
-    //   buttons: [ {
-    //     text: this.commonText?.cancel?.toUpperCase(),
-    //     role: 'cancel',
-    //   },
-    //   {
-    //     text: this.commonText?.delete?.toUpperCase(),
-    //     handler: async() => {}
-    //   }, ]
-    // };
+    const alertProps = {
+      cssClass: 'del-doc-alert',
+      header: this.commonText?.delete + ` ${this.selectedDocuments.length} ` +  this.docsCommonText?.docPlural,
+      message: this.docsCommonText?.deletePromptPlural,
+      backdropDismiss: false,
+      buttons: [ {
+        text: this.commonText?.cancel,
+        role: 'cancel',
+      },
+      {
+        text: this.commonText?.delete,
+        handler: async() => {
+          await this.deleteDocs(this.selectedDocuments).then(async() => {
+            this.getDocuments();
+            this.isSelecting = false;
+            this.sharedMethods.showToast(
+              `${this.selectedDocuments.length} ${this.docsCommonText?.docPlural} ${this.docsCommonText?.deleted}`,
+              'short'
+            );
+            this.selectedDocuments = [];
+          });
+        }
+      }, ]
+    };
 
-    // const alert = await this.alertController.create(alertProps);
-    // await alert.present();
+    const alert = await this.alertController.create(alertProps);
+    await alert.present();
+  }
+  
+  async deleteDocs(docs: DocumentType[]) {
+    for (const doc of docs) {
+      if (doc?.onlineRef) {
+        // if doc is synced, the is_deleted field is set to true
+        // Doc will be deleted from the device after online reference is deleted
+        await this.documentsDataService.updateDocumentField(doc.id, 'is_deleted', 1);
+      } else {
+        await this.documentsDataService.deleteDocument(doc.id);
+      }
+    }
+    await this.uploadService.deleteDocuments(docs);
   }
 
-  async shareDocs() {}
+  async shareDocs() {
+    try {
+      const promises = this.selectedDocuments.map(async(doc) => {
+        if (doc.docType === 'image') {
+          const fileName = doc.fileUrl.split('files/')[1];
+          const path = await Filesystem.getUri({
+            directory: Directory.Data,
+            path: fileName
+          });
+          return path.uri;
+        } else {
+          return doc.fileUrl;
+        }
+      });
 
-  async deleteDocs(docs: Document[]) {}
+      await Promise.all(promises).then(async docsToShare => {
+        await Share.share({ files: docsToShare });
+      });
+
+      this.selectedDocuments = [];
+      this.isSelecting = false;
+    } catch (error) {
+      console.error(error);
+    }
+  }
 }
