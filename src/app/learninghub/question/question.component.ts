@@ -10,8 +10,10 @@ import { ContentService } from 'src/app/shared/services/content/content.service'
 export class QuestionComponent  implements OnInit {
   questionData: any;
   commonText: any;
-  isYesNoValue = false;
+  isYesNoValue: boolean = false;
   selectedValue = '';
+  hasFollowupQtn: boolean = false;
+  followupQtnData: any;
 
   constructor(
     public activatedRoute: ActivatedRoute,
@@ -42,10 +44,31 @@ export class QuestionComponent  implements OnInit {
         });
       }
     }
+
+    this.getFollowupQtn();
   }
 
   selectOption(value: string) {
     this.selectedValue = value;
+    this.questionData.value = value;
+    this.getFollowupQtn();
+  }
+
+  getFollowupQtn() {
+    if (this.questionData?.options) {
+      // use value
+      const selectedOption = this.questionData.options.find((opt) => opt.option === this.questionData.value);
+      if (selectedOption?.followUpQuestion) {
+        this.hasFollowupQtn = true;
+        this.followupQtnData = selectedOption.followUpQuestion;
+        if(this.followupQtnData?.key === 'See the Get Help section to find a workers union you can consult with') {
+          this.followupQtnData.questionType = 'helperText';
+        }
+      } else {
+        this.hasFollowupQtn = false;
+        this.followupQtnData = null;
+      }
+    }
   }
 
   submitAnswer() {}
