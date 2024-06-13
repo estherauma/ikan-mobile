@@ -18,10 +18,9 @@
             *ngIf="questionData?.questionType === 'text'"
             class="text-container"
           >
-            <!-- translate -->
             <ion-input
               class="input"
-              placeholder="Type your answer here"
+              [placeholder]="commonText?.typeYourAnswerHere"
               autofocus
               [(ngModel)]="inputValue"
               (ionChange)="handleInputChange($event)"
@@ -130,7 +129,7 @@
         <p>{{ followupQtnData?.question }}</p>
         <ion-input
           class="input"
-          placeholder="Type your answer here"
+          [placeholder]="commonText?.typeYourAnswerHere"
           autofocus
           [(ngModel)]="followUpInputValue"
           (ionChange)="handleFollowUpInputChange($event)"
