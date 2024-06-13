@@ -8,7 +8,7 @@ import { ContentService } from '../../services/content/content.service';
 import { FieldType, Icons } from '../../types/api-types';
 import { SharedmethodsService } from '../../services/sharedmethods/sharedmethods.service';
 import { AudioService } from '../../services/audio/audio.service';
-import { FileOpener } from '@awesome-cordova-plugins/file-opener/ngx';
+import { FileOpener } from '@capawesome-team/capacitor-file-opener';
 
 @Component({
   selector: 'app-form',
@@ -43,9 +43,6 @@ export class FormComponent implements OnInit {
   @Output() formValue = new EventEmitter<any>();
   @Output() dataFromCustomButton = new EventEmitter<any>();
 
-  selectedImages = {};
-  // selectedDocuments = {};
-
   formKeysToRemove = [];
   typesToExclude = ['h1','h2','h3','h4','h5','h6','p'];
   typeHereText = 'Type here';
@@ -60,7 +57,6 @@ export class FormComponent implements OnInit {
     public sharedMethods: SharedmethodsService,
     public audioService: AudioService,
     public alertController: AlertController,
-    public fileOpener: FileOpener,
   ) { }
 
   ngOnInit() {
@@ -134,10 +130,6 @@ export class FormComponent implements OnInit {
           return data?.data?.imageData;
         }
       });
-
-      // TODO: Add logic for take photo and update form values list
-      // const picture = await this.uploadService.takePicture();
-      // this.selectedImages = {...this.selectedImages, [key]:picture };
       
     } catch (error) {
       console.error(error);
@@ -158,10 +150,6 @@ export class FormComponent implements OnInit {
       }
       return el;
     });
-  }
-
-  removePicture(key) {
-    delete this.selectedImages[key];
   }
 
   async onRecord(question) {
@@ -210,17 +198,16 @@ export class FormComponent implements OnInit {
     await alert.present();
   }
 
-  viewPdf(doc) {
+  async viewPdf(doc) {
     doc.fileUrl = doc.uriPath || doc.fileUrl;
     if (this.sharedMethods.currentPlatform === 'web') {
       window.open(doc.fileUrl, '_blank');
     } else {
-      this.fileOpener.open(doc.fileUrl, 'application/pdf')
-      .then(() => console.log('File is opened'))
-      .catch(e => {
-        console.log('Error opening file', e);
-        this.sharedMethods.showToast(this.docsCommonText?.errorOpeningFile);
-      });
+      await FileOpener.openFile({ path: doc.fileUrl})
+        .catch((e) => {
+          console.log('Error opening file', e);
+          this.sharedMethods.showToast(this.docsCommonText?.errorOpeningFile);
+        });
     }
   }
 }

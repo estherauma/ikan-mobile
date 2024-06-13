@@ -10,7 +10,7 @@
     <ion-col size="4" *ngIf="documents.length" class="ion-justify-content-end select-col">
       <p
         class="select"
-        (click)="editDocuments()"
+        (click)="selectDocs()"
       >
         {{ commonText?.select }}
       </p>
@@ -46,13 +46,13 @@
         <p *ngIf="doc.updatedAt || doc.createdAt">{{ doc.updatedAt || doc.createdAt | date:'dd/MM/yyy' }}</p>
         <p *ngIf="doc.fileSize">{{ doc.fileSize }}</p>
         <ion-icon
-          *ngIf="isEditing"
+          *ngIf="isSelecting"
           class="ellipse"
           name="ellipse"
           (click)="selectDocument(doc)"
         ></ion-icon>
         <ion-icon
-          *ngIf="isEditing && selectedDocuments.includes(doc)"
+          *ngIf="isSelecting && selectedDocuments.includes(doc)"
           class="radio"
           name="radio-button-on"
           (click)="unSelectDocument(doc)"
@@ -61,7 +61,7 @@
     </ion-row>
   </div>
 
-  <div class="del-share-btns" *ngIf="isEditing && !!selectedDocuments.length">
+  <div class="del-share-btns" *ngIf="isSelecting && !!selectedDocuments.length">
     <div>
       <ion-icon name="share-outline" (click)="shareDocs()"></ion-icon>
     </div>

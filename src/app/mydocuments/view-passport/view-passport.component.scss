@@ -54,4 +54,28 @@
       color: red;
     }
   }
+
+  .btn-row {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 20px;
+    ion-col {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+    ion-button {
+      --border-radius: 20px;
+      text-transform: none;
+      min-width: 100px;
+    }
+    .edit-btn {
+      --background: #191970;
+      --color: white;
+    }
+    .del-btn {
+      --background: #eb4747;
+      --color: white;
+    }
+  }
 }

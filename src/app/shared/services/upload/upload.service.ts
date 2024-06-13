@@ -2,19 +2,15 @@ import { Injectable } from '@angular/core';
 import { Camera, CameraSource, CameraResultType } from '@capacitor/camera';
 import { Capacitor } from '@capacitor/core';
 import { FilePicker } from '@capawesome/capacitor-file-picker';
-import { Chooser } from '@awesome-cordova-plugins/chooser/ngx';
 import { Filesystem, Directory } from '@capacitor/filesystem';
-import { UploadType } from '../../types/types';
+import { DocumentType, UploadType } from '../../types/types';
 
 
 @Injectable({
   providedIn: 'root'
 })
 export class UploadService {
-  constructor(
-    private chooser: Chooser,
-  ) { }
-
+  constructor() { }
 
   async chooseFile(types: UploadType[] = ['application/pdf']) {
     try {
@@ -99,16 +95,17 @@ export class UploadService {
     }
   }
 
-  async choosePdfFile() {
+  async deleteDocuments(docs: DocumentType[]) {
     try {
-      const result = await this.chooser.getFile({mimeTypes: 'application/pdf'});
-      const fileName = result.name;
+      const directory = Directory.Data;
+      const promises = docs.map(async doc => {
+        const fileName = doc.fileUrl.split('files/')[1];
+        await Filesystem.deleteFile({ path: fileName, directory });
+      });
 
-      return await this.saveFile(result.path, fileName, 'pdf');
+      await Promise.all(promises);
     } catch (error) {
-      console.log('upload file error', error);
-      console.error('Error in upload.service.ts at choosePdfFile(). Failed to select pdf file.', error);
-      return null;
+      console.error(error);
     }
   }
 }
