@@ -237,6 +237,7 @@ ion-modal.workers-create-modal {
   }
   .alert-button-group {
     justify-content: center;
+    border: none;
   }
   .alert-button {
     flex: none;
@@ -246,12 +247,12 @@ ion-modal.workers-create-modal {
     display: flex;
     justify-content: center;
     margin-top: 10px;
+    height: 50px;
+    border: none;
     .alert-button-inner {
       justify-content: center;
       border-radius: 20px;
       background-color: #3565ff;
-      width: 200px;
-      height: 50px;
     }
   }
   .alert-button:last-child {
@@ -265,6 +266,12 @@ ion-modal.workers-create-modal {
       height: unset;
     }
   }
+}
+
+.parties-edit-alert .alert-wrapper .alert-button,
+.add-file-alert .alert-wrapper .alert-button.sc-ion-alert-ios {
+  margin-top: 20px !important;
+  min-height: 60px !important;
 }
 
 .add-file-alert .alert-wrapper {

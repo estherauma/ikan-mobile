@@ -214,7 +214,7 @@ export class ContentService {
 
     let result = {};
     contentDocs?.forEach((item) => {
-      const qtns = item?.pageContent?.filter(x => x.type === 'questions');
+      const qtns = item?.pageContent?.filter(x => x?.type === 'questions');
       if (qtns?.length) {
         result[item?.pageName] = qtns;
       }
