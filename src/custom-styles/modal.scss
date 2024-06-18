@@ -121,8 +121,8 @@ ion-modal.my-own-class {
 .del-img-prompt-alert .alert-wrapper {
   .alert-button:last-child {
     color: white !important;
-    background-color: red !important;
-    border-color: red;
+    background-color: var(--ikan_red_100) !important;
+    border-color: var(--ikan_red_100);
   }
 }
 

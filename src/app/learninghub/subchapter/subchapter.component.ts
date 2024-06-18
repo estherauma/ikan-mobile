@@ -3,6 +3,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { AnalyticsService } from 'src/app/shared/services/analytics/analytics.service';
 import { ContentService } from 'src/app/shared/services/content/content.service';
 import { SharedmethodsService } from 'src/app/shared/services/sharedmethods/sharedmethods.service';
+import { HubQuestionStatus } from 'src/app/shared/types/api-types';
 
 @Component({
   selector: 'app-subchapter',
@@ -44,6 +45,13 @@ export class SubchapterComponent  implements OnInit {
   }
 
   ngOnInit() {
+    this.pageSetup();
+    this.setUpAnalytics();
+    this.getQuestionValues(); // TODO
+    this.getQuestionStatus();
+  }
+
+  pageSetup() {
     if (this.isCaseStudy) {
       this.allPageContent = this.contentService.getContentByPropertyName(this.caseStudyUid);
       this.pageContent = this.allPageContent?.pageContent;
@@ -55,12 +63,56 @@ export class SubchapterComponent  implements OnInit {
       const chapterId = this.subChapterId?.split('.')[0];
       this.imgUrl = this.sharedmethods?.getChapterBackground(chapterId, 'subchapter');
       this.upNextContent = this.getNextChapterContent();
-      if (this.pageContent.analyticsEventName) {
-        this.analytics.trackEvent(this.pageContent.analyticsEventName, this.sharedmethods.analyticsEventParams);
+    }
+  }
+  
+  setUpAnalytics() {
+    if (this.pageContent?.analyticsEventName) {
+      this.analytics.trackEvent(this.pageContent.analyticsEventName, this.sharedmethods.analyticsEventParams);
+    } else {
+      if (this.isCaseStudy) {
+        // TODO: send error to sentry
+        console.log(`No analytics event name found for this case study: ${this.caseStudyUid} ${this.allPageContent?.pageTitle}`);
       } else {
-        console.log('No analytics event name found for this page')
+        // TODO: send error to sentry
+        console.log(`No analytics event name found for this page: ${this.subChapterId} ${this.allPageContent?.pageTitle}`);
       }
     }
+  }
+
+  // TODO
+  getQuestionValues() {}
+
+  getQuestionStatus() {
+    this.pageContent?.forEach((item) => {
+      if (item?.type === 'questions') {
+        if (!item?.value) {
+          item.status = HubQuestionStatus.pending;
+          item.icon = 'help';
+        } else if (
+          (item.questionType === 'radio' || item.questionType === 'select') 
+          && item.value.toLowerCase() === 'yes'
+        ) {
+          item.status = HubQuestionStatus.answeredYes;
+          item.icon = 'checkmark';
+        } else if (
+          (item.questionType === 'radio' || item.questionType === 'select')
+          && item.value.toLowerCase() === 'no'
+        ) {
+          item.status = HubQuestionStatus.answeredNo;
+          item.icon = 'close';
+        } else if (
+          (item.questionType === 'radio' || item.questionType === 'select')
+          && item.value.toLowerCase() === 'maybe'
+        ) {
+          item.status = HubQuestionStatus.answeredMaybe;
+          item.icon = 'alert';
+        } else {
+          item.status = HubQuestionStatus.completed;
+          item.icon = 'checkmark';
+        }
+      }
+    });
   }
 
   goToNextChapter() {
@@ -111,4 +163,7 @@ export class SubchapterComponent  implements OnInit {
     this.router.navigate([ 'learninghub/case-studies', data?.uid, params ]);
   }
 
+  viewQuestion(data) {
+    this.router.navigate([this.router.url, 'question', data?.key , { questionData: JSON.stringify(data) }]);
+  }
 }

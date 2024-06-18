@@ -1,22 +1,21 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-
 import { IonicModule } from '@ionic/angular';
 
-import { VariantPageRoutingModule } from './variant-routing.module';
-
-import { VariantPage } from './variant.page';
+import { ChapterRoutingModule } from './chapter-routing.module';
+import { ChapterComponent } from './chapter.component';
 import { SharedModule } from 'src/app/shared/shared.modules';
+
 
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
     IonicModule,
-    VariantPageRoutingModule,
-    SharedModule
+    ChapterRoutingModule,
+    SharedModule,
   ],
-  declarations: [VariantPage]
+  declarations: [ChapterComponent]
 })
-export class VariantPageModule {}
+export class ChapterModule { }

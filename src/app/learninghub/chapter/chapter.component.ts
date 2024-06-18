@@ -5,11 +5,11 @@ import { ContentService } from 'src/app/shared/services/content/content.service'
 import { SharedmethodsService } from 'src/app/shared/services/sharedmethods/sharedmethods.service';
 
 @Component({
-  selector: 'app-variant',
-  templateUrl: './variant.page.html',
-  styleUrls: ['./variant.page.scss'],
+  selector: 'app-chapter',
+  templateUrl: './chapter.component.html',
+  styleUrls: ['./chapter.component.scss'],
 })
-export class VariantPage implements OnInit {
+export class ChapterComponent  implements OnInit {
   pageContent: any;
   learningHubSubChapters = [];
   chapterId: string;
@@ -48,7 +48,7 @@ export class VariantPage implements OnInit {
     }
   }
 
-  viewDetials(item) {
+  viewDetails(item) {
     this.router.navigate([ 'learninghub/chapters', this.chapterId, item?.page?.uid ]);
   }
 }

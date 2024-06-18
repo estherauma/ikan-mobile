@@ -16,7 +16,6 @@ import { AuthbgpaperComponent } from './components/authbgpaper/authbgpaper.compo
 import { ButtonComponent } from './components/button/button.component';
 import { WorkordercardComponent } from './components/workordercard/workordercard.component';
 import { AgentcardComponent } from './components/agentcard/agentcard.component';
-import { QuestiontitlecardComponent } from './components/questiontitlecard/questiontitlecard.component';
 import { NotificationcardComponent } from './components/notificationcard/notificationcard.component';
 import { AttachmentComponent } from './components/attachment/attachment.component';
 import { BadgeComponent } from './components/badge/badge.component';
@@ -74,7 +73,6 @@ import { ViewPassportComponent } from '../mydocuments/view-passport/view-passpor
     AgentcardComponent,
     MaincardComponent,
     ProgressbarComponent,
-    QuestiontitlecardComponent,
     NotificationcardComponent,
     AttachmentComponent,
     BadgeComponent,
@@ -121,7 +119,6 @@ import { ViewPassportComponent } from '../mydocuments/view-passport/view-passpor
     AgentcardComponent,
     MaincardComponent,
     ProgressbarComponent,
-    QuestiontitlecardComponent,
     NotificationcardComponent,
     AttachmentComponent,
     BadgeComponent,
