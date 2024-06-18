@@ -178,3 +178,11 @@ export interface analyticsEventsData{
   accountId: string;
   deviceId: string;
 }
+
+export enum HubQuestionStatus {
+  pending = 'pending',
+  completed = 'completed',
+  answeredYes = 'answeredYes',
+  answeredNo = 'answeredNo',
+  answeredMaybe = 'answeredMaybe',
+}

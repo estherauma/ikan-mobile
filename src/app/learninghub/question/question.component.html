@@ -1,0 +1,200 @@
+<app-header></app-header>
+<ion-content>
+  <div class="container">
+    <div class="question-section">
+      <ion-row>
+        <ion-col size="12">
+          <h3 class="qtn-label">
+          {{ questionData?.question }}
+          </h3>
+        </ion-col> 
+      </ion-row>
+      
+      <!-- TODO: add qtn audio. Not available at the moment -->
+
+      <ion-row class="value-row">
+        <ion-col size="12">
+          <div
+            *ngIf="questionData?.questionType === 'text'"
+            class="text-container"
+          >
+            <ion-input
+              class="input"
+              [placeholder]="commonText?.typeYourAnswerHere"
+              autofocus
+              [(ngModel)]="inputValue"
+              (ionChange)="handleInputChange($event)"
+            ></ion-input>
+          </div>
+          
+          <div
+            *ngIf="!isYesNoValue && questionData?.questionType === 'select'"
+            class="select-container"
+          >
+            <ion-select
+              class="input"
+              label-placement="stacked"
+              [placeholder]="commonText?.pleaseSelect"
+              [okText]="commonText?.ok"
+              [cancelText]="commonText?.cancel"
+              [(ngModel)]="selectedValue"
+              (ionChange)="handleSelectChange($event)"
+            >
+            <!-- TODO: use value after getting solution for translations -->
+              <ion-select-option *ngFor="let option of questionData?.options" value="{{ option?.option }}">{{ option?.option }}</ion-select-option>
+            </ion-select>
+          </div>
+          
+          <div *ngIf="!isYesNoValue && questionData?.questionType === 'radio'">
+            <ion-radio-group
+              [value]="questionData?.value"
+            >
+            <!-- TODO: use value after getting solution for translations -->
+              <ion-item  *ngFor="let option of questionData?.options" lines="none">
+                <ion-radio [value]="option?.option" labelPlacement="end">{{ option?.option }}</ion-radio>
+              </ion-item>
+            </ion-radio-group>
+          </div>
+          
+          <div
+            *ngIf="isYesNoValue && (questionData?.questionType === 'radio' || questionData?.questionType === 'select')"
+            class="yes-no-container"
+          >
+            <ion-radio-group [(ngModel)]="selectedValue">
+              <ion-row>
+                <!-- TODO: use value after getting solution for translations -->
+                <ion-col *ngFor="let option of questionData?.options">
+                  <div
+                    class="option"
+                    (click)="selectOption(option?.option)"
+                    [ngClass]="{
+                      'yes': (selectedValue === option?.option && selectedValue.toLowerCase() === 'yes'),
+                      'no': (selectedValue === option?.option && selectedValue.toLowerCase() === 'no'),
+                      'other': (selectedValue && selectedValue === option?.option && (selectedValue.toLowerCase() !== 'yes' && selectedValue.toLowerCase() !== 'no'))
+                    }"
+                  >
+                    <ion-radio slot="start" value="{{ option?.option }}"></ion-radio>
+                    <ion-icon [name]="option?.icon"></ion-icon>
+                  </div>
+                  <ion-img
+                    *ngIf="hasFollowupQtn && selectedValue === option?.option && selectedValue.toLowerCase() === 'yes'"
+                    class="cutout-icon"
+                    src="assets/imgs/cutout-rectangle-green.svg"
+                  >
+                  </ion-img>
+                  <ion-img
+                    *ngIf="hasFollowupQtn && selectedValue === option?.option && selectedValue.toLowerCase() === 'no'"
+                    class="cutout-icon"
+                    src="assets/imgs/cutout-rectangle-red.svg"
+                  >
+                  </ion-img>
+                  <ion-img
+                    *ngIf="hasFollowupQtn && selectedValue === option?.option && selectedValue.toLowerCase() === 'other'"
+                    class="cutout-icon"
+                    src="assets/imgs/cutout-rectangle-orange.svg"
+                  >
+                  </ion-img>
+                </ion-col>
+              </ion-row>
+            </ion-radio-group>
+          </div>
+        </ion-col>
+      </ion-row>
+
+      <ion-row *ngIf="!hasFollowupQtn" class="btn-row">
+        <ion-col size="12">
+          <ion-button color="primary" expand="block" (click)="submitAnswer()">{{ commonText?.submit }}</ion-button>
+        </ion-col>
+      </ion-row>
+    </div>
+
+    <div
+      *ngIf="hasFollowupQtn"
+      class="followup-qtn-section"
+      [ngClass]="{
+        'green': selectedValue.toLowerCase() === 'yes',
+        'red': selectedValue.toLowerCase() === 'no',
+        'orange': selectedValue.toLowerCase() === 'other',
+      }"
+    >
+      <div *ngIf="followupQtnData?.questionType === 'helperText'" class="helper-text-container">
+        <p>{{ followupQtnData?.question }}</p>
+      </div>
+
+      <div
+        *ngIf="followupQtnData?.questionType === 'text'"
+        class="text-container"
+      >
+      <!-- translate -->
+        <p>{{ followupQtnData?.question }}</p>
+        <ion-input
+          class="input"
+          [placeholder]="commonText?.typeYourAnswerHere"
+          autofocus
+          [(ngModel)]="followUpInputValue"
+          (ionChange)="handleFollowUpInputChange($event)"
+        ></ion-input>
+      </div>
+      
+      <div
+        *ngIf="followupQtnData?.questionType === 'select'"
+        class="select-container"
+      >
+        <p>{{ followupQtnData?.question }}</p>
+        <ion-select
+          class="input"
+          label-placement="stacked"
+          [placeholder]="commonText?.pleaseSelect"
+          [okText]="commonText?.ok"
+          [cancelText]="commonText?.cancel"
+          [(ngModel)]="followUpSelectedValue"
+          (ionChange)="handleFollowUpSelectChange($event)"
+        >
+        <!-- TODO: use value after getting solution for translations -->
+          <ion-select-option *ngFor="let option of followupQtnData?.options" value="{{ option?.option }}">{{ option?.option }}</ion-select-option>
+        </ion-select>
+      </div>
+
+      <div
+        *ngIf="followupQtnData?.questionType === 'multi-select'"
+        class="select-container"
+      >
+        <p>{{ followupQtnData?.question }}</p>
+        <ion-select
+          class="input"
+          label-placement="stacked"
+          [placeholder]="commonText?.pleaseSelect"
+          [okText]="commonText?.ok"
+          [cancelText]="commonText?.cancel"
+          multiple
+          [(ngModel)]="followUpSelectedValue"
+          (ionChange)="handleFollowUpSelectChange($event)"
+        >
+        <!-- TODO: use value after getting solution for translations -->
+          <ion-select-option *ngFor="let option of followupQtnData?.options" value="{{ option?.option }}">{{ option?.option }}</ion-select-option>
+        </ion-select>
+      </div>
+
+      <div
+        *ngIf="followupQtnData?.questionType === 'radio'"
+      >
+        <p>{{ followupQtnData?.question }}</p>
+        <ion-radio-group
+          [(ngModel)]="followUpSelectedValue"
+          (ionChange)="handleFollowUpSelectChange($event)"
+        >
+        <!-- TODO: use value after getting solution for translations -->
+          <ion-item *ngFor="let option of followupQtnData?.options" lines="none">
+            <ion-radio [value]="option?.option" labelPlacement="end">{{ option?.option }}</ion-radio>
+          </ion-item>
+        </ion-radio-group>
+      </div>
+
+      <ion-row class="btn-row">
+        <ion-col size="12">
+          <ion-button color="primary" expand="block" (click)="submitAnswer()">{{ commonText?.submit }}</ion-button>
+        </ion-col>
+      </ion-row>
+    </div>
+  </div>
+</ion-content>

@@ -10,7 +10,7 @@ const routes: Routes = [
   },
   {
     path: 'chapters/:chapterId',
-    loadChildren: () => import('../variant/variant.module').then( m => m.VariantPageModule)
+    loadChildren: () => import('../chapter/chapter.module').then( m => m.ChapterModule)
   },
   {
     path: 'case-studies/:caseStudyUid',
