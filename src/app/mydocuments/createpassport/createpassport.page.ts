@@ -56,26 +56,9 @@ export class CreatepassportPage extends BaseformPage implements OnInit {
     const now = this.sharedMethods.getCurrentDateTime();
 
     if (!this.isEditing) {
-      const docSaveObj = {
-        appRef: this.sharedMethods.generateAppRef(),
-        userId: userData.id,
-        fileName: 'ikan-my-passport' || formData?.imageUrl.fileName,
-        fileUrl: formData?.imageUrl.webPath,
-        fileSize: formData?.imageUrl.fileSize || '',
-        docType: formData?.imageUrl.docType,
-        isEssential: true,
-        createdAt: now,
-        updatedAt: now,
-        createdBy: userData.id,
-        updatedBy: userData.id,
-      };
-
-      const docInsertId = await this.documentsDataService.create(docSaveObj);
-      if (docInsertId) {
         const passportData = {
           appRef: this.sharedMethods.generateAppRef(),
           userId: userData.id,
-          documentId: docInsertId,
           firstName: formData.firstName,
           surname: formData.surname,
           passportNumber: formData.passportNumber,
@@ -96,13 +79,9 @@ export class CreatepassportPage extends BaseformPage implements OnInit {
         } else {
           this.sharedMethods.showToast(this.pageText?.errSavingPassport || 'Error saving passport');
         }
-      } else {
-        // TODO: save image details to local storage to be saved to db later
-      }
     } else {
       const passportData = {
         id: this.passportData?.id,
-        documentId: this.passportData?.documentId,
         firstName: formData.firstName,
         surname: formData.surname,
         passportNumber: formData.passportNumber,
@@ -114,8 +93,6 @@ export class CreatepassportPage extends BaseformPage implements OnInit {
       };
       const passportUpdate = await this.documentsDataService.updatePassport(passportData);
       if (passportUpdate) {
-        await this.documentsDataService.updateDocumentField(this.passportData?.documentId, 'file_url', formData?.imageUrl.webPath);
-
         this.modalCtrl.dismiss({ passportData });
       } else {
         this.sharedMethods.showToast(this.pageText?.errUpdatingPassport || 'Error updating passport');

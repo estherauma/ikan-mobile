@@ -80,13 +80,9 @@ export class ViewPassportComponent  implements OnInit {
 
   async deleteDocument(passport) {
     if (passport?.onlineRef) {
-      await this.documentsDataService.updatePassportField(passport.id, 'is_deleted', 1).then(async() => {
-        await this.documentsDataService.updateDocumentField(passport.documentId, 'is_deleted', 1);
-      });
+      await this.documentsDataService.updatePassportField(passport.id, 'is_deleted', 1).then(() => {});
     } else {
-      await this.documentsDataService.deletePassport(passport.id).then(async() => {
-        await this.documentsDataService.deleteDocument(passport.documentId);
-      });
+      await this.documentsDataService.deletePassport(passport.id).then(() => {});
     }
     passport.fileUrl = passport.imageUrl;
     const docs = [passport];

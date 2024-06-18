@@ -11,6 +11,7 @@ export interface DocumentType {
   fileSize?: string;
   docType: FileType;
   isEssential: boolean;
+  isDeleted?: boolean;
   createdAt: string;
   createdBy: string;
   updatedAt: string;

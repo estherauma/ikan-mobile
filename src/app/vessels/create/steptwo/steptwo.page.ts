@@ -89,6 +89,7 @@ export class SteptwoPage extends BaseformPage implements OnInit {
             vessel_id: insertId,
             image_url: formData?.image_url?.webPath,
             description: '', // TODO: update description
+            app_ref: this.sharedMethods.generateAppRef(),
           };
           const imageInsertId = await this.vesselDataService.createVesselImage(imageData);
           if (!imageInsertId) {
@@ -133,6 +134,7 @@ export class SteptwoPage extends BaseformPage implements OnInit {
             image_url: typeof formData?.image_url === 'string' ? formData?.image_url :
            formData?.image_url?.webPath,
             description: '', // TODO: update description
+            app_ref: this.sharedMethods.generateAppRef(),
           };
           const imageInsertId = await this.vesselDataService.createVesselImage(imageData);
           if (!imageInsertId) {

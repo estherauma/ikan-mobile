@@ -184,6 +184,18 @@ export class ContractDataService {
     }).catch((e) => console.log(e));
   }
 
+  async saveOnlineContractDocument(data) {
+    const query = 'INSERT INTO contract_documents (contract_id, name, url, status, online_ref, \
+      created_at, updated_at, created_by, updated_by) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)';
+    const params = [ data.contractId, data.name, data.url, data.status,
+      data.onlineRef, data.createdAt, data.updatedAt, data.createdBy, data.updatedBy ];
+    
+    return this.db.executeSql(query, params).then(async(result) => {
+      await this.retrieveContractDocuments();
+      return result.insertId;
+    }).catch((e) => console.log(e));
+  }
+
   retrieveContractDocuments() {
     const query = 'SELECT * FROM contract_documents';
     return this.db.executeSql(query, []).then((data) => {
@@ -196,6 +208,7 @@ export class ContractDataService {
             name: data.rows.item(i).name,
             url: data.rows.item(i).url,
             status: data.rows.item(i).status,
+            onlineRef: data.rows.item(i).online_ref,
             createdAt: data.rows.item(i).created_at,
             updatedAt: data.rows.item(i).updated_at,
             createdBy: data.rows.item(i).created_by,
@@ -210,9 +223,9 @@ export class ContractDataService {
     });
   }
 
-  async getContractDocumentById(id) {
+  async getContractDocumentByField(field, value) {
     const contractDocuments = await this.retrieveContractDocuments();
-    const doc = contractDocuments.find(doc => doc.id === id);
+    const doc = contractDocuments.find(doc => doc?.[field] === value);
     return doc;
   }
 
@@ -222,16 +235,16 @@ export class ContractDataService {
     return docs.some(doc => doc.contract_id === contractId);
   }
 
-  async updateContractDocument(id, data) {
+  async updateContractDocument(contractId, data) {
     const query = 'UPDATE contract_documents SET name = ?, url = ?, status = ?, \
-      updated_at = ?, updated_by = ? WHERE id = ?';
+      updated_at = ?, updated_by = ? WHERE contract_id = ?';
     const now = this.sharedMethods.getCurrentDateTime();
     const user = await this.sharedMethods.getUserData();
-    const params = [data.name, data.url, data.status, now, user?.id, id];
+    const params = [data.name, data.url, data.status, now, user?.id, contractId];
     
     return this.db.executeSql(query, params).then(async(result) => {
       await this.retrieveContractDocuments();
-      const doc = await this.getContractDocumentById(id);
+      const doc = await this.getContractDocumentByField('contract_id', contractId);
       return {
         rowsAffected: result.rowsAffected,
         doc,
@@ -240,6 +253,16 @@ export class ContractDataService {
       console.log(e);
       return null;
     });
+  }
+
+  async updateContractDocumentFieldByContractId(contractId, field, value) {
+    const query = `UPDATE contract_documents SET ${field} = ? WHERE contract_id = ?`;
+    const params = [value, contractId];
+    return this.db.executeSql(query, params).then((res) => {
+      this.retrieveContractDocuments();
+      this.retrieveContracts();
+      return res.rowsAffected;
+    }).catch(e => console.log(3));
   }
 
   deleteContractDocument(id) { }

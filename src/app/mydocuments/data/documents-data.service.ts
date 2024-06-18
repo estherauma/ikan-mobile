@@ -11,6 +11,7 @@ export class DocumentsDataService {
 
   documents: Array<DocumentType> = [];
   documentsObs = new BehaviorSubject<Array<DocumentType>>(this.documents);
+  allDocumentsObs = new BehaviorSubject<Array<DocumentType>>([]);
   db: SQLiteObject;
 
   constructor(
@@ -24,6 +25,7 @@ export class DocumentsDataService {
       }).then(async(_db: SQLiteObject) => {
         this.db = _db;
         this.retriveDocuments();
+        this.retriveAllDocuments();
         this.retrievePassports();
       }).catch(e => console.log(e));
     });
@@ -33,6 +35,9 @@ export class DocumentsDataService {
     });
   }
 
+  /**
+   * Retrieves documents excluding deleted ons
+   */ 
   async retriveDocuments() {
     const query = 'SELECT * FROM documents WHERE (is_deleted IS NULL OR is_deleted = 0)';
     return this.db.executeSql(query, []).then((data) => {
@@ -68,6 +73,41 @@ export class DocumentsDataService {
     });
   }
 
+  /**
+   * Retrieves all documents including deleted ones
+  */
+  async retriveAllDocuments() {
+    const query = 'SELECT * FROM documents';
+    return this.db.executeSql(query, []).then((data) => {
+      const documents = [];
+      if (data.rows.length > 0) {
+        for (let i = 0; i < data.rows.length; i++) {
+          documents.push({
+            id: data.rows.item(i).id,
+            onlineRef: data.rows.item(i).online_ref,
+            appRef: data.rows.item(i).app_ref,
+            userId: data.rows.item(i).user_id,
+            fileName: data.rows.item(i).file_name,
+            fileUrl: data.rows.item(i).file_url,
+            fileSize: data.rows.item(i).file_size,
+            docType: data.rows.item(i).doc_type,
+            isEssential: this.getBooleanValue(data.rows.item(i).is_essential),
+            isDeleted: this.getBooleanValue(data.rows.item(i).is_deleted),
+            createdAt: data.rows.item(i).created_at,
+            updatedAt: data.rows.item(i).updated_at,
+            createdBy: data.rows.item(i).created_by,
+            updatedBy: data.rows.item(i).updated_by,
+          });
+        }
+      }
+      this.allDocumentsObs.next(documents);
+      return documents;
+    }).catch((e) => {
+      console.log(e);
+      return [];
+    });
+  }
+
   getBooleanValue(value) {
     if (typeof value === 'boolean') {
       return value;
@@ -82,6 +122,10 @@ export class DocumentsDataService {
 
   getAll() {
     return this.documentsObs.asObservable();
+  }
+
+  retrieveAllObservable() {
+    return this.allDocumentsObs.asObservable();
   }
 
   async create(data) {
@@ -151,13 +195,13 @@ export class DocumentsDataService {
             onlineRef: data.rows.item(i).online_ref,
             appRef: data.rows.item(i).app_ref,
             userId: data.rows.item(i).user_id,
-            documentId: data.rows.item(i).document_id,
             firstName: data.rows.item(i).first_name,
             surname: data.rows.item(i).surname,
             passportNumber: data.rows.item(i).passport_number,
             dateOfIssue: data.rows.item(i).date_of_issue,
             dateOfExpiry: data.rows.item(i).date_of_expiry,
             imageUrl: data.rows.item(i).image_url,
+            isDeleted: this.getBooleanValue(data.rows.item(i).is_deleted),
             createdAt: data.rows.item(i).created_at,
             updatedAt: data.rows.item(i).updated_at,
             createdBy: data.rows.item(i).created_by,
@@ -183,7 +227,6 @@ export class DocumentsDataService {
             onlineRef: data.rows.item(i).online_ref,
             appRef: data.rows.item(i).app_ref,
             userId: data.rows.item(i).user_id,
-            documentId: data.rows.item(i).document_id,
             firstName: data.rows.item(i).first_name,
             surname: data.rows.item(i).surname,
             passportNumber: data.rows.item(i).passport_number,
@@ -206,10 +249,10 @@ export class DocumentsDataService {
   }
 
   async createPassport(data) {
-    const query = 'INSERT INTO passports (app_ref, user_id, document_id, first_name, \
+    const query = 'INSERT INTO passports (app_ref, user_id, first_name, \
       surname, passport_number, date_of_issue, date_of_expiry, image_url, created_at, \
-      updated_at, created_by, updated_by) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?)';
-    const params = [data.appRef, data.userId, data.documentId, data.firstName,
+      updated_at, created_by, updated_by) VALUES (?,?,?,?,?,?,?,?,?,?,?,?)';
+    const params = [data.appRef, data.userId, data.firstName,
       data.surname, data.passportNumber, data.dateOfIssue, data.dateOfExpiry,
       data.imageUrl, data.createdAt, data.updatedAt, data.createdBy, data.updatedBy];
     return this.db.executeSql(query, params).then(async(result) => {
@@ -260,10 +303,10 @@ export class DocumentsDataService {
   }
 
   async saveOnlinePassport(data) {
-    const query = 'INSERT INTO passports (online_ref, app_ref, user_id, document_id, first_name, \
+    const query = 'INSERT INTO passports (online_ref, app_ref, user_id, first_name, \
       surname, passport_number, date_of_issue, date_of_expiry, image_url, created_at, \
-      updated_at, created_by, updated_by) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?)';
-    const params = [data.onlineRef, data.appRef, data.userId, data.documentId, data.firstName,
+      updated_at, created_by, updated_by) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?)';
+    const params = [data.onlineRef, data.appRef, data.userId, data.firstName,
       data.surname, data.passportNumber, data.dateOfIssue, data.dateOfExpiry,
       data.imageUrl, data.createdAt, data.updatedAt, data.createdBy, data.updatedBy];
     return this.db.executeSql(query, params).then(async(result) => {

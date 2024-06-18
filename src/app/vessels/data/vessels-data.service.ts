@@ -24,6 +24,7 @@ export class VesselsDataService {
       }).then(async(_db: SQLiteObject) => {
         this.db = _db;
         this.retriveVessels();
+        this.getVesselImages();
       }).catch(e => console.log(e));
     });
 
@@ -70,8 +71,8 @@ export class VesselsDataService {
     return this.vesselsObs.asObservable();
   }
 
-  async getVesselById(id) {
-    const vessel = this.vessels.find((entry) => entry.id === id);
+  async getVesselByField(field, value) {
+    const vessel = this.vessels.find((entry) => entry[field] === value);
     return vessel;
   }
 
@@ -108,7 +109,7 @@ export class VesselsDataService {
     
     return this.db.executeSql(query, params).then(async(result) => {
       await this.retriveVessels();
-      const vessel = await this.getVesselById(data.id);
+      const vessel = await this.getVesselByField('id', data.id);
       return {
         rowsAffected: result.rowsAffected,
         vessel
@@ -138,9 +139,11 @@ export class VesselsDataService {
         for (let i = 0; i < data.rows.length; i++) {
           vesselImages.push({
             id: data.rows.item(i).id,
+            app_ref: data.rows.item(i).app_ref,
             vessel_id: data.rows.item(i).vessel_id,
             image_url: data.rows.item(i).image_url,
             description: data.rows.item(i).description,
+            onlineRef: data.rows.item(i).online_ref,
             createdAt: data.rows.item(i).created_at,
             updatedAt: data.rows.item(i).updated_at,
             createdBy: data.rows.item(i).created_by,
@@ -162,14 +165,25 @@ export class VesselsDataService {
   }
 
   async createVesselImage(data) {
-    const query = 'INSERT INTO vessel_images (vessel_id, image_url, description, \
-      created_at, updated_at, created_by, updated_by) VALUES (?, ?, ?, ?, ?, ?, ?)';
+    const query = 'INSERT INTO vessel_images (vessel_id, image_url, description, app_ref, \
+      created_at, updated_at, created_by, updated_by) VALUES (?, ?, ?, ?, ?, ?, ?, ?)';
     const now = this.sharedMethods.getCurrentDateTime();
     const user = await this.sharedMethods.getUserData();
-    const params = [data?.vessel_id, data?.image_url, data?.description,
+    const params = [data?.vessel_id, data?.image_url, data?.description, data.app_ref,
       now, now, user?.id, user?.id];
     
       return this.db.executeSql(query, params).then((result) => {
+      this.getVesselImages();
+      return result.insertId;
+    }).catch(e => console.log(e));
+  }
+
+  async saveOnlineVesselImage(data) {
+    const query = 'INSERT INTO vessel_images (vessel_id, image_url, description, app_ref, \
+      created_at, updated_at, created_by, updated_by, online_ref) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)';
+    const params = [data?.vesselId, data?.imageUrl, data?.description, data.appRef,
+      data.createdAt, data.updatedAt, data.createdBy, data.updatedBy, data.id];
+    return this.db.executeSql(query, params).then((result) => {
       this.getVesselImages();
       return result.insertId;
     }).catch(e => console.log(e));

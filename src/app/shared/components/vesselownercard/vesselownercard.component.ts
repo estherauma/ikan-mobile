@@ -28,7 +28,6 @@ export class VesselownercardComponent implements OnInit {
   }
 
   viewDetails(vessel) {
-    console.log('vessel-from home', vessel)
     this.router.navigate(['vessels/view', {vessel: JSON.stringify(vessel)}]);
   }
 }
