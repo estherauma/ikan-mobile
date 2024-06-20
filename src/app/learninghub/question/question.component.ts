@@ -31,15 +31,14 @@ export class QuestionComponent  implements OnInit {
     });
     this.commonText = this.contentService?.commonText;
     if (this.questionData?.questionType === 'radio' || this.questionData?.questionType === 'select') {
-      // TODO: use value after getting solution for translations
-      const values = this.questionData.options.map(obj => obj?.option?.toLowerCase());
+      const values = this.questionData.options.map(obj => obj?.value?.toLowerCase());
       const containsYesNo = values.includes('yes') && values.includes('no');
       if (containsYesNo) {
         this.isYesNoValue = true;
         this.questionData.options.forEach((opt) => {
-          if (opt?.option?.toLowerCase() === 'yes') {
+          if (opt?.value?.toLowerCase() === 'yes') {
             opt.icon = 'checkmark';
-          } else if (opt.option?.toLowerCase() === 'no') {
+          } else if (opt.value?.toLowerCase() === 'no') {
             opt.icon = 'close';
           } else {
             opt.icon = 'alert';
@@ -71,8 +70,7 @@ export class QuestionComponent  implements OnInit {
 
   getFollowupQtn() {
     if (this.questionData?.options) {
-      // TODO: use value after getting solution for translations
-      const selectedOption = this.questionData.options.find((opt) => opt.option === this.questionData.value);
+      const selectedOption = this.questionData.options.find((opt) => opt.value === this.questionData.value);
       if (selectedOption?.followUpQuestion) {
         this.hasFollowupQtn = true;
         this.followupQtnData = selectedOption.followUpQuestion;

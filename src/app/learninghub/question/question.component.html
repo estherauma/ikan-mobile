@@ -40,8 +40,7 @@
               [(ngModel)]="selectedValue"
               (ionChange)="handleSelectChange($event)"
             >
-            <!-- TODO: use value after getting solution for translations -->
-              <ion-select-option *ngFor="let option of questionData?.options" value="{{ option?.option }}">{{ option?.option }}</ion-select-option>
+              <ion-select-option *ngFor="let option of questionData?.options" value="{{ option?.value }}">{{ option?.option }}</ion-select-option>
             </ion-select>
           </div>
           
@@ -49,9 +48,8 @@
             <ion-radio-group
               [value]="questionData?.value"
             >
-            <!-- TODO: use value after getting solution for translations -->
               <ion-item  *ngFor="let option of questionData?.options" lines="none">
-                <ion-radio [value]="option?.option" labelPlacement="end">{{ option?.option }}</ion-radio>
+                <ion-radio [value]="option?.value" labelPlacement="end">{{ option?.option }}</ion-radio>
               </ion-item>
             </ion-radio-group>
           </div>
@@ -62,34 +60,33 @@
           >
             <ion-radio-group [(ngModel)]="selectedValue">
               <ion-row>
-                <!-- TODO: use value after getting solution for translations -->
                 <ion-col *ngFor="let option of questionData?.options">
                   <div
                     class="option"
-                    (click)="selectOption(option?.option)"
+                    (click)="selectOption(option?.value)"
                     [ngClass]="{
-                      'yes': (selectedValue === option?.option && selectedValue.toLowerCase() === 'yes'),
-                      'no': (selectedValue === option?.option && selectedValue.toLowerCase() === 'no'),
-                      'other': (selectedValue && selectedValue === option?.option && (selectedValue.toLowerCase() !== 'yes' && selectedValue.toLowerCase() !== 'no'))
+                      'yes': (selectedValue === option?.value && selectedValue.toLowerCase() === 'yes'),
+                      'no': (selectedValue === option?.value && selectedValue.toLowerCase() === 'no'),
+                      'other': (selectedValue && selectedValue === option?.value && (selectedValue.toLowerCase() !== 'yes' && selectedValue.toLowerCase() !== 'no'))
                     }"
                   >
-                    <ion-radio slot="start" value="{{ option?.option }}"></ion-radio>
+                    <ion-radio slot="start" value="{{ option?.value }}"></ion-radio>
                     <ion-icon [name]="option?.icon"></ion-icon>
                   </div>
                   <ion-img
-                    *ngIf="hasFollowupQtn && selectedValue === option?.option && selectedValue.toLowerCase() === 'yes'"
+                    *ngIf="hasFollowupQtn && selectedValue === option?.value && selectedValue.toLowerCase() === 'yes'"
                     class="cutout-icon"
                     src="assets/imgs/cutout-rectangle-green.svg"
                   >
                   </ion-img>
                   <ion-img
-                    *ngIf="hasFollowupQtn && selectedValue === option?.option && selectedValue.toLowerCase() === 'no'"
+                    *ngIf="hasFollowupQtn && selectedValue === option?.value && selectedValue.toLowerCase() === 'no'"
                     class="cutout-icon"
                     src="assets/imgs/cutout-rectangle-red.svg"
                   >
                   </ion-img>
                   <ion-img
-                    *ngIf="hasFollowupQtn && selectedValue === option?.option && selectedValue.toLowerCase() === 'other'"
+                    *ngIf="hasFollowupQtn && selectedValue === option?.value && (selectedValue.toLowerCase() !== 'yes' && selectedValue.toLowerCase() !== 'no')"
                     class="cutout-icon"
                     src="assets/imgs/cutout-rectangle-orange.svg"
                   >
@@ -114,7 +111,7 @@
       [ngClass]="{
         'green': selectedValue.toLowerCase() === 'yes',
         'red': selectedValue.toLowerCase() === 'no',
-        'orange': selectedValue.toLowerCase() === 'other',
+        'orange': (selectedValue.toLowerCase() !== 'yes' && selectedValue.toLowerCase() !== 'no'),
       }"
     >
       <div *ngIf="followupQtnData?.questionType === 'helperText'" class="helper-text-container">
@@ -150,8 +147,7 @@
           [(ngModel)]="followUpSelectedValue"
           (ionChange)="handleFollowUpSelectChange($event)"
         >
-        <!-- TODO: use value after getting solution for translations -->
-          <ion-select-option *ngFor="let option of followupQtnData?.options" value="{{ option?.option }}">{{ option?.option }}</ion-select-option>
+          <ion-select-option *ngFor="let option of followupQtnData?.options" value="{{ option?.value }}">{{ option?.option }}</ion-select-option>
         </ion-select>
       </div>
 
@@ -170,8 +166,7 @@
           [(ngModel)]="followUpSelectedValue"
           (ionChange)="handleFollowUpSelectChange($event)"
         >
-        <!-- TODO: use value after getting solution for translations -->
-          <ion-select-option *ngFor="let option of followupQtnData?.options" value="{{ option?.option }}">{{ option?.option }}</ion-select-option>
+          <ion-select-option *ngFor="let option of followupQtnData?.options" value="{{ option?.value }}">{{ option?.option }}</ion-select-option>
         </ion-select>
       </div>
 
@@ -183,9 +178,8 @@
           [(ngModel)]="followUpSelectedValue"
           (ionChange)="handleFollowUpSelectChange($event)"
         >
-        <!-- TODO: use value after getting solution for translations -->
           <ion-item *ngFor="let option of followupQtnData?.options" lines="none">
-            <ion-radio [value]="option?.option" labelPlacement="end">{{ option?.option }}</ion-radio>
+            <ion-radio [value]="option?.value" labelPlacement="end">{{ option?.option }}</ion-radio>
           </ion-item>
         </ion-radio-group>
       </div>
