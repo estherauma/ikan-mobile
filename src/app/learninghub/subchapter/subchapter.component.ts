@@ -44,17 +44,22 @@ export class SubchapterComponent  implements OnInit {
       this.caseStudyUid = params?.caseStudyUid;
       this.isCaseStudy = !!params?.caseStudyUid;
       this.caseStudyImgUrl = params?.imgUrl || '';
+      this.pageSetup();
     });
   }
 
   ngOnInit() {
     this.pageSetup();
     this.setUpAnalytics();
+  }
+
+  pageSetup() {
+    this.getContent();
     this.getQuestionValues();
     this.getQuestionStatus();
   }
 
-  pageSetup() {
+  getContent() {
     if (this.isCaseStudy) {
       this.allPageContent = this.contentService.getContentByPropertyName(this.caseStudyUid);
       this.pageContent = this.allPageContent?.pageContent;
