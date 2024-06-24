@@ -181,7 +181,7 @@ export class SyncService {
         this.apiService.post('file-upload', imageData).subscribe((res) => {
           if (res?.['status'] === 'OK') {
             if (!vesselImage.onlineRef) {
-              // this.dbService.updateDatabaseField('vessel_images', 'online_ref', res?.['data']['vesselImage']?.id, vesselImage.app_ref);
+              this.dbService.updateDatabaseField('vessel_images', 'online_ref', res?.['data']['vesselImage']?.id, vesselImage.app_ref);
             }
           } else {
             console.error(`Failed to sync vessel image for vessel ${vessel.name} to the api`, res);
@@ -291,9 +291,7 @@ export class SyncService {
         this.apiService.post('file-upload', docData).subscribe((res) => {
           if (res?.['status'] === 'OK') {
             if (!contractDocument.onlineRef) {
-              // TODO tr
-              // this.dbService.updateDatabaseField('contract_documents', 'online_ref', res?.['contractDocument']?.id, contractDocument.appRef);
-              // this.contractServ.updateContractDocumentFieldByContractId(contractDocument.contract_id, 'online_ref', res?.['contractDocument']?.id);
+              this.contractServ.updateContractDocumentFieldByContractId(contractDocument.contract_id, 'online_ref', res?.['data']['contractDocument']?.id);
             }
           } else {
             console.error(`Failed to sync contract document for contract ${contract.name} to the api`, res);
