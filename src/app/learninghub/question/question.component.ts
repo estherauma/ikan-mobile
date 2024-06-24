@@ -91,14 +91,17 @@ export class QuestionComponent  implements OnInit {
     this.followupQtnData.value = e.detail.value;
   }
 
+  // Question responses are saved even if followup question is not answered
+  // Uncomment code below to only submit if followup question is also answered
   async submitAnswer() {
     if (!this.questionData?.value) return;
     
-    if (this.hasFollowupQtn && !this.followupQtnData?.value && this.followupQtnData?.questionType !== 'helperText') {
-      // TODO: translate
-      this.sharedMethods.showToast(this.commonText?.pleaseAnswerFollowupQtn);
-      return;
-    }
+    // Uncomment code below to only submit if followup question is answered
+    // if (this.hasFollowupQtn && !this.followupQtnData?.value && this.followupQtnData?.questionType !== 'helperText') {
+    //   // TODO: translate
+    //   this.sharedMethods.showToast(this.commonText?.pleaseAnswerFollowupQtn);
+    //   return;
+    // }
 
     if (this.followupQtnData && this.followupQtnData.value && Array.isArray(this.followupQtnData.value)) {
       this.followupQtnData.value = this.followupQtnData.value.length ? this.followupQtnData.value.join(', ') : null;
