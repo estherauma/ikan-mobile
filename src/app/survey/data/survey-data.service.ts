@@ -102,6 +102,7 @@ export class SurveyDataService {
   async delete(id) {
     const query = 'DELETE FROM surveys WHERE id = ?';
     return await this.db.executeSql(query, [id]).then((result) => {
+      this.retriveSurveys();
       return result.rowsAffected;
     }).catch((error) => {
       console.error(error);
@@ -175,11 +176,9 @@ export class SurveyDataService {
       follow_up_question_key, follow_up_question_type, follow_up_question_text, follow_up_question_response, \
       created_at, updated_at, created_by, updated_by) \
       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`;
-    const now = this.sharedMethods.getCurrentDateTime();
-    const user = await this.sharedMethods.getUserData();
     const params = [data.appRef, data.onlineRef, data.userId, data.subChapter, data.questionKey, data.questionType,
       data.questionText, data.questionResponse, data.followUpQuestionKey, data.followUpQuestionType,
-      data.followUpQuestionText, data.followUpQuestionResponse, now, now, user.id, user.id];
+      data.followUpQuestionText, data.followUpQuestionResponse, data.createdAt, data.updatedAt, data.createdBy, data.updatedBy];
   
     return this.db.executeSql(query, params).then(async(result) => {
       await this.retrieveInlineQuestions();

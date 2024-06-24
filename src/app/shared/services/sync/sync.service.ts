@@ -87,6 +87,7 @@ export class SyncService {
     this.syncVessels();
     this.syncContracts();
     this.syncSurveyResponses();
+    this.syncInlineQuestions();
     this.syncMyDocuments();
     this.syncPassports();
     this.fetchCompanies();
@@ -94,6 +95,7 @@ export class SyncService {
     this.fetchContracts(); // clauses are fetched after contracts have been fetched in the fetchContracts method
     this.fetchMyDocuments();
     this.fetchPassports();
+    this.fetchInlineQuestions();
   }
 
   syncCompanies() {
@@ -395,16 +397,74 @@ export class SyncService {
     this.surveyDataService.getAll().subscribe((surveys) => {
       if (surveys?.length) {
         surveys.forEach((survey) => {
-          delete survey.id;
-          if (!survey.onlineRef) {
-            this.apiService.post('surveys', survey).subscribe((response:CreateSurveyResp) => {
-              if (response?.status === 'OK') {
-                this.dbService.updateDatabaseField('surveys', 'online_ref', response?.data.id, survey.appRef);
-              }
-            }, e => console.error(e));
-          } else {
-            // TODO: add update logic
+          // Survey responses are saved to the db then synced to the api
+          // After sync the response is deleted from the local db
+          // We never fetch them from the api so the onlineRef isn't neccessary
+          const surveyId = survey.id;
+          const surveyToUpload = Object.assign({}, survey);
+          surveyToUpload.surveyDate = new Date(survey.surveyDate).toISOString().split('T')[0];
+          delete surveyToUpload.id;
+          if (surveyToUpload?.userId) {
+            surveyToUpload.user = surveyToUpload.userId;
           }
+          this.apiService.post('surveys', surveyToUpload).subscribe((response:CreateSurveyResp) => {
+            if (response?.status === 'OK') {
+              this.surveyDataService.delete(surveyId);
+            }
+          }, e => console.error(e));
+        });
+      }
+    });
+  }
+
+  async syncInlineQuestions() {
+    this.surveyDataService.getAllInlineQuestions().subscribe((questions) => {
+      if (questions?.length) {
+        questions.forEach((question) => {
+          const questionId = question.id;
+          const questionToUpload = Object.assign({}, question);
+          delete questionToUpload.id;
+          questionToUpload.user = questionToUpload.userId;
+          if (!questionToUpload.onlineRef) {
+            this.apiService.post('inline-questions', questionToUpload).subscribe(async(response) => {
+              if (response['status'] === 'OK') {
+                this.dbService.updateDatabaseField('inline_questions', 'online_ref', response['data']['id'], question.appRef);
+              }
+            });
+          } else {
+            this.apiService.put('inline-questions', questionToUpload.onlineRef, questionToUpload).subscribe(async(response) => {
+              if (response?.['status'] !== 'OK') {
+                console.error('Failed to update inline question', response);
+              }
+            });
+          }
+        });
+      }
+    });
+  }
+
+  async fetchInlineQuestions() {
+    return this.apiService.get('inline-questions').subscribe((response) => {
+      if (response.status === 200 && response.body.data.length > 0) {
+        response.body.data.forEach((question) => {
+          this.dbService.checkIfEntryExists('inline_questions', question.appRef)
+          .then(async(exists) => {
+            if (!exists) {
+              const now = this.sharedMethods.getCurrentDateTime();
+              const user = await this.sharedMethods.getUserData();
+              const questionToSave = {
+                ...question,
+                userId: question.user,
+                onlineRef: question.id,
+                createdAt: question.createdAt ??  now,
+                updatedAt: question.updatedAt ??  now,
+                createdBy: question.createdBy ?? user?.id,
+                updatedBy: question.updatedBy ?? user?.id,
+              };
+              this.surveyDataService.saveOnlineInlineQuestion(questionToSave)
+              .then((id) => { console.log ( `Inline question ${question.question} saved with id ${id}`)});
+            }
+          });
         });
       }
     });
