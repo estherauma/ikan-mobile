@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { ContentService } from 'src/app/shared/services/content/content.service';
+import { SharedmethodsService } from 'src/app/shared/services/sharedmethods/sharedmethods.service';
+import { SurveyDataService } from 'src/app/survey/data/survey-data.service';
 
 @Component({
   selector: 'app-question',
@@ -11,16 +13,15 @@ export class QuestionComponent  implements OnInit {
   questionData: any;
   commonText: any;
   isYesNoValue: boolean = false;
-  selectedValue = '';
-  inputValue = '';
   hasFollowupQtn: boolean = false;
   followupQtnData: any;
-  followUpSelectedValue = '';
-  followUpInputValue = '';
 
   constructor(
     public activatedRoute: ActivatedRoute,
     public contentService: ContentService,
+    public sharedMethods: SharedmethodsService,
+    public surveyDataService: SurveyDataService,
+    public router: Router,
   ) {}
 
   ngOnInit() {
@@ -51,24 +52,22 @@ export class QuestionComponent  implements OnInit {
   }
 
   selectOption(value: string) {
-    this.selectedValue = value;
     this.questionData.value = value;
     this.getFollowupQtn();
   }
 
   handleInputChange(e) {
-    this.inputValue = e.detail.value;
-    this.questionData.value = this.inputValue;
+    this.questionData.value = e.detail.value;
     this.getFollowupQtn();
   }
   
   handleSelectChange(e) {
-    this.selectedValue = e.detail.value;
-    this.questionData.value = this.selectedValue;
+    this.questionData.value = e.detail.value;
     this.getFollowupQtn();
   }
 
   getFollowupQtn() {
+    // todo: clear followup value if value
     if (this.questionData?.options) {
       const selectedOption = this.questionData.options.find((opt) => opt.value === this.questionData.value);
       if (selectedOption?.followUpQuestion) {
@@ -85,14 +84,48 @@ export class QuestionComponent  implements OnInit {
   }
 
   handleFollowUpInputChange(e) {
-    this.followUpInputValue = e.detail.value;
-    this.followupQtnData.value = this.followUpInputValue;
+    this.followupQtnData.value = e.detail.value;
   }
   
   handleFollowUpSelectChange(e) {
-    this.followUpSelectedValue = e.detail.value;
-    this.followupQtnData.value = this.followUpSelectedValue;
+    this.followupQtnData.value = e.detail.value;
   }
 
-  submitAnswer() {}
+  async submitAnswer() {
+    if (!this.questionData?.value) return;
+    
+    if (this.hasFollowupQtn && !this.followupQtnData?.value && this.followupQtnData?.questionType !== 'helperText') {
+      // TODO: translate
+      this.sharedMethods.showToast('Please answer the followup question');
+      return;
+    }
+
+    if (this.followupQtnData && this.followupQtnData.value && typeof this.followupQtnData.value === 'object') {
+      this.followupQtnData.value = this.followupQtnData.value.join(', ');
+    }
+    const user = await this.sharedMethods.getUserData();
+    const dataToSave = {
+      appRef: this.sharedMethods.generateAppRef(),
+      userId: user.id,
+      subChapter: this.questionData?.subChapter,
+      questionKey: this.questionData?.key,
+      questionType: this.questionData?.questionType,
+      questionText: this.questionData?.question,
+      questionResponse: this.questionData?.value,
+      followUpQuestionKey: this.followupQtnData ? this.followupQtnData?.key : null,
+      followUpQuestionType: this.followupQtnData ? this.followupQtnData?.questionType : null,
+      followUpQuestionText: this.followupQtnData ? this.followupQtnData?.question : null,
+      followUpQuestionResponse: this.followupQtnData ? this.followupQtnData?.value : null,
+    };
+
+    const insertId = await this.surveyDataService.createInlineQuestion(dataToSave);
+    if (insertId) {
+      const chapterId = this.questionData.subChapter.split('.')[0];
+      const subChapterId = this.questionData.subChapter;
+      this.router.navigate([ 'learninghub/chapters', chapterId, subChapterId ], { replaceUrl: true });
+    } else {
+      // TODO: translate
+      this.sharedMethods.showToast('Error saving response');
+    }
+  }
 }
