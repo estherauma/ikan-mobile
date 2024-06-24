@@ -96,7 +96,7 @@ export class QuestionComponent  implements OnInit {
     
     if (this.hasFollowupQtn && !this.followupQtnData?.value && this.followupQtnData?.questionType !== 'helperText') {
       // TODO: translate
-      this.sharedMethods.showToast('Please answer the followup question');
+      this.sharedMethods.showToast(this.commonText?.pleaseAnswerFollowupQtn);
       return;
     }
 
@@ -124,8 +124,7 @@ export class QuestionComponent  implements OnInit {
       const subChapterId = this.questionData.subChapter;
       this.router.navigate([ 'learninghub/chapters', chapterId, subChapterId ], { replaceUrl: true });
     } else {
-      // TODO: translate
-      this.sharedMethods.showToast('Error saving response');
+      this.sharedMethods.showToast(this.commonText?.errSavingResponses);
     }
   }
 }
