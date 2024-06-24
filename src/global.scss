@@ -86,3 +86,10 @@ body {
 ion-tab-bar {
   margin-bottom: calc(4px + env(safe-area-inset-top));
 }
+
+.content-container {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  width: 100%;
+}

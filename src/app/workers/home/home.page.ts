@@ -56,9 +56,9 @@ export class HomePage implements OnInit {
     const countryOptions = this.contentService.getFormOptions('createworkers', 'country');
     const statusLabel = this.commonText?.filterByStatus;
     const statusOptions = [
-      { value: 'active', label: 'Active' },
-      { value: 'inactive', label: 'Inactive' },
-      { value: 'pending', label: 'Pending'}
+      { value: 'active', label: this.commonText?.active },
+      { value: 'inactive', label: this.commonText?.inactive },
+      { value: 'pending', label: this.commonText.pending}
     ];
 
     return [

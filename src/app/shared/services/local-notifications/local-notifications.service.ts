@@ -60,15 +60,13 @@ export class LocalNotificationsService {
 
   async scheduleNotifications() {
     try {
-      const isProduction = env.production;
       const permissionsGranted = await this.requestNotificationPermission();
       if (permissionsGranted) {
         // Regular Notifications to run every Sunday
         const regularNotifications: LocalNotificationSchema[] = [
           {
-            // TODO: add to prismic
-            title: 'Survey' + (isProduction ? '' : ' (Development)'),
-            body: 'A quick survey checking on you',
+            title: this.commonText?.surveyNotificationTitle || 'Survey',
+            body: this.commonText?.surveyNotificationBody || 'A quick survey checking on you',
             id: 1,
             schedule: {
               repeats: true,
