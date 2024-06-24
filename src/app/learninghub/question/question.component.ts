@@ -100,8 +100,8 @@ export class QuestionComponent  implements OnInit {
       return;
     }
 
-    if (this.followupQtnData && this.followupQtnData.value && typeof this.followupQtnData.value === 'object') {
-      this.followupQtnData.value = this.followupQtnData.value.join(', ');
+    if (this.followupQtnData && this.followupQtnData.value && Array.isArray(this.followupQtnData.value)) {
+      this.followupQtnData.value = this.followupQtnData.value.length ? this.followupQtnData.value.join(', ') : null;
     }
     const user = await this.sharedMethods.getUserData();
     const dataToSave = {
