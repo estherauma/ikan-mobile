@@ -103,7 +103,10 @@ export class QuestionComponent  implements OnInit {
     //   return;
     // }
 
-    if (this.followupQtnData && this.followupQtnData.value && Array.isArray(this.followupQtnData.value)) {
+    if (this.questionData && this.questionData?.value && Array.isArray(this.questionData?.value)) {
+      this.questionData.value = this.questionData.value.length ? this.questionData.value.join(', ') : null;
+    }
+    if (this.followupQtnData && this.followupQtnData?.value && Array.isArray(this.followupQtnData?.value)) {
       this.followupQtnData.value = this.followupQtnData.value.length ? this.followupQtnData.value.join(', ') : null;
     }
     const user = await this.sharedMethods.getUserData();

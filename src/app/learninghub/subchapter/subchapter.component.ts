@@ -95,7 +95,7 @@ export class SubchapterComponent  implements OnInit {
         const savedQtn = this.savedInlineQuestions.find((el) => el.questionKey === item.key);
         if (savedQtn) {
           if (item?.questionType === 'multi-select') {
-            const values = savedQtn.questionResponse.split(',');
+            const values: Array<string> = savedQtn.questionResponse?.split(',');
             const optValues = values.map((val) => val.trim());
             item.value = optValues;
           } else {
