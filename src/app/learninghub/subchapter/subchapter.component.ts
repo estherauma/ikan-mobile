@@ -28,6 +28,7 @@ export class SubchapterComponent  implements OnInit {
   isCaseStudy = false;
   caseStudyUid: string;
   caseStudyImgUrl: string;
+  networkStatus = false;
 
   constructor(
     public activatedRoute: ActivatedRoute,
@@ -44,7 +45,8 @@ export class SubchapterComponent  implements OnInit {
     });
   }
 
-  ngOnInit() {
+  async ngOnInit() {
+    this.networkStatus = await this.sharedmethods.checkInternetConnectionStatus();
     this.pageSetup();
     this.setUpAnalytics();
     this.getQuestionValues(); // TODO
@@ -166,4 +168,6 @@ export class SubchapterComponent  implements OnInit {
   viewQuestion(data) {
     this.router.navigate([this.router.url, 'question', data?.key , { questionData: JSON.stringify(data) }]);
   }
+
+  onPlay(e) {}
 }

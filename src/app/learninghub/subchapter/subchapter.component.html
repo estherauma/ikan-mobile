@@ -18,12 +18,14 @@
     </div> -->
     <div class="content-section">
       <div *ngFor="let section of pageContent">
+        <!-- text area type -->
         <shared-text-area
           *ngIf="section?.type === 'text_area'"
           [data]="section"
           styles="textarea"
         ></shared-text-area>
         
+        <!-- question type -->
         <div
           *ngIf="section?.type === 'questions'"
           class="qtn-wrapper"
@@ -52,6 +54,7 @@
           </ion-row>
         </div>
     
+        <!-- audio type -->
         <app-audio-player
           *ngIf="section?.type === 'audio'"
           [title]="section?.title || ''"
@@ -59,6 +62,7 @@
           variant="white-bg-title" 
         ></app-audio-player>
     
+        <!-- case study link -->
         <shared-case-study
           *ngIf="section?.type === 'case_study'"
           [data]="section"
@@ -68,6 +72,7 @@
         >
         </shared-case-study>
     
+        <!-- warning box type -->
         <shared-warning-box
           *ngIf="section?.type === 'warning_box'"
           [data]="section"
@@ -76,11 +81,23 @@
         >
         </shared-warning-box>
         
+        <!-- image type -->
         <shared-image
           *ngIf="section?.type === 'image'"
           [data]="section"
         >
         </shared-image>
+        
+        <!-- video type-->
+         <shared-video
+          *ngIf="section?.type === 'video'"
+          [data]="section"
+          [networkStatus]="networkStatus"
+          defaultThumbnail="assets/icon/default-thumbnail.jpg"
+          playIcon="assets/icon/play.svg"
+          (onPlay)="onPlay($event)"
+        >
+        </shared-video>
       </div>
     </div>
   </div>
