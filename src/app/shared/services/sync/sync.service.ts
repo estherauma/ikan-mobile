@@ -460,7 +460,7 @@ export class SyncService {
                 updatedBy: question.updatedBy ?? user?.id,
               };
               this.surveyDataService.saveOnlineInlineQuestion(questionToSave)
-              .then((id) => { console.log ( `Inline question ${question.question} saved with id ${id}`)});
+              .then((id) => { console.log ( `Inline question ${question.questionText} saved with id ${id}`)});
             }
           });
         });
