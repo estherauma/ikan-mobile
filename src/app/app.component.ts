@@ -81,7 +81,7 @@ export class AppComponent implements OnInit, OnDestroy {
     await this.contentService.setUpAppData().then(() => {
       this.checkSetupComplete();
       this.commonText = this.contentService.commonText;
-      this.localNotifications.scheduleNotifications();
+      this.localNotifications.scheduleNotifications(this.commonText);
     });
     this.userData = this.authService.userData;
     this.userEmail = this.authService.userData?.email;

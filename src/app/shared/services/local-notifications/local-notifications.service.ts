@@ -4,7 +4,6 @@ import { ActionPerformed, LocalNotificationSchema, LocalNotifications, Weekday }
 import { NotificationActionId, SurveySources, UserRole } from '../../types/api-types';
 import { SharedmethodsService } from '../sharedmethods/sharedmethods.service';
 import { GlobalErrorHandlerService } from '../error-handler/global-error-handler.service';
-import { env } from 'src/environments/environment';
 import { AuthService } from '../auth/auth.service';
 import { Platform } from '@ionic/angular';
 import { App, AppState } from '@capacitor/app';
@@ -16,9 +15,7 @@ const coreApp = Plugins.App;
   providedIn: 'root'
 })
 export class LocalNotificationsService {
-
   appActive = false;
-  commonText: any;
 
   constructor(
     public router: Router,
@@ -28,13 +25,10 @@ export class LocalNotificationsService {
     public authService: AuthService,
     public contentService: ContentService,
   ) {
-    this.commonText = this.contentService?.commonText;
     this.platform.ready().then(() => {
       App.addListener('appStateChange', (state: AppState) => {
         this.appActive = state.isActive;
       });
-
-    this.scheduleNotifications();
     this.addListeners();
     });
   }
@@ -58,15 +52,15 @@ export class LocalNotificationsService {
   }
 
 
-  async scheduleNotifications() {
+  async scheduleNotifications(commonText) {
     try {
       const permissionsGranted = await this.requestNotificationPermission();
       if (permissionsGranted) {
         // Regular Notifications to run every Sunday
         const regularNotifications: LocalNotificationSchema[] = [
           {
-            title: this.commonText?.surveyNotificationTitle || 'Survey',
-            body: this.commonText?.surveyNotificationBody || 'A quick survey checking on you',
+            title: commonText?.surveyNotificationTitle,
+            body: commonText?.surveyNotificationBody,
             id: 1,
             schedule: {
               repeats: true,
@@ -100,8 +94,8 @@ export class LocalNotificationsService {
         // Preset Notifications to run every week from the given date within given time frame
         let presetNotifications: LocalNotificationSchema[] = [];
         const presetTopics = await this.contentService?.getAllCategories();
-        const notificationsStartDate = this.commonText?.notificationsStartDate ? new Date(this.commonText?.notificationsStartDate) : undefined;
-        const notificationsTimeFrame = this.commonText?.notificationsTimeFrame ? Number(this.commonText?.notificationsTimeFrame) : undefined;
+        const notificationsStartDate = commonText?.notificationsStartDate ? new Date(commonText?.notificationsStartDate) : undefined;
+        const notificationsTimeFrame = commonText?.notificationsTimeFrame ? Number(commonText?.notificationsTimeFrame) : undefined;
 
         if (!notificationsStartDate || !notificationsTimeFrame) {
           return;
@@ -113,8 +107,8 @@ export class LocalNotificationsService {
           notificationDate.setHours(18, 0, 0, 0);
 
           const prestNotif = {
-            title: 'Survey',
-            body: 'A quick survey checking on you',
+            title: commonText?.surveyNotificationTitle,
+            body: commonText?.surveyNotificationBody,
             id: i + 1,
             schedule: { 
               at: notificationDate, 
@@ -150,13 +144,13 @@ export class LocalNotificationsService {
     }
   }
 
-  async triggerTestNotification() {
+  async triggerTestNotification(commonText) {
     try {
       await LocalNotifications.schedule({
         notifications: [
           {
-            title: 'Survey - This is a test notification',
-            body: 'A quick survey checking on you',
+            title: commonText?.surveyNotificationTitle,
+            body: commonText?.surveyNotificationBody,
             id: 10,
             schedule: { 
               at: new Date(Date.now() + 1000), 
