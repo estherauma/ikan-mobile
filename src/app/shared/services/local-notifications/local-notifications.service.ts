@@ -56,7 +56,7 @@ export class LocalNotificationsService {
     try {
       const permissionsGranted = await this.requestNotificationPermission();
       if (permissionsGranted) {
-        // Regular Notifications to run every Sunday
+        // Regular Notifications to run every Thursday & Sunday
         const regularNotifications: LocalNotificationSchema[] = [
           {
             title: commonText?.surveyNotificationTitle,
@@ -76,8 +76,27 @@ export class LocalNotificationsService {
               roles: [UserRole.worker,]
             }
           },
+          {
+            title: commonText?.surveyNotificationTitle,
+            body: commonText?.surveyNotificationBody,
+            id: 2,
+            schedule: {
+              repeats: true,
+              on:
+                {
+                  weekday: Weekday.Thursday,
+                  hour: 18,
+                  minute: 0,
+                }
+              }, // Notification will run every Thursday
+            actionTypeId: NotificationActionId.survey,
+            extra: {
+              roles: [UserRole.worker,]
+            }
+          },
   
           // ADD NOTIFICATIONS HERE
+          // id should be different for each notification otherwise it will override the previous one
         ];
   
         const user = await this.sharedMethods.getUserData();
@@ -93,6 +112,8 @@ export class LocalNotificationsService {
 
         // Preset Notifications to run every week from the given date within given time frame
         let presetNotifications: LocalNotificationSchema[] = [];
+        // TODO: Get preset topics from prismic
+        // TODO: make notif frequency dynamic
         const presetTopics = await this.contentService?.getAllCategories();
         const notificationsStartDate = commonText?.notificationsStartDate ? new Date(commonText?.notificationsStartDate) : undefined;
         const notificationsTimeFrame = commonText?.notificationsTimeFrame ? Number(commonText?.notificationsTimeFrame) : undefined;
