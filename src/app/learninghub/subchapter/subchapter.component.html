@@ -25,7 +25,7 @@
         ></shared-text-area>
         
         <div
-          *ngIf="section?.type === 'questions'"
+          *ngIf="section?.type === 'questions' && section?.displayquestion"
           class="qtn-wrapper"
           (click)="viewQuestion(section)"
         >
