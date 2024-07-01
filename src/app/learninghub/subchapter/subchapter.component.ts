@@ -29,6 +29,7 @@ export class SubchapterComponent  implements OnInit {
   isCaseStudy = false;
   caseStudyUid: string;
   caseStudyImgUrl: string;
+  networkStatus = false;
   savedInlineQuestions = [];
 
   constructor(
@@ -48,7 +49,8 @@ export class SubchapterComponent  implements OnInit {
     });
   }
 
-  ngOnInit() {
+  async ngOnInit() {
+    this.networkStatus = await this.sharedmethods.checkInternetConnectionStatus();
     this.pageSetup();
     this.setUpAnalytics();
   }
@@ -190,4 +192,6 @@ export class SubchapterComponent  implements OnInit {
     data.subChapter = this.subChapterId;
     this.router.navigate([this.router.url, 'question', data?.key , { questionData: JSON.stringify(data) }]);
   }
+
+  onPlay(e) {}
 }
