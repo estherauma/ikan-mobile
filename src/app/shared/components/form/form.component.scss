@@ -117,11 +117,19 @@ ion-select {
   border-radius: 10px;
 }
 
-.help-text-wrapper {
+.help-text-wrapper,
+.disclaimer-wrapper {
   p {
     margin: 0;
     font-style: italic;
     font-weight: 600;
+  }
+}
+
+.disclaimer-wrapper {
+  margin: 20px 0;
+  p {
+    color: var(--ikan_red_100);
   }
 }
 

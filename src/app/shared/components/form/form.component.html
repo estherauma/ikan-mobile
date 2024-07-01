@@ -749,6 +749,12 @@
     </div>
   </div>
 
+  <div *ngIf="showSurveyDisclaimer" class="help-text-wrapper disclaimer-wrapper">
+    <div [ngClass]="{'text-darkblue': isOtherDarkBlue}" lines="none" class="transparent-bg">
+      <p class="text-section">{{ disclaimerText }}</p>
+    </div>
+  </div>
+
   <ion-row class="buttons" *ngIf="!useCustomSubmitButton">
     <ion-col *ngIf="showCancelButton" size="6">
       <app-button

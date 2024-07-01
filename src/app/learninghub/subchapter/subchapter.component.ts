@@ -76,8 +76,8 @@ export class SubchapterComponent  implements OnInit {
   }
   
   setUpAnalytics() {
-    if (this.pageContent?.analyticsEventName) {
-      this.analytics.trackEvent(this.pageContent.analyticsEventName, this.sharedmethods.analyticsEventParams);
+    if (this.allPageContent?.analyticsEventName) {
+      this.analytics.trackEvent(this.allPageContent.analyticsEventName, this.sharedmethods.analyticsEventParams);
     } else {
       if (this.isCaseStudy) {
         // TODO: send error to sentry

@@ -20,6 +20,7 @@ export class TrainingVideoComponent extends BaseformPage  implements OnInit {
   video: any;
   networkStatus = false;
   defaultThumbnail = '/assets/icon/default-thumbnail.jpg';
+  disclaimerText: string = '';
 
   constructor(
     public contentService: ContentService,
@@ -34,6 +35,7 @@ export class TrainingVideoComponent extends BaseformPage  implements OnInit {
 
   async ngOnInit() {
     this.commonText = this.contentService?.commonText;
+    this.disclaimerText = this.commonText?.disclaimerMessage || '';
     this.networkStatus = await this.sharedMethods.checkInternetConnectionStatus();
     const pageData = this.contentService.getContentByPropertyName('tfa-training-video');
     this.pageTitle  = pageData?.pageTitle;
