@@ -82,13 +82,31 @@ export class TrainingVideoComponent extends BaseformPage  implements OnInit {
   async onSubmit(formData) {
     this.sharedMethods.showLoader(this.commonText?.submittingYourData);
     const date = this.sharedMethods.getCurrentDateTime('date');
-    const videoResponses =  this.formQuestions.map((item) => {
-      return {
-        app_ref: this.sharedMethods.generateAppRef(),
-        survey_date: date,
-        question_key: item.key,
-        question_text: item?.label || item?.question,
-        question_response: formData[item.key],
+    const user = await this.sharedMethods.getUserData();
+    const videoResponses = [];
+    this.formQuestions.forEach((item) => {
+      if (formData[item.key]) {
+        let isFollowUpQuestionAnswered = false;
+        let followUpQuestionResponse = formData[item?.followUpQuestion?.key] ?? null;
+        if (item?.hasFollowUpQuestion && formData[item?.followUpQuestion?.key]) {
+          isFollowUpQuestionAnswered = true;
+          if (Array.isArray(followUpQuestionResponse)) {
+            followUpQuestionResponse = followUpQuestionResponse.length ? followUpQuestionResponse.join(', ') : null;
+          }
+        }
+        videoResponses.push({
+          appRef: this.sharedMethods.generateAppRef(),
+          userId: user?.id,
+          surveyDate: date,
+          questionKey: item.key,
+          questionType: item.questionType,
+          questionText: item?.label || item?.question,
+          questionResponse: formData[item.key],
+          followUpQuestionKey: isFollowUpQuestionAnswered ? item?.followUpQuestion?.key : null,
+          followUpQuestionType: isFollowUpQuestionAnswered ? item?.followUpQuestion?.questionType : null,
+          followUpQuestionText: isFollowUpQuestionAnswered ? item?.followUpQuestion?.label : null,
+          followUpQuestionResponse: isFollowUpQuestionAnswered ? followUpQuestionResponse : null,
+        });
       }
     });
 
