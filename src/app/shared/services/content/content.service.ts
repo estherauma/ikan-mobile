@@ -52,7 +52,7 @@ export class ContentService {
     const result = await this.readLocalContent();
     this.appContent = result?.content;
     await this.updateCurrentLanguage();
-
+    await this.addQuestionOptionValues();
   }
 
   async currentContentCreateAt() {
@@ -205,7 +205,6 @@ export class ContentService {
 
   getSurveyData() {
     const content = this.appContent?.[`${this.currentLanguage}`];
-    // TODO: fix error, null survey categories
     if (!content) return {};
     
     const allDocs: Array<any> = Object.values(content);
@@ -237,7 +236,6 @@ export class ContentService {
   }
 
   async getSurveyQuestions(surveyTopic: string = '') {
-    // TODO: fix error, null survey categories
     let category = surveyTopic;
     if (!category) {
       let allCategories;
@@ -250,7 +248,7 @@ export class ContentService {
       // get random category
       // const randomIndex = Math.floor(Math.random() * allCategories.length);
       // const randomCategory = allCategories[randomIndex];
-       category = allCategories[0];
+      category = allCategories[0];
     }
     const surveyData =  this.getSurveyData();
     
@@ -264,7 +262,7 @@ export class ContentService {
       questionType: qn.questionType,
       options: qn.options?.length ? qn.options.map(x => ({
         label: x.option,
-        value: x.option, //TODO: use english value
+        value: x.value,
         ...x 
       })) : [],
     })) ?? [];
@@ -288,5 +286,40 @@ export class ContentService {
     
     const opt = options.find(x => x.value === optionValue);
     return opt?.label ?? optionValue;
+  }
+
+  /**
+   * Adds values to content_area question options 
+   * The options/labels are in the selected language
+   * The values are in English irrespective of the selected language
+   */
+  addQuestionOptionValues(){
+    const content = this.appContent?.[`${this.currentLanguage}`];
+    const englishContent = this.appContent?.['en-us'];
+    if (!content || !englishContent) return;
+    
+    const allDocs: Array<any> = Object.values(content);
+    const allEnglishDocs: Array<any> = Object.values(englishContent);
+
+    allDocs?.forEach((doc) => {
+      if (doc?.type === 'create_content_area' && (!isNaN(parseFloat(doc?.pageName)) || doc?.pageName.includes('ikan-feedback'))) {
+        const englishDoc = allEnglishDocs.find(x => x?.pageName === doc?.pageName);
+        if (!englishDoc) return;
+
+        doc?.pageContent?.forEach((section) => {
+          if (section?.type === 'questions') {
+            section?.options?.forEach((opt, i) => {
+              const englishOptions = englishDoc?.pageContent?.find(x => x?.type === 'questions' && x?.key === section?.key)?.options;
+              opt.value = englishOptions[i]?.option;
+              if (opt?.followUpQuestion) {
+                opt?.followUpQuestion?.options?.forEach((fOpt, j) => {
+                  fOpt.value = englishOptions[i]?.followUpQuestion?.options[j]?.option;
+                });
+              }
+            });
+          }
+        });
+      }
+    });
   }
 }

@@ -1,7 +1,7 @@
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { ContentService } from '../shared/services/content/content.service';
 import { BaseformPage } from '../shared/components/baseform/baseform.page';
-import { FormControl, Validators, FormGroup } from '@angular/forms';
+import { FormControl, FormGroup } from '@angular/forms';
 import { SharedmethodsService } from '../shared/services/sharedmethods/sharedmethods.service';
 import { ActivatedRoute, Params, Router } from '@angular/router';
 import { StorageKeys, SurveySources } from '../shared/types/api-types';
@@ -18,6 +18,7 @@ export class SurveyComponent extends BaseformPage  implements OnInit {
   attemptedFollowUpQtnKeys = {};
   surveySource = '';
   surveyTopic: string = '';
+  disclaimerText: string = '';
 
   constructor(
     public contentService: ContentService,
@@ -34,6 +35,7 @@ export class SurveyComponent extends BaseformPage  implements OnInit {
 
   async ngOnInit() {
     this.commonText = this.contentService?.commonText;
+    this.disclaimerText = `${this.commonText?.disclaimerMessage || ''} ${this.commonText?.disclaimerContactMessage || ''}`;
     const pageData = this.contentService.getContentByPropertyName('survey');
     this.pageTitle  = pageData?.pageTitle;
     await this.getSurveySource();
@@ -91,26 +93,31 @@ export class SurveyComponent extends BaseformPage  implements OnInit {
     const surveyData = [];
     this.formQuestions.forEach((qtn) => {
       // check if question has response and if response is an array, check it has at least one item
-      if (formData[qtn.key] && (!Array.isArray(formData[qtn.key]) || formData[qtn.key].length)) {;
-        surveyData.push({
-          app_ref: this.sharedMethods.generateAppRef(),
-          survey_date: date,
-          question_key: qtn.key,
-          question_text: qtn?.label || qtn?.question,
-          question_response: formData[qtn.key],
-        });
-
+      if (formData[qtn.key] && (!Array.isArray(formData[qtn.key]) || formData[qtn.key].length)) {
+        let isFollowUpQuestionAnswered = false;
+        let followUpQuestionResponse = formData[qtn?.followUpQuestion?.key] ?? null;
         // check if question has followup question and if followup question has response and if response is an array, check it has at least one item
-        if (qtn?.hasFollowUpQuestion && formData[qtn?.followUpQuestion?.key]
-              && (!Array.isArray(formData[qtn?.followUpQuestion?.key]) || formData[qtn?.followUpQuestion?.key].length)) {
-          surveyData.push({
-            app_ref: this.sharedMethods.generateAppRef(),
-            survey_date: date,
-            question_key: qtn?.followUpQuestion?.key,
-            question_text: qtn?.followUpQuestion?.label,
-            question_response: formData[qtn?.followUpQuestion?.key],
-          });
-        };
+        if (qtn?.hasFollowUpQuestion && formData[qtn?.followUpQuestion?.key]) {
+          isFollowUpQuestionAnswered = true;
+          
+          if (Array.isArray(followUpQuestionResponse)) {
+            followUpQuestionResponse = followUpQuestionResponse.length ? followUpQuestionResponse.join(', ') : null;
+          }
+        }
+        
+        surveyData.push({
+          appRef: this.sharedMethods.generateAppRef(),
+          surveyDate: date,
+          questionKey: qtn.key,
+          questionType: qtn.questionType,
+          questionText: qtn?.label || qtn?.question,
+          questionResponse: formData[qtn.key],
+          userId: user?.id,
+          followUpQuestionKey: isFollowUpQuestionAnswered ? qtn?.followUpQuestion?.key : null,
+          followUpQuestionType: isFollowUpQuestionAnswered ? qtn?.followUpQuestion?.questionType : null,
+          followUpQuestionText: isFollowUpQuestionAnswered ? qtn?.followUpQuestion?.label : null,
+          followUpQuestionResponse: isFollowUpQuestionAnswered ? followUpQuestionResponse : null,
+        });
       }
     });
 

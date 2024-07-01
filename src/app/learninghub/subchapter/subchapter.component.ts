@@ -4,6 +4,7 @@ import { AnalyticsService } from 'src/app/shared/services/analytics/analytics.se
 import { ContentService } from 'src/app/shared/services/content/content.service';
 import { SharedmethodsService } from 'src/app/shared/services/sharedmethods/sharedmethods.service';
 import { HubQuestionStatus } from 'src/app/shared/types/api-types';
+import { SurveyDataService } from 'src/app/survey/data/survey-data.service';
 
 @Component({
   selector: 'app-subchapter',
@@ -28,30 +29,39 @@ export class SubchapterComponent  implements OnInit {
   isCaseStudy = false;
   caseStudyUid: string;
   caseStudyImgUrl: string;
+  networkStatus = false;
+  savedInlineQuestions = [];
 
   constructor(
     public activatedRoute: ActivatedRoute,
     public contentService: ContentService,
     public router: Router,
     public sharedmethods: SharedmethodsService,
-    public analytics: AnalyticsService
+    public analytics: AnalyticsService,
+    public surveyDataService: SurveyDataService,
   ) {
     this.activatedRoute.params.subscribe(async params => {
       this.subChapterId = params?.subChapterId;
       this.caseStudyUid = params?.caseStudyUid;
       this.isCaseStudy = !!params?.caseStudyUid;
       this.caseStudyImgUrl = params?.imgUrl || '';
+      this.pageSetup();
     });
   }
 
-  ngOnInit() {
+  async ngOnInit() {
+    this.networkStatus = await this.sharedmethods.checkInternetConnectionStatus();
     this.pageSetup();
     this.setUpAnalytics();
-    this.getQuestionValues(); // TODO
-    this.getQuestionStatus();
   }
 
   pageSetup() {
+    this.getContent();
+    this.getQuestionValues();
+    this.getQuestionStatus();
+  }
+
+  getContent() {
     if (this.isCaseStudy) {
       this.allPageContent = this.contentService.getContentByPropertyName(this.caseStudyUid);
       this.pageContent = this.allPageContent?.pageContent;
@@ -63,12 +73,13 @@ export class SubchapterComponent  implements OnInit {
       const chapterId = this.subChapterId?.split('.')[0];
       this.imgUrl = this.sharedmethods?.getChapterBackground(chapterId, 'subchapter');
       this.upNextContent = this.getNextChapterContent();
+      this.savedInlineQuestions = this.surveyDataService.inlineQuestions;
     }
   }
   
   setUpAnalytics() {
-    if (this.pageContent?.analyticsEventName) {
-      this.analytics.trackEvent(this.pageContent.analyticsEventName, this.sharedmethods.analyticsEventParams);
+    if (this.allPageContent?.analyticsEventName) {
+      this.analytics.trackEvent(this.allPageContent.analyticsEventName, this.sharedmethods.analyticsEventParams);
     } else {
       if (this.isCaseStudy) {
         // TODO: send error to sentry
@@ -80,8 +91,22 @@ export class SubchapterComponent  implements OnInit {
     }
   }
 
-  // TODO
-  getQuestionValues() {}
+  getQuestionValues() {
+    this.pageContent?.forEach((item) => {
+      if (item?.type === 'questions') {
+        const savedQtn = this.savedInlineQuestions.find((el) => el.questionKey === item.key);
+        if (savedQtn) {
+          if (item?.questionType === 'multi-select') {
+            const values: Array<string> = savedQtn.questionResponse?.split(',');
+            const optValues = values.map((val) => val.trim());
+            item.value = optValues;
+          } else {
+            item.value = savedQtn.questionResponse;
+          }
+        }
+      }
+    });
+  }
 
   getQuestionStatus() {
     this.pageContent?.forEach((item) => {
@@ -103,7 +128,7 @@ export class SubchapterComponent  implements OnInit {
           item.icon = 'close';
         } else if (
           (item.questionType === 'radio' || item.questionType === 'select')
-          && item.value.toLowerCase() === 'maybe'
+          && (item.value.toLowerCase() !== 'yes' || item.value.toLowerCase() !== 'no')
         ) {
           item.status = HubQuestionStatus.answeredMaybe;
           item.icon = 'alert';
@@ -164,6 +189,9 @@ export class SubchapterComponent  implements OnInit {
   }
 
   viewQuestion(data) {
+    data.subChapter = this.subChapterId;
     this.router.navigate([this.router.url, 'question', data?.key , { questionData: JSON.stringify(data) }]);
   }
+
+  onPlay(e) {}
 }
