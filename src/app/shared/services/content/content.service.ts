@@ -42,11 +42,10 @@ export class ContentService {
     const appContent = await this.readLocalContent();
     if (appContent == null || appContent === undefined) {
       await this.fetchContent();
-      // Read the content again after fetching it and saving it to storage
-      await this.setAppContent();
-    } else {
-      await this.setAppContent();
     }
+    await this.setAppContent();
+    await this.updateCommonText();
+    await this.updateSideMenu();
   }
 
   async setAppContent() {
@@ -86,9 +85,9 @@ export class ContentService {
         const content = res.body;
         if (content?.status === 'OK' && content.new) {
           this.writeLocalContent(StorageKeys.appContent, content.data[0]);
-          this.contentObs.next(true);
           this.appContent = content.data[0].content;
           this.updateSideMenu();
+          this.contentObs.next(true);
           return this.appContent;
         }
       });

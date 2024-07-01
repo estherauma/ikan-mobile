@@ -89,7 +89,7 @@ export class ViewclausePage implements OnInit {
     pageTextArray.forEach((element, idx) => {
       if (idx === 0) {
         textHtml += element?.paragraph;
-      } else if (element?.paragraph === '{{}}') {
+      } else if (element?.paragraph.startsWith('{{') &&  element?.paragraph.endsWith('}}')) {
         textHtml += '<br/>';
         textHtml += element?.paragraph;
       } else {
@@ -103,30 +103,32 @@ export class ViewclausePage implements OnInit {
 
   fillPlaceHolders(inputString, placeholderValues) {
     let result = inputString;
-    placeholderValues.forEach((element) => {
-      result = result.replace('{{}}', `${element}`);
-    });
+    for (const key in placeholderValues) {
+      if (placeholderValues.hasOwnProperty(key)) {
+        const placeholder = new RegExp(`{{${key}}}`, 'g');
+        result = result.replace(placeholder, placeholderValues[key]);
+      }
+    }
     return result;
   }
 
   async orderDataForClause(clauseType, data) {
     let parsedObject = JSON.parse(data);
-    let replacement = []
     switch (clauseType) {
       case 'contract-clauses-parties-requirement-vessel':
         let clauseOneData = await this.orderClauseOneData(parsedObject);
         return clauseOneData
       default:
         let replacement = await this.orderOtherClauses(parsedObject);
-        return replacement
+        return replacement;
     }
   }
 
   async orderClauseOneData(data) {
-    let response = [];
+    let response = {};
     for (const [key, value] of Object.entries(data)) {
       const formattedValue  = this.formatClauseValues(key, value);
-      response.push(formattedValue);
+      response[key] = formattedValue;
     }
     // clause one has two entries, so we need to add the second entry
     if  (this.clauseDetails?.partyB !== undefined || this.clauseDetails?.partyB !== null) {
@@ -134,28 +136,25 @@ export class ViewclausePage implements OnInit {
       let partyBDetails = JSON.parse(partyBClauseDetails?.content);
       for (const [key, value] of Object.entries(partyBDetails)) {
         const formattedValue  = this.formatClauseValues(key, value);
-        response.push(formattedValue);
+        response[key] = formattedValue;
       }
     }
-    // The values for the clause are repeated at the bottom of clause one details. These are passport/id, 
-    // in the responses array, add the 7th, 14th, 14th and 14th item end of the array in that order
-    response.push(response[7]);
-    response.push(response[15]);
-    response.push(this.vesselDetails?.name);
-    response.push(this.vesselDetails?.regNo);
+    response['vesselName'] = this.vesselDetails?.name;
+    response['vesselRegNo'] = this.vesselDetails?.regNo;
     return response;
   }
 
+  // TODO: log data, sync fetch clause documents, attachments clause
   async orderOtherClauses(data) {
     // TODO: refactor payments & benefits data display
     if (!data?.paymentFrequencyDetails) {
       delete data.paymentFrequencyDetails;
     }
 
-    let response = [];
+    let response = {};
     for (const [key, value] of Object.entries(data)) {
       const formattedValue  = this.formatClauseValues(key, value);
-      response.push(formattedValue)
+      response[key] = formattedValue;
     }
     return response;
   }

@@ -13,7 +13,6 @@ import { DBService } from 'src/app/shared/services/database/db.service';
 import { SyncService } from 'src/app/shared/services/sync/sync.service';
 import { LocalNotificationsService } from 'src/app/shared/services/local-notifications/local-notifications.service';
 import { LocalNotifications  } from '@capacitor/local-notifications';
-import { SelectRoleComponent } from '../select-role/select-role.component';
 import { AnalyticsService } from 'src/app/shared/services/analytics/analytics.service';
 import { pageEventNames } from 'src/app/shared/services/analytics/event-names';
 
@@ -94,7 +93,7 @@ export class LoginPage extends BaseformPage implements OnInit {
 
           // setup/reset local notifications
           await LocalNotifications.removeAllListeners();
-          this.localNotifications.scheduleNotifications();
+          this.localNotifications.scheduleNotifications(this.contentService.commonText);
 
           // sync data
           await this.syncService.syncData();

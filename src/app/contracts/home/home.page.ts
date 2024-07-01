@@ -8,6 +8,8 @@ import { formatDate } from "@angular/common";
 import { AuthService } from 'src/app/shared/services/auth/auth.service';
 import { CompaniesDataService } from 'src/app/companies/data/companies-data.service';
 import { GroupedOption } from 'src/app/shared/components/filter/filter.component';
+import { SharedmethodsService } from 'src/app/shared/services/sharedmethods/sharedmethods.service';
+import { UserData, UserRole } from 'src/app/shared/types/api-types';
 
 
 @Component({
@@ -30,10 +32,12 @@ export class HomePage implements OnInit {
     public contentService: ContentService,
     public authService: AuthService,
     public companiesDataService: CompaniesDataService,
+    public sharedMethods: SharedmethodsService,
 
   ) {
-    this.contractsDataService.getAll().subscribe((data) => {
-      this.contracts = this.unfilteredData = data;
+    this.contractsDataService.getAll().subscribe(async(allContracts) => {
+      const contracts = await this.getContractsByRole(allContracts);
+      this.contracts = this.unfilteredData = contracts;
       this.pageTitle = this.commonText?.contracts;
     });
   }
@@ -42,6 +46,17 @@ export class HomePage implements OnInit {
     this.commonText = this.contentService?.commonText;
     this.pageTitle = this.commonText?.contracts;
     this.groupedFilterOptions = this.getGroupedFilterOptions();
+  }
+
+  async getContractsByRole(allContracts: any[]) {
+    const user: UserData = await this.sharedMethods.getUserData();
+    if (user?.role === UserRole.vesselOwner) {
+      return allContracts.filter(contract => contract?.createdBy === user.id);
+    } else if (user?.role === UserRole.worker) {
+      // TODO: refactor logic
+      return allContracts.filter(contract => contract?.userId === user.id);
+    }
+    return [];
   }
   
   // TODO: add filter by vessel

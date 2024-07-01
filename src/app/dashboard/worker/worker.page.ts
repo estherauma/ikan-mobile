@@ -54,18 +54,19 @@ export class WorkerPage implements OnInit {
     });
   }
 
-  ngOnInit() {
+  async ngOnInit() {
     if (!this.pushNotifications.preventSecondNotificationPrompt) {
       this.pushNotifications.checkAndroidPNsPermissions();
     }
-    this.setupPage();
+    await this.setupPage();
     this.analytics.trackEvent(pageEventNames.viewWorkerDashboard, this.sharedmethods.analyticsEventParams)
   }
 
   async setupPage() {
-    this.commonText = this.contentService.commonText;
+    await this.contentService.setUpAppData();
+    this.commonText = this.contentService?.commonText;
     this.user = await this.sharedmethods.readDataFromStorage(StorageKeys.userData);
-    this.name = this.commonText?.hi || '' + ' ' + this.user?.firstName || '';
+    this.name = `${this.commonText?.hi || ''} ${this.user?.firstName || ''}`;
     await this.contentService.updateCurrentLanguage();
     const menuContent = await this.contentService.getMenuContent();
 
@@ -91,6 +92,6 @@ export class WorkerPage implements OnInit {
 
   // For testing purposes
   triggerNotifications() {
-    this.localNotifications.triggerTestNotification();
+    this.localNotifications.triggerTestNotification(this.commonText);
   }
 }

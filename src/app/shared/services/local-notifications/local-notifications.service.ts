@@ -4,7 +4,6 @@ import { ActionPerformed, LocalNotificationSchema, LocalNotifications, Weekday }
 import { NotificationActionId, SurveySources, UserRole } from '../../types/api-types';
 import { SharedmethodsService } from '../sharedmethods/sharedmethods.service';
 import { GlobalErrorHandlerService } from '../error-handler/global-error-handler.service';
-import { env } from 'src/environments/environment';
 import { AuthService } from '../auth/auth.service';
 import { Platform } from '@ionic/angular';
 import { App, AppState } from '@capacitor/app';
@@ -16,9 +15,7 @@ const coreApp = Plugins.App;
   providedIn: 'root'
 })
 export class LocalNotificationsService {
-
   appActive = false;
-  commonText: any;
 
   constructor(
     public router: Router,
@@ -28,13 +25,10 @@ export class LocalNotificationsService {
     public authService: AuthService,
     public contentService: ContentService,
   ) {
-    this.commonText = this.contentService?.commonText;
     this.platform.ready().then(() => {
       App.addListener('appStateChange', (state: AppState) => {
         this.appActive = state.isActive;
       });
-
-    this.scheduleNotifications();
     this.addListeners();
     });
   }
@@ -58,15 +52,15 @@ export class LocalNotificationsService {
   }
 
 
-  async scheduleNotifications() {
+  async scheduleNotifications(commonText) {
     try {
       const permissionsGranted = await this.requestNotificationPermission();
       if (permissionsGranted) {
-        // Regular Notifications to run every Sunday
+        // Regular Notifications to run every Thursday & Sunday
         const regularNotifications: LocalNotificationSchema[] = [
           {
-            title: this.commonText?.surveyNotificationTitle || 'Survey',
-            body: this.commonText?.surveyNotificationBody || 'A quick survey checking on you',
+            title: commonText?.surveyNotificationTitle,
+            body: commonText?.surveyNotificationBody,
             id: 1,
             schedule: {
               repeats: true,
@@ -82,8 +76,27 @@ export class LocalNotificationsService {
               roles: [UserRole.worker,]
             }
           },
+          {
+            title: commonText?.surveyNotificationTitle,
+            body: commonText?.surveyNotificationBody,
+            id: 2,
+            schedule: {
+              repeats: true,
+              on:
+                {
+                  weekday: Weekday.Thursday,
+                  hour: 18,
+                  minute: 0,
+                }
+              }, // Notification will run every Thursday
+            actionTypeId: NotificationActionId.survey,
+            extra: {
+              roles: [UserRole.worker,]
+            }
+          },
   
           // ADD NOTIFICATIONS HERE
+          // id should be different for each notification otherwise it will override the previous one
         ];
   
         const user = await this.sharedMethods.getUserData();
@@ -99,9 +112,11 @@ export class LocalNotificationsService {
 
         // Preset Notifications to run every week from the given date within given time frame
         let presetNotifications: LocalNotificationSchema[] = [];
+        // TODO: Get preset topics from prismic
+        // TODO: make notif frequency dynamic
         const presetTopics = await this.contentService?.getAllCategories();
-        const notificationsStartDate = this.commonText?.notificationsStartDate ? new Date(this.commonText?.notificationsStartDate) : undefined;
-        const notificationsTimeFrame = this.commonText?.notificationsTimeFrame ? Number(this.commonText?.notificationsTimeFrame) : undefined;
+        const notificationsStartDate = commonText?.notificationsStartDate ? new Date(commonText?.notificationsStartDate) : undefined;
+        const notificationsTimeFrame = commonText?.notificationsTimeFrame ? Number(commonText?.notificationsTimeFrame) : undefined;
 
         if (!notificationsStartDate || !notificationsTimeFrame) {
           return;
@@ -113,8 +128,8 @@ export class LocalNotificationsService {
           notificationDate.setHours(18, 0, 0, 0);
 
           const prestNotif = {
-            title: 'Survey',
-            body: 'A quick survey checking on you',
+            title: commonText?.surveyNotificationTitle,
+            body: commonText?.surveyNotificationBody,
             id: i + 1,
             schedule: { 
               at: notificationDate, 
@@ -150,13 +165,13 @@ export class LocalNotificationsService {
     }
   }
 
-  async triggerTestNotification() {
+  async triggerTestNotification(commonText) {
     try {
       await LocalNotifications.schedule({
         notifications: [
           {
-            title: 'Survey - This is a test notification',
-            body: 'A quick survey checking on you',
+            title: commonText?.surveyNotificationTitle,
+            body: commonText?.surveyNotificationBody,
             id: 10,
             schedule: { 
               at: new Date(Date.now() + 1000), 
