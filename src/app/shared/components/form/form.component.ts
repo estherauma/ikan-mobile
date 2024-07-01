@@ -37,6 +37,8 @@ export class FormComponent implements OnInit {
   @Input() uploadDocIcon: string = 'assets/icon/pdf.svg';
   @Input() uploadDocText: string = '';
   @Input() showCancelButton: boolean = false;
+  @Input() showSurveyDisclaimer: boolean = false;
+  @Input() disclaimerText: string = '';
 
   @Output() formValues = new EventEmitter<any>();
   @Output() cancel = new EventEmitter<any>();

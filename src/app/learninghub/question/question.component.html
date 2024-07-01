@@ -22,8 +22,9 @@
               class="input"
               [placeholder]="commonText?.typeYourAnswerHere"
               autofocus
-              [(ngModel)]="inputValue"
+              [value]="questionData?.value || ''"
               (ionChange)="handleInputChange($event)"
+              (ionInput)="handleInputChange($event)"
             ></ion-input>
           </div>
           
@@ -37,21 +38,38 @@
               [placeholder]="commonText?.pleaseSelect"
               [okText]="commonText?.ok"
               [cancelText]="commonText?.cancel"
-              [(ngModel)]="selectedValue"
+              [value]="questionData?.value || ''"
               (ionChange)="handleSelectChange($event)"
             >
-            <!-- TODO: use value after getting solution for translations -->
-              <ion-select-option *ngFor="let option of questionData?.options" value="{{ option?.option }}">{{ option?.option }}</ion-select-option>
+              <ion-select-option *ngFor="let option of questionData?.options" value="{{ option?.value }}">{{ option?.option }}</ion-select-option>
+            </ion-select>
+          </div>
+          
+          <div
+            *ngIf="questionData?.questionType === 'multi-select'"
+            class="select-container"
+          >
+            <ion-select
+              class="input"
+              label-placement="stacked"
+              [placeholder]="commonText?.pleaseSelect"
+              [okText]="commonText?.ok"
+              [cancelText]="commonText?.cancel"
+              multiple
+              [value]="questionData?.value || []"
+              (ionChange)="handleSelectChange($event)"
+            >
+              <ion-select-option *ngFor="let option of questionData?.options" value="{{ option?.value }}">{{ option?.option }}</ion-select-option>
             </ion-select>
           </div>
           
           <div *ngIf="!isYesNoValue && questionData?.questionType === 'radio'">
             <ion-radio-group
-              [value]="questionData?.value"
+              [value]="questionData?.value || ''"
+              (ionChange)="handleSelectChange($event)"
             >
-            <!-- TODO: use value after getting solution for translations -->
               <ion-item  *ngFor="let option of questionData?.options" lines="none">
-                <ion-radio [value]="option?.option" labelPlacement="end">{{ option?.option }}</ion-radio>
+                <ion-radio [value]="option?.value" labelPlacement="end">{{ option?.option }}</ion-radio>
               </ion-item>
             </ion-radio-group>
           </div>
@@ -60,36 +78,35 @@
             *ngIf="isYesNoValue && (questionData?.questionType === 'radio' || questionData?.questionType === 'select')"
             class="yes-no-container"
           >
-            <ion-radio-group [(ngModel)]="selectedValue">
+            <ion-radio-group [value]="questionData?.value || ''">
               <ion-row>
-                <!-- TODO: use value after getting solution for translations -->
                 <ion-col *ngFor="let option of questionData?.options">
                   <div
                     class="option"
-                    (click)="selectOption(option?.option)"
+                    (click)="selectOption(option?.value)"
                     [ngClass]="{
-                      'yes': (selectedValue === option?.option && selectedValue.toLowerCase() === 'yes'),
-                      'no': (selectedValue === option?.option && selectedValue.toLowerCase() === 'no'),
-                      'other': (selectedValue && selectedValue === option?.option && (selectedValue.toLowerCase() !== 'yes' && selectedValue.toLowerCase() !== 'no'))
+                      'yes': (questionData?.value === option?.value && questionData?.value.toLowerCase() === 'yes'),
+                      'no': (questionData?.value === option?.value && questionData?.value.toLowerCase() === 'no'),
+                      'other': (questionData?.value && questionData?.value === option?.value && (questionData?.value.toLowerCase() !== 'yes' && questionData?.value.toLowerCase() !== 'no'))
                     }"
                   >
-                    <ion-radio slot="start" value="{{ option?.option }}"></ion-radio>
+                    <ion-radio slot="start" value="{{ option?.value }}"></ion-radio>
                     <ion-icon [name]="option?.icon"></ion-icon>
                   </div>
                   <ion-img
-                    *ngIf="hasFollowupQtn && selectedValue === option?.option && selectedValue.toLowerCase() === 'yes'"
+                    *ngIf="hasFollowupQtn && questionData?.value === option?.value && questionData?.value.toLowerCase() === 'yes'"
                     class="cutout-icon"
                     src="assets/imgs/cutout-rectangle-green.svg"
                   >
                   </ion-img>
                   <ion-img
-                    *ngIf="hasFollowupQtn && selectedValue === option?.option && selectedValue.toLowerCase() === 'no'"
+                    *ngIf="hasFollowupQtn && questionData?.value === option?.value && questionData?.value.toLowerCase() === 'no'"
                     class="cutout-icon"
                     src="assets/imgs/cutout-rectangle-red.svg"
                   >
                   </ion-img>
                   <ion-img
-                    *ngIf="hasFollowupQtn && selectedValue === option?.option && selectedValue.toLowerCase() === 'other'"
+                    *ngIf="hasFollowupQtn && questionData?.value === option?.value && (questionData?.value.toLowerCase() !== 'yes' && questionData?.value.toLowerCase() !== 'no')"
                     class="cutout-icon"
                     src="assets/imgs/cutout-rectangle-orange.svg"
                   >
@@ -103,7 +120,14 @@
 
       <ion-row *ngIf="!hasFollowupQtn" class="btn-row">
         <ion-col size="12">
-          <ion-button color="primary" expand="block" (click)="submitAnswer()">{{ commonText?.submit }}</ion-button>
+          <ion-button
+            color="primary"
+            expand="block"
+            [disabled]="!questionData?.value"
+            (click)="submitAnswer()"
+          >
+            {{ commonText?.submit }}
+          </ion-button>
         </ion-col>
       </ion-row>
     </div>
@@ -112,9 +136,9 @@
       *ngIf="hasFollowupQtn"
       class="followup-qtn-section"
       [ngClass]="{
-        'green': selectedValue.toLowerCase() === 'yes',
-        'red': selectedValue.toLowerCase() === 'no',
-        'orange': selectedValue.toLowerCase() === 'other',
+        'green': questionData?.value.toLowerCase() === 'yes',
+        'red': questionData?.value.toLowerCase() === 'no',
+        'orange': (questionData?.value.toLowerCase() !== 'yes' && questionData?.value.toLowerCase() !== 'no'),
       }"
     >
       <div *ngIf="followupQtnData?.questionType === 'helperText'" class="helper-text-container">
@@ -125,14 +149,14 @@
         *ngIf="followupQtnData?.questionType === 'text'"
         class="text-container"
       >
-      <!-- translate -->
         <p>{{ followupQtnData?.question }}</p>
         <ion-input
           class="input"
           [placeholder]="commonText?.typeYourAnswerHere"
           autofocus
-          [(ngModel)]="followUpInputValue"
+          [value]="followupQtnData?.value || ''"
           (ionChange)="handleFollowUpInputChange($event)"
+          (ionInput)="handleFollowUpInputChange($event)"
         ></ion-input>
       </div>
       
@@ -147,11 +171,10 @@
           [placeholder]="commonText?.pleaseSelect"
           [okText]="commonText?.ok"
           [cancelText]="commonText?.cancel"
-          [(ngModel)]="followUpSelectedValue"
+          [value]="followupQtnData?.value || ''"
           (ionChange)="handleFollowUpSelectChange($event)"
         >
-        <!-- TODO: use value after getting solution for translations -->
-          <ion-select-option *ngFor="let option of followupQtnData?.options" value="{{ option?.option }}">{{ option?.option }}</ion-select-option>
+          <ion-select-option *ngFor="let option of followupQtnData?.options" value="{{ option?.value }}">{{ option?.option }}</ion-select-option>
         </ion-select>
       </div>
 
@@ -167,11 +190,10 @@
           [okText]="commonText?.ok"
           [cancelText]="commonText?.cancel"
           multiple
-          [(ngModel)]="followUpSelectedValue"
+          [value]="followupQtnData?.value || []"
           (ionChange)="handleFollowUpSelectChange($event)"
         >
-        <!-- TODO: use value after getting solution for translations -->
-          <ion-select-option *ngFor="let option of followupQtnData?.options" value="{{ option?.option }}">{{ option?.option }}</ion-select-option>
+          <ion-select-option *ngFor="let option of followupQtnData?.options" value="{{ option?.value }}">{{ option?.option }}</ion-select-option>
         </ion-select>
       </div>
 
@@ -180,12 +202,11 @@
       >
         <p>{{ followupQtnData?.question }}</p>
         <ion-radio-group
-          [(ngModel)]="followUpSelectedValue"
+          [value]="followupQtnData?.value || ''"
           (ionChange)="handleFollowUpSelectChange($event)"
         >
-        <!-- TODO: use value after getting solution for translations -->
           <ion-item *ngFor="let option of followupQtnData?.options" lines="none">
-            <ion-radio [value]="option?.option" labelPlacement="end">{{ option?.option }}</ion-radio>
+            <ion-radio [value]="option?.value" labelPlacement="end">{{ option?.option }}</ion-radio>
           </ion-item>
         </ion-radio-group>
       </div>
