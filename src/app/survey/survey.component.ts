@@ -67,8 +67,13 @@ export class SurveyComponent extends BaseformPage  implements OnInit {
             entry.hasFollowUpQuestion = true;
             entry.followUpQuestion = currentOption?.[0]?.followUpQuestion;
             const followupValidators = this.sharedMethods.getFormValidators(entry.followUpQuestion);
-            this.pageFormGroup.addControl(entry.followUpQuestion.key, new FormControl('', followupValidators));
-            this.attemptedFollowUpQtnKeys[entry.key] = currentOption?.[0]?.followUpQuestion.key;
+            
+            if (entry.followUpQuestion?.key === 'See the Get Help section to find a workers union you can consult with') {
+              entry.followUpQuestion.questionType = 'p';
+            } else {
+              this.pageFormGroup.addControl(entry.followUpQuestion.key, new FormControl('', followupValidators));
+              this.attemptedFollowUpQtnKeys[entry.key] = currentOption?.[0]?.followUpQuestion.key;
+            }
           } else {
             entry.hasFollowUpQuestion = false;
             entry.followUpQuestion = null;
