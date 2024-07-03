@@ -189,7 +189,22 @@ export class ViewclausePage implements OnInit {
       const alert = await this.getAlert();
       await alert.present();
     } else {
-      const clauseDetails = JSON.stringify(this.clauseDetails);
+      let details = this.clauseDetails;
+      const data = JSON.parse(details?.data);
+      if (details?.kind === 'contract-clauses-attachments' && (data?.partyASignature || data?.partyBSignature)) {
+        for (const [key, value] of Object.entries(data)) {
+          if (key === 'partyASignature' || key === 'partyBSignature') { 
+            data[key] = typeof value === 'string' && value?.endsWith('.pdf') ? { docType: 'pdf', fileUri: value} : {docType: 'image', webPath: value};
+          }
+        }
+        
+        details = {
+          ...details,
+          data: JSON.stringify(data),
+        };
+      }
+
+      const clauseDetails = JSON.stringify(details);
       this.router.navigate(['/contracts/createdetails', {clauseDetails}], { queryParams: { isEditing: true } });
     }
   }
