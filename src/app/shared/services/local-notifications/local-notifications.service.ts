@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, NgZone } from '@angular/core';
 import { Router } from '@angular/router';
 import { ActionPerformed, LocalNotificationSchema, LocalNotifications, Weekday } from '@capacitor/local-notifications';
 import { NotificationActionId, SurveySources, UserRole } from '../../types/api-types';
@@ -7,9 +7,7 @@ import { GlobalErrorHandlerService } from '../error-handler/global-error-handler
 import { AuthService } from '../auth/auth.service';
 import { Platform } from '@ionic/angular';
 import { App, AppState } from '@capacitor/app';
-import { Plugins, } from '@capacitor/core';
 import { ContentService } from '../content/content.service';
-const coreApp = Plugins.App;
 
 @Injectable({
   providedIn: 'root'
@@ -24,6 +22,7 @@ export class LocalNotificationsService {
     public platform: Platform,
     public authService: AuthService,
     public contentService: ContentService,
+    public zone: NgZone,
   ) {
     this.platform.ready().then(() => {
       App.addListener('appStateChange', (state: AppState) => {
@@ -195,27 +194,28 @@ export class LocalNotificationsService {
       LocalNotifications.addListener(
         'localNotificationActionPerformed',
         async(notificationAction: ActionPerformed) => {
-          const notification: LocalNotificationSchema = notificationAction?.notification;
-          switch (notificationAction?.actionId) {
-            case 'tap':
-              if (notification?.actionTypeId === NotificationActionId.survey) {
-                if (!this.appActive) {
-                  return setTimeout(async() => {
-                    await this.router.navigate([ 'survey' ], { queryParams: { surveySource: SurveySources.notification }});
-                  }, 700);
+          this.zone.run(async() => {
+            const notification: LocalNotificationSchema = notificationAction?.notification;
+            switch (notificationAction?.actionId) {
+              case 'tap':
+                if (notification?.actionTypeId === NotificationActionId.survey) {
+                  if (!this.appActive) {
+                    return setTimeout(async() => {
+                      await this.router.navigate([ 'survey' ], { queryParams: { surveySource: SurveySources.notification }});
+                    }, 700);
+                  }
+                  this.router.navigate([ 'survey' ], { queryParams: { surveySource: SurveySources.notification }});
                 }
-                this.router.navigate([ 'survey' ], { queryParams: { surveySource: SurveySources.notification }});
-              }
-              // TO BE REMOVED
-              // for testing purposes
-              if (notification?.actionTypeId === NotificationActionId.test) {
-                this.router.navigate([ 'survey' ], { queryParams: { surveySource: SurveySources.notification }});
-              }
-              break;
-            default:
-              break;
-          }
-
+                // TO BE REMOVED
+                // for testing purposes
+                if (notification?.actionTypeId === NotificationActionId.test) {
+                  this.router.navigate([ 'survey' ], { queryParams: { surveySource: SurveySources.notification }});
+                }
+                break;
+              default:
+                break;
+            }
+          });
         }
       );
     } catch (error) {

@@ -43,7 +43,7 @@
           />
         </div>
         <p *ngIf="doc.fileName" class="file-name">{{ doc.fileName }}</p>
-        <p *ngIf="doc.updatedAt || doc.createdAt">{{ doc.updatedAt || doc.createdAt | date:'dd/MM/yyy' }}</p>
+        <p *ngIf="doc.createdAt || doc.updatedAt">{{ doc.updatedAt || doc.createdAt | date:'dd/MM/yyy' }}</p>
         <p *ngIf="doc.fileSize">{{ doc.fileSize }}</p>
         <ion-icon
           *ngIf="isSelecting"

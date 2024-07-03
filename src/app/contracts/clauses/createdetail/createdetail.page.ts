@@ -138,6 +138,15 @@ export class CreatedetailPage extends BaseformPage implements OnInit {
   async onSubmit(formData) {
     const userData = await this.sharedMethods.getUserData();
     const now = this.sharedMethods.getCurrentDateTime();
+    if (formData.partyASignature || formData.partyBSignature) {
+      const partyASignature = formData.partyASignature ? (formData.partyASignature.docType === 'image' ? formData.partyASignature.webPath : formData.partyASignature.uriPath) : '';
+      const partyBSignature = formData.partyBSignature ? (formData.partyBSignature.docType === 'image' ? formData.partyBSignature.webPath : formData.partyBSignature.uriPath) : '';
+      formData = {
+        ...formData,
+        partyASignature,
+        partyBSignature,
+      };
+    }
 
     if (!this.isEditing) {
       // We need this information before we append meta data

@@ -93,6 +93,7 @@ export class LoginPage extends BaseformPage implements OnInit {
 
           // setup/reset local notifications
           await LocalNotifications.removeAllListeners();
+          this.localNotifications.addListeners();
           this.localNotifications.scheduleNotifications(this.contentService.commonText);
 
           // sync data

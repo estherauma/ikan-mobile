@@ -322,4 +322,20 @@ export class ContentService {
       }
     });
   }
+
+  /**
+   * returns untranslated inline question (english version)
+   * @param subChapterId
+   * @param questionKey
+   */
+  getUntranslatedInlineQuestion(subChapterId: string, questionKey: string) {
+    const englishContent = this.appContent?.['en-us'];
+    if (!englishContent) return null;
+    
+    const englishDoc = englishContent?.[subChapterId];
+    if (!englishDoc) return null;
+
+    const qtn = englishDoc?.pageContent?.find(x => x?.type === 'questions' && x?.key === questionKey);
+    return qtn;
+  }
 }
