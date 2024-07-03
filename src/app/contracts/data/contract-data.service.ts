@@ -132,8 +132,8 @@ export class ContractDataService {
     const params = [data.name, data.appRef, data.appRef, data.startDate, data.endDate,
       data.description, data.taiwaneseCompany, data.indonesianCompany, data.kind,
       data.createdAt, data.updatedAt, data.createdBy, data.updatedBy, data.id];
-    return this.db.executeSql(query, params).then((result) => {
-      this.retrieveContracts();
+    return this.db.executeSql(query, params).then(async(result) => {
+      await this.retrieveContracts();
       return result.insertId;
     }).catch((e) => {
       console.log(e);

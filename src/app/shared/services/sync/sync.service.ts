@@ -358,18 +358,50 @@ export class SyncService {
       // The contract_id has to be the for the online record and not the local before sending to the api
       // replace the contract_id with the contract id online_ref
       clause.contract = contractOnlineRef;
+      const clauseToUpload = Object.assign({}, clause);
+      delete clauseToUpload.id;
       if (!clause.onlineRef) {
-        this.apiService.post('contracts-clauses', clause).subscribe((response: CreateContractClauseResp) => {
+        this.apiService.post('contracts-clauses', clauseToUpload).subscribe(async(response: CreateContractClauseResp) => {
           if (response?.status === 'OK') {
             this.dbService.updateDatabaseField('contract_clauses', 'online_ref', response?.data?.id, clause.appRef);
+            await this.syncContractClausesAttachments(clause);
           }
         });
       } else {
-        // this.apiService.put('contract-clauses', clause.online_ref, clause).subscribe((response) => {
-        //   console.log(response);
-        // });
+        this.apiService.put('contracts-clauses', clause.onlineRef, clauseToUpload).subscribe(async(response) => {
+          if (response?.['status'] === 'OK') {
+            await this.syncContractClausesAttachments(clause);
+          } else {
+            console.error('Failed to update contract clause', response);
+          }
+        });
       }
     });
+  }
+
+  async syncContractClausesAttachments(clause) {
+    if (clause.kind === 'contract-clauses-attachments') {
+      const content = JSON.parse(clause.content);
+      if (Object.keys(content).length && (content.partyASignature || content.partyBSignature)) {
+        for (const [key, value] of Object.entries(content)) {
+          if (key === 'partyASignature' || key === 'partyBSignature') {
+            const attachmentFile = await this.uploadService.retrieveAndReturnBlob(value);
+            if (attachmentFile) {
+              const attachmentData = new FormData();
+              attachmentData.append('fileContent', attachmentFile);
+              attachmentData.append('entityType', 'contract_clause_attachment');
+              attachmentData.append('clauseAppRef', clause.appRef);
+              attachmentData.append('contentField', key);
+              this.apiService.post('file-upload', attachmentData).subscribe((res) => {
+                if (res?.['status'] !== 'OK')  {
+                  console.error(`Failed to sync contract clause attachment for clause ${clause.name} to the api`, res);
+                }
+              });
+            }
+          }
+        }
+      }
+    }
   }
 
   async fetchContractClauses() {
@@ -381,8 +413,32 @@ export class SyncService {
             if (!exists) {
               const contract = this.contractServ.getContractByField('onlineRef', clause.contract);
               if (contract) {
-                this.contractServ.saveOnlineContractClause(contract?.id, clause)
-                .then((id) => { console.log ( `Contract clause ${clause.name} saved with id ${id}`)});
+                const data = JSON.parse(clause.content);
+                delete data.partyASignature;
+                delete data.partyBSignature;
+                const clauseToSave = {
+                  ...clause,
+                  content: JSON.stringify(data),
+                };
+                await this.contractServ.saveOnlineContractClause(contract?.id, clauseToSave).then(async(id) => {
+                  let content = JSON.parse(clause.content);
+                  if (Object.keys(content).length && (content.partyASignature || content.partyBSignature)) {
+                    for (const [key, value] of Object.entries(content)) {
+                      if (key === 'partyASignature' || key === 'partyBSignature') {
+                        await this.uploadService.fetchAndSaveFile(value).then(async(fileUri) => {
+                          content[key] = fileUri;
+                        });
+                      }
+                    }
+                  }
+                  const dataToUpdate = {
+                    ...clause,
+                    content: JSON.stringify(content),
+                    updated_at: clause.updatedAt,
+                    updated_by: clause.updatedBy,
+                  };
+                  await this.contractServ.updateContractClause(id, dataToUpdate);
+                });
               }
             }
           });
