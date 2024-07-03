@@ -80,7 +80,13 @@ export class QuestionComponent  implements OnInit {
           this.followupQtnData.questionType = 'helperText';
         }
         if (this.questionData?.savedQtn?.followUpQuestionResponse) {
-          this.followupQtnData.value = this.questionData?.savedQtn?.followUpQuestionResponse;
+          if (this.followupQtnData.questionType === 'multi-select') {
+            const values = this.questionData?.savedQtn?.followUpQuestionResponse.split(',');
+            const optValues = values.map((val) => val.trim());
+            this.followupQtnData.value = optValues;
+          } else {
+            this.followupQtnData.value = this.questionData?.savedQtn?.followUpQuestionResponse;
+          }
         }
       } else {
         this.hasFollowupQtn = false;
