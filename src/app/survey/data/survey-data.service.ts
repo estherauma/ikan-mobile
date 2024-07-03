@@ -190,11 +190,13 @@ export class SurveyDataService {
   }
 
   async updateInlineQuestion(data) {
-    const query = `UPDATE inline_questions SET question_response = ?, follow_up_question_response = ?, \
-      updated_at = ?, updated_by = ? WHERE id = ?`;
+    const query = `UPDATE inline_questions SET question_type = ?, question_text = ?, question_response = ?, \
+      follow_up_question_key = ?, follow_up_question_type = ?, follow_up_question_text = ?, \
+      follow_up_question_response = ?, updated_at = ?, updated_by = ? WHERE id = ?`;
     const now = this.sharedMethods.getCurrentDateTime();
     const user = await this.sharedMethods.getUserData();
-    const params = [data.questionResponse, data.followUpQuestionResponse, now, user.id, data.id];
+    const params = [data.questionType, data.questionText, data.questionResponse, data.followUpQuestionKey,
+      data.followUpQuestionType, data.followUpQuestionText, data.followUpQuestionResponse, now, user.id, data.id];
 
     return this.db.executeSql(query, params).then(async(result) => {
       await this.retrieveInlineQuestions();

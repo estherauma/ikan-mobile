@@ -15,6 +15,7 @@ export class QuestionComponent  implements OnInit {
   isYesNoValue: boolean = false;
   hasFollowupQtn: boolean = false;
   followupQtnData: any;
+  unTranslatedQtn: any;
 
   constructor(
     public activatedRoute: ActivatedRoute,
@@ -30,7 +31,9 @@ export class QuestionComponent  implements OnInit {
         this.questionData = JSON.parse(params?.questionData);
       }
     });
+    
     this.commonText = this.contentService?.commonText;
+    this.unTranslatedQtn = this.contentService.getUntranslatedInlineQuestion(this.questionData?.subChapter, this.questionData?.key);
     if (this.questionData?.questionType === 'radio' || this.questionData?.questionType === 'select') {
       const values = this.questionData.options.map(obj => obj?.value?.toLowerCase());
       const containsYesNo = values.includes('yes') && values.includes('no');
@@ -109,6 +112,11 @@ export class QuestionComponent  implements OnInit {
     if (this.questionData && this.questionData?.value && Array.isArray(this.questionData?.value)) {
       this.questionData.value = this.questionData.value.length ? this.questionData.value.join(', ') : null;
     }
+    if (this.followupQtnData) {
+      const unTranslatedFollowupQtnText = this.unTranslatedQtn?.options?.find(
+        (opt) => opt?.followUpQuestion?.key === this.followupQtnData?.key)?.followUpQuestion;
+      this.followupQtnData.unTranslatedQuestionText = unTranslatedFollowupQtnText?.question;
+    }
     if (this.followupQtnData && this.followupQtnData?.value && Array.isArray(this.followupQtnData?.value)) {
       this.followupQtnData.value = this.followupQtnData.value.length ? this.followupQtnData.value.join(', ') : null;
     }
@@ -121,11 +129,11 @@ export class QuestionComponent  implements OnInit {
         subChapter: this.questionData?.subChapter,
         questionKey: this.questionData?.key,
         questionType: this.questionData?.questionType,
-        questionText: this.questionData?.question,
+        questionText: this.unTranslatedQtn?.question || this.questionData?.question,
         questionResponse: this.questionData?.value,
         followUpQuestionKey: this.followupQtnData ? this.followupQtnData?.key : null,
         followUpQuestionType: this.followupQtnData ? this.followupQtnData?.questionType : null,
-        followUpQuestionText: this.followupQtnData ? this.followupQtnData?.question : null,
+        followUpQuestionText: this.followupQtnData ? (this.followupQtnData?.unTranslatedQuestionText || this.followupQtnData?.question) : null,
         followUpQuestionResponse: this.followupQtnData ? this.followupQtnData?.value : null,
       };
 
@@ -138,11 +146,33 @@ export class QuestionComponent  implements OnInit {
         this.sharedMethods.showToast(this.commonText?.errSavingResponses);
       }
     } else {
+      const savedQtn = this.questionData?.savedQtn;
+      if (
+        savedQtn?.questionResponse === this.questionData?.value &&
+        savedQtn?.questionType === this.questionData?.questionType &&
+        savedQtn?.questionText === this.unTranslatedQtn?.question &&
+        savedQtn?.followUpQuestionResponse === this.followupQtnData?.value &&
+        savedQtn?.followUpQuestionKey === this.followupQtnData?.key &&
+        savedQtn?.followUpQuestionType === this.followupQtnData?.questionType &&
+        savedQtn?.followUpQuestionText === this.followupQtnData?.unTranslatedQuestionText
+      ) {
+        const chapterId = this.questionData.subChapter.split('.')[0];
+        const subChapterId = this.questionData.subChapter;
+        this.router.navigate([ 'learninghub/chapters', chapterId, subChapterId ], { replaceUrl: true });
+        return;
+      }
+      
       const dataToUpdate = {
         id: this.questionData?.savedQtn.id,
         questionResponse: this.questionData?.value,
-        followUpQuestionResponse: this.followupQtnData?.value,
+        questionType: this.questionData?.questionType,
+        questionText: this.unTranslatedQtn?.question || this.questionData?.question,
+        followUpQuestionKey: this.followupQtnData ? this.followupQtnData?.key : null,
+        followUpQuestionType: this.followupQtnData ? this.followupQtnData?.questionType : null,
+        followUpQuestionText: this.followupQtnData ? (this.followupQtnData?.unTranslatedQuestionText || this.followupQtnData?.question) : null,
+        followUpQuestionResponse: this.followupQtnData ? this.followupQtnData?.value : null,
       };
+
       const updateId = await this.surveyDataService.updateInlineQuestion(dataToUpdate);
       if (updateId) {
         const chapterId = this.questionData.subChapter.split('.')[0];
