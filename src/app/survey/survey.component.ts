@@ -47,16 +47,19 @@ export class SurveyComponent extends BaseformPage  implements OnInit {
     }
 
     this.formQuestions.forEach(entry => {
+      if (!entry?.displayquestion) return;
       const validators = this.sharedMethods.getFormValidators(entry);
       this.group[entry.key] = new FormControl('', validators);
+    });
+    this.pageFormGroup = new FormGroup(this.group);
 
+    this.formQuestions.forEach((entry) => {
       if (entry?.options) {
-        this.group[entry.key].valueChanges.subscribe((value) => {
+        this.pageFormGroup.controls?.[entry.key]?.valueChanges.subscribe((value) => {
           // Remove previous option from formGroup
           if (this.attemptedFollowUpQtnKeys?.[entry.key]) {
             this.pageFormGroup.removeControl(this.attemptedFollowUpQtnKeys[entry.key]);
             delete this.attemptedFollowUpQtnKeys[entry.key];
-
           }
 
           const currentOption = entry.options.filter(x => x.value === value);
@@ -64,7 +67,7 @@ export class SurveyComponent extends BaseformPage  implements OnInit {
             entry.hasFollowUpQuestion = true;
             entry.followUpQuestion = currentOption?.[0]?.followUpQuestion;
             const followupValidators = this.sharedMethods.getFormValidators(entry.followUpQuestion);
-            this.group[entry.followUpQuestion.key] = new FormControl('', followupValidators);
+            this.pageFormGroup.addControl(entry.followUpQuestion.key, new FormControl('', followupValidators));
             this.attemptedFollowUpQtnKeys[entry.key] = currentOption?.[0]?.followUpQuestion.key;
           } else {
             entry.hasFollowUpQuestion = false;
@@ -74,7 +77,6 @@ export class SurveyComponent extends BaseformPage  implements OnInit {
         });
       }
     });
-    this.pageFormGroup = new FormGroup(this.group);
   }
 
   async getSurveySource() {
@@ -92,6 +94,7 @@ export class SurveyComponent extends BaseformPage  implements OnInit {
     const user = await this.sharedMethods.readDataFromStorage(StorageKeys.userData);
     const surveyData = [];
     this.formQuestions.forEach((qtn) => {
+      if (!qtn?.displayquestion) return;
       // check if question has response and if response is an array, check it has at least one item
       if (formData[qtn.key] && (!Array.isArray(formData[qtn.key]) || formData[qtn.key].length)) {
         let isFollowUpQuestionAnswered = false;
