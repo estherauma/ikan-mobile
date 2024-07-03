@@ -76,6 +76,9 @@ export class QuestionComponent  implements OnInit {
         if(this.followupQtnData?.key === 'See the Get Help section to find a workers union you can consult with') {
           this.followupQtnData.questionType = 'helperText';
         }
+        if (this.questionData?.savedQtn?.followUpQuestionResponse) {
+          this.followupQtnData.value = this.questionData?.savedQtn?.followUpQuestionResponse;
+        }
       } else {
         this.hasFollowupQtn = false;
         this.followupQtnData = null;
@@ -109,28 +112,45 @@ export class QuestionComponent  implements OnInit {
     if (this.followupQtnData && this.followupQtnData?.value && Array.isArray(this.followupQtnData?.value)) {
       this.followupQtnData.value = this.followupQtnData.value.length ? this.followupQtnData.value.join(', ') : null;
     }
-    const user = await this.sharedMethods.getUserData();
-    const dataToSave = {
-      appRef: this.sharedMethods.generateAppRef(),
-      userId: user.id,
-      subChapter: this.questionData?.subChapter,
-      questionKey: this.questionData?.key,
-      questionType: this.questionData?.questionType,
-      questionText: this.questionData?.question,
-      questionResponse: this.questionData?.value,
-      followUpQuestionKey: this.followupQtnData ? this.followupQtnData?.key : null,
-      followUpQuestionType: this.followupQtnData ? this.followupQtnData?.questionType : null,
-      followUpQuestionText: this.followupQtnData ? this.followupQtnData?.question : null,
-      followUpQuestionResponse: this.followupQtnData ? this.followupQtnData?.value : null,
-    };
 
-    const insertId = await this.surveyDataService.createInlineQuestion(dataToSave);
-    if (insertId) {
-      const chapterId = this.questionData.subChapter.split('.')[0];
-      const subChapterId = this.questionData.subChapter;
-      this.router.navigate([ 'learninghub/chapters', chapterId, subChapterId ], { replaceUrl: true });
+    if (!this.questionData?.savedQtn) {
+      const user = await this.sharedMethods.getUserData();
+      const dataToSave = {
+        appRef: this.sharedMethods.generateAppRef(),
+        userId: user.id,
+        subChapter: this.questionData?.subChapter,
+        questionKey: this.questionData?.key,
+        questionType: this.questionData?.questionType,
+        questionText: this.questionData?.question,
+        questionResponse: this.questionData?.value,
+        followUpQuestionKey: this.followupQtnData ? this.followupQtnData?.key : null,
+        followUpQuestionType: this.followupQtnData ? this.followupQtnData?.questionType : null,
+        followUpQuestionText: this.followupQtnData ? this.followupQtnData?.question : null,
+        followUpQuestionResponse: this.followupQtnData ? this.followupQtnData?.value : null,
+      };
+
+      const insertId = await this.surveyDataService.createInlineQuestion(dataToSave);
+      if (insertId) {
+        const chapterId = this.questionData.subChapter.split('.')[0];
+        const subChapterId = this.questionData.subChapter;
+        this.router.navigate([ 'learninghub/chapters', chapterId, subChapterId ], { replaceUrl: true });
+      } else {
+        this.sharedMethods.showToast(this.commonText?.errSavingResponses);
+      }
     } else {
-      this.sharedMethods.showToast(this.commonText?.errSavingResponses);
+      const dataToUpdate = {
+        id: this.questionData?.savedQtn.id,
+        questionResponse: this.questionData?.value,
+        followUpQuestionResponse: this.followupQtnData?.value,
+      };
+      const updateId = await this.surveyDataService.updateInlineQuestion(dataToUpdate);
+      if (updateId) {
+        const chapterId = this.questionData.subChapter.split('.')[0];
+        const subChapterId = this.questionData.subChapter;
+        this.router.navigate([ 'learninghub/chapters', chapterId, subChapterId ], { replaceUrl: true });
+      } else {
+        this.sharedMethods.showToast(this.commonText?.errSavingResponses);
+      }
     }
   }
 }

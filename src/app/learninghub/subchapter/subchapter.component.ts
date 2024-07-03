@@ -3,7 +3,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { AnalyticsService } from 'src/app/shared/services/analytics/analytics.service';
 import { ContentService } from 'src/app/shared/services/content/content.service';
 import { SharedmethodsService } from 'src/app/shared/services/sharedmethods/sharedmethods.service';
-import { HubQuestionStatus } from 'src/app/shared/types/api-types';
+import { HubQuestionStatus, UserData } from 'src/app/shared/types/api-types';
 import { SurveyDataService } from 'src/app/survey/data/survey-data.service';
 
 @Component({
@@ -31,6 +31,7 @@ export class SubchapterComponent  implements OnInit {
   caseStudyImgUrl: string;
   networkStatus = false;
   savedInlineQuestions = [];
+  user: UserData;
 
   constructor(
     public activatedRoute: ActivatedRoute,
@@ -45,23 +46,24 @@ export class SubchapterComponent  implements OnInit {
       this.caseStudyUid = params?.caseStudyUid;
       this.isCaseStudy = !!params?.caseStudyUid;
       this.caseStudyImgUrl = params?.imgUrl || '';
-      this.pageSetup();
+      await this.pageSetup();
     });
   }
 
   async ngOnInit() {
     this.networkStatus = await this.sharedmethods.checkInternetConnectionStatus();
-    this.pageSetup();
+    this.user = await this.sharedmethods.getUserData();
+    await this.pageSetup();
     this.setUpAnalytics();
   }
 
-  pageSetup() {
-    this.getContent();
-    this.getQuestionValues();
-    this.getQuestionStatus();
+  async pageSetup() {
+    await this.getContent();
+    await this.getQuestionValues();
+    await this.getQuestionStatus();
   }
 
-  getContent() {
+  async getContent() {
     if (this.isCaseStudy) {
       this.allPageContent = this.contentService.getContentByPropertyName(this.caseStudyUid);
       this.pageContent = this.allPageContent?.pageContent;
@@ -91,11 +93,12 @@ export class SubchapterComponent  implements OnInit {
     }
   }
 
-  getQuestionValues() {
-    this.pageContent?.forEach((item) => {
+  async getQuestionValues() {
+    this.pageContent?.forEach(async(item) => {
       if (item?.type === 'questions') {
-        const savedQtn = this.savedInlineQuestions.find((el) => el.questionKey === item.key);
+        const savedQtn = await this.savedInlineQuestions.find((el) => el.questionKey === item.key && el.createdBy === this.user?.id);
         if (savedQtn) {
+          item.savedQtn = savedQtn;
           if (item?.questionType === 'multi-select') {
             const values: Array<string> = savedQtn.questionResponse?.split(',');
             const optValues = values.map((val) => val.trim());
@@ -108,7 +111,7 @@ export class SubchapterComponent  implements OnInit {
     });
   }
 
-  getQuestionStatus() {
+  async getQuestionStatus() {
     this.pageContent?.forEach((item) => {
       if (item?.type === 'questions') {
         if (!item?.value) {

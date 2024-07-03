@@ -189,7 +189,7 @@ export class SurveyDataService {
     });
   }
 
-  async editInlineQuestion(data) {
+  async updateInlineQuestion(data) {
     const query = `UPDATE inline_questions SET question_response = ?, follow_up_question_response = ?, \
       updated_at = ?, updated_by = ? WHERE id = ?`;
     const now = this.sharedMethods.getCurrentDateTime();
