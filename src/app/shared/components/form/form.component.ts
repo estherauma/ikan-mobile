@@ -68,6 +68,7 @@ export class FormComponent implements OnInit {
     this.typeHereText = this.commonText?.typeHere;
     this.uploadPictureText = this.commonText?.uploadPicture;
     this.uploadDocText = this.commonText?.uploadDocument;
+    this.selectDateText = this.commonText?.selectADate;
     this.submitButtonText = this.submitButtonText || this.commonText?.submit;
     this.tunaFormquestions?.map(question => {
       if ([...this.typesToExclude].includes(question.questionType)) {
