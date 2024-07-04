@@ -29,7 +29,7 @@ dependencies {
     implementation project(':capawesome-capacitor-file-picker')
     implementation project(':capacitor-native-settings')
     implementation project(':capacitor-voice-recorder')
-    implementation "androidx.legacy:legacy-support-v4:1.0.0"
+
 }
 
 
