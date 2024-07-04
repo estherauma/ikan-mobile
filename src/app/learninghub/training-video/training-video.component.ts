@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ModalController } from '@ionic/angular';
 import { BaseformPage } from 'src/app/shared/components/baseform/baseform.page';
+import { AnalyticsService } from 'src/app/shared/services/analytics/analytics.service';
+import { appEventNames, pageEventNames } from 'src/app/shared/services/analytics/event-names';
 import { ApiService } from 'src/app/shared/services/api/api.service';
 import { ContentService } from 'src/app/shared/services/content/content.service';
 import { SharedmethodsService } from 'src/app/shared/services/sharedmethods/sharedmethods.service';
@@ -18,6 +20,7 @@ export class TrainingVideoComponent extends BaseformPage  implements OnInit {
   video: any;
   networkStatus = false;
   defaultThumbnail = '/assets/icon/default-thumbnail.jpg';
+  disclaimerText: string = '';
 
   constructor(
     public contentService: ContentService,
@@ -25,12 +28,14 @@ export class TrainingVideoComponent extends BaseformPage  implements OnInit {
     public modalCtrl: ModalController,
     public apiService: ApiService,
     public surveysDataService: SurveyDataService,
+    public analyticsService: AnalyticsService
   ) {
     super(contentService)
   }
 
   async ngOnInit() {
     this.commonText = this.contentService?.commonText;
+    this.disclaimerText = this.commonText?.disclaimerMessage || '';
     this.networkStatus = await this.sharedMethods.checkInternetConnectionStatus();
     const pageData = this.contentService.getContentByPropertyName('tfa-training-video');
     this.pageTitle  = pageData?.pageTitle;
@@ -40,11 +45,13 @@ export class TrainingVideoComponent extends BaseformPage  implements OnInit {
 
     this.formQuestions = this.getFormQuestions(pageData);
     this.formQuestions.forEach(entry => {
-      this.group[entry.key] = new FormControl(null, [ Validators.required ]);
+      const validators = this.sharedMethods.getFormValidators(entry);
+      this.group[entry.key] = new FormControl(null, validators);
       entry.options[0] = { ...entry.options[0], value: 'True' };
       entry.options[1] = { ...entry.options[1], value: 'False' };
     });
     this.pageFormGroup = new FormGroup(this.group);
+    this.analyticsService.trackEvent(pageEventNames.tfaVideo, this.sharedMethods.analyticsEventParams)
   }
 
   getFormQuestions(data) {
@@ -75,13 +82,31 @@ export class TrainingVideoComponent extends BaseformPage  implements OnInit {
   async onSubmit(formData) {
     this.sharedMethods.showLoader(this.commonText?.submittingYourData);
     const date = this.sharedMethods.getCurrentDateTime('date');
-    const videoResponses =  this.formQuestions.map((item) => {
-      return {
-        app_ref: this.sharedMethods.generateAppRef(),
-        survey_date: date,
-        question_key: item.key,
-        question_text: item?.label || item?.question,
-        question_response: formData[item.key],
+    const user = await this.sharedMethods.getUserData();
+    const videoResponses = [];
+    this.formQuestions.forEach((item) => {
+      if (formData[item.key]) {
+        let isFollowUpQuestionAnswered = false;
+        let followUpQuestionResponse = formData[item?.followUpQuestion?.key] ?? null;
+        if (item?.hasFollowUpQuestion && formData[item?.followUpQuestion?.key]) {
+          isFollowUpQuestionAnswered = true;
+          if (Array.isArray(followUpQuestionResponse)) {
+            followUpQuestionResponse = followUpQuestionResponse.length ? followUpQuestionResponse.join(', ') : null;
+          }
+        }
+        videoResponses.push({
+          appRef: this.sharedMethods.generateAppRef(),
+          userId: user?.id,
+          surveyDate: date,
+          questionKey: item.key,
+          questionType: item.questionType,
+          questionText: item?.label || item?.question,
+          questionResponse: formData[item.key],
+          followUpQuestionKey: isFollowUpQuestionAnswered ? item?.followUpQuestion?.key : null,
+          followUpQuestionType: isFollowUpQuestionAnswered ? item?.followUpQuestion?.questionType : null,
+          followUpQuestionText: isFollowUpQuestionAnswered ? item?.followUpQuestion?.label : null,
+          followUpQuestionResponse: isFollowUpQuestionAnswered ? followUpQuestionResponse : null,
+        });
       }
     });
 
@@ -95,12 +120,13 @@ export class TrainingVideoComponent extends BaseformPage  implements OnInit {
     }
 
     await this.sharedMethods.saveDataToStorage(StorageKeys.watchedTFAVideo, true);
-
+    this.analyticsService.trackEvent(appEventNames.submitTrainingVideo, this.sharedMethods.analyticsEventParams)
     this.sharedMethods?.hideLoader();
     this.modalCtrl.dismiss();
   }
 
   onCancel() {
+    this.analyticsService.trackEvent(appEventNames.cancelTrainingVideo, this.sharedMethods.analyticsEventParams)
     this.modalCtrl?.dismiss();
   }
 }

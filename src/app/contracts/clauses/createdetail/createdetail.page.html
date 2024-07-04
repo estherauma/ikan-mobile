@@ -1,5 +1,6 @@
 <ion-toolbar class="ion-padding">
-  <ion-title>{{pageTitle}}</ion-title>
+  <h3 *ngIf="isEditing">{{ editClauseText | uppercase }}</h3>
+  <ion-text tex-wrap>{{ pageTitle }}</ion-text>
 </ion-toolbar>
 
 <ion-content class="ion-padding">

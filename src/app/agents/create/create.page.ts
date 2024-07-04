@@ -6,6 +6,8 @@ import { Router } from '@angular/router';
 import { BaseformPage } from 'src/app/shared/components/baseform/baseform.page';
 import { FormControl, Validators, FormGroup } from '@angular/forms';
 import { ModalController } from '@ionic/angular';
+import { AnalyticsService } from 'src/app/shared/services/analytics/analytics.service';
+import { pageEventNames } from 'src/app/shared/services/analytics/event-names';
 
 @Component({
   selector: 'app-create',
@@ -19,16 +21,19 @@ export class CreatePage extends BaseformPage implements OnInit {
     public sharedMethods: SharedmethodsService,
     public router: Router,
     public agentsDataService: AgentsDataService,
-    public modalCtrl: ModalController
+    public modalCtrl: ModalController,
+    public analytics: AnalyticsService
   ) {
     super(contentService);
     const pageData = this.contentService.getContentByPropertyName('agentcreate');
     this.pageTitle = pageData?.pageTitle;
     this.formQuestions = pageData?.formQuestions;
     this.formQuestions.forEach((entry) => {
-      this.group[entry.key] = new FormControl('', [Validators.required]);
+      const validators = this.sharedMethods.getFormValidators(entry);
+      this.group[entry.key] = new FormControl('', validators);
     });
     this.pageFormGroup = new FormGroup(this.group);
+    this.analytics.trackEvent(pageEventNames.createAgent, this.sharedMethods.analyticsEventParams);
   }
 
   ngOnInit() {

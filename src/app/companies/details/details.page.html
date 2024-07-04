@@ -12,9 +12,14 @@
         </div>
     </div>
     <div class="ion-padding bottom-section">
+        <div class="edit-btn-container">
+            <ion-button class="edit-btn" (click)="editCompany(company)">
+                {{ commonText?.edit }}
+            </ion-button>
+        </div>
 
         <div>
-            <h6 class="title">Contacts</h6>
+            <h6 class="title">{{ commonText?.contacts }}</h6>
             <div class="item-section">
                 <ion-icon name="mail-outline"></ion-icon>
                 <ion-text class="text">
@@ -30,7 +35,7 @@
         </div>
 
         <div>
-            <h6 class="title">Addresses</h6>
+            <h6 class="title">{{ commonText?.address }}</h6>
             <div class="item-section">
                 <ion-icon name="home-outline"></ion-icon>
                 <ion-text class="text">

@@ -1,7 +1,7 @@
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { ContentService } from '../shared/services/content/content.service';
 import { BaseformPage } from '../shared/components/baseform/baseform.page';
-import { FormControl, Validators, FormGroup } from '@angular/forms';
+import { FormControl, FormGroup } from '@angular/forms';
 import { SharedmethodsService } from '../shared/services/sharedmethods/sharedmethods.service';
 import { ActivatedRoute, Params, Router } from '@angular/router';
 import { StorageKeys, SurveySources } from '../shared/types/api-types';
@@ -17,6 +17,8 @@ import { SurveyDataService } from './data/survey-data.service';
 export class SurveyComponent extends BaseformPage  implements OnInit {
   attemptedFollowUpQtnKeys = {};
   surveySource = '';
+  surveyTopic: string = '';
+  disclaimerText: string = '';
 
   constructor(
     public contentService: ContentService,
@@ -33,34 +35,45 @@ export class SurveyComponent extends BaseformPage  implements OnInit {
 
   async ngOnInit() {
     this.commonText = this.contentService?.commonText;
+    this.disclaimerText = `${this.commonText?.disclaimerMessage || ''} ${this.commonText?.disclaimerContactMessage || ''}`;
     const pageData = this.contentService.getContentByPropertyName('survey');
     this.pageTitle  = pageData?.pageTitle;
     await this.getSurveySource();
 
     if (this.surveySource === SurveySources.notification) {
-      this.formQuestions = await this.contentService.getSurveyQuestions();
+      this.formQuestions = await this.contentService.getSurveyQuestions(this.surveyTopic);
     } else {
       this.formQuestions = pageData?.formQuestions;
     }
 
     this.formQuestions.forEach(entry => {
-      this.group[entry.key] = new FormControl('', []);
+      if (!entry?.displayquestion) return;
+      const validators = this.sharedMethods.getFormValidators(entry);
+      this.group[entry.key] = new FormControl('', validators);
+    });
+    this.pageFormGroup = new FormGroup(this.group);
 
+    this.formQuestions.forEach((entry) => {
       if (entry?.options) {
-        this.group[entry.key].valueChanges.subscribe((value) => {
+        this.pageFormGroup.controls?.[entry.key]?.valueChanges.subscribe((value) => {
           // Remove previous option from formGroup
           if (this.attemptedFollowUpQtnKeys?.[entry.key]) {
             this.pageFormGroup.removeControl(this.attemptedFollowUpQtnKeys[entry.key]);
             delete this.attemptedFollowUpQtnKeys[entry.key];
-
           }
 
           const currentOption = entry.options.filter(x => x.value === value);
           if (currentOption?.[0]?.followUpQuestion) {
             entry.hasFollowUpQuestion = true;
             entry.followUpQuestion = currentOption?.[0]?.followUpQuestion;
-            this.group[entry.followUpQuestion.key] = new FormControl('', []);
-            this.attemptedFollowUpQtnKeys[entry.key] = currentOption?.[0]?.followUpQuestion.key;
+            const followupValidators = this.sharedMethods.getFormValidators(entry.followUpQuestion);
+            
+            if (entry.followUpQuestion?.key === 'See the Get Help section to find a workers union you can consult with') {
+              entry.followUpQuestion.questionType = 'p';
+            } else {
+              this.pageFormGroup.addControl(entry.followUpQuestion.key, new FormControl('', followupValidators));
+              this.attemptedFollowUpQtnKeys[entry.key] = currentOption?.[0]?.followUpQuestion.key;
+            }
           } else {
             entry.hasFollowUpQuestion = false;
             entry.followUpQuestion = null;
@@ -69,13 +82,13 @@ export class SurveyComponent extends BaseformPage  implements OnInit {
         });
       }
     });
-    this.pageFormGroup = new FormGroup(this.group);
   }
 
   async getSurveySource() {
     return this.activatedRoute.queryParams.subscribe((queryParams: Params) => {
       if (queryParams && Object.keys(queryParams).length > 0) {
         this.surveySource = queryParams?.surveySource || '';
+        this.surveyTopic = queryParams?.surveyTopic || '';
       }
     });
   }
@@ -86,27 +99,33 @@ export class SurveyComponent extends BaseformPage  implements OnInit {
     const user = await this.sharedMethods.readDataFromStorage(StorageKeys.userData);
     const surveyData = [];
     this.formQuestions.forEach((qtn) => {
+      if (!qtn?.displayquestion) return;
       // check if question has response and if response is an array, check it has at least one item
-      if (formData[qtn.key] && (!Array.isArray(formData[qtn.key]) || formData[qtn.key].length)) {;
-        surveyData.push({
-          app_ref: this.sharedMethods.generateAppRef(),
-          survey_date: date,
-          question_key: qtn.key,
-          question_text: qtn?.label || qtn?.question,
-          question_response: formData[qtn.key],
-        });
-
+      if (formData[qtn.key] && (!Array.isArray(formData[qtn.key]) || formData[qtn.key].length)) {
+        let isFollowUpQuestionAnswered = false;
+        let followUpQuestionResponse = formData[qtn?.followUpQuestion?.key] ?? null;
         // check if question has followup question and if followup question has response and if response is an array, check it has at least one item
-        if (qtn?.hasFollowUpQuestion && formData[qtn?.followUpQuestion?.key]
-              && (!Array.isArray(formData[qtn?.followUpQuestion?.key]) || formData[qtn?.followUpQuestion?.key].length)) {
-          surveyData.push({
-            app_ref: this.sharedMethods.generateAppRef(),
-            survey_date: date,
-            question_key: qtn?.followUpQuestion?.key,
-            question_text: qtn?.followUpQuestion?.label,
-            question_response: formData[qtn?.followUpQuestion?.key],
-          });
-        };
+        if (qtn?.hasFollowUpQuestion && formData[qtn?.followUpQuestion?.key]) {
+          isFollowUpQuestionAnswered = true;
+          
+          if (Array.isArray(followUpQuestionResponse)) {
+            followUpQuestionResponse = followUpQuestionResponse.length ? followUpQuestionResponse.join(', ') : null;
+          }
+        }
+        
+        surveyData.push({
+          appRef: this.sharedMethods.generateAppRef(),
+          surveyDate: date,
+          questionKey: qtn.key,
+          questionType: qtn.questionType,
+          questionText: qtn?.label || qtn?.question,
+          questionResponse: formData[qtn.key],
+          userId: user?.id,
+          followUpQuestionKey: isFollowUpQuestionAnswered ? qtn?.followUpQuestion?.key : null,
+          followUpQuestionType: isFollowUpQuestionAnswered ? qtn?.followUpQuestion?.questionType : null,
+          followUpQuestionText: isFollowUpQuestionAnswered ? qtn?.followUpQuestion?.label : null,
+          followUpQuestionResponse: isFollowUpQuestionAnswered ? followUpQuestionResponse : null,
+        });
       }
     });
 

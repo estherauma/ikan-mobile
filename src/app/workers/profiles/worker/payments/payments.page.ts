@@ -1,8 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { FormControl, Validators, FormGroup } from '@angular/forms';
 import { PaymentsDataService } from 'src/app/payments/data/payments-data.service';
 import { ProfilesDataService } from 'src/app/profiles/data/profiles-data.service';
 import { BaseformPage } from 'src/app/shared/components/baseform/baseform.page';
+import { AnalyticsService } from 'src/app/shared/services/analytics/analytics.service';
+import { pageEventNames } from 'src/app/shared/services/analytics/event-names';
 import { ContentService } from 'src/app/shared/services/content/content.service';
 import { SharedmethodsService } from 'src/app/shared/services/sharedmethods/sharedmethods.service';
 import { ProfileData } from 'src/app/shared/services/sync/types';
@@ -13,6 +15,9 @@ import { ProfileData } from 'src/app/shared/services/sync/types';
   styleUrls: ['./payments.page.scss'],
 })
 export class PaymentsPage extends BaseformPage implements OnInit {
+  @Input() page: 'loggedin-user-payments' | 'vo-workers-payments' = 'loggedin-user-payments';
+  @Input() workerInfo: any;
+  
   submitButtonText = 'Save';
   acctFormQtns: any;
   beneficiaryFormQtns: any;
@@ -22,7 +27,7 @@ export class PaymentsPage extends BaseformPage implements OnInit {
   beneficiaryFormGroup: FormGroup;
   acctData: any;
   beneficiaryData: any;
-  userId: any;
+  profileId: any;
   profileData: ProfileData;
   acctPageText: any;
   benficiaryPageText: any;
@@ -40,29 +45,37 @@ export class PaymentsPage extends BaseformPage implements OnInit {
     public sharedMethods: SharedmethodsService,
     public paymentsDataService: PaymentsDataService,
     public profilesDataService: ProfilesDataService,
+    public analtyics: AnalyticsService,
   ) {
     super(contentService);
   }
 
   async ngOnInit() {
     await this.pageSetup();
+    this.analtyics.trackEvent(pageEventNames.workerProfilePayments, this.sharedMethods.analyticsEventParams);
   }
 
   async pageSetup() {
     this.commonText = this.contentService.commonText;
     this.submitButtonText = (this.isEditingAcct || this.isEditingBeneficiary) ? this.commonText?.update : this.commonText?.save;
     const userData = await this.sharedMethods.getUserData();
-    const profData: ProfileData = await this.profilesDataService.getSingleProfile(userData?.email);
+
+    let profData: ProfileData = await this.profilesDataService.getSingleProfile(userData?.email);
+    if (this.page === 'vo-workers-payments') {
+      profData = this.workerInfo;
+    }
+
     if (profData?.id) {
       this.profileData = profData;
     }
-    const acctData = await this.paymentsDataService.getActiveBankAccount(userData?.id);
-    if (acctData?.userId) {
+    this.profileId = typeof this.profileData?.id === 'number' ? this.profileData?.id : parseFloat(this.profileData?.id);
+    const acctData = await this.paymentsDataService.getActiveBankAccount(this.profileId);
+    if (acctData?.id) {
       this.isViewAcct = true;
       this.acctData = acctData;
     }
-    const beneficiaryData = await this.paymentsDataService.getActiveBeneficiary(userData?.id);
-    if (beneficiaryData?.userId) {
+    const beneficiaryData = await this.paymentsDataService.getActiveBeneficiary(this.profileId);
+    if (beneficiaryData?.id) {
       this.isViewBeneficiary = true;
       this.beneficiaryData = beneficiaryData;
     }
@@ -81,11 +94,7 @@ export class PaymentsPage extends BaseformPage implements OnInit {
         return;
       }
 
-      const validators = [];
-      if (entry.isRequired) {
-        validators.push(Validators.required);
-      }
-
+      const validators = this.sharedMethods.getFormValidators(entry);
       const value = this.isEditingAcct ? (this.acctData?.[entry.key] || '') : '';
       this.acctGroup[entry.key] = new FormControl(value, validators);
     });
@@ -103,11 +112,7 @@ export class PaymentsPage extends BaseformPage implements OnInit {
         return;
       }
 
-      const validators = [];
-      if (entry.isRequired) {
-        validators.push(Validators.required);
-      }
-
+      const validators = this.sharedMethods.getFormValidators(entry);
       const value = this.isEditingBeneficiary ? (this.beneficiaryData?.[entry.key] || '') : '';
       this.beneficiaryGroup[entry.key] = new FormControl(value, validators);
     });
@@ -120,7 +125,7 @@ export class PaymentsPage extends BaseformPage implements OnInit {
     const now = this.sharedMethods.getCurrentDateTime();
     data.updatedBy = userData.id;
     data.updatedAt = now;
-    data.userId = this.profileData?.id;
+    data.userId = this.profileId;
 
     const accountExists = await this.paymentsDataService.checkIfBankAccountExists(data.userId, data?.accountNumber);
     if (accountExists) {
@@ -184,7 +189,7 @@ export class PaymentsPage extends BaseformPage implements OnInit {
     const now = this.sharedMethods.getCurrentDateTime();
     data.updatedBy = userData.id;
     data.updatedAt = now;
-    data.userId = this.profileData?.id;
+    data.userId = this.profileId;
 
     const beneficiaryExists = await this.paymentsDataService.checkIfBeneficiaryExists(data.userId, data.accountNumber);
     if (beneficiaryExists) {

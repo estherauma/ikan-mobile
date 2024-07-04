@@ -1,6 +1,9 @@
 import { Component, OnInit } from '@angular/core';
+import { AnalyticsService } from 'src/app/shared/services/analytics/analytics.service';
+import { pageEventNames } from 'src/app/shared/services/analytics/event-names';
 import { ContentService } from 'src/app/shared/services/content/content.service';
 import { SharedmethodsService } from 'src/app/shared/services/sharedmethods/sharedmethods.service';
+
 
 @Component({
   selector: 'app-privacy-policy',
@@ -13,11 +16,13 @@ export class PrivacyPolicyPage implements OnInit {
 
   constructor(
     public contentService: ContentService,
-    public sharedMethods: SharedmethodsService
+    public sharedMethods: SharedmethodsService,
+    public analytics: AnalyticsService
   ) { }
 
   ngOnInit() {
-    this.pageSetup()
+    this.pageSetup();
+    this.analytics.trackEvent(pageEventNames.privacyPolicy, this.sharedMethods.analyticsEventParams);
   }
 
   pageSetup() {

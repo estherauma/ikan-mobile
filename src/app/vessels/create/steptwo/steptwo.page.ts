@@ -6,6 +6,8 @@ import { BaseformPage } from 'src/app/shared/components/baseform/baseform.page';
 import { ContentService } from 'src/app/shared/services/content/content.service';
 import { SharedmethodsService } from 'src/app/shared/services/sharedmethods/sharedmethods.service';
 import { VesselsDataService } from '../../data/vessels-data.service';
+import { AnalyticsService } from 'src/app/shared/services/analytics/analytics.service';
+import { pageEventNames } from 'src/app/shared/services/analytics/event-names';
 
 @Component({
   selector: 'app-steptwo',
@@ -17,6 +19,7 @@ export class SteptwoPage extends BaseformPage implements OnInit {
   prevQuestions: any;
   prevData: any;
   pageText: any;
+  isEditing: boolean = false;
 
   constructor(
     public sharedMethods: SharedmethodsService,
@@ -24,7 +27,8 @@ export class SteptwoPage extends BaseformPage implements OnInit {
     public activatedRoute: ActivatedRoute,
     public vesselDataService: VesselsDataService,
     public modalCtrl: ModalController,
-    public router: Router
+    public router: Router,
+    public analytics: AnalyticsService
   ) {
     super(contentService);
   }
@@ -35,6 +39,9 @@ export class SteptwoPage extends BaseformPage implements OnInit {
       this.prevQuestions = JSON.parse(questions);
       this.prevData = JSON.parse(data);
     });
+    this.activatedRoute.queryParams.subscribe((queryParams) => {
+      this.isEditing = queryParams.isEditing === 'true';
+    });
   }
 
   async ngOnInit() {
@@ -44,46 +51,104 @@ export class SteptwoPage extends BaseformPage implements OnInit {
       'vessels-createsteptwo'
     );
     this.commonText = this.contentService.commonText;
-    this.submitButtonText = this.commonText?.save;
-    this.pageTitle = pageData?.pageTitle;
+    this.submitButtonText = this.isEditing ? this.commonText?.update : this.commonText?.save;
     this.pageText = this.sharedMethods.convertAdditionalTextToObj(pageData?.additionalText);
+    this.pageTitle = this.isEditing ? this.pageText?.editVessel : pageData?.pageTitle;
     this.formQuestions = this.prevQuestions.concat(pageData?.formQuestions);
     this.formQuestions.forEach((entry) => {
+      if (entry.displayquestion === false) return;
+      const validators = this.sharedMethods.getFormValidators(entry);
       if (entry.key in this.prevData) {
-        this.group[entry.key] = new FormControl(this.prevData[entry.key], [Validators.required]);
+        this.group[entry.key] = new FormControl(this.prevData[entry.key], validators);
       } else {
-        this.group[entry.key] = new FormControl('', [Validators.required]);
+        this.group[entry.key] = new FormControl('', validators);
       }
-
     });
 
     this.pageFormGroup = new FormGroup(this.group);
+    this.analytics.trackEvent(pageEventNames.createVessel2, this.sharedMethods.analyticsEventParams);
   }
 
   async onSubmit(formData) {
     this.sharedMethods.showLoader(this.pageText?.savingVessel);
     const now = this.sharedMethods.getCurrentDateTime();
-    formData.created_at = formData.updated_at = now;
     const userData = await this.sharedMethods.getUserData();
-    formData.created_by = formData.updated_by = userData.id;
-    formData.app_ref = this.sharedMethods.generateAppRef();
-    const insertId = await this.vesselDataService.create(formData);
+    formData.updated_at = now;
+    formData.updated_by = userData.id;
     
-    if (insertId) {
-      const imageData = {
-        vessel_id: insertId,
-        image_url: formData?.image_url,
-        description: '', // TODO: update description
-      };
-      const imageInsertId = await this.vesselDataService.createVesselImage(imageData);
-      if (!imageInsertId) {
-        this.sharedMethods.showLoader(this.pageText?.errSavingImage);
+    if (!this.isEditing) {
+      formData.created_at = formData.updated_at = now;
+      formData.created_by = formData.updated_by = userData.id;
+      formData.app_ref = this.sharedMethods.generateAppRef();
+      
+      const insertId = await this.vesselDataService.create(formData);
+      
+      if (insertId) {
+        if (formData?.image_url?.webPath) {
+          const imageData = {
+            vessel_id: insertId,
+            image_url: formData?.image_url?.webPath,
+            description: '', // TODO: update description
+            app_ref: this.sharedMethods.generateAppRef(),
+          };
+          const imageInsertId = await this.vesselDataService.createVesselImage(imageData);
+          if (!imageInsertId) {
+            this.sharedMethods.showLoader(this.pageText?.errSavingImage);
+          }
+        }
+        
+        const vesselDetails = {
+          ...formData,
+          imageFile: formData?.image_url,
+          regNo: formData?.reg_no,
+        };
+        this.modalCtrl.dismiss();
+        this.router.navigate(['vessels/view', {vessel: JSON.stringify(vesselDetails)}], { replaceUrl: true });
+      } else {
+        this.sharedMethods.showLoader(this.pageText?.errCreatingVessel);
       }
-      this.modalCtrl.dismiss();
-      this.router.navigate(['vessels/view', formData], { replaceUrl: true });
     } else {
+      formData.app_ref = this.prevData?.app_ref;
+      formData.id = parseFloat(this.prevData.id);
+      const result = await this.vesselDataService.update(formData);
+      if (result?.rowsAffected > 0) {
+        let vesselDetails = result?.vessel;
+        const vesselImage = await this.vesselDataService.getVesselImageByVesselId(formData.id);
+        if (vesselImage) {
+          const imageData = {
+            id: vesselImage.id,
+            vessel_id: formData.id,
+            image_url: typeof formData?.image_url === 'string' ? formData?.image_url :
+           formData?.image_url?.webPath,
+            description: '', // TODO: update description
+          };
+          const imageResult = await this.vesselDataService.updateVesselImage(imageData);
+          if (imageResult?.rowsAffected === 0) {
+            this.sharedMethods.showLoader(this.pageText?.errUpdatingImage);
+          } else {
+            vesselDetails = { ...vesselDetails, imageFile: {webPath: imageResult.image.image_url} };
+          }
+        } else {
+          const imageData = {
+            vessel_id: formData.id,
+            image_url: typeof formData?.image_url === 'string' ? formData?.image_url :
+           formData?.image_url?.webPath,
+            description: '', // TODO: update description
+            app_ref: this.sharedMethods.generateAppRef(),
+          };
+          const imageInsertId = await this.vesselDataService.createVesselImage(imageData);
+          if (!imageInsertId) {
+            this.sharedMethods.showLoader(this.pageText?.errSavingImage);
+          } else {
+            vesselDetails = { ...vesselDetails, imageFile: {webPath: imageData.image_url} };
+          }
+        }
 
-      this.sharedMethods.showLoader(this.pageText?.errCreatingVessel);
+        this.modalCtrl.dismiss();
+        this.router.navigate(['vessels/view', {vessel: JSON.stringify(vesselDetails)}], { replaceUrl: true });
+      } else {
+        this.sharedMethods.showLoader(this.pageText?.errUpdatingVessel);
+      }
     }
   }
 }

@@ -73,6 +73,7 @@ export class AuthService {
   logOut() {
     Preferences.remove({ key: StorageKeys.apiToken });
     Preferences.remove({ key: StorageKeys.userData });
+    Preferences.remove({ key: StorageKeys.isRoleSet });
   }
 
   alterMenuBasedOnRole(menuItems: Array<any>) {

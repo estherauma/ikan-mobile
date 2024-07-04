@@ -1,14 +1,14 @@
-import { Component, OnInit, Output, EventEmitter, Input, ChangeDetectorRef } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter, Input } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { AlertController, ModalController } from '@ionic/angular';
 import { UploadService } from 'src/app/shared/services/upload/upload.service';
-import { CreatePage } from 'src/app/workorders/create/create.page';
 import { ImageselectComponent } from '../imageselect/imageselect.component';
 import { RecordoptionmodalComponent } from '../recordoptionmodal/recordoptionmodal.component';
 import { ContentService } from '../../services/content/content.service';
 import { FieldType, Icons } from '../../types/api-types';
 import { SharedmethodsService } from '../../services/sharedmethods/sharedmethods.service';
 import { AudioService } from '../../services/audio/audio.service';
+import { FileOpener } from '@capawesome-team/capacitor-file-opener';
 
 @Component({
   selector: 'app-form',
@@ -37,20 +37,20 @@ export class FormComponent implements OnInit {
   @Input() uploadDocIcon: string = 'assets/icon/pdf.svg';
   @Input() uploadDocText: string = '';
   @Input() showCancelButton: boolean = false;
+  @Input() showSurveyDisclaimer: boolean = false;
+  @Input() disclaimerText: string = '';
 
   @Output() formValues = new EventEmitter<any>();
   @Output() cancel = new EventEmitter<any>();
   @Output() formValue = new EventEmitter<any>();
   @Output() dataFromCustomButton = new EventEmitter<any>();
 
-  selectedImages = {};
-  selectedDocuments = {};
-
   formKeysToRemove = [];
   typesToExclude = ['h1','h2','h3','h4','h5','h6','p'];
   typeHereText = 'Type here';
   selectDateText = 'Select a date'; // TODO: add to prismic
   commonText: any;
+  docsCommonText: any;
 
   constructor(
     public uploadService: UploadService,
@@ -63,9 +63,12 @@ export class FormComponent implements OnInit {
 
   ngOnInit() {
     this.commonText = this.contentService?.commonText;
+    const docsPageData = this.contentService.getContentByPropertyName('my-documents-common-text');
+    this.docsCommonText = this.sharedMethods.convertAdditionalTextToObj(docsPageData?.additionalText);
     this.typeHereText = this.commonText?.typeHere;
     this.uploadPictureText = this.commonText?.uploadPicture;
     this.uploadDocText = this.commonText?.uploadDocument;
+    this.selectDateText = this.commonText?.selectADate;
     this.submitButtonText = this.submitButtonText || this.commonText?.submit;
     this.tunaFormquestions?.map(question => {
       if ([...this.typesToExclude].includes(question.questionType)) {
@@ -113,14 +116,10 @@ export class FormComponent implements OnInit {
     this.tunaFormGroup.patchValue({
       [key]: file
     });
-
-    this.selectedDocuments = {...this.selectedDocuments, [key]:file };
   }
 
   async takePicture(key) {
     try {
-      await this.audioService.checkDevicePermissions();
-
       const modal = await this.modalCtrl.create({
         component: ImageselectComponent,
         cssClass: 'notification-modal'
@@ -129,15 +128,11 @@ export class FormComponent implements OnInit {
 
       modal.onDidDismiss().then((data) => {
         if (data?.data?.imageData) {
-          const val = data?.data?.imageData?.webPath;
-
+          const val = data?.data?.imageData;
           this.updateFieldValue(key, val);
+          return data?.data?.imageData;
         }
       });
-
-      // TODO: Add logic for take photo and update form values list
-      // const picture = await this.uploadService.takePicture();
-      // this.selectedImages = {...this.selectedImages, [key]:picture };
       
     } catch (error) {
       console.error(error);
@@ -158,14 +153,6 @@ export class FormComponent implements OnInit {
       }
       return el;
     });
-  }
-
-  removeDocument(key) {
-    delete this.selectedDocuments[key];
-  }
-
-  removePicture(key) {
-    delete this.selectedImages[key];
   }
 
   async onRecord(question) {
@@ -212,5 +199,18 @@ export class FormComponent implements OnInit {
       ]
     });
     await alert.present();
+  }
+
+  async viewPdf(doc) {
+    doc.fileUrl = doc.uriPath || doc.fileUrl;
+    if (this.sharedMethods.currentPlatform === 'web') {
+      window.open(doc.fileUrl, '_blank');
+    } else {
+      await FileOpener.openFile({ path: doc.fileUrl})
+        .catch((e) => {
+          console.log('Error opening file', e);
+          this.sharedMethods.showToast(this.docsCommonText?.errorOpeningFile);
+        });
+    }
   }
 }

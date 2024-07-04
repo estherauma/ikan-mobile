@@ -1,63 +1,72 @@
-<app-header [pageTitle]=""></app-header>
+<div class="content-wrapper">
+  <!-- <app-search [searchDataSet]="[]" (searchResult)="searchResult($event)"></app-search> -->
+  <ion-row class="add-select-row">
+    <ion-col size="8" class="add-col">
+      <ion-button (click)="addDocument()">
+        <ion-icon slot="icon-only" name="add"></ion-icon>
+        {{ docsCommonText?.addDocument }}
+      </ion-button>
+    </ion-col>
+    <ion-col size="4" *ngIf="documents.length" class="ion-justify-content-end select-col">
+      <p
+        class="select"
+        (click)="selectDocs()"
+      >
+        {{ commonText?.select }}
+      </p>
+    </ion-col>
+  </ion-row>
 
-<ion-content>
-  <div class="toggle-nav-buttons ion-padding">
-    <div class="active-btn" (click)="onGoToEssentials()">Essentials</div>
-    <div class="inactive-btn" (click)="onGoToFiles()">My Files</div>
-  </div>
-  <app-search [searchDataSet]="[]" (searchResult)="searchResult($event)"></app-search>
-  <div>
-    <div class="ion-padding-vertical">
-      <ion-grid *ngIf="display==='icon'">
-        <ion-row class="ion-justify-content-center ion-margin-bottom">
-          <ion-col *ngFor="let file of files" size="4" class="ion-justify-content-center">
-            <div style="height: 150px; position: relative;" class="ion-margin-bottom">
-              <div *ngIf="select"  style="position:absolute; right: 5px; top:5px;">
-              <ion-checkbox></ion-checkbox>
-            </div>
-              <ion-thumbnail style="width: 100%; height: 100%;">
-                <ion-img [src]=""></ion-img>
-              </ion-thumbnail>
-            </div>
-              <ion-label class="image-title-list">{{file.name}}</ion-label>
-              <small class="image-text-list">{{file.date}}</small>
-              <small class="image-text-list">{{file.size}}</small>
-          </ion-col>
-        </ion-row>
-      </ion-grid>
+  <div *ngIf="documents.length > 0" class="documents-wrapper">
+    <ion-row>
+      <ion-col
+        class="ion-padding"
+        size="6"
+        *ngFor="let doc of documents; let i = index"
+        (click)="doc.docType === 'image' ? viewImage(doc) : viewFile(doc)"
+      >
+        <img
+          *ngIf="doc.docType === 'image' && sharedMethods.isIos"
+          [src]="doc.fileUrl | safeurl"
+          [alt]="doc.fileName"
+        />
 
-      <div *ngIf="display==='list'" class="ion-padding-horizontal">
-        <ion-col>
-          <ion-row *ngFor="let file of files">
-            <ion-col *ngIf="select" size="1">
-              <ion-checkbox></ion-checkbox>
-            </ion-col>
-            <ion-col size="2">
-              <ion-thumbnail>
-                <ion-img [src]=""></ion-img>
-              </ion-thumbnail>
-            </ion-col>
-            <ion-col size="9">
-              <ion-label class="image-title-list">{{file.name}}</ion-label>
-              <small class="image-text-list">{{file.date}}</small>
-              <small class="image-text-list">{{file.size}}</small>
-            </ion-col>
-          </ion-row>
-        </ion-col>
-      </div>
+        <img
+          *ngIf="doc.docType === 'image' && !sharedMethods.isIos"
+          [src]="doc.fileUrl"
+          [alt]="doc.fileName"
+        />
+        <div *ngIf="doc.docType === 'pdf'" class="img doc-icon-wrapper">
+          <img
+            src="assets/icon/documents.svg"
+            [alt]="docsCommonText?.documentsIcon"
+          />
+        </div>
+        <p *ngIf="doc.fileName" class="file-name">{{ doc.fileName }}</p>
+        <p *ngIf="doc.createdAt || doc.updatedAt">{{ doc.updatedAt || doc.createdAt | date:'dd/MM/yyy' }}</p>
+        <p *ngIf="doc.fileSize">{{ doc.fileSize }}</p>
+        <ion-icon
+          *ngIf="isSelecting"
+          class="ellipse"
+          name="ellipse"
+          (click)="selectDocument(doc)"
+        ></ion-icon>
+        <ion-icon
+          *ngIf="isSelecting && selectedDocuments.includes(doc)"
+          class="radio"
+          name="radio-button-on"
+          (click)="unSelectDocument(doc)"
+        ></ion-icon>
+      </ion-col>
+    </ion-row>
+  </div>
+
+  <div class="del-share-btns" *ngIf="isSelecting && !!selectedDocuments.length">
+    <div>
+      <ion-icon name="share-outline" (click)="shareDocs()"></ion-icon>
+    </div>
+    <div>
+      <ion-icon name="trash" (click)="openDelAlert()"></ion-icon>
     </div>
   </div>
-</ion-content>
-<div style="height: 44px;">
-  <ion-toolbar>
-    <div *ngIf="!select" slot="start" (click)="onSelect()">
-      Select
-    </div>
-    <div *ngIf="select" slot="start" (click)="onCancel()">
-      Cancel
-    </div>
-    <div slot="end" (click)="actionClicked ? onDismiss() : onClick()">
-        <ion-icon name="ellipsis-vertical-outline" size="large"></ion-icon>
-    </div>
-  </ion-toolbar>
 </div>

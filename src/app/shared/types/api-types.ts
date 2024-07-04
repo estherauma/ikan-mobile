@@ -161,4 +161,28 @@ export interface IPasswordResetResp {
 
 export enum SurveySources {
   notification = 'notification',
+  fromMenu = 'fromMenu',
+}
+
+export enum NotificationActionId {
+  feeeback = 'feedback',
+  survey = 'survey',
+  test = 'test',
+}
+
+export interface analyticsEventsData{
+  appLanguage: string;
+  role: string;
+  isIos: boolean;
+  isAndroid: boolean;
+  accountId: string;
+  deviceId: string;
+}
+
+export enum HubQuestionStatus {
+  pending = 'pending',
+  completed = 'completed',
+  answeredYes = 'answeredYes',
+  answeredNo = 'answeredNo',
+  answeredMaybe = 'answeredMaybe',
 }

@@ -10,7 +10,7 @@ import { AuthService } from '../../services/auth/auth.service';
 })
 export class HeaderComponent implements OnInit {
   @Input() pageTitle: string;
-  @Input() isBackButton = false;
+  @Input() isBackButton = true;
   @Input() isMenuButton = true;
   @Input() backBtnText = '';
   @Input() isLightBlueBg = false;

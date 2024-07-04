@@ -8,8 +8,6 @@ import { SearchComponent } from './components/search/search.component';
 import { DashboardelcomesectionComponent } from './dashboardelcomesection/dashboardelcomesection.component';
 import { ChartComponent } from './components/chart/chart.component';
 import { FilterComponent } from './components/filter/filter.component';
-import { DocumentactionsComponent } from './components/documentactions/documentactions.component';
-import { DocumentselectedactionComponent } from './components/documentselectedaction/documentselectedaction.component';
 import { ConfirmmodalComponent } from './components/confirmmodal/confirmmodal.component';
 import { ConfirmedmodalComponent } from './components/confirmedmodal/confirmedmodal.component';
 import { RecordoptionmodalComponent } from './components/recordoptionmodal/recordoptionmodal.component';
@@ -18,7 +16,6 @@ import { AuthbgpaperComponent } from './components/authbgpaper/authbgpaper.compo
 import { ButtonComponent } from './components/button/button.component';
 import { WorkordercardComponent } from './components/workordercard/workordercard.component';
 import { AgentcardComponent } from './components/agentcard/agentcard.component';
-import { QuestiontitlecardComponent } from './components/questiontitlecard/questiontitlecard.component';
 import { NotificationcardComponent } from './components/notificationcard/notificationcard.component';
 import { AttachmentComponent } from './components/attachment/attachment.component';
 import { BadgeComponent } from './components/badge/badge.component';
@@ -43,6 +40,12 @@ import { CompaniescardComponent } from './components/companiescard/companiescard
 import { CompanycontractcardComponent } from './components/companycontractcard/companycontractcard.component';
 import { SelectLanguageComponent } from './components/select-language/select-language/select-language.component';
 import { SafeurlPipe } from './pipes/safeurl/safeurl.pipe';
+import { PaymentsPage } from '../workers/profiles/worker/payments/payments.page';
+import { InfoPage as WorkerProfile } from '../workers/profiles/worker/info/info.page';
+import { FilesPage } from '../mydocuments/files/files.page';
+import { EssentialsComponent } from '../mydocuments/essentials/essentials.component';
+import { ViewImageComponent } from '../mydocuments/view-image/view-image.component';
+import { ViewPassportComponent } from '../mydocuments/view-passport/view-passport.component';
 
 
 @NgModule({
@@ -60,8 +63,6 @@ import { SafeurlPipe } from './pipes/safeurl/safeurl.pipe';
     DashboardelcomesectionComponent,
     ChartComponent,
     FilterComponent,
-    DocumentactionsComponent,
-    DocumentselectedactionComponent,
     ConfirmmodalComponent,
     ConfirmedmodalComponent,
     RecordoptionmodalComponent,
@@ -72,7 +73,6 @@ import { SafeurlPipe } from './pipes/safeurl/safeurl.pipe';
     AgentcardComponent,
     MaincardComponent,
     ProgressbarComponent,
-    QuestiontitlecardComponent,
     NotificationcardComponent,
     AttachmentComponent,
     BadgeComponent,
@@ -94,6 +94,12 @@ import { SafeurlPipe } from './pipes/safeurl/safeurl.pipe';
     CompaniescardComponent,
     CompanycontractcardComponent,
     SelectLanguageComponent,
+    PaymentsPage,
+    WorkerProfile,
+    FilesPage,
+    EssentialsComponent,
+    ViewImageComponent,
+    ViewPassportComponent,
   ],
   exports: [
     SafeurlPipe,
@@ -103,8 +109,6 @@ import { SafeurlPipe } from './pipes/safeurl/safeurl.pipe';
     DashboardelcomesectionComponent,
     ChartComponent,
     FilterComponent,
-    DocumentactionsComponent,
-    DocumentselectedactionComponent,
     ConfirmmodalComponent,
     ConfirmedmodalComponent,
     RecordoptionmodalComponent,
@@ -115,7 +119,6 @@ import { SafeurlPipe } from './pipes/safeurl/safeurl.pipe';
     AgentcardComponent,
     MaincardComponent,
     ProgressbarComponent,
-    QuestiontitlecardComponent,
     NotificationcardComponent,
     AttachmentComponent,
     BadgeComponent,
@@ -136,6 +139,12 @@ import { SafeurlPipe } from './pipes/safeurl/safeurl.pipe';
     FeedbackStatCardComponent,
     CompaniescardComponent,
     CompanycontractcardComponent,
+    PaymentsPage,
+    WorkerProfile,
+    FilesPage,
+    EssentialsComponent,
+    ViewImageComponent,
+    ViewPassportComponent,
   ]
 })
 

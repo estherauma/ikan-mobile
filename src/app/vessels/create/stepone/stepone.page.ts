@@ -3,6 +3,8 @@ import { FormControl, Validators, FormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
 import { ModalController } from '@ionic/angular';
 import { BaseformPage } from 'src/app/shared/components/baseform/baseform.page';
+import { AnalyticsService } from 'src/app/shared/services/analytics/analytics.service';
+import { pageEventNames } from 'src/app/shared/services/analytics/event-names';
 import { ContentService } from 'src/app/shared/services/content/content.service';
 import { SharedmethodsService } from 'src/app/shared/services/sharedmethods/sharedmethods.service';
 
@@ -18,19 +20,22 @@ export class SteponePage extends BaseformPage implements OnInit {
     public contentService: ContentService,
     public sharedMethods: SharedmethodsService,
     public modalCtrl: ModalController,
-    public router: Router
+    public router: Router,
+    public analytics: AnalyticsService
   ) {
     super(contentService);
     const pageData = this.contentService.getContentByPropertyName('vessels-createstepone');
     this.pageTitle = pageData?.pageTitle;
     this.formQuestions = pageData?.formQuestions;
     this.formQuestions.forEach((entry) => {
-      this.group[entry.key] = new FormControl('', [Validators.required]);
+      const validators = this.sharedMethods.getFormValidators(entry);
+      this.group[entry.key] = new FormControl('', validators);
     });
     this.pageFormGroup = new FormGroup(this.group);
   }
 
   ngOnInit() {
+    this.analytics.trackEvent(pageEventNames.createVessel, this.sharedMethods.analyticsEventParams)
   }
 
   async onSubmit(formData) {

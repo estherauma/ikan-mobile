@@ -23,7 +23,8 @@ export class DeductionsPage extends BaseformPage  implements OnInit {
     const deductionsData = this.contentServ.getContentByPropertyName('payment-deductions');
     this.formQuestions = deductionsData?.formQuestions;
     this.formQuestions.forEach((q) => {
-      this.group[q.key] = new FormControl('', [Validators.required]);
+      const validators = this.sharedMethods.getFormValidators(q);
+      this.group[q.key] = new FormControl('', validators);
     });
     this.pageFormGroup = new FormGroup(this.group);
   }

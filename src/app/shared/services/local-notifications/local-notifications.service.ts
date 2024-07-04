@@ -1,21 +1,18 @@
-import { Injectable } from '@angular/core';
+import { Injectable, NgZone } from '@angular/core';
 import { Router } from '@angular/router';
 import { ActionPerformed, LocalNotificationSchema, LocalNotifications, Weekday } from '@capacitor/local-notifications';
-import { SurveySources } from '../../types/api-types';
+import { NotificationActionId, SurveySources, UserRole } from '../../types/api-types';
 import { SharedmethodsService } from '../sharedmethods/sharedmethods.service';
 import { GlobalErrorHandlerService } from '../error-handler/global-error-handler.service';
-import { env } from 'src/environments/environment';
 import { AuthService } from '../auth/auth.service';
 import { Platform } from '@ionic/angular';
 import { App, AppState } from '@capacitor/app';
-import { Plugins, } from '@capacitor/core';
-const coreApp = Plugins.App;
+import { ContentService } from '../content/content.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class LocalNotificationsService {
-
   appActive = false;
 
   constructor(
@@ -24,16 +21,14 @@ export class LocalNotificationsService {
     public globalErrorHandler: GlobalErrorHandlerService,
     public platform: Platform,
     public authService: AuthService,
+    public contentService: ContentService,
+    public zone: NgZone,
   ) {
-
     this.platform.ready().then(() => {
       App.addListener('appStateChange', (state: AppState) => {
         this.appActive = state.isActive;
       });
-
-    this.scheduleNotifications();
     this.addListeners();
-  
     });
   }
 
@@ -56,16 +51,15 @@ export class LocalNotificationsService {
   }
 
 
-  async scheduleNotifications() {
+  async scheduleNotifications(commonText) {
     try {
-      const isProduction = env.production;
       const permissionsGranted = await this.requestNotificationPermission();
       if (permissionsGranted) {
-        const allNotifications: LocalNotificationSchema[] = [
+        // Regular Notifications to run every Thursday & Sunday
+        const regularNotifications: LocalNotificationSchema[] = [
           {
-            // TODO: add to prismic
-            title: 'Survey' + (isProduction ? '' : ' (Development)'),
-            body: 'A quick survey checking on you',
+            title: commonText?.surveyNotificationTitle,
+            body: commonText?.surveyNotificationBody,
             id: 1,
             schedule: {
               repeats: true,
@@ -76,69 +70,112 @@ export class LocalNotificationsService {
                   minute: 0,
                 }
               }, // Notification will run every Sunday
-            actionTypeId: 'survey',
+            actionTypeId: NotificationActionId.survey,
             extra: {
-              roles: ['worker',]
+              roles: [UserRole.worker,]
             }
           },
-
-          // FOR TEST PURPOSES
-          // {
-          //     title: 'Test Notification' + (isProduction ? '' : ' (Development)'),
-          //     body: 'This is a test notification.',
-          //     id: 2,
-          //     schedule: { 
-          //       at: new Date(Date.now() + 1000), 
-          //       repeats: true,
-          //       every: "minute", //runs every minute
-          //     },
-          //     actionTypeId: 'survey',
-          //   },
-
-          // TO BE REMOVED
-          // Testing purposes
-          // Uncomment the code block below (& in addListeners()) to run the notification every minute
-          // {
-          //   title: 'Another Test Notification' + (isProduction ? '' : ' (Development)'),
-          //   body: 'This is another test notification.',
-          //   id: 2,
-          //   schedule: { 
-          //     at: new Date(Date.now() + 1000), 
-          //     repeats: true,
-          //     every: "minute" //runs every minute
-          //   },
-          //   actionTypeId: 'test',
-          // },
+          {
+            title: commonText?.surveyNotificationTitle,
+            body: commonText?.surveyNotificationBody,
+            id: 2,
+            schedule: {
+              repeats: true,
+              on:
+                {
+                  weekday: Weekday.Thursday,
+                  hour: 18,
+                  minute: 0,
+                }
+              }, // Notification will run every Thursday
+            actionTypeId: NotificationActionId.survey,
+            extra: {
+              roles: [UserRole.worker,]
+            }
+          },
   
           // ADD NOTIFICATIONS HERE
+          // id should be different for each notification otherwise it will override the previous one
         ];
   
         const user = await this.sharedMethods.getUserData();
-        const notifications = allNotifications.filter((notif) => notif?.extra?.roles?.includes(user?.role) || !notif.extra?.roles);
+        const userNotifications = regularNotifications.filter((notif) => notif?.extra?.roles?.includes(user?.role) || !notif.extra?.roles);
       
-        if (notifications.length > 0) {
-          await LocalNotifications.schedule({
-            notifications: notifications,
-          });
+        if (userNotifications.length > 0) {
+          await LocalNotifications.schedule({ notifications: userNotifications});
+        } else {
+          // cancel any existing notifications
+          await LocalNotifications.cancel({ notifications: userNotifications });
         }
+
+
+        // Preset Notifications to run every week from the given date within given time frame
+        let presetNotifications: LocalNotificationSchema[] = [];
+        // TODO: Get preset topics from prismic
+        // TODO: make notif frequency dynamic
+        const presetTopics = await this.contentService?.getAllCategories();
+        const notificationsStartDate = commonText?.notificationsStartDate ? new Date(commonText?.notificationsStartDate) : undefined;
+        const notificationsTimeFrame = commonText?.notificationsTimeFrame ? Number(commonText?.notificationsTimeFrame) : undefined;
+
+        if (!notificationsStartDate || !notificationsTimeFrame) {
+          return;
+        }
+
+        for (let i = 0; i < notificationsTimeFrame; i++) {
+          const notificationDate = new Date(notificationsStartDate);
+          notificationDate.setDate(notificationDate.getDate() + (i * 7));
+          notificationDate.setHours(18, 0, 0, 0);
+
+          const prestNotif = {
+            title: commonText?.surveyNotificationTitle,
+            body: commonText?.surveyNotificationBody,
+            id: i + 1,
+            schedule: { 
+              at: notificationDate, 
+            },
+            actionTypeId: NotificationActionId.survey,
+            extra: {
+              roles: [UserRole.worker,],
+              topic: presetTopics?.[i] || ''
+            }
+          };
+          presetNotifications.push(prestNotif);
+        }
+
+        const currentDate = new Date();
+        const dateInRange = this.sharedMethods.isDateWithinTimeFrame(currentDate, notificationsTimeFrame, notificationsStartDate);
+        if (dateInRange) {
+          // cancel existing regular notifications so that they's no clash
+          await LocalNotifications.cancel({ notifications: userNotifications});
+          
+          // schedule the preset notificationsconst
+          const userPresetNotifications = presetNotifications.filter((notif) => notif?.extra?.roles?.includes(user?.role) || !notif.extra?.roles);
+          if (userPresetNotifications.length > 0) {
+            await LocalNotifications.schedule({ notifications: userPresetNotifications});
+          } else {
+            // cancel any existing notifications
+            await LocalNotifications.cancel({ notifications: userPresetNotifications });
+          }
+        }
+  
       }
     } catch (error) {
       this.globalErrorHandler.handleError(error, 'Error in local-notifications.service.ts at scheduleNotifications(). Failed to schedule local notifications');
     }
   }
 
-  async triggerTestNotification() {
+  async triggerTestNotification(commonText) {
     try {
       await LocalNotifications.schedule({
         notifications: [
           {
-            title: 'Survey - This is a test notification',
-            body: 'A quick survey checking on you',
+            title: commonText?.surveyNotificationTitle,
+            body: commonText?.surveyNotificationBody,
             id: 10,
             schedule: { 
               at: new Date(Date.now() + 1000), 
             },
-            actionTypeId: 'survey',
+            actionTypeId: NotificationActionId.survey,
           },
         ],
       });
@@ -157,27 +194,28 @@ export class LocalNotificationsService {
       LocalNotifications.addListener(
         'localNotificationActionPerformed',
         async(notificationAction: ActionPerformed) => {
-          const notification: LocalNotificationSchema = notificationAction?.notification;
-          switch (notificationAction?.actionId) {
-            case 'tap':
-              if (notification?.actionTypeId === 'survey') {
-                if (!this.appActive) {
-                  return setTimeout(async() => {
-                    await this.router.navigate([ 'survey' ], { queryParams: { surveySource: SurveySources.notification }});
-                  }, 700);
+          this.zone.run(async() => {
+            const notification: LocalNotificationSchema = notificationAction?.notification;
+            switch (notificationAction?.actionId) {
+              case 'tap':
+                if (notification?.actionTypeId === NotificationActionId.survey) {
+                  if (!this.appActive) {
+                    return setTimeout(async() => {
+                      await this.router.navigate([ 'survey' ], { queryParams: { surveySource: SurveySources.notification }});
+                    }, 700);
+                  }
+                  this.router.navigate([ 'survey' ], { queryParams: { surveySource: SurveySources.notification }});
                 }
-                this.router.navigate([ 'survey' ], { queryParams: { surveySource: SurveySources.notification }});
-              }
-              // TO BE REMOVED
-              // for testing purposes
-              if (notification?.actionTypeId === 'test') {
-                this.router.navigate([ 'survey' ], { queryParams: { surveySource: SurveySources.notification }});
-              }
-              break;
-            default:
-              break;
-          }
-
+                // TO BE REMOVED
+                // for testing purposes
+                if (notification?.actionTypeId === NotificationActionId.test) {
+                  this.router.navigate([ 'survey' ], { queryParams: { surveySource: SurveySources.notification }});
+                }
+                break;
+              default:
+                break;
+            }
+          });
         }
       );
     } catch (error) {

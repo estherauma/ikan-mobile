@@ -1,7 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import { AnalyticsService } from 'src/app/shared/services/analytics/analytics.service';
 import { ContentService } from 'src/app/shared/services/content/content.service';
 import { SharedmethodsService } from 'src/app/shared/services/sharedmethods/sharedmethods.service';
+import { HubQuestionStatus, UserData } from 'src/app/shared/types/api-types';
+import { SurveyDataService } from 'src/app/survey/data/survey-data.service';
 
 @Component({
   selector: 'app-subchapter',
@@ -26,22 +29,41 @@ export class SubchapterComponent  implements OnInit {
   isCaseStudy = false;
   caseStudyUid: string;
   caseStudyImgUrl: string;
+  networkStatus = false;
+  savedInlineQuestions = [];
+  user: UserData;
 
   constructor(
     public activatedRoute: ActivatedRoute,
     public contentService: ContentService,
     public router: Router,
     public sharedmethods: SharedmethodsService,
+    public analytics: AnalyticsService,
+    public surveyDataService: SurveyDataService,
   ) {
     this.activatedRoute.params.subscribe(async params => {
       this.subChapterId = params?.subChapterId;
       this.caseStudyUid = params?.caseStudyUid;
       this.isCaseStudy = !!params?.caseStudyUid;
       this.caseStudyImgUrl = params?.imgUrl || '';
+      await this.pageSetup();
     });
   }
 
-  ngOnInit() {
+  async ngOnInit() {
+    this.networkStatus = await this.sharedmethods.checkInternetConnectionStatus();
+    this.user = await this.sharedmethods.getUserData();
+    await this.pageSetup();
+    this.setUpAnalytics();
+  }
+
+  async pageSetup() {
+    await this.getContent();
+    await this.getQuestionValues();
+    await this.getQuestionStatus();
+  }
+
+  async getContent() {
     if (this.isCaseStudy) {
       this.allPageContent = this.contentService.getContentByPropertyName(this.caseStudyUid);
       this.pageContent = this.allPageContent?.pageContent;
@@ -53,7 +75,72 @@ export class SubchapterComponent  implements OnInit {
       const chapterId = this.subChapterId?.split('.')[0];
       this.imgUrl = this.sharedmethods?.getChapterBackground(chapterId, 'subchapter');
       this.upNextContent = this.getNextChapterContent();
+      this.savedInlineQuestions = this.surveyDataService.inlineQuestions;
     }
+  }
+  
+  setUpAnalytics() {
+    if (this.allPageContent?.analyticsEventName) {
+      this.analytics.trackEvent(this.allPageContent.analyticsEventName, this.sharedmethods.analyticsEventParams);
+    } else {
+      if (this.isCaseStudy) {
+        // TODO: send error to sentry
+        console.log(`No analytics event name found for this case study: ${this.caseStudyUid} ${this.allPageContent?.pageTitle}`);
+      } else {
+        // TODO: send error to sentry
+        console.log(`No analytics event name found for this page: ${this.subChapterId} ${this.allPageContent?.pageTitle}`);
+      }
+    }
+  }
+
+  async getQuestionValues() {
+    this.pageContent?.forEach(async(item) => {
+      if (item?.type === 'questions') {
+        const savedQtn = await this.savedInlineQuestions.find((el) => el.questionKey === item.key && el.createdBy === this.user?.id);
+        if (savedQtn) {
+          item.savedQtn = savedQtn;
+          if (item?.questionType === 'multi-select') {
+            const values: Array<string> = savedQtn.questionResponse?.split(',');
+            const optValues = values.map((val) => val.trim());
+            item.value = optValues;
+          } else {
+            item.value = savedQtn.questionResponse;
+          }
+        }
+      }
+    });
+  }
+
+  async getQuestionStatus() {
+    this.pageContent?.forEach((item) => {
+      if (item?.type === 'questions') {
+        if (!item?.value) {
+          item.status = HubQuestionStatus.pending;
+          item.icon = 'help';
+        } else if (
+          (item.questionType === 'radio' || item.questionType === 'select') 
+          && item.value.toLowerCase() === 'yes'
+        ) {
+          item.status = HubQuestionStatus.answeredYes;
+          item.icon = 'checkmark';
+        } else if (
+          (item.questionType === 'radio' || item.questionType === 'select')
+          && item.value.toLowerCase() === 'no'
+        ) {
+          item.status = HubQuestionStatus.answeredNo;
+          item.icon = 'close';
+        } else if (
+          (item.questionType === 'radio' || item.questionType === 'select')
+          && (item.value.toLowerCase() !== 'yes' || item.value.toLowerCase() !== 'no')
+        ) {
+          item.status = HubQuestionStatus.answeredMaybe;
+          item.icon = 'alert';
+        } else {
+          item.status = HubQuestionStatus.completed;
+          item.icon = 'checkmark';
+        }
+      }
+    });
   }
 
   goToNextChapter() {
@@ -104,4 +191,10 @@ export class SubchapterComponent  implements OnInit {
     this.router.navigate([ 'learninghub/case-studies', data?.uid, params ]);
   }
 
+  viewQuestion(data) {
+    data.subChapter = this.subChapterId;
+    this.router.navigate([this.router.url, 'question', data?.key , { questionData: JSON.stringify(data) }]);
+  }
+
+  onPlay(e) {}
 }

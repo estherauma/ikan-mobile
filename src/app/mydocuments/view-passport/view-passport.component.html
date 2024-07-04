@@ -1,0 +1,73 @@
+<div class="view-passport-wrapper">
+  <h3>{{ docsCommonText?.passportDetails }}</h3>
+  <ion-icon name="close" (click)="closeView()" class="close-icon"></ion-icon>
+  <ion-grid>
+    <ion-row>
+      <ion-col size="6">
+        <ion-label class="label">{{ passportViewData?.firstName }}</ion-label>
+      </ion-col>
+      <ion-col size="6">
+        <ion-label class="value">{{ userPassportDetails?.firstName }}</ion-label>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col size="6">
+        <ion-label class="label">{{ passportViewData?.surname }}</ion-label>
+      </ion-col>
+      <ion-col size="6">
+        <ion-label class="value"> {{ userPassportDetails?.surname }}</ion-label>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col size="6">
+        <ion-label class="label">{{ passportViewData?.passportNumber }}</ion-label>
+      </ion-col>
+      <ion-col size="6">
+        <ion-label class="value"> {{ userPassportDetails?.passportNumber }}</ion-label>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col size="6">
+        <ion-label class="label">{{ passportViewData?.dateOfIssue }}</ion-label>
+      </ion-col>
+      <ion-col size="6">
+        <ion-label class="value">{{ userPassportDetails?.dateOfIssue | date : "dd/MM/yyy" }}</ion-label>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col size="6">
+        <ion-label class="label">{{ passportViewData?.dateOfExpiry }}</ion-label>
+      </ion-col>
+      <ion-col size="6">
+        <ion-label class="value">{{ userPassportDetails?.dateOfExpiry | date : "dd/MM/yyy" }}</ion-label>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col size="12"></ion-col>
+      <ion-col size="12" class="image-col">
+        <ion-row class="image-preview">
+          <img *ngIf="sharedMethods.isIos" [src]="userPassportDetails.imageUrl | safeurl" />
+          <img *ngIf="!sharedMethods.isIos" [src]="userPassportDetails.imageUrl" />
+        </ion-row>
+      </ion-col>
+    </ion-row>
+    <ion-row class="btn-row">
+      <ion-col size="6">
+        <ion-button
+          class="edit-btn"
+          (click)="editPassport(userPassportDetails)"
+        >
+          {{ commonText?.edit }}
+        </ion-button>
+      </ion-col>
+      <ion-col size="6">
+        <ion-button
+          class="del-btn"
+          (click)="deletePassport(userPassportDetails)"
+        >
+          {{ commonText?.delete }}
+        </ion-button>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</div>

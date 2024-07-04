@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { AnalyticsService } from 'src/app/shared/services/analytics/analytics.service';
+import { pageEventNames } from 'src/app/shared/services/analytics/event-names';
 import { ContentService } from 'src/app/shared/services/content/content.service';
 import { SharedmethodsService } from 'src/app/shared/services/sharedmethods/sharedmethods.service';
 
@@ -16,12 +18,14 @@ export class PasswordResetSuccessPage implements OnInit {
     public router: Router,
     public contentService: ContentService,
     public sharedMethods: SharedmethodsService,
+    public analytics: AnalyticsService
   ) { }
 
   ngOnInit() {
     this.commonText = this.contentService?.commonText;
     const pageData = this.contentService.getContentByPropertyName('reset-password-success');
     this.pageText = this.sharedMethods.convertAdditionalTextToObj(pageData?.additionalText);
+    this.analytics.trackEvent(pageEventNames.passwordResetSuccess, this.sharedMethods.analyticsEventParams);
   }
 
   toLogin() {

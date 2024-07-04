@@ -4,7 +4,7 @@ ion-backdrop {
 
 .select-lang-modal {
   --background: transparent !important;
-  
+
   app-select-language {
     display: flex;
     flex-direction: column;
@@ -68,7 +68,7 @@ ion-modal.my-own-class {
   --width: 250px;
   --border-radius: 20px;
   align-items: flex-end;
-  justify-content: end;
+  justify-content: flex-end;
   margin-bottom: 44px;
   padding-right: 10px;
   padding-bottom: 15px;
@@ -85,7 +85,7 @@ ion-modal.my-own-class {
   }
 }
 
-.tuna-alert  .alert-wrapper { 
+.tuna-alert .alert-wrapper {
   width: 100%;
   margin: 20px;
   padding: 20px;
@@ -96,33 +96,33 @@ ion-modal.my-own-class {
   .alert-head {
     padding-top: 0;
     text-align: center;
-   h2{
-    font-size: 1.25rem;
-    font-weight: bold;
-    color: #2E2D2C;
-   }
+    h2 {
+      font-size: 1.25rem;
+      font-weight: bold;
+      color: #2e2d2c;
+    }
   }
-  .alert-button-group{
+  .alert-button-group {
     justify-content: center;
   }
-  .alert-button{
-    flex:none;
+  .alert-button {
+    flex: none;
     min-width: 25%;
     padding: 8px 20px;
     font-weight: bold;
-    color: #2E2D2C !important;
+    color: #2e2d2c !important;
     border-radius: 28px;
-    border: 1px solid #2E2D2C;
-    margin:0 6px;
+    border: 1px solid #2e2d2c;
+    margin: 0 6px;
     background-color: white;
   }
 }
 
-.del-img-prompt-alert .alert-wrapper{
+.del-img-prompt-alert .alert-wrapper {
   .alert-button:last-child {
     color: white !important;
-    background-color: red !important;
-    border-color: red;
+    background-color: var(--ikan_red_100) !important;
+    border-color: var(--ikan_red_100);
   }
 }
 
@@ -189,11 +189,11 @@ ion-modal.workers-create-modal {
   .alert-wrapper {
     .alert-head {
       padding-top: 0;
-     h2{
-      font-size: 1.25rem;
-      font-weight: bold;
-      color:var(--ion-color-primary)
-     }
+      h2 {
+        font-size: 1.25rem;
+        font-weight: bold;
+        color: var(--ion-color-primary);
+      }
     }
 
     .alert-message {
@@ -203,7 +203,113 @@ ion-modal.workers-create-modal {
     .alert-button {
       color: white !important;
       background-color: var(--ion-color-primary);
-      border-color:var(--ion-color-primary);
+      border-color: var(--ion-color-primary);
+    }
+  }
+}
+
+.select-group-label {
+  .alert-button-inner {
+    opacity: 1 !important;
+  }
+  .alert-checkbox-icon {
+    display: none;
+  }
+
+  .alert-checkbox-label {
+    color: var(--ion-color-primary);
+    padding: 15px 15px 0 15px;
+  }
+}
+
+.parties-edit-alert .alert-wrapper,
+.add-file-alert .alert-wrapper {
+  width: 100%;
+  margin: 20px;
+  padding: 20px;
+  border-radius: 30px;
+  background-color: white;
+  max-width: 100% !important;
+  min-width: 80% !important;
+  .alert-head,
+  .alert-message {
+    display: none;
+  }
+  .alert-button-group {
+    justify-content: center;
+    border: none;
+  }
+  .alert-button {
+    flex: none;
+    font-weight: bold;
+    color: white !important;
+    text-transform: capitalize;
+    display: flex;
+    justify-content: center;
+    margin-top: 10px;
+    height: 50px;
+    border: none;
+    .alert-button-inner {
+      justify-content: center;
+      border-radius: 20px;
+      background-color: #3565ff;
+    }
+  }
+  .alert-button:last-child {
+    color: #191970 !important;
+    justify-content: flex-end;
+    padding: 0;
+    text-transform: uppercase;
+    .alert-button-inner {
+      justify-content: flex-end;
+      background-color: white;
+      height: unset;
+    }
+  }
+}
+
+.parties-edit-alert .alert-wrapper .alert-button,
+.add-file-alert .alert-wrapper .alert-button.sc-ion-alert-ios {
+  margin-top: 20px !important;
+  min-height: 60px !important;
+}
+
+.add-file-alert .alert-wrapper {
+  .alert-button-inner {
+    min-width: 230px;
+    max-width: 100%;
+  }
+}
+
+.add-file-name-alert .alert-wrapper {
+  min-width: 80%;
+  max-width: 90%;
+  border-radius: 30px;
+  padding: 20px 10px;
+
+  .alert-head {
+    padding-bottom: 5px;
+    h2 {
+      color: var(--ikan_darkblue_90);
+      color: #191970;
+    }
+  }
+  .alert-message {
+    font-size: 0.85rem;
+  }
+  .alert-input-group {
+    padding-top: 0;
+    padding-bottom: 0;
+    .alert-input-wrapper {
+      .alert-input {
+        border-radius: 10px;
+        border: 1px solid var(--ikan_darkblue_90);
+        border: 1px solid #191970;
+        padding: 10px;
+        color: var(--ikan_darkblue_100);
+        background: #eaedf6;
+        height: 50px;
+      }
     }
   }
 }

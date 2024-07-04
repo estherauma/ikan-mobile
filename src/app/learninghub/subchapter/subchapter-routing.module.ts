@@ -6,6 +6,10 @@ const routes: Routes = [
   {
     path: '',
     component: SubchapterComponent
+  },
+  {
+    path: 'question/:key',
+    loadChildren: () => import('../question/question.module').then( m => m.QuestionModule)
   }
 ];
 

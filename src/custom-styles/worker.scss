@@ -88,14 +88,6 @@ app-profile {
     }
   }
 
-  .edit-profile {
-    #app-btn {
-      min-width: 100px !important;
-      text-transform: none;
-      min-height: 40px; 
-    }
-  }
-
   form {
     .title {
       color: var(--ikan_darkblue_90);
@@ -112,5 +104,15 @@ app-viewclause {
     object-fit: cover;
     object-position: center;
     border-radius: 20px;
+  }
+}
+
+app-detail {
+  .info-edit-btn {
+    ion-button::part(native) {
+      background: #191970 !important;
+      color: white !important;
+      text-transform: none;
+    }
   }
 }

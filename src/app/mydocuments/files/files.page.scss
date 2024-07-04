@@ -1,42 +1,108 @@
-.toggle-nav-buttons{
+.add-select-row {
+  padding: 0 15px;
+  .select-col {
     display: flex;
-    background-color: #E6E6E6;
-    height: 60px;
+    justify-content: flex-end;
+    p {
+      font-size: 1rem;
+      font-weight: 400;
+      margin: 10px;
+      color: var(--ion-color-primary);
+    }
+  }
+  .add-col {
+    ion-button {
+      color: white;
+      --background: var(--ion-color-primary);
+      text-transform: none;
+      --border-radius: 15px;
 
-    .active-btn{
-        width: 100%;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        background-color: #F5F5F5;
-        ;
+      ion-icon {
+        margin-right: 5px;
+      }
+    }
+  }
+}
+
+.documents-wrapper {
+  padding-bottom: 100px;
+
+  ion-row {
+    padding: 5px 30px 0px 30px;
+  }
+  ion-col {
+    min-height: 200px;
+    max-height: 300px;
+    position: relative;
+
+    .ellipse {
+      position: absolute;
+      top: 10%;
+      right: 15%;
+      color: #eaedf6;
+      font-size: 1.4rem;
     }
 
-    .inactive-btn{
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        width: 100%;
-        color: #B4B4B4;
+    .radio {
+      color: var(--ion-color-primary);
+      position: absolute;
+      top: 10.5%;
+      right: 15.5%;
+      font-size: 1.2rem;
+      font-weight: bold;
+      --ionicon-stroke-width: 40px;
     }
-}
+  }
+  img,
+  .img {
+    width: 100%;
+    max-height: 80%;
+    border: none;
+    pointer-events: none;
+    margin-bottom: 5px;
+  }
 
-.image-text{
-    display: block;
+  .doc-icon-wrapper {
+    background-color: var(--ion-color-blue-dark);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 5px;
+
+    img {
+      height: 80px;
+      width: 80px;
+    }
+  }
+
+  p {
+    font-size: 0.875rem;
+    font-weight: 400;
+    margin: 0;
     text-align: center;
-    color: #B4B4B4;
+    color: #a0abcc;
+  }
+  .file-name {
+    color: unset;
+  }
 }
 
-.image-title{
-    display: block;
-    text-align: center;
-}
+.del-share-btns {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  height: 60px;
+  width: 100%;
+  border-radius: 40px 40px 0 0;
+  padding: 10px 40px;
+  background-color: #3565ff;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 
-.image-text-list{
-    display: block;
-    color: #B4B4B4;
-}
-
-.image-title-list{
-    display: block;
+  ion-icon {
+    color: #f7f6f0;
+    font-size: 1.6rem;
+    --ionicon-stroke-width: 40px;
+  }
 }

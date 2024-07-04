@@ -2,10 +2,13 @@
 
 <ion-content class="ion-padding content-skyblue-bg">
   <app-form
+    class="survey-form"
     btnFill="solid"
     [tunaFormGroup]="pageFormGroup"
     [tunaFormquestions]="formQuestions"
     [submitButtonText]="commonText?.submit"
+    [showSurveyDisclaimer]="true"
+    [disclaimerText]="disclaimerText"
     (formValue)="onSubmit($event)"
   >
   </app-form>

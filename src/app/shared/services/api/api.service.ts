@@ -49,12 +49,12 @@ export class ApiService {
    * @param requestData
    * Return the data from a post request
    */
-  post(resourceUrl, requestData, excludeHeaders=false) {
+  post(resourceUrl, requestData, excludeHeaders=false, params={}) {
     //TODO: Consider checking status of the request from here and also passing interface for the expected data
     if (excludeHeaders) {
-      return this.http.post(`${env.apiUrl}/${resourceUrl}`, requestData);
+      return this.http.post(`${env.apiUrl}/${resourceUrl}`, requestData, { params });
     }
-    return this.http.post(`${env.apiUrl}/${resourceUrl}`, requestData, {headers: this.headers});
+    return this.http.post(`${env.apiUrl}/${resourceUrl}`, requestData, { headers: this.headers, params });
   }
 
   /**
@@ -64,7 +64,7 @@ export class ApiService {
    * @param requestData
    */
   put(resourceUrl, resourceId, requestData) {
-    return this.http.put(`${env.apiUrl}/${resourceUrl}/${resourceId}/`, requestData, {headers: this.headers})
+    return this.http.put(`${env.apiUrl}/${resourceUrl}/${resourceId}`, requestData, {headers: this.headers})
   }
 
   /**
@@ -73,12 +73,11 @@ export class ApiService {
    * @param requestData
    */
   patch(resourceUrl, resourceId, requestData) {
-    this.http.patch(`${env.apiUrl}/${resourceUrl}/${resourceId}/`, requestData, {headers: this.headers})
-    .subscribe((response) => response);
+    return this.http.patch(`${env.apiUrl}/${resourceUrl}/${resourceId}`, requestData, {headers: this.headers});
   }
 
   delete(resourceUrl, resourceId) {
-    // TODO: Implement later when we want to start deleting records.
+    return this.http.delete(`${env.apiUrl}/${resourceUrl}/${resourceId}`, {headers: this.headers});
   }
 
   uploadPushNotificationData(uploadDetails: PushNotificationData): any {

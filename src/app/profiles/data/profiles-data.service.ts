@@ -91,7 +91,7 @@ export class ProfilesDataService {
   }
 
   async getSingleProfile(email: string) {
-    const profile = this.profiles.find((p) => p.email === email);
+    const profile = await this.profiles.find((p) => p.email === email);
     return profile;
   }
 
@@ -101,6 +101,8 @@ export class ProfilesDataService {
       registration_number, passport_number, position, is_active, is_verified, last_login, user_role, \
       created_at, updated_at, created_by, updated_by) \
       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)';
+    data.isActive = data.isActive ?? false;
+    data.isVerified = data.isVerified ?? false;
     const params = [data?.email, data?.firstName, data?.lastName, data?.telephone, data?.mobile,
       data?.addressLine1, data?.addressLine2, data?.addressLine3, data?.city, data?.country,
       data?.postalCode, data?.profileImage, data?.registrationNumber, data?.passportNumber,
@@ -117,13 +119,13 @@ export class ProfilesDataService {
   }
   async saveOnlineProfile(data) {
     const query = 'INSERT OR IGNORE INTO profiles (email, first_name, last_name, telephone, mobile, \
-      address_line_1, address_line_2, address_line_3, city, country, postal_code, profile_image, \
+      address_line_1, address_line_2, address_line_3, city, country, postal_code, \
       registration_number, passport_number, position, is_active, is_verified, last_login, user_role, \
       created_at, updated_at, created_by, updated_by, online_ref) \
-      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)';
+      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)';
     const params = [data?.email, data?.firstName, data?.lastName, data?.telephone, data?.mobile,
       data?.addressLine1, data?.addressLine2, data?.addressLine3, data?.city, data?.country,
-      data?.postalCode, data?.profileImage, data?.registrationNumber, data?.passportNumber,
+      data?.postalCode, data?.registrationNumber, data?.passportNumber,
       data?.position, data?.isActive, data?.isVerified, data?.lastLogin, data?.userRole,
       data?.createdAt, data?.updatedAt, data?.createdBy, data?.updatedBy, data?.id];
 
@@ -179,6 +181,18 @@ export class ProfilesDataService {
       WHERE email = ?';
     const params = [data.registrationNumber, data.passportNumber, data.updatedAt, data.updatedBy, data.email];
     return this.db.executeSql(query, params).then(async (result) => {
+      await this.retrieveProfiles();
+      return result;
+    }).catch((e) => {
+      console.error(e);
+      return null;
+    });
+  }
+
+  async updateProfilesField(email: string, field: string, value: any) {
+    const query = `UPDATE profiles SET ${field} = ? WHERE email = ?`;
+    const params = [value, email];
+    return this.db.executeSql(query, params).then(async(result) => {
       await this.retrieveProfiles();
       return result;
     }).catch((e) => {

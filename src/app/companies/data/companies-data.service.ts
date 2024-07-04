@@ -7,7 +7,8 @@ import { BehaviorSubject } from 'rxjs';
   providedIn: 'root'
 })
 export class CompaniesDataService {
-  companies = new BehaviorSubject([]);
+  companies: Array<any> = [];
+  companiesObs = new BehaviorSubject([]);
   db: SQLiteObject;
 
   constructor(
@@ -23,11 +24,15 @@ export class CompaniesDataService {
         await this.retriveCompanies();
       }).catch(e => console.log(e));
     });
+
+    this.getAll().subscribe((companies) => {
+      this.companies = companies;
+    });
   }
 
   async retriveCompanies() {
     const query = 'SELECT * FROM companies';
-    this.db.executeSql(query, []).then((data) => {
+    return this.db.executeSql(query, []).then((data) => {
       const companies = [];
       if (data.rows.length > 0) {
         for (let i = 0; i < data.rows.length; i++) {
@@ -52,12 +57,21 @@ export class CompaniesDataService {
           });
         }
       }
-      this.companies.next(companies);
+      this.companiesObs.next(companies);
     }).catch((e) => console.log(e));
   }
 
   getAll() {
-    return this.companies.asObservable();
+    return this.companiesObs.asObservable();
+  }
+
+  async getCompanyById(id) {
+    try {
+      return await this.companies.find((entry) => entry.id === id);
+    } catch (e) {
+      console.log(e);
+      return null;
+    }
   }
 
   async create(data) {
@@ -71,6 +85,25 @@ export class CompaniesDataService {
       this.retriveCompanies();
       return result.insertId;
     }).catch((e) => console.log(e));
+  }
+
+  update(data, companyId) {
+    const query = 'UPDATE companies SET name = ?, description = ?, status = ?, country = ?, telephone = ?, \
+      email = ?, address_line_1 = ?, address_line_2 = ?, address_line_3 = ?, updated_at = ?, updated_by = ? \
+      WHERE id = ?';
+    const params = [data.name, data.description, data.status, data.country, data.telephone, data.email,
+      data.address_line_1, data.address_line_2, data.address_line_3, data.updated_at, data.updated_by, companyId];
+    return this.db.executeSql(query, params).then(async(result) => {
+      await this.retriveCompanies();
+      const company = await this.getCompanyById(companyId);
+      return {
+        rowsAffected: result.rowsAffected,
+        company
+      }
+    }).catch((e) => {
+      console.log(e)
+      return null;
+    });
   }
 
 
@@ -105,5 +138,12 @@ export class CompaniesDataService {
     return this.db.executeSql(query, params).then((result) => {
       // this.retriveCompanies();
     }).catch((e) => console.log(e));
+  }
+
+  getCountryCompanyOptions(country: 'Taiwan' | 'Indonesia') {
+    const companies = this.companies.filter((entry) => entry.country === country);
+    return companies.map((entry) => {
+      return { label: entry.name, value: entry.id };
+    });
   }
 }

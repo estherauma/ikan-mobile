@@ -1,12 +1,13 @@
-import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
 import { ContentService } from '../../shared/services/content/content.service';
 import { ModalController } from '@ionic/angular';
 import { CreateclausePage } from '../clauses/createclause/createclause.page';
 import { ContractDataService } from '../data/contract-data.service';
 import { SharedmethodsService } from 'src/app/shared/services/sharedmethods/sharedmethods.service';
 import { AuthService } from 'src/app/shared/services/auth/auth.service';
-import { StorageKeys } from 'src/app/shared/types/api-types';
+import { CompaniesDataService } from 'src/app/companies/data/companies-data.service';
+import { CreatePage } from '../create/create.page';
 
 @Component({
   selector: 'app-view',
@@ -33,10 +34,12 @@ export class ViewPage implements OnInit {
   pageTitle: string;
   contract;
   contractClauses = [];
-  done = false;
+  done = false; // TODO: add done logic
   partiesRequirementId: string;
-  createButtonText: string = 'Add new clause';
+  createClauseText: string = 'Add new clause';
   pageText: any;
+  editContractText: string = 'Edit contract';
+
 
   constructor(
     public activatedRoute: ActivatedRoute,
@@ -45,13 +48,19 @@ export class ViewPage implements OnInit {
     public contractDataService: ContractDataService,
     public sharedMethods: SharedmethodsService,
     public authService: AuthService,
+    public companiesDataService: CompaniesDataService,
+    public router: Router,
   ) {}
 
   ngOnInit() {
     // TODO: Consider refactoring this method to smaller functions
     this.commonText = this.contentService?.commonText;
     this.activatedRoute.params.subscribe((params) => {
-      this.contract = params;
+      const data = {
+        ...params,
+        file: JSON.parse(params.file),
+      };
+      this.contract = data;
       if (params.name === 'undefined' || params.name === undefined) {
         this.contract = this.contractDataService.getSingleContract(params.id);
       }
@@ -89,7 +98,7 @@ export class ViewPage implements OnInit {
         this.contractClauses = this.contractClauses.sort((a, b) => a.order - b.order);
       });
     });
-    
+
     this.pageSetup();
   }
 
@@ -112,6 +121,15 @@ export class ViewPage implements OnInit {
     return clauseOrder[clauseKind];
   }
 
+  getCompanyName(companyId) {
+    const companies = this.companiesDataService.companies;
+    if (!companies.length) {
+      return '';
+    }
+    const company = companies.find((entry) => entry.id === parseFloat(companyId));
+    return company?.name || '';
+  }
+
   async createClause() {
     const modal = await this.modalController.create({
       component: CreateclausePage,
@@ -128,9 +146,40 @@ export class ViewPage implements OnInit {
   pageSetup() {
     const pageData = this.contentService.getContentByPropertyName('contracts-view-clause');
     if (!pageData) {
-        return;
+      return;
     }
     this.pageText = this.sharedMethods.convertAdditionalTextToObj(pageData?.additionalText);
-    this.createButtonText = this.pageText?.addNewClause;
+    this.createClauseText = this.pageText?.addNewClause;
+    this.editContractText = this.pageText?.editContract ?? this.editContractText;
+  }
+
+  async editContract() {
+    const contractDetails = {
+      ...this.contract,
+      id: parseFloat(this.contract.id),
+      app_ref: this.contract.appRef,
+      internal_ref: this.contract.internalRef,
+      start_date: this.contract.startDate,
+      end_date: this.contract.endDate,
+      online_ref: this.contract.onlineRef,
+      type: this.contract.kind,
+      taiwanese_company_id: this.contract.taiwaneseCompany,
+      indonesian_company_id: this.contract.indonesianCompany,
+    };
+
+    const modal = await this.modalController.create({
+      cssClass: 'notification-modal',
+      component: CreatePage,
+      componentProps: {
+        contractDetails,
+        isEditing: true,
+      }
+    });
+    modal.present();
+    modal.onDidDismiss().then((data) => {
+      if (data?.data?.contractDetails && Object.keys(data.data.contractDetails)?.length) {
+        this.contract = data.data?.contractDetails;
+      }
+    });
   }
 }

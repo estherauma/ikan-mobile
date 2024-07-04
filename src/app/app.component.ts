@@ -1,9 +1,9 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { NavigationEnd, NavigationStart, Router } from '@angular/router';
+import { Router } from '@angular/router';
 import { StatusBar } from '@capacitor/status-bar';
 import { ContentService } from './shared/services/content/content.service';
 import { SharedmethodsService } from './shared/services/sharedmethods/sharedmethods.service';
-import { StorageKeys, UserData } from './shared/types/api-types';
+import { StorageKeys, SurveySources, UserData } from './shared/types/api-types';
 import { PluginListenerHandle } from '@capacitor/core';
 import { AuthService } from './shared/services/auth/auth.service';
 import { DBService } from './shared/services/database/db.service';
@@ -45,12 +45,8 @@ export class AppComponent implements OnInit, OnDestroy {
     public location: Location,
   ) {
     this.authService.setUpAuthData();
-    this.contentService.setUpAppData().then(() => {
-      this.checkSetupComplete();
-    });
     this.checkLoginStatus();
     this.pushNotifications.setup();
-    this.localNotifications.scheduleNotifications();
     this.contentService.menuContent.subscribe((data) => {
       this.setupMenu(data);
     });
@@ -76,13 +72,17 @@ export class AppComponent implements OnInit, OnDestroy {
     };
     this.handleBackButtonNavigation();
     await this.sharedMethods.addNetworkEventListener((async(network) => {
-        this.networkListener = network.networkListener;
-        if (network.connected) {
-          await this.contentService.compareContent();
-          this.checkSetupComplete();
-        }
+      this.networkListener = network.networkListener;
+      if (network.connected) {
+        await this.contentService.compareContent();
+        this.checkSetupComplete();
+      }
     }));
-    this.commonText = this.contentService.commonText;
+    await this.contentService.setUpAppData().then(() => {
+      this.checkSetupComplete();
+      this.commonText = this.contentService.commonText;
+      this.localNotifications.scheduleNotifications(this.commonText);
+    });
     this.userData = this.authService.userData;
     this.userEmail = this.authService.userData?.email;
     await this.contentService.saveSurveyCategories();
@@ -175,6 +175,8 @@ export class AppComponent implements OnInit, OnDestroy {
     } else if (this.appPages[index].url === '/myprofile') {
       const user: UserData = await this.sharedMethods.readDataFromStorage(StorageKeys.userData);
       this.router.navigate([ this.sharedMethods.getProfileUrlBasedOnRole(user?.role) ]);
+    } else if (this.appPages[index].url === '/survey') {
+      this.router.navigate([this.appPages[index].url], { queryParams: { surveySource: SurveySources.fromMenu } });
     } else {
       this.router.navigate([this.appPages[index].url]);
     }

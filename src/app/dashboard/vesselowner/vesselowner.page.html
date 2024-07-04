@@ -1,70 +1,34 @@
-<app-header [pageTitle]="">
+<app-header
+  [isBackButton]="false"
+>
 </app-header>
 
 <ion-content>
-  <app-dashboardelcomesection 
-    [message]="welcomeText"
-    [message1]=""
-    [name]="name"
-    (onProfileClick)="goToProfile()"
-    >
-  </app-dashboardelcomesection>
-  <!-- For Testing purposes - uncomment the line below to test the survey page-->
-  <!-- <ion-button (click)="gooo()">Test survey page</ion-button> -->
+  <div class="content-container">
+    <app-dashboardelcomesection 
+      [greeting]="welcomeText"
+      [name]="name"
+      (onProfileClick)="goToProfile()"
+      >
+    </app-dashboardelcomesection>
 
-    <!-- <div>
-      <ion-card>
-        <ion-card-content>
-          <ion-card-title>{{performanceData.title}}</ion-card-title>
+    <div class="ion-padding page-content">
+      <ion-card *ngFor="let sList of sLists">
+        <ion-card-content [routerLink]="sList.url">
           <ion-grid>
-            <ion-row class="ion-align-items-center">
-              <ion-col size="4">
-                <app-chart chartType="doughnut" [chartDatasets]="performanceData.datasets"></app-chart>
+            <ion-row>
+              <ion-col size="3">
+                <ion-thumbnail>
+                    <img [src]="sList.icon" width="10" height="10" />
+                </ion-thumbnail>
               </ion-col>
-              <ion-col size="8">
-                <ion-text>
-                  <h5>{{overalStat}}</h5>
-                </ion-text>
-                <br />
-                <ion-text>
-                  <p>
-                    <ion-icon name="square"></ion-icon>{{stat1}}
-                  </p>
-                </ion-text>
-                <ion-text>
-                  <p>
-                    <ion-icon name="square"></ion-icon> {{stat2}}
-                  </p>
-                </ion-text>
-                <ion-text>
-                  <p>
-                    <ion-icon name="square"></ion-icon> {{stat3}}
-                  </p>
-                </ion-text>
-                <br />
-                <ion-text class="ion-center"><a routerLink="/feedbackdashboard/home">{{feedbackDashboardMessage}}</a></ion-text>
+              <ion-col size="9">
+                <ion-card-title>{{sList.title}}</ion-card-title>
               </ion-col>
             </ion-row>
           </ion-grid>
         </ion-card-content>
       </ion-card>
-    </div> -->
-  <div style="background-color: #F5F5F5;" class="ion-padding">
-    <ion-card *ngFor="let sList of sLists">
-      <ion-card-content [routerLink]="sList.url">
-        <ion-grid>
-          <ion-row>
-            <ion-col size="3">
-              <ion-thumbnail>
-                  <img [src]="sList.icon" width="10" height="10" />
-              </ion-thumbnail>
-            </ion-col>
-            <ion-col size="9">
-              <ion-card-title>{{sList.title}}</ion-card-title>
-            </ion-col>
-          </ion-row>
-        </ion-grid>
-      </ion-card-content>
-    </ion-card>
+    </div>
   </div>
 </ion-content>

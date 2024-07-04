@@ -6,10 +6,20 @@
 }"
 >
   <ion-card-content>
-    <div 
-    class="vessel-image-container"
-    [ngStyle]="{'background': 'url(' + vessel.imgUrl + ') no-repeat 0 0 / cover'}"
-     >
+    <div class="vessel-image-container">
+      <img
+        *ngIf="!vessel.imageFile.webPath"
+        src="assets/icon/boat_with_blue_bg.svg"
+        class="no-image"
+      />
+      <img
+        *ngIf="sharedMethods.isIos && vessel.imageFile.webPath"
+        [src]="vessel.imageFile.webPath | safeurl"
+      />
+      <img
+        *ngIf="!sharedMethods.isIos && vessel.imageFile.webPath"
+        [src]="vessel.imageFile.webPath"
+      />
     </div>
     
     <ion-grid>
@@ -20,8 +30,8 @@
 
         <ion-col size="9">
           <ion-card-title class="title"> {{vessel.name}}</ion-card-title>
-          <p class="text-label">Registration No: <span class="text-value">{{vessel.regNo}}</span></p>
-          <p class="text-label">Status: <span class="text-value">{{vessel.status}}</span></p>
+          <p class="text-label">{{ commonText?.registrationNumber }}: <span class="text-value">{{vessel.regNo}}</span></p>
+          <p class="text-label">{{ commonText?.status }}: <span class="text-value">{{vesselStatus}}</span></p>
         </ion-col>
       </ion-row>
     </ion-grid>

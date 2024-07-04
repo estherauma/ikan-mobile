@@ -6,6 +6,8 @@ import { ContentService } from 'src/app/shared/services/content/content.service'
 import { SharedmethodsService } from 'src/app/shared/services/sharedmethods/sharedmethods.service';
 import { ContractDataService } from '../../data/contract-data.service';
 import { VesselsDataService } from 'src/app/vessels/data/vessels-data.service';
+import { AnalyticsService } from 'src/app/shared/services/analytics/analytics.service';
+import { pageEventNames } from 'src/app/shared/services/analytics/event-names';
 
 @Component({
   selector: 'app-createdetail',
@@ -25,9 +27,13 @@ export class CreatedetailPage extends BaseformPage implements OnInit {
   objectTolookup: string;
   contractId: any;
   isPartyBForm: boolean = false;
+  isPartyAForm: boolean = false;
   vessels: any = [];
   noVesselsText: string = 'No vessels found. Please add a vessel first';
-  
+  isEditing = false;
+  clauseDetails: any;
+  formValues: any;
+  editClauseText: string = 'Edit Clause';
 
   constructor(
     public contentService: ContentService,
@@ -36,25 +42,38 @@ export class CreatedetailPage extends BaseformPage implements OnInit {
     private contractDataServ: ContractDataService,
     public router: Router,
     public vesselsDataService: VesselsDataService,
+    public analytics: AnalyticsService
   ) { 
     super(contentService)
   }
 
   ngOnInit() {
+    this.activatedRoute.queryParams.subscribe((queryParams) => {
+      if (queryParams?.isEditing) {
+        this.isEditing = true;
+      }
+    });
     this.activatedRoute.params.subscribe((params) => {
-      // we use this to search the content by the key to load the form we need.
-      this.objectTolookup = params['clause-type']; 
-      // remove whitespace from beginning and end of string
-      this.objectTolookup = this.objectTolookup.trim();
-      this.contractId = params['contractId'];
-      // TODO: Add a check to see if the contract clause exists
-      // We should be able to fetch it and display it for the user to edit
+      if (!this.isEditing) {
+        // we use this to search the content by the key to load the form we need.
+        this.objectTolookup = params?.['clause-type'];
+        // remove whitespace from beginning and end of string
+        this.objectTolookup = this.objectTolookup?.trim();
+        this.contractId = params?.['contractId'];
+        // TODO: Add a check to see if the contract clause exists
+        // We should be able to fetch it and display it for the user to edit
+      } else {
+        this.clauseDetails = JSON.parse(params.clauseDetails);
+        this.formValues = JSON.parse(this.clauseDetails?.data);
+      }
       this.pageSetup();
     });
+    this.analytics.trackEvent(pageEventNames.createClauseDetails, this.sharedMethods.analyticsEventParams);
   }
 
   pageSetup(){
-    const pageData = this.contentService.getContentByPropertyName(this.clauseMapping[this.objectTolookup]);
+    const property = this.isEditing ? this.clauseDetails['kind'] : this.clauseMapping[this.objectTolookup];
+    const pageData = this.contentService.getContentByPropertyName(property);
     if (!pageData) {
       this.sharedMethods.showToast(this.commonText?.somethingWentWrong);
       return;
@@ -62,19 +81,27 @@ export class CreatedetailPage extends BaseformPage implements OnInit {
     const pageName = pageData?.pageName;
     if (pageName === 'contract-clauses-parties-requirement-fishers') {
       this.isPartyBForm = true;
+    } else if (pageName === 'contract-clauses-parties-requirement-vessel') {
+      this.isPartyAForm = true;
     }
-
 
     this.vesselsDataService.getAll().subscribe((data) => {
       this.vessels = data;
     });
 
+    this.editClauseText = this.commonText?.editClause;
     this.pageTitle = pageData?.pageTitle;
     this.pageText = this.sharedMethods.convertAdditionalTextToObj(pageData?.additionalText);
     this.noVesselsText = this.pageText?.noVesselsText || this.noVesselsText;
     this.formQuestions = pageData?.formQuestions;
     this.formQuestions.forEach((entry) => {
-      this.group[entry.key] = new FormControl('', []);
+      const validators = this.sharedMethods.getFormValidators(entry);
+      if (this.isEditing && this.formValues[entry.key]) {
+        this.group[entry.key] = new FormControl(this.formValues[entry.key], validators);
+      } else {
+        this.group[entry.key] = new FormControl('', validators);
+      }
+      
       // add change listener to payment frequency
       if (entry.key === 'paymentFrequency') {
         this.group[entry.key].valueChanges.subscribe((value) => {
@@ -111,19 +138,60 @@ export class CreatedetailPage extends BaseformPage implements OnInit {
   async onSubmit(formData) {
     const userData = await this.sharedMethods.getUserData();
     const now = this.sharedMethods.getCurrentDateTime();
-    // We need this information before we append meta data
-    formData.content = JSON.stringify(formData);
-    formData.app_ref = this.sharedMethods.generateAppRef();
-    formData.created_by = userData.id;
-    formData.updated_by = userData.id;
-    formData.created_at = formData.updated_at = now;
-    formData.kind = this.clauseMapping[this.objectTolookup];
-    formData.name = this.pageTitle;
-    this.contractDataServ.saveContractClause(this.contractId, formData)
-    .then((result) => {
-     this.sharedMethods.showToast(this.contentService.commonText?.clauseSaved);
-     this.router.navigate(['/contracts/view', {id: this.contractId}]);
-    })
+    if (formData.partyASignature || formData.partyBSignature) {
+      const partyASignature = formData.partyASignature ? (formData.partyASignature.docType === 'image' ? formData.partyASignature.webPath : formData.partyASignature.uriPath) : '';
+      const partyBSignature = formData.partyBSignature ? (formData.partyBSignature.docType === 'image' ? formData.partyBSignature.webPath : formData.partyBSignature.uriPath) : '';
+      formData = {
+        ...formData,
+        partyASignature,
+        partyBSignature,
+      };
+    }
+
+    if (!this.isEditing) {
+      // We need this information before we append meta data
+      formData.content = JSON.stringify(formData);
+      formData.app_ref = this.sharedMethods.generateAppRef();
+      formData.created_by = userData.id;
+      formData.updated_by = userData.id;
+      formData.created_at = formData.updated_at = now;
+      formData.kind = this.clauseMapping[this.objectTolookup];
+      formData.name = this.pageTitle;
+      this.contractDataServ.saveContractClause(this.contractId, formData)
+      .then((result) => {
+      this.sharedMethods.showToast(this.contentService.commonText?.clauseSaved);
+      this.router.navigate(['/contracts/view', {id: this.contractId}], { replaceUrl: true });
+      });
+    } else {
+      // We are basically updating only the content
+      const editObj = {
+        content: JSON.stringify(formData),
+        updated_by: userData.id,
+        updated_at: now,
+        id: parseFloat(this.clauseDetails.id),
+      }
+
+      const result = await this.contractDataServ.updateContractClause(editObj.id, editObj);
+      if (result) {
+        this.sharedMethods.showToast(this.contentService.commonText?.clauseUpdated);
+
+        if (this.isPartyBForm){
+          // Party A and B clause are displayed together
+          // So we navigate to party A clause and in turn party B will be fetched
+          const partyAId = this.clauseDetails?.partyAId;
+          const partyAClause = await this.contractDataServ.retrieveClauseDetails(partyAId);
+          partyAClause.partyB = this.clauseDetails.id;
+          this.router.navigate(['/contracts/clauses/viewclause/', partyAClause], { replaceUrl: true });
+          return;
+        } else if (this.isPartyAForm) {
+          result.clause.partyB = this.clauseDetails.partyB;
+        }
+        
+        this.router.navigate(['/contracts/clauses/viewclause/', result.clause], { replaceUrl: true })
+      } else {
+        this.sharedMethods.showToast(this.contentService.commonText?.errorUpdatingClause);
+      }
+    }
   }
 
   paymentFrequencyChanged(value) {

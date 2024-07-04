@@ -49,6 +49,32 @@
   }
 }
 
+.pdf-preview {
+
+  background-color: var(--ion-color-blue-dark);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 5px;
+
+  img {
+    height: 80px;
+    width: 80px;
+  }
+
+  .trash-icon {
+    position: absolute;
+    top: 5%;
+    right: 5%;
+    background: white;
+    font-size: 1.2rem;
+    padding: 3px;
+    border-radius: 50%;
+    color: red;
+  }
+}
+
+
 ion-input{
   --height: 60px;
 }
@@ -91,11 +117,19 @@ ion-select {
   border-radius: 10px;
 }
 
-.help-text-wrapper {
+.help-text-wrapper,
+.disclaimer-wrapper {
   p {
     margin: 0;
     font-style: italic;
     font-weight: 600;
+  }
+}
+
+.disclaimer-wrapper {
+  margin: 20px 0;
+  p {
+    color: var(--ion-color-primary);
   }
 }
 
@@ -114,7 +148,8 @@ ion-label.asterisk::after {
 :host.create-vessel-step-2,
 :host.create-worker,
 :host.create-note,
-:host.training-video-form {
+:host.training-video-form,
+:host.create-passport-form {
   .form-input {
     background: #EAEDF6;
   }
@@ -125,7 +160,8 @@ ion-label.asterisk::after {
   }
 }
 
-:host.training-video-form {
+:host.training-video-form,
+:host.survey-form {
   form {
 
     ion-radio-group {

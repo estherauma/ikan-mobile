@@ -1,11 +1,13 @@
 import { Component, OnInit } from '@angular/core';
-import { Data, Router } from '@angular/router';
+import { Router } from '@angular/router';
 import { MenuController, ModalController } from '@ionic/angular';
 import { SteponePage } from '../create/stepone/stepone.page';
 import { VesselsDataService } from '../data/vessels-data.service';
 import { ContentService } from 'src/app/shared/services/content/content.service';
 import { DBService } from 'src/app/shared/services/database/db.service';
 import { SharedmethodsService } from 'src/app/shared/services/sharedmethods/sharedmethods.service';
+import { AnalyticsService } from 'src/app/shared/services/analytics/analytics.service';
+import { pageEventNames } from 'src/app/shared/services/analytics/event-names';
 
 @Component({
   selector: 'app-home',
@@ -13,16 +15,14 @@ import { SharedmethodsService } from 'src/app/shared/services/sharedmethods/shar
   styleUrls: ['./home.page.scss'],
 })
 export class HomePage implements OnInit {
-  //TODO: Use translated text from prisimic
   pageTitle = 'Vessels';
   vessels = [];
   unFilteredData = [];
-  filterOptions = [
-    {title:'Active Duty', value:'Active Duty'},
-    {title:'', value:'opened'}
-  ];
+  filterOptions = [];
   filterText = 'Filter';
   newText = 'New';
+  commonText;
+  statusFilterLabel = 'Filter by status';
 
   constructor(
     public menuCtrl: MenuController,
@@ -31,7 +31,8 @@ export class HomePage implements OnInit {
     public vesselsDataService: VesselsDataService,
     public contentService: ContentService,
     public dbService: DBService,
-    public sharedMethods: SharedmethodsService
+    public sharedMethods: SharedmethodsService,
+    public analytics: AnalyticsService
   ) {
     this.vesselsDataService.getAll().subscribe((data) => {
       this.vessels = this.unFilteredData = data;
@@ -39,13 +40,17 @@ export class HomePage implements OnInit {
   }
 
   ngOnInit() {
-    this.filterText = this.contentService.commonText?.filter;
-    this.pageTitle = this.contentService.commonText?.vessels;
-    this.newText = this.contentService.commonText?.new;
+    this.commonText = this.contentService.commonText;
+    this.filterText = this.commonText?.filter;
+    this.pageTitle = this.commonText?.vessels;
+    this.newText = this.commonText?.new;
+    this.statusFilterLabel = this.commonText?.filterByStatus ?? this.statusFilterLabel;
+    this.filterOptions = this.contentService.getFormOptions('vessels-createsteptwo', 'status');
+    this.analytics.trackEvent(pageEventNames.listVessels, this.sharedMethods.analyticsEventParams)
   }
 
   ionViewWillEnter() {
-    this.menuCtrl.enable(true);
+    this.menuCtrl.enable(true); 
   }
 
   async createVessel() {

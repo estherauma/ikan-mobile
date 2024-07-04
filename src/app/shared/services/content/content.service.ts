@@ -42,18 +42,17 @@ export class ContentService {
     const appContent = await this.readLocalContent();
     if (appContent == null || appContent === undefined) {
       await this.fetchContent();
-      // Read the content again after fetching it and saving it to storage
-      await this.setAppContent();
-    } else {
-      await this.setAppContent();
     }
+    await this.setAppContent();
+    await this.updateCommonText();
+    await this.updateSideMenu();
   }
 
   async setAppContent() {
     const result = await this.readLocalContent();
     this.appContent = result?.content;
     await this.updateCurrentLanguage();
-
+    await this.addQuestionOptionValues();
   }
 
   async currentContentCreateAt() {
@@ -79,14 +78,16 @@ export class ContentService {
     // ToDo: If device time is ahead of servertime, user will not get updated content
     // Provide fix for this
     if (currentContentCreateAt) {
-      const response = this.apiService.get(`content/compare?app_content_created_at=${currentContentCreateAt}`, true);
+      let endPoint = `content/compare?app_content_created_at=`;
+      let finalEndpoint = endPoint + encodeURIComponent(currentContentCreateAt);
+      const response = this.apiService.get(finalEndpoint, true);
       response.subscribe((res: HttpResponse<any>) => {
         const content = res.body;
         if (content?.status === 'OK' && content.new) {
           this.writeLocalContent(StorageKeys.appContent, content.data[0]);
-          this.contentObs.next(true);
           this.appContent = content.data[0].content;
           this.updateSideMenu();
+          this.contentObs.next(true);
           return this.appContent;
         }
       });
@@ -207,11 +208,11 @@ export class ContentService {
     if (!content) return {};
     
     const allDocs: Array<any> = Object.values(content);
-    const contentDocs = allDocs?.filter((doc) => (doc?.type === 'create_content_area' && !isNaN(doc?.pageName)));
+    const contentDocs = allDocs?.filter((doc) => ((doc?.type === 'create_content_area' && (!isNaN(parseFloat(doc?.pageName)) || doc?.pageName.includes('ikan-feedback')))));
 
     let result = {};
     contentDocs?.forEach((item) => {
-      const qtns = item?.pageContent?.filter(x => x.type === 'questions');
+      const qtns = item?.pageContent?.filter(x => x?.type === 'questions');
       if (qtns?.length) {
         result[item?.pageName] = qtns;
       }
@@ -219,38 +220,122 @@ export class ContentService {
     return result;
   }
 
-  async saveSurveyCategories() {
+  async getAllCategories() {
     const surveyData = this.getSurveyData();
+    const categories = Object.keys(surveyData);
+    categories.sort((a, b) => a.localeCompare(b, undefined, { numeric: true }));
+    return categories;
+  }
+
+  async saveSurveyCategories() {
     const savedCategories = await this.sharedMethods.readDataFromStorage(StorageKeys.surveyCategories);
     if(!savedCategories || !savedCategories?.length) {
-      const categories = Object.keys(surveyData);
+      const categories = await this.getAllCategories();
       await this.sharedMethods.saveDataToStorage(StorageKeys.surveyCategories, categories);
-      return categories;
     }
   }
 
-  async getSurveyQuestions() {
-    let allCategories;
-    allCategories = await this.sharedMethods.readDataFromStorage(StorageKeys.surveyCategories);
-    if(!allCategories?.length) {
-      allCategories = await this.saveSurveyCategories();
+  async getSurveyQuestions(surveyTopic: string = '') {
+    let category = surveyTopic;
+    if (!category) {
+      let allCategories;
+      allCategories = await this.sharedMethods.readDataFromStorage(StorageKeys.surveyCategories);
+      if(!allCategories?.length) {
+        allCategories = this.getAllCategories();
+        await this.saveSurveyCategories();
+      }
+      
+      // get random category
+      // const randomIndex = Math.floor(Math.random() * allCategories.length);
+      // const randomCategory = allCategories[randomIndex];
+      category = allCategories[0];
     }
-    
-    // get random category
-    // const randomIndex = Math.floor(Math.random() * allCategories.length);
-    // const randomCategory = allCategories[randomIndex];
-    const category = allCategories[0];
     const surveyData =  this.getSurveyData();
     
-    return surveyData[category].map((qn) => ({
+    return surveyData[category]?.map((qn) => ({
       category: null,
-      displayquestion: true,
+      displayquestion: qn?.displayquestion,
       helpText: qn?.helpText ?? null,
       key: qn.key,
       label: qn.question ?? '',
       placeholder: qn?.placeholder ?? null,
       questionType: qn.questionType,
-      options: (qn.options ?? []).map(x => ({ label: x.option, value: x.option, ...x })),
+      options: qn.options?.length ? qn.options.map(x => ({
+        label: x.option,
+        value: x.value,
+        ...x 
+      })) : [],
     })) ?? [];
+  }
+
+  getPageFormQuestions(pageName: string) {
+    const content = this.appContent?.[`${this.currentLanguage}`];
+    const pageData = content?.[pageName];
+    return pageData?.formQuestions;
+  }
+
+  getFormOptions(pageName: string, inputKey: string) {
+    const formQuestions = this.getPageFormQuestions(pageName);
+    const formQtn = formQuestions.find(x => x.key === inputKey);
+    return formQtn?.options ?? [];
+  }
+
+  getFormOptionTranslation(pageName: string, inputKey: string, optionValue: string) {
+    const options = this.getFormOptions(pageName, inputKey);
+    if (!options.length) return optionValue;
+    
+    const opt = options.find(x => x.value === optionValue);
+    return opt?.label ?? optionValue;
+  }
+
+  /**
+   * Adds values to content_area question options 
+   * The options/labels are in the selected language
+   * The values are in English irrespective of the selected language
+   */
+  addQuestionOptionValues(){
+    const content = this.appContent?.[`${this.currentLanguage}`];
+    const englishContent = this.appContent?.['en-us'];
+    if (!content || !englishContent) return;
+    
+    const allDocs: Array<any> = Object.values(content);
+    const allEnglishDocs: Array<any> = Object.values(englishContent);
+
+    allDocs?.forEach((doc) => {
+      if (doc?.type === 'create_content_area' && (!isNaN(parseFloat(doc?.pageName)) || doc?.pageName.includes('ikan-feedback'))) {
+        const englishDoc = allEnglishDocs.find(x => x?.pageName === doc?.pageName);
+        if (!englishDoc) return;
+
+        doc?.pageContent?.forEach((section) => {
+          if (section?.type === 'questions') {
+            section?.options?.forEach((opt, i) => {
+              const englishOptions = englishDoc?.pageContent?.find(x => x?.type === 'questions' && x?.key === section?.key)?.options;
+              opt.value = englishOptions[i]?.option;
+              if (opt?.followUpQuestion) {
+                opt?.followUpQuestion?.options?.forEach((fOpt, j) => {
+                  fOpt.value = englishOptions[i]?.followUpQuestion?.options[j]?.option;
+                });
+              }
+            });
+          }
+        });
+      }
+    });
+  }
+
+  /**
+   * returns untranslated inline question (english version)
+   * @param subChapterId
+   * @param questionKey
+   */
+  getUntranslatedInlineQuestion(subChapterId: string, questionKey: string) {
+    const englishContent = this.appContent?.['en-us'];
+    if (!englishContent) return null;
+    
+    const englishDoc = englishContent?.[subChapterId];
+    if (!englishDoc) return null;
+
+    const qtn = englishDoc?.pageContent?.find(x => x?.type === 'questions' && x?.key === questionKey);
+    return qtn;
   }
 }

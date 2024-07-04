@@ -4,6 +4,7 @@ import { ModalController } from '@ionic/angular';
 import { CreatePage } from '../create/create.page';
 import { SharedmethodsService } from 'src/app/shared/services/sharedmethods/sharedmethods.service';
 import { DemandlettersDataService } from 'src/app/demandletter/data/demandletters-data.service';
+import { ContentService } from 'src/app/shared/services/content/content.service';
 
 
 export interface DemandLetter {
@@ -28,12 +29,14 @@ export class HomePage implements OnInit {
     {title:'closed', value:'closed'},
     {title:'open', value:'open'}
   ];
+  commonText: any;
 
   constructor(
     public modalCtrl: ModalController,
     private router: Router,
     public sharedMethods: SharedmethodsService,
     public demandLettersDataService: DemandlettersDataService,
+    public contentService: ContentService,
   ) {
     this.demandLettersDataService.getAll().subscribe((data) => {
       this.demandLetters = data;
@@ -41,6 +44,7 @@ export class HomePage implements OnInit {
   }
 
   ngOnInit() {
+    this.commonText = this.contentService?.commonText;
   }
 
   async createDemandLetter() {
