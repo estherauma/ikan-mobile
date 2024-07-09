@@ -60,6 +60,11 @@ export class CreatedetailPage extends BaseformPage implements OnInit {
         // remove whitespace from beginning and end of string
         this.objectTolookup = this.objectTolookup?.trim();
         this.contractId = params?.['contractId'];
+
+        if (params.prefillDetails) {
+          this.formValues = JSON.parse(params.prefillDetails);
+        }
+        
         // TODO: Add a check to see if the contract clause exists
         // We should be able to fetch it and display it for the user to edit
       } else {
@@ -96,7 +101,7 @@ export class CreatedetailPage extends BaseformPage implements OnInit {
     this.formQuestions = pageData?.formQuestions;
     this.formQuestions.forEach((entry) => {
       const validators = this.sharedMethods.getFormValidators(entry);
-      if (this.isEditing && this.formValues[entry.key]) {
+      if (this.formValues?.[entry.key]) {
         this.group[entry.key] = new FormControl(this.formValues[entry.key], validators);
       } else {
         this.group[entry.key] = new FormControl('', validators);
