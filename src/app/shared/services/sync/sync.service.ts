@@ -461,9 +461,9 @@ export class SyncService {
           if (surveyToUpload?.userId) {
             surveyToUpload.user = surveyToUpload.userId;
           }
-          this.apiService.post('surveys', surveyToUpload).subscribe((response:CreateSurveyResp) => {
+           this.apiService.post('surveys', surveyToUpload).subscribe(async(response:CreateSurveyResp) => {
             if (response?.status === 'OK') {
-              this.surveyDataService.delete(surveyId);
+              await this.surveyDataService.delete(surveyId);
             }
           }, e => console.error(e));
         });
