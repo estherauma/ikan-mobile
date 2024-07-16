@@ -85,6 +85,8 @@ export class TrainingVideoComponent extends BaseformPage  implements OnInit {
     const user = await this.sharedMethods.getUserData();
     const videoResponses = [];
     this.formQuestions.forEach((item) => {
+      if (!item?.displayquestion) return;
+      
       if (formData[item.key]) {
         const untranslatedQtn = this.contentService.getUntranslatedInlineQuestion('tfa-training-video', item?.key);
         
