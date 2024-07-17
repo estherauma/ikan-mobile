@@ -17,6 +17,7 @@ export class ContentService {
   currentLanguage: string = 'en-us';
   commonText: any;
   menuContent = new Subject<any>();
+  currentSurveyCategory: string = '';
 
   constructor(
     public apiService: ApiService,
@@ -250,6 +251,7 @@ export class ContentService {
       // const randomCategory = allCategories[randomIndex];
       category = allCategories[0];
     }
+    this.currentSurveyCategory = category;
     const surveyData =  this.getSurveyData();
     
     return surveyData[category]?.map((qn) => ({
@@ -336,6 +338,17 @@ export class ContentService {
     if (!englishDoc) return null;
 
     const qtn = englishDoc?.pageContent?.find(x => x?.type === 'questions' && x?.key === questionKey);
+    return qtn;
+  }
+
+  getUntranlatedSurveyQuestion(pageName, questionKey) {
+    const englishContent = this.appContent?.['en-us'];
+    if (!englishContent) return null;
+    
+    const englishDoc = englishContent?.[pageName];
+    if (!englishDoc) return null;
+
+    const qtn = englishDoc?.formQuestions?.find(x => x?.key === questionKey);
     return qtn;
   }
 }

@@ -136,6 +136,7 @@ export class ViewPage implements OnInit {
       cssClass: 'notification-modal',
       componentProps: {
         contractId: this.contract.id,
+        contract: this.contract,
       }
     });
     modal.present();

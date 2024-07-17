@@ -17,6 +17,7 @@ import { pageEventNames } from 'src/app/shared/services/analytics/event-names';
 })
 export class CreateclausePage extends BaseformPage implements OnInit {
   contractId: any;
+  contract: any;
   clauseExistsText: string = 'This clause already exists in the contract';
   clauseMapping = {
     'Parties to this contract - Party A': 'contract-clauses-parties-requirement-vessel',
@@ -63,12 +64,19 @@ export class CreateclausePage extends BaseformPage implements OnInit {
   async onSubmit(formData) {
     formData.contractId = this.contractId;
     // if the clause kind selected exists, don't add again
-    let clauseExists = await this.checkIfClauseExists(this.contractId, this.clauseMapping[formData['clause-type'].trim()]);
+    const clauseKind = this.clauseMapping[formData['clause-type'].trim()];
+    let clauseExists = await this.checkIfClauseExists(this.contractId, clauseKind);
     if (clauseExists) {
       this.modalCtrl.dismiss();
       this.sharedMethods.showToast(this.clauseExistsText);
       return;
-    } 
+    }
+
+    const prefillDetails = await this.getPrefillDetails(clauseKind);
+    if (prefillDetails) {
+      formData.prefillDetails = prefillDetails;
+    }
+    
     this.modalCtrl.dismiss();
     this.router.navigate(['/contracts/createdetails', formData]);
   }
@@ -79,5 +87,33 @@ export class CreateclausePage extends BaseformPage implements OnInit {
       return entry.kind === clauseKind;
     });
     return clauseExists;
+  }
+
+  async getPrefillDetails(clauseKind) {
+    if (!clauseKind) {
+      return null;
+    }
+
+    if (clauseKind === 'contract-clauses-contract-validity') {
+      const validityDates = {
+        validityStartDate: this.contract.startDate,
+        validityEndDate: this.contract.endDate
+      };
+      return JSON.stringify(validityDates);
+    } else if (clauseKind === 'contract-clauses-parties-requirement-fishers') {
+      const partyBDetails = {
+        crewName: this.contract.name
+      };
+      return JSON.stringify(partyBDetails);
+    } else if (clauseKind === 'contract-clauses-parties-requirement-vessel') {
+      const user =  await this.sharedMethods.getUserData();
+      const clauses = await this.contractDataService.retrieveContractClausesByField('kind', clauseKind);
+      const clauseByUser = clauses.find((entry) => entry.createdBy === user.id);
+      if (clauseByUser) {
+        return clauseByUser.content;
+      }
+      return null;
+    }
+    return null;
   }
 }
