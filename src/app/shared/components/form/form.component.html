@@ -265,7 +265,7 @@
       </div>
 
       <div *ngSwitchCase="'audio'">
-          <div class="ion-padding-horizontal">
+          <div *ngIf="question.displayquestion" class="ion-padding-horizontal">
             <ion-row (click)="onRecord(question)" class="ion-align-items-center">
               <ion-col size="3">
                 <div style="background-color: #e5e5e5; height: 60px; width: 60px; border-radius: 50px; display: flex; justify-content:center; align-items: center;">
@@ -384,7 +384,7 @@
       </div>
 
       <div *ngSwitchCase="question.questionType === 'radioGroup' || question.questionType  === 'radio' ? question.questionType : '' ">
-        <div lines="none">
+        <div *ngIf="question.displayquestion" lines="none">
           <ion-grid >
             <ion-row>
               <ion-col size="12">

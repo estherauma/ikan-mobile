@@ -19,6 +19,7 @@ export class SurveyComponent extends BaseformPage  implements OnInit {
   surveySource = '';
   surveyTopic: string = '';
   disclaimerText: string = '';
+  pageName: string = 'survey';
 
   constructor(
     public contentService: ContentService,
@@ -42,6 +43,7 @@ export class SurveyComponent extends BaseformPage  implements OnInit {
 
     if (this.surveySource === SurveySources.notification) {
       this.formQuestions = await this.contentService.getSurveyQuestions(this.surveyTopic);
+      this.pageName = this.contentService.currentSurveyCategory;
     } else {
       this.formQuestions = pageData?.formQuestions;
     }
@@ -54,6 +56,8 @@ export class SurveyComponent extends BaseformPage  implements OnInit {
     this.pageFormGroup = new FormGroup(this.group);
 
     this.formQuestions.forEach((entry) => {
+      if (!entry?.displayquestion) return;
+      
       if (entry?.options) {
         this.pageFormGroup.controls?.[entry.key]?.valueChanges.subscribe((value) => {
           // Remove previous option from formGroup
@@ -100,13 +104,24 @@ export class SurveyComponent extends BaseformPage  implements OnInit {
     const surveyData = [];
     this.formQuestions.forEach((qtn) => {
       if (!qtn?.displayquestion) return;
+
       // check if question has response and if response is an array, check it has at least one item
       if (formData[qtn.key] && (!Array.isArray(formData[qtn.key]) || formData[qtn.key].length)) {
+        let untranslatedQtn;
+        if (this.pageName === 'survey') {
+          untranslatedQtn = this.contentService.getUntranlatedSurveyQuestion(this.pageName, qtn?.key);
+        } else {
+          untranslatedQtn = this.contentService.getUntranslatedInlineQuestion(this.pageName, qtn?.key);
+        }
+        
         let isFollowUpQuestionAnswered = false;
         let followUpQuestionResponse = formData[qtn?.followUpQuestion?.key] ?? null;
         // check if question has followup question and if followup question has response and if response is an array, check it has at least one item
         if (qtn?.hasFollowUpQuestion && formData[qtn?.followUpQuestion?.key]) {
           isFollowUpQuestionAnswered = true;
+          const unTranslatedFollowupQtn = untranslatedQtn?.options?.find(
+            (opt) => opt?.followUpQuestion?.key === qtn?.followUpQuestion?.key)?.followUpQuestion;
+          qtn.followUpQuestion.unTranslatedFollowupQtnText = unTranslatedFollowupQtn?.label || unTranslatedFollowupQtn?.question;
           
           if (Array.isArray(followUpQuestionResponse)) {
             followUpQuestionResponse = followUpQuestionResponse.length ? followUpQuestionResponse.join(', ') : null;
@@ -118,12 +133,12 @@ export class SurveyComponent extends BaseformPage  implements OnInit {
           surveyDate: date,
           questionKey: qtn.key,
           questionType: qtn.questionType,
-          questionText: qtn?.label || qtn?.question,
+          questionText: untranslatedQtn?.label || untranslatedQtn?.question,
           questionResponse: formData[qtn.key],
           userId: user?.id,
           followUpQuestionKey: isFollowUpQuestionAnswered ? qtn?.followUpQuestion?.key : null,
           followUpQuestionType: isFollowUpQuestionAnswered ? qtn?.followUpQuestion?.questionType : null,
-          followUpQuestionText: isFollowUpQuestionAnswered ? qtn?.followUpQuestion?.label : null,
+          followUpQuestionText: isFollowUpQuestionAnswered ? qtn?.followUpQuestion?.unTranslatedFollowupQtnText : null,
           followUpQuestionResponse: isFollowUpQuestionAnswered ? followUpQuestionResponse : null,
         });
       }
@@ -136,6 +151,7 @@ export class SurveyComponent extends BaseformPage  implements OnInit {
           this.sharedMethods.showToast(this.commonText?.errSavingResponses || 'Error saving responses');
         }
       });
+      await this.surveysDataService.retriveSurveys();
     }
 
     if (this.surveySource === SurveySources.notification) {

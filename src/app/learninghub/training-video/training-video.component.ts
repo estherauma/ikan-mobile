@@ -85,11 +85,19 @@ export class TrainingVideoComponent extends BaseformPage  implements OnInit {
     const user = await this.sharedMethods.getUserData();
     const videoResponses = [];
     this.formQuestions.forEach((item) => {
+      if (!item?.displayquestion) return;
+      
       if (formData[item.key]) {
+        const untranslatedQtn = this.contentService.getUntranslatedInlineQuestion('tfa-training-video', item?.key);
+        
         let isFollowUpQuestionAnswered = false;
         let followUpQuestionResponse = formData[item?.followUpQuestion?.key] ?? null;
         if (item?.hasFollowUpQuestion && formData[item?.followUpQuestion?.key]) {
           isFollowUpQuestionAnswered = true;
+          const unTranslatedFollowupQtn = untranslatedQtn?.options?.find(
+            (opt) => opt?.followUpQuestion?.key === item?.followUpQuestion?.key)?.followUpQuestion;
+          item.followUpQuestion.unTranslatedFollowupQtnText = unTranslatedFollowupQtn?.question;
+          
           if (Array.isArray(followUpQuestionResponse)) {
             followUpQuestionResponse = followUpQuestionResponse.length ? followUpQuestionResponse.join(', ') : null;
           }
@@ -100,11 +108,11 @@ export class TrainingVideoComponent extends BaseformPage  implements OnInit {
           surveyDate: date,
           questionKey: item.key,
           questionType: item.questionType,
-          questionText: item?.label || item?.question,
+          questionText: untranslatedQtn?.question,
           questionResponse: formData[item.key],
           followUpQuestionKey: isFollowUpQuestionAnswered ? item?.followUpQuestion?.key : null,
           followUpQuestionType: isFollowUpQuestionAnswered ? item?.followUpQuestion?.questionType : null,
-          followUpQuestionText: isFollowUpQuestionAnswered ? item?.followUpQuestion?.label : null,
+          followUpQuestionText: isFollowUpQuestionAnswered ? item?.unTranslatedFollowupQtnText : null,
           followUpQuestionResponse: isFollowUpQuestionAnswered ? followUpQuestionResponse : null,
         });
       }
