@@ -25,9 +25,8 @@
       </div>
 
       <div *ngIf="isEditable && isWorker">
-        <!-- TODO: Translate -->
         <ion-text class="contact-text">
-          To make changes to this clause, please contact the vessel owner.
+          {{ commonText?.editClausesContactText }}
         </ion-text>
       </div>
     </div>

@@ -15,9 +15,8 @@
               >
               </app-button>
               <div *ngIf="isWorker">
-                <!-- TODO: Translate -->
                 <p class="contact-text">
-                  To make changes to this contract, please contact the vessel owner.
+                  {{ commonText?.editContractsContactText }}
                 </p>
               </div>
             </div>
@@ -62,9 +61,8 @@
   <div class="workorders-wrapper ion-padding">
     <div class="workorders-container">
       <div class="clause-sub-title">
-        <!-- Translate -->
         <app-title
-          title="Clauses"
+          [title]="commonText?.clauses"
           [isSmall]="false"
           [isBlue]="true"
         ></app-title>
