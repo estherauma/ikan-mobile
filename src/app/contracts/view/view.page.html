@@ -1,5 +1,4 @@
-<app-header [pageTitle]="pageTitle" [isBackButton]="true">
-</app-header>
+<app-header [pageTitle]="pageTitle" [isBackButton]="true"> </app-header>
 
 <ion-content>
   <div class="ion-padding detail-section">
@@ -10,27 +9,43 @@
             <div>
               <app-button
                 class="edit-contract-btn"
-                *ngIf="authService.userRole === 'vessel_owner'"
+                *ngIf="isVesselOwner"
                 [title]="editContractText"
                 (onClick)="editContract()"
               >
               </app-button>
+              <div *ngIf="isWorker">
+                <!-- TODO: Translate -->
+                <p class="contact-text">
+                  To make changes to this contract, please contact the vessel owner.
+                </p>
+              </div>
             </div>
           </ion-row>
         </ion-col>
       </ion-row>
     </ion-grid>
-    <ion-text><span class="gray">{{ commonText?.appRef }}:</span> {{contract.appRef}}</ion-text>
+    
+    <ion-text>
+      <span class="gray">{{ commonText?.appRef }}:</span>
+      {{contract.appRef}}
+    </ion-text>
     <ion-text>
       <h1 class="name">{{contract.name}}</h1>
     </ion-text>
-   
+
     <ion-text>
       <h1>{{contract.companyName}}</h1>
     </ion-text>
 
-    <ion-text class="block"><span class="gray">{{ commonText?.vessel }}:</span> {{contract.vesselName}}</ion-text>
-    <ion-text class="block"><span class="gray">{{ commonText?.dates }}:</span> {{contract.startDate | date: 'dd/MM/yyy'}} - {{contract.endDate |  date: 'dd/MM/yyy'}}</ion-text>
+    <ion-text class="block">
+      <span class="gray">{{ commonText?.vessel }}:</span>
+      {{contract.vesselName}}
+    </ion-text>
+    <ion-text class="block">
+      <span class="gray">{{ commonText?.dates }}:</span>
+      {{contract.startDate | date: 'dd/MM/yyy'}} - {{contract.endDate | date: 'dd/MM/yyy'}}
+    </ion-text>
     <br />
 
     <ion-text class="block">
@@ -39,14 +54,20 @@
     </ion-text>
     <ion-text class="block">
       <span class="gray">{{ commonText?.indonesianRepresentative }}:</span>
-      {{ getCompanyName(contract.indonesianCompany) }} <p></p>
+      {{ getCompanyName(contract.indonesianCompany) }}
+      <p></p>
     </ion-text>
-
   </div>
+
   <div class="workorders-wrapper ion-padding">
     <div class="workorders-container">
       <div class="clause-sub-title">
-        <app-title title="Clauses" [isSmall]="false" [isBlue]="true"></app-title>
+        <!-- Translate -->
+        <app-title
+          title="Clauses"
+          [isSmall]="false"
+          [isBlue]="true"
+        ></app-title>
       </div>
 
       <ion-grid *ngIf="contractClauses?.length">
@@ -54,19 +75,24 @@
           <ion-col>
             <ion-row class="ion-justify-content-end">
               <div>
-                <app-button *ngIf="authService.userRole === 'vessel_owner'" (onClick)="createClause()" iconName="add-outline" [title]="createClauseText"></app-button>
+                <app-button
+                  *ngIf="isVesselOwner"
+                  (onClick)="createClause()"
+                  iconName="add-outline"
+                  [title]="createClauseText"
+                ></app-button>
               </div>
             </ion-row>
           </ion-col>
         </ion-row>
       </ion-grid>
-      
+
       <app-placementoffercard
         *ngFor="let clause of contractClauses; let i=index"
         class="placement-card"
-        [clauseId] = clause.id
-        [clauseKind] = clause.kind
-        [clause] = clause
+        [clauseId]="clause.id"
+        [clauseKind]="clause.kind"
+        [clause]="clause"
         [title]="clause.translatedTitle"
         [details]="clause.subTitle"
         [noMargin]="true"
@@ -77,7 +103,13 @@
       ></app-placementoffercard>
     </div>
     <div class="ion-margin-vertical" [ngClass]="{'action-buttons': !done}">
-      <app-button (onClick)="createClause()" *ngIf="!done" [title]="createClauseText" size="small" iconName="add-outline"></app-button>
+      <app-button
+        (onClick)="createClause()"
+        *ngIf="!done && isVesselOwner"
+        [title]="createClauseText"
+        size="small"
+        iconName="add-outline"
+      ></app-button>
     </div>
   </div>
 </ion-content>

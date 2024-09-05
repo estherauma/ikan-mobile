@@ -11,7 +11,7 @@
         ></app-title>
       </div>
 
-      <div *ngIf="isEditable" class="btn-section">
+      <div *ngIf="isEditable && isVesselOwner" class="btn-section">
         <ion-row class="ion-justify-end">
           <ion-col>
             <app-button
@@ -22,6 +22,13 @@
             </app-button>
           </ion-col>
         </ion-row>
+      </div>
+
+      <div *ngIf="isEditable && isWorker">
+        <!-- TODO: Translate -->
+        <ion-text class="contact-text">
+          To make changes to this clause, please contact the vessel owner.
+        </ion-text>
       </div>
     </div>
     
