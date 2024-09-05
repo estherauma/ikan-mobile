@@ -30,7 +30,7 @@ import { forkJoin } from 'rxjs';
 import { ProfilesDataService } from 'src/app/profiles/data/profiles-data.service';
 import { AuthService } from '../auth/auth.service';
 import { PaymentsDataService } from 'src/app/payments/data/payments-data.service';
-import { UserData, UserRole } from '../../types/api-types';
+import { StorageKeys, UserData, UserRole } from '../../types/api-types';
 import { UploadService } from '../upload/upload.service';
 import { DocumentsDataService } from 'src/app/mydocuments/data/documents-data.service';
 
@@ -304,6 +304,9 @@ export class SyncService {
   async fetchContracts() {
     return this.apiService.get('contracts').subscribe(async(response:GetContractsResponse) => {
       if (response.status === 200 && response.body.data.length > 0) {
+        const userOnlineContracts = response.body.data.map((contract) => contract.appRef);
+        await this.sharedMethods.saveDataToStorage(StorageKeys.currentUserOnlineContractsAppRefs, userOnlineContracts);
+        
         forkJoin(response.body.data.map(async(contract) => {
           await this.dbService.checkIfEntryExists('contracts', contract.appRef)
           .then(async(exists) => {

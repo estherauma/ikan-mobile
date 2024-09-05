@@ -9,7 +9,7 @@ import { AuthService } from 'src/app/shared/services/auth/auth.service';
 import { CompaniesDataService } from 'src/app/companies/data/companies-data.service';
 import { GroupedOption } from 'src/app/shared/components/filter/filter.component';
 import { SharedmethodsService } from 'src/app/shared/services/sharedmethods/sharedmethods.service';
-import { UserData, UserRole } from 'src/app/shared/types/api-types';
+import { StorageKeys, UserData, UserRole } from 'src/app/shared/types/api-types';
 
 
 @Component({
@@ -53,8 +53,8 @@ export class HomePage implements OnInit {
     if (user?.role === UserRole.vesselOwner) {
       return allContracts.filter(contract => contract?.createdBy === user.id);
     } else if (user?.role === UserRole.worker) {
-      // TODO: refactor logic
-      return allContracts.filter(contract => contract?.userId === user.id);
+      const onlineContracts = await this.sharedMethods.readDataFromStorage(StorageKeys.currentUserOnlineContractsAppRefs);
+      return allContracts.filter(contract => onlineContracts.includes(contract.appRef));
     }
     return [];
   }
