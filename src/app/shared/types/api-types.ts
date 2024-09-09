@@ -83,6 +83,8 @@ export enum StorageKeys {
   surveyCategories = 'surveyCategories',
   watchedTFAVideo = 'watchedTFAVideo',
   isRoleSet = 'isRoleSet',
+  currentUserOnlineContractsAppRefs = 'currentUserOnlineContracts',
+  currentUserContracts = 'currentUserContracts',
 }
 
 export interface UserData {
