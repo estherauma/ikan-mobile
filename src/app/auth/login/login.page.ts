@@ -68,7 +68,6 @@ export class LoginPage extends BaseformPage implements OnInit {
     this.testEmails = this.dbService.testEmails;
   }
 
-
   ionViewWillEnter() {
     this.menuCtrl.enable(false);
   }
@@ -96,6 +95,9 @@ export class LoginPage extends BaseformPage implements OnInit {
           await this.authService.setUpAuthData();
           await this.contentService.updateAllContent();
           this.sharedMethods.hideLoader();
+
+          // get contract access
+          this.contentService.getUserContractViewAccess();
 
           // setup/reset local notifications
           await LocalNotifications.removeAllListeners();

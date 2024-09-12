@@ -6,6 +6,7 @@ import { Preferences } from '@capacitor/preferences';
 import { HttpResponse } from '@angular/common/http';
 import { Subject, Subscription } from 'rxjs';
 import { AuthService } from '../auth/auth.service';
+import { GetContractsResponse } from '../sync/types';
 
 @Injectable({
   providedIn: 'root',
@@ -350,5 +351,14 @@ export class ContentService {
 
     const qtn = englishDoc?.formQuestions?.find(x => x?.key === questionKey);
     return qtn;
+  }
+
+  async getUserContractViewAccess() {
+    return this.apiService.get('contracts').subscribe(async(response: GetContractsResponse) => {
+      if (response.status === 200 && response.body.data.length > 0) {
+        const userOnlineContracts = response.body.data.map((contract) => contract.appRef);
+        await this.sharedMethods.saveDataToStorage(StorageKeys.currentUserOnlineContractsAppRefs, userOnlineContracts);
+      }
+    });
   }
 }
