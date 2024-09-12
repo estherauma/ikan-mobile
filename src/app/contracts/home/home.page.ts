@@ -76,8 +76,8 @@ export class HomePage implements OnInit {
   }
 
 
-  viewDeatils(demandLetter) {
-    this.router.navigate(['/contracts/view', demandLetter]);
+  viewDetails(details) {
+    this.router.navigate(['/contracts/view', details]);
   }
 
   searchResult(searchResultData) {
