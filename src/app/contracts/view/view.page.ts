@@ -60,15 +60,21 @@ export class ViewPage implements OnInit {
     this.isVesselOwner = this.authService.userRole === UserRole.vesselOwner;
     this.isWorker = this.authService.userRole === UserRole.worker;
     this.activatedRoute.params.subscribe((params) => {
-      const data = {
-        ...params,
-        file: JSON.parse(params.file),
-      };
-      this.contract = data;
+      const hasOtherValues = Object.keys(params).some(key => key !== 'id');
+      if (hasOtherValues && params?.name) {
+        let data = params;
+        if (params.file) {
+          data = {
+            ...params,
+            file: JSON.parse(params.file),
+          };
+        }
+        this.contract = data;
+      }
       if (params.name === 'undefined' || params.name === undefined) {
         this.contract = this.contractDataService.getSingleContract(params.id);
       }
-      this.pageTitle = params.name;
+      this.pageTitle = params.name ?? this.contract?.name;
       this.contractDataService.retrieveContractClauses(this.contract.id)
       .then((response) => {
         response.forEach((entry) => {

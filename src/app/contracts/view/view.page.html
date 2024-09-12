@@ -27,33 +27,33 @@
     
     <ion-text>
       <span class="gray">{{ commonText?.appRef }}:</span>
-      {{contract.appRef}}
+      {{contract?.appRef}}
     </ion-text>
     <ion-text>
-      <h1 class="name">{{contract.name}}</h1>
+      <h1 class="name">{{contract?.name}}</h1>
     </ion-text>
 
     <ion-text>
-      <h1>{{contract.companyName}}</h1>
+      <h1>{{contract?.companyName}}</h1>
     </ion-text>
 
     <ion-text class="block">
       <span class="gray">{{ commonText?.vessel }}:</span>
-      {{contract.vesselName}}
+      {{contract?.vesselName}}
     </ion-text>
     <ion-text class="block">
       <span class="gray">{{ commonText?.dates }}:</span>
-      {{contract.startDate | date: 'dd/MM/yyy'}} - {{contract.endDate | date: 'dd/MM/yyy'}}
+      {{contract?.startDate | date: 'dd/MM/yyy'}} - {{contract?.endDate | date: 'dd/MM/yyy'}}
     </ion-text>
     <br />
 
     <ion-text class="block">
       <span class="gray">{{ commonText?.taiwaneseRepresentative }}:</span>
-      {{ getCompanyName(contract.taiwaneseCompany) }}
+      {{ getCompanyName(contract?.taiwaneseCompany) }}
     </ion-text>
     <ion-text class="block">
       <span class="gray">{{ commonText?.indonesianRepresentative }}:</span>
-      {{ getCompanyName(contract.indonesianCompany) }}
+      {{ getCompanyName(contract?.indonesianCompany) }}
       <p></p>
     </ion-text>
   </div>
