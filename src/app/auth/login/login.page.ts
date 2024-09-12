@@ -57,11 +57,11 @@ export class LoginPage extends BaseformPage implements OnInit {
     this.formQuestions.forEach((entry) => {
       this.group[entry.key] = new FormControl('', [Validators.required]);
       if (entry.key === 'password') {
-        this.group[entry.key] = new FormControl('', [Validators.required, Validators.minLength(8)]);
+        this.group[entry.key] = new FormControl('', [Validators.required]);
       }
 
       if (entry.key === 'email') {
-        this.group[entry.key] = new FormControl('', [Validators.required, Validators.minLength(8)]);
+        this.group[entry.key] = new FormControl('', [Validators.required, Validators.email]);
       }
     });
     this.pageFormGroup = new FormGroup(this.group);
@@ -76,6 +76,12 @@ export class LoginPage extends BaseformPage implements OnInit {
   setUpForm(): void {}
 
   async onSubmit(formData) {
+    formData = {
+      ...formData,
+      email: formData.email.trim(),
+      password: formData.password.trim()
+    };
+    
     this.sharedMethods.showLoader(this.contentService.commonText?.loadingText);
     const response = await this.apiServices.post('accounts/login', formData, true);
     response.subscribe(
