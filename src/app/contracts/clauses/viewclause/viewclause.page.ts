@@ -140,7 +140,7 @@ export class ViewclausePage implements OnInit {
     // clause one has two entries, so we need to add the second entry
     if  (this.clauseDetails?.partyB !== undefined || this.clauseDetails?.partyB !== null) {
       let partyBClauseDetails = await this.contractDataService.retrieveClauseDetails(this.clauseDetails?.partyB);
-      let partyBDetails = JSON.parse(partyBClauseDetails?.content);
+      let partyBDetails = partyBClauseDetails ? JSON.parse(partyBClauseDetails?.content) : {};
       for (const [key, value] of Object.entries(partyBDetails)) {
         const formattedValue  = this.formatClauseValues(key, value);
         response[key] = formattedValue;
