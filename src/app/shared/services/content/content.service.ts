@@ -170,7 +170,7 @@ export class ContentService {
   getCommonText() {
     const content = this.appContent?.[`${this.currentLanguage}`];
     if (content != null || content !== undefined) {
-      const { commonText } = content;
+      const commonText = content?.commonText;
       const commonTextOject = {};
       for (const item of commonText.data) {
         commonTextOject[item.label] = item.value;
