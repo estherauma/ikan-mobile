@@ -123,8 +123,8 @@ export class AppComponent implements OnInit, OnDestroy {
     this.sharedMethods.removeNetworkEventListener(this.networkListener);
   }
 
-  checkLoginStatus() {
-    this.sharedMethods.readDataFromStorage(StorageKeys.apiToken)
+  async checkLoginStatus() {
+    await this.sharedMethods.readDataFromStorage(StorageKeys.apiToken)
       .then(async(value) => {
         if (value) {
           const user: UserData = await this.sharedMethods.readDataFromStorage(StorageKeys.userData);

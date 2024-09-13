@@ -28,7 +28,7 @@ export class LocalNotificationsService {
       App.addListener('appStateChange', (state: AppState) => {
         this.appActive = state.isActive;
       });
-    this.addListeners();
+      this.addListeners();
     });
   }
 
@@ -202,13 +202,14 @@ export class LocalNotificationsService {
                   if (!this.appActive) {
                     return setTimeout(async() => {
                       await this.router.navigate([ 'survey' ], { queryParams: { surveySource: SurveySources.notification }});
+                      return false;
                     }, 700);
                   }
                   this.router.navigate([ 'survey' ], { queryParams: { surveySource: SurveySources.notification }});
                 }
                 // TO BE REMOVED
                 // for testing purposes
-                if (notification?.actionTypeId === NotificationActionId.test) {
+                else if (notification?.actionTypeId === NotificationActionId.test) {
                   this.router.navigate([ 'survey' ], { queryParams: { surveySource: SurveySources.notification }});
                 }
                 break;
