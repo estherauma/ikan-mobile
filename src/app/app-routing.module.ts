@@ -4,11 +4,6 @@ import { AuthGuard } from './shared/guards/auth/authguard.guard';
 
 const routes: Routes = [
   {
-    path: '',
-    redirectTo: 'auth/login-method',
-    pathMatch: 'full'
-  },
-  {
     path: 'auth/password-reset',
     loadChildren: () => import('./auth/password-reset/password-reset.module').then( m => m.PasswordResetPageModule)
   },
@@ -368,6 +363,14 @@ const routes: Routes = [
   {
     path: 'help',
     loadChildren: () => import('./get-help/get-help.module').then(m => m.GetHelpModule)
+  },
+
+  // should be last item in the routes
+  // add routes above this
+  {
+    path: '',
+    redirectTo: 'auth/login-method',
+    pathMatch: 'full'
   },
 ];
 
