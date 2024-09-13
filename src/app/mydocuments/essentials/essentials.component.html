@@ -22,11 +22,10 @@
 
       <ion-card *ngIf="passportImageUrl" class="has-value">
         <ion-card-content>
-          <ion-row>
+          <ion-row (click)="viewPassportDetails()">
             <ion-col
               size="3"
               class="img-col"
-              (click)="viewPassportDetails()"
             >
               <div class="img-wrapper">
                 <img *ngIf="sharedMethods.isIos" [src]="passportImageUrl | safeurl" />
@@ -72,11 +71,10 @@
 
       <ion-card *ngIf="visaImageUrl" class="has-value">
         <ion-card-content>
-          <ion-row>
+          <ion-row (click)="userVisaDetails.docType === 'image' ? viewImage(userVisaDetails) : viewFile(userVisaDetails)">
             <ion-col
               size="3"
               class="img-col"
-              (click)="userVisaDetails.docType === 'image' ? viewImage(userVisaDetails) : viewFile(userVisaDetails)"
             >
               <div *ngIf="userVisaDetails.docType === 'image'" class="img-wrapper">
                 <img *ngIf="sharedMethods.isIos" [src]="userVisaDetails.fileUrl | safeurl" />
@@ -123,11 +121,10 @@
 
       <ion-card *ngIf="seamansBookImageUrl" class="has-value">
         <ion-card-content>
-          <ion-row>
+          <ion-row (click)="userSeamansBookDetails.docType === 'image' ? viewImage(userSeamansBookDetails) : viewFile(userSeamansBookDetails)">
             <ion-col
               size="3"
               class="img-col"
-              (click)="userSeamansBookDetails.docType === 'image' ? viewImage(userSeamansBookDetails) : viewFile(userSeamansBookDetails)"
             >
               <div *ngIf="userSeamansBookDetails.docType === 'image'" class="img-wrapper">
                 <img *ngIf="sharedMethods.isIos" [src]="userSeamansBookDetails.fileUrl | safeurl" />
@@ -178,11 +175,10 @@
       <ng-container *ngFor="let doc of otherEssentialDocuments">
         <ion-card class="has-value">
           <ion-card-content>
-            <ion-row>
+            <ion-row (click)="doc.docType === 'image' ? viewImage(doc) : viewFile(doc)">
               <ion-col
                 size="3"
                 class="img-col"
-                (click)="doc.docType === 'image' ? viewImage(doc) : viewFile(doc)"
               >
                 <div *ngIf="doc.docType === 'image'" class="img-wrapper">
                   <img *ngIf="sharedMethods.isIos" [src]="doc.fileUrl | safeurl" />
