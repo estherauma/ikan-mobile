@@ -54,7 +54,7 @@ export class HomePage implements OnInit {
       return allContracts.filter(contract => contract?.createdBy === user.id);
     } else if (user?.role === UserRole.worker) {
       const onlineContracts = await this.sharedMethods.readDataFromStorage(StorageKeys.currentUserOnlineContractsAppRefs);
-      return allContracts.filter(contract => onlineContracts.includes(contract.appRef));
+      return allContracts.filter(contract => onlineContracts?.includes(contract.appRef));
     }
     return [];
   }
@@ -76,8 +76,8 @@ export class HomePage implements OnInit {
   }
 
 
-  viewDeatils(demandLetter) {
-    this.router.navigate(['/contracts/view', demandLetter]);
+  viewDetails(details) {
+    this.router.navigate(['/contracts/view', details]);
   }
 
   searchResult(searchResultData) {

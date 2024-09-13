@@ -184,8 +184,12 @@ export class DocumentsDataService {
     });
   }
 
-  retrievePassports() {
-    const query = 'SELECT * FROM passports WHERE (is_deleted = 0 OR is_deleted IS NULL)';
+  retrievePassports(includeDeleted = false) {
+    let query = 'SELECT * FROM passports WHERE (is_deleted = 0 OR is_deleted IS NULL)';
+    if (includeDeleted) {
+      query = 'SELECT * FROM passports';
+    }
+
     return this.db.executeSql(query, []).then((data) => {
       const passports = [];
       if (data.rows.length > 0) {
@@ -217,7 +221,7 @@ export class DocumentsDataService {
   }
 
   getUserPassport(userId) {
-    const query = 'SELECT * FROM passports WHERE user_id = ? AND (is_deleted = 0 OR is_deleted IS NULL)';
+    const query = 'SELECT * FROM passports WHERE user_id = ? AND (is_deleted = 0 OR is_deleted IS NULL OR is_deleted = false)';
     return this.db.executeSql(query, [userId]).then((data) => {
       const passports = [];
       if (data.rows.length > 0) {

@@ -31,6 +31,7 @@ export class EssentialsComponent  implements OnInit {
   otherEssentialDocuments: any = []; // excludes passport, visa & seamans book as they are displayed separately
   isEditing: boolean = false;
   passportViewData: any = {};
+  hasPassportDetails: boolean = false;
 
   constructor(
     public router: Router,
@@ -53,8 +54,11 @@ export class EssentialsComponent  implements OnInit {
 
   async getDocDetails() {
     this.userPassportDetails = await this.documentsDataService.getUserPassport(this.userData.id);
+    this.hasPassportDetails = !!this.userPassportDetails;
     if (this.userPassportDetails && this.userPassportDetails.imageUrl) {
       this.passportImageUrl = this.userPassportDetails.imageUrl;
+    } else {
+      this.passportImageUrl = '';
     }
 
     this.allEssentialDocuments = this.getEssentialDocuments();
@@ -73,8 +77,8 @@ export class EssentialsComponent  implements OnInit {
       component: CreatepassportPage,
     });
     modal.present();
-    modal.onDidDismiss().then((data) => {
-      this.getDocDetails();
+    modal.onDidDismiss().then(async(data) => {
+      await this.getDocDetails();
     });
   }
 
@@ -100,7 +104,7 @@ export class EssentialsComponent  implements OnInit {
         };
         const docInsertId = await this.documentsDataService.create(visaSaveObj);
         if (docInsertId) {
-          this.getDocDetails();
+          await this.getDocDetails();
         } else {
           this.sharedMethods.showToast(this.docsCommonText?.saveVisaError);
         }
@@ -141,7 +145,7 @@ export class EssentialsComponent  implements OnInit {
         };
         const docInsertId = await this.documentsDataService.create(saveObj);
         if (docInsertId) {
-          this.getDocDetails();
+          await this.getDocDetails();
         } else {
           this.sharedMethods.showToast(this.docsCommonText?.saveSeamansBookError);
         }
@@ -194,8 +198,8 @@ export class EssentialsComponent  implements OnInit {
       }
     });
     await modal.present();
-    await modal.onDidDismiss().then((data) => {
-      this.getDocDetails();
+    await modal.onDidDismiss().then(async(data) => {
+      await this.getDocDetails();
     });
   }
 
@@ -223,8 +227,8 @@ export class EssentialsComponent  implements OnInit {
         {
           text: this.commonText?.delete,
           handler: async () => {
-            await this.deleteDocument(doc).then(() => {
-              this.getDocDetails();
+            await this.deleteDocument(doc).then(async() => {
+              await this.getDocDetails();
               this.sharedMethods.showToast(this.docsCommonText?.docDeletedSuccessfully);
             });
           }
