@@ -2,7 +2,7 @@
   <ion-grid>
     <!-- add passport -->
     <div class="passport-wrapper">
-      <ion-card *ngIf="!passportImageUrl" (click)="addPassport()">
+      <ion-card *ngIf="!passportImageUrl && !hasPassportDetails" (click)="addPassport()">
         <ion-card-content>
           <ion-row>
             <ion-col size="3" class="img-col">
@@ -20,7 +20,7 @@
         </ion-card-content>
       </ion-card>
 
-      <ion-card *ngIf="passportImageUrl" class="has-value">
+      <ion-card *ngIf="passportImageUrl && hasPassportDetails" class="has-value">
         <ion-card-content>
           <ion-row (click)="viewPassportDetails()">
             <ion-col
