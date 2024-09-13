@@ -184,8 +184,12 @@ export class DocumentsDataService {
     });
   }
 
-  retrievePassports() {
-    const query = 'SELECT * FROM passports WHERE (is_deleted = 0 OR is_deleted IS NULL)';
+  retrievePassports(includeDeleted = false) {
+    let query = 'SELECT * FROM passports WHERE (is_deleted = 0 OR is_deleted IS NULL)';
+    if (includeDeleted) {
+      query = 'SELECT * FROM passports';
+    }
+
     return this.db.executeSql(query, []).then((data) => {
       const passports = [];
       if (data.rows.length > 0) {

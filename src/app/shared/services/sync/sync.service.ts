@@ -813,7 +813,7 @@ export class SyncService {
             await this.documentsDataService.deleteDocument(document.id);
           } else if (document.isDeleted && document.onlineRef) {
             this.apiService.delete('mydocuments', document.onlineRef).subscribe(async(response) => {
-              if (response?.['status'] === 'OK') {
+              if (response?.['status'] === 'OK' || !response) {
                 await this.documentsDataService.deleteDocument(document.id);
               } else {
                 console.error(`Failed to delete document ${document.fileName} from the api`, response);
@@ -891,9 +891,9 @@ export class SyncService {
   }
 
   async syncPassports(){
-    this.documentsDataService.retrievePassports().then((passports) => {
+    this.documentsDataService.retrievePassports(true).then((passports) => {
       if (passports.length > 0) {
-        passports.forEach((passport) => {
+        passports.forEach(async(passport) => {
           const dataToSave = Object.assign({}, passport);
           delete dataToSave.id;
           delete dataToSave.imageUrl;
@@ -901,41 +901,55 @@ export class SyncService {
           dataToSave.dateOfIssue = new Date(dataToSave.dateOfIssue).toISOString().split('T')[0];
           dataToSave.dateOfExpiry = new Date(dataToSave.dateOfExpiry).toISOString().split('T')[0];
           if (!dataToSave.onlineRef) {
-            this.apiService.post('passports', dataToSave).subscribe(async(response) => {
-              if (response?.['status'] === 'OK') {
-                this.dbService.updateDatabaseField('passports', 'online_ref', response?.['data']?.id, passport.appRef);
-                const file = await this.uploadService.retrieveAndReturnBlob(passport.imageUrl); 
-                if (file) {
-                  const imageData = new FormData();
-                  imageData.append('fileContent', file);
-                  imageData.append('entityType', 'passport');
-                  imageData.append('passportId', response?.['data']?.id);
+            if (passport.isDeleted) {
+              await this.documentsDataService.deletePassport(passport.id);
+            } else {
+              this.apiService.post('passports', dataToSave).subscribe(async(response) => {
+                if (response?.['status'] === 'OK') {
+                  this.dbService.updateDatabaseField('passports', 'online_ref', response?.['data']?.id, passport.appRef);
+                  const file = await this.uploadService.retrieveAndReturnBlob(passport.imageUrl); 
+                  if (file) {
+                    const imageData = new FormData();
+                    imageData.append('fileContent', file);
+                    imageData.append('entityType', 'passport');
+                    imageData.append('passportId', response?.['data']?.id);
 
-                  this.apiService.post('file-upload', imageData).subscribe((res) => {
-                    if (res?.['status'] !== 'OK') {
-                      console.error(`Failed to sync passport image, ${passport.appRef} to the api`, res);
-                    }
-                  });
-                };
-              }
-            });
-          } else {
-            this.apiService.put('passports', passport.onlineRef, dataToSave).subscribe(async(response) => {
-              if (response?.['status'] === 'OK') {
-                const file = await this.uploadService.retrieveAndReturnBlob(passport.imageUrl);
-                if (file) {
-                  const imageData = new FormData();
-                  imageData.append('fileContent', file);
-                  imageData.append('entityType', 'passport');
-                  imageData.append('passportId', passport.onlineRef);
-                  this.apiService.post('file-upload', imageData).subscribe((res) => {
-                    if (res?.['status'] !== 'OK') {
-                      console.error(`Failed to sync passport image, ${passport.appRef} to the api`, res);
-                    }
-                  });
+                    this.apiService.post('file-upload', imageData).subscribe((res) => {
+                      if (res?.['status'] !== 'OK') {
+                        console.error(`Failed to sync passport image, ${passport.appRef} to the api`, res);
+                      }
+                    });
+                  };
                 }
-              }
-            });
+              });
+            }
+          } else {
+            if (passport.isDeleted) {
+              this.apiService.delete('passports', passport.onlineRef).subscribe(async(response) => {
+                if (response?.['status'] === 'OK' || !response) {
+                  await this.documentsDataService.deletePassport(passport.id);
+                } else {
+                  console.error(`Failed to delete passport ${passport.appRef} from the api`, response);
+                }
+              });
+            } else {
+              this.apiService.put('passports', passport.onlineRef, dataToSave).subscribe(async(response) => {
+                if (response?.['status'] === 'OK') {
+                  const file = await this.uploadService.retrieveAndReturnBlob(passport.imageUrl);
+                  if (file) {
+                    const imageData = new FormData();
+                    imageData.append('fileContent', file);
+                    imageData.append('entityType', 'passport');
+                    imageData.append('passportId', passport.onlineRef);
+                    this.apiService.post('file-upload', imageData).subscribe((res) => {
+                      if (res?.['status'] !== 'OK') {
+                        console.error(`Failed to sync passport image, ${passport.appRef} to the api`, res);
+                      }
+                    });
+                  }
+                }
+              });
+            }
           }
         });
       }
