@@ -8,6 +8,7 @@ import { SharedmethodsService } from 'src/app/shared/services/sharedmethods/shar
 import { AuthService } from 'src/app/shared/services/auth/auth.service';
 import { CompaniesDataService } from 'src/app/companies/data/companies-data.service';
 import { CreatePage } from '../create/create.page';
+import { UserRole } from 'src/app/shared/types/api-types';
 
 @Component({
   selector: 'app-view',
@@ -39,7 +40,8 @@ export class ViewPage implements OnInit {
   createClauseText: string = 'Add new clause';
   pageText: any;
   editContractText: string = 'Edit contract';
-
+  isVesselOwner: boolean = false;
+  isWorker: boolean = false;
 
   constructor(
     public activatedRoute: ActivatedRoute,
@@ -55,6 +57,8 @@ export class ViewPage implements OnInit {
   ngOnInit() {
     // TODO: Consider refactoring this method to smaller functions
     this.commonText = this.contentService?.commonText;
+    this.isVesselOwner = this.authService.userRole === UserRole.vesselOwner;
+    this.isWorker = this.authService.userRole === UserRole.worker;
     this.activatedRoute.params.subscribe((params) => {
       const data = {
         ...params,

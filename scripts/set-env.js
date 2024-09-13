@@ -31,12 +31,24 @@ module.exports.generateEnvironmentFiles = (buildType) => {
             };
             `;
             break;
+        case 'test':
+            environmentFile = `export const env = {
+                production: false,
+                type: 'production',
+                apiUrl: '${process.env.TEST_API_URL}',
+                baseUrl: '${process.env.TEST_BASE_URL}',
+                environment: 'test',
+                pushNotificationApi: '${process.env.PROD_PUSH_NOTIFICATION_URL}',
+                sentryDSN: '${process.env.SENTRY_DSN}'
+            };
+            `;
+            break;
         default:
             environmentFile = `export const env = {
             production: false,
             type: 'debug',
-            apiUrl: '${process.env.API_URL}',
-            baseUrl: '${process.env.BASE_URL}',
+            apiUrl: '${process.env.DEV_API_URL}',
+            baseUrl: '${process.env.DEV_BASE_URL}',
             environment: 'development',
             pushNotificationApi: '${process.env.DEV_PUSH_NOTIFICATION_URL}',
             sentryDSN: '${process.env.SENTRY_DSN}'

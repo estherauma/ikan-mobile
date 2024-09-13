@@ -8,6 +8,8 @@ import { AlertController } from '@ionic/angular';
 import { AnalyticsService } from 'src/app/shared/services/analytics/analytics.service';
 import { pageEventNames } from 'src/app/shared/services/analytics/event-names';
 import { SharedmethodsService } from 'src/app/shared/services/sharedmethods/sharedmethods.service';
+import { AuthService } from 'src/app/shared/services/auth/auth.service';
+import { UserRole } from 'src/app/shared/types/api-types';
 
 @Component({
   selector: 'app-viewclause',
@@ -52,6 +54,8 @@ export class ViewclausePage implements OnInit {
   allVessels: any = [];
   vesselDetails: any;
   commonText: any;
+  isVesselOwner: boolean = false;
+  isWorker: boolean = false;
 
   constructor(
     public contractDataService: ContractDataService,
@@ -61,13 +65,16 @@ export class ViewclausePage implements OnInit {
     public router: Router,
     public alertController: AlertController,
     public analytics: AnalyticsService,
-    public sharedMethods: SharedmethodsService
+    public sharedMethods: SharedmethodsService,
+    public authService: AuthService,
   ) { }
 
   ngOnInit() {
     this.activatedRoute.params.subscribe((params) => {
       this.clauseDetails = params;
       this.pageSetup();
+      this.isVesselOwner = this.authService.userRole === UserRole.vesselOwner;
+      this.isWorker = this.authService.userRole === UserRole.worker;
     });
     this.analytics.trackEvent(pageEventNames.viewClause, this.sharedMethods.analyticsEventParams);
   }
