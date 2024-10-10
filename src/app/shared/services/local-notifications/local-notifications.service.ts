@@ -194,7 +194,7 @@ export class LocalNotificationsService {
       LocalNotifications.addListener(
         'localNotificationActionPerformed',
         async(notificationAction: ActionPerformed) => {
-          this.zone.run(async() => {
+          await this.zone.run(async() => {
             const notification: LocalNotificationSchema = notificationAction?.notification;
             switch (notificationAction?.actionId) {
               case 'tap':
