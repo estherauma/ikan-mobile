@@ -47,7 +47,7 @@
     "@capacitor/toast": "^5.0.0",
     "@capawesome-team/capacitor-file-opener": "^5.0.4",
     "@capawesome/capacitor-file-picker": "^5.3.0",
-    "@fiftyeight/shared-components": "^0.0.37",
+    "@fiftyeight/shared-components": "^0.0.39",
     "@ionic/angular": "^7.1.1",
     "@ionic/pwa-elements": "^3.1.1",
     "@sentry/angular-ivy": "^7.87.0",
@@ -96,7 +96,7 @@
     "karma-jasmine-html-reporter": "^1.5.0",
     "protractor": "~7.0.0",
     "ts-node": "~8.3.0",
-    "typescript": "^5.6.3"
+    "typescript": "5.5"
   },
   "description": "Add tuna description here later",
   "browserslist": [
