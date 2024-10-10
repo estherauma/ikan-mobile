@@ -3,7 +3,7 @@ apply plugin: 'com.google.firebase.appdistribution'
 
 android {
     namespace "com.fiftyeight.tuna"
-    compileSdkVersion rootProject.ext.compileSdkVersion
+    compileSdk rootProject.ext.compileSdkVersion
     defaultConfig {
         applicationId "com.fiftyeight"
         minSdkVersion rootProject.ext.minSdkVersion
