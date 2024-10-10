@@ -61,7 +61,7 @@
     "swiper": "^8.4.5",
     "tslib": "^2.2.0",
     "uuid": "^9.0.1",
-    "zone.js": "^0.15.0"
+    "zone.js": "^0.14.10"
   },
   "devDependencies": {
     "@angular-devkit/build-angular": "^17.3.10",
