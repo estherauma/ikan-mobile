@@ -2,7 +2,6 @@
 	"appId": "com.fiftyeight.tuna.dev",
 	"appName": "tuna-mobile",
 	"webDir": "www",
-	"bundledWebRuntime": false,
 	"server": {
     "cleartext": true
   },

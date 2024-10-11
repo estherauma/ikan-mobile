@@ -1,4 +1,3 @@
-import { HttpErrorResponse } from '@angular/common/http';
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { FormControl, Validators, FormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
@@ -44,10 +43,6 @@ export class InviteCodePage extends BaseformPage implements OnInit {
 
   ngOnInit(): void {
     this.analytics.trackEvent(pageEventNames.inviteCode, this.sharedMethods.analyticsEventParams);
-  }
-
-  onLogin() {
-    this.router.navigate(['/intro']);
   }
 
   async onSubmit(data) {
