@@ -105,8 +105,8 @@ export class PushNotificationsService {
 
   addListeners() {
     try {
-      PushNotifications.addListener('registration', (token: Token) => {
-        this.getFCMToken();
+      PushNotifications.addListener('registration', async(token: Token) => {
+        await this.getFCMToken();
       });
 
       PushNotifications.addListener('registrationError', (error: any) => {
@@ -120,12 +120,12 @@ export class PushNotificationsService {
 
       PushNotifications.addListener(
         'pushNotificationActionPerformed',
-        (actionData: ActionPerformed) => {
+        async(actionData: ActionPerformed) => {
           const notification: PushNotificationSchema = actionData?.notification;
           switch (actionData?.actionId) {
             case 'tap':
               if (notification?.data?.type === 'message') {
-                this.router.navigate([ '/tabs/messages' ]);
+                await this.router.navigate([ '/tabs/messages' ]);
               }
               break;
 

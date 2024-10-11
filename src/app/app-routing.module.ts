@@ -153,10 +153,6 @@ const routes: Routes = [
     loadChildren: () => import('./dashboard/buyer/buyer.module').then( m => m.BuyerPageModule)
   },
   {
-    path: 'intro',
-    loadChildren: () => import('./intro/intro.module').then( m => m.IntroPageModule)
-  },
-  {
     path: 'profile',
     loadChildren: () => import('./accounts/profile/profile.module').then( m => m.ProfilePageModule)
   },

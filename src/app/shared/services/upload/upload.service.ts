@@ -60,6 +60,7 @@ export class UploadService {
 
       return await this.saveFile(image?.path, fileName, 'image');
     } catch (error) {
+      // TODO: show err to user if upload is cancelled
       console.error('Error in upload.service.ts at takePicture(). Failed to capture image.', error);
     }
   }
