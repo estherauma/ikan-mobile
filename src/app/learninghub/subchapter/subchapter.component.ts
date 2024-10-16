@@ -71,7 +71,7 @@ export class SubchapterComponent  implements OnInit {
       this.imgUrl = this.caseStudyImgUrl || this.sharedmethods?.getChapterBackground(chapterId, 'subchapter');
     } else {
       this.allPageContent = this.contentService.getContentByPropertyName(this.subChapterId);
-      await this.contentService.replaceVesselPlaceholderText(this.allPageContent);
+      await this.contentService.replaceVesselPlaceholderText();
       this.pageContent = this.allPageContent?.pageContent;
       const chapterId = this.subChapterId?.split('.')[0];
       this.imgUrl = this.sharedmethods?.getChapterBackground(chapterId, 'subchapter');

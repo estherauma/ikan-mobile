@@ -73,7 +73,6 @@ export class ContentService {
       if (content?.status === 'OK') {
         this.writeLocalContent(StorageKeys.appContent, content.data[0]);
         this.appContent = content.data[0].content;
-        // here
         
         this.contentObs.next(true);
       }
@@ -101,23 +100,22 @@ export class ContentService {
     }
   }
 
-  async replaceVesselPlaceholderText(pageData) {
-    // if (this.authService.userRole === UserRole.worker && pageData?.pageName === '1.9') {
-      if (this.authService.userRole === UserRole.worker && pageData?.pageName === '1.9') {
+  async replaceVesselPlaceholderText() {
+    if (this.authService.userRole === UserRole.worker) {
       const userVessel = await this.getWorkerVessel();
       if (userVessel && userVessel?.name) {
-        // Object.entries(this.appContent).forEach(([lang, data]) => {
-          // const vesselDoc = data['1.9'];
-          const section = pageData?.pageContent?.find(
-            (item) => item?.type === 'questions' && item.key === 'is_this_the_vessel_you_are_working_on_the_one_you_were_assigned_to'
-          );
-      
-          if (section) {
-            section.question = section.question.replace('[vessel_name_from_system]',
-              `<i class='vessel-name' style='color:#263CB1!important;'>${userVessel?.name}</i>`
+        Object.entries(this.appContent).forEach(([lang, data]) => {
+          const vesselDoc = data['1.9'];
+          if (vesselDoc) {
+            const vesselQtn = vesselDoc?.pageContent?.find(
+              (item) => item?.type === 'questions' && item.key === 'is_this_the_vessel_you_are_working_on_the_one_you_were_assigned_to'
             );
+        
+            if (vesselQtn) {
+              vesselQtn.question = vesselQtn.question.replace('[vessel_name_from_system]', userVessel?.name.toUpperCase());
+            }
           }
-        // });
+        });
       }
     }
   }
@@ -127,16 +125,17 @@ export class ContentService {
     if (userContracts?.length) {
       // TODO: change method when user has multiple contracts
       const contract = this.contractDataService.contracts.find((contract) => contract.appRef === userContracts[0]);
-      const clause = await this.contractDataService.retrieveClauseByFieldByContractId('kind', 'contract-clauses-parties-requirement-fishers', contract.id);
-      if (clause) {
-        const clauseData = JSON.parse(clause.content);
-        if (clauseData?.vessel) {
-          const vesselRef = clauseData.vessel;
-          const vessels = this.vesselDataService.vessels;
-          if (vessels.length) {
-            const vessel = vessels.find((v) => v.appRef === vesselRef);
-            console.log('vessel--------', vessel);
-            return vessel;
+      if (contract && contract?.id) {
+        const clause = await this.contractDataService.retrieveClauseByFieldByContractId('kind', 'contract-clauses-parties-requirement-fishers', contract.id);
+        if (clause) {
+          const clauseData = JSON.parse(clause.content);
+          if (clauseData?.vessel) {
+            const vesselRef = clauseData.vessel;
+            const vessels = this.vesselDataService.vessels;
+            if (vessels.length) {
+              const vessel = vessels.find((v) => v.appRef === vesselRef);
+              return vessel;
+            }
           }
         }
       }
@@ -286,7 +285,7 @@ export class ContentService {
   }
 
   async getSurveyQuestions(surveyTopic: string = '') {
-    let category = '1.9'// surveyTopic;
+    let category = surveyTopic;
     if (!category) {
       let allCategories;
       allCategories = await this.sharedMethods.readDataFromStorage(StorageKeys.surveyCategories);
