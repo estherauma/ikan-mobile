@@ -101,6 +101,27 @@ export class ContentService {
     }
   }
 
+  async replaceVesselPlaceholderText(pageData) {
+    // if (this.authService.userRole === UserRole.worker && pageData?.pageName === '1.9') {
+      if (this.authService.userRole === UserRole.worker && pageData?.pageName === '1.9') {
+      const userVessel = await this.getWorkerVessel();
+      if (userVessel && userVessel?.name) {
+        // Object.entries(this.appContent).forEach(([lang, data]) => {
+          // const vesselDoc = data['1.9'];
+          const section = pageData?.pageContent?.find(
+            (item) => item?.type === 'questions' && item.key === 'is_this_the_vessel_you_are_working_on_the_one_you_were_assigned_to'
+          );
+      
+          if (section) {
+            section.question = section.question.replace('[vessel_name_from_system]',
+              `<i class='vessel-name' style='color:#263CB1!important;'>${userVessel?.name}</i>`
+            );
+          }
+        // });
+      }
+    }
+  }
+
   async getWorkerVessel() {
     const userContracts = await this.sharedMethods.readDataFromStorage(StorageKeys.currentUserOnlineContractsAppRefs);
     if (userContracts?.length) {
