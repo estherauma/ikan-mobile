@@ -72,6 +72,7 @@ export class ContractDataService {
         }
       }
       contracts.reverse();
+      console.log('Contracts', contracts);
       this.contractsObs.next(contracts);
     }).catch((e) => console.log(e));
   }
@@ -298,6 +299,31 @@ export class ContractDataService {
     });
   }
 
+  retrieveClauseByFieldByContractId(field, value, contractId) {
+    const query = `SELECT * FROM contract_clauses WHERE ${field} = ? AND contract_id = ?`;
+    const params = [value, contractId];
+    return this.db.executeSql(query, params).then((data) => {
+      const result = [];
+      if (data.rows.length > 0) {
+        for (let i = 0; i < data.rows.length; i++) {
+          result.push({
+            id: data.rows.item(i).id,
+            appRef: data.rows.item(i).app_ref,
+            name: data.rows.item(i).name,
+            kind: data.rows.item(i).kind,
+            onlineRef: data.rows.item(i).online_ref,
+            content: data.rows.item(i).content,
+            createdAt: data.rows.item(i).created_at,
+            updatedAt: data.rows.item(i).updated_at,
+            createdBy: data.rows.item(i).created_by,
+            updatedBy: data.rows.item(i).updated_by,
+          });
+        }
+      }
+      return result?.length ? result[0] : null;
+    });
+  }
+
   saveContractClause(contractId, clauseData) {
     const query = 'INSERT INTO contract_clauses (contract_id, app_ref, \
       name, kind, content, created_at, updated_at, created_by, updated_by) \
@@ -369,7 +395,7 @@ export class ContractDataService {
           });
         }
       }
-      return result[0];
+      return result?.length ? result[0] : null;
     });
   }
   
