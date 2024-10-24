@@ -1,3 +1,143 @@
-<p>
-  consent-forms works!
-</p>
+<app-header [showMenuButton]="false" [pageTitle]="'Consent Form'"></app-header>
+<ion-content [fullscreen]="true">
+
+  <!-- Audio Element, Hidden Controls -->
+  <audio #audioPlayer [src]="audioUrl" hidden>
+    <!-- <source [src]="audioUrl" type="audio/mpeg"> MP3 format -->
+    <!-- <source [src]="audioUrl" type="audio/ogg"> OGG format -->
+    <!-- Your browser does not support the audio element. -->
+  </audio>
+
+  <swiper-container
+    #swiper
+    id="swiper_element"
+    [autoHeight]="true"
+    [spaceBetween]="10"
+  >
+    <swiper-slide
+      *ngFor="let slide of pages; let i = index"
+      class="slide"
+      [ngClass]="{ 'second-slide': i === 1 }"
+    >
+      <!-- <p>{{ slide?.pageTitle }} + ''ppppp''</p> -->
+      <!-- Translate -->
+      <ion-label class="page-label">
+        {{ "Page " + (i + 1) + " of " + pages.length }}
+      </ion-label>
+
+      <div class="section-wrapper">
+        <div *ngFor="let section of slide?.pageContent" class="section">
+          <!-- text area type -->
+          <div *ngIf="section?.type === 'text_area'" class="text-area-section">
+            <ion-icon
+              *ngIf="section?.contentAudio?.url"
+              class="audio-icon"
+              name="volume-medium"
+              (click)="playAudio(section?.contentAudio?.url)"
+            ></ion-icon>
+            <shared-text-area
+              *ngIf="section?.type === 'text_area'"
+              [data]="section"
+              styles="textarea"
+            ></shared-text-area>
+          </div>
+
+          <!-- question type -->
+          <div
+            *ngIf="section?.type === 'questions' && section?.displayquestion"
+            class="qtn-section"
+          >
+            <!-- Checkbox -->
+            <ion-item
+              *ngIf="section?.questionType === 'checkbox'"
+              lines="none"
+              class="checkbox-item"
+            >
+              <ion-checkbox slot="start"></ion-checkbox>
+              <ion-label class="checkbox-label">
+                {{ section?.question }}
+                <span *ngIf="section?.questionAudio">
+                  <ion-icon
+                    *ngIf="section?.questionAudio.url"
+                    class="audio-icon"
+                    name="volume-medium"
+                    (click)="playAudio(section?.questionAudio.url)"
+                  ></ion-icon>
+                </span>
+              </ion-label>
+            </ion-item>
+
+
+            <!-- Select -->
+            <!-- <div *ngIf="section?.questionType === 'select'" class="select-item">
+              <ion-select
+                [value]="section?.value || ''"
+                (ionChange)="handleSelectChange($event)"
+              >
+                <ion-select-option
+                  *ngFor="let option of section?.options"
+                  [value]="option?.value"
+                  >{{ option?.option }}</ion-select-option
+                >
+              </ion-select>
+            </div> -->
+
+            <!-- Radio -->
+            <!-- <div
+              *ngIf="section?.questionType === 'radio'"
+            >
+              <ion-radio-group
+                [value]="section?.value || ''"
+                (ionChange)="handleRadioChange($event)"
+              >
+                <ion-item
+                  *ngFor="let option of section?.options"
+                  lines="none"
+                >
+                  <ion-radio [value]="option?.value" labelPlacement="end">
+                    {{ option?.option }}
+                  </ion-radio>
+                </ion-item>
+              </ion-radio-group>
+            </div> -->
+          </div>
+
+          <!-- heading type -->
+          <div *ngIf="section?.type === 'heading'" class="heading-section">
+            <h1 class="heading-label">
+              {{ section?.text }}
+              <span *ngIf="section?.headingAudio">
+                <ion-icon
+                  *ngIf="section?.headingAudio.url"
+                  class="audio-icon"
+                  name="volume-medium"
+                  (click)="playAudio(section?.headingAudio.url)"
+                ></ion-icon>
+              </span>
+            </h1>
+          </div>
+        </div>
+
+        <div class="btn-wrapper">
+          <ion-button
+            *ngIf="showPrevBtn"
+            class="prev-btn swiper-button-prev"
+            shape="round"
+            (click)="goToPrevSlide()"
+          >
+            <!-- Translate -->
+            {{ "Previous" }}
+          </ion-button>
+          <ion-button
+            class="next-btn swiper-button-next"
+            shape="round"
+            (click)="i === pages.length - 1 ? submitForm() : goToNextSlide()"
+          >
+            <!-- Translate -->
+            {{ i === pages.length - 1 ? "Submit" : "Next" }}
+          </ion-button>
+        </div>
+      </div>
+    </swiper-slide>
+  </swiper-container>
+</ion-content>
