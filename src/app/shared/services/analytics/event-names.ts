@@ -80,10 +80,17 @@ export enum pageEventNames {
     // learning hub
     learningHubHome = 'page_learning_hub_home',
     tfaVideo = 'page_tfa_video',
+
+    // Consent Forms
+    viewConsentForm = 'page_view_consent_form',
 }
 
 export enum appEventNames {
     // TFA video
     cancelTrainingVideo = 'cancel_training_video',
     submitTrainingVideo = 'submit_training_video_resp',
+
+    // Consent Forms
+    acceptedConsentFormConditions = 'accepted_consent_form_conditions',
+    rejectedConsentFormConditions = 'rejected_consent_form_conditions',
 }

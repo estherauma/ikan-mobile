@@ -8,6 +8,7 @@ import { PrivacyPolicyPageRoutingModule } from './privacy-policy-routing.module'
 
 import { PrivacyPolicyPage } from './privacy-policy.page';
 import { SharedModule } from 'src/app/shared/shared.modules';
+import { SharedComponentsModule } from '@fiftyeight/shared-components';
 
 @NgModule({
   imports: [
@@ -15,7 +16,8 @@ import { SharedModule } from 'src/app/shared/shared.modules';
     FormsModule,
     IonicModule,
     PrivacyPolicyPageRoutingModule,
-    SharedModule
+    SharedModule,
+    SharedComponentsModule,
   ],
   declarations: [PrivacyPolicyPage]
 })

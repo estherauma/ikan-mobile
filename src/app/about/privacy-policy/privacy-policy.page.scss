@@ -1,4 +1,7 @@
-.content-section {
-    padding: 15px;
-    text-align: justify;
+ion-content {
+    --background: var(--ikan_skyblue_100);
+    --padding-top: 20px;
+    --padding-bottom: 50px;
+    --padding-start: 10px;
+    --padding-end: 10px;
 }

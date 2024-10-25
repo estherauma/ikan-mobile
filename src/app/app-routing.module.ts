@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
 import { AuthGuard } from './shared/guards/auth/authguard.guard';
+import { ConsentFormGuard } from './shared/guards/consent-form/consent-form.guard';
 
 const routes: Routes = [
   {
@@ -142,7 +143,8 @@ const routes: Routes = [
   },
   {
     path: 'dashboard/worker',
-    loadChildren: () => import('./dashboard/worker/worker.module').then( m => m.WorkerPageModule)
+    loadChildren: () => import('./dashboard/worker/worker.module').then( m => m.WorkerPageModule),
+    canActivate: [ConsentFormGuard],
   },
   {
     path: 'dashboard/taiwaneseagent',
@@ -359,6 +361,10 @@ const routes: Routes = [
   {
     path: 'help',
     loadChildren: () => import('./get-help/get-help.module').then(m => m.GetHelpModule)
+  },
+  {
+    path: 'consent-forms',
+    loadChildren: () => import('./consent-forms/consent-forms.module').then( m => m.ConsentFormsModule)
   },
 
   // should be last item in the routes

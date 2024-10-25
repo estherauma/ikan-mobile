@@ -1,4 +1,8 @@
-<app-header [isBackButton]="true"></app-header>
+<app-header
+  [isBackButton]="true"
+  [showMenuButton]="showMenuButton"
+  [pageTitle]="pageTitle"
+  ></app-header>
 
 <ion-content>
   <ion-text>
@@ -6,6 +10,13 @@
   </ion-text>
 
   <div class="content-section">
-    <div [innerHtml]="pageContent"></div>
+    <div *ngFor="let section of pageContent">
+      <!-- text area type -->
+      <shared-text-area
+        *ngIf="section?.type === 'text_area'"
+        [data]="section"
+        styles="textarea"
+      ></shared-text-area>
+    </div>
   </div>
 </ion-content>
