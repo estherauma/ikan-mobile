@@ -85,6 +85,7 @@ export enum StorageKeys {
   isRoleSet = 'isRoleSet',
   currentUserOnlineContractsAppRefs = 'currentUserOnlineContracts',
   currentUserContracts = 'currentUserContracts',
+  completedConsentForms = 'completedConsentForms',
 }
 
 export interface UserData {

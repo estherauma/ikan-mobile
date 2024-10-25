@@ -1,6 +1,9 @@
-<app-header [showMenuButton]="false" [pageTitle]="'Consent Form'"></app-header>
+<!-- Translate -->
+<app-header
+  [showMenuButton]="false"
+  [pageTitle]="'Consent Form'"
+></app-header>
 <ion-content [fullscreen]="true">
-
   <!-- Audio Element, Hidden Controls -->
   <audio #audioPlayer [src]="audioUrl" hidden>
     <!-- <source [src]="audioUrl" type="audio/mpeg"> MP3 format -->
@@ -19,13 +22,12 @@
       class="slide"
       [ngClass]="{ 'second-slide': i === 1 }"
     >
-      <!-- <p>{{ slide?.pageTitle }} + ''ppppp''</p> -->
       <!-- Translate -->
       <ion-label class="page-label">
         {{ "Page " + (i + 1) + " of " + pages.length }}
       </ion-label>
 
-      <div class="section-wrapper">
+      <div class="section-wrapper" [formGroup]="consentFormGroup">
         <div *ngFor="let section of slide?.pageContent" class="section">
           <!-- text area type -->
           <div *ngIf="section?.type === 'text_area'" class="text-area-section">
@@ -53,7 +55,10 @@
               lines="none"
               class="checkbox-item"
             >
-              <ion-checkbox slot="start"></ion-checkbox>
+              <ion-checkbox
+                slot="start"
+                [formControlName]="section?.key"
+              ></ion-checkbox>
               <ion-label class="checkbox-label">
                 {{ section?.question }}
                 <span *ngIf="section?.questionAudio">
@@ -66,7 +71,6 @@
                 </span>
               </ion-label>
             </ion-item>
-
 
             <!-- Select -->
             <!-- <div *ngIf="section?.questionType === 'select'" class="select-item">
