@@ -3,7 +3,6 @@ app-consent-forms {
     --background: var(--ikan_skyblue_100);
     --padding-bottom: 30px;
     --padding-top: 30px;
-    // font-family: 'interRegular';
 
     .page-label {
       margin-bottom: 20px;
@@ -31,11 +30,13 @@ app-consent-forms {
       .textarea {
         --background: var(--ikan_skyblue_100);
         margin-bottom: 20px;
+        font-size: 1rem;
         h2 {
           margin: 0 0 20px 0;
         }
         p {
           margin: 0 0 10px 0 !important;
+          font-size: 1rem !important;
           i {
             font-size: 0.8rem;
             color: var(--ion-color-primary);

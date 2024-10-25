@@ -1,4 +1,4 @@
-import { Component, ElementRef, OnInit, Renderer2, ViewChild } from '@angular/core';
+import { Component, ElementRef, HostListener, OnInit, ViewChild } from '@angular/core';
 import { ContentService } from '../shared/services/content/content.service';
 import { register } from 'swiper/element/bundle';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
@@ -31,8 +31,6 @@ export class ConsentFormsComponent  implements OnInit {
     public contentService: ContentService,
     public analyticsService: AnalyticsService,
     public sharedMethods: SharedmethodsService,
-    // private el: ElementRef,
-    // private renderer: Renderer2,
     public router: Router,
     public surveyDataService: SurveyDataService,
   ) { }
@@ -41,7 +39,6 @@ export class ConsentFormsComponent  implements OnInit {
     this.analyticsService.trackEvent(pageEventNames.viewConsentForm, this.sharedMethods.analyticsEventParams);
     this.commonText = this.contentService?.commonText;
     const pageOne = this.contentService.getContentByPropertyName('worker-consent-form-one');
-    // this.linkPrivacyPolicy(pageOne);
     this.pages.push(pageOne);
     const pageTwo = this.contentService.getContentByPropertyName('worker-consent-form-two');
     this.pages.push(pageTwo);
@@ -49,26 +46,22 @@ export class ConsentFormsComponent  implements OnInit {
     this.setupForm();
   }
 
-  // ngAfterViewInit() {
-  //   const hostElement = this.el.nativeElement.querySelector('.textarea');
-  //   hostElement.querySelectorAll('a[href^="/about/privacy-policy"]').forEach((link: HTMLAnchorElement) => {
-  //     this.renderer.listen(link, 'click', (event) => {
-  //       event.preventDefault();
-  //       console.log('link----', link);
-  //       this.router.navigateByUrl(link.getAttribute('href'));
-  //     });
-  //   });
-  // }
+  /**
+   * Since we are using innerHTML to render content
+   * and angular routerLink doesn't work with innerHTML
+   * we need to manually handle the click event on anchor tags
+   * and navigate to the correct route within the app
+  */
+  @HostListener('document:click', ['$event'])
+  handleClick(event: MouseEvent) {
+    const target = event.target as HTMLElement;
 
-  // linkPrivacyPolicy(pageOne) {
-  //   pageOne?.pageContent?.forEach((item) => {
-  //     item?.description?.forEach((desc) => {
-  //       if (desc?.paragraph) {
-  //         // desc.paragraph = desc.paragraph.replace('href=\"/about/privacy-policy\"', 'routerLink=\"/about/privacy-policy\"');
-  //       }
-  //     });
-  //   });
-  // }
+    if (target.tagName === 'A' && target.getAttribute('href')?.startsWith('/')) {
+      event.preventDefault();
+      const path = target.getAttribute('href');
+      this.router.navigateByUrl(path);
+    }
+  }
 
   setupForm() {
     const group = {};
