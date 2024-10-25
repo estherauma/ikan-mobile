@@ -37,6 +37,7 @@ export class SurveyComponent extends BaseformPage  implements OnInit {
   async ngOnInit() {
     this.commonText = this.contentService?.commonText;
     this.disclaimerText = `${this.commonText?.disclaimerMessage || ''} ${this.commonText?.disclaimerContactMessage || ''}`;
+    await this.contentService.replaceVesselPlaceholderText();
     const pageData = this.contentService.getContentByPropertyName('survey');
     this.pageTitle  = pageData?.pageTitle;
     await this.getSurveySource();

@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Content, StorageKeys } from '../../types/api-types';
+import { Content, StorageKeys, UserRole } from '../../types/api-types';
 import { ApiService } from '../api/api.service';
 import { SharedmethodsService } from '../sharedmethods/sharedmethods.service';
 import { Preferences } from '@capacitor/preferences';
@@ -7,6 +7,8 @@ import { HttpResponse } from '@angular/common/http';
 import { Subject, Subscription } from 'rxjs';
 import { AuthService } from '../auth/auth.service';
 import { GetContractsResponse } from '../sync/types';
+import { ContractDataService } from 'src/app/contracts/data/contract-data.service';
+import { VesselsDataService } from 'src/app/vessels/data/vessels-data.service';
 
 @Injectable({
   providedIn: 'root',
@@ -23,7 +25,9 @@ export class ContentService {
   constructor(
     public apiService: ApiService,
     public sharedMethods: SharedmethodsService,
-    public authService: AuthService
+    public authService: AuthService,
+    public contractDataService: ContractDataService,
+    public vesselDataService: VesselsDataService,
   ) {
     this.setUpAppData();
     this.watchContentSubscription = this.watchContent().subscribe(async(res) => {
@@ -94,6 +98,49 @@ export class ContentService {
         }
       });
     }
+  }
+
+  async replaceVesselPlaceholderText() {
+    if (this.authService.userRole === UserRole.worker) {
+      const userVessel = await this.getWorkerVessel();
+      if (userVessel && userVessel?.name) {
+        Object.entries(this.appContent).forEach(([lang, data]) => {
+          const vesselDoc = data['1.9'];
+          if (vesselDoc) {
+            const vesselQtn = vesselDoc?.pageContent?.find(
+              (item) => item?.type === 'questions' && item.key === 'is_this_the_vessel_you_are_working_on_the_one_you_were_assigned_to'
+            );
+        
+            if (vesselQtn) {
+              vesselQtn.question = vesselQtn.question.replace('[vessel_name_from_system]', userVessel?.name.toUpperCase());
+            }
+          }
+        });
+      }
+    }
+  }
+
+  async getWorkerVessel() {
+    const userContracts = await this.sharedMethods.readDataFromStorage(StorageKeys.currentUserOnlineContractsAppRefs);
+    if (userContracts?.length) {
+      // TODO: change method when user has multiple contracts
+      const contract = this.contractDataService.contracts.find((contract) => contract.appRef === userContracts[0]);
+      if (contract && contract?.id) {
+        const clause = await this.contractDataService.retrieveClauseByFieldByContractId('kind', 'contract-clauses-parties-requirement-fishers', contract.id);
+        if (clause) {
+          const clauseData = JSON.parse(clause.content);
+          if (clauseData?.vessel) {
+            const vesselRef = clauseData.vessel;
+            const vessels = this.vesselDataService.vessels;
+            if (vessels.length) {
+              const vessel = vessels.find((v) => v.appRef === vesselRef);
+              return vessel;
+            }
+          }
+        }
+      }
+    }
+    return null;
   }
 
   async updateCurrentLanguage() {
@@ -213,7 +260,7 @@ export class ContentService {
     const contentDocs = allDocs?.filter((doc) => ((doc?.type === 'create_content_area' && (!isNaN(parseFloat(doc?.pageName)) || doc?.pageName.includes('ikan-feedback')))));
 
     let result = {};
-    contentDocs?.forEach((item) => {
+    contentDocs?.forEach(async(item) => {
       const qtns = item?.pageContent?.filter(x => x?.type === 'questions');
       if (qtns?.length) {
         result[item?.pageName] = qtns;

@@ -82,6 +82,11 @@
         margin: 10px;
         font-weight: bold;
         span {
+          .vessel-name {
+            color: var(--ikan_darkblue_90) !important;
+          }
+        }
+        .q {
           margin-right: 5px;
         }
       }
