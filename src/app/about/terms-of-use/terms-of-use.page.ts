@@ -10,7 +10,7 @@ import { SharedmethodsService } from 'src/app/shared/services/sharedmethods/shar
   styleUrls: ['./terms-of-use.page.scss'],
 })
 export class TermsOfUsePage implements OnInit {
-  pageContent = '';
+  pageContent: any;
   pageTitle: any;
 
   constructor(
@@ -27,14 +27,7 @@ export class TermsOfUsePage implements OnInit {
   pageSetup() {
     const content = this.contentService.getContentByPropertyName('terms-of-use');
     this.pageTitle = content?.pageTitle;
-    const pageContent = content?.pageContent[0];
-    pageContent['description'].forEach((element) => {
-      if (element?.paragraph !== undefined || element?.paragraph !== null) {
-        this.pageContent += element?.paragraph;
-        this.pageContent += '<br/>';
-      }
-     
-    });
+    this.pageContent = content?.pageContent;
   }
 
 }
