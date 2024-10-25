@@ -3,6 +3,7 @@ import { AnalyticsService } from 'src/app/shared/services/analytics/analytics.se
 import { pageEventNames } from 'src/app/shared/services/analytics/event-names';
 import { ContentService } from 'src/app/shared/services/content/content.service';
 import { SharedmethodsService } from 'src/app/shared/services/sharedmethods/sharedmethods.service';
+import { StorageKeys } from 'src/app/shared/types/api-types';
 
 
 @Component({
@@ -11,8 +12,10 @@ import { SharedmethodsService } from 'src/app/shared/services/sharedmethods/shar
   styleUrls: ['./privacy-policy.page.scss'],
 })
 export class PrivacyPolicyPage implements OnInit {
-  pageContent: any = '';
+  
+  pageContent: any;
   pageTitle: any;
+  showMenuButton = true;
 
   constructor(
     public contentService: ContentService,
@@ -20,23 +23,19 @@ export class PrivacyPolicyPage implements OnInit {
     public analytics: AnalyticsService
   ) { }
 
-  ngOnInit() {
-    this.pageSetup();
+  async ngOnInit() {
+    await this.pageSetup();
     this.analytics.trackEvent(pageEventNames.privacyPolicy, this.sharedMethods.analyticsEventParams);
   }
 
-  pageSetup() {
+  async pageSetup() {
+    const completedConsentForm = await this.sharedMethods.readDataFromStorage(StorageKeys.completedConsentForms);
+    if (!completedConsentForm) {
+      this.showMenuButton = false;
+    }
     const content = this.contentService.getContentByPropertyName('app-privacy-policy');
     this.pageTitle = content?.pageTitle;
-    const pageContent = content?.pageContent[0];
-    pageContent['description'].forEach((element) => {
-      if (element?.paragraph !== undefined) {
-        this.pageContent += '<br/>';
-        this.pageContent += element?.paragraph;
-      }
-     
-    });
-    
+    this.pageContent = content?.pageContent;
   }
 
 }
