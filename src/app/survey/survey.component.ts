@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit, OnDestroy } from '@angular/core';
 import { ContentService } from '../shared/services/content/content.service';
 import { BaseformPage } from '../shared/components/baseform/baseform.page';
 import { FormControl, FormGroup } from '@angular/forms';
@@ -14,7 +14,7 @@ import { SurveyDataService } from './data/survey-data.service';
   templateUrl: './survey.component.html',
   styleUrls: ['./survey.component.scss'],
 })
-export class SurveyComponent extends BaseformPage  implements OnInit {
+export class SurveyComponent extends BaseformPage  implements OnInit, OnDestroy {
   attemptedFollowUpQtnKeys = {};
   surveySource = '';
   surveyTopic: string = '';
@@ -89,6 +89,12 @@ export class SurveyComponent extends BaseformPage  implements OnInit {
     });
   }
 
+  async ngOnDestroy() {
+    if (this.surveySource === SurveySources.notification) {
+      await this.removeCategoryFromSavedOptions();
+    }
+  }
+
   async getSurveySource() {
     return this.activatedRoute.queryParams.subscribe((queryParams: Params) => {
       if (queryParams && Object.keys(queryParams).length > 0) {
@@ -155,9 +161,12 @@ export class SurveyComponent extends BaseformPage  implements OnInit {
       await this.surveysDataService.retriveSurveys();
     }
 
-    if (this.surveySource === SurveySources.notification) {
-      await this.removeCategoryFromSavedOptions();
-    }
+    // Temporarily disabled so that category is removed from saved options
+    // even if user does not complete survey.
+    // Added to ngDestroy
+    // if (this.surveySource === SurveySources.notification) {
+    //   await this.removeCategoryFromSavedOptions();
+    // }
 
     this.sharedMethods?.hideLoader();
     this.router.navigate([this.authService.getCurrentUserBaseUrlFromRole(user?.role)]);
