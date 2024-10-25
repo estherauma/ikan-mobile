@@ -8,6 +8,7 @@ import { TermsOfUsePageRoutingModule } from './terms-of-use-routing.module';
 
 import { TermsOfUsePage } from './terms-of-use.page';
 import { SharedModule } from 'src/app/shared/shared.modules';
+import { SharedComponentsModule } from '@fiftyeight/shared-components';
 
 @NgModule({
   imports: [
@@ -15,7 +16,8 @@ import { SharedModule } from 'src/app/shared/shared.modules';
     FormsModule,
     IonicModule,
     TermsOfUsePageRoutingModule,
-    SharedModule
+    SharedModule,
+    SharedComponentsModule,
   ],
   declarations: [TermsOfUsePage]
 })
