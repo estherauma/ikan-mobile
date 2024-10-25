@@ -1,14 +1,10 @@
-<!-- Translate -->
 <app-header
   [showMenuButton]="false"
-  [pageTitle]="'Consent Form'"
+  [pageTitle]="commonText?.consentForm"
 ></app-header>
 <ion-content [fullscreen]="true">
-  <!-- Audio Element, Hidden Controls -->
+  
   <audio #audioPlayer [src]="audioUrl" hidden>
-    <!-- <source [src]="audioUrl" type="audio/mpeg"> MP3 format -->
-    <!-- <source [src]="audioUrl" type="audio/ogg"> OGG format -->
-    <!-- Your browser does not support the audio element. -->
   </audio>
 
   <swiper-container
@@ -22,9 +18,8 @@
       class="slide"
       [ngClass]="{ 'second-slide': i === 1 }"
     >
-      <!-- Translate -->
       <ion-label class="page-label">
-        {{ "Page " + (i + 1) + " of " + pages.length }}
+        {{ commonText?.page + " " + (i + 1) + " " + commonText?.of + " " + pages.length }}
       </ion-label>
 
       <div class="section-wrapper" [formGroup]="consentFormGroup">
@@ -129,16 +124,14 @@
             shape="round"
             (click)="goToPrevSlide()"
           >
-            <!-- Translate -->
-            {{ "Previous" }}
+            {{ commonText?.previous }}
           </ion-button>
           <ion-button
             class="next-btn swiper-button-next"
             shape="round"
             (click)="i === pages.length - 1 ? submitForm() : goToNextSlide()"
           >
-            <!-- Translate -->
-            {{ i === pages.length - 1 ? "Submit" : "Next" }}
+            {{ i === pages.length - 1 ? commonText?.submit : commonText?.next }}
           </ion-button>
         </div>
       </div>
