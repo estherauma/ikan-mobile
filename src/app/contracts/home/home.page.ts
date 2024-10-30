@@ -36,7 +36,7 @@ export class HomePage implements OnInit {
 
   ) {
     this.contractsDataService.getAll().subscribe(async(allContracts) => {
-      const contracts = await this.getContractsByRole(allContracts);
+      const contracts = await this.getUserContracts(allContracts);
       this.contracts = this.unfilteredData = contracts;
       this.pageTitle = this.commonText?.contracts;
     });
@@ -48,15 +48,9 @@ export class HomePage implements OnInit {
     this.groupedFilterOptions = this.getGroupedFilterOptions();
   }
 
-  async getContractsByRole(allContracts: any[]) {
-    const user: UserData = await this.sharedMethods.getUserData();
-    if (user?.role === UserRole.vesselOwner) {
-      return allContracts.filter(contract => contract?.createdBy === user.id);
-    } else if (user?.role === UserRole.worker) {
-      const onlineContracts = await this.sharedMethods.readDataFromStorage(StorageKeys.currentUserOnlineContractsAppRefs);
-      return allContracts.filter(contract => onlineContracts?.includes(contract.appRef));
-    }
-    return [];
+  async getUserContracts(allContracts: any[]) {
+    const onlineContracts = await this.sharedMethods.readDataFromStorage(StorageKeys.currentUserOnlineContractsAppRefs);
+    return allContracts.filter(contract => onlineContracts?.includes(contract.appRef));
   }
   
   // TODO: add filter by vessel
