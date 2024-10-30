@@ -208,10 +208,12 @@ export class AppComponent implements OnInit, OnDestroy {
   }
 
   async syncData() {
+    await this.sharedMethods.showWaitLoader(this.commonText?.syncingData || 'Syncing data...');
     const user: UserData = await this.sharedMethods.readDataFromStorage(StorageKeys.userData);
     if (user) {
      await this.syncService.syncData();
     }
+    await this.sharedMethods.dismissLoader();
   }
 
   async setupDB() {

@@ -105,7 +105,10 @@ export class LoginPage extends BaseformPage implements OnInit {
           this.localNotifications.scheduleNotifications(this.contentService.commonText);
 
           // sync data
+          await this.sharedMethods.showWaitLoader(this.commonText?.syncingData || 'Syncing data...');
           await this.syncService.syncData();
+          await this.sharedMethods.dismissLoader();
+          
           // enable menu
           this.menuCtrl.enable(true);
           if (this.testEmails.includes(res.data.userData?.email)) {
