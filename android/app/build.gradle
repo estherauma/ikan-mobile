@@ -9,7 +9,7 @@ android {
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 1009
-        versionName "1.0.9-08"
+        versionName "1.0.9-09"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         aaptOptions {
              // Files and dirs to omit from the packaged assets dir, modified to accommodate modern web apps.
@@ -35,7 +35,7 @@ android {
           resValue "string", "title_activity_main", "IKAN(Dev)"
           namespace "com.fiftyeight.tuna.dev"
           firebaseAppDistribution {
-            releaseNotes="Update circleci image"
+            releaseNotes="Fix undefined values in old contracts & Fix contract syncing on fresh installs"
             groups="scrum,staging-testers"
             serviceCredentialsFile=file("google-services-credentials.json")
           }
