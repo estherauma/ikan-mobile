@@ -22,6 +22,7 @@ export class SharedmethodsService {
   isAndroid = false;
   public analyticsEventParams: analyticsEventsData;
   currentPlatform: string = '';
+  loader: any;
 
   constructor(
     public loadingCtrl: LoadingController,
@@ -36,6 +37,18 @@ export class SharedmethodsService {
     }
     this.currentPlatform = this.getCurrentPlatform();
     this.setAnalyticsEventParams();
+  }
+
+  async showWaitLoader(message: string = 'Please wait') {
+    this.loader = await this.loadingCtrl.create({
+      message,
+      spinner: 'bubbles',
+    });
+    await this.loader.present();
+  }
+
+  async dismissLoader() {
+    this.loader.dismiss();
   }
 
   async showLoader(message: string, duration = 5000) {
