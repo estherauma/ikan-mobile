@@ -81,25 +81,25 @@ export class SyncService {
       return;
     }
 
-    this.apiService.setApiRequestHeaders();
-    this.syncUsersData();
-    this.syncCompanies();
-    this.syncVessels();
-    this.syncContracts();
-    this.syncSurveyResponses();
-    this.syncInlineQuestions();
-    this.syncMyDocuments();
-    this.syncPassports();
-    this.fetchCompanies();
-    this.fetchVessels();
-    this.fetchContracts(); // clauses are fetched after contracts have been fetched in the fetchContracts method
-    this.fetchMyDocuments();
-    this.fetchPassports();
-    this.fetchInlineQuestions();
+    await this.apiService.setApiRequestHeaders();
+    await this.syncUsersData();
+    await this.syncCompanies();
+    await this.syncVessels();
+    await this.syncContracts();
+    await this.syncSurveyResponses();
+    await this.syncInlineQuestions();
+    await this.syncMyDocuments();
+    await this.syncPassports();
+    await this.fetchCompanies();
+    await this.fetchVessels();
+    await this.fetchContracts(); // clauses are fetched after contracts have been fetched in the fetchContracts method
+    await this.fetchMyDocuments();
+    await this.fetchPassports();
+    await this.fetchInlineQuestions();
   }
 
-  syncCompanies() {
-    this.companyServ.getAll().subscribe((data) => {
+  async syncCompanies() {
+    return this.companyServ.getAll().subscribe((data) => {
       let companies = data;
       if (companies.length > 0) {
         companies.forEach((company) => {
@@ -119,8 +119,8 @@ export class SyncService {
     })
   }
 
-  fetchCompanies() {
-    this.apiService.get('companies').subscribe((response: GetCompaniesResponse) => {
+  async fetchCompanies() {
+    return this.apiService.get('companies').subscribe((response: GetCompaniesResponse) => {
       if (response.status === 200 && response.body.data.length > 0) {
         response.body.data.forEach((company) => {
           // if the company doesn't exist in the local db, add it
@@ -136,8 +136,8 @@ export class SyncService {
     });
   }
 
-  syncVessels() {
-    this.vesselServ.getAll().subscribe((data) => {
+  async syncVessels() {
+    return this.vesselServ.getAll().subscribe((data) => {
       let vessels = data;
       if (vessels.length > 0) {
         vessels.forEach((vessel) => {
@@ -191,8 +191,8 @@ export class SyncService {
     }
   }
 
-  fetchVessels() {
-    this.apiService.get('vessels').subscribe((response: GetVesselsResponse) => {
+  async fetchVessels() {
+    return this.apiService.get('vessels').subscribe((response: GetVesselsResponse) => {
       if (response.status === 200 && response.body.data.length > 0) {
         forkJoin(response.body.data.map(async(vessel) => {
           this.dbService.checkIfEntryExists('vessels', vessel.appRef)
@@ -238,8 +238,8 @@ export class SyncService {
     });
   }
 
-  syncContracts() {
-    this.contractServ.getAll().subscribe((data) => {
+  async syncContracts() {
+    return this.contractServ.getAll().subscribe((data) => {
       let contracts  = data;
       if (contracts.length > 0) {
         contracts.forEach((contract) => {
@@ -451,7 +451,7 @@ export class SyncService {
   }
 
   async syncSurveyResponses() {
-    this.surveyDataService.getAll().subscribe((surveys) => {
+    return this.surveyDataService.getAll().subscribe((surveys) => {
       if (surveys?.length) {
         surveys.forEach((survey) => {
           // Survey responses are saved to the db then synced to the api
@@ -475,7 +475,7 @@ export class SyncService {
   }
 
   async syncInlineQuestions() {
-    this.surveyDataService.getAllInlineQuestions().subscribe((questions) => {
+    return this.surveyDataService.getAllInlineQuestions().subscribe((questions) => {
       if (questions?.length) {
         questions.forEach((question) => {
           const questionId = question.id;
@@ -806,7 +806,7 @@ export class SyncService {
   }
 
   async syncMyDocuments() {
-    this.documentsDataService.retrieveAllObservable().subscribe((documents) => {
+    return this.documentsDataService.retrieveAllObservable().subscribe((documents) => {
       if (documents?.length) {
         documents.forEach(async(document) => {
           if (document.isDeleted && !document.onlineRef) {
@@ -891,7 +891,7 @@ export class SyncService {
   }
 
   async syncPassports(){
-    this.documentsDataService.retrievePassports(true).then((passports) => {
+    await this.documentsDataService.retrievePassports(true).then((passports) => {
       if (passports.length > 0) {
         passports.forEach(async(passport) => {
           const dataToSave = Object.assign({}, passport);
