@@ -133,6 +133,17 @@ export class ViewclausePage implements OnInit {
 
   async orderClauseOneData(data) {
     let response = {};
+
+    // TODO: remove after all old records are synced
+    // This is a fix for old records that have different keys for rep details
+    data = {
+      ...data,
+      representative: data?.representative ?? data?.respresentative,
+      repAddress: data?.repAddress ?? data?.address,
+      repTelephone: data?.repTelephone ?? data?.tel,
+    }
+    // End of fix
+
     for (const [key, value] of Object.entries(data)) {
       const formattedValue  = this.formatClauseValues(key, value);
       response[key] = formattedValue;
@@ -140,6 +151,29 @@ export class ViewclausePage implements OnInit {
     // clause one has two entries, so we need to add the second entry
     if  (this.clauseDetails?.partyB !== undefined || this.clauseDetails?.partyB !== null) {
       let partyBClauseDetails = await this.contractDataService.retrieveClauseDetails(this.clauseDetails?.partyB);
+
+      // TODO: remove after all old records are synced/updated
+      // This is a fix for old records that have different keys for crew details
+      let crewContent = await JSON.parse(partyBClauseDetails.content);
+      if (crewContent && Object.keys(crewContent).length) {
+        crewContent = {
+          ...crewContent,
+          crewAddress: crewContent?.crewAddress ?? crewContent?.address,
+          crewTelephone: crewContent?.crewTelephone ?? crewContent?.telephone,
+        }
+        partyBClauseDetails.content = JSON.stringify(crewContent);
+      }
+      let crewData = await JSON.parse(partyBClauseDetails.data);
+      if (crewData && Object.keys(crewData).length) {
+        crewData = {
+          ...crewData,
+          crewAddress: crewData?.crewAddress ?? crewData?.address,
+          crewTelephone: crewData?.crewTelephone ?? crewData?.telephone,
+        }
+        partyBClauseDetails.data = JSON.stringify(crewData);
+      }
+      // End of fix
+      
       let partyBDetails = partyBClauseDetails ? JSON.parse(partyBClauseDetails?.content) : {};
       for (const [key, value] of Object.entries(partyBDetails)) {
         const formattedValue  = this.formatClauseValues(key, value);
