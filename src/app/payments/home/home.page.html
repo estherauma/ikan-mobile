@@ -2,57 +2,69 @@
 
 <ion-content class="content-skyblue-bg">
   <ion-grid>
-    <ion-row class="title-row">
-      <ion-col size="12">
-        <ion-img src="/assets/icon/payments.svg" class="icon"></ion-img>
-      </ion-col>
-      <ion-col size="12">
-        <app-title class="payments-page" [title]="commonText?.payments" [isBlue]="true"></app-title>
-      </ion-col>
-    </ion-row>
+    <div class="title-search-filter">
+      <!-- Create functionality disabled for now -->
+      <!-- <ion-row class="ion-justify-content-end">
+        <app-button
+          iconName="add-outline"
+          [title]="commonText?.new"
+        ></app-button>
+      </ion-row> -->
+
+      <ion-row class="title-row">
+        <ion-col size="12">
+          <ion-img src="/assets/icon/payments.svg" class="icon"></ion-img>
+        </ion-col>
+        <ion-col size="12">
+          <app-title
+            class="payments-page"
+            [title]="commonText?.payments"
+            [isBlue]="true"
+          ></app-title>
+        </ion-col>
+      </ion-row>
+
+      <!-- TODO: change search/filter datasets according to role -->
+      <ion-row class="search-row">
+        <ion-col size="12">
+          <app-search
+            [searchDataSet]="filterDataSet"
+            (searchResult)="searchResult($event)"
+          ></app-search>
+        </ion-col>
+      </ion-row>
+
+      <ion-row class="filter-row">
+        <ion-col size="12" size-sm="6">
+          <app-filter
+            filterProperty="status"
+            [options]="filterOptions"
+            [filterDataSet]="filterDataSet"
+            (filterResult)="filterResult($event)"
+            [filterLabel]="commonText?.filterByStatus"
+          ></app-filter>
+        </ion-col>
+        <ion-col size="12" size-sm="6">
+          <app-filter
+            filterProperty="status"
+            [options]="filterOptions"
+            [filterDataSet]="filterDataSet"
+            (filterResult)="filterResult($event)"
+            [filterLabel]="commonText?.filterByStatus"
+          ></app-filter>
+        </ion-col>
+      </ion-row>
+    </div>
+
+    <!-- Vessel Owner View -->
+    <div class="vo-view"></div>
+
+    <!-- Worker/ Fisher -->
+    <div class="worker-view"></div>
   </ion-grid>
 
   <!-- <app-contentwrapper> -->
-  <div>
-    <div class="ion-padding-horizontal ion-padding-bottom"></div>
-    <app-search
-      [searchDataSet]="filterDataSet"
-      (searchResult)="searchResult($event)"
-    ></app-search>
-  </div>
-  <ion-grid>
-    <ion-row>
-      <ion-col size="12"
-        ><ion-text class="filter">{{ commonText?.filter }}</ion-text></ion-col
-      >
-      <ion-col size="12">
-        <ion-grid>
-          <ion-row>
-            <ion-col>
-              <app-filter
-                filterProperty="status"
-                [options]="filterOptions"
-                [filterDataSet]="filterDataSet"
-                (filterResult)="filterResult($event)"
-                [filterLabel]="commonText?.filterByStatus"
-              ></app-filter>
-            </ion-col>
-            <ion-col>
-              <app-filter
-                filterProperty="status"
-                [options]="filterOptions"
-                [filterDataSet]="filterDataSet"
-                (filterResult)="filterResult($event)"
-                [filterLabel]="commonText?.filterByStatus"
-              ></app-filter>
-            </ion-col>
-          </ion-row>
-        </ion-grid>
-      </ion-col>
-    </ion-row>
-  </ion-grid>
 
-  <!-- Vessel Owner View -->
   <app-maincard
     cardTitleSize="small"
     (click)="viewDetails(org)"
