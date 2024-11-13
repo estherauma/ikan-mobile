@@ -2,6 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { ContentService } from 'src/app/shared/services/content/content.service';
 import { VesselsDataService } from 'src/app/vessels/data/vessels-data.service';
+import { PaymentsDataService } from '../data/payments-data.service';
+import { StorageKeys, UserData } from 'src/app/shared/types/api-types';
+import { SharedmethodsService } from 'src/app/shared/services/sharedmethods/sharedmethods.service';
 
 @Component({
   selector: 'app-home',
@@ -60,6 +63,8 @@ export class HomePage implements OnInit {
   ];
   unFilteredData = [];
   vessels = [];
+  currentUser: UserData;
+  userPayments = [];
 
   // remove after fixing filtering
   // TODO: fix filtering
@@ -68,13 +73,20 @@ export class HomePage implements OnInit {
     public router: Router,
     public contentService: ContentService,
     public vesselsDataService: VesselsDataService,
+    public paymentsDataService: PaymentsDataService,
+    public sharedMethods: SharedmethodsService,
   ) {
     this.vesselsDataService.getAll().subscribe((data) => {
       this.vessels = this.unFilteredData = data;
     });
+    this.paymentsDataService.getAll().subscribe(async(data) => {
+      const user: UserData = await this.sharedMethods.readDataFromStorage(StorageKeys.userData);
+      this.userPayments = data.filter(payment => payment.WorkerId === user.id); 
+    });
   }
 
   async ngOnInit() {
+    this.currentUser = await this.sharedMethods.readDataFromStorage(StorageKeys.userData);
     this.commonText = await this.contentService?.commonText;
     this.pageTitle = this.commonText?.payments;
     this.filterOptions = [
@@ -105,5 +117,9 @@ export class HomePage implements OnInit {
 
   goToVesselPayments(vessel) {
     console.log('vessel', vessel);
+  }
+
+  goToPaymentDetail(payment) {
+    console.log('payment', payment);
   }
 }

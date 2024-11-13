@@ -57,7 +57,7 @@
     </div>
 
     <!-- Vessel Owner View -->
-    <div class="vo-view">
+    <div *ngIf="currentUser?.role==='vessel_owner'" class="vo-view">
       <ion-row
         *ngFor="let vessel of vessels"
         class="vessel-row"
@@ -78,22 +78,64 @@
       </ion-row>
     </div>
 
-    <!-- Worker/ Fisher -->
-    <div class="worker-view"></div>
+    <!-- Worker/Fisher View -->
+    <div *ngIf="currentUser?.role==='worker'" class="worker-view">
+      <ion-row class="sub-title-row">
+        <ion-col size="12">
+          <p class="sub-title">
+            {{ commonText?.paymentHistory }}
+            <span *ngIf="userPayments?.length">
+              ({{ userPayments?.length + ' ' + commonText?.payments }})
+            </span>
+          </p>
+        </ion-col>
+        <!-- No existing payments -->
+        <ion-col *ngIf="!userPayments?.length" size="12">
+          <p class="no-payments">
+            {{ commonText?.noPayments || 'No payments made yet.' }}
+          </p>
+        </ion-col>
+      </ion-row>
+
+      <ion-row
+        *ngFor="let payment of userPayments"
+        class="payment-row"
+        (click)="goToPaymentDetail(payment)"
+      >
+        <!-- TODO: style according to status -->
+        <ion-col size="12" class="status-col">
+          <ion-text class="status">
+            {{payment?.status || 'Confirmed'}}</ion-text
+          >
+        </ion-col>
+        <ion-col size="2" class="icon-col">
+          <div class="icon-wrapper">
+            <ion-img
+              class="icon"
+              src="assets/icon/single_payment_blue.svg"
+            ></ion-img>
+          </div>
+        </ion-col>
+
+        <ion-col size="10" class="details-col">
+          <p class="amount">
+            <span>{{ payment?.currency || '$' }}</span>
+            {{ payment?.amount || '999'}}
+          </p>
+          <p>
+            {{ commonText?.paymentMade || 'Payment Made' }}:
+            <span>
+              {{ payment?.dateCreated || '10/10/2020' | date: 'dd/MM/yyyy'}}
+            </span>
+          </p>
+          <p>
+            {{ commonText?.paymentConfirmed || 'Payment Confirmed' }}:
+            <span>
+              {{ payment?.dateConfirmed || '10/10/2020' | date: 'dd/MM/yyyy'}}
+            </span>
+          </p>
+        </ion-col>
+      </ion-row>
+    </div>
   </ion-grid>
-
-  <!-- <app-contentwrapper> -->
-  <!-- <app-maincard
-    cardTitleSize="small"
-    (click)="viewDetails(org)"
-    *ngFor="let org of organizations"
-    imagePosition="left"
-    imageUrl="/assets/icon/image_placeholder.svg"
-    imageShape="rounded"
-    [title]="org.name"
-    [text]="vesselCompanyText"
-  ></app-maincard> -->
-
-  <!-- Worker/ Fisher -->
-  <!-- </app-contentwrapper> -->
 </ion-content>
