@@ -25,26 +25,18 @@
       </ion-row>
 
       <!-- TODO: change search/filter datasets according to role -->
-      <ion-row class="search-row">
+       <!-- Search functionality disabled for now -->
+      <!-- <ion-row class="search-row">
         <ion-col size="12">
           <app-search
             [searchDataSet]="filterDataSet"
             (searchResult)="searchResult($event)"
           ></app-search>
         </ion-col>
-      </ion-row>
+      </ion-row> -->
 
       <ion-row class="filter-row">
-        <ion-col size="12" size-sm="6">
-          <app-filter
-            filterProperty="status"
-            [options]="filterOptions"
-            [filterDataSet]="filterDataSet"
-            (filterResult)="filterResult($event)"
-            [filterLabel]="commonText?.filterByStatus"
-          ></app-filter>
-        </ion-col>
-        <ion-col size="12" size-sm="6">
+        <ion-col size="12">
           <app-filter
             filterProperty="status"
             [options]="filterOptions"
