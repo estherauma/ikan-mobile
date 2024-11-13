@@ -13,7 +13,7 @@
 
       <ion-row class="title-row">
         <ion-col size="12">
-          <ion-img src="/assets/icon/payments.svg" class="icon"></ion-img>
+          <ion-img src="assets/icon/payments.svg" class="icon"></ion-img>
         </ion-col>
         <ion-col size="12">
           <app-title
@@ -57,15 +57,33 @@
     </div>
 
     <!-- Vessel Owner View -->
-    <div class="vo-view"></div>
+    <div class="vo-view">
+      <ion-row
+        *ngFor="let vessel of vessels"
+        class="vessel-row"
+        (click)="goToVesselPayments(vessel)"
+      >
+        <ion-col size="3" class="icon-col">
+          <div class="icon-wrapper">
+            <ion-img
+              class="icon"
+              src="assets/icon/boat_with_blue_bg.svg"
+            ></ion-img>
+          </div>
+        </ion-col>
+
+        <ion-col size="9" class="name-col">
+          <ion-card-title class="name"> {{vessel?.name}}</ion-card-title>
+        </ion-col>
+      </ion-row>
+    </div>
 
     <!-- Worker/ Fisher -->
     <div class="worker-view"></div>
   </ion-grid>
 
   <!-- <app-contentwrapper> -->
-
-  <app-maincard
+  <!-- <app-maincard
     cardTitleSize="small"
     (click)="viewDetails(org)"
     *ngFor="let org of organizations"
@@ -74,7 +92,7 @@
     imageShape="rounded"
     [title]="org.name"
     [text]="vesselCompanyText"
-  ></app-maincard>
+  ></app-maincard> -->
 
   <!-- Worker/ Fisher -->
   <!-- </app-contentwrapper> -->

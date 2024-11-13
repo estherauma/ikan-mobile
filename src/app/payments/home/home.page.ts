@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { ContentService } from 'src/app/shared/services/content/content.service';
+import { VesselsDataService } from 'src/app/vessels/data/vessels-data.service';
 
 @Component({
   selector: 'app-home',
@@ -57,16 +58,24 @@ export class HomePage implements OnInit {
     {title:'closed', value:'closed'},
     {title:'opened', value:'opened'}
   ];
+  unFilteredData = [];
+  vessels = [];
 
+  // remove after fixing filtering
   // TODO: fix filtering
 
   constructor(
     public router: Router,
     public contentService: ContentService,
-  ) { }
+    public vesselsDataService: VesselsDataService,
+  ) {
+    this.vesselsDataService.getAll().subscribe((data) => {
+      this.vessels = this.unFilteredData = data;
+    });
+  }
 
-  ngOnInit() {
-    this.commonText = this.contentService?.commonText;
+  async ngOnInit() {
+    this.commonText = await this.contentService?.commonText;
     this.pageTitle = this.commonText?.payments;
     this.filterOptions = [
       {title: this.commonText?.closed, value: 'closed'},
@@ -94,4 +103,7 @@ export class HomePage implements OnInit {
     this.router.navigate(['payments/view/company', organization], { queryParams });
   }
 
+  goToVesselPayments(vessel) {
+    console.log('vessel', vessel);
+  }
 }

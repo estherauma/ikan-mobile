@@ -5,21 +5,61 @@ ion-content {
   --padding-start: 15px;
   --padding-end: 15px;
 
-  .title-row {
+  ion-row {
     ion-col {
-      padding-top: 0;
-      padding-bottom: 0;
+      padding: 0;
     }
   }
-}
+  .title-row {
+    .icon {
+      height: 24px;
+      width: 24px;
+    }
+  }
+  .search-row {
+    margin-top: 5px;
+  }
+  .filter-row {
+    padding-top: 10px;
+    padding-bottom: 20px;
+    ion-col {
+      padding: 3px;
+    }
+  }
 
-.icon{
-  height: 24px;
-  width: 24px;
-}
-
-.filter{
-  color: #A0ABCC;
-  padding-left: 8px;
-  padding-right: 8px;
+  .vo-view {
+    margin: 10px 0 30px 0;
+    .vessel-row {
+      margin: 15px 0;
+      padding: 10px;
+      background: white;
+      border-radius: 20px;
+      min-height: 90px;
+      ion-col {
+        display: flex;
+        align-items: center;
+      }
+      .icon-col {
+        justify-content: center;
+        .icon-wrapper {
+          width: 90%;
+          height: 90%;
+          ion-icon,
+          ion-img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+          }
+        }
+      }
+      .name-col {
+        padding-left: 10px;
+        .name {
+          font-size: 1rem;
+          font-family: "GatwickBold";
+          color: var(--ikan_darkblue_90);
+        }
+      }
+    }
+  }
 }
