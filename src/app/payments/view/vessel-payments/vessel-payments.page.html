@@ -1,3 +1,104 @@
-<p>
-  vessel-payments works!
-</p>
+<app-header [pageTitle]=""></app-header>
+
+<ion-content class="content-skyblue-bg">
+  <ion-grid>
+    <div class="title-filter">
+      <ion-row class="title-row">
+        <ion-col size="12">
+          <ion-img src="assets/icon/payments.svg" class="icon"></ion-img>
+        </ion-col>
+        <ion-col size="12">
+          <app-title
+            class="vessel-payments-page"
+            [title]="vessel?.name + ' ' + commonText?.payments || 'Payments'"
+            [isBlue]="true"
+          ></app-title>
+        </ion-col>
+      </ion-row>
+
+      <!-- TODO: change search/filter datasets according to role -->
+       <!-- Search functionality disabled for now -->
+      <!-- <ion-row class="search-row">
+        <ion-col size="12">
+          <app-search
+            [searchDataSet]="filterDataSet"
+            (searchResult)="searchResult($event)"
+          ></app-search>
+        </ion-col>
+      </ion-row> -->
+
+      <ion-row class="filter-row">
+        <ion-col size="12">
+          <app-filter
+            filterProperty="status"
+            [options]="filterOptions"
+            [filterDataSet]="filterDataSet"
+            (filterResult)="filterResult($event)"
+            [filterLabel]="commonText?.filterByStatus"
+          ></app-filter>
+        </ion-col>
+      </ion-row>
+    </div>
+
+    <!-- Worker/Fisher View -->
+    <div class="payments-display">
+      <ion-row class="sub-title-row">
+        <ion-col size="12">
+          <p class="sub-title">
+            {{ commonText?.paymentHistory }}
+            <span *ngIf="vesselPayments?.length">
+              ({{ vesselPayments?.length + ' ' + commonText?.payments }})
+            </span>
+          </p>
+        </ion-col>
+        <!-- No existing payments -->
+        <ion-col *ngIf="!vesselPayments?.length" size="12">
+          <p class="no-payments">
+            {{ commonText?.noPayments || 'No payments made yet.' }}
+          </p>
+        </ion-col>
+      </ion-row>
+
+      <!-- TODO: group payments by date -->
+      <ion-row
+        *ngFor="let payment of vesselPayments"
+        class="payment-row"
+        (click)="goToPaymentDetail(payment)"
+      >
+        <!-- TODO: style according to status -->
+        <ion-col size="12" class="status-col">
+          <ion-text class="status">
+            {{payment?.status || 'Confirmed'}}</ion-text
+          >
+        </ion-col>
+        <ion-col size="2" class="icon-col">
+          <div class="icon-wrapper">
+            <ion-img
+              class="icon"
+              src="assets/icon/single_payment_blue.svg"
+            ></ion-img>
+          </div>
+        </ion-col>
+
+        <ion-col size="10" class="details-col">
+          <p class="amount">
+            <span>{{ payment?.currency || '$' }}</span>
+            {{ payment?.amount || '999'}}
+          </p>
+          <p>
+            {{ commonText?.paymentMade || 'Payment Made' }}:
+            <span>
+              {{ payment?.dateCreated || '10/10/2020' | date: 'dd/MM/yyyy'}}
+            </span>
+          </p>
+          <p>
+            {{ commonText?.paymentConfirmed || 'Payment Confirmed' }}:
+            <span>
+              {{ payment?.dateConfirmed || '10/10/2020' | date: 'dd/MM/yyyy'}}
+            </span>
+          </p>
+        </ion-col>
+      </ion-row>
+    </div>
+  </ion-grid>
+</ion-content>

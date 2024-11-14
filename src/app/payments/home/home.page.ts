@@ -13,11 +13,10 @@ import { SharedmethodsService } from 'src/app/shared/services/sharedmethods/shar
 })
 export class HomePage implements OnInit {
   commonText: any;
-  filterDataSet =  [
+  filterDataSet = [
     {
       name: 'Vessel Company One',
       status: 'Opened',
-
     },
     {
       name: 'Vessel Company Two',
@@ -30,13 +29,12 @@ export class HomePage implements OnInit {
     {
       name: 'Vessel Company Four',
       status: 'Closed',
-    }
+    },
   ];
-  chineseFilterDataSet =  [
+  chineseFilterDataSet = [
     {
       name: '船隻公司',
       status: 'Opened',
-
     },
     {
       name: '船隻公司第二',
@@ -49,17 +47,18 @@ export class HomePage implements OnInit {
     {
       name: '船隻公司四',
       status: 'Closed',
-    }
+    },
   ];
   vesselCompanyText = 'Details about this vessel company';
   chineseVesselCompanyText = '有關該船隻公司的詳細信息';
 
+  // translate
   pageTitle = 'Payments';
   organizations = [...this.filterDataSet];
 
   filterOptions = [
-    {title:'closed', value:'closed'},
-    {title:'opened', value:'opened'}
+    { title: 'closed', value: 'closed' },
+    { title: 'opened', value: 'opened' },
   ];
   unFilteredData = [];
   vessels = [];
@@ -74,24 +73,30 @@ export class HomePage implements OnInit {
     public contentService: ContentService,
     public vesselsDataService: VesselsDataService,
     public paymentsDataService: PaymentsDataService,
-    public sharedMethods: SharedmethodsService,
+    public sharedMethods: SharedmethodsService
   ) {
     this.vesselsDataService.getAll().subscribe((data) => {
       this.vessels = this.unFilteredData = data;
     });
-    this.paymentsDataService.getAll().subscribe(async(data) => {
-      const user: UserData = await this.sharedMethods.readDataFromStorage(StorageKeys.userData);
-      this.userPayments = data.filter(payment => payment.WorkerId === user.id); 
+    this.paymentsDataService.getAll().subscribe(async (data) => {
+      const user: UserData = await this.sharedMethods.readDataFromStorage(
+        StorageKeys.userData
+      );
+      this.userPayments = data.filter(
+        (payment) => payment.WorkerId === user.id
+      );
     });
   }
 
   async ngOnInit() {
-    this.currentUser = await this.sharedMethods.readDataFromStorage(StorageKeys.userData);
+    this.currentUser = await this.sharedMethods.readDataFromStorage(
+      StorageKeys.userData
+    );
     this.commonText = await this.contentService?.commonText;
     this.pageTitle = this.commonText?.payments;
     this.filterOptions = [
-      {title: this.commonText?.closed, value: 'closed'},
-      {title: this.commonText?.opened, value: 'opened'}
+      { title: this.commonText?.closed, value: 'closed' },
+      { title: this.commonText?.opened, value: 'opened' },
     ];
 
     // For testing purposes
@@ -109,14 +114,9 @@ export class HomePage implements OnInit {
     this.organizations = result;
   }
 
-
-  viewDetails(organization) {
-    const queryParams = organization
-    this.router.navigate(['payments/view/company', organization], { queryParams });
-  }
-
   goToVesselPayments(vessel) {
-    console.log('vessel', vessel);
+    const queryParams = { vessel: JSON.stringify(vessel) };
+    this.router.navigate(['payments/vessel-payments'], { queryParams });
   }
 
   goToPaymentDetail(payment) {
