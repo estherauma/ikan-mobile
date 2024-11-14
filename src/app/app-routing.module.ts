@@ -163,10 +163,6 @@ const routes: Routes = [
     loadChildren: () => import('./payments/home/home.module').then( m => m.HomePageModule)
   },
   {
-    path: 'payments/view/company',
-    loadChildren: () => import('./payments/view/company/company.module').then( m => m.CompanyPageModule)
-  },
-  {
     path: 'payments/view/details',
     loadChildren: () => import('./payments/view/details/details.module').then( m => m.DetailsPageModule)
   },
