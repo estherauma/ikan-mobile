@@ -159,7 +159,7 @@ const routes: Routes = [
     loadChildren: () => import('./accounts/profile/profile.module').then( m => m.ProfilePageModule)
   },
   {
-    path: 'payments/home',
+    path: 'payments',
     loadChildren: () => import('./payments/home/home.module').then( m => m.HomePageModule)
   },
   {
