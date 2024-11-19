@@ -52,3 +52,8 @@ To build with live reload on Android, run `npm run android-livereload`
 ## Testing
 
 ## Continuous Deployment
+
+# iOS and CocoaPods
+- See (this guide) [https://stackoverflow.com/questions/20755044/how-do-i-install-cocoapods]
+- Install cocoapods `sudo gem install -n /usr/local/bin cocoapods`
+- Run `pod install` in the ios directory
