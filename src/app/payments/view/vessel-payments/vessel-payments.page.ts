@@ -6,6 +6,12 @@ import { VesselsDataService } from 'src/app/vessels/data/vessels-data.service';
 import { PaymentsDataService } from '../../data/payments-data.service';
 import { UserData, StorageKeys } from 'src/app/shared/types/api-types';
 
+type GroupedVesselPayments = {
+  date: string;
+  payments: any[];
+  isExpanded: boolean;
+};
+
 @Component({
   selector: 'app-vessel-payments',
   templateUrl: './vessel-payments.page.html',
@@ -13,6 +19,7 @@ import { UserData, StorageKeys } from 'src/app/shared/types/api-types';
 })
 export class VesselPaymentsPage implements OnInit {
   commonText: any;
+  currentUser: UserData;
   vessel: any;
   pageTitle = 'Payments';
   filterOptions = [
@@ -39,6 +46,7 @@ export class VesselPaymentsPage implements OnInit {
   ];
   unFilteredData = [];
   vesselPayments = [];
+  groupedVesselPayments: GroupedVesselPayments[] = [];
 
   constructor(
     public router: Router,
@@ -54,12 +62,15 @@ export class VesselPaymentsPage implements OnInit {
       }
     });
     this.paymentsDataService.getAll().subscribe(async (data) => {
-      const user: UserData = await this.sharedMethods.readDataFromStorage(
+      this.currentUser = await this.sharedMethods.readDataFromStorage(
         StorageKeys.userData
       );
-      // TODO: filter by date
       this.vesselPayments = data.filter(
-        (payment) => payment.createdBy === user.id
+        (payment) => payment.createdBy === this.currentUser.id
+      );
+      // group vessel payments by date
+      this.groupedVesselPayments = this.groupPaymentsByDate(
+        this.vesselPayments
       );
     });
   }
@@ -68,6 +79,31 @@ export class VesselPaymentsPage implements OnInit {
     this.commonText = await this.contentService?.commonText;
     // translate
     this.pageTitle = this.commonText?.vesselPayments;
+  }
+
+  groupPaymentsByDate(payments) {
+    const grouped = payments.reduce((acc, payment) => {
+      // TODO: check whether to use created date or date
+      const date = new Date(payment.date).toDateString();
+      if (!acc[date]) {
+        acc[date] = [];
+      }
+      acc[date].push(payment);
+      return acc;
+    }, {});
+
+    const vesselPayments = Object.keys(grouped).map((date) => ({
+      date,
+      payments: grouped[date],
+      isExpanded: false,
+    }));
+
+    return vesselPayments;
+  }
+
+  toggleGroup(index: number) {
+    this.groupedVesselPayments[index].isExpanded =
+      !this.groupedVesselPayments[index].isExpanded;
   }
 
   filterResult(result) {}
