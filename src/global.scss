@@ -37,7 +37,7 @@
 @import '@ionic/angular/css/ionic-swiper';
 
 @font-face {   
-  font-family: 'GatwickBold';    //This is what we are going to call
+  font-family: 'GatwickBold';
   src: url('./assets/fonts/gatwick/PPGatwick-Bold.otf');
 }
 @font-face {   
@@ -53,10 +53,6 @@
 .center-in-card {
   text-align: center;
   padding-top: 10%;
-}
-
-.content-skyblue-bg{
-  --background: var(--ikan_skyblue_100);
 }
 
 .truncate-text {

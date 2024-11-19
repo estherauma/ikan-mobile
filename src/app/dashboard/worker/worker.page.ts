@@ -32,10 +32,14 @@ export class WorkerPage implements OnInit {
       icon: '/assets/icon/offers.svg', 
       url: '/contracts/home'
     },
+    {
+      title: 'Payments',
+      icon: '/assets/icon/single_payment_blue.svg',
+      url: '/payments/home'
+    },
     // {title: 'Placement'},
     // {title: 'To Do'},
     // {title: 'Training'},
-    // {title: 'Payments'},
   ];
 
   constructor(
