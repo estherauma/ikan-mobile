@@ -119,7 +119,8 @@ export class HomePage implements OnInit {
     this.router.navigate(['payments/vessel-payments'], { queryParams });
   }
 
-  goToPaymentDetail(payment) {
-    console.log('payment', payment);
+  goToPaymentDetail(paymentDetails) {
+    const queryParams = { vessel: JSON.stringify(paymentDetails) };
+    this.router.navigate(['payments/payment-details'], { queryParams });
   }
 }

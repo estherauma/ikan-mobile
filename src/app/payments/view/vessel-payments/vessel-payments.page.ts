@@ -251,5 +251,8 @@ export class VesselPaymentsPage implements OnInit {
 
   filterResult(result) {}
 
-  goToPaymentDetail(payment) {}
+  goToPaymentDetail(paymentDetails) {
+    const queryParams = { vessel: JSON.stringify(paymentDetails) };
+    this.router.navigate(['payments/payment-details'], { queryParams });
+  }
 }
