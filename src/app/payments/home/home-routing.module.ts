@@ -5,8 +5,12 @@ import { HomePage } from './home.page';
 
 const routes: Routes = [
   {
-    path: '',
+    path: 'home',
     component: HomePage
+  },
+  {
+    path: 'vessel-payments',
+    loadChildren: () => import('../view/vessel-payments/vessel-payments.module').then( m => m.VesselPaymentsModule)
   }
 ];
 
