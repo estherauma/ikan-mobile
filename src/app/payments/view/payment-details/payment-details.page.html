@@ -1,3 +1,39 @@
-<p>
-  payment-details works!
-</p>
+<app-header></app-header>
+
+<ion-content class="content-skyblue-bg">
+  <div class="summary-wrapper">
+    <ion-card class="summary-card">
+      <ion-card-content>
+        <div class="icon-wrapper">
+          <!-- TODO: change icon according to status -->
+          <ion-icon [src]="paymentIconUrl" class="icon"></ion-icon>
+        </div>
+        <h3>
+          <!-- TODO: add currency -->
+          <span>{{paymentDetails?.currency || '$'}}</span>
+          {{paymentDetails?.totalAmount}}
+        </h3>
+        <h4 class="text-content">{{paymentDetails?.companyName}}</h4>
+        <p class="status">
+          {{ commonText?.status }}: {{paymentDetails?.status}}
+        </p>
+      </ion-card-content>
+    </ion-card>
+  </div>
+
+  <div class="sub-title-wrapper">
+    <!-- TODO: translate -->
+    <p class="sub-title">
+      {{ commonText?.paymentBreakdown || 'Payment Breakdown' }}
+    </p>
+  </div>
+
+  <!-- TODO: display if payment has bank transfer -->
+  <div class="bank-transfer-wrapper"></div>
+
+  <!-- TODO: display if payment has cash transaction -->
+  <div class="cash-transaction-wrapper"></div>
+
+  <!-- TODO: display if payment has beneficiary -->
+  <div class="beneficiary-wrapper"></div>
+</ion-content>
