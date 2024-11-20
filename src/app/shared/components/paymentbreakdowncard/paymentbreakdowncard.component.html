@@ -35,26 +35,22 @@
   </ion-col>
 
   <ion-col
-    *ngIf="showConfirmationPrompt"
+    *ngIf="currentUser?.role === 'worker' && showConfirmationPrompt"
     size="6"
-    class="prompt-col"
+    class="prompt-col confirm-col"
     (click)="goToConfirmPayment()"
   >
-    <div class="icon-wrapper">
-      <ion-img class="icon" src="assets/icon/gray_thumbs_up.svg"></ion-img>
-    </div>
+    <ion-icon class="icon" src="assets/icon/gray_thumbs_up.svg"></ion-icon>
     <p>{{ commonText?.confirm || "Confirm" }}</p>
   </ion-col>
 
   <ion-col
-    *ngIf="showGrievancePrompt"
+    *ngIf="currentUser?.role === 'worker' && showGrievancePrompt"
     size="6"
-    class="prompt-col"
+    class="prompt-col grievance-col"
     (click)="goToRaiseGrievance()"
   >
-    <div class="icon-wrapper">
-      <ion-img class="icon" src="assets/icon/gray_thumbs_down.svg"></ion-img>
-    </div>
+    <ion-icon class="icon" src="assets/icon/gray_thumbs_down.svg"></ion-icon>
     <p>{{ commonText?.report || "Report" }}</p>
   </ion-col>
 </ion-row>

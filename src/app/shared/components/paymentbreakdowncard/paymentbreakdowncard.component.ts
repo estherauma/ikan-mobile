@@ -1,5 +1,7 @@
 import { Component, Input, OnInit, Output, EventEmitter } from '@angular/core';
 import { ContentService } from '../../services/content/content.service';
+import { SharedmethodsService } from '../../services/sharedmethods/sharedmethods.service';
+import { UserData } from '../../types/api-types';
 
 export type PaymentType = 'Bank transfer' | 'Beneficiary' | 'Cash' | 'Listing';
 @Component({
@@ -10,6 +12,7 @@ export type PaymentType = 'Bank transfer' | 'Beneficiary' | 'Cash' | 'Listing';
 export class PaymentbreakdowncardComponent implements OnInit {
   
   commonText: any;
+  currentUser: UserData;
 
   @Input() showStatus = true;
   @Input() statusClass: any; // add type
@@ -31,10 +34,12 @@ export class PaymentbreakdowncardComponent implements OnInit {
 
   constructor(
     public contentService: ContentService,
+    public sharedmethods: SharedmethodsService,
   ) { }
 
-  ngOnInit() {
+  async ngOnInit() {
     this.commonText = this.contentService?.commonText;
+    this.currentUser = await this.sharedmethods.getUserData();
   }
 
   onClickCard(e) {

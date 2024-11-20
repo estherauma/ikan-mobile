@@ -1,9 +1,12 @@
 ion-row {
   margin: 0;
-  padding: 0 0 10px 10px;
+  padding: 0;
   background: white;
   border-radius: 20px;
   min-height: 90px;
+  box-shadow: 0 3px 1px -2px rgba(160, 171, 204, 0.2),
+    0 2px 2px 0 rgba(160, 171, 204, 0.14),
+    0 1px 5px 0 rgba(160, 171, 204, 0.12);
 
   ion-col {
     display: flex;
@@ -35,9 +38,10 @@ ion-row {
 
   .icon-col {
     justify-content: center;
+    padding-left: 10px;
     .icon-wrapper {
-      width: 30px;
-      height: 30px;
+      width: 24px;
+      height: 24px;
       ion-icon,
       ion-img {
         width: 100%;
@@ -50,7 +54,7 @@ ion-row {
     padding-left: 10px;
     padding-right: 10px;
     flex-direction: column;
-    margin-bottom: 5px;
+    margin-bottom: 15px;
     p {
       font-size: 0.8rem;
       font-family: "interRegular";
@@ -83,7 +87,7 @@ ion-row {
     justify-content: center;
     align-items: center;
     background: #eaedf6;
-    .icom-wrapper {
+    .icon-wrapper {
       width: 30px;
       height: 30px;
       ion-icon,
@@ -94,14 +98,18 @@ ion-row {
       }
     }
     p {
-      font-size: 0.8rem;
+      font-size: 1rem;
       font-family: "interRegular";
       color: #a0abcc;
-      margin: 2px 0;
-      span {
-        color: black;
-        font-size: 0.8rem;
-      }
+      margin-left: 3px;
     }
+  }
+  .confirm-col {
+    border-right: 1px solid white;
+    border-radius: 0 0 0 20px;
+  }
+  .grievance-col {
+    border-left: 1px solid white;
+    border-radius: 0 0 20px 0;
   }
 }
