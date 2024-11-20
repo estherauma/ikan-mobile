@@ -25,7 +25,7 @@
       </ion-row>
 
       <!-- TODO: change search/filter datasets according to role -->
-       <!-- Search functionality disabled for now -->
+      <!-- Search functionality disabled for now -->
       <!-- <ion-row class="search-row">
         <ion-col size="12">
           <app-search
@@ -89,45 +89,23 @@
         </ion-col>
       </ion-row>
 
-      <ion-row
-        *ngFor="let payment of userPayments"
-        class="payment-row"
-        (click)="goToPaymentDetail(payment)"
-      >
-        <!-- TODO: style according to status -->
-        <ion-col size="12" class="status-col">
-          <ion-text class="status">
-            {{payment?.status || 'Confirmed'}}</ion-text
-          >
-        </ion-col>
-        <ion-col size="2" class="icon-col">
-          <div class="icon-wrapper">
-            <ion-img
-              class="icon"
-              src="assets/icon/single_payment_blue.svg"
-            ></ion-img>
-          </div>
-        </ion-col>
-
-        <ion-col size="10" class="details-col">
-          <p class="amount">
-            <span>{{ payment?.currency || '$' }}</span>
-            {{ payment?.amount || '999'}}
-          </p>
-          <p>
-            {{ commonText?.paymentMade || 'Payment Made' }}:
-            <span>
-              {{ payment?.dateCreated || '10/10/2020' | date: 'dd/MM/yyyy'}}
-            </span>
-          </p>
-          <p>
-            {{ commonText?.paymentConfirmed || 'Payment Confirmed' }}:
-            <span>
-              {{ payment?.dateConfirmed || '10/10/2020' | date: 'dd/MM/yyyy'}}
-            </span>
-          </p>
-        </ion-col>
-      </ion-row>
+      <div *ngFor="let payment of userPayments" class="payment-wrapper">
+        <app-paymentbreakdowncard
+          [statusClass]="{
+                  'pending': payment.status === 'Pending',
+                  'confirmed': payment.status === 'Confirmed',
+                  'rejected': payment.status === 'Rejected',
+                }"
+          [status]="payment?.status"
+          iconUrl="assets/icon/single_payment_blue.svg"
+          [amount]="payment?.totalAmount"
+          [currency]="payment?.currency || '$'"
+          [paymentMadeOn]="payment?.createdAt"
+          [paymentConfirmedOn]="payment?.confirmedDate"
+          (onClick)="goToPaymentDetail(payment)"
+        >
+        </app-paymentbreakdowncard>
+      </div>
     </div>
   </ion-grid>
 </ion-content>
