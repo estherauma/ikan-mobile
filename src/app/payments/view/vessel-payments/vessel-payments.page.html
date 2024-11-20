@@ -82,52 +82,23 @@
               *ngFor="let payment of group.payments"
               class="payment-item"
             >
-              <ion-row class="payment-row" (click)="goToPaymentDetail(payment)">
-                <!-- TODO: style according to status -->
-                <!-- TODO: add other statuses -->
-                <ion-col size="12" class="status-col">
-                  <ion-text
-                    class="status"
-                    [ngClass]="{
-                      'pending': payment.status === 'Pending',
-                      'confirmed': payment.status === 'Confirmed',
-                      'rejected': payment.status === 'Rejected',
-                    }"
-                  >
-                    {{payment?.status || 'Confirmed'}}</ion-text
-                  >
-                </ion-col>
-                <ion-col size="2" class="icon-col">
-                  <div class="icon-wrapper">
-                    <ion-img
-                      class="icon"
-                      src="assets/icon/single_payment_blue.svg"
-                    ></ion-img>
-                  </div>
-                </ion-col>
-
-                <ion-col size="10" class="details-col">
-                  <p class="amount">
-                    <span>{{ payment?.currency || '$' }}</span>
-                    {{ payment?.totalAmount || '999'}}
-                  </p>
-                  <p>
-                    {{ commonText?.paymentMade || 'Payment Made' }}:
-                    <!-- TODO: check whther to use createdat pr payment date -->
-                    <span>
-                      {{ payment?.createdAt || '10/10/2020' | date:
-                      'dd/MM/yyyy'}}
-                    </span>
-                  </p>
-                  <p>
-                    {{ commonText?.paymentConfirmed || 'Payment Confirmed' }}:
-                    <span>
-                      {{ payment?.confirmedDate || '10/10/2020' | date:
-                      'dd/MM/yyyy'}}
-                    </span>
-                  </p>
-                </ion-col>
-              </ion-row>
+              <!-- TODO: check whther to use createdat or payment date -->
+              <!-- TODO: remove dummy text/ add translations -->
+              <app-paymentbreakdowncard
+                [statusClass]="{
+                  'pending': payment.status === 'Pending',
+                  'confirmed': payment.status === 'Confirmed',
+                  'rejected': payment.status === 'Rejected',
+                }"
+                [status]="payment?.status || 'Confirmed'"
+                iconUrl="assets/icon/single_payment_blue.svg"
+                [amount]="payment?.totalAmount || '999'"
+                [currency]="payment?.currency || '$'"
+                [paymentMadeOn]="payment?.createdAt || '10/10/2020'"
+                [paymentConfirmedOn]="payment?.confirmedDate || '10/10/2020'"
+                (onClick)="goToPaymentDetail(payment)"
+              >
+              </app-paymentbreakdowncard>
             </ion-item>
           </ion-list>
         </div>
