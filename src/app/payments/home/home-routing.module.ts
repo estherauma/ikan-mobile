@@ -5,13 +5,26 @@ import { HomePage } from './home.page';
 
 const routes: Routes = [
   {
+    path: '',
+    redirectTo: 'home',
+    pathMatch: 'full',
+  },
+  {
     path: 'home',
     component: HomePage
   },
   {
     path: 'vessel-payments',
     loadChildren: () => import('../view/vessel-payments/vessel-payments.module').then( m => m.VesselPaymentsModule)
-  }
+  },
+  {
+    path: 'payment-details',
+    loadChildren: () => import('../view/payment-details/payment-details.module').then( m => m.PaymentDetailsModule)
+  },
+  {
+    path: 'create',
+    loadChildren: () => import('../create/create.module').then( m => m.CreatePageModule)
+  },
 ];
 
 @NgModule({

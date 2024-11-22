@@ -27,7 +27,6 @@ import { ImageselectComponent } from './components/imageselect/imageselect.compo
 import { UsercontractcardComponent } from './components/usercontractcard/usercontractcard.component';
 import { DocumentuploadComponent } from './components/documentupload/documentupload.component';
 import { VesselownercardComponent } from './components/vesselownercard/vesselownercard.component';
-import { PaymentssummarycardComponent } from './components/paymentssummarycard/paymentssummarycard.component';
 import { PlacementoffercardComponent } from './components/placementoffercard/placementoffercard.component';
 import { PagetabnavigatorComponent } from './components/pagetabnavigator/pagetabnavigator.component';
 import { PageprofilecontainerComponent } from './components/pageprofilecontainer/pageprofilecontainer.component';
@@ -77,7 +76,6 @@ import { ViewPassportComponent } from '../mydocuments/view-passport/view-passpor
     AttachmentComponent,
     BadgeComponent,
     VesselownercardComponent,
-    PaymentssummarycardComponent,
     GenericmodalComponent,
     PaymentbreakdowncardComponent,
     ImageselectComponent,
@@ -123,7 +121,6 @@ import { ViewPassportComponent } from '../mydocuments/view-passport/view-passpor
     AttachmentComponent,
     BadgeComponent,
     VesselownercardComponent,
-    PaymentssummarycardComponent,
     GenericmodalComponent,
     PaymentbreakdowncardComponent,
     ImageselectComponent,

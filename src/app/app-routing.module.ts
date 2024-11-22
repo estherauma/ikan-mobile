@@ -163,14 +163,6 @@ const routes: Routes = [
     loadChildren: () => import('./payments/home/home.module').then( m => m.HomePageModule)
   },
   {
-    path: 'payments/view/details',
-    loadChildren: () => import('./payments/view/details/details.module').then( m => m.DetailsPageModule)
-  },
-  {
-    path: 'payments/create',
-    loadChildren: () => import('./payments/create/create.module').then( m => m.CreatePageModule)
-  },
-  {
     path: 'feedbackdashboard/home',
     loadChildren: () => import('./feedbackdashboard/home/home.module').then( m => m.HomePageModule)
   },
@@ -285,10 +277,6 @@ const routes: Routes = [
   {
     path: 'todo/badgeinfo',
     loadChildren: () => import('./todo/badgeinfo/badgeinfo.module').then( m => m.BadgeinfoPageModule)
-  },
-  {
-    path: 'sandbox',
-    loadChildren: () => import('./sandbox/sandbox.module').then( m => m.SandboxPageModule)
   },
   {
     path: 'workers/info',

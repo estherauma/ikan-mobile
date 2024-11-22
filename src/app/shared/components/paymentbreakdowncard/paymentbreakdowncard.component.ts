@@ -1,5 +1,7 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit, Output, EventEmitter } from '@angular/core';
 import { ContentService } from '../../services/content/content.service';
+import { SharedmethodsService } from '../../services/sharedmethods/sharedmethods.service';
+import { UserData } from '../../types/api-types';
 
 export type PaymentType = 'Bank transfer' | 'Beneficiary' | 'Cash' | 'Listing';
 @Component({
@@ -8,39 +10,47 @@ export type PaymentType = 'Bank transfer' | 'Beneficiary' | 'Cash' | 'Listing';
   styleUrls: ['./paymentbreakdowncard.component.scss'],
 })
 export class PaymentbreakdowncardComponent implements OnInit {
+  
   commonText: any;
+  currentUser: UserData;
 
-  @Input() type: PaymentType = 'Listing';
-  @Input() isListing = false;
-  @Input() amount = '';
-  @Input() madeOn = '';
-  @Input() confirmedOn = '';
-  @Input() isConfirmable = false;
+  @Input() showStatus = true;
+  @Input() statusClass: any; // add type
   @Input() status = '';
-  iconUrl;
+  @Input() showType = false;
+  @Input() type: PaymentType = 'Listing'; //change type
+  @Input() iconUrl = '';
+  @Input() currency = '$';
+  @Input() amount = '';
+  @Input() paymentMadeOn: string = '';
+  @Input() paymentConfirmedOn: string = '';
+  @Input() showConfirmationPrompt = false;
+  @Input() showGrievancePrompt = false;
+
+  @Output() onClick = new EventEmitter<any>();
+  @Output() confirmPayment = new EventEmitter<any>();
+  @Output() raiseGrievance = new EventEmitter<any>();
+
 
   constructor(
     public contentService: ContentService,
+    public sharedmethods: SharedmethodsService,
   ) { }
 
-  ngOnInit() {
+  async ngOnInit() {
     this.commonText = this.contentService?.commonText;
-    if (this.type === 'Listing') {
-      this.isListing = true;
-      this.iconUrl = '/assets/icon/single_payment.svg';
-    }
-
-    if (this.type === 'Bank transfer') {
-      this.iconUrl = '/assets/icon/bank.svg';
-    }
-
-    if (this.type === 'Beneficiary') {
-      this.iconUrl = '/assets/icon/beneficiary.svg';
-    }
-
-    if (this.type === 'Cash') {
-      this.iconUrl = '/assets/icon/cash.svg';
-    }
+    this.currentUser = await this.sharedmethods.getUserData();
   }
 
+  onClickCard(e) {
+    this.onClick.emit(e);
+  }
+
+  goToConfirmPayment() {
+    this.confirmPayment.emit();
+  }
+
+  goToRaiseGrievance() {
+    this.raiseGrievance.emit();
+  }
 }

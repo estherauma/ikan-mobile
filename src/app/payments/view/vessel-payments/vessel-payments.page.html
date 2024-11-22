@@ -17,7 +17,7 @@
       </ion-row>
 
       <!-- TODO: change search/filter datasets according to role -->
-       <!-- Search functionality disabled for now -->
+      <!-- Search functionality disabled for now -->
       <!-- <ion-row class="search-row">
         <ion-col size="12">
           <app-search
@@ -40,7 +40,6 @@
       </ion-row>
     </div>
 
-    <!-- Worker/Fisher View -->
     <div class="payments-display">
       <ion-row class="sub-title-row">
         <ion-col size="12">
@@ -60,45 +59,50 @@
       </ion-row>
 
       <!-- TODO: group payments by date -->
-      <ion-row
-        *ngFor="let payment of vesselPayments"
-        class="payment-row"
-        (click)="goToPaymentDetail(payment)"
+      <ion-list
+        *ngIf="vesselPayments?.length && groupedVesselPayments?.length"
+        class="list-wrapper"
       >
-        <!-- TODO: style according to status -->
-        <ion-col size="12" class="status-col">
-          <ion-text class="status">
-            {{payment?.status || 'Confirmed'}}</ion-text
+        <div *ngFor="let group of groupedVesselPayments; let i = index">
+          <ion-item
+            (click)="toggleGroup(i)"
+            class="group-item"
+            [ngClass]="{'not-expanded': !group.isExpanded}"
+            button
           >
-        </ion-col>
-        <ion-col size="2" class="icon-col">
-          <div class="icon-wrapper">
-            <ion-img
-              class="icon"
-              src="assets/icon/single_payment_blue.svg"
-            ></ion-img>
-          </div>
-        </ion-col>
+            <ion-label>{{ group?.date }}</ion-label>
+            <ion-icon
+              [name]="group.isExpanded ? 'chevron-up' : 'chevron-down'"
+              slot="end"
+            ></ion-icon>
+          </ion-item>
 
-        <ion-col size="10" class="details-col">
-          <p class="amount">
-            <span>{{ payment?.currency || '$' }}</span>
-            {{ payment?.amount || '999'}}
-          </p>
-          <p>
-            {{ commonText?.paymentMade || 'Payment Made' }}:
-            <span>
-              {{ payment?.dateCreated || '10/10/2020' | date: 'dd/MM/yyyy'}}
-            </span>
-          </p>
-          <p>
-            {{ commonText?.paymentConfirmed || 'Payment Confirmed' }}:
-            <span>
-              {{ payment?.dateConfirmed || '10/10/2020' | date: 'dd/MM/yyyy'}}
-            </span>
-          </p>
-        </ion-col>
-      </ion-row>
+          <div *ngIf="group.isExpanded" class="group-list-wrapper">
+            <div
+              *ngFor="let payment of group.payments"
+              class="payment-item"
+            >
+              <!-- TODO: check whther to use createdat or payment date -->
+              <!-- TODO: remove dummy text/ add translations -->
+              <app-paymentbreakdowncard
+                [statusClass]="{
+                  'pending': payment.status === 'Pending',
+                  'confirmed': payment.status === 'Confirmed',
+                  'rejected': payment.status === 'Rejected',
+                }"
+                [status]="payment?.status || 'Confirmed'"
+                iconUrl="assets/icon/single_payment_blue.svg"
+                [amount]="payment?.totalAmount || '999'"
+                [currency]="payment?.currency || '$'"
+                [paymentMadeOn]="payment?.createdAt || '10/10/2020'"
+                [paymentConfirmedOn]="payment?.confirmedDate || '10/10/2020'"
+                (onClick)="goToPaymentDetail(payment)"
+              >
+              </app-paymentbreakdowncard>
+            </div>
+          </div>
+        </div>
+      </ion-list>
     </div>
   </ion-grid>
 </ion-content>

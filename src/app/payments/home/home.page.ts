@@ -85,6 +85,52 @@ export class HomePage implements OnInit {
       this.userPayments = data.filter(
         (payment) => payment.WorkerId === user.id
       );
+      // dummy data
+      // TODO: reove dummy data after adding payments
+      this.userPayments = this.userPayments?.length
+        ? this.userPayments
+        : [
+            {
+              id: 1,
+              companyName: 'Company Name 1',
+              type: 'Cash',
+              worker: this.currentUser?.id,
+              totalAmount: 600,
+              remmitanceAmount: 0,
+              beneficiaryAmount: 300,
+              cashAmount: 300,
+              date: '2024-11-01T10:00:00Z',
+              status: 'Confirmed',
+              confirmed: true,
+              confirmedDate: '2024-11-01T10:00:00Z',
+              fileUrl: null,
+              onlineRef: 'ref',
+              createdAt: '2024-11-01T10:00:00Z',
+              updatedAt: '2024-11-01T10:00:00Z',
+              createdBy: this.currentUser.id,
+              updatedBy: this.currentUser.id,
+            },
+            {
+              id: 1,
+              companyName: 'Company Name 2',
+              type: 'Cash',
+              worker: this.currentUser?.id,
+              totalAmount: 600,
+              remmitanceAmount: 0,
+              beneficiaryAmount: 300,
+              cashAmount: 300,
+              date: '2024-11-01T10:00:00Z',
+              status: 'Rejected',
+              confirmed: true,
+              confirmedDate: '2024-11-01T10:00:00Z',
+              fileUrl: null,
+              onlineRef: 'ref',
+              createdAt: '2024-11-01T10:00:00Z',
+              updatedAt: '2024-11-01T10:00:00Z',
+              createdBy: this.currentUser.id,
+              updatedBy: this.currentUser.id,
+            },
+          ];
     });
   }
 
@@ -119,7 +165,8 @@ export class HomePage implements OnInit {
     this.router.navigate(['payments/vessel-payments'], { queryParams });
   }
 
-  goToPaymentDetail(payment) {
-    console.log('payment', payment);
+  goToPaymentDetail(paymentDetails) {
+    const queryParams = { paymentDetails: JSON.stringify(paymentDetails) };
+    this.router.navigate(['payments/payment-details'], { queryParams });
   }
 }

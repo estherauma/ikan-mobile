@@ -1,40 +1,56 @@
-<ion-card class="card-body">
-  <div class="card-content">
-    <div class="card-section">
-      <div *ngIf="status" class="status-section">
-        <div class="status-container">
-          <div class="status-wrapper">
-            <span>{{status}}</span>
-          </div>
-        </div>
-      </div>
-      <div class="ion-padding ion-margin-vertical card-details">
-        <div class="card-icon-section">
-          <img [src]="iconUrl" />
-        </div>
-        <div>
-          <ion-card-title *ngIf="!isListing" class="blue-text">{{type}}</ion-card-title>
-          <div>
-            <ion-card-title  class="deep-blue-text amount" [ngClass]="{'non-listing-amount': !isListing}">{{amount}}</ion-card-title>
-          </div>
-          <div *ngIf="madeOn">
-            <ion-label><ion-text class="gray-text">{{ commonText?.paymentMade }}: </ion-text> <ion-text
-                class="deep-blue-text"></ion-text>{{madeOn}}</ion-label> <br>
-          </div>
-          <div *ngIf="confirmedOn">
-            <ion-label><ion-text class="gray-text">{{ commonText?.paymentConfirmed}}: </ion-text> <ion-text
-                class="deep-blue-text">{{confirmedOn}}</ion-text></ion-label> <br>
-          </div>
-        </div>
-      </div>
+<ion-row (click)="onClickCard($event)">
+  <!-- TODO: style according to status -->
+  <ion-col *ngIf="showStatus" size="12" class="status-col">
+    <ion-text class="status" [ngClass]="statusClass"> {{ status }}</ion-text>
+  </ion-col>
+
+  <ion-col size="2" class="icon-col">
+    <div class="icon-wrapper">
+      <ion-img class="icon" [src]="iconUrl"></ion-img>
     </div>
-    <div class="footer gray-text" *ngIf="isConfirmable">
-      <div>
-        <span>{{ commonText?.confirm }}</span>
-      </div>
-      <div>
-        <span>{{ commonText?.report }}</span>
-      </div>
-    </div>
-  </div>
-</ion-card>
+  </ion-col>
+
+  <ion-col size="10" class="details-col">
+    <p *ngIf="showType" class="type">
+      {{ type }}
+    </p>
+    <p class="amount">
+      <span>{{ currency }}</span>
+      {{ amount }}
+    </p>
+    <!-- TODO: add translation -->
+    <p>
+      {{ commonText?.paymentMade || "Payment Madee" }}:
+      <span>
+        {{ paymentMadeOn | date : "dd/MM/yyyy" }}
+      </span>
+    </p>
+    <p>
+      <!-- Translate -->
+      {{ commonText?.paymentConfirmed || "Payment Confirmed" }}:
+      <span>
+        {{ paymentConfirmedOn | date : "dd/MM/yyyy" }}
+      </span>
+    </p>
+  </ion-col>
+
+  <ion-col
+    *ngIf="currentUser?.role === 'worker' && showConfirmationPrompt"
+    size="6"
+    class="prompt-col confirm-col"
+    (click)="goToConfirmPayment()"
+  >
+    <ion-icon class="icon" src="assets/icon/gray_thumbs_up.svg"></ion-icon>
+    <p>{{ commonText?.confirm || "Confirm" }}</p>
+  </ion-col>
+
+  <ion-col
+    *ngIf="currentUser?.role === 'worker' && showGrievancePrompt"
+    size="6"
+    class="prompt-col grievance-col"
+    (click)="goToRaiseGrievance()"
+  >
+    <ion-icon class="icon" src="assets/icon/gray_thumbs_down.svg"></ion-icon>
+    <p>{{ commonText?.report || "Report" }}</p>
+  </ion-col>
+</ion-row>
