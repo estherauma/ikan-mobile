@@ -65,7 +65,7 @@ export class VesselPaymentsPage implements OnInit {
       this.currentUser = await this.sharedMethods.readDataFromStorage(
         StorageKeys.userData
       );
-      this.vesselPayments = data.filter(
+      this.vesselPayments = data?.filter(
         (payment) => payment.createdBy === this.currentUser.id
       );
       // dummy data

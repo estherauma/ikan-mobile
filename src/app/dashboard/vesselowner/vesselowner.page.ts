@@ -20,7 +20,7 @@ export class VesselownerPage implements OnInit {
     {title: 'Manning Agencies', icon: '/assets/icon/office.svg',  url: '/companies/home'},
     {title: 'Recruits', icon: '/assets/icon/profile_info_blue.svg', url: '/workers/home'},
     {title: 'Contracts', icon: '/assets/icon/offers.svg',  url: '/contracts/home'},
-    {title: 'Payments', icon: '/assets/icon/single_payment_blue.svg',  url: '/payments/home'},
+    // {title: 'Payments', icon: '/assets/icon/single_payment_blue.svg',  url: '/payments/home'},
   ];
 
   performanceData: any = {
