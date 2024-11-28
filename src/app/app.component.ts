@@ -106,6 +106,10 @@ export class AppComponent implements OnInit, OnDestroy {
             el.last = false;
           }
         }
+        
+        if (el.url === '/delete-account') {
+          el.isDeleteAccount = true;
+        }
       });
 
       this.appPages = this.authService.alterMenuBasedOnRole(menuData);

@@ -14,7 +14,10 @@
               lines="none"
               detail="false"
               routerLinkActive="selected"
-              [ngClass]="{'is-last': p.last}"
+              [ngClass]="{
+                'is-last': p.last,
+                'delete-acct-item': p?.isDeleteAccount
+              }"
             >
               <ion-icon slot="start" [name]="p.icon"></ion-icon>
               <ion-label>{{ p.label }}</ion-label>
