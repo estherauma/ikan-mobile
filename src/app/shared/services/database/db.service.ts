@@ -43,7 +43,7 @@ export class DBService {
             return;
           }
           await this.getAndRunPendingMigrations(seedData);
-          })
+        })
         .catch(e => {
           this.globalErrorHandler.handleError(e, 'Error in db.service.ts at checkDbPlatformAndRunMigration(). Error creating database or running migrations');
         });
@@ -66,7 +66,7 @@ export class DBService {
       });
   }
 
-  readMigrationsTable() {
+  async readMigrationsTable() {
     console.log('Reading migrations table');
     return this.db.executeSql('SELECT * FROM migrations', [])
     .then((data) => {
@@ -84,7 +84,7 @@ export class DBService {
   }
 
   async getAndRunPendingMigrations(seedData = false) {
-    this.http.get('assets/migrations/migrations-list.txt', { responseType: 'text' as 'json'})
+    return this.http.get('assets/migrations/migrations-list.txt', { responseType: 'text' as 'json'})
     .subscribe(async(data: any) => {
         this.allMigrationFiles = (data as string)?.split('\n') || [];
         // remove empty array elements
@@ -104,20 +104,20 @@ export class DBService {
   }
 
   async runPendingMigrations(pendingMigrations) {
-    pendingMigrations.forEach(async(migration) => {
+    return pendingMigrations.forEach(async(migration) => {
       await this.runSingleMigrationFile(migration);
     });
   }
 
   async runSingleMigrationFile(migrationFileName) {
     
-    this.http.get('assets/migrations/' + migrationFileName, { responseType: 'text' as 'text'})
-    .subscribe((data: any) => {
+    return this.http.get('assets/migrations/' + migrationFileName, { responseType: 'text' as 'text'})
+    .subscribe(async(data: any) => {
         // TODO: add logic for skipping comments in the migration file
         const migrationQueries = data.split(';');
-        migrationQueries.forEach((query) => {
+        await migrationQueries.forEach(async(query) => {
           query = query.replace(/\r?\n|\r/g, '');
-          this.db.executeSql(query, [])
+          await this.db.executeSql(query, [])
           .then(() => {
             // TODO: remove this line. Left for testing purposes
             console.log(`Query " ${query} " executed`);
@@ -127,7 +127,7 @@ export class DBService {
             this.globalErrorHandler.handleError(e, `Error in db.service.ts at runSingleMigrationFile(). Error executing ${query}`);
           });
         });
-        this.db.executeSql('INSERT INTO migrations (name, executed_at) VALUES (?, ?)', [migrationFileName, new Date()])
+        await this.db.executeSql('INSERT INTO migrations (name, executed_at) VALUES (?, ?)', [migrationFileName, new Date()])
         .then(() => console.error('Migration ' + migrationFileName + ' marked as completed'))
         .catch(e => {
           this.globalErrorHandler.handleError(e, `Error in db.service.ts at runSingleMigrationFile(). Error inserting migration ${migrationFileName} into migrations table`); 
@@ -135,8 +135,8 @@ export class DBService {
     });
   }
 
-  dropDatabase() {
-    this.sqlite.deleteDatabase({
+  async dropDatabase() {
+    return await this.sqlite.deleteDatabase({
       name: 'tunalocal.db',
       location: 'default'
     }).then(() => console.log('Database deleted'))
