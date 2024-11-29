@@ -207,28 +207,24 @@ export class AppComponent implements OnInit, OnDestroy {
       return this.sharedMethods.showToast(this.contentService.commonText?.noInternetConnection || 'No internet connection');
     }
 
+    // translate
     const alert = await this.alertController.create({
       header: this.commonText?.deletingYourAccount || 'Deleting your Account',
-      // message: this.commonText?.deleteAccountMessage || 'Are you sure you want to delete your account?',
       message: new IonicSafeString(`
-        <p>Deleting your account is a permanent action and cannot be undone.</p>
-        <p>Once deleted, you will lose access to:</p>
-        <ul>
-          <li>Your profile and personal settings</li>
-          <li>Any saved data, documents or preferences</li>
-          <li>Access to your subscriptions or purchase history</li>
-        </ul>
-
+        <p>Are you sure you want to delete your account?</p>
+        <p style="color: var(--ikan_red_100); font-weight: bold;">This action is permanent and cannot be undone.</p>
+        <p>All your data, including profile, settings, and saved items, will be deleted.</p>
         <p><strong>If you're sure, please CONFIRM. Otherwise, you can cancel this action.</strong></p>
       `),
       cssClass: 'tuna-alert delete-account-alert',
       buttons: [
         {
-          text: this.commonText?.cancel || 'Cancel',
+          text: this.commonText?.cancel,
           role: 'cancel',
           cssClass: 'secondary',
-        }, {
-          text: this.commonText?.delete || 'Delete',
+        }, 
+        {
+          text: this.commonText?.delete,
           handler: async() => {
             // translate
             await this.sharedMethods.showWaitLoader(this.commonText?.deletingAccount || 'Deleting account...');
@@ -266,7 +262,6 @@ export class AppComponent implements OnInit, OnDestroy {
   }
 
   async syncData() {
-    console.log('syncing data................');
     await this.sharedMethods.showWaitLoader(this.commonText?.syncingData || 'Syncing data...');
     const user: UserData = await this.sharedMethods.readDataFromStorage(StorageKeys.userData);
     if (user) {
@@ -277,7 +272,6 @@ export class AppComponent implements OnInit, OnDestroy {
 
   async setupDB() {
     await this.dbService.checkDbPlatformAndRunMigration();
-    console.log('db setup complete................');
     await this.syncData();
   }
 }
