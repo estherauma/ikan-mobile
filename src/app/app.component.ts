@@ -12,10 +12,11 @@ import { LocalNotificationsService } from './shared/services/local-notifications
 import { Subscription } from 'rxjs';
 import { SyncService } from './shared/services/sync/sync.service';
 import { TrainingVideoComponent } from './learninghub/training-video/training-video.component';
-import { ModalController, Platform } from '@ionic/angular';
+import { AlertController, IonicSafeString, ModalController, Platform } from '@ionic/angular';
 import { App } from '@capacitor/app';
 import { Location } from '@angular/common';
 import { LocalNotifications  } from '@capacitor/local-notifications';
+import { ApiService } from './shared/services/api/api.service';
 
 @Component({
   selector: 'app-root',
@@ -43,6 +44,8 @@ export class AppComponent implements OnInit, OnDestroy {
     public modalController: ModalController,
     public platform: Platform,
     public location: Location,
+    public alertController: AlertController,
+    public apiService: ApiService,
   ) {
     this.authService.setUpAuthData();
     this.checkLoginStatus();
@@ -181,6 +184,8 @@ export class AppComponent implements OnInit, OnDestroy {
       this.router.navigate([ this.sharedMethods.getProfileUrlBasedOnRole(user?.role) ]);
     } else if (this.appPages[index].url === '/survey') {
       this.router.navigate([this.appPages[index].url], { queryParams: { surveySource: SurveySources.fromMenu } });
+    } else if (this.appPages[index].url === '/delete-account') {
+      await this.deleteAccount();
     } else {
       this.router.navigate([this.appPages[index].url]);
     }
@@ -195,6 +200,50 @@ export class AppComponent implements OnInit, OnDestroy {
     modal.present();
   }
 
+  async deleteAccount() {
+    const hasInternet = await this.sharedMethods.checkInternetConnectionStatus();
+    if (!hasInternet) {
+      // translate
+      return this.sharedMethods.showToast(this.contentService.commonText?.noInternetConnection || 'No internet connection');
+    }
+
+    const alert = await this.alertController.create({
+      header: this.commonText?.deletingYourAccount || 'Deleting your Account',
+      // message: this.commonText?.deleteAccountMessage || 'Are you sure you want to delete your account?',
+      message: new IonicSafeString(`
+        <p>Deleting your account is a permanent action and cannot be undone.</p>
+        <p>Once deleted, you will lose access to:</p>
+        <ul>
+          <li>Your profile and personal settings</li>
+          <li>Any saved data, documents or preferences</li>
+          <li>Access to your subscriptions or purchase history</li>
+        </ul>
+
+        <p><strong>If you're sure, please CONFIRM. Otherwise, you can cancel this action.</strong></p>
+      `),
+      cssClass: 'tuna-alert delete-account-alert',
+      buttons: [
+        {
+          text: this.commonText?.cancel || 'Cancel',
+          role: 'cancel',
+          cssClass: 'secondary',
+        }, {
+          text: this.commonText?.delete || 'Delete',
+          handler: async() => {
+            // translate
+            await this.sharedMethods.showWaitLoader(this.commonText?.deletingAccount || 'Deleting account...');
+            // clear db, storage, and delete account
+            await this.dbService.dropDatabase().then(async() => {});
+
+            this.router.navigate(['']);
+            await this.sharedMethods.dismissLoader();
+          }
+        }
+      ]
+    });
+
+    await alert.present();
+  }
 
   handleBackButtonNavigation() {
     this.platform.backButton.subscribeWithPriority(-1, async () => {
@@ -212,6 +261,7 @@ export class AppComponent implements OnInit, OnDestroy {
   }
 
   async syncData() {
+    console.log('syncing data................');
     await this.sharedMethods.showWaitLoader(this.commonText?.syncingData || 'Syncing data...');
     const user: UserData = await this.sharedMethods.readDataFromStorage(StorageKeys.userData);
     if (user) {
@@ -222,6 +272,7 @@ export class AppComponent implements OnInit, OnDestroy {
 
   async setupDB() {
     await this.dbService.checkDbPlatformAndRunMigration();
+    console.log('db setup complete................');
     await this.syncData();
   }
 }

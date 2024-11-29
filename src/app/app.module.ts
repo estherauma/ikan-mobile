@@ -33,7 +33,7 @@ import { GlobalHttpInterceptor } from './shared/services/error-handler/global-ht
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
   imports: [
     BrowserModule,
-    IonicModule.forRoot(),
+    IonicModule.forRoot({ innerHTMLTemplatesEnabled: true }),
     AppRoutingModule,
     ReactiveFormsModule,
     FormsModule,
