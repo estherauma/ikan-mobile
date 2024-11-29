@@ -233,7 +233,12 @@ export class AppComponent implements OnInit, OnDestroy {
             // translate
             await this.sharedMethods.showWaitLoader(this.commonText?.deletingAccount || 'Deleting account...');
             // clear db, storage, and delete account
-            await this.dbService.dropDatabase().then(async() => {});
+            await this.dbService.dropDatabase().then(async() => {
+              const userId = this.userData?.id;
+              await this.dbService.checkDbPlatformAndRunMigration();
+              await this.apiService.delete('account/users', userId);
+              await this.sharedMethods.clearPreferences();
+            });
 
             this.router.navigate(['']);
             await this.sharedMethods.dismissLoader();
