@@ -134,7 +134,6 @@ export class HomePage implements OnInit {
               updatedBy: this.currentUser.id,
             },
           ];
-      console.log('userPayments', this.userPayments);
     });
   }
 
