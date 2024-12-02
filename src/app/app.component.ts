@@ -225,16 +225,21 @@ export class AppComponent implements OnInit, OnDestroy {
           text: this.commonText?.delete,
           handler: async() => {
             await this.sharedMethods.showWaitLoader(this.commonText?.deletingAccountWaitMessage);
-            // clear db, storage, and delete account
-            await this.dbService.dropDatabase().then(async() => {
-              const userId = this.userData?.id;
-              await this.dbService.checkDbPlatformAndRunMigration();
-              await this.apiService.delete('account/users', userId);
-              await this.sharedMethods.clearPreferences();
+            const userId = this.userData?.id;
+            return this.apiService.delete('accounts/users', userId).subscribe(async(resp) => {
+              if (resp?.['status'] === 'OK' || !resp) {
+                await this.dbService.dropDatabase().then(async() => {
+                  this.dbService.executedMigrations = [];
+                  await this.dbService.checkDbPlatformAndRunMigration();
+                  await this.sharedMethods.clearPreferences();
+                  await this.sharedMethods.dismissLoader();
+                  this.router.navigate(['']);
+                });
+              } else {
+                await this.sharedMethods.dismissLoader();
+                this.sharedMethods.showToast(this.commonText?.accountDeleteError, 'long');
+              }
             });
-
-            this.router.navigate(['']);
-            await this.sharedMethods.dismissLoader();
           }
         }
       ]
