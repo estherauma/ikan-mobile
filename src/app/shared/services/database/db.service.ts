@@ -30,8 +30,8 @@ export class DBService {
   ) {}
   
   async checkDbPlatformAndRunMigration(seedData = false) {
-    await this.platform.ready().then(async() => {
-      this.sqlite.create({
+    return await this.platform.ready().then(async() => {
+      return await this.sqlite.create({
         name: 'tunalocal.db',
         location: 'default'
       }).then(async(_db: SQLiteObject) => {
