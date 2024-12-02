@@ -203,18 +203,16 @@ export class AppComponent implements OnInit, OnDestroy {
   async deleteAccount() {
     const hasInternet = await this.sharedMethods.checkInternetConnectionStatus();
     if (!hasInternet) {
-      // translate
-      return this.sharedMethods.showToast(this.contentService.commonText?.noInternetConnection || 'No internet connection');
+      return this.sharedMethods.showToast(this.contentService.commonText?.noInternetConnection, 'long');
     }
 
-    // translate
     const alert = await this.alertController.create({
-      header: this.commonText?.deletingYourAccount || 'Deleting your Account',
+      header: this.commonText?.deletingYourAccount,
       message: new IonicSafeString(`
-        <p>Are you sure you want to delete your account?</p>
-        <p style="color: var(--ikan_red_100); font-weight: bold;">This action is permanent and cannot be undone.</p>
-        <p>All your data, including profile, settings, and saved items, will be deleted.</p>
-        <p><strong>If you're sure, please CONFIRM. Otherwise, you can cancel this action.</strong></p>
+        <p>${ this.commonText?.deleteAccountPrompt }</p>
+        <p style="color: var(--ikan_red_100); font-weight: bold;">${ this.commonText?.deleteActionIsPermanent }</p>
+        <p>${ this.commonText?.accountDataWillBeDeleted }</p>
+        <p><strong>${ this.commonText?.proceedWithAccountDeletion }</strong></p>
       `),
       cssClass: 'tuna-alert delete-account-alert',
       buttons: [
@@ -226,8 +224,7 @@ export class AppComponent implements OnInit, OnDestroy {
         {
           text: this.commonText?.delete,
           handler: async() => {
-            // translate
-            await this.sharedMethods.showWaitLoader(this.commonText?.deletingAccount || 'Deleting account...');
+            await this.sharedMethods.showWaitLoader(this.commonText?.deletingAccountWaitMessage);
             // clear db, storage, and delete account
             await this.dbService.dropDatabase().then(async() => {
               const userId = this.userData?.id;
