@@ -82,11 +82,14 @@ export class HomePage implements OnInit {
       const user: UserData = await this.sharedMethods.readDataFromStorage(
         StorageKeys.userData
       );
-      this.userPayments = data.filter(
+      this.userPayments = data?.filter(
         (payment) => payment.WorkerId === user.id
       );
       // dummy data
       // TODO: reove dummy data after adding payments
+      this.currentUser = await this.sharedMethods.readDataFromStorage(
+        StorageKeys.userData
+      );
       this.userPayments = this.userPayments?.length
         ? this.userPayments
         : [

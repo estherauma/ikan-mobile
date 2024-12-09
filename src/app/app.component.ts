@@ -12,10 +12,11 @@ import { LocalNotificationsService } from './shared/services/local-notifications
 import { Subscription } from 'rxjs';
 import { SyncService } from './shared/services/sync/sync.service';
 import { TrainingVideoComponent } from './learninghub/training-video/training-video.component';
-import { ModalController, Platform } from '@ionic/angular';
+import { AlertController, IonicSafeString, ModalController, Platform } from '@ionic/angular';
 import { App } from '@capacitor/app';
 import { Location } from '@angular/common';
 import { LocalNotifications  } from '@capacitor/local-notifications';
+import { ApiService } from './shared/services/api/api.service';
 
 @Component({
   selector: 'app-root',
@@ -43,6 +44,8 @@ export class AppComponent implements OnInit, OnDestroy {
     public modalController: ModalController,
     public platform: Platform,
     public location: Location,
+    public alertController: AlertController,
+    public apiService: ApiService,
   ) {
     this.authService.setUpAuthData();
     this.checkLoginStatus();
@@ -105,6 +108,10 @@ export class AppComponent implements OnInit, OnDestroy {
           } else {
             el.last = false;
           }
+        }
+        
+        if (el.url === '/delete-account') {
+          el.isDeleteAccount = true;
         }
       });
 
@@ -177,6 +184,8 @@ export class AppComponent implements OnInit, OnDestroy {
       this.router.navigate([ this.sharedMethods.getProfileUrlBasedOnRole(user?.role) ]);
     } else if (this.appPages[index].url === '/survey') {
       this.router.navigate([this.appPages[index].url], { queryParams: { surveySource: SurveySources.fromMenu } });
+    } else if (this.appPages[index].url === '/delete-account') {
+      await this.deleteAccount();
     } else {
       this.router.navigate([this.appPages[index].url]);
     }
@@ -191,6 +200,53 @@ export class AppComponent implements OnInit, OnDestroy {
     modal.present();
   }
 
+  async deleteAccount() {
+    const hasInternet = await this.sharedMethods.checkInternetConnectionStatus();
+    if (!hasInternet) {
+      return this.sharedMethods.showToast(this.contentService.commonText?.noInternetConnection, 'long');
+    }
+
+    const alert = await this.alertController.create({
+      header: this.commonText?.deletingYourAccount,
+      message: new IonicSafeString(`
+        <p>${ this.commonText?.deleteAccountPrompt }</p>
+        <p style="color: var(--ikan_red_100); font-weight: bold;">${ this.commonText?.deleteActionIsPermanent }</p>
+        <p>${ this.commonText?.accountDataWillBeDeleted }</p>
+        <p><strong>${ this.commonText?.proceedWithAccountDeletion }</strong></p>
+      `),
+      cssClass: 'tuna-alert delete-account-alert',
+      buttons: [
+        {
+          text: this.commonText?.cancel,
+          role: 'cancel',
+          cssClass: 'secondary',
+        }, 
+        {
+          text: this.commonText?.delete,
+          handler: async() => {
+            await this.sharedMethods.showWaitLoader(this.commonText?.deletingAccountWaitMessage);
+            const userId = this.userData?.id;
+            return this.apiService.delete('accounts/users', userId).subscribe(async(resp) => {
+              if (resp?.['status'] === 'OK' || !resp) {
+                await this.dbService.dropDatabase().then(async() => {
+                  this.dbService.executedMigrations = [];
+                  await this.dbService.checkDbPlatformAndRunMigration();
+                  await this.sharedMethods.clearPreferences();
+                  await this.sharedMethods.dismissLoader();
+                  this.router.navigate(['']);
+                });
+              } else {
+                await this.sharedMethods.dismissLoader();
+                this.sharedMethods.showToast(this.commonText?.accountDeleteError, 'long');
+              }
+            });
+          }
+        }
+      ]
+    });
+
+    await alert.present();
+  }
 
   handleBackButtonNavigation() {
     this.platform.backButton.subscribeWithPriority(-1, async () => {

@@ -200,4 +200,16 @@ export class ProfilesDataService {
       return null;
     });
   }
+
+  async delete(email: string) {
+    const query = 'DELETE FROM profiles WHERE email = ?';
+    const params = [email];
+    return this.db.executeSql(query, params).then(async(result) => {
+      await this.retrieveProfiles();
+      return result;
+    }).catch((e) => {
+      console.error(e);
+      return null;
+    });
+  }
 }

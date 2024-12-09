@@ -87,6 +87,19 @@ export class SharedmethodsService {
     }
   }
 
+  async clearPreferences(keysToExclude: string[] = [StorageKeys.appContent]) {
+    try {
+      const { keys } = await Preferences.keys();
+      const keysToDelete = keys.filter((key) => !keysToExclude.includes(key));
+
+      for (const key of keysToDelete) {
+        await Preferences.remove({ key });
+      }
+    } catch (error) {
+      console.error('Error clearing preferences', error);
+    }
+  }
+
   isValidJSON(str: string) {
     try {
       JSON.parse(str);

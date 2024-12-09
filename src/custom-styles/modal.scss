@@ -118,11 +118,38 @@ ion-modal.my-own-class {
   }
 }
 
+.delete-account-alert .alert-wrapper,
 .del-img-prompt-alert .alert-wrapper {
   .alert-button:last-child {
     color: white !important;
     background-color: var(--ikan_red_100) !important;
     border-color: var(--ikan_red_100);
+  }
+}
+
+.delete-account-alert {
+  .alert-wrapper {
+    width: 100%;
+    min-height: 10%;
+    height: unset;
+    max-height: 90% !important;
+
+    .alert-head {
+      border-bottom: 1px solid #eaedf6;
+      h2 {
+        font-size: 1.35rem;
+        color: #191970;
+      }
+    }
+    
+    .alert-message {
+      max-height: unset;
+      color: #2e2d2c;
+
+      ul {
+        padding-left: 25px;
+      }
+    }
   }
 }
 
