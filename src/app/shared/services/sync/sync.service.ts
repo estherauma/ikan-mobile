@@ -96,6 +96,7 @@ export class SyncService {
     await this.fetchMyDocuments();
     await this.fetchPassports();
     await this.fetchInlineQuestions();
+    await this.fetchPayments();
   }
 
   async syncCompanies() {
@@ -979,6 +980,39 @@ export class SyncService {
               });
             }
           });
+        });
+      }
+    });
+  }
+
+  async fetchPayments() {
+    return this.apiService.get('payments').subscribe((response) => {
+      if (response?.['status'] === 200 && response.body.data.length > 0) {
+        response.body.data.forEach(async(payment) => {
+          const user = await this.sharedMethods.getUserData();
+          const now = this.sharedMethods.getCurrentDateTime();
+          const dataToSave = {
+            ...payment,
+            onlineRef: payment.id,
+            userId: payment.user,
+            vesselId: payment.vessel,
+            createdAt: payment.createdAt ??  now,
+            updatedAt: payment.updatedAt ??  now,
+            createdBy: payment.createdBy ?? user?.id,
+            updatedBy: payment.updatedBy ?? user?.id,
+          };
+
+          const paymentExists = await this.paymentsDataService.checkIfPaymentExists(payment.id);
+          if (paymentExists) {
+            const currentPayment = await this.paymentsDataService.payments.find(p => p.onlineRef === payment.id);
+            const currentUpdateDate = new Date(currentPayment?.updatedAt);
+            const newUpdateDate = new Date(payment.updatedAt);
+            if (currentUpdateDate < newUpdateDate) {
+              await this.paymentsDataService.update(dataToSave).then(() => {});
+            }
+          } else {
+            await this.paymentsDataService.saveOnlinePayment(dataToSave).then(() => {});
+          }
         });
       }
     });
