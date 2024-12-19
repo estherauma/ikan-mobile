@@ -106,9 +106,9 @@ export class PaymentsDataService {
                   : false,
               deductions: data.rows.item(i).deductions,
               paymentStatus: data.rows.item(i).payment_status,
-              confirmed:
-                data.rows.item(i).confirmed ||
-                data.rows.item(i).confirmed === 'true'
+              isConfirmed:
+                data.rows.item(i).is_confirmed ||
+                data.rows.item(i).is_confirmed === 'true'
                   ? true
                   : false,
               confirmationDate: data.rows.item(i).confirmation_date,
@@ -121,7 +121,6 @@ export class PaymentsDataService {
             });
           }
         }
-        console.log('payments', payments);
         this.paymentsObs.next(payments);
       })
       .catch((e) => console.log(e));
@@ -140,7 +139,7 @@ export class PaymentsDataService {
       bank_transfer_usd_amount, bank_transfer_currency, bank_transfer_local_amount, bank_transfer_exchange_rate, \
       is_bank_transfer_beneficiary_crew, bank_account_name, bank_account_number, bank_name, \
       bank_transfer_beneficiary_relationship, bank_transfer_beneficiary_contact, bank_transfer_beneficiary_contact_platform, \
-      has_deductions, deductions, payment_status, confirmed, confirmation_date, created_at, updated_at, created_by, updated_by, \
+      has_deductions, deductions, payment_status, is_confirmed, confirmation_date, created_at, updated_at, created_by, updated_by, \
       deleted_at, deleted_by) VALUES \
       (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, \
       ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)';
@@ -177,7 +176,7 @@ export class PaymentsDataService {
       data.hasDeductions,
       data.deductions,
       data.paymentStatus,
-      data.confirmed,
+      data.isConfirmed,
       data.confirmationDate,
       data.createdAt,
       data.updatedAt,
@@ -202,7 +201,7 @@ export class PaymentsDataService {
       bank_transfer_usd_amount, bank_transfer_currency, bank_transfer_local_amount, bank_transfer_exchange_rate, \
       is_bank_transfer_beneficiary_crew, bank_account_name, bank_account_number, bank_name, \
       bank_transfer_beneficiary_relationship, bank_transfer_beneficiary_contact, bank_transfer_beneficiary_contact_platform, \
-      has_deductions, deductions, payment_status, confirmed, confirmation_date, created_at, updated_at, created_by, updated_by, \
+      has_deductions, deductions, payment_status, is_confirmed, confirmation_date, created_at, updated_at, created_by, updated_by, \
       deleted_at, deleted_by) VALUES \
       (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, \
       ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)';
@@ -240,7 +239,7 @@ export class PaymentsDataService {
       data.hasDeductions,
       data.deductions,
       data.paymentStatus,
-      data.confirmed,
+      data.isConfirmed,
       data.confirmationDate,
       data.createdAt,
       data.updatedAt,
@@ -273,7 +272,7 @@ export class PaymentsDataService {
       is_bank_transfer_beneficiary_crew = ?, bank_account_name = ?, bank_account_number = ?, bank_name = ?, \
       bank_transfer_beneficiary_relationship = ?, bank_transfer_beneficiary_contact = ?, \
       bank_transfer_beneficiary_contact_platform = ?, has_deductions = ?, deductions = ?, payment_status = ?, \
-      confirmed = ?, confirmation_date = ?, updated_at = ?, updated_by = ? WHERE online_ref = ?';
+      is_confirmed = ?, confirmation_date = ?, updated_at = ?, updated_by = ? WHERE online_ref = ?';
     const params = [
       data.paymentDate,
       data.paymentCategory,
@@ -305,7 +304,7 @@ export class PaymentsDataService {
       data.hasDeductions,
       data.deductions,
       data.paymentStatus,
-      data.confirmed,
+      data.isConfirmed,
       data.confirmationDate,
       data.updatedAt,
       data.updatedBy,
