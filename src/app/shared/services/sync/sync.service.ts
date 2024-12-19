@@ -987,20 +987,16 @@ export class SyncService {
 
   async fetchPayments() {
     return this.apiService.get('payments').subscribe((response) => {
-      if (response?.['status'] === 200 && response.body.data.length > 0) {
-        response.body.data.forEach(async(payment) => {
+      if (response?.['status'] === 200 && response.body.length > 0) {
+        response.body.forEach(async(payment) => {
           const user = await this.sharedMethods.getUserData();
           const now = this.sharedMethods.getCurrentDateTime();
-          const dataToSave = {
-            ...payment,
-            onlineRef: payment.id,
-            userId: payment.user,
-            vesselId: payment.vessel,
-            createdAt: payment.createdAt ??  now,
-            updatedAt: payment.updatedAt ??  now,
-            createdBy: payment.createdBy ?? user?.id,
-            updatedBy: payment.updatedBy ?? user?.id,
-          };
+          const dataToSave = Object.assign({}, payment);
+          delete dataToSave.id;
+          dataToSave.userId = payment.user;
+          dataToSave.vesselId = payment.vessel;
+          dataToSave.onlineRef = payment.id;
+          dataToSave.isConfirmed = payment.isConfirmed ?? false;
 
           const paymentExists = await this.paymentsDataService.checkIfPaymentExists(payment.id);
           if (paymentExists) {
