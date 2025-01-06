@@ -230,7 +230,12 @@
                 <ion-input
                   class="ion-padding-start form-input"
                   [id]="question.key"
-                  [value]="tunaFormGroup.controls[question.key].value | date"
+                  [value]="
+                    sharedMethods.formatLocalDate(
+                      tunaFormGroup.controls[question.key].value,
+                      currentLanguage
+                    )
+                  "
                   [placeholder]="question.placeholder || selectDateText"
                   [ngClass]="(tunaFormGroup.controls[question.key].invalid && isSubmitting) ? 'invalid-input' : '' "
                   [disabled]="tunaFormGroup.controls[question.key].disabled"
@@ -560,7 +565,12 @@
                     <ion-input
                       class="ion-padding-start form-input"
                       [id]="question.followUpQuestion.key"
-                      [value]="tunaFormGroup.controls[question.followUpQuestion.key].value | date"
+                      [value]="
+                        sharedMethods.formatLocalDate(
+                          tunaFormGroup.controls[question.followUpQuestion.key].value,
+                          currentLanguage
+                        )
+                      "
                       [placeholder]="question.followUpQuestion.placeholder || selectDateText"
                       [ngClass]="(tunaFormGroup.controls[question.followUpQuestion.key].invalid && isSubmitting) ? 'invalid-input' : '' "
                       [disabled]="tunaFormGroup.controls[question.followUpQuestion.key].disabled"

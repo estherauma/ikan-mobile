@@ -4,7 +4,7 @@ import { ModalController } from '@ionic/angular';
 import { CreatePage } from '../../create/create.page';
 import { ContractDataService } from '../../data/contract-data.service';
 import { ContentService } from '../../../shared/services/content/content.service';
-import { formatDate } from "@angular/common";
+import { SharedmethodsService } from 'src/app/shared/services/sharedmethods/sharedmethods.service';
 
 @Component({
   selector: 'app-home',
@@ -23,6 +23,7 @@ export class HomePage implements OnInit {
     public contractsDataService: ContractDataService,
     public modalCtrl: ModalController,
     public contentService: ContentService,
+    public sharedMethods: SharedmethodsService,
   ) {
     this.contractsDataService.getAll().subscribe((data) => {
       this.contracts = this.unfilteredData = data;
@@ -61,9 +62,9 @@ export class HomePage implements OnInit {
 
   // TODO: Move to sharedMethods
   getContractDates(contract) {
-    const locale = this.contentService.currentLanguage;
-    const start = formatDate(contract?.startDate, 'dd/MM/yyyy', locale);
-    const end = formatDate(contract?.endDate, 'dd/MM/yyyy', locale);
+    const lang = this.contentService.currentLanguage;
+    const start = this.sharedMethods.formatLocalDate(contract?.startDate, lang);
+    const end = this.sharedMethods.formatLocalDate(contract?.endDate, lang);
     return `${start} - ${end}`;
   }
 

@@ -24,7 +24,7 @@
         </ion-col>
       </ion-row>
     </ion-grid>
-    
+
     <ion-text>
       <span class="gray">{{ commonText?.appRef }}:</span>
       {{contract?.appRef}}
@@ -43,7 +43,8 @@
     </ion-text>
     <ion-text class="block">
       <span class="gray">{{ commonText?.dates }}:</span>
-      {{contract?.startDate | date: 'dd/MM/yyy'}} - {{contract?.endDate | date: 'dd/MM/yyy'}}
+      {{ sharedMethods.formatLocalDate(contract?.startDate, currentLanguage) }} -
+      {{ sharedMethods.formatLocalDate(contract?.endDate, currentLanguage) }}
     </ion-text>
     <br />
 

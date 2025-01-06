@@ -32,6 +32,7 @@ export class EssentialsComponent  implements OnInit {
   isEditing: boolean = false;
   passportViewData: any = {};
   hasPassportDetails: boolean = false;
+  currentLanguage = 'en-us';
 
   constructor(
     public router: Router,
@@ -45,6 +46,7 @@ export class EssentialsComponent  implements OnInit {
 
   async ngOnInit() {
     this.commonText = this.contentService.commonText;
+    this.currentLanguage = this.contentService.currentLanguage;
     const docsPageData = this.contentService.getContentByPropertyName('my-documents-common-text');
     this.docsCommonText = this.sharedMethods.convertAdditionalTextToObj(docsPageData?.additionalText);
     this.userData = await this.sharedMethods.getUserData();

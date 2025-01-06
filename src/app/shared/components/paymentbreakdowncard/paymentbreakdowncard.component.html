@@ -22,14 +22,24 @@
     <p>
       {{ commonText?.paymentMade || "Payment Madee" }}:
       <span>
-        {{ paymentMadeOn | date : "dd/MM/yyyy" }}
+        {{
+          sharedmethods.formatLocalDate(
+            paymentMadeOn,
+            currentLanguage
+          )
+        }}
       </span>
     </p>
     <p>
       <!-- Translate -->
       {{ commonText?.paymentConfirmed || "Payment Confirmed" }}:
       <span>
-        {{ paymentConfirmedOn | date : "dd/MM/yyyy" }}
+        {{
+          sharedmethods.formatLocalDate(
+            paymentConfirmedOn,
+            currentLanguage
+          )
+        }}
       </span>
     </p>
   </ion-col>
