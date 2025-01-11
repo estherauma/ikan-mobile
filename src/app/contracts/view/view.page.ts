@@ -42,6 +42,7 @@ export class ViewPage implements OnInit {
   editContractText: string = 'Edit contract';
   isVesselOwner: boolean = false;
   isWorker: boolean = false;
+  currentLanguage = 'en-us';
 
   constructor(
     public activatedRoute: ActivatedRoute,
@@ -59,6 +60,7 @@ export class ViewPage implements OnInit {
     this.commonText = this.contentService?.commonText;
     this.isVesselOwner = this.authService.userRole === UserRole.vesselOwner;
     this.isWorker = this.authService.userRole === UserRole.worker;
+    this.currentLanguage = this.contentService.currentLanguage;
     this.activatedRoute.params.subscribe((params) => {
       const hasOtherValues = Object.keys(params).some(key => key !== 'id');
       if (hasOtherValues && params?.name) {

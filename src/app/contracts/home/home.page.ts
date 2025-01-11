@@ -4,12 +4,11 @@ import { ModalController } from '@ionic/angular';
 import { CreatePage } from '../create/create.page';
 import { ContractDataService } from '../data/contract-data.service';
 import { ContentService } from '../../shared/services/content/content.service';
-import { formatDate } from "@angular/common";
 import { AuthService } from 'src/app/shared/services/auth/auth.service';
 import { CompaniesDataService } from 'src/app/companies/data/companies-data.service';
 import { GroupedOption } from 'src/app/shared/components/filter/filter.component';
 import { SharedmethodsService } from 'src/app/shared/services/sharedmethods/sharedmethods.service';
-import { StorageKeys, UserData, UserRole } from 'src/app/shared/types/api-types';
+import { StorageKeys } from 'src/app/shared/types/api-types';
 
 
 @Component({
@@ -94,12 +93,10 @@ export class HomePage implements OnInit {
     this.contracts = result;
   }
 
-  // TODO: Move to sharedMethods
-  // Todo: Our locales apart from english through an error. Setting this here to english for now.
   getContractDates(contract) {
-    const locale = this.contentService.currentLanguage;
-    const start = formatDate(contract?.startDate, 'dd/MM/yyyy', 'en-us');
-    const end = formatDate(contract?.endDate, 'dd/MM/yyyy', 'en-us');
+    const lang = this.contentService.currentLanguage;
+    const start = this.sharedMethods.formatLocalDate(contract?.startDate, lang);
+    const end = this.sharedMethods.formatLocalDate(contract?.endDate, lang);
     return `${start} - ${end}`;
   }
 }

@@ -29,6 +29,7 @@ export class FilesPage implements OnInit {
   selectedDocuments: DocumentType[] = [];
   commonText: any;
   docsCommonText: any;
+  currentLanguage = 'en-us';
   
   constructor(
     public modalCtrl: ModalController,
@@ -43,6 +44,7 @@ export class FilesPage implements OnInit {
 
   ngOnInit() {
     this.commonText = this.contentService.commonText;
+    this.currentLanguage = this.contentService.currentLanguage;
     const docsPageData = this.contentService.getContentByPropertyName('my-documents-common-text');
     this.docsCommonText = this.sharedMethods.convertAdditionalTextToObj(docsPageData?.additionalText);
     this.getDocuments();

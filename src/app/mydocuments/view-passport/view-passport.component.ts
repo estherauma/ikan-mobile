@@ -16,6 +16,7 @@ export class ViewPassportComponent  implements OnInit {
   passportViewData;
   docsCommonText: any;
   commonText: any;
+  currentLanguage = 'en-us';
   
   constructor(
     public sharedMethods: SharedmethodsService,
@@ -30,6 +31,7 @@ export class ViewPassportComponent  implements OnInit {
     const docsPageData = this.contentService.getContentByPropertyName('my-documents-common-text');
     this.docsCommonText = this.sharedMethods.convertAdditionalTextToObj(docsPageData?.additionalText);
     this.commonText = this.contentService.commonText;
+    this.currentLanguage = this.contentService.currentLanguage;
   }
 
   closeView() {
