@@ -151,6 +151,10 @@ export class SharedmethodsService {
   }
 
    formatLocalDate(date, currentLanguage) {
+    if (!date) {
+      return date;
+    }
+    
     let locale = 'en-us';
     let format = 'dd MMM yyyy';
     
