@@ -1,4 +1,4 @@
-<ion-row (click)="onClickCard($event)">
+<ion-row (click)="onClickCard($event)" [ngClass]="{ 'no-status': !showStatus }">
   <!-- TODO: style according to status -->
   <ion-col *ngIf="showStatus" size="12" class="status-col">
     <ion-text class="status" [ngClass]="statusClass"> {{ status }}</ion-text>

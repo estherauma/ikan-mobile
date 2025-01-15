@@ -3,7 +3,11 @@ import { Router } from '@angular/router';
 import { ContentService } from 'src/app/shared/services/content/content.service';
 import { VesselsDataService } from 'src/app/vessels/data/vessels-data.service';
 import { PaymentsDataService } from '../data/payments-data.service';
-import { StorageKeys, UserData } from 'src/app/shared/types/api-types';
+import {
+  StorageKeys,
+  UserData,
+  UserRole,
+} from 'src/app/shared/types/api-types';
 import { SharedmethodsService } from 'src/app/shared/services/sharedmethods/sharedmethods.service';
 
 @Component({
@@ -75,72 +79,27 @@ export class HomePage implements OnInit {
     public paymentsDataService: PaymentsDataService,
     public sharedMethods: SharedmethodsService
   ) {
-    this.vesselsDataService.getAll().subscribe((data) => {
+    this.vesselsDataService.getAll().subscribe(async (data) => {
+      await this.getCurrentUser();
+      // TODO: filter data based on user role
       this.vessels = this.unFilteredData = data;
     });
     this.paymentsDataService.getAll().subscribe(async (data) => {
-      const user: UserData = await this.sharedMethods.readDataFromStorage(
-        StorageKeys.userData
-      );
-      this.userPayments = data?.filter(
-        (payment) => payment.WorkerId === user.id
-      );
-      // dummy data
-      // TODO: reove dummy data after adding payments
-      this.currentUser = await this.sharedMethods.readDataFromStorage(
-        StorageKeys.userData
-      );
-      this.userPayments = this.userPayments?.length
-        ? this.userPayments
-        : [
-            {
-              id: 1,
-              companyName: 'Company Name 1',
-              type: 'Cash',
-              worker: this.currentUser?.id,
-              totalAmount: 600,
-              remmitanceAmount: 0,
-              beneficiaryAmount: 300,
-              cashAmount: 300,
-              date: '2024-11-01T10:00:00Z',
-              status: 'Confirmed',
-              confirmed: true,
-              confirmedDate: '2024-11-01T10:00:00Z',
-              fileUrl: null,
-              onlineRef: 'ref',
-              createdAt: '2024-11-01T10:00:00Z',
-              updatedAt: '2024-11-01T10:00:00Z',
-              createdBy: this.currentUser.id,
-              updatedBy: this.currentUser.id,
-            },
-            {
-              id: 1,
-              companyName: 'Company Name 2',
-              type: 'Cash',
-              worker: this.currentUser?.id,
-              totalAmount: 600,
-              remmitanceAmount: 0,
-              beneficiaryAmount: 300,
-              cashAmount: 300,
-              date: '2024-11-01T10:00:00Z',
-              status: 'Rejected',
-              confirmed: true,
-              confirmedDate: '2024-11-01T10:00:00Z',
-              fileUrl: null,
-              onlineRef: 'ref',
-              createdAt: '2024-11-01T10:00:00Z',
-              updatedAt: '2024-11-01T10:00:00Z',
-              createdBy: this.currentUser.id,
-              updatedBy: this.currentUser.id,
-            },
-          ];
+      await this.getCurrentUser();
+      if (this.currentUser?.role === UserRole.worker) {
+        this.userPayments = data?.filter(
+          (payment) => payment.userId === this.currentUser.id
+        );
+      } else if (this.currentUser?.role === UserRole.vesselOwner) {
+        this.userPayments = data?.filter(
+          (payment) => payment.createdBy === this.currentUser.id
+        );
+      }
     });
   }
 
   async ngOnInit() {
-    this.currentUser = await this.sharedMethods.readDataFromStorage(
-      StorageKeys.userData
-    );
+    await this.getCurrentUser();
     this.commonText = await this.contentService?.commonText;
     this.pageTitle = this.commonText?.payments;
     this.filterOptions = [
@@ -153,6 +112,12 @@ export class HomePage implements OnInit {
       this.organizations = [...this.chineseFilterDataSet];
       this.vesselCompanyText = this.chineseVesselCompanyText;
     }
+  }
+
+  async getCurrentUser() {
+    this.currentUser = await this.sharedMethods.readDataFromStorage(
+      StorageKeys.userData
+    );
   }
 
   searchResult(data) {

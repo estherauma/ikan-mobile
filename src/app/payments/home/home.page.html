@@ -98,10 +98,9 @@
                 }"
           [status]="payment?.status"
           iconUrl="assets/icon/single_payment_blue.svg"
-          [amount]="payment?.totalAmount"
-          [currency]="payment?.currency || '$'"
-          [paymentMadeOn]="payment?.createdAt"
-          [paymentConfirmedOn]="payment?.confirmedDate"
+          currency="$"
+          [amount]="payment?.totalUsdAmountReceived"
+          [paymentMadeOn]="payment?.paymentDate"
           (onClick)="goToPaymentDetail(payment)"
         >
         </app-paymentbreakdowncard>
