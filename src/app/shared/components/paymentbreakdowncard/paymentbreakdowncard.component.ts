@@ -14,7 +14,7 @@ export class PaymentbreakdowncardComponent implements OnInit {
   commonText: any;
   currentUser: UserData;
 
-  @Input() showStatus = true;
+  @Input() showStatus = false;
   @Input() statusClass: any; // add type
   @Input() status = '';
   @Input() showType = false;
