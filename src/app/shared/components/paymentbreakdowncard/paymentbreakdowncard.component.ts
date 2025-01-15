@@ -13,6 +13,7 @@ export class PaymentbreakdowncardComponent implements OnInit {
   
   commonText: any;
   currentUser: UserData;
+  currentLanguage = 'en-us';
 
   @Input() showStatus = false;
   @Input() statusClass: any; // add type
@@ -39,6 +40,7 @@ export class PaymentbreakdowncardComponent implements OnInit {
 
   async ngOnInit() {
     this.commonText = this.contentService?.commonText;
+    this.currentLanguage = this.contentService?.currentLanguage;
     this.currentUser = await this.sharedmethods.getUserData();
   }
 

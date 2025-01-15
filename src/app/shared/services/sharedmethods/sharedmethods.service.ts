@@ -9,7 +9,8 @@ import { Device } from '@capacitor/device';
 import {v4 as uuidv4} from 'uuid';
 import { UserRole } from '../../types/api-types';
 import { Validators } from '@angular/forms';
-import { Camera, CameraSource } from '@capacitor/camera';
+import { CameraSource } from '@capacitor/camera';
+import { formatDate } from "@angular/common";
 
 
 @Injectable({
@@ -147,6 +148,20 @@ export class SharedmethodsService {
       const dateTime = date + ' ' + time;
       return dateTime;
     }
+  }
+
+   formatLocalDate(date, currentLanguage) {
+    let locale = 'en-us';
+    let format = 'dd MMM yyyy';
+    
+    if (currentLanguage === 'qm-zh') {
+      locale = 'zh';
+      format = 'yyyy年MM月dd日';
+    } else if (currentLanguage === 'id-id') {
+      locale = 'id';
+    }
+
+    return formatDate(date, format, locale);
   }
 
   async getUserData() {

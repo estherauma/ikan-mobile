@@ -39,8 +39,8 @@
               <p>
                 <span>{{ commonText?.uploaded }}: </span>
                 {{
-                  userPassportDetails?.updatedAt ||
-                    userPassportDetails?.createdAt | date : "dd/MM/yyyy"
+                  sharedMethods.formatLocalDate(userPassportDetails?.updatedAt, currentLanguage) ||
+                    sharedMethods.formatLocalDate(userPassportDetails?.createdAt, currentLanguage)
                 }}
               </p>
             </ion-col>
@@ -90,7 +90,10 @@
               </ion-label>
               <p>
                 <span>{{ commonText?.uploaded }}: </span>
-                {{ userVisaDetails.updatedAt || userVisaDetails.createdAt | date : "dd/MM/yyyy" }}
+                {{
+                  sharedMethods.formatLocalDate(userVisaDetails.updatedAt, currentLanguage) ||
+                    sharedMethods.formatLocalDate(userVisaDetails.createdAt, currentLanguage)
+                }}
               </p>
             </ion-col>
           </ion-row>
@@ -141,7 +144,10 @@
               <p>
                 <span>{{ commonText?.uploaded }}: 
                 </span>
-                {{ userSeamansBookDetails.updatedAt || userSeamansBookDetails.createdAt | date : "dd/MM/yyyy" }}
+                {{
+                  sharedMethods.formatLocalDate(userSeamansBookDetails.updatedAt, currentLanguage) ||
+                    sharedMethods.formatLocalDate(userSeamansBookDetails.createdAt, currentLanguage)
+                }}
               </p>
             </ion-col>
           </ion-row>
@@ -194,7 +200,10 @@
                 </ion-label>
                 <p>
                   <span>{{ commonText?.uploaded }}: </span>
-                  {{ doc.updatedAt || doc.createdAt | date : "dd/MM/yyyy" }}
+                  {{
+                    sharedMethods.formatLocalDate(doc.updatedAt, currentLanguage) ||
+                      sharedMethods.formatLocalDate(doc.createdAt, currentLanguage)
+                  }}
                 </p>
               </ion-col>
             </ion-row>

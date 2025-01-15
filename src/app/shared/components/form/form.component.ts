@@ -51,6 +51,7 @@ export class FormComponent implements OnInit {
   selectDateText = 'Select a date'; // TODO: add to prismic
   commonText: any;
   docsCommonText: any;
+  currentLanguage = 'en-us';
 
   constructor(
     public uploadService: UploadService,
@@ -63,6 +64,7 @@ export class FormComponent implements OnInit {
 
   ngOnInit() {
     this.commonText = this.contentService?.commonText;
+    this.currentLanguage = this.contentService?.currentLanguage;
     const docsPageData = this.contentService.getContentByPropertyName('my-documents-common-text');
     this.docsCommonText = this.sharedMethods.convertAdditionalTextToObj(docsPageData?.additionalText);
     this.typeHereText = this.commonText?.typeHere;

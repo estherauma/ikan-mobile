@@ -2,7 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { ContractDataService } from '../../data/contract-data.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ContentService } from 'src/app/shared/services/content/content.service';
-import { formatDate } from '@angular/common';
 import { VesselsDataService } from 'src/app/vessels/data/vessels-data.service';
 import { AlertController } from '@ionic/angular';
 import { AnalyticsService } from 'src/app/shared/services/analytics/analytics.service';
@@ -56,6 +55,7 @@ export class ViewclausePage implements OnInit {
   commonText: any;
   isVesselOwner: boolean = false;
   isWorker: boolean = false;
+  currentLanguage = 'en-us';
 
   constructor(
     public contractDataService: ContractDataService,
@@ -85,6 +85,7 @@ export class ViewclausePage implements OnInit {
     });
     this.isEditable = this.editableClauses.includes(this.clauseDetails?.kind);
     this.commonText = this.contentService?.commonText;
+    this.currentLanguage = this.contentService.currentLanguage;
     this.pageData = this.contentService.getContentByPropertyName(this.clauseContentObjectMapping[this.clauseDetails?.kind]);
     this.pageName = this.pageData?.pageName;
     this.editBtnText = this.commonText?.editClause;
@@ -206,8 +207,7 @@ export class ViewclausePage implements OnInit {
     }
 
     if (key?.toLowerCase().includes('date')) {
-      // TODO: check which format to use so that we have uniformity in the app
-      return formatDate(value, 'yyyy/MM/dd', 'en-us');
+      return this.sharedMethods.formatLocalDate(value, this.currentLanguage);
     } else if (key === 'partyASignature' || key === 'partyBSignature') {
       return `<img class="image" src="${value}" alt="image">`; 
     } else if (this.pageName === 'contract-clauses-parties-to-this-contract-content' && key === 'vessel') {

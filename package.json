@@ -28,7 +28,7 @@
     "@awesome-cordova-plugins/sqlite": "^6.2.0",
     "@capacitor-community/fcm": "^5.0.1",
     "@capacitor-community/firebase-analytics": "^6.0.0",
-    "@capacitor/android": "^6.0.0",
+    "@capacitor/android": "^6.2.0",
     "@capacitor/app": "^6.0.0",
     "@capacitor/camera": "^6.0.0",
     "@capacitor/core": "^6.0.0",
