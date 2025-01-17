@@ -132,12 +132,13 @@ ion-content {
       }
 
       .buttons-row {
-        background: #EAEDF6;
+        gap: 1px;
         ion-col {
           justify-content: center;
           align-items: center;
+          background: #eaedf6;
           ion-button {
-            color: #A0ABCC;
+            color: #a0abcc;
             text-transform: none;
             ion-icon {
               margin-right: 5px;
