@@ -9,14 +9,14 @@
           <ion-icon [src]="paymentIconUrl" class="icon"></ion-icon>
         </div>
         <h3>
-          <!-- TODO: add currency -->
-          <span>{{paymentDetails?.currency || '$'}}</span>
-          {{paymentDetails?.totalAmount}}
+          <span>USD</span>
+          {{paymentDetails?.totalUsdAmountReceived}}
         </h3>
-        <h4 class="text-content">{{paymentDetails?.companyName}}</h4>
-        <p class="status">
+        <h4 class="text-content">{{paymentDetails?.vessel?.name}}</h4>
+        <!-- Commented out for now -->
+        <!-- <p class="status">
           {{ commonText?.status }}: {{paymentDetails?.status}}
-        </p>
+        </p> -->
       </ion-card-content>
     </ion-card>
   </div>
@@ -28,67 +28,254 @@
     </p>
   </div>
 
-  <!-- TODO: display if payment has bank transfer -->
-  <div class="bank-transfer-wrapper">
-    <app-paymentbreakdowncard
-      [statusClass]="{
-                  'pending': paymentDetails?.status === 'Pending',
-                  'confirmed': paymentDetails?.status === 'Confirmed',
-                  'rejected': paymentDetails?.status === 'Rejected',
-                }"
-      [status]="paymentDetails?.status"
-      iconUrl="assets/icon/bank.svg"
-      [amount]="paymentDetails?.totalAmount || '0'"
-      [currency]="paymentDetails?.currency || '$'"
-      [paymentMadeOn]="paymentDetails?.createdAt"
-      [paymentConfirmedOn]="paymentDetails?.confirmedDate"
-      [showType]="true"
-      type="Bank transfer"
-    >
-    </app-paymentbreakdowncard>
+  <!-- display if paymentMethod is bank_transfer or both -->
+  <div
+    *ngIf="paymentDetails?.paymentMethod !== 'cash'"
+    class="bank-transfer-wrapper"
+  >
+    <ion-card>
+      <ion-card-content>
+        <ion-row>
+          <ion-col size="2" class="icon-col">
+            <div class="icon-wrapper">
+              <ion-img class="icon" src="assets/icon/bank.svg"></ion-img>
+            </div>
+          </ion-col>
+          <ion-col size="10" class="details-col">
+            <p class="type">
+              <!-- Translate -->
+              {{ commonText?.bankTransfer || 'Bank Transfer' }}
+            </p>
+            <p class="amount">
+              USD {{ paymentDetails?.bankTransferUsdAmount || '0' }}
+            </p>
+            <ng-container
+              *ngIf="paymentDetails?.bankTransferCurrency !== 'USD'"
+            >
+              <p>
+                <!-- Translate -->
+                {{ commonText?.localEquivalennt || "Local Equivalent" }}:
+                <span
+                  >{{ paymentDetails?.bankTransferCurrency }} {{
+                  paymentDetails?.bankTransferLocalAmount }}</span
+                >
+              </p>
+              <p>
+                <!-- Translate -->
+                {{ commonText?.exchangeRate || "Exchange rate" }}:
+                <span
+                  >1 USD = {{ paymentDetails?.bankTransferCurrency }} {{
+                  paymentDetails?.bankTransferExchangeRate }}</span
+                >
+              </p>
+              <p>
+                <!-- Translate -->
+                {{ commonText?.paymentMade || "Payment Madee" }}:
+                <span>
+                  {{ sharedmethods.formatLocalDate( paymentDetails?.paymentDate,
+                  currentLanguage ) }}
+                </span>
+              </p>
+              <p>
+                <!-- Translate -->
+                {{ commonText?.paymentConfirmed || "Payment Confirmed" }}:
+                <span>
+                  {{ sharedmethods.formatLocalDate(
+                  paymentDetails?.confirmedDate, currentLanguage ) }}
+                </span>
+              </p>
+
+              <p class="details-title">
+                <!-- Translate -->
+                {{ commonText?.bankDetails || 'Bank details' }}
+              </p>
+              <p>
+                <!-- Translate -->
+                {{ commonText?.bankAccountName || "Bank account name" }}:
+                <span>{{ paymentDetails?.bankAccountName }}</span>
+              </p>
+              <p>
+                <!-- Translate -->
+                {{ commonText?.bankAccountNumber || "Bank account number" }}:
+                <span>{{ paymentDetails?.bankAccountNumber }}</span>
+              </p>
+              <p>
+                <!-- Translate -->
+                {{ commonText?.bankName || "Bank name" }}:
+                <span>{{ paymentDetails?.bankName }}</span>
+              </p>
+            </ng-container>
+            <ng-container *ngIf="paymentDetails?.isBankTransferBeneficiaryCrew">
+              <p class="details-title">
+                <!-- translate -->
+                {{ commonText?.beneficiaryDetails || 'Beneficiary Details' }}
+              </p>
+              <p>
+                <!-- Translate -->
+                {{ commonText?.beneficiaryName || "Beneficiary name" }}:
+                <span>{{ paymentDetails?.beneficiaryName }}</span>
+              </p>
+              <p>
+                <!-- Translate -->
+                {{ commonText?.beneficiaryRelationship || "Beneficiary
+                relationship" }}:
+                <span
+                  >{{ paymentDetails?.bankTransferBeneficiaryRelationship
+                  }}</span
+                >
+              </p>
+              <p>
+                <!-- Translate -->
+                {{ commonText?.beneficiaryContact || "Beneficiary contact" }}:
+                <span
+                  >{{ paymentDetails?.bankTransferBeneficiaryContact }}</span
+                >
+              </p>
+              <p>
+                <!-- Translate -->
+                {{ commonText?.beneficiaryContactPlatform || "Beneficiary
+                contact platform" }}:
+                <span
+                  >{{ paymentDetails?.bankTransferBeneficiaryContactPlatform
+                  }}</span
+                >
+              </p>
+            </ng-container>
+          </ion-col>
+        </ion-row>
+      </ion-card-content>
+
+      <ion-row *ngIf="currentUser?.role === 'worker'" class="buttons-row">
+        <ion-col>
+          <ion-button fill="clear">
+            <ion-icon
+              class="icon"
+              src="assets/icon/gray_thumbs_up.svg"
+            ></ion-icon>
+            {{ commonText?.confirm || 'Confirm' }}
+          </ion-button>
+        </ion-col>
+        <ion-col>
+          <ion-button fill="clear">
+            <ion-icon
+              class="icon"
+              src="assets/icon/gray_thumbs_down.svg"
+            ></ion-icon>
+            {{ commonText?.report || 'Report' }}
+          </ion-button>
+        </ion-col>
+      </ion-row>
+    </ion-card>
   </div>
 
-  <!-- TODO: display if payment has cash transaction -->
-  <div class="cash-transaction-wrapper">
-    <app-paymentbreakdowncard
-      [statusClass]="{
-                  'pending': paymentDetails?.status === 'Pending',
-                  'confirmed': paymentDetails?.status === 'Confirmed',
-                  'rejected': paymentDetails?.status === 'Rejected',
-                }"
-      [status]="paymentDetails?.status"
-      iconUrl="assets/icon/cash.svg"
-      [amount]="paymentDetails?.cashAmount || '0'"
-      [currency]="paymentDetails?.currency || '$'"
-      [paymentMadeOn]="paymentDetails?.createdAt"
-      [paymentConfirmedOn]="paymentDetails?.confirmedDate"
-      [showType]="true"
-      type="Cash"
-    >
-    </app-paymentbreakdowncard>
-  </div>
+  <!-- display if paymentMethod is cash or both -->
+  <div
+    *ngIf="paymentDetails?.paymentMethod !== 'bank_transfer'"
+    class="cash-transaction-wrapper"
+  >
+    <ion-card>
+      <ion-card-content>
+        <ion-row>
+          <ion-col size="2" class="icon-col">
+            <div class="icon-wrapper">
+              <ion-img class="icon" src="assets/icon/cash.svg"></ion-img>
+            </div>
+          </ion-col>
+          <ion-col size="10" class="details-col">
+            <p class="type">
+              <!-- Translate -->
+              {{ commonText?.cash || 'Cash' }}
+            </p>
+            <p class="amount">USD {{ paymentDetails?.cashUsdAmount || '0' }}</p>
+            <ng-container *ngIf="paymentDetails?.cashCurrency !== 'USD'">
+              <p>
+                <!-- Translate -->
+                {{ commonText?.localEquivalennt || "Local Equivalent" }}:
+                <span
+                  >{{ paymentDetails?.cashCurrency }} {{
+                  paymentDetails?.cashLocalAmount }}</span
+                >
+              </p>
+              <p>
+                <!-- Translate -->
+                {{ commonText?.exchangeRate || "Exchange rate" }}:
+                <span
+                  >1 USD = {{ paymentDetails?.cashCurrency }} {{
+                  paymentDetails?.cashExchangeRate }}</span
+                >
+              </p>
+              <p>
+                <!-- Translate -->
+                {{ commonText?.paymentMade || "Payment Madee" }}:
+                <span>
+                  {{ sharedmethods.formatLocalDate( paymentDetails?.paymentDate,
+                  currentLanguage ) }}
+                </span>
+              </p>
+              <p>
+                <!-- Translate -->
+                {{ commonText?.paymentConfirmed || "Payment Confirmed" }}:
+                <span>
+                  {{ sharedmethods.formatLocalDate(
+                  paymentDetails?.confirmedDate, currentLanguage ) }}
+                </span>
+              </p>
+            </ng-container>
+            <ng-container *ngIf="paymentDetails?.iscashBeneficiaryCrew">
+              <p class="details-title">
+                <!-- translate -->
+                {{ commonText?.beneficiaryDetails || 'Beneficiary Details' }}
+              </p>
+              <p>
+                <!-- Translate -->
+                {{ commonText?.beneficiaryName || "Beneficiary name" }}:
+                <span>{{ paymentDetails?.beneficiaryName }}</span>
+              </p>
+              <p>
+                <!-- Translate -->
+                {{ commonText?.beneficiaryRelationship || "Beneficiary
+                relationship" }}:
+                <span>{{ paymentDetails?.cashBeneficiaryRelationship }}</span>
+              </p>
+              <p>
+                <!-- Translate -->
+                {{ commonText?.beneficiaryContact || "Beneficiary contact" }}:
+                <span>{{ paymentDetails?.cashBeneficiaryContact }}</span>
+              </p>
+              <p>
+                <!-- Translate -->
+                {{ commonText?.beneficiaryContactPlatform || "Beneficiary
+                contact platform" }}:
+                <span
+                  >{{ paymentDetails?.cashBeneficiaryContactPlatform }}</span
+                >
+              </p>
+            </ng-container>
+          </ion-col>
+        </ion-row>
+      </ion-card-content>
 
-  <!-- TODO: display if payment has beneficiary -->
-   <!-- Add translations -->
-  <div class="beneficiary-wrapper">
-    <app-paymentbreakdowncard
-      [statusClass]="{
-                  'pending': paymentDetails?.status === 'Pending',
-                  'confirmed': paymentDetails?.status === 'Confirmed',
-                  'rejected': paymentDetails?.status === 'Rejected',
-                }"
-      [status]="paymentDetails?.status || 'Confirmed'"
-      iconUrl="assets/icon/beneficiary.svg"
-      [amount]="paymentDetails?.totalAmount || '999'"
-      [currency]="paymentDetails?.currency || '$'"
-      [paymentMadeOn]="paymentDetails?.createdAt"
-      [paymentConfirmedOn]="paymentDetails?.confirmedDate"
-      [showType]="true"
-      type="Beneficiary"
-      [showConfirmationPrompt]="true"
-      [showGrievancePrompt]="true"
-    >
-    </app-paymentbreakdowncard>
+      <ion-row *ngIf="currentUser?.role === 'worker'" class="buttons-row">
+        <ion-col>
+          <ion-button fill="clear">
+            <ion-icon
+              class="icon"
+              src="assets/icon/gray_thumbs_up.svg"
+            ></ion-icon>
+            {{ commonText?.confirm || 'Confirm' }}
+          </ion-button>
+        </ion-col>
+        <ion-col>
+          <ion-button fill="clear">
+            <ion-icon
+              class="icon"
+              src="assets/icon/gray_thumbs_down.svg"
+            ></ion-icon>
+            {{ commonText?.report || 'Report' }}
+          </ion-button>
+        </ion-col>
+      </ion-row>
+    </ion-card>
   </div>
 
   <!-- TODO: for VO view add button linking to the web data upload -->
