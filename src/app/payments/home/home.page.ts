@@ -134,6 +134,8 @@ export class HomePage implements OnInit {
   }
 
   goToPaymentDetail(paymentDetails) {
+    const vessel = this.vessels.find((v) => v.onlineRef === paymentDetails.vesselId);
+    paymentDetails.vessel = vessel;
     const queryParams = { paymentDetails: JSON.stringify(paymentDetails) };
     this.router.navigate(['payments/payment-details'], { queryParams });
   }
