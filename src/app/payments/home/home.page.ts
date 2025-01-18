@@ -82,7 +82,9 @@ export class HomePage implements OnInit {
     this.vesselsDataService.getAll().subscribe(async (data) => {
       await this.getCurrentUser();
       // TODO: filter data based on user role
-      this.vessels = this.unFilteredData = data;
+      this.vessels = this.unFilteredData = data?.filter(
+        (vessel) => vessel.createdBy === this.currentUser.id
+      );
     });
     this.paymentsDataService.getAll().subscribe(async (data) => {
       await this.getCurrentUser();

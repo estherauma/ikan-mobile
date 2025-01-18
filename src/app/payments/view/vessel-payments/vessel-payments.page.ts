@@ -21,6 +21,7 @@ export class VesselPaymentsPage implements OnInit {
   commonText: any;
   currentUser: UserData;
   vessel: any;
+  // translate
   pageTitle = 'Payments';
   filterOptions = [
     { title: 'closed', value: 'closed' },
@@ -56,168 +57,24 @@ export class VesselPaymentsPage implements OnInit {
     public sharedMethods: SharedmethodsService,
     public activatedRoute: ActivatedRoute
   ) {
-    this.activatedRoute.queryParams.subscribe((params) => {
+    this.activatedRoute.queryParams.subscribe(async(params) => {
       if (params?.vessel) {
         this.vessel = JSON.parse(params.vessel);
+        this.paymentsDataService.getAll().subscribe(async (data) => {
+          this.currentUser = await this.sharedMethods.readDataFromStorage(
+            StorageKeys.userData
+          );
+          this.vesselPayments = data?.filter(
+            (payment) =>
+              payment.vesselId === this.vessel.onlineRef &&
+              payment.createdBy === this.currentUser.id
+          );
+          // group vessel payments by date
+          this.groupedVesselPayments = this.groupPaymentsByDate(
+            this.vesselPayments
+          );
+        });
       }
-    });
-    this.paymentsDataService.getAll().subscribe(async (data) => {
-      this.currentUser = await this.sharedMethods.readDataFromStorage(
-        StorageKeys.userData
-      );
-      this.vesselPayments = data?.filter(
-        (payment) => payment.createdBy === this.currentUser.id
-      );
-      // dummy data
-      // TODO: reove dummy data after adding payments
-      this.vesselPayments = this.vesselPayments?.length
-        ? this.vesselPayments
-        : [
-            {
-              id: 1,
-              companyName: 'Company Name 1',
-              type: 'Cash',
-              worker: '-Nj748NSgdNa6i4-_l_N',
-              totalAmount: 600,
-              remmitanceAmount: 0,
-              beneficiaryAmount: 300,
-              cashAmount: 300,
-              date: '2024-11-01T10:00:00Z',
-              status: 'Confirmed',
-              confirmed: true,
-              confirmedDate: '2024-11-01T10:00:00Z',
-              fileUrl: null,
-              onlineRef: 'ref',
-              createdAt: '2024-11-01T10:00:00Z',
-              updatedAt: '2024-11-01T10:00:00Z',
-              createdBy: this.currentUser.id,
-              updatedBy: this.currentUser.id,
-            },
-            {
-              id: 1,
-              companyName: 'Company Name 2',
-              type: 'Cash',
-              worker: '-Nj748NSgdNa6i4-_l_N',
-              totalAmount: 600,
-              remmitanceAmount: 0,
-              beneficiaryAmount: 300,
-              cashAmount: 300,
-              date: '2024-11-01T10:00:00Z',
-              status: 'Rejected',
-              confirmed: true,
-              confirmedDate: '2024-11-01T10:00:00Z',
-              fileUrl: null,
-              onlineRef: 'ref',
-              createdAt: '2024-11-01T10:00:00Z',
-              updatedAt: '2024-11-01T10:00:00Z',
-              createdBy: this.currentUser.id,
-              updatedBy: this.currentUser.id,
-            },
-            {
-              id: 1,
-              companyName: 'Company Name 3',
-              type: 'Cash',
-              worker: '-Nj748NSgdNa6i4-_l_N',
-              totalAmount: 600,
-              remmitanceAmount: 0,
-              beneficiaryAmount: 300,
-              cashAmount: 300,
-              date: '2024-11-01T10:00:00Z',
-              status: 'Pending',
-              confirmed: true,
-              confirmedDate: '2024-11-01T10:00:00Z',
-              fileUrl: null,
-              onlineRef: 'ref',
-              createdAt: '2024-11-01T10:00:00Z',
-              updatedAt: '2024-11-01T10:00:00Z',
-              createdBy: this.currentUser.id,
-              updatedBy: this.currentUser.id,
-            },
-            {
-              id: 1,
-              companyName: 'Company Name 4',
-              type: 'Cash',
-              worker: '-Nj748NSgdNa6i4-_l_N',
-              totalAmount: 600,
-              remmitanceAmount: 0,
-              beneficiaryAmount: 300,
-              cashAmount: 300,
-              date: '2024-11-02T10:00:00Z',
-              status: 'Confirmed',
-              confirmed: true,
-              confirmedDate: '2024-11-01T10:00:00Z',
-              fileUrl: null,
-              onlineRef: 'ref',
-              createdAt: '2024-11-01T10:00:00Z',
-              updatedAt: '2024-11-01T10:00:00Z',
-              createdBy: this.currentUser.id,
-              updatedBy: this.currentUser.id,
-            },
-            {
-              id: 1,
-              companyName: 'Company Name 4',
-              type: 'Cash',
-              worker: '-Nj748NSgdNa6i4-_l_N',
-              totalAmount: 600,
-              remmitanceAmount: 0,
-              beneficiaryAmount: 300,
-              cashAmount: 300,
-              date: '2024-11-02T10:00:00Z',
-              status: 'Rejected',
-              confirmed: true,
-              confirmedDate: '2024-11-01T10:00:00Z',
-              fileUrl: null,
-              onlineRef: 'ref',
-              createdAt: '2024-11-01T10:00:00Z',
-              updatedAt: '2024-11-01T10:00:00Z',
-              createdBy: this.currentUser.id,
-              updatedBy: this.currentUser.id,
-            },
-            {
-              id: 1,
-              companyName: 'Company Name 6',
-              type: 'Cash',
-              worker: '-Nj748NSgdNa6i4-_l_N',
-              totalAmount: 600,
-              remmitanceAmount: 0,
-              beneficiaryAmount: 300,
-              cashAmount: 300,
-              date: '2024-01-01T10:00:00Z',
-              status: 'Rejected',
-              confirmed: true,
-              confirmedDate: '2024-11-01T10:00:00Z',
-              fileUrl: null,
-              onlineRef: 'ref',
-              createdAt: '2024-11-01T10:00:00Z',
-              updatedAt: '2024-11-01T10:00:00Z',
-              createdBy: this.currentUser.id,
-              updatedBy: this.currentUser.id,
-            },
-            {
-              id: 1,
-              companyName: 'Company Name 7',
-              type: 'Bank Transfer',
-              worker: '-Nj748NSgdNa6i4-_l_N',
-              totalAmount: 600,
-              remmitanceAmount: 0,
-              beneficiaryAmount: 300,
-              cashAmount: 300,
-              date: '2024-01-01T10:00:00Z',
-              status: 'Confirmed',
-              confirmed: true,
-              confirmedDate: '2024-11-01T10:00:00Z',
-              fileUrl: null,
-              onlineRef: 'ref',
-              createdAt: '2024-11-01T10:00:00Z',
-              updatedAt: '2024-11-01T10:00:00Z',
-              createdBy: this.currentUser.id,
-              updatedBy: this.currentUser.id,
-            },
-          ];
-      // group vessel payments by date
-      this.groupedVesselPayments = this.groupPaymentsByDate(
-        this.vesselPayments
-      );
     });
   }
 
@@ -229,8 +86,7 @@ export class VesselPaymentsPage implements OnInit {
 
   groupPaymentsByDate(payments) {
     const grouped = payments.reduce((acc, payment) => {
-      // TODO: check whether to use created date or date
-      const date = new Date(payment.date).toDateString();
+      const date = new Date(payment.paymentDate).toDateString();
       if (!acc[date]) {
         acc[date] = [];
       }
@@ -255,6 +111,7 @@ export class VesselPaymentsPage implements OnInit {
   filterResult(result) {}
 
   goToPaymentDetail(paymentDetails) {
+    paymentDetails.vessel = this.vessel;
     const queryParams = { paymentDetails: JSON.stringify(paymentDetails) };
     this.router.navigate(['payments/payment-details'], { queryParams });
   }
