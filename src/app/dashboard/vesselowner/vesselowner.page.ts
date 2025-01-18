@@ -13,23 +13,44 @@ import { StorageKeys } from 'src/app/shared/types/api-types';
   styleUrls: ['./vesselowner.page.scss'],
 })
 export class VesselownerPage implements OnInit {
-
   sLists = [
     // {title: 'Work Orders', icon: '/assets/icon/workorders_blue.svg', url: '/workorders/home'},
-    {title: 'Vessels', icon: '/assets/icon/boat_with_blue_bg.svg',  url: '/vessels/home'},
-    {title: 'Manning Agencies', icon: '/assets/icon/office.svg',  url: '/companies/home'},
-    {title: 'Recruits', icon: '/assets/icon/profile_info_blue.svg', url: '/workers/home'},
-    {title: 'Contracts', icon: '/assets/icon/offers.svg',  url: '/contracts/home'},
-    // {title: 'Payments', icon: '/assets/icon/single_payment_blue.svg',  url: '/payments/home'},
+    {
+      title: 'Vessels',
+      icon: '/assets/icon/boat_with_blue_bg.svg',
+      url: '/vessels/home',
+    },
+    {
+      title: 'Manning Agencies',
+      icon: '/assets/icon/office.svg',
+      url: '/companies/home',
+    },
+    {
+      title: 'Recruits',
+      icon: '/assets/icon/profile_info_blue.svg',
+      url: '/workers/home',
+    },
+    {
+      title: 'Contracts',
+      icon: '/assets/icon/offers.svg',
+      url: '/contracts/home',
+    },
+    {
+      title: 'Payments',
+      icon: '/assets/icon/single_payment_blue.svg',
+      url: '/payments/home',
+    },
   ];
 
   performanceData: any = {
     chartType: 'doughnut',
     title: '',
-    datasets: [{
-      label: '',
-      data: [65, 59, 80]
-    }]
+    datasets: [
+      {
+        label: '',
+        data: [65, 59, 80],
+      },
+    ],
   };
   feedbackDashboardMessage: string = '';
   welcomeText: string = '';
@@ -53,21 +74,24 @@ export class VesselownerPage implements OnInit {
   ) {
     this.menuContent = this.contentService.getMenuContent();
     this.setupPage();
-    this.contentService.watchContent().subscribe(async(resp) => {
+    this.contentService.watchContent().subscribe(async (resp) => {
       if (resp) {
         this.commonText = this.contentService.commonText;
         this.menuContent = await this.contentService.getMenuContent();
         await this.setupPage();
       }
     });
-   }
+  }
 
   async ngOnInit() {
     if (!this.pushNotifications.preventSecondNotificationPrompt) {
       this.pushNotifications.checkAndroidPNsPermissions();
     }
     await this.setupPage();
-    this.analytics.trackEvent(pageEventNames.viewVesselOwnerDashboard, this.sharedmethods.analyticsEventParams)
+    this.analytics.trackEvent(
+      pageEventNames.viewVesselOwnerDashboard,
+      this.sharedmethods.analyticsEventParams
+    );
   }
 
   async setupPage() {
@@ -81,12 +105,14 @@ export class VesselownerPage implements OnInit {
     this.performanceData = {
       chartType: 'doughnut',
       title: this.welcomeCardTitle,
-      datasets: [{
-        label: '',
-        data: [65, 59, 80]
-      }]
+      datasets: [
+        {
+          label: '',
+          data: [65, 59, 80],
+        },
+      ],
     };
-    
+
     // for item in slists, update title with menuContent
     this.sLists.forEach((item) => {
       Object.entries(this.menuContent).forEach((x) => {
@@ -102,7 +128,9 @@ export class VesselownerPage implements OnInit {
     this.stat3 = this.commonText?.fdbckCoreTraining;
 
     // get user name
-    const user = await this.sharedmethods.readDataFromStorage(StorageKeys.userData);
+    const user = await this.sharedmethods.readDataFromStorage(
+      StorageKeys.userData
+    );
     this.name = (this.commonText?.hi || '') + ' ' + (user?.firstName || '');
   }
 
