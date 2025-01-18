@@ -21,6 +21,7 @@ export class VesselPaymentsPage implements OnInit {
   commonText: any;
   paymentsCommonText: any;
   currentUser: UserData;
+  currentLanguage: string = 'en-us';
   vessel: any;
   pageTitle: string = 'Vessel Payments';
   filterOptions = [
@@ -80,6 +81,7 @@ export class VesselPaymentsPage implements OnInit {
 
   async ngOnInit() {
     this.commonText = await this.contentService?.commonText;
+    this.currentLanguage = this.contentService?.currentLanguage;
     const paymentsPageData = this.contentService.getContentByPropertyName('payments-common-text');
     this.paymentsCommonText = this.sharedMethods.convertAdditionalTextToObj(paymentsPageData?.additionalText);
     this.pageTitle = this.paymentsCommonText?.vesselPayments;
@@ -96,7 +98,7 @@ export class VesselPaymentsPage implements OnInit {
     }, {});
 
     const vesselPayments = Object.keys(grouped).map((date) => ({
-      date,
+      date: this.sharedMethods.formatLocalDate(date, this.currentLanguage),
       payments: grouped[date],
       isExpanded: false,
     }));

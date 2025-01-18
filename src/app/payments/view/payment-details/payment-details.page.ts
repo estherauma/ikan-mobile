@@ -35,6 +35,7 @@ export class PaymentDetailsPage  implements OnInit {
     this.commonText = this.contentService?.commonText;
     const paymentsPageData = this.contentService.getContentByPropertyName('payments-common-text');
     this.paymentsCommonText = this.sharedmethods.convertAdditionalTextToObj(paymentsPageData?.additionalText);
+    this.currentLanguage = this.contentService?.currentLanguage;
     this.currentUser = await this.sharedmethods.getUserData();
   }
 
