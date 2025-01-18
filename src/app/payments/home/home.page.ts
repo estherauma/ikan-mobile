@@ -17,6 +17,7 @@ import { SharedmethodsService } from 'src/app/shared/services/sharedmethods/shar
 })
 export class HomePage implements OnInit {
   commonText: any;
+  paymentsCommonText: any;
   filterDataSet = [
     {
       name: 'Vessel Company One',
@@ -56,8 +57,7 @@ export class HomePage implements OnInit {
   vesselCompanyText = 'Details about this vessel company';
   chineseVesselCompanyText = '有關該船隻公司的詳細信息';
 
-  // translate
-  pageTitle = 'Payments';
+  pageTitle: string = 'Payments';
   organizations = [...this.filterDataSet];
 
   filterOptions = [
@@ -103,7 +103,9 @@ export class HomePage implements OnInit {
   async ngOnInit() {
     await this.getCurrentUser();
     this.commonText = await this.contentService?.commonText;
-    this.pageTitle = this.commonText?.payments;
+    const paymentsPageData = this.contentService.getContentByPropertyName('payments-common-text');
+    this.paymentsCommonText = this.sharedMethods.convertAdditionalTextToObj(paymentsPageData?.additionalText);
+    this.pageTitle = this.paymentsCommonText?.payments;
     this.filterOptions = [
       { title: this.commonText?.closed, value: 'closed' },
       { title: this.commonText?.opened, value: 'opened' },

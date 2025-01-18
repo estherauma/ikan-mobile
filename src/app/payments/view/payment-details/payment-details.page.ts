@@ -12,6 +12,7 @@ import { UserData } from 'src/app/shared/types/api-types';
 export class PaymentDetailsPage  implements OnInit {
 
   commonText: any;
+  paymentsCommonText: any;
   paymentDetails: any;
   paymentIconUrl: string = 'assets/icon/gray_thumbs_up.svg';
   currentUser: UserData;
@@ -32,7 +33,8 @@ export class PaymentDetailsPage  implements OnInit {
 
   async ngOnInit() {
     this.commonText = this.contentService?.commonText;
-    this.currentLanguage = this.contentService?.currentLanguage;
+    const paymentsPageData = this.contentService.getContentByPropertyName('payments-common-text');
+    this.paymentsCommonText = this.sharedmethods.convertAdditionalTextToObj(paymentsPageData?.additionalText);
     this.currentUser = await this.sharedmethods.getUserData();
   }
 

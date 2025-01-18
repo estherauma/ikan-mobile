@@ -12,6 +12,7 @@ export type PaymentType = 'Bank transfer' | 'Beneficiary' | 'Cash' | 'Listing';
 export class PaymentbreakdowncardComponent implements OnInit {
   
   commonText: any;
+  paymentsCommonText: any;
   currentUser: UserData;
   currentLanguage = 'en-us';
 
@@ -40,6 +41,8 @@ export class PaymentbreakdowncardComponent implements OnInit {
 
   async ngOnInit() {
     this.commonText = this.contentService?.commonText;
+    const paymentsPageData = this.contentService.getContentByPropertyName('payments-common-text');
+    this.paymentsCommonText = this.sharedmethods.convertAdditionalTextToObj(paymentsPageData?.additionalText);
     this.currentLanguage = this.contentService?.currentLanguage;
     this.currentUser = await this.sharedmethods.getUserData();
   }

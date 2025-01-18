@@ -1,4 +1,4 @@
-<app-header [pageTitle]=""></app-header>
+<app-header [pageTitle]="pageTitle"></app-header>
 
 <ion-content class="content-skyblue-bg">
   <ion-grid>
@@ -10,7 +10,7 @@
         <ion-col size="12">
           <app-title
             class="vessel-payments-page"
-            [title]="vessel?.name + ' ' + commonText?.payments || 'Payments'"
+            [title]="vessel?.name + ' ' + paymentsCommonText?.payments"
             [isBlue]="true"
           ></app-title>
         </ion-col>
@@ -44,16 +44,16 @@
       <ion-row class="sub-title-row">
         <ion-col size="12">
           <p class="sub-title">
-            {{ commonText?.paymentHistory }}
+            {{ paymentsCommonText?.paymentHistory }}
             <span *ngIf="vesselPayments?.length">
-              ({{ vesselPayments?.length + ' ' + commonText?.payments }})
+              ({{ vesselPayments?.length + ' ' + paymentsCommonText?.payments }})
             </span>
           </p>
         </ion-col>
         <!-- No existing payments -->
         <ion-col *ngIf="!vesselPayments?.length" size="12">
           <p class="no-payments">
-            {{ commonText?.noPayments || 'No payments made yet.' }}
+            {{ paymentsCommonText?.noPayments }}
           </p>
         </ion-col>
       </ion-row>

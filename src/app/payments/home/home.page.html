@@ -18,7 +18,7 @@
         <ion-col size="12">
           <app-title
             class="payments-page"
-            [title]="commonText?.payments"
+            [title]="paymentsCommonText?.payments"
             [isBlue]="true"
           ></app-title>
         </ion-col>
@@ -75,16 +75,16 @@
       <ion-row class="sub-title-row">
         <ion-col size="12">
           <p class="sub-title">
-            {{ commonText?.paymentHistory }}
+            {{ paymentsCommonText?.paymentHistory }}
             <span *ngIf="userPayments?.length">
-              ({{ userPayments?.length + ' ' + commonText?.payments }})
+              ({{ userPayments?.length + ' ' + paymentsCommonText?.payments }})
             </span>
           </p>
         </ion-col>
         <!-- No existing payments -->
         <ion-col *ngIf="!userPayments?.length" size="12">
           <p class="no-payments">
-            {{ commonText?.noPayments || 'No payments made yet.' }}
+            {{ paymentsCommonText?.noPayments }}
           </p>
         </ion-col>
       </ion-row>

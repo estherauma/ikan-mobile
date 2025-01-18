@@ -19,10 +19,10 @@ type GroupedVesselPayments = {
 })
 export class VesselPaymentsPage implements OnInit {
   commonText: any;
+  paymentsCommonText: any;
   currentUser: UserData;
   vessel: any;
-  // translate
-  pageTitle = 'Payments';
+  pageTitle: string = 'Vessel Payments';
   filterOptions = [
     { title: 'closed', value: 'closed' },
     { title: 'opened', value: 'opened' },
@@ -80,8 +80,9 @@ export class VesselPaymentsPage implements OnInit {
 
   async ngOnInit() {
     this.commonText = await this.contentService?.commonText;
-    // translate
-    this.pageTitle = this.commonText?.vesselPayments;
+    const paymentsPageData = this.contentService.getContentByPropertyName('payments-common-text');
+    this.paymentsCommonText = this.sharedMethods.convertAdditionalTextToObj(paymentsPageData?.additionalText);
+    this.pageTitle = this.paymentsCommonText?.vesselPayments;
   }
 
   groupPaymentsByDate(payments) {
