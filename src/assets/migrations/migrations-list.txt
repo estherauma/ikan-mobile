@@ -19,3 +19,4 @@
 1716469399472_addPassportsTable.sql
 1717591415567_alterDocumentsAddIsDeleted.sql
 1718883954125_alterSurveysAddInlineQuestions.sql
+1734532965926_reworkPaymentsTable.sql

@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { ContentService } from 'src/app/shared/services/content/content.service';
+import { SharedmethodsService } from 'src/app/shared/services/sharedmethods/sharedmethods.service';
+import { UserData } from 'src/app/shared/types/api-types';
 
 @Component({
   selector: 'app-payment-details',
@@ -10,12 +12,16 @@ import { ContentService } from 'src/app/shared/services/content/content.service'
 export class PaymentDetailsPage  implements OnInit {
 
   commonText: any;
+  paymentsCommonText: any;
   paymentDetails: any;
   paymentIconUrl: string = 'assets/icon/gray_thumbs_up.svg';
+  currentUser: UserData;
+  currentLanguage = 'en-us';
 
   constructor(
     public contentService: ContentService,
     public activatedRoute: ActivatedRoute,
+    public sharedmethods: SharedmethodsService,
   ) {
     this.activatedRoute.queryParams.subscribe((params) => {
       if (params?.paymentDetails) {
@@ -27,6 +33,10 @@ export class PaymentDetailsPage  implements OnInit {
 
   async ngOnInit() {
     this.commonText = this.contentService?.commonText;
+    const paymentsPageData = this.contentService.getContentByPropertyName('payments-common-text');
+    this.paymentsCommonText = this.sharedmethods.convertAdditionalTextToObj(paymentsPageData?.additionalText);
+    this.currentLanguage = this.contentService?.currentLanguage;
+    this.currentUser = await this.sharedmethods.getUserData();
   }
 
   // TODO: change statuses
