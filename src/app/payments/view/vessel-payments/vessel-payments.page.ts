@@ -5,6 +5,8 @@ import { SharedmethodsService } from 'src/app/shared/services/sharedmethods/shar
 import { VesselsDataService } from 'src/app/vessels/data/vessels-data.service';
 import { PaymentsDataService } from '../../data/payments-data.service';
 import { UserData, StorageKeys } from 'src/app/shared/types/api-types';
+import { AnalyticsService } from 'src/app/shared/services/analytics/analytics.service';
+import { pageEventNames } from 'src/app/shared/services/analytics/event-names';
 
 type GroupedVesselPayments = {
   date: string;
@@ -56,7 +58,8 @@ export class VesselPaymentsPage implements OnInit {
     public vesselsDataService: VesselsDataService,
     public paymentsDataService: PaymentsDataService,
     public sharedMethods: SharedmethodsService,
-    public activatedRoute: ActivatedRoute
+    public activatedRoute: ActivatedRoute,
+    public analyticsService: AnalyticsService,
   ) {
     this.activatedRoute.queryParams.subscribe(async(params) => {
       if (params?.vessel) {
@@ -85,6 +88,8 @@ export class VesselPaymentsPage implements OnInit {
     const paymentsPageData = this.contentService.getContentByPropertyName('payments-common-text');
     this.paymentsCommonText = this.sharedMethods.convertAdditionalTextToObj(paymentsPageData?.additionalText);
     this.pageTitle = this.paymentsCommonText?.vesselPayments;
+
+    this.analyticsService.trackEvent(pageEventNames.viewVesselPayments, this.sharedMethods.analyticsEventParams);
   }
 
   groupPaymentsByDate(payments) {
