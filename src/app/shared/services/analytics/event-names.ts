@@ -83,6 +83,12 @@ export enum pageEventNames {
 
     // Consent Forms
     viewConsentForm = 'page_view_consent_form',
+
+    // Payments
+    viewPayments = 'page_payments_home',
+    viewVesselPayments = 'page_vessel_payments',
+    viewPaymentDetails = 'page_payment_details',
+
 }
 
 export enum appEventNames {

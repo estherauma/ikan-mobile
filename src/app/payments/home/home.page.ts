@@ -9,6 +9,8 @@ import {
   UserRole,
 } from 'src/app/shared/types/api-types';
 import { SharedmethodsService } from 'src/app/shared/services/sharedmethods/sharedmethods.service';
+import { AnalyticsService } from 'src/app/shared/services/analytics/analytics.service';
+import { pageEventNames } from 'src/app/shared/services/analytics/event-names';
 
 @Component({
   selector: 'app-home',
@@ -77,7 +79,8 @@ export class HomePage implements OnInit {
     public contentService: ContentService,
     public vesselsDataService: VesselsDataService,
     public paymentsDataService: PaymentsDataService,
-    public sharedMethods: SharedmethodsService
+    public sharedMethods: SharedmethodsService,
+    public analyticsService: AnalyticsService,
   ) {
     this.vesselsDataService.getAll().subscribe(async (data) => {
       await this.getCurrentUser();
@@ -116,6 +119,8 @@ export class HomePage implements OnInit {
       this.organizations = [...this.chineseFilterDataSet];
       this.vesselCompanyText = this.chineseVesselCompanyText;
     }
+
+    this.analyticsService.trackEvent(pageEventNames.viewPayments, this.sharedMethods.analyticsEventParams);
   }
 
   async getCurrentUser() {
