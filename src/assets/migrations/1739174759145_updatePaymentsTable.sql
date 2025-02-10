@@ -1,0 +1,42 @@
+DROP TABLE IF EXISTS user_payments;
+
+CREATE TABLE IF NOT EXISTS new_user_payments (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  online_ref VARCHAR(255),
+  user_id VARCHAR(255) NOT NULL,
+  vessel_id VARCHAR(255) NOT NULL,
+  payment_date VARCHAR(255) NOT NULL,
+  payment_category VARCHAR(255) NOT NULL,
+  payment_method VARCHAR(255) NOT NULL,
+  start_date VARCHAR(255) NOT NULL,
+  end_date VARCHAR(255) NOT NULL,
+  total_usd_amount_received VARCHAR(255) NOT NULL,
+  cash_amount DECIMAL(10, 2),
+  cash_currency VARCHAR(255),
+  cash_exchange_rate DECIMAL(10, 2),
+  cash_beneficiary_relationship VARCHAR(255),
+  cash_beneficiary_name VARCHAR(255),
+  cash_beneficiary_contact VARCHAR(255),
+  cash_beneficiary_contact_platform VARCHAR(255),
+  bank_transfer_amount DECIMAL(10, 2),
+  bank_transfer_currency VARCHAR(255),
+  bank_transfer_exchange_rate DECIMAL(10, 2),
+  bank_account_name VARCHAR(255),
+  bank_account_number VARCHAR(255),
+  bank_name VARCHAR(255),
+  bank_transfer_beneficiary_relationship VARCHAR(255),
+  bank_transfer_beneficiary_name VARCHAR(255),
+  bank_transfer_beneficiary_contact VARCHAR(255),
+  bank_transfer_beneficiary_contact_platform VARCHAR(255),
+  has_deductions BOOLEAN DEFAULT 0,
+  deductions TEXT,
+  created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  deleted_at TIMESTAMP DEFAULT NULL,
+  created_by VARCHAR(255) NOT NULL,
+  updated_by VARCHAR(255) NOT NULL,
+  deleted_by VARCHAR(255),
+  deleted BOOLEAN DEFAULT 0
+);
+
+ALTER TABLE new_user_payments RENAME TO user_payments;
