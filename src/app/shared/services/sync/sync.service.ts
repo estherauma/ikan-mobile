@@ -996,7 +996,6 @@ export class SyncService {
           dataToSave.userId = payment.user;
           dataToSave.vesselId = payment.vessel;
           dataToSave.onlineRef = payment.id;
-          dataToSave.isConfirmed = payment.isConfirmed ?? false;
 
           const paymentExists = await this.paymentsDataService.checkIfPaymentExists(payment.id);
           if (paymentExists) {
