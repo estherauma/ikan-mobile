@@ -92,10 +92,10 @@
                 }"
                 [status]="payment?.status || 'Confirmed'"
                 iconUrl="assets/icon/single_payment_blue.svg"
-                [amount]="payment?.totalAmount || '999'"
-                [currency]="payment?.currency || '$'"
-                [paymentMadeOn]="payment?.createdAt || '10/10/2020'"
-                [paymentConfirmedOn]="payment?.confirmedDate || '10/10/2020'"
+                [amount]="payment?.totalUsdAmountReceived"
+                [currency]="'$'"
+                [paymentMadeOn]="payment?.createdAt"
+                [paymentConfirmedOn]="payment?.confirmedDate"
                 (onClick)="goToPaymentDetail(payment)"
               >
               </app-paymentbreakdowncard>
