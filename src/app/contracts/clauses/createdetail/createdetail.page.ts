@@ -34,6 +34,7 @@ export class CreatedetailPage extends BaseformPage implements OnInit {
   clauseDetails: any;
   formValues: any;
   editClauseText: string = 'Edit Clause';
+  userData: any;
 
   constructor(
     public contentService: ContentService,
@@ -53,7 +54,7 @@ export class CreatedetailPage extends BaseformPage implements OnInit {
         this.isEditing = true;
       }
     });
-    this.activatedRoute.params.subscribe((params) => {
+    this.activatedRoute.params.subscribe(async(params) => {
       if (!this.isEditing) {
         // we use this to search the content by the key to load the form we need.
         this.objectTolookup = params?.['clause-type'];
@@ -71,12 +72,13 @@ export class CreatedetailPage extends BaseformPage implements OnInit {
         this.clauseDetails = JSON.parse(params.clauseDetails);
         this.formValues = JSON.parse(this.clauseDetails?.data);
       }
-      this.pageSetup();
+      await this.pageSetup();
     });
     this.analytics.trackEvent(pageEventNames.createClauseDetails, this.sharedMethods.analyticsEventParams);
   }
 
-  pageSetup(){
+  async pageSetup(){
+    this.userData = await this.sharedMethods.getUserData();
     const property = this.isEditing ? this.clauseDetails['kind'] : this.clauseMapping[this.objectTolookup];
     const pageData = this.contentService.getContentByPropertyName(property);
     if (!pageData) {
@@ -91,7 +93,7 @@ export class CreatedetailPage extends BaseformPage implements OnInit {
     }
 
     this.vesselsDataService.getAll().subscribe((data) => {
-      this.vessels = data;
+      this.vessels = data.filter((vessel) => vessel.createdBy === this.userData?.id);
     });
 
     this.editClauseText = this.commonText?.editClause;
