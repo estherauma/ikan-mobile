@@ -105,7 +105,6 @@ export class PaymentsDataService {
           }
         }
         this.paymentsObs.next(payments);
-        console.log('payments----saved----------', payments.length, payments);
       })
       .catch((e) => console.log(e));
   }
