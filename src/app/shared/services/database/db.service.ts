@@ -104,7 +104,7 @@ export class DBService {
   }
 
   async runPendingMigrations(pendingMigrations) {
-    return pendingMigrations.forEach(async(migration) => {
+    return await pendingMigrations.forEach(async(migration) => {
       await this.runSingleMigrationFile(migration);
     });
   }
@@ -113,7 +113,9 @@ export class DBService {
     
     return this.http.get('assets/migrations/' + migrationFileName, { responseType: 'text' as 'text'})
     .subscribe(async(data: any) => {
-        // TODO: add logic for skipping comments in the migration file
+        // Rmove comments from the migration file
+        data = data.replace(/\/\*[\s\S]*?\*\/|--.*$/gm, '');
+        
         const migrationQueries = data.split(';');
         await migrationQueries.forEach(async(query) => {
           query = query.replace(/\r?\n|\r/g, '');

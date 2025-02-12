@@ -61,40 +61,30 @@ export class PaymentsDataService {
               beneficiaryName: data.rows.item(i).beneficiary_name,
               startDate: data.rows.item(i).start_date,
               endDate: data.rows.item(i).end_date,
-              duration: data.rows.item(i).duration,
               totalUsdAmountReceived:
                 data.rows.item(i).total_usd_amount_received,
-              cashUsdAmount: data.rows.item(i).cash_usd_amount,
+              cashAmount: data.rows.item(i).cash_amount,
               cashCurrency: data.rows.item(i).cash_currency,
-              cashLocalAmount: data.rows.item(i).cash_local_amount,
               cashExchangeRate: data.rows.item(i).cash_exchange_rate,
-              isCashBeneficiaryCrew:
-                data.rows.item(i).is_cash_beneficiary_crew ||
-                data.rows.item(i).is_cash_beneficiary_crew === 'true'
-                  ? true
-                  : false,
               cashBeneficiaryRelationship:
                 data.rows.item(i).cash_beneficiary_relationship,
+              cashBeneficiaryName:
+                data.rows.item(i).cash_beneficiary_name,
               cashBeneficiaryContact:
                 data.rows.item(i).cash_beneficiary_contact,
               cashBeneficiaryContactPlatform:
                 data.rows.item(i).cash_beneficiary_contact_platform,
-              bankTransferUsdAmount: data.rows.item(i).bank_transfer_usd_amount,
+              bankTransferAmount: data.rows.item(i).bank_transfer_amount,
               bankTransferCurrency: data.rows.item(i).bank_transfer_currency,
-              bankTransferLocalAmount:
-                data.rows.item(i).bank_transfer_local_amount,
               bankTransferExchangeRate:
                 data.rows.item(i).bank_transfer_exchange_rate,
-              isBankTransferBeneficiaryCrew:
-                data.rows.item(i).is_bank_transfer_beneficiary_crew ||
-                data.rows.item(i).is_bank_transfer_beneficiary_crew === 'true'
-                  ? true
-                  : false,
               bankAccountName: data.rows.item(i).bank_account_name,
               bankAccountNumber: data.rows.item(i).bank_account_number,
               bankName: data.rows.item(i).bank_name,
               bankTransferBeneficiaryRelationship:
                 data.rows.item(i).bank_transfer_beneficiary_relationship,
+              bankTransferBeneficiaryName:
+                data.rows.item(i).bank_transfer_beneficiary_name,
               bankTransferBeneficiaryContact:
                 data.rows.item(i).bank_transfer_beneficiary_contact,
               bankTransferBeneficiaryContactPlatform:
@@ -105,13 +95,6 @@ export class PaymentsDataService {
                   ? true
                   : false,
               deductions: data.rows.item(i).deductions,
-              paymentStatus: data.rows.item(i).payment_status,
-              isConfirmed:
-                data.rows.item(i).is_confirmed ||
-                data.rows.item(i).is_confirmed === 'true'
-                  ? true
-                  : false,
-              confirmationDate: data.rows.item(i).confirmation_date,
               createdAt: data.rows.item(i).created_at,
               updatedAt: data.rows.item(i).updated_at,
               createdBy: data.rows.item(i).created_by,
@@ -133,51 +116,44 @@ export class PaymentsDataService {
   async create(data) {
     const query =
       'INSERT INTO user_payments (user_id, vessel_id, payment_date, payment_category, \
-      payment_method, beneficiary_name, start_date, end_date, duration, total_usd_amount_received, \
-      cash_usd_amount, cash_currency, cash_local_amount, cash_exchange_rate, is_cash_beneficiary_crew, \
-      cash_beneficiary_relationship, cash_beneficiary_contact, cash_beneficiary_contact_platform, \
-      bank_transfer_usd_amount, bank_transfer_currency, bank_transfer_local_amount, bank_transfer_exchange_rate, \
-      is_bank_transfer_beneficiary_crew, bank_account_name, bank_account_number, bank_name, \
-      bank_transfer_beneficiary_relationship, bank_transfer_beneficiary_contact, bank_transfer_beneficiary_contact_platform, \
-      has_deductions, deductions, payment_status, is_confirmed, confirmation_date, created_at, updated_at, created_by, updated_by, \
+      payment_method, start_date, end_date, total_usd_amount_received, \
+      cash_amount, cash_currency, cash_exchange_rate, cash_beneficiary_relationship, \
+      cash_beneficiary_name, cash_beneficiary_contact, cash_beneficiary_contact_platform, \
+      bank_transfer_amount, bank_transfer_currency, bank_transfer_exchange_rate, \
+      bank_account_name, bank_account_number, bank_name, bank_transfer_beneficiary_relationship, \
+      bank_transfer_beneficiary_name, bank_transfer_beneficiary_contact, bank_transfer_beneficiary_contact_platform, \
+      has_deductions, deductions, created_at, updated_at, created_by, updated_by, \
       deleted_at, deleted_by) VALUES \
       (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, \
-      ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)';
+      ?, ?, ?)';
     const params = [
       data.userId,
       data.vesselId,
       data.paymentDate,
       data.paymentCategory,
       data.paymentMethod,
-      data.beneficiaryName,
       data.startDate,
       data.endDate,
-      data.duration,
       data.totalUsdAmountReceived,
-      data.cashUsdAmount,
+      data.cashAmount,
       data.cashCurrency,
-      data.cashLocalAmount,
       data.cashExchangeRate,
-      data.isCashBeneficiaryCrew,
       data.cashBeneficiaryRelationship,
+      data.cashBeneficiaryName,
       data.cashBeneficiaryContact,
       data.cashBeneficiaryContactPlatform,
-      data.bankTransferUsdAmount,
+      data.bankTransferAmount,
       data.bankTransferCurrency,
-      data.bankTransferLocalAmount,
       data.bankTransferExchangeRate,
-      data.isBankTransferBeneficiaryCrew,
       data.bankAccountName,
       data.bankAccountNumber,
       data.bankName,
       data.bankTransferBeneficiaryRelationship,
+      data.bankTransferBeneficiaryName,
       data.bankTransferBeneficiaryContact,
       data.bankTransferBeneficiaryContactPlatform,
       data.hasDeductions,
       data.deductions,
-      data.paymentStatus,
-      data.isConfirmed,
-      data.confirmationDate,
       data.createdAt,
       data.updatedAt,
       data.createdBy,
@@ -195,16 +171,16 @@ export class PaymentsDataService {
   async saveOnlinePayment(data) {
     const query =
       'INSERT INTO user_payments (online_ref, user_id, vessel_id, payment_date, payment_category, \
-      payment_method, beneficiary_name, start_date, end_date, duration, total_usd_amount_received, \
-      cash_usd_amount, cash_currency, cash_local_amount, cash_exchange_rate, is_cash_beneficiary_crew, \
-      cash_beneficiary_relationship, cash_beneficiary_contact, cash_beneficiary_contact_platform, \
-      bank_transfer_usd_amount, bank_transfer_currency, bank_transfer_local_amount, bank_transfer_exchange_rate, \
-      is_bank_transfer_beneficiary_crew, bank_account_name, bank_account_number, bank_name, \
-      bank_transfer_beneficiary_relationship, bank_transfer_beneficiary_contact, bank_transfer_beneficiary_contact_platform, \
-      has_deductions, deductions, payment_status, is_confirmed, confirmation_date, created_at, updated_at, created_by, updated_by, \
+      payment_method, start_date, end_date, total_usd_amount_received, \
+      cash_amount, cash_currency, cash_exchange_rate, cash_beneficiary_relationship, \
+      cash_beneficiary_name, cash_beneficiary_contact, cash_beneficiary_contact_platform, \
+      bank_transfer_amount, bank_transfer_currency, bank_transfer_exchange_rate, \
+      bank_account_name, bank_account_number, bank_name, bank_transfer_beneficiary_relationship, \
+      bank_transfer_beneficiary_name, bank_transfer_beneficiary_contact, bank_transfer_beneficiary_contact_platform, \
+      has_deductions, deductions, created_at, updated_at, created_by, updated_by, \
       deleted_at, deleted_by) VALUES \
-      (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, \
-      ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)';
+      (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, \
+      ?, ?, ?, ?)';
     const params = [
       data.onlineRef,
       data.userId,
@@ -212,35 +188,28 @@ export class PaymentsDataService {
       data.paymentDate,
       data.paymentCategory,
       data.paymentMethod,
-      data.beneficiaryName,
       data.startDate,
       data.endDate,
-      data.duration,
       data.totalUsdAmountReceived,
-      data.cashUsdAmount,
+      data.cashAmount,
       data.cashCurrency,
-      data.cashLocalAmount,
       data.cashExchangeRate,
-      data.isCashBeneficiaryCrew,
       data.cashBeneficiaryRelationship,
+      data.cashBeneficiaryName,
       data.cashBeneficiaryContact,
       data.cashBeneficiaryContactPlatform,
-      data.bankTransferUsdAmount,
+      data.bankTransferAmount,
       data.bankTransferCurrency,
-      data.bankTransferLocalAmount,
       data.bankTransferExchangeRate,
-      data.isBankTransferBeneficiaryCrew,
       data.bankAccountName,
       data.bankAccountNumber,
       data.bankName,
       data.bankTransferBeneficiaryRelationship,
+      data.bankTransferBeneficiaryName,
       data.bankTransferBeneficiaryContact,
       data.bankTransferBeneficiaryContactPlatform,
       data.hasDeductions,
       data.deductions,
-      data.paymentStatus,
-      data.isConfirmed,
-      data.confirmationDate,
       data.createdAt,
       data.updatedAt,
       data.createdBy,
@@ -252,7 +221,7 @@ export class PaymentsDataService {
     return this.db.executeSql(query, params).then((result) => {
       this.retrievePayments();
       return result.insertId;
-    });
+    }).catch((e) => {console.log(e)});
   }
 
   async checkIfPaymentExists(onlineRef) {
@@ -264,48 +233,41 @@ export class PaymentsDataService {
   async update(data) {
     const query =
       'UPDATE user_payments SET payment_date = ?, payment_category = ?, \
-      payment_method = ?, beneficiary_name = ?, start_date = ?, end_date = ?, duration = ?, \
-      total_usd_amount_received = ?, cash_usd_amount = ?, cash_currency = ?, cash_local_amount = ?, \
-      cash_exchange_rate = ?, is_cash_beneficiary_crew = ?, cash_beneficiary_relationship = ?, \
-      cash_beneficiary_contact = ?, cash_beneficiary_contact_platform = ?, bank_transfer_usd_amount = ?, \
-      bank_transfer_currency = ?, bank_transfer_local_amount = ?, bank_transfer_exchange_rate = ?, \
-      is_bank_transfer_beneficiary_crew = ?, bank_account_name = ?, bank_account_number = ?, bank_name = ?, \
-      bank_transfer_beneficiary_relationship = ?, bank_transfer_beneficiary_contact = ?, \
-      bank_transfer_beneficiary_contact_platform = ?, has_deductions = ?, deductions = ?, payment_status = ?, \
-      is_confirmed = ?, confirmation_date = ?, updated_at = ?, updated_by = ? WHERE online_ref = ?';
+      payment_method = ?, start_date = ?, end_date = ?, \
+      total_usd_amount_received = ?, cash_amount = ?, cash_currency = ?, \
+      cash_exchange_rate = ?, cash_beneficiary_relationship = ?, cash_beneficiary_name = ?, \
+      cash_beneficiary_contact = ?, cash_beneficiary_contact_platform = ?, bank_transfer_amount = ?, \
+      bank_transfer_currency = ?, bank_transfer_exchange_rate = ?, \
+      bank_account_name = ?, bank_account_number = ?, bank_name = ?,bank_transfer_beneficiary_relationship = ?,  \
+      bank_transfer_beneficiary_name = ?, bank_transfer_beneficiary_contact = ?,\
+      bank_transfer_beneficiary_contact_platform = ?, has_deductions = ?, deductions = ?, \
+      updated_at = ?, updated_by = ? WHERE online_ref = ?';
     const params = [
       data.paymentDate,
       data.paymentCategory,
       data.paymentMethod,
-      data.beneficiaryName,
       data.startDate,
       data.endDate,
-      data.duration,
       data.totalUsdAmountReceived,
-      data.cashUsdAmount,
+      data.cashAmount,
       data.cashCurrency,
-      data.cashLocalAmount,
       data.cashExchangeRate,
-      data.isCashBeneficiaryCrew,
       data.cashBeneficiaryRelationship,
+      data.cashBeneficiaryName,
       data.cashBeneficiaryContact,
       data.cashBeneficiaryContactPlatform,
-      data.bankTransferUsdAmount,
+      data.bankTransferAmount,
       data.bankTransferCurrency,
-      data.bankTransferLocalAmount,
       data.bankTransferExchangeRate,
-      data.isBankTransferBeneficiaryCrew,
       data.bankAccountName,
       data.bankAccountNumber,
       data.bankName,
       data.bankTransferBeneficiaryRelationship,
+      data.bankTransferBeneficiaryName,
       data.bankTransferBeneficiaryContact,
       data.bankTransferBeneficiaryContactPlatform,
       data.hasDeductions,
       data.deductions,
-      data.paymentStatus,
-      data.isConfirmed,
-      data.confirmationDate,
       data.updatedAt,
       data.updatedBy,
       data.onlineRef,

@@ -8,7 +8,7 @@ import { AuthService } from 'src/app/shared/services/auth/auth.service';
 import { CompaniesDataService } from 'src/app/companies/data/companies-data.service';
 import { GroupedOption } from 'src/app/shared/components/filter/filter.component';
 import { SharedmethodsService } from 'src/app/shared/services/sharedmethods/sharedmethods.service';
-import { StorageKeys } from 'src/app/shared/types/api-types';
+import { StorageKeys, UserRole } from 'src/app/shared/types/api-types';
 
 
 @Component({
@@ -23,6 +23,8 @@ export class HomePage implements OnInit {
   unfilteredData = [];
   filterOptions = [];
   groupedFilterOptions: GroupedOption[] = [];
+  userRole: string;
+  userData: any;
 
   constructor(
     public router: Router,
@@ -35,7 +37,10 @@ export class HomePage implements OnInit {
 
   ) {
     this.contractsDataService.getAll().subscribe(async(allContracts) => {
-      const contracts = await this.getUserContracts(allContracts);
+      this.userData = await this.sharedMethods.getUserData();
+      this.userRole = this.userData?.role;
+      const contracts = this.userRole === UserRole.vesselOwner ? await this.getVOContracts(allContracts) :
+        await this.getUserContracts(allContracts);
       this.contracts = this.unfilteredData = contracts;
       this.pageTitle = this.commonText?.contracts;
     });
@@ -50,6 +55,10 @@ export class HomePage implements OnInit {
   async getUserContracts(allContracts: any[]) {
     const onlineContracts = await this.sharedMethods.readDataFromStorage(StorageKeys.currentUserOnlineContractsAppRefs);
     return allContracts.filter(contract => onlineContracts?.includes(contract.appRef));
+  }
+  async getVOContracts(allContracts: any[]) {
+    const onlineContracts = await this.sharedMethods.readDataFromStorage(StorageKeys.currentUserOnlineContractsAppRefs);
+    return allContracts.filter(contract => onlineContracts?.includes(contract.appRef) || contract.createdBy === this.userData?.id);
   }
   
   // TODO: add filter by vessel

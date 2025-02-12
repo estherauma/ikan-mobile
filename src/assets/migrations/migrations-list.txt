@@ -20,3 +20,4 @@
 1717591415567_alterDocumentsAddIsDeleted.sql
 1718883954125_alterSurveysAddInlineQuestions.sql
 1734532965926_reworkPaymentsTable.sql
+1739174759145_updatePaymentsTable.sql

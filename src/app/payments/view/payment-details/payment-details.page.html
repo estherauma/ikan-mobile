@@ -41,18 +41,11 @@
           <ion-col size="10" class="details-col">
             <p class="type">{{ paymentsCommonText?.bankTransfer }}</p>
             <p class="amount">
-              USD {{ paymentDetails?.bankTransferUsdAmount || '0' }}
+              {{paymentDetails?.bankTransferCurrency}} {{ paymentDetails?.bankTransferAmount || '0' }}
             </p>
             <ng-container
-              *ngIf="paymentDetails?.bankTransferCurrency !== 'USD'"
+              *ngIf="paymentDetails?.bankTransferCurrency && paymentDetails?.bankTransferCurrency !== 'USD'"
             >
-              <p>
-                {{ paymentsCommonText?.localEquivalent }}:
-                <span>
-                  {{ paymentDetails?.bankTransferCurrency }} {{
-                  paymentDetails?.bankTransferLocalAmount }}
-                </span>
-              </p>
               <p>
                 {{ paymentsCommonText?.exchangeRate }}:
                 <span>
@@ -60,42 +53,43 @@
                   paymentDetails?.bankTransferExchangeRate }}
                 </span>
               </p>
-              <p>
-                {{ paymentsCommonText?.paymentMade }}:
-                <span>
-                  {{ sharedmethods.formatLocalDate( paymentDetails?.paymentDate,
-                  currentLanguage ) }}
-                </span>
-              </p>
-              <p>
-                {{ paymentsCommonText?.paymentConfirmed }}:
-                <span>
-                  {{ sharedmethods.formatLocalDate(
-                  paymentDetails?.confirmedDate, currentLanguage ) }}
-                </span>
-              </p>
-
-              <p class="details-title">{{ paymentsCommonText?.bankDetails }}</p>
-              <p>
-                {{ paymentsCommonText?.bankAccountName }}:
-                <span>{{ paymentDetails?.bankAccountName }}</span>
-              </p>
-              <p>
-                {{ paymentsCommonText?.bankAccountNumber }}:
-                <span>{{ paymentDetails?.bankAccountNumber }}</span>
-              </p>
-              <p>
-                {{ paymentsCommonText?.bankName }}:
-                <span>{{ paymentDetails?.bankName }}</span>
-              </p>
             </ng-container>
-            <ng-container *ngIf="paymentDetails?.isBankTransferBeneficiaryCrew">
+            <p>
+              {{ paymentsCommonText?.paymentMade }}:
+              <span>
+                {{ sharedmethods.formatLocalDate( paymentDetails?.paymentDate,
+                currentLanguage ) }}
+              </span>
+            </p>
+            <p>
+              {{ paymentsCommonText?.paymentConfirmed }}:
+              <!-- TODO: change date-->
+              <span>
+                {{ sharedmethods.formatLocalDate(
+                paymentDetails?.confirmedDate, currentLanguage ) }}
+              </span>
+            </p>
+
+            <p class="details-title">{{ paymentsCommonText?.bankDetails }}</p>
+            <p>
+              {{ paymentsCommonText?.bankAccountName }}:
+              <span>{{ paymentDetails?.bankAccountName }}</span>
+            </p>
+            <p>
+              {{ paymentsCommonText?.bankAccountNumber }}:
+              <span>{{ paymentDetails?.bankAccountNumber }}</span>
+            </p>
+            <p>
+              {{ paymentsCommonText?.bankName }}:
+              <span>{{ paymentDetails?.bankName }}</span>
+            </p>
+            <ng-container *ngIf="paymentDetails?.bankTransferBeneficiaryRelationship && paymentDetails?.bankTransferBeneficiaryRelationship !== 'self'">
               <p class="details-title">
                 {{ paymentsCommonText?.beneficiaryDetails }}
               </p>
               <p>
                 {{ paymentsCommonText?.beneficiaryName }}:
-                <span>{{ paymentDetails?.beneficiaryName }}</span>
+                <span>{{ paymentDetails?.bankTransferBeneficiaryName }}</span>
               </p>
               <p>
                 {{ paymentsCommonText?.beneficiaryRelationship }}:
@@ -109,13 +103,13 @@
                   {{ paymentDetails?.bankTransferBeneficiaryContact }}
                 </span>
               </p>
-              <p>
+              <!-- <p>
                 {{ paymentsCommonText?.beneficiaryContactPlatform }}:
                 <span>
                   {{ paymentDetails?.bankTransferBeneficiaryContactPlatform
                   }}
                 </span>
-              </p>
+              </p> -->
             </ng-container>
           </ion-col>
         </ion-row>
@@ -159,15 +153,8 @@
           </ion-col>
           <ion-col size="10" class="details-col">
             <p class="type">{{ paymentsCommonText?.cash }}</p>
-            <p class="amount">USD {{ paymentDetails?.cashUsdAmount || '0' }}</p>
-            <ng-container *ngIf="paymentDetails?.cashCurrency !== 'USD'">
-              <p>
-                {{ paymentsCommonText?.localEquivalent }}:
-                <span
-                  >{{ paymentDetails?.cashCurrency }} {{
-                  paymentDetails?.cashLocalAmount }}</span
-                >
-              </p>
+            <p class="amount">{{ paymentDetails?.cashCurrency }} {{ paymentDetails?.cashAmount || '0' }}</p>
+            <ng-container *ngIf="paymentDetails?.cashCurrency && paymentDetails?.cashCurrency !== 'USD'">
               <p>
                 {{ paymentsCommonText?.exchangeRate }}:
                 <span
@@ -175,28 +162,28 @@
                   paymentDetails?.cashExchangeRate }}</span
                 >
               </p>
-              <p>
-                {{ paymentsCommonText?.paymentMade }}:
-                <span>
-                  {{ sharedmethods.formatLocalDate( paymentDetails?.paymentDate,
-                  currentLanguage ) }}
-                </span>
-              </p>
-              <p>
-                {{ paymentsCommonText?.paymentConfirmed }}:
-                <span>
-                  {{ sharedmethods.formatLocalDate(
-                  paymentDetails?.confirmedDate, currentLanguage ) }}
-                </span>
-              </p>
             </ng-container>
-            <ng-container *ngIf="paymentDetails?.isCashBeneficiaryCrew">
+            <p>
+              {{ paymentsCommonText?.paymentMade }}:
+              <span>
+                {{ sharedmethods.formatLocalDate( paymentDetails?.paymentDate,
+                currentLanguage ) }}
+              </span>
+            </p>
+            <p>
+              {{ paymentsCommonText?.paymentConfirmed }}:
+              <span>
+                {{ sharedmethods.formatLocalDate(
+                paymentDetails?.confirmedDate, currentLanguage ) }}
+              </span>
+            </p>
+            <ng-container *ngIf="paymentDetails?.cashBeneficiaryRelationship && paymentDetails?.cashBeneficiaryRelationship !== 'self'">
               <p class="details-title">
                 {{ paymentsCommonText?.beneficiaryDetails }}
               </p>
               <p>
                 {{ paymentsCommonText?.beneficiaryName }}:
-                <span>{{ paymentDetails?.beneficiaryName }}</span>
+                <span>{{ paymentDetails?.cashBeneficiaryName }}</span>
               </p>
               <p>
                 {{ paymentsCommonText?.beneficiaryRelationship }}:
@@ -206,12 +193,12 @@
                 {{ paymentsCommonText?.beneficiaryContact }}:
                 <span>{{ paymentDetails?.cashBeneficiaryContact }}</span>
               </p>
-              <p>
+              <!-- <p>
                 {{ paymentsCommonText?.beneficiaryContactPlatform }}:
                 <span>
                   {{ paymentDetails?.cashBeneficiaryContactPlatform }}
                 </span>
-              </p>
+              </p> -->
             </ng-container>
           </ion-col>
         </ion-row>
