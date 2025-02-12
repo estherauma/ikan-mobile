@@ -124,4 +124,3 @@ workflows:
                 - dev
                 - staging
                 - main
-                - fx-build-upload-release
