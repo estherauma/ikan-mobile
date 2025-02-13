@@ -15,6 +15,7 @@ import { LocalNotificationsService } from 'src/app/shared/services/local-notific
 import { LocalNotifications  } from '@capacitor/local-notifications';
 import { AnalyticsService } from 'src/app/shared/services/analytics/analytics.service';
 import { pageEventNames } from 'src/app/shared/services/analytics/event-names';
+import { PushNotificationsService } from 'src/app/shared/services/push-notifications/push-notifications.service';
 
 @Component({
   selector: 'app-login',
@@ -38,7 +39,8 @@ export class LoginPage extends BaseformPage implements OnInit {
     public syncService: SyncService,
     public localNotifications: LocalNotificationsService,
     public modalController: ModalController,
-    public analytics: AnalyticsService
+    public analytics: AnalyticsService,
+    public pushNotificationsService: PushNotificationsService,
   ) {
     super(contentService);
   }
@@ -98,6 +100,9 @@ export class LoginPage extends BaseformPage implements OnInit {
 
           // get contract access
           this.contentService.getUserContractViewAccess();
+
+          // setup push notifications
+          await this.pushNotificationsService.setup();
 
           // setup/reset local notifications
           await LocalNotifications.removeAllListeners();
