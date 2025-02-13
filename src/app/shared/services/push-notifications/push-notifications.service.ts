@@ -2,6 +2,7 @@ import {
   StorageKeys,
   PushNotificationData,
   UserData,
+  UserRole,
 } from 'src/app/shared/types/api-types';
 import {
   ActionPerformed,
@@ -19,6 +20,7 @@ import { SharedmethodsService } from '../sharedmethods/sharedmethods.service';
 import { NativeSettings, AndroidSettings } from 'capacitor-native-settings';
 import { ContentService } from '../content/content.service';
 import { GlobalErrorHandlerService } from '../error-handler/global-error-handler.service';
+import { VesselsDataService } from 'src/app/vessels/data/vessels-data.service';
 
 @Injectable({
   providedIn: 'root'
@@ -37,6 +39,7 @@ export class PushNotificationsService {
     public sharedmethods: SharedmethodsService,
     public contentService: ContentService,
     public globalErrorHandler: GlobalErrorHandlerService,
+    public vesselsDataService: VesselsDataService,
   ) { }
 
   async setup() {
@@ -53,18 +56,47 @@ export class PushNotificationsService {
 
   async setPushNotificationData() {
     const user: UserData = await this.sharedmethods.readDataFromStorage(StorageKeys.userData);
-    // TODO: add logic for all users
     if (!user || !this.registrationToken) {
       return;
     }
-    const messagingRepos = [ 'tuna-messaging' ];
-    // TODO: add logic for all users, language and locale
+    const messagingRepos = [ 'tuna-messaging', 'tuna-push-notifications' ];
+    const currentLanguage = this.contentService.currentLanguage;
+    const vessels = await this.getCurrentUserVessels();
+    
     this.pushNotificationData = {
-      appId: 'tuna',
+      appId: 'tuna', // to identify it from other products on push notifications server
+      language: currentLanguage,
       userRole: user?.role,
       registrationToken: this.registrationToken,
       messagingRepos,
+      vessels,
+      userId: user?.id,
     };
+  }
+
+  async getCurrentUserVessels() {
+    const user: UserData = await this.sharedmethods.readDataFromStorage(StorageKeys.userData);
+    if (!user) {
+      return [];
+    }
+    
+    const userVessels = [];
+    let allVessels = [];
+    this.vesselsDataService.getAll().subscribe((data) => {
+      allVessels = data;
+    });
+    
+    if (user?.role === UserRole.vesselOwner) {
+      const voVessels = allVessels?.filter((vessel) => vessel.createdBy === user.id);
+      userVessels.push(...voVessels.map((vessel) => vessel.appRef));
+    } else if (user?.role === UserRole.worker) {
+      const workerVessel = await this.contentService.getWorkerVessel();
+      if (workerVessel && workerVessel?.appRef) {
+        userVessels.push(workerVessel?.appRef);
+      }
+    }
+    
+    return userVessels;
   }
 
   async getPushNotificationData() {
