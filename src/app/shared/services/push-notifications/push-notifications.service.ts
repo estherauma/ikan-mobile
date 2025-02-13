@@ -31,6 +31,7 @@ export class PushNotificationsService {
   public notificationsPermission = false;
   public registrationToken = '';
   public preventSecondNotificationPrompt = false;
+  oldNotificationData: PushNotificationData;
 
   constructor(
     private router: Router,
@@ -128,6 +129,22 @@ export class PushNotificationsService {
       if (!pushNotificationData) {
         return;
       }
+
+      // check if data has changed before uploading
+      // This will prevent unnecessary use of server resources
+      if (this.oldNotificationData) {
+        if (
+          this.oldNotificationData.registrationToken === pushNotificationData.registrationToken &&
+          this.oldNotificationData.language === pushNotificationData.language &&
+          this.oldNotificationData.userRole === pushNotificationData.userRole &&
+          this.oldNotificationData.vessels === pushNotificationData.vessels &&
+          this.oldNotificationData.userId === pushNotificationData.userId &&
+          this.oldNotificationData.messagingRepos === pushNotificationData.messagingRepos
+        ) {
+          return;
+        }
+      }
+      
       await this.apiService.uploadPushNotificationData(pushNotificationData);
     } catch (error) {
       this.globalErrorHandler.handleError(error, 'Error in push-notifications.service.ts at uploadPushNotificationData(). Failed to upload push notification data');
@@ -246,6 +263,7 @@ export class PushNotificationsService {
 
           // check if token is expired if we have previously saved data
           const savedNotificationData = await this.getPushNotificationData();
+          this.oldNotificationData = savedNotificationData;
           const isTokenExpired = await this.checkFCMTokenExpiry(r.token);
           if (savedNotificationData && isTokenExpired) {
             // update old data, set token expiry to true. This will help us identify duplicate users
