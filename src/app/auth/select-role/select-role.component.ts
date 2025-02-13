@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { ModalController } from '@ionic/angular';
 import { AuthService } from 'src/app/shared/services/auth/auth.service';
 import { ContentService } from 'src/app/shared/services/content/content.service';
+import { PushNotificationsService } from 'src/app/shared/services/push-notifications/push-notifications.service';
 import { SharedmethodsService } from 'src/app/shared/services/sharedmethods/sharedmethods.service';
 import { StorageKeys, UserData, UserRole } from 'src/app/shared/types/api-types';
 
@@ -22,7 +23,7 @@ export class SelectRoleComponent  implements OnInit {
     public modalController: ModalController,
     public router: Router,
     public authService: AuthService,
-
+    public pushNotificationsService: PushNotificationsService,
   ) {}
 
   async ngOnInit() {
@@ -48,6 +49,7 @@ export class SelectRoleComponent  implements OnInit {
     await this.sharedMethods.saveDataToStorage(StorageKeys.userData, userData);
     await this.sharedMethods.saveDataToStorage(StorageKeys.isRoleSet, true);
     await this.authService.setUpAuthData();
+    await this.pushNotificationsService.setup();
     this.contentService.contentObs.next(true);
     this.router.navigate([this.authService.getCurrentUserBaseUrlFromRole(event?.detail?.value)], {replaceUrl: true});
   }
