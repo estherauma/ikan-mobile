@@ -37,7 +37,7 @@ export class PushNotificationsService {
     public sharedmethods: SharedmethodsService,
     public contentService: ContentService,
     public globalErrorHandler: GlobalErrorHandlerService,
-    ) { }
+  ) { }
 
   async setup() {
     const permissionStatus = await PushNotifications.requestPermissions();
@@ -45,9 +45,8 @@ export class PushNotificationsService {
       this.notificationsPermission = false;
       return;
     }
-    await this.getFCMToken();
-    await this.setPushNotificationData();
     await PushNotifications.register();
+    await this.getFCMToken(); // bit of duplication here since function is called after registration event, but neede for when listener is not triggered
     this.addListeners();
     this.notificationsPermission = true;
   }
@@ -213,14 +212,37 @@ export class PushNotificationsService {
         .then(async(r) => {
           this.registrationToken = r.token;
 
+          // check if token is expired if we have previously saved data
           const savedNotificationData = await this.getPushNotificationData();
-          if (!savedNotificationData) {
-            this.setSaveUploadPushNotificationData();
+          const isTokenExpired = await this.checkFCMTokenExpiry(r.token);
+          if (savedNotificationData && isTokenExpired) {
+            // update old data, set token expiry to true. This will help us identify duplicate users
+            const dataToUpdate = { ...savedNotificationData, tokenExpired: true };
+            this.apiService.uploadPushNotificationData(dataToUpdate);
           }
+          
+          // update preferences regardless since other data might have changed not just the token
+          this.setSaveUploadPushNotificationData();
         })
         .catch((err) => {
           this.globalErrorHandler.handleError(err, 'Error in push-notifications.service.ts at getFCMToken(). Failed to get FCM token');
         });
+    }
+  }
+
+  async checkFCMTokenExpiry(currentToken: string) {
+    try {
+      const storedPushNotificationData = await this.getPushNotificationData();
+      if (!storedPushNotificationData) {
+        return false;
+      }
+      if (storedPushNotificationData.registrationToken === currentToken) {
+        return false;
+      }
+      return true;
+    } catch (error) {
+      this.globalErrorHandler.handleError(error, 'Error in push-notifications.service.ts at checkFCMTokenExpiry(). Failed to check FCM token expiry');
+      return false;
     }
   }
 
