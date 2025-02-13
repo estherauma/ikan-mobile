@@ -147,7 +147,7 @@ export interface PushNotificationData {
   appId: string;
   userRole: string;
   language?: string;
-  locale?: string;
+  locale?: string; // to remove ??
   registrationToken: string;
   messagingRepos?: Array<string>;
   vessels?: Array<string>;

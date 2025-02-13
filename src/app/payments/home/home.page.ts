@@ -85,6 +85,7 @@ export class HomePage implements OnInit {
     this.vesselsDataService.getAll().subscribe(async (data) => {
       await this.getCurrentUser();
       // TODO: filter data based on user role
+      // filtering by createdBy because the vessels are only displayed for VOs
       this.vessels = this.unFilteredData = data?.filter(
         (vessel) => vessel.createdBy === this.currentUser.id
       );
