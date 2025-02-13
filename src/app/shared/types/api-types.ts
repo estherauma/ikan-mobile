@@ -145,16 +145,14 @@ export enum Icons {
 
 export interface PushNotificationData {
   appId: string;
-  userRole: string; // fix type
+  userRole: string;
   language?: string;
   locale?: string;
-  // age?: string;
-  // sectors?: Array<string>;
-  // gender?: string;
-  // organisation?: string;
-  // factoryFarm?: string;
   registrationToken: string;
   messagingRepos?: Array<string>;
+  vessels?: Array<string>;
+  userId?: string;
+  tokenExpired?: boolean;
 }
 
 export interface IPasswordResetResp {
