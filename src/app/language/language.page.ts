@@ -6,6 +6,7 @@ import { Router } from '@angular/router';
 import { AuthService } from '../shared/services/auth/auth.service';
 import { AnalyticsService } from '../shared/services/analytics/analytics.service';
 import { pageEventNames } from '../shared/services/analytics/event-names';
+import { PushNotificationsService } from '../shared/services/push-notifications/push-notifications.service';
 
 @Component({
   selector: 'app-language',
@@ -22,7 +23,8 @@ export class LanguagePage implements OnInit {
     public router: Router,
     public authService: AuthService,
     public sharedMethods: SharedmethodsService,
-    public analytics: AnalyticsService
+    public analytics: AnalyticsService,
+    public pushNotificationsService: PushNotificationsService,
   ) {
     this.getAvailableLanguages();
     this.sharedMethods.readDataFromStorage(StorageKeys.currentLanguage)
@@ -50,6 +52,8 @@ export class LanguagePage implements OnInit {
     await this.sharedMethods.saveDataToStorage(StorageKeys.currentLanguage,selectedLanguage?.detail?.value);
     await this.contentServ.updateCurrentLanguage();
     this.contentServ.contentObs.next(true);
+
+    await this.pushNotificationsService.setup();
     
     const user: UserData = await this.sharedMethods.readDataFromStorage(StorageKeys.userData);
     this.router.navigate([this.authService.getCurrentUserBaseUrlFromRole(user.role)], {replaceUrl: true});
