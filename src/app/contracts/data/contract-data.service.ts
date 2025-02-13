@@ -11,6 +11,8 @@ export class ContractDataService {
   db: SQLiteObject;
   contractsObs = new BehaviorSubject([]);
   contracts = [];
+  contractClausesObs = new BehaviorSubject([]);
+  contractClauses = [];
 
   constructor(
     private platform: Platform,
@@ -29,6 +31,9 @@ export class ContractDataService {
 
     this.getAll().subscribe((data) => {
       this.contracts = data;
+    });
+    this.getAllClauses().subscribe((data) => {
+      this.contractClauses = data;
     });
   }
 
@@ -272,6 +277,38 @@ export class ContractDataService {
   updateContractDocumentRecipient(id, data) { }
 
   deleteContractRecipient(id) { }
+
+  async retrieveAllClauses() {
+    const query = 'SELECT * FROM contract_clauses';
+    return this.db.executeSql(query, []).then((data) => {
+      const clauses = [];
+      if (data.rows.length > 0) {
+        for (let i = 0; i < data.rows.length; i++) {
+          clauses.push({
+            id: data.rows.item(i).id,
+            appRef: data.rows.item(i).app_ref,
+            name: data.rows.item(i).name,
+            kind: data.rows.item(i).kind,
+            onlineRef: data.rows.item(i).online_ref,
+            content: data.rows.item(i).content,
+            createdAt: data.rows.item(i).created_at,
+            updatedAt: data.rows.item(i).updated_at,
+            createdBy: data.rows.item(i).created_by,
+            updatedBy: data.rows.item(i).updated_by,
+          });
+        }
+      }
+      this.contractClausesObs.next(clauses);
+      return clauses;
+    }).catch((e) => {
+      console.log(e);
+      return [];
+    });
+  }
+
+  getAllClauses() {
+    return this.contractClausesObs.asObservable();
+  }
 
   retrieveContractClauses(contractid) {
     const query  = 'SELECT * FROM contract_clauses WHERE contract_id = ?';
