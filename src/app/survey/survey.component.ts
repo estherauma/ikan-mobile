@@ -42,6 +42,13 @@ export class SurveyComponent extends BaseformPage  implements OnInit, OnDestroy 
     this.pageTitle  = pageData?.pageTitle;
     await this.getSurveySource();
 
+    // Temporary. TO BE REMOVED
+    const currentDate = new Date();
+    const expiryDate = new Date('2025-02-24');
+    if (currentDate < expiryDate) {
+      this.surveyTopic = '3.5'; // wages
+    }
+
     if (this.surveySource === SurveySources.notification) {
       this.formQuestions = await this.contentService.getSurveyQuestions(this.surveyTopic);
       this.pageName = this.contentService.currentSurveyCategory;
