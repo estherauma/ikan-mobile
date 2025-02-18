@@ -72,6 +72,7 @@ export class PushNotificationsService {
       messagingRepos,
       vessels,
       userId: user?.id,
+      tokenExpired: false,
     };
   }
 
