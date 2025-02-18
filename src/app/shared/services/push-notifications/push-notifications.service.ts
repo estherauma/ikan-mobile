@@ -21,6 +21,7 @@ import { NativeSettings, AndroidSettings } from 'capacitor-native-settings';
 import { ContentService } from '../content/content.service';
 import { GlobalErrorHandlerService } from '../error-handler/global-error-handler.service';
 import { VesselsDataService } from 'src/app/vessels/data/vessels-data.service';
+import { AuthService } from '../auth/auth.service';
 
 @Injectable({
   providedIn: 'root'
@@ -41,6 +42,7 @@ export class PushNotificationsService {
     public contentService: ContentService,
     public globalErrorHandler: GlobalErrorHandlerService,
     public vesselsDataService: VesselsDataService,
+    public authService: AuthService,
   ) { }
 
   async setup() {
@@ -175,6 +177,10 @@ export class PushNotificationsService {
             case 'tap':
               if (notification?.data?.type === 'message') {
                 await this.router.navigate([ '/tabs/messages' ]);
+              }
+              if (notification?.data?.type === 'push-notification') {
+                const user: UserData = await this.sharedmethods.readDataFromStorage(StorageKeys.userData);
+                this.authService.getCurrentUserBaseUrlFromRole(user?.role);
               }
               break;
 
