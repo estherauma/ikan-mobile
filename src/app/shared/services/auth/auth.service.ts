@@ -87,7 +87,7 @@ export class AuthService {
       if (menuItem?.roles == null) {
         return;
       }
-      let allowedRoles = menuItem.roles.split(',');
+      let allowedRoles = menuItem.roles.split(',').map((role) => role.trim());
       if (menuItem?.enabled && (allowedRoles.includes(this.userRole) || allowedRoles.includes('all'))) {
        finalMenu.push(menuItem);
       }
