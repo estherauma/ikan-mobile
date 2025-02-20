@@ -100,6 +100,7 @@ export class ContentService {
     }
   }
 
+  // TODO: update when worker has multiple contracts
   async replaceVesselPlaceholderText() {
     if (this.authService.userRole === UserRole.worker) {
       const userVessel = await this.getWorkerVessel();
@@ -120,10 +121,12 @@ export class ContentService {
     }
   }
 
+  // Refactor when worker has multiple contracts AND move to vesseldataservice
   async getWorkerVessel() {
     const userContracts = await this.sharedMethods.readDataFromStorage(StorageKeys.currentUserOnlineContractsAppRefs);
     if (userContracts?.length) {
       // TODO: change method when user has multiple contracts
+      // const contract = this.contractDataService.contracts.find((contract) => userContracts.includes(contract.appRef));
       const contract = this.contractDataService.contracts.find((contract) => contract.appRef === userContracts[0]);
       if (contract && contract?.id) {
         const clause = await this.contractDataService.retrieveClauseByFieldByContractId('kind', 'contract-clauses-parties-requirement-fishers', contract.id);

@@ -139,7 +139,6 @@ export class AppComponent implements OnInit, OnDestroy {
           if ( this.authService.tokenExpiryDate < new Date(now)) {
             this.logOut();
           } else {
-            await this.pushNotifications.setSaveUploadPushNotificationData();
             // TODO: Service isn't returning role and is returning
             // Ensure auth service returns role immediately
 
@@ -147,6 +146,8 @@ export class AppComponent implements OnInit, OnDestroy {
             if (user?.roles?.length > 1 && !isRoleSet) {
               return this.router.navigate(['/select-role']);
             }
+
+            await this.pushNotifications.setup();
            
             this.router.navigate([this.authService.getCurrentUserBaseUrlFromRole(user?.role)]);
           }

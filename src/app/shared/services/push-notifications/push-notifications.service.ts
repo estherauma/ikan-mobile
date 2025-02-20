@@ -2,6 +2,7 @@ import {
   StorageKeys,
   PushNotificationData,
   UserData,
+  UserRole,
 } from 'src/app/shared/types/api-types';
 import {
   ActionPerformed,
@@ -19,6 +20,8 @@ import { SharedmethodsService } from '../sharedmethods/sharedmethods.service';
 import { NativeSettings, AndroidSettings } from 'capacitor-native-settings';
 import { ContentService } from '../content/content.service';
 import { GlobalErrorHandlerService } from '../error-handler/global-error-handler.service';
+import { VesselsDataService } from 'src/app/vessels/data/vessels-data.service';
+import { AuthService } from '../auth/auth.service';
 
 @Injectable({
   providedIn: 'root'
@@ -29,6 +32,7 @@ export class PushNotificationsService {
   public notificationsPermission = false;
   public registrationToken = '';
   public preventSecondNotificationPrompt = false;
+  oldNotificationData: PushNotificationData;
 
   constructor(
     private router: Router,
@@ -37,7 +41,9 @@ export class PushNotificationsService {
     public sharedmethods: SharedmethodsService,
     public contentService: ContentService,
     public globalErrorHandler: GlobalErrorHandlerService,
-    ) { }
+    public vesselsDataService: VesselsDataService,
+    public authService: AuthService,
+  ) { }
 
   async setup() {
     const permissionStatus = await PushNotifications.requestPermissions();
@@ -45,27 +51,56 @@ export class PushNotificationsService {
       this.notificationsPermission = false;
       return;
     }
-    await this.getFCMToken();
-    await this.setPushNotificationData();
     await PushNotifications.register();
+    await this.getFCMToken(); // bit of duplication here since function is called after registration event, but neede for when listener is not triggered
     this.addListeners();
     this.notificationsPermission = true;
   }
 
   async setPushNotificationData() {
     const user: UserData = await this.sharedmethods.readDataFromStorage(StorageKeys.userData);
-    // TODO: add logic for all users
     if (!user || !this.registrationToken) {
       return;
     }
-    const messagingRepos = [ 'tuna-messaging' ];
-    // TODO: add logic for all users, language and locale
+    const messagingRepos = [ 'tuna-messaging', 'tuna-push-notifications' ];
+    const currentLanguage = this.contentService.currentLanguage;
+    const vessels = await this.getCurrentUserVessels();
+    
     this.pushNotificationData = {
-      appId: 'tuna',
+      appId: 'tuna', // to identify it from other products on push notifications server
+      language: currentLanguage,
       userRole: user?.role,
       registrationToken: this.registrationToken,
       messagingRepos,
+      vessels,
+      userId: user?.id,
+      tokenExpired: false,
     };
+  }
+
+  async getCurrentUserVessels() {
+    const user: UserData = await this.sharedmethods.readDataFromStorage(StorageKeys.userData);
+    if (!user) {
+      return [];
+    }
+    
+    const userVessels = [];
+    let allVessels = [];
+    this.vesselsDataService.getAll().subscribe((data) => {
+      allVessels = data;
+    });
+    
+    if (user?.role === UserRole.vesselOwner) {
+      const voVessels = allVessels?.filter((vessel) => vessel.createdBy === user.id);
+      userVessels.push(...voVessels.map((vessel) => vessel.appRef));
+    } else if (user?.role === UserRole.worker) {
+      const workerVessel = await this.contentService.getWorkerVessel();
+      if (workerVessel && workerVessel?.appRef) {
+        userVessels.push(workerVessel?.appRef);
+      }
+    }
+    
+    return userVessels;
   }
 
   async getPushNotificationData() {
@@ -97,6 +132,22 @@ export class PushNotificationsService {
       if (!pushNotificationData) {
         return;
       }
+
+      // check if data has changed before uploading
+      // This will prevent unnecessary use of server resources
+      if (this.oldNotificationData) {
+        if (
+          this.oldNotificationData.registrationToken === pushNotificationData.registrationToken &&
+          this.oldNotificationData.language === pushNotificationData.language &&
+          this.oldNotificationData.userRole === pushNotificationData.userRole &&
+          this.oldNotificationData.vessels === pushNotificationData.vessels &&
+          this.oldNotificationData.userId === pushNotificationData.userId &&
+          this.oldNotificationData.messagingRepos === pushNotificationData.messagingRepos
+        ) {
+          return;
+        }
+      }
+      
       await this.apiService.uploadPushNotificationData(pushNotificationData);
     } catch (error) {
       this.globalErrorHandler.handleError(error, 'Error in push-notifications.service.ts at uploadPushNotificationData(). Failed to upload push notification data');
@@ -126,6 +177,10 @@ export class PushNotificationsService {
             case 'tap':
               if (notification?.data?.type === 'message') {
                 await this.router.navigate([ '/tabs/messages' ]);
+              }
+              if (notification?.data?.type === 'push-notification') {
+                const user: UserData = await this.sharedmethods.readDataFromStorage(StorageKeys.userData);
+                this.authService.getCurrentUserBaseUrlFromRole(user?.role);
               }
               break;
 
@@ -213,14 +268,38 @@ export class PushNotificationsService {
         .then(async(r) => {
           this.registrationToken = r.token;
 
+          // check if token is expired if we have previously saved data
           const savedNotificationData = await this.getPushNotificationData();
-          if (!savedNotificationData) {
-            this.setSaveUploadPushNotificationData();
+          this.oldNotificationData = savedNotificationData;
+          const isTokenExpired = await this.checkFCMTokenExpiry(r.token);
+          if (savedNotificationData && isTokenExpired) {
+            // update old data, set token expiry to true. This will help us identify duplicate users
+            const dataToUpdate = { ...savedNotificationData, tokenExpired: true };
+            this.apiService.uploadPushNotificationData(dataToUpdate);
           }
+          
+          // update preferences regardless since other data might have changed not just the token
+          this.setSaveUploadPushNotificationData();
         })
         .catch((err) => {
           this.globalErrorHandler.handleError(err, 'Error in push-notifications.service.ts at getFCMToken(). Failed to get FCM token');
         });
+    }
+  }
+
+  async checkFCMTokenExpiry(currentToken: string) {
+    try {
+      const storedPushNotificationData = await this.getPushNotificationData();
+      if (!storedPushNotificationData) {
+        return false;
+      }
+      if (storedPushNotificationData.registrationToken === currentToken) {
+        return false;
+      }
+      return true;
+    } catch (error) {
+      this.globalErrorHandler.handleError(error, 'Error in push-notifications.service.ts at checkFCMTokenExpiry(). Failed to check FCM token expiry');
+      return false;
     }
   }
 

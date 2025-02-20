@@ -1,5 +1,5 @@
 const fs = require('fs');
-require('dotenv').config()
+require('dotenv').config();
 
 module.exports.generateEnvironmentFiles = (buildType) => {
     console.info(`Building for ${buildType}`);
@@ -34,11 +34,11 @@ module.exports.generateEnvironmentFiles = (buildType) => {
         case 'test':
             environmentFile = `export const env = {
                 production: false,
-                type: 'production',
+                type: 'test',
                 apiUrl: '${process.env.TEST_API_URL}',
                 baseUrl: '${process.env.TEST_BASE_URL}',
                 environment: 'test',
-                pushNotificationApi: '${process.env.PROD_PUSH_NOTIFICATION_URL}',
+                pushNotificationApi: '${process.env.DEV_PUSH_NOTIFICATION_URL}',
                 sentryDSN: '${process.env.SENTRY_DSN}'
             };
             `;
