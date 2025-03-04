@@ -64,7 +64,8 @@ ion-content {
 
   .bank-transfer-wrapper,
   .cash-transaction-wrapper,
-  .beneficiary-wrapper {
+  .beneficiary-wrapper,
+  .deductions-wrapper {
     margin: 15px 0px;
 
     ion-card {
@@ -87,6 +88,7 @@ ion-content {
             height: 30px;
             ion-icon,
             ion-img {
+              color: #3565ff;
               width: 100%;
               height: 100%;
               object-fit: contain;
@@ -146,6 +148,32 @@ ion-content {
             }
           }
         }
+      }
+    }
+  }
+
+  .deductions-wrapper {
+    .deductions-header {
+      .details-title {
+        border: 1px solid #eeebeb;
+        border-bottom: 2px solid #eeebeb;
+        padding: 3px 5px;
+      }
+    }
+    .deduction-row {
+      ion-col {
+        border: 1px solid #eeebeb;
+        border-top: unset;
+        padding: 3px 5px !important;
+        font-size: 0.8rem;
+        font-family: "interRegular";
+      }
+      .item {
+        color: #4465c9;
+      }
+      .deduction-amount {
+        color: var(--ikan_darkblue_100);
+
       }
     }
   }
