@@ -227,5 +227,54 @@
     </ion-card>
   </div>
 
+  <div
+    *ngIf="paymentDetails?.deductions && paymentDetails?.deductions?.length > 0"
+    class="deductions-wrapper"
+  >
+    <ion-card>
+      <ion-card-content>
+        <ion-row>
+          <ion-col size="2" class="icon-col">
+            <div class="icon-wrapper">
+              <ion-icon name="cut-outline" class="icon"></ion-icon>
+            </div>
+          </ion-col>
+          <ion-col size="10" class="details-col">
+            <p class="type">{{ paymentsCommonText?.deductions }}</p>
+            <ion-row class="deductions-header">
+              <ion-col size="5" class="details-title">{{ paymentsCommonText?.item }}</ion-col>
+              <ion-col size="7" class="details-title">{{ paymentsCommonText?.amount }}</ion-col>
+            </ion-row>
+            <ion-row *ngFor="let deduction of paymentDetails?.deductions" class="deduction-row">
+              <ion-col size="5" class="item">{{ deduction?.name }}</ion-col>
+              <ion-col size="7" class="deduction-amount">{{ deduction?.currency }} {{ deduction?.amount }}</ion-col>
+            </ion-row>
+          </ion-col>
+        </ion-row>
+      </ion-card-content>
+
+      <ion-row *ngIf="currentUser?.role === 'worker'" class="buttons-row">
+        <ion-col>
+          <ion-button fill="clear">
+            <ion-icon
+              class="icon"
+              src="assets/icon/gray_thumbs_up.svg"
+            ></ion-icon>
+            {{ commonText?.confirm }}
+          </ion-button>
+        </ion-col>
+        <ion-col>
+          <ion-button fill="clear">
+            <ion-icon
+              class="icon"
+              src="assets/icon/gray_thumbs_down.svg"
+            ></ion-icon>
+            {{ commonText?.report }}
+          </ion-button>
+        </ion-col>
+      </ion-row>
+    </ion-card>
+  </div>
+
   <!-- TODO: for VO view add button linking to the web data upload -->
 </ion-content>
