@@ -41,7 +41,7 @@ ion-content {
           margin-top: 5px;
         }
         p {
-          font-size: 0.8rem;
+          font-size: 1rem;
           font-family: "interRegular";
           color: #a0abcc;
           margin-top: 5px;
@@ -100,13 +100,13 @@ ion-content {
           flex-direction: column;
           margin-bottom: 5px;
           p {
-            font-size: 0.8rem;
+            font-size: 1rem;
             font-family: "interRegular";
             color: #a0abcc;
             margin: 2px 0;
             span {
               color: var(--ikan_darkblue_100);
-              font-size: 0.8rem;
+              font-size: 1rem;
             }
           }
           .type {
@@ -165,7 +165,7 @@ ion-content {
         border: 1px solid #eeebeb;
         border-top: unset;
         padding: 3px 5px !important;
-        font-size: 0.8rem;
+        font-size: 1rem;
         font-family: "interRegular";
       }
       .item {
