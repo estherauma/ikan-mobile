@@ -15,7 +15,11 @@ export class IndonesianagentPage implements OnInit {
   sLists = [
     {title: 'Demand Letters'},
     {title: 'Recruits'},
-    {title: 'Payments'}
+    {
+      title: 'Payments',
+      icon: '/assets/icon/single_payment_blue.svg',
+      url: '/payments',
+    },
   ];
 
   performanceData = {
