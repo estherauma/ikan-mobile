@@ -312,7 +312,7 @@ export class SyncService {
           await this.dbService.checkIfEntryExists('contracts', contract.appRef)
           .then(async(exists) => {
             if (!exists) {
-              this.contractServ.saveOnlineContract(contract)
+              await this.contractServ.saveOnlineContract(contract)
               .then((id) => { console.log ( `Contract ${contract.name} saved with id ${id}`)});
             }
           });
@@ -411,11 +411,11 @@ export class SyncService {
   async fetchContractClauses() {
     return this.apiService.get('contracts-clauses').subscribe((response:GetClausesResponse) => {
       if (response.status === 200 && response.body.length > 0) {
-        response.body.forEach((clause) => {
-          this.dbService.checkIfEntryExists('contract_clauses', clause.appRef)
+        response.body.forEach(async(clause) => {
+          await this.dbService.checkIfEntryExists('contract_clauses', clause.appRef)
           .then(async(exists) => {
             if (!exists) {
-              const contract = this.contractServ.getContractByField('onlineRef', clause.contract);
+              const contract = await this.contractServ.getContractByField('onlineRef', clause.contract);
               if (contract) {
                 const data = JSON.parse(clause.content);
                 delete data.partyASignature;
