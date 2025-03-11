@@ -35,7 +35,7 @@ export class WorkerPage implements OnInit {
     {
       title: 'Payments',
       icon: '/assets/icon/single_payment_blue.svg',
-      url: '/payments/home'
+      url: '/payments'
     },
     // {title: 'Placement'},
     // {title: 'To Do'},
