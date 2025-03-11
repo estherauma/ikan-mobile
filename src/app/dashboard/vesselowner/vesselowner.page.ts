@@ -38,7 +38,7 @@ export class VesselownerPage implements OnInit {
     {
       title: 'Payments',
       icon: '/assets/icon/single_payment_blue.svg',
-      url: '/payments/home',
+      url: '/payments',
     },
   ];
 

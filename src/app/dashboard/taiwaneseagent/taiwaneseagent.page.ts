@@ -16,7 +16,11 @@ export class TaiwaneseagentPage implements OnInit {
     {title: 'Work Orders'},
     {title: 'Demand Letters'},
     {title: 'Recruits'},
-    {title: 'Payments'},
+    {
+      title: 'Payments',
+      icon: '/assets/icon/single_payment_blue.svg',
+      url: '/payments',
+    },
     {title: 'Learning Hub'}
   ];
 
