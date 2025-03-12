@@ -84,4 +84,7 @@ export class SignupPage extends BaseformPage implements OnInit {
     );
   }
 
+  goBack() {
+    this.router.navigate(['auth/login-method'], { replaceUrl: true });
+  }
 }
