@@ -23,8 +23,8 @@ export class VesselsDataService {
         location: 'default'
       }).then(async(_db: SQLiteObject) => {
         this.db = _db;
-        this.retriveVessels();
-        this.getVesselImages();
+        await this.retriveVessels();
+        await this.getVesselImages();
       }).catch(e => console.log(e));
     });
 
