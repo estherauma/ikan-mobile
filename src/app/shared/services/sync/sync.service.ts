@@ -100,24 +100,25 @@ export class SyncService {
   }
 
   async syncCompanies() {
-    return this.companyServ.getAll().subscribe((data) => {
-      let companies = data;
-      if (companies.length > 0) {
-        companies.forEach((company) => {
-          if (!company.onlineRef) {
-            this.apiService.post('companies', company).subscribe((response: CreateCompanyResp) => {
-              if (response?.status === 'OK') {
-                this.updateEntityOnlineId(response?.data?.id, company.appRef, 'companies');
-              }
-            });
-          } else {
-            // this.apiService.put('companies', company.online_ref, company).subscribe((response) => {
-            //   console.log(response);
-            // });
-          }
-        });
-      }
-    })
+    const companies = this.companyServ.companies;
+    if (companies.length > 0) {
+      companies.forEach(async(company) => {
+        const companyId = company.id;
+        const companyToUpload = Object.assign({}, company);
+        delete companyToUpload.id;
+        if (!companyToUpload.onlineRef) {
+          this.apiService.post('companies', companyToUpload).subscribe(async(response: CreateCompanyResp) => {
+            if (response?.status === 'OK') {
+              await this.updateEntityOnlineId(response?.data?.id, companyToUpload.appRef, 'companies');
+            }
+          });
+        } else {
+          this.apiService.put('companies', companyToUpload.onlineRef, companyToUpload).subscribe((response) => {
+            console.log(response);
+          });
+        }
+      });
+    }
   }
 
   async fetchCompanies() {
