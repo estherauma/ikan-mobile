@@ -9,6 +9,7 @@ import { SharedmethodsService } from 'src/app/shared/services/sharedmethods/shar
 import { ContractDataService } from '../data/contract-data.service';
 import { AnalyticsService } from 'src/app/shared/services/analytics/analytics.service';
 import { pageEventNames } from 'src/app/shared/services/analytics/event-names';
+import { SyncService } from 'src/app/shared/services/sync/sync.service';
 
 @Component({
   selector: 'app-create',
@@ -31,7 +32,8 @@ export class CreatePage extends BaseformPage implements OnInit {
     public contractsDataService: ContractDataService,
     public modalCtrl: ModalController,
     public navParams: NavParams,
-    public analytics: AnalyticsService
+    public analytics: AnalyticsService,
+    public syncService: SyncService,
   ) {
     super(contentService);
   }
@@ -113,6 +115,8 @@ export class CreatePage extends BaseformPage implements OnInit {
           }
         }
         await this.createStaticContractClauses(insertId);
+        
+        await this.syncService.syncContracts();
         this.modalCtrl.dismiss();
       } else {
         this.sharedMethods.showToast(this.pageText?.errCreatingContract);
@@ -169,6 +173,7 @@ export class CreatePage extends BaseformPage implements OnInit {
             }
           }
 
+        await this.syncService.syncContracts();
         this.modalCtrl.dismiss({contractDetails, isEditing: false});
       } else {
         this.sharedMethods.showToast(this.pageText?.errUpdatingContract);

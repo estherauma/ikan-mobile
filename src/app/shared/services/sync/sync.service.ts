@@ -239,38 +239,41 @@ export class SyncService {
   }
 
   async syncContracts() {
-    return this.contractServ.getAll().subscribe((data) => {
-      let contracts  = data;
-      if (contracts.length > 0) {
-        contracts.forEach((contract) => {
-          contract.startDate = new Date(contract.startDate).toISOString().split('T')[0];
-          contract.endDate = new Date(contract.endDate).toISOString().split('T')[0];
-          let tempContractId = contract.id;
-          const contractToUpload = Object.assign({}, contract);
-          delete contractToUpload.id;
-          if (!contract.onlineRef) {
-            this.apiService.post('contracts', contractToUpload).subscribe(async(response: CreateContractResp) => {
-              if (response?.status === 'OK') {
-                contract.id = tempContractId;
-                this.dbService.updateDatabaseField('contracts', 'online_ref', response?.data?.id, contract.appRef);
-                await this.postContractDocument(contract);
-                
-                // start syncing the clauses at this point.
-                // we'd avoid making a different db call to get th online_ref
-                await this.syncContractClauses(tempContractId, response?.data?.id);
-              }
-            });
-          } else {
-            this.apiService.put('contracts', contractToUpload.onlineRef, contractToUpload).subscribe(async(response) => {
-              if (response?.['status'] === 'OK') {
-                await this.postContractDocument(contract);
-                await this.syncContractClauses(contract.id, contract.onlineRef);
-              }
-            });
-          }
-        });
-      }
-    });
+    const contracts  = this.contractServ.contracts;
+    if (contracts.length > 0) {
+      contracts.forEach((contract) => {
+        contract.startDate = new Date(contract.startDate).toISOString().split('T')[0];
+        contract.endDate = new Date(contract.endDate).toISOString().split('T')[0];
+        let tempContractId = contract.id;
+        const contractToUpload = Object.assign({}, contract);
+        delete contractToUpload.id;
+        if (!contractToUpload.taiwaneseCompany) delete contractToUpload.taiwaneseCompany;
+        if (!contractToUpload.indonesianCompany) delete contractToUpload.indonesianCompany;
+        if (!contractToUpload.description) delete contractToUpload.description;
+
+        if (!contract.onlineRef) {
+          this.apiService.post('contracts', contractToUpload).subscribe(async(response: CreateContractResp) => {
+            if (response?.status === 'OK') {
+
+              contract.id = tempContractId;
+              this.dbService.updateDatabaseField('contracts', 'online_ref', response?.data?.id, contract.appRef);
+              await this.postContractDocument(contract);
+              
+              // start syncing the clauses at this point.
+              // we'd avoid making a different db call to get th online_ref
+              await this.syncContractClauses(tempContractId, response?.data?.id);
+            }
+          });
+        } else {
+          this.apiService.put('contracts', contractToUpload.onlineRef, contractToUpload).subscribe(async(response) => {
+            if (response?.['status'] === 'OK') {
+              await this.postContractDocument(contract);
+              await this.syncContractClauses(contract.id, contract.onlineRef);
+            }
+          });
+        }
+      });
+    }
   }
 
   async postContractDocument(contract) {
