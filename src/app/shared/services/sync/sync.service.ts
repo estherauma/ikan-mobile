@@ -815,60 +815,59 @@ export class SyncService {
   }
 
   async syncMyDocuments() {
-    return this.documentsDataService.retrieveAllObservable().subscribe((documents) => {
-      if (documents?.length) {
-        documents.forEach(async(document) => {
-          if (document.isDeleted && !document.onlineRef) {
-            await this.documentsDataService.deleteDocument(document.id);
-          } else if (document.isDeleted && document.onlineRef) {
-            this.apiService.delete('mydocuments', document.onlineRef).subscribe(async(response) => {
-              if (response?.['status'] === 'OK' || !response) {
-                await this.documentsDataService.deleteDocument(document.id);
+    const allDocs = this.documentsDataService.allDocuments;
+    if (allDocs?.length) {
+      allDocs.forEach(async(document) => {
+        if (document.isDeleted && !document.onlineRef) {
+          await this.documentsDataService.deleteDocument(document.id);
+        } else if (document.isDeleted && document.onlineRef) {
+          this.apiService.delete('mydocuments', document.onlineRef).subscribe(async(response) => {
+            if (response?.['status'] === 'OK' || !response) {
+              await this.documentsDataService.deleteDocument(document.id);
+            } else {
+              console.error(`Failed to delete document ${document.fileName} from the api`, response);
+            }
+          });
+        } else {
+          const documentId = document.id;
+          const documentToUpload = Object.assign({}, document);
+          delete documentToUpload.id;
+          delete documentToUpload.fileUrl;
+
+          const file = await this.uploadService.retrieveAndReturnBlob(document.fileUrl);
+          if (file) {
+            const docData =  new FormData();
+            docData.append('fileContent', file);
+            docData.append('entityType', 'my_document');
+            this.apiService.post('file-upload', docData).subscribe((uploadResponse) => {
+              if (uploadResponse?.['status'] === 'OK') {
+                documentToUpload.fileUrl = uploadResponse?.['data']?.fileLocation;
+                const dataToSave = {...documentToUpload, user: documentToUpload.userId};
+                
+                if (!documentToUpload.onlineRef) {
+                  this.apiService.post('mydocuments', dataToSave).subscribe((response) => {
+                    if (response?.['status'] === 'OK') {
+                      this.dbService.updateDatabaseField('documents', 'online_ref', response?.['data']?.id, documentToUpload.appRef);
+                    } else {
+                      console.error(`Failed to sync document ${document.fileName} to the api`, response);
+                    }
+                  });
+                } else {
+                  this.apiService.put('mydocuments', documentToUpload.onlineRef, dataToSave).subscribe((response) => {
+                    if (response?.['status'] !== 'OK')  {
+                      console.error(`Failed to sync document ${document.fileName} to the api`, response);
+                    }
+                  });
+                }
               } else {
-                console.error(`Failed to delete document ${document.fileName} from the api`, response);
+                console.error(`Failed to sync document ${document.fileName} to the api`, uploadResponse);
               }
             });
-          } else {
-            const documentId = document.id;
-            const documentToUpload = Object.assign({}, document);
-            delete documentToUpload.id;
-            delete documentToUpload.fileUrl;
-
-            const file = await this.uploadService.retrieveAndReturnBlob(document.fileUrl);
-            if (file) {
-              const docData =  new FormData();
-              docData.append('fileContent', file);
-              docData.append('entityType', 'my_document');
-              this.apiService.post('file-upload', docData).subscribe((uploadResponse) => {
-                if (uploadResponse?.['status'] === 'OK') {
-                  documentToUpload.fileUrl = uploadResponse?.['data']?.fileLocation;
-                  const dataToSave = {...documentToUpload, user: documentToUpload.userId};
-                  
-                  if (!documentToUpload.onlineRef) {
-                    this.apiService.post('mydocuments', dataToSave).subscribe((response) => {
-                      if (response?.['status'] === 'OK') {
-                        this.dbService.updateDatabaseField('documents', 'online_ref', response?.['data']?.id, documentToUpload.appRef);
-                      } else {
-                        console.error(`Failed to sync document ${document.fileName} to the api`, response);
-                      }
-                    });
-                  } else {
-                    this.apiService.put('mydocuments', documentToUpload.onlineRef, dataToSave).subscribe((response) => {
-                      if (response?.['status'] !== 'OK')  {
-                        console.error(`Failed to sync document ${document.fileName} to the api`, response);
-                      }
-                    });
-                  }
-                } else {
-                  console.error(`Failed to sync document ${document.fileName} to the api`, uploadResponse);
-                }
-              });
-            }
           }
-        });
-        
-      }
-    });
+        }
+      });
+      
+    }
   }
 
   async fetchMyDocuments() {

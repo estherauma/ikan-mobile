@@ -9,9 +9,12 @@ import { DocumentType } from 'src/app/shared/types/types';
 })
 export class DocumentsDataService {
 
+  passports: Array<any> = [];
+  passportsObs = new BehaviorSubject<Array<any>>(this.passports);
+  allDocuments: Array<DocumentType> = []; // includes deleted ones
+  allDocumentsObs = new BehaviorSubject<Array<DocumentType>>([]); // includes deleted ones
   documents: Array<DocumentType> = [];
   documentsObs = new BehaviorSubject<Array<DocumentType>>(this.documents);
-  allDocumentsObs = new BehaviorSubject<Array<DocumentType>>([]);
   db: SQLiteObject;
 
   constructor(
@@ -24,14 +27,17 @@ export class DocumentsDataService {
         location: 'default'
       }).then(async(_db: SQLiteObject) => {
         this.db = _db;
-        this.retriveDocuments();
-        this.retriveAllDocuments();
-        this.retrievePassports();
+        await this.retriveDocuments();
+        await this.retriveAllDocuments();
+        await this.retrievePassports();
       }).catch(e => console.log(e));
     });
 
     this.getAll().subscribe((documents) => {
       this.documents = documents;
+    });
+    this.getPassports().subscribe((passports) => {
+      this.passports = passports;
     });
   }
 
@@ -79,10 +85,10 @@ export class DocumentsDataService {
   async retriveAllDocuments() {
     const query = 'SELECT * FROM documents';
     return this.db.executeSql(query, []).then((data) => {
-      const documents = [];
+      const allDocuments = [];
       if (data.rows.length > 0) {
         for (let i = 0; i < data.rows.length; i++) {
-          documents.push({
+          allDocuments.push({
             id: data.rows.item(i).id,
             onlineRef: data.rows.item(i).online_ref,
             appRef: data.rows.item(i).app_ref,
@@ -100,8 +106,8 @@ export class DocumentsDataService {
           });
         }
       }
-      this.allDocumentsObs.next(documents);
-      return documents;
+      this.allDocumentsObs.next(allDocuments);
+      return allDocuments;
     }).catch((e) => {
       console.log(e);
       return [];
@@ -137,6 +143,7 @@ export class DocumentsDataService {
       data.createdBy, data.updatedBy];
     return this.db.executeSql(query, params).then(async(result) => {
       await this.retriveDocuments();
+      await this.retriveAllDocuments();
       return result.insertId;
     }).catch((e) => {
       console.log(e);
@@ -151,8 +158,9 @@ export class DocumentsDataService {
     const params = [data.onlineRef, data.appRef, data.userId, data.fileName,
       data.fileUrl, data.fileSize, data.docType, data.isEssential, data.createdAt, data.updatedAt,
       data.createdBy, data.updatedBy];
-    return this.db.executeSql(query, params).then((result) => {
-      this.retriveDocuments();
+    return this.db.executeSql(query, params).then(async(result) => {
+      await this.retriveDocuments();
+      await this.retriveAllDocuments();
       return result.insertId;
     }).catch((e) => {
       console.log(e);
@@ -165,6 +173,7 @@ export class DocumentsDataService {
     const params = [value, id];
     return this.db.executeSql(query, params).then(async(result) => {
       await this.retriveDocuments();
+      await this.retriveAllDocuments();
       return result.rowsAffected;
     }).catch((e) => {
       console.log(e);
@@ -177,6 +186,7 @@ export class DocumentsDataService {
     const params = [id];
     return this.db.executeSql(query, params).then(async(result) => {
       await this.retriveDocuments();
+      await this.retriveAllDocuments();
       return result.rowsAffected;
     }).catch((e) => {
       console.log(e);
@@ -213,11 +223,16 @@ export class DocumentsDataService {
           });
         }
       }
+      this.passportsObs.next(passports);
       return passports;
     }).catch((e) => {
       console.log(e);
       return [];
     });
+  }
+
+  getPassports() {
+    return this.passportsObs.asObservable();
   }
 
   getUserPassport(userId) {
@@ -298,7 +313,7 @@ export class DocumentsDataService {
     const query = 'DELETE FROM passports WHERE id = ?';
     const params = [id];
     return this.db.executeSql(query, params).then(async(result) => {
-      await this.retrievePassports();
+      await this.retrievePassports(true);
       return result.rowsAffected;
     }).catch((e) => {
       console.log(e);
