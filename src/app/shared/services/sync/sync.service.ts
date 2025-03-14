@@ -485,29 +485,28 @@ export class SyncService {
   }
 
   async syncInlineQuestions() {
-    return this.surveyDataService.getAllInlineQuestions().subscribe((questions) => {
-      if (questions?.length) {
-        questions.forEach((question) => {
-          const questionId = question.id;
-          const questionToUpload = Object.assign({}, question);
-          delete questionToUpload.id;
-          questionToUpload.user = questionToUpload.userId;
-          if (!questionToUpload.onlineRef) {
-            this.apiService.post('inline-questions', questionToUpload).subscribe(async(response) => {
-              if (response['status'] === 'OK') {
-                this.dbService.updateDatabaseField('inline_questions', 'online_ref', response['data']['id'], question.appRef);
-              }
-            });
-          } else {
-            this.apiService.put('inline-questions', questionToUpload.onlineRef, questionToUpload).subscribe(async(response) => {
-              if (response?.['status'] !== 'OK') {
-                console.error('Failed to update inline question', response);
-              }
-            });
-          }
-        });
-      }
-    });
+    const questions = this.surveyDataService.inlineQuestions;
+    if (questions?.length) {
+      questions.forEach((question) => {
+        const questionId = question.id;
+        const questionToUpload = Object.assign({}, question);
+        delete questionToUpload.id;
+        questionToUpload.user = questionToUpload.userId;
+        if (!questionToUpload.onlineRef) {
+          this.apiService.post('inline-questions', questionToUpload).subscribe(async(response) => {
+            if (response['status'] === 'OK') {
+              this.dbService.updateDatabaseField('inline_questions', 'online_ref', response['data']['id'], question.appRef);
+            }
+          });
+        } else {
+          this.apiService.put('inline-questions', questionToUpload.onlineRef, questionToUpload).subscribe(async(response) => {
+            if (response?.['status'] !== 'OK') {
+              console.error('Failed to update inline question', response);
+            }
+          });
+        }
+      });
+    }
   }
 
   async fetchInlineQuestions() {
