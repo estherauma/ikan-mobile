@@ -1,9 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AnalyticsService } from 'src/app/shared/services/analytics/analytics.service';
+import { AuthService } from 'src/app/shared/services/auth/auth.service';
 import { ContentService } from 'src/app/shared/services/content/content.service';
 import { SharedmethodsService } from 'src/app/shared/services/sharedmethods/sharedmethods.service';
-import { HubQuestionStatus, UserData } from 'src/app/shared/types/api-types';
+import { HubQuestionStatus, UserData, UserRole } from 'src/app/shared/types/api-types';
 import { SurveyDataService } from 'src/app/survey/data/survey-data.service';
 
 @Component({
@@ -32,6 +33,8 @@ export class SubchapterComponent  implements OnInit {
   networkStatus = false;
   savedInlineQuestions = [];
   user: UserData;
+  isWorker: boolean = false;
+  isVesselOwner: boolean = false;
 
   constructor(
     public activatedRoute: ActivatedRoute,
@@ -40,6 +43,7 @@ export class SubchapterComponent  implements OnInit {
     public sharedmethods: SharedmethodsService,
     public analytics: AnalyticsService,
     public surveyDataService: SurveyDataService,
+    public authService: AuthService,
   ) {
     this.activatedRoute.params.subscribe(async params => {
       this.subChapterId = params?.subChapterId;
@@ -53,6 +57,8 @@ export class SubchapterComponent  implements OnInit {
   async ngOnInit() {
     this.networkStatus = await this.sharedmethods.checkInternetConnectionStatus();
     this.user = await this.sharedmethods.getUserData();
+        this.isVesselOwner = this.authService.userRole === UserRole.vesselOwner;
+        this.isWorker = this.authService.userRole === UserRole.worker;
     await this.pageSetup();
     this.setUpAnalytics();
   }
