@@ -26,7 +26,7 @@ import { VesselsDataService } from 'src/app/vessels/data/vessels-data.service';
 import { ContractDataService } from 'src/app/contracts/data/contract-data.service';
 import { SharedmethodsService } from '../sharedmethods/sharedmethods.service';
 import { SurveyDataService } from 'src/app/survey/data/survey-data.service';
-import { forkJoin } from 'rxjs';
+import { forkJoin, lastValueFrom } from 'rxjs';
 import { ProfilesDataService } from 'src/app/profiles/data/profiles-data.service';
 import { AuthService } from '../auth/auth.service';
 import { PaymentsDataService } from 'src/app/payments/data/payments-data.service';
@@ -305,7 +305,7 @@ export class SyncService {
   }
 
   async fetchContracts() {
-    return this.apiService.get('contracts').subscribe(async(response:GetContractsResponse) => {
+    return await lastValueFrom(this.apiService.get('contracts')).then(async(response:GetContractsResponse) => {
       if (response.status === 200 && response.body.data.length > 0) {
         const userOnlineContracts = response.body.data.map((contract) => contract.appRef);
         await this.sharedMethods.saveDataToStorage(StorageKeys.currentUserOnlineContractsAppRefs, userOnlineContracts);
@@ -360,18 +360,24 @@ export class SyncService {
 
   async syncContractClauses(contractId, contractOnlineRef) {
     let clauses = await this.contractServ.retrieveContractClauses(contractId);
-    clauses.forEach((clause) => {
+    clauses.forEach(async(clause) => {
       // The contract_id has to be the for the online record and not the local before sending to the api
       // replace the contract_id with the contract id online_ref
       clause.contract = contractOnlineRef;
       const clauseToUpload = Object.assign({}, clause);
       delete clauseToUpload.id;
       if (!clause.onlineRef) {
-        this.apiService.post('contracts-clauses', clauseToUpload).subscribe(async(response: CreateContractClauseResp) => {
+        await lastValueFrom(this.apiService.post('contracts-clauses', clauseToUpload)).then(async(response: CreateContractClauseResp) => {
           if (response?.status === 'OK') {
             this.dbService.updateDatabaseField('contract_clauses', 'online_ref', response?.data?.id, clause.appRef);
             await this.syncContractClausesAttachments(clause);
           }
+        }).catch((e) => {
+          console.log('error', e);
+          // TODO: save clause onlinref if no exists
+          // if (e?.error?.appRef && e.error.appRef[0] === 'contract clause with this app ref already exists.') {
+          //   console.log('contract clause with this app ref already exists.');
+          // }
         });
       } else {
         this.apiService.put('contracts-clauses', clause.onlineRef, clauseToUpload).subscribe(async(response) => {
@@ -446,6 +452,8 @@ export class SyncService {
                   await this.contractServ.updateContractClause(id, dataToUpdate);
                 });
               }
+            } else {
+              // TODO: update the clause if it exists
             }
           });
         });

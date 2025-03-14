@@ -26,6 +26,7 @@ export class ContractDataService {
       }).then(async(_db: SQLiteObject) => {
         this.db = _db;
         await this.retrieveContracts();
+        await this.retrieveAllClauses();
       }).catch(e => console.log(e));
     });
 
