@@ -6,6 +6,7 @@ import { BaseformPage } from 'src/app/shared/components/baseform/baseform.page';
 import { ContentService } from 'src/app/shared/services/content/content.service';
 import { SharedmethodsService } from 'src/app/shared/services/sharedmethods/sharedmethods.service';
 import { DocumentsDataService } from '../data/documents-data.service';
+import { SyncService } from 'src/app/shared/services/sync/sync.service';
 
 @Component({
   selector: 'app-createpassport',
@@ -24,6 +25,7 @@ export class CreatepassportPage extends BaseformPage implements OnInit {
     public modalCtrl: ModalController,
     public documentsDataService: DocumentsDataService,
     public navParams: NavParams,
+    public syncService: SyncService,
   ) {
     super(contentService);
   }
@@ -75,6 +77,7 @@ export class CreatepassportPage extends BaseformPage implements OnInit {
           passportData
         );
         if (passportInsertId) {
+          await this.syncService.syncPassports();
           this.modalCtrl.dismiss({ passportData });
         } else {
           this.sharedMethods.showToast(this.pageText?.errSavingPassport || 'Error saving passport');
@@ -93,6 +96,7 @@ export class CreatepassportPage extends BaseformPage implements OnInit {
       };
       const passportUpdate = await this.documentsDataService.updatePassport(passportData);
       if (passportUpdate) {
+        await this.syncService.syncPassports();
         this.modalCtrl.dismiss({ passportData });
       } else {
         this.sharedMethods.showToast(this.pageText?.errUpdatingPassport || 'Error updating passport');
