@@ -84,33 +84,17 @@
                   <div
                     class="option"
                     (click)="selectOption(option?.value)"
-                    [ngClass]="{
-                      'yes': (questionData?.value === option?.value && questionData?.value.toLowerCase() === 'yes'),
-                      'no': (questionData?.value === option?.value && questionData?.value.toLowerCase() === 'no'),
-                      'other': (questionData?.value && questionData?.value === option?.value && (questionData?.value.toLowerCase() !== 'yes' && questionData?.value.toLowerCase() !== 'no'))
-                    }"
+                    [ngClass]="{ 'option-has-value': questionData?.value === option?.value }"
                   >
                     <ion-radio slot="start" value="{{ option?.value }}"></ion-radio>
                     <ion-icon [name]="option?.icon"></ion-icon>
                   </div>
-                  <ion-img
-                    *ngIf="hasFollowupQtn && questionData?.value === option?.value && questionData?.value.toLowerCase() === 'yes'"
-                    class="cutout-icon"
-                    src="assets/imgs/cutout-rectangle-green.svg"
-                  >
-                  </ion-img>
-                  <ion-img
-                    *ngIf="hasFollowupQtn && questionData?.value === option?.value && questionData?.value.toLowerCase() === 'no'"
-                    class="cutout-icon"
-                    src="assets/imgs/cutout-rectangle-red.svg"
-                  >
-                  </ion-img>
-                  <ion-img
-                    *ngIf="hasFollowupQtn && questionData?.value === option?.value && (questionData?.value.toLowerCase() !== 'yes' && questionData?.value.toLowerCase() !== 'no')"
-                    class="cutout-icon"
-                    src="assets/imgs/cutout-rectangle-orange.svg"
-                  >
-                  </ion-img>
+                <ion-img
+                  *ngIf="hasFollowupQtn && questionData?.value === option?.value"
+                  class="cutout-icon"
+                  src="assets/imgs/cutout-rectangle-blue.svg"
+                >
+                </ion-img>
                 </ion-col>
               </ion-row>
             </ion-radio-group>
@@ -135,11 +119,6 @@
     <div
       *ngIf="hasFollowupQtn"
       class="followup-qtn-section"
-      [ngClass]="{
-        'green': questionData?.value.toLowerCase() === 'yes',
-        'red': questionData?.value.toLowerCase() === 'no',
-        'orange': (questionData?.value.toLowerCase() !== 'yes' && questionData?.value.toLowerCase() !== 'no'),
-      }"
     >
       <div *ngIf="followupQtnData?.questionType === 'helperText'" class="helper-text-container">
         <p>{{ followupQtnData?.question }}</p>

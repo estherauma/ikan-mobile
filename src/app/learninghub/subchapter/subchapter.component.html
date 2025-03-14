@@ -37,10 +37,10 @@
               class="icon-col"
               [ngClass]="{
                 'pending': section?.status === 'pending',
-                'completed': section?.status === 'completed',
-                'answered-yes': section?.status === 'answeredYes',
-                'answered-no': section?.status === 'answeredNo',
-                'answered-maybe': section?.status === 'answeredMaybe'
+                'completed': section?.status === 'completed' ||
+                  section?.status === 'answeredYes' ||
+                  section?.status === 'answeredNo' ||
+                  section?.status === 'answeredMaybe',
               }"
             >
               <ion-icon [name]="section.icon"></ion-icon>

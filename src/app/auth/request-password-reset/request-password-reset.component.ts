@@ -78,4 +78,8 @@ export class RequestPasswordResetComponent extends BaseformPage implements OnIni
       }
     );
   }
+  
+  goBack() {
+    this.router.navigate(['login'], { replaceUrl: true });
+  }
 }

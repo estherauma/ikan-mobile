@@ -2,11 +2,16 @@
   <app-authbgpaper></app-authbgpaper>
 
   <div class="ion-padding center-content">
+    <div class="back-icon-wrapper">
+      <ion-icon icon="arrow-back-outline" (click)="goBack()"></ion-icon>
+    </div>
+    
     <div>
       <ion-row class="ion-justify-content-center">
-        <ion-img class="icon" src="/assets/imgs/logo_svg.svg"></ion-img>
+        <ion-img class="icon" src="assets/imgs/logo_svg.svg"></ion-img>
       </ion-row>
     </div>
+    
     <app-form
       [tunaFormGroup]="pageFormGroup"
       [tunaFormquestions]="formQuestions"
