@@ -462,27 +462,26 @@ export class SyncService {
   }
 
   async syncSurveyResponses() {
-    return this.surveyDataService.getAll().subscribe((surveys) => {
-      if (surveys?.length) {
-        surveys.forEach((survey) => {
-          // Survey responses are saved to the db then synced to the api
-          // After sync the response is deleted from the local db
-          // We never fetch them from the api so the onlineRef isn't neccessary
-          const surveyId = survey.id;
-          const surveyToUpload = Object.assign({}, survey);
-          surveyToUpload.surveyDate = new Date(survey.surveyDate).toISOString().split('T')[0];
-          delete surveyToUpload.id;
-          if (surveyToUpload?.userId) {
-            surveyToUpload.user = surveyToUpload.userId;
+    const surveys = this.surveyDataService.surveys;
+    if (surveys?.length) {
+      surveys.forEach((survey) => {
+        // Survey responses are saved to the db then synced to the api
+        // After sync the response is deleted from the local db
+        // We never fetch them from the api so the onlineRef isn't neccessary
+        const surveyId = survey.id;
+        const surveyToUpload = Object.assign({}, survey);
+        surveyToUpload.surveyDate = new Date(survey.surveyDate).toISOString().split('T')[0];
+        delete surveyToUpload.id;
+        if (surveyToUpload?.userId) {
+          surveyToUpload.user = surveyToUpload.userId;
+        }
+          this.apiService.post('surveys', surveyToUpload).subscribe(async(response:CreateSurveyResp) => {
+          if (response?.status === 'OK') {
+            await this.surveyDataService.delete(surveyId);
           }
-           this.apiService.post('surveys', surveyToUpload).subscribe(async(response:CreateSurveyResp) => {
-            if (response?.status === 'OK') {
-              await this.surveyDataService.delete(surveyId);
-            }
-          }, e => console.error(e));
-        });
-      }
-    });
+        }, e => console.error(e));
+      });
+    }
   }
 
   async syncInlineQuestions() {
