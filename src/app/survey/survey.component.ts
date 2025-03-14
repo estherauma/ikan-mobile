@@ -8,6 +8,7 @@ import { StorageKeys, SurveySources } from '../shared/types/api-types';
 import { AuthService } from '../shared/services/auth/auth.service';
 import { ApiService } from '../shared/services/api/api.service';
 import { SurveyDataService } from './data/survey-data.service';
+import { SyncService } from '../shared/services/sync/sync.service';
 
 @Component({
   selector: 'app-survey',
@@ -30,6 +31,7 @@ export class SurveyComponent extends BaseformPage  implements OnInit, OnDestroy 
     public activatedRoute: ActivatedRoute,
     public apiService: ApiService,
     public surveysDataService: SurveyDataService,
+    public syncService: SyncService,
   ) {
     super(contentService)
   }
@@ -166,6 +168,7 @@ export class SurveyComponent extends BaseformPage  implements OnInit, OnDestroy 
         }
       });
       await this.surveysDataService.retriveSurveys();
+      await this.syncService.syncSurveyResponses();
     }
 
     // Temporarily disabled so that category is removed from saved options
