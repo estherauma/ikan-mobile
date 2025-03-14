@@ -63,6 +63,7 @@ export class CreateclausePage extends BaseformPage implements OnInit {
 
   async onSubmit(formData) {
     formData.contractId = this.contractId;
+    formData.contractOnlineRef = this.contract.onlineRef ?? null;
     // if the clause kind selected exists, don't add again
     const clauseKind = this.clauseMapping[formData['clause-type'].trim()];
     let clauseExists = await this.checkIfClauseExists(this.contractId, clauseKind);
