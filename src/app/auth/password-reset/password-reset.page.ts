@@ -100,4 +100,7 @@ export class PasswordResetPage extends BaseformPage implements OnInit {
     );
   }
 
+  goBack() {
+    this.router.navigate(['auth/request-password-reset'], { replaceUrl: true });
+  }
 }

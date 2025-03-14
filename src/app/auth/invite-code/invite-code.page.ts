@@ -79,4 +79,7 @@ export class InviteCodePage extends BaseformPage implements OnInit {
     this.passwordEyeIcon = (this.passwordEyeIcon === Icons.iconEyeClosed) ? Icons.iconEyeOpen : Icons.iconEyeClosed;
   }
 
+  goBack() {
+    this.router.navigate(['auth/login-method'], { replaceUrl: true });
+  }
 }

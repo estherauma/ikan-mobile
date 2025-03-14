@@ -63,16 +63,10 @@
       }
     }
     .completed {
-      background: var(--ikan_green_100);
-    }
-    .answered-yes {
-      background: var(--ikan_green_100);
-    }
-    .answered-no {
-      background: var(--ikan_red_100);
-    }
-    .answered-maybe {
-      background: var(--ikan_yellow_100);
+      background: #7cdeff;
+      ion-icon {
+        color: var(--ikan_blue_100);
+      }
     }
     .qtn-col {
       border-top-right-radius: 20px;
