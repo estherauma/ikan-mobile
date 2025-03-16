@@ -25,7 +25,8 @@ export class ContractDataService {
         location: 'default'
       }).then(async(_db: SQLiteObject) => {
         this.db = _db;
-        this.retrieveContracts();
+        await this.retrieveContracts();
+        await this.retrieveAllClauses();
       }).catch(e => console.log(e));
     });
 
@@ -92,7 +93,7 @@ export class ContractDataService {
 
   getSingleContract(contractId) {
     let contract = {};
-    this.contractsObs.getValue().forEach((entry) => {
+    this.contracts.forEach((entry) => {
       if (entry.id == contractId) {
         contract = entry;
         return;
@@ -103,8 +104,8 @@ export class ContractDataService {
 
   getContractByField(field, value) {
     let contract = null;
-    this.contractsObs.getValue().forEach((entry) => {
-      if (entry[field].toString() === value.toString()) {
+    this.contracts.forEach((entry) => {
+      if (entry[field] && entry[field].toString() === value.toString()) {
         contract = entry;
         return false;  // Exit the loop once the condition is met
       }
@@ -121,8 +122,8 @@ export class ContractDataService {
     const params = [data.name, data.app_ref, data.internal_ref, data.start_date, data.end_date,
       data.description, data.taiwanese_company_id, data.indonesian_company_id, data.type,
       data.created_at, data.updated_at, data.created_by, data.updated_by];
-    return this.db.executeSql(query, params).then((result) => {
-      this.retrieveContracts();
+    return this.db.executeSql(query, params).then(async(result) => {
+      await this.retrieveContracts();
       return result.insertId;
     }).catch((e) => {
       console.log(e);
@@ -170,8 +171,8 @@ export class ContractDataService {
   delete(id) {
     const query = 'DELETE FROM contracts WHERE id = ?';
     const params = [id];
-    return this.db.executeSql(query, params).then((result) => {
-      this.retrieveContracts();
+    return this.db.executeSql(query, params).then(async(result) => {
+      await this.retrieveContracts();
     }).catch((e) => console.log(e));
   };
 
@@ -263,9 +264,9 @@ export class ContractDataService {
   async updateContractDocumentFieldByContractId(contractId, field, value) {
     const query = `UPDATE contract_documents SET ${field} = ? WHERE contract_id = ?`;
     const params = [value, contractId];
-    return this.db.executeSql(query, params).then((res) => {
-      this.retrieveContractDocuments();
-      this.retrieveContracts();
+    return this.db.executeSql(query, params).then(async(res) => {
+      await this.retrieveContractDocuments();
+      await this.retrieveContracts();
       return res.rowsAffected;
     }).catch(e => console.log(3));
   }

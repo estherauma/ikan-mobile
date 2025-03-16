@@ -7,6 +7,7 @@ import { SharedmethodsService } from 'src/app/shared/services/sharedmethods/shar
 import { CompaniesDataService } from '../data/companies-data.service';
 import { AnalyticsService } from 'src/app/shared/services/analytics/analytics.service';
 import { pageEventNames } from 'src/app/shared/services/analytics/event-names';
+import { SyncService } from 'src/app/shared/services/sync/sync.service';
 
 @Component({
   selector: 'app-create',
@@ -23,7 +24,8 @@ export class CreatePage extends BaseformPage implements OnInit {
     public companiesDataService: CompaniesDataService,
     public modalCtrl: ModalController,
     public navParams: NavParams,
-    public analytics: AnalyticsService
+    public analytics: AnalyticsService,
+    public syncService: SyncService,
   ) {
     super(contentService);
   }
@@ -68,6 +70,7 @@ export class CreatePage extends BaseformPage implements OnInit {
       formData.app_ref = this.sharedMethods.generateAppRef();
       const insertId =  await this.companiesDataService.create(formData);
       if (insertId) {
+        await this.syncService.syncCompanies();
         this.modalCtrl.dismiss();
         this.sharedMethods.hideLoader();
         this.sharedMethods.showToast(this.pageText?.companyCreated || 'Company created successfully');
@@ -79,6 +82,7 @@ export class CreatePage extends BaseformPage implements OnInit {
       const id = parseFloat(this.companyDetails.id);
       const result = await this.companiesDataService.update(formData, id);
       if (result?.rowsAffected) {
+        await this.syncService.syncCompanies();
         this.modalCtrl.dismiss({ company: result.company, isEditing: false});
         this.sharedMethods.hideLoader();
         this.sharedMethods.showToast(this.pageText?.companyUpdated || 'Company updated successfully');

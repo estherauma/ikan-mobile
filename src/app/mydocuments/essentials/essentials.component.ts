@@ -10,6 +10,7 @@ import { DocumentType } from 'src/app/shared/types/types';
 import { ViewImageComponent } from '../view-image/view-image.component';
 import { ViewPassportComponent } from '../view-passport/view-passport.component';
 import { FileOpener } from '@capawesome-team/capacitor-file-opener';
+import { SyncService } from 'src/app/shared/services/sync/sync.service';
 
 @Component({
   selector: 'app-essentials',
@@ -42,6 +43,7 @@ export class EssentialsComponent  implements OnInit {
     public contentService: ContentService,
     public uploadService: UploadService,
     public alertController: AlertController,
+    public syncService: SyncService,
   ) { }
 
   async ngOnInit() {
@@ -107,6 +109,7 @@ export class EssentialsComponent  implements OnInit {
         const docInsertId = await this.documentsDataService.create(visaSaveObj);
         if (docInsertId) {
           await this.getDocDetails();
+          await this.syncService.syncMyDocuments();
         } else {
           this.sharedMethods.showToast(this.docsCommonText?.saveVisaError);
         }
@@ -148,6 +151,7 @@ export class EssentialsComponent  implements OnInit {
         const docInsertId = await this.documentsDataService.create(saveObj);
         if (docInsertId) {
           await this.getDocDetails();
+          await this.syncService.syncMyDocuments();
         } else {
           this.sharedMethods.showToast(this.docsCommonText?.saveSeamansBookError);
         }
@@ -159,6 +163,7 @@ export class EssentialsComponent  implements OnInit {
     const newDoc = await this.sharedMethods.addDocument(this.commonText, this.alertController, this.uploadService, this.documentsDataService, this.docsCommonText, true);
     if (newDoc) {
       this.otherEssentialDocuments = this.getOtherEssentialDocuments();
+      await this.syncService.syncMyDocuments();
     }
   }
 
@@ -248,6 +253,8 @@ export class EssentialsComponent  implements OnInit {
     } else {
       await this.documentsDataService.deleteDocument(doc.id);
     }
+    await this.syncService.syncMyDocuments();
+
     const docs = [doc];
     await this.uploadService.deleteDocuments(docs);
   }

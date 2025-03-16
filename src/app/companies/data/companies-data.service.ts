@@ -81,8 +81,8 @@ export class CompaniesDataService {
     const params = [data.name, data.description, data.status, data.country, data.telephone, data.email,
       data.address_line_1, data.address_line_2, data.address_line_3, data.created_at, data.updated_at,
       data.created_by, data.updated_by, data.app_ref];
-    return this.db.executeSql(query, params).then((result) => {
-      this.retriveCompanies();
+    return this.db.executeSql(query, params).then(async(result) => {
+      await this.retriveCompanies();
       return result.insertId;
     }).catch((e) => console.log(e));
   }
@@ -114,8 +114,8 @@ export class CompaniesDataService {
     const params = [data.name, data.description, 'Active', data.country, data.telephone, data.email,
       data.addressLine1, data.addressLine2, data.addressLine3, data.createdAt, data.updatedAt,
       data.createdBy, data.updatedBy, data.appRef, data.id];
-      return this.db.executeSql(query, params).then((result) => {
-        this.retriveCompanies();
+      return this.db.executeSql(query, params).then(async(result) => {
+        await this.retriveCompanies();
         return result.insertId;
       }).catch((e) => console.log(e));   
   }
@@ -126,8 +126,8 @@ export class CompaniesDataService {
   delete(id) {
     const query = 'DELETE FROM companies WHERE id = ?';
     const params = [id];
-    return this.db.executeSql(query, params).then((result) => {
-      this.retriveCompanies();
+    return this.db.executeSql(query, params).then(async(result) => {
+      await this.retriveCompanies();
       // ToDo: Delete company related data from other tables
     }).catch((e) => console.log(e));
   }
@@ -135,8 +135,8 @@ export class CompaniesDataService {
   setAppRef(id, appRef) {
     const query = 'UPDATE companies SET app_ref = ? WHERE id = ?';
     const params = [appRef, id];
-    return this.db.executeSql(query, params).then((result) => {
-      // this.retriveCompanies();
+    return this.db.executeSql(query, params).then(async(result) => {
+      // await this.retriveCompanies();
     }).catch((e) => console.log(e));
   }
 

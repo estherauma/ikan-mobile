@@ -8,6 +8,7 @@ import { ContractDataService } from '../../data/contract-data.service';
 import { VesselsDataService } from 'src/app/vessels/data/vessels-data.service';
 import { AnalyticsService } from 'src/app/shared/services/analytics/analytics.service';
 import { pageEventNames } from 'src/app/shared/services/analytics/event-names';
+import { SyncService } from 'src/app/shared/services/sync/sync.service';
 
 @Component({
   selector: 'app-createdetail',
@@ -26,6 +27,7 @@ export class CreatedetailPage extends BaseformPage implements OnInit {
   }
   objectTolookup: string;
   contractId: any;
+  contractOnlineRef: any;
   isPartyBForm: boolean = false;
   isPartyAForm: boolean = false;
   vessels: any = [];
@@ -43,7 +45,8 @@ export class CreatedetailPage extends BaseformPage implements OnInit {
     private contractDataServ: ContractDataService,
     public router: Router,
     public vesselsDataService: VesselsDataService,
-    public analytics: AnalyticsService
+    public analytics: AnalyticsService,
+    public syncService: SyncService,
   ) { 
     super(contentService)
   }
@@ -61,7 +64,9 @@ export class CreatedetailPage extends BaseformPage implements OnInit {
         // remove whitespace from beginning and end of string
         this.objectTolookup = this.objectTolookup?.trim();
         this.contractId = params?.['contractId'];
-
+        if (params.contractOnlineRef && params.contractOnlineRef !== 'undefined' && params.contractOnlineRef !== 'null') {
+          this.contractOnlineRef = params.contractOnlineRef;
+        }
         if (params.prefillDetails) {
           this.formValues = JSON.parse(params.prefillDetails);
         }
@@ -164,10 +169,14 @@ export class CreatedetailPage extends BaseformPage implements OnInit {
       formData.created_at = formData.updated_at = now;
       formData.kind = this.clauseMapping[this.objectTolookup];
       formData.name = this.pageTitle;
-      this.contractDataServ.saveContractClause(this.contractId, formData)
-      .then((result) => {
-      this.sharedMethods.showToast(this.contentService.commonText?.clauseSaved);
-      this.router.navigate(['/contracts/view', {id: this.contractId}], { replaceUrl: true });
+      await this.contractDataServ.saveContractClause(this.contractId, formData)
+      .then(async(result) => {
+        this.sharedMethods.showToast(this.contentService.commonText?.clauseSaved);
+
+        if (this.contractOnlineRef) {
+          await this.syncService.syncContractClauses(this.contractId, this.contractOnlineRef);
+        }
+        this.router.navigate(['/contracts/view', {id: this.contractId}], { replaceUrl: true });
       });
     } else {
       // We are basically updating only the content
@@ -193,7 +202,11 @@ export class CreatedetailPage extends BaseformPage implements OnInit {
         } else if (this.isPartyAForm) {
           result.clause.partyB = this.clauseDetails.partyB;
         }
-        
+        // TODO: sync clause immediately after updating
+        // id and onlineref are undefined
+        // if (this.contractOnlineRef) {
+        //   await this.syncService.syncContractClauses(this.contractId, this.contractOnlineRef);
+        // } 
         this.router.navigate(['/contracts/clauses/viewclause/', result.clause], { replaceUrl: true })
       } else {
         this.sharedMethods.showToast(this.contentService.commonText?.errorUpdatingClause);

@@ -91,6 +91,7 @@ export class SurveyDataService {
       data.followUpQuestionText, data.followUpQuestionResponse, now, now, user.id, user.id];
 
     return this.db.executeSql(query, params).then(async(result) => {
+      await this.retriveSurveys();
       return result.insertId;
     }).catch((error) => {
       console.error(error);
@@ -100,7 +101,8 @@ export class SurveyDataService {
 
   async delete(id) {
     const query = 'DELETE FROM surveys WHERE id = ?';
-    return await this.db.executeSql(query, [id]).then((result) => {
+    return await this.db.executeSql(query, [id]).then(async(result) => {
+      await this.retriveSurveys();
       return result.rowsAffected;
     }).catch((error) => {
       console.error(error);

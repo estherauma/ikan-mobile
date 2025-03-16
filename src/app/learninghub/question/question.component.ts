@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ContentService } from 'src/app/shared/services/content/content.service';
 import { SharedmethodsService } from 'src/app/shared/services/sharedmethods/sharedmethods.service';
+import { SyncService } from 'src/app/shared/services/sync/sync.service';
 import { SurveyDataService } from 'src/app/survey/data/survey-data.service';
 
 @Component({
@@ -23,6 +24,7 @@ export class QuestionComponent  implements OnInit {
     public sharedMethods: SharedmethodsService,
     public surveyDataService: SurveyDataService,
     public router: Router,
+    public syncService: SyncService,
   ) {}
 
   ngOnInit() {
@@ -147,6 +149,7 @@ export class QuestionComponent  implements OnInit {
       if (insertId) {
         const chapterId = this.questionData.subChapter.split('.')[0];
         const subChapterId = this.questionData.subChapter;
+        await this.syncService.syncInlineQuestions();
         this.router.navigate([ 'learninghub/chapters', chapterId, subChapterId ], { replaceUrl: true });
       } else {
         this.sharedMethods.showToast(this.commonText?.errSavingResponses);
@@ -183,6 +186,7 @@ export class QuestionComponent  implements OnInit {
       if (updateId) {
         const chapterId = this.questionData.subChapter.split('.')[0];
         const subChapterId = this.questionData.subChapter;
+        await this.syncService.syncInlineQuestions();
         this.router.navigate([ 'learninghub/chapters', chapterId, subChapterId ], { replaceUrl: true });
       } else {
         this.sharedMethods.showToast(this.commonText?.errSavingResponses);

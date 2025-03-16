@@ -10,6 +10,7 @@ import { DocumentsDataService } from '../data/documents-data.service';
 import { Filesystem, Directory } from '@capacitor/filesystem';
 import { Share } from '@capacitor/share';
 import { FileOpener } from '@capawesome-team/capacitor-file-opener';
+import { SyncService } from 'src/app/shared/services/sync/sync.service';
 
 @Component({
   selector: 'app-files',
@@ -40,6 +41,7 @@ export class FilesPage implements OnInit {
     public alertController: AlertController,
     public documentsDataService: DocumentsDataService,
     public uploadService: UploadService,
+    public syncService: SyncService,
   ) { }
 
   ngOnInit() {
@@ -61,6 +63,7 @@ export class FilesPage implements OnInit {
     const newDoc = await this.sharedMethods.addDocument(this.commonText, this.alertController, this.uploadService, this.documentsDataService, this.docsCommonText, false);
     if (newDoc) {
       this.getDocuments();
+      await this.syncService.syncMyDocuments();
     }
   }
 
@@ -150,6 +153,7 @@ export class FilesPage implements OnInit {
       } else {
         await this.documentsDataService.deleteDocument(doc.id);
       }
+      await this.syncService.syncMyDocuments();
     }
     await this.uploadService.deleteDocuments(docs);
   }

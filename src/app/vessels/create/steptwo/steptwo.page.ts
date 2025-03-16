@@ -8,6 +8,7 @@ import { SharedmethodsService } from 'src/app/shared/services/sharedmethods/shar
 import { VesselsDataService } from '../../data/vessels-data.service';
 import { AnalyticsService } from 'src/app/shared/services/analytics/analytics.service';
 import { pageEventNames } from 'src/app/shared/services/analytics/event-names';
+import { SyncService } from 'src/app/shared/services/sync/sync.service';
 
 @Component({
   selector: 'app-steptwo',
@@ -28,7 +29,8 @@ export class SteptwoPage extends BaseformPage implements OnInit {
     public vesselDataService: VesselsDataService,
     public modalCtrl: ModalController,
     public router: Router,
-    public analytics: AnalyticsService
+    public analytics: AnalyticsService,
+    public syncService: SyncService,
   ) {
     super(contentService);
   }
@@ -96,6 +98,8 @@ export class SteptwoPage extends BaseformPage implements OnInit {
             this.sharedMethods.showLoader(this.pageText?.errSavingImage);
           }
         }
+
+        await this.syncService.syncVessels();
         
         const vesselDetails = {
           ...formData,
@@ -143,6 +147,8 @@ export class SteptwoPage extends BaseformPage implements OnInit {
             vesselDetails = { ...vesselDetails, imageFile: {webPath: imageData.image_url} };
           }
         }
+
+        await this.syncService.syncVessels();
 
         this.modalCtrl.dismiss();
         this.router.navigate(['vessels/view', {vessel: JSON.stringify(vesselDetails)}], { replaceUrl: true });

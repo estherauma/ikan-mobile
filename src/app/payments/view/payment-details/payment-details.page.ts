@@ -29,6 +29,7 @@ export class PaymentDetailsPage  implements OnInit {
     this.activatedRoute.queryParams.subscribe((params) => {
       if (params?.paymentDetails) {
         this.paymentDetails = JSON.parse(params.paymentDetails);
+        this.paymentDetails.deductions = this.paymentDetails.deductions ? JSON.parse(this.paymentDetails.deductions) : null;
         this.paymentIconUrl = this.getPaymentIconUrlByStatus(this.paymentDetails.status);
       }
     });
