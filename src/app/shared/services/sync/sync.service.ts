@@ -1002,6 +1002,9 @@ export class SyncService {
           dataToSave.userId = payment.user;
           dataToSave.vesselId = payment.vessel;
           dataToSave.onlineRef = payment.id;
+          dataToSave.deductions = payment.deductions ? JSON.stringify(payment.deductions) : '';
+          dataToSave.createdAt = payment.createdAt ??  now;
+          dataToSave.updatedAt = payment.updatedAt ??  now;
 
           const paymentExists = await this.paymentsDataService.checkIfPaymentExists(payment.id);
           if (paymentExists) {
