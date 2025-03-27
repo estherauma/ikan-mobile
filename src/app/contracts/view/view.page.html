@@ -25,10 +25,11 @@
       </ion-row>
     </ion-grid>
 
-    <ion-text>
+    <!-- slicing the app ref so we don't display it to the user -->
+    <!-- <ion-text>
       <span class="gray">{{ commonText?.appRef }}:</span>
-      {{contract?.appRef}}
-    </ion-text>
+      {{contract?.appRef?.slice(9,13) || contract?.appRef}}
+    </ion-text> -->
     <ion-text>
       <h1 class="name">{{contract?.name}}</h1>
     </ion-text>
