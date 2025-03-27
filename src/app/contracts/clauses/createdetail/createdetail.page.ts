@@ -63,7 +63,9 @@ export class CreatedetailPage extends BaseformPage implements OnInit {
         this.objectTolookup = params?.['clause-type'];
         // remove whitespace from beginning and end of string
         this.objectTolookup = this.objectTolookup?.trim();
-        this.contractId = params?.['contractId'];
+        if (params?.contractId) {
+          this.contractId = params.contractId;
+        }
         if (params.contractOnlineRef && params.contractOnlineRef !== 'undefined' && params.contractOnlineRef !== 'null') {
           this.contractOnlineRef = params.contractOnlineRef;
         }
@@ -75,6 +77,16 @@ export class CreatedetailPage extends BaseformPage implements OnInit {
         // We should be able to fetch it and display it for the user to edit
       } else {
         this.clauseDetails = JSON.parse(params.clauseDetails);
+        if (this.clauseDetails?.contractId) {
+          this.contractId = this.clauseDetails.contractId;
+        }
+        if (
+          this.clauseDetails?.contractOnlineRef &&
+          this.clauseDetails.contractOnlineRef !== 'undefined' &&
+          this.clauseDetails.contractOnlineRef !== 'null'
+        ) {
+          this.contractOnlineRef = this.clauseDetails.contractOnlineRef;
+        }
         this.formValues = JSON.parse(this.clauseDetails?.data);
       }
       await this.pageSetup();
@@ -200,11 +212,10 @@ export class CreatedetailPage extends BaseformPage implements OnInit {
         } else if (this.isPartyAForm) {
           result.clause.partyB = this.clauseDetails.partyB;
         }
-        // TODO: sync clause immediately after updating
-        // id and onlineref are undefined
-        // if (this.contractOnlineRef) {
-        //   await this.syncService.syncContractClauses(this.contractId, this.contractOnlineRef);
-        // }
+
+        if (this.contractId && this.contractOnlineRef) {
+          await this.syncService.syncContractClauses(this.contractId, this.contractOnlineRef);
+        }
         this.router.navigate(['/contracts/clauses/viewclause/', result.clause], { replaceUrl: true })
       } else {
         this.sharedMethods.showToast(this.contentService.commonText?.errorUpdatingClause);
