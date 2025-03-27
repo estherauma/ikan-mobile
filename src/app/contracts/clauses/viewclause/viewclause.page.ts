@@ -46,7 +46,6 @@ export class ViewclausePage implements OnInit {
   isEditable = false;
   editBtnText = 'Edit Clause';
   clauseDetails: any;
-  clauseContent: any;
   pageData: any;
   htmlContent: any;
   pageName = '';
@@ -232,7 +231,7 @@ export class ViewclausePage implements OnInit {
       const data = JSON.parse(details?.data);
       if (details?.kind === 'contract-clauses-attachments' && (data?.partyASignature || data?.partyBSignature)) {
         for (const [key, value] of Object.entries(data)) {
-          if (key === 'partyASignature' || key === 'partyBSignature') { 
+          if (key === 'partyASignature' || key === 'partyBSignature') {
             data[key] = typeof value === 'string' && value?.endsWith('.pdf') ? { docType: 'pdf', fileUri: value} : {docType: 'image', webPath: value};
           }
         }
