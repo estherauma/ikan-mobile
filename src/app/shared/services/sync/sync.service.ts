@@ -422,8 +422,8 @@ export class SyncService {
 
   async fetchContractClauses() {
     return this.apiService.get('contracts-clauses').subscribe((response: GetClausesResponse) => {
-      if (response.status === 200 && response.body.length > 0) {
-        response.body.forEach(async(clause) => {
+      if (response.status === 200 && response.body.data.length > 0) {
+        response.body.data.forEach(async(clause) => {
           await this.dbService.checkIfEntryExists('contract_clauses', clause.appRef)
           .then(async(exists) => {
             if (!exists) {
