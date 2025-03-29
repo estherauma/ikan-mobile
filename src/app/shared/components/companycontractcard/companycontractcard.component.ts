@@ -29,7 +29,7 @@ export class CompanycontractcardComponent implements OnInit {
   viewContract() {
     this.contract.file = JSON.stringify(this.contract.file);
     const queryParams =  this.contract;
-    this.router.navigate(['/contracts/view', queryParams])
+    this.router.navigate(['/contracts/view', queryParams]);
   }
 
 }

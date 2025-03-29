@@ -93,7 +93,7 @@ export class CreatePage extends BaseformPage implements OnInit {
     this.sharedMethods.showLoader(submittingText);
     const userData = await this.sharedMethods.getUserData();
     const now = this.sharedMethods.getCurrentDateTime();
-    formData.internal_ref = formData.app_ref;
+    formData.internal_ref = formData.app_ref = this.sharedMethods.generateAppRef();
     formData.updated_by = userData.id;
     formData.updated_at = now;
 
