@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { FormControl, FormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
 import { ModalController } from '@ionic/angular';
 import { BaseformPage } from 'src/app/shared/components/baseform/baseform.page';
@@ -18,7 +18,7 @@ import { pageEventNames } from 'src/app/shared/services/analytics/event-names';
 export class CreateclausePage extends BaseformPage implements OnInit {
   contractId: any;
   contract: any;
-  clauseExistsText: string = 'This clause already exists in the contract';
+  clauseExistsText = 'This clause already exists in the contract';
   clauseMapping = {
     'Parties to this contract - Party A': 'contract-clauses-parties-requirement-vessel',
     'Parties to this contract - Party B': 'contract-clauses-parties-requirement-fishers',
@@ -27,7 +27,7 @@ export class CreateclausePage extends BaseformPage implements OnInit {
     'Article 5 Working hours rest and leave': 'contract-clauses-working-hours-rest-and-leave',
     'Article 6 Labor protection and benefits': 'contract-clauses-labor-protection-and-benefits',
     'Attachments': 'contract-clauses-attachments',
-  }
+  };
 
   constructor(
     public contentService: ContentService,
@@ -47,7 +47,7 @@ export class CreateclausePage extends BaseformPage implements OnInit {
     this.analytics.trackEvent(pageEventNames.createClause, this.sharedMethods.analyticsEventParams);
   }
 
-  pageSetup(){
+  pageSetup() {
     const pageData = this.contentService.getContentByPropertyName('contract-create-clause');
     this.formQuestions = pageData.formQuestions;
     this.pageTitle = pageData?.pageTitle;
@@ -66,7 +66,7 @@ export class CreateclausePage extends BaseformPage implements OnInit {
     formData.contractOnlineRef = this.contract.onlineRef ?? null;
     // if the clause kind selected exists, don't add again
     const clauseKind = this.clauseMapping[formData['clause-type'].trim()];
-    let clauseExists = await this.checkIfClauseExists(this.contractId, clauseKind);
+    const clauseExists = await this.checkIfClauseExists(this.contractId, clauseKind);
     if (clauseExists) {
       this.modalCtrl.dismiss();
       this.sharedMethods.showToast(this.clauseExistsText);
@@ -77,16 +77,14 @@ export class CreateclausePage extends BaseformPage implements OnInit {
     if (prefillDetails) {
       formData.prefillDetails = prefillDetails;
     }
-    
+
     this.modalCtrl.dismiss();
     this.router.navigate(['/contracts/createdetails', formData]);
   }
 
   async checkIfClauseExists(contractId, clauseKind) {
     const response = await this.contractDataService.retrieveContractClauses(contractId);
-    const clauseExists = response.some((entry) => {
-      return entry.kind === clauseKind;
-    });
+    const clauseExists = response.some((entry) => entry.kind === clauseKind );
     return clauseExists;
   }
 

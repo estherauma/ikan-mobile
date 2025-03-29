@@ -435,7 +435,7 @@ export class ContractDataService {
       return result?.length ? result[0] : null;
     });
   }
-  
+
   async retrieveContractClausesByField(field, value) {
     const query = `SELECT * FROM contract_clauses WHERE ${field} = ?`;
     const params = [value];

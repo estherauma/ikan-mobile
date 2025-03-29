@@ -10,7 +10,7 @@ import { Router } from '@angular/router';
 export class PlacementoffercardComponent implements OnInit {
   @Input() clauseId = '';
   @Input() clauseKind = '';
-  @Input() clause : any;
+  @Input() clause: any;
   @Input() title = '';
   @Input() details = '';
   @Input() isFirst = false;
@@ -18,6 +18,7 @@ export class PlacementoffercardComponent implements OnInit {
   @Input() noMargin = false;
   @Input() isBlue = false;
   @Input() partyB = '';
+  @Input() contract: any;
 
   constructor(
     public router: Router
@@ -26,8 +27,13 @@ export class PlacementoffercardComponent implements OnInit {
   ngOnInit() {}
 
   viewClauseDetails() {
-    // Temp fix to get partyB clause it to the view page
     this.clause.partyB = this.partyB;
-    this.router.navigate(['/contracts/clauses/viewclause/', this.clause])
+    const data = {
+      ...this.clause,
+      partyB: this.partyB,
+      contractId: this.contract.id,
+      contractOnlineRef: this.contract.onlineRef,
+    };
+    this.router.navigate(['/contracts/clauses/viewclause/', data]);
   }
 }

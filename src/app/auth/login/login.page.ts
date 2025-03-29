@@ -68,6 +68,12 @@ export class LoginPage extends BaseformPage implements OnInit {
     });
     this.pageFormGroup = new FormGroup(this.group);
     this.testEmails = this.dbService.testEmails;
+
+    this.pageFormGroup.valueChanges.subscribe((data) => {
+      if (data.email) {
+        this.pageFormGroup.controls.email.setValue(data.email.trim(), { emitEvent: false });
+      }
+    });
   }
 
   ionViewWillEnter() {

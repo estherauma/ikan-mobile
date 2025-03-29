@@ -1,4 +1,5 @@
 ion-row {
+  position: relative;
   margin: 0;
   padding: 0;
   background: white;
@@ -114,4 +115,11 @@ ion-row {
 }
 .no-status {
   padding-top: 12px;
+}
+
+.chevron {
+  position: absolute;
+  top: 50%;
+  right: 10px;
+  color: var(--ikan_darkblue_100);
 }

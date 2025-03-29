@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { FormControl, FormGroup } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { BaseformPage } from 'src/app/shared/components/baseform/baseform.page';
 import { ContentService } from 'src/app/shared/services/content/content.service';
@@ -24,18 +24,18 @@ export class CreatedetailPage extends BaseformPage implements OnInit {
     'Article 5 Working hours rest and leave': 'contract-clauses-working-hours-rest-and-leave',
     'Article 6 Labor protection and benefits': 'contract-clauses-labor-protection-and-benefits',
     'Attachments': 'contract-clauses-attachments',
-  }
+  };
   objectTolookup: string;
   contractId: any;
   contractOnlineRef: any;
-  isPartyBForm: boolean = false;
-  isPartyAForm: boolean = false;
+  isPartyBForm = false;
+  isPartyAForm = false;
   vessels: any = [];
-  noVesselsText: string = 'No vessels found. Please add a vessel first';
+  noVesselsText = 'No vessels found. Please add a vessel first';
   isEditing = false;
   clauseDetails: any;
   formValues: any;
-  editClauseText: string = 'Edit Clause';
+  editClauseText = 'Edit Clause';
   userData: any;
 
   constructor(
@@ -47,8 +47,8 @@ export class CreatedetailPage extends BaseformPage implements OnInit {
     public vesselsDataService: VesselsDataService,
     public analytics: AnalyticsService,
     public syncService: SyncService,
-  ) { 
-    super(contentService)
+  ) {
+    super(contentService);
   }
 
   ngOnInit() {
@@ -63,18 +63,30 @@ export class CreatedetailPage extends BaseformPage implements OnInit {
         this.objectTolookup = params?.['clause-type'];
         // remove whitespace from beginning and end of string
         this.objectTolookup = this.objectTolookup?.trim();
-        this.contractId = params?.['contractId'];
+        if (params?.contractId) {
+          this.contractId = params.contractId;
+        }
         if (params.contractOnlineRef && params.contractOnlineRef !== 'undefined' && params.contractOnlineRef !== 'null') {
           this.contractOnlineRef = params.contractOnlineRef;
         }
         if (params.prefillDetails) {
           this.formValues = JSON.parse(params.prefillDetails);
         }
-        
+
         // TODO: Add a check to see if the contract clause exists
         // We should be able to fetch it and display it for the user to edit
       } else {
         this.clauseDetails = JSON.parse(params.clauseDetails);
+        if (this.clauseDetails?.contractId) {
+          this.contractId = this.clauseDetails.contractId;
+        }
+        if (
+          this.clauseDetails?.contractOnlineRef &&
+          this.clauseDetails.contractOnlineRef !== 'undefined' &&
+          this.clauseDetails.contractOnlineRef !== 'null'
+        ) {
+          this.contractOnlineRef = this.clauseDetails.contractOnlineRef;
+        }
         this.formValues = JSON.parse(this.clauseDetails?.data);
       }
       await this.pageSetup();
@@ -82,7 +94,7 @@ export class CreatedetailPage extends BaseformPage implements OnInit {
     this.analytics.trackEvent(pageEventNames.createClauseDetails, this.sharedMethods.analyticsEventParams);
   }
 
-  async pageSetup(){
+  async pageSetup() {
     this.userData = await this.sharedMethods.getUserData();
     const property = this.isEditing ? this.clauseDetails['kind'] : this.clauseMapping[this.objectTolookup];
     const pageData = this.contentService.getContentByPropertyName(property);
@@ -113,7 +125,7 @@ export class CreatedetailPage extends BaseformPage implements OnInit {
       } else {
         this.group[entry.key] = new FormControl('', validators);
       }
-      
+
       // add change listener to payment frequency
       if (entry.key === 'paymentFrequency') {
         this.group[entry.key].valueChanges.subscribe((value) => {
@@ -137,9 +149,7 @@ export class CreatedetailPage extends BaseformPage implements OnInit {
 
       // add vessel options (parties B clause)
       if (this.isPartyBForm && entry.key === 'vessel') {
-        const options = this.vessels.map((vessel) => {
-          return { label: vessel.name, value: vessel.appRef }
-        });
+        const options = this.vessels.map((vessel) => ({ label: vessel.name, value: vessel.appRef }));
         entry.options = options;
       }
     });
@@ -185,13 +195,13 @@ export class CreatedetailPage extends BaseformPage implements OnInit {
         updated_by: userData.id,
         updated_at: now,
         id: parseFloat(this.clauseDetails.id),
-      }
+      };
 
       const result = await this.contractDataServ.updateContractClause(editObj.id, editObj);
       if (result) {
         this.sharedMethods.showToast(this.contentService.commonText?.clauseUpdated);
 
-        if (this.isPartyBForm){
+        if (this.isPartyBForm) {
           // Party A and B clause are displayed together
           // So we navigate to party A clause and in turn party B will be fetched
           const partyAId = this.clauseDetails?.partyAId;
@@ -202,11 +212,10 @@ export class CreatedetailPage extends BaseformPage implements OnInit {
         } else if (this.isPartyAForm) {
           result.clause.partyB = this.clauseDetails.partyB;
         }
-        // TODO: sync clause immediately after updating
-        // id and onlineref are undefined
-        // if (this.contractOnlineRef) {
-        //   await this.syncService.syncContractClauses(this.contractId, this.contractOnlineRef);
-        // } 
+
+        if (this.contractId && this.contractOnlineRef) {
+          await this.syncService.syncContractClauses(this.contractId, this.contractOnlineRef);
+        }
         this.router.navigate(['/contracts/clauses/viewclause/', result.clause], { replaceUrl: true })
       } else {
         this.sharedMethods.showToast(this.contentService.commonText?.errorUpdatingClause);
@@ -222,7 +231,7 @@ export class CreatedetailPage extends BaseformPage implements OnInit {
             entry.displayquestion = false;
             return;
           }
-        })
+        });
         break;
       }
       case 'Other': {
@@ -232,7 +241,7 @@ export class CreatedetailPage extends BaseformPage implements OnInit {
             entry.displayquestion = true;
             return;
           }
-        })
+        });
         break;
       }
       default: {
@@ -250,7 +259,7 @@ export class CreatedetailPage extends BaseformPage implements OnInit {
             entry.displayquestion = true;
             // can't return here because I need it to go through all of them to find both
           }
-        })
+        });
         break;
       }
       default: {
@@ -259,7 +268,7 @@ export class CreatedetailPage extends BaseformPage implements OnInit {
             entry.displayquestion = false;
             // can't return here because I need it to go through all of them to find both
           }
-        })
+        });
         break;
       }
     }
@@ -269,7 +278,11 @@ export class CreatedetailPage extends BaseformPage implements OnInit {
     switch (value.trim()) {
       case 'Yes': {
         this.formQuestions.forEach((entry) => {
-          if (entry.key === 'relativePhoneNumber' || entry.key === 'relativeWhatspp' || entry.key === 'relativeFb' || entry.key === 'relativeOthers')  {
+          if (entry.key === 'relativePhoneNumber' ||
+            entry.key === 'relativeWhatspp' ||
+            entry.key === 'relativeFb' ||
+            entry.key === 'relativeOthers'
+          )  {
             entry.displayquestion = true;
           }
         });
@@ -277,7 +290,12 @@ export class CreatedetailPage extends BaseformPage implements OnInit {
       }
       default: {
         this.formQuestions.forEach((entry) => {
-          if (entry.key === 'relativePhoneNumber' || entry.key === 'relativeWhatspp' || entry.key === 'relativeFb' || entry.key === 'others')  {
+          if (
+            entry.key === 'relativePhoneNumber' ||
+            entry.key === 'relativeWhatspp' ||
+            entry.key === 'relativeFb' ||
+            entry.key === 'others'
+          )  {
             entry.displayquestion = false;
           }
         });

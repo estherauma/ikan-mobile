@@ -30,7 +30,7 @@ export class ViewclausePage implements OnInit {
     'contract-clauses-means-to-address-breach-of-contract': 'contract-clauses-means-to-address-breach-of-contract-content',
     'contract-clauses-dispute-settlement': 'contract-clauses-dispute-settlement-content',
     'contract-clauses-miscellaneous': 'contract-clauses-miscellaneous-content'
-  }
+  };
 
   clauseMapping = {
     'Parties to this contract - Party A': 'contract-clauses-parties-requirement-vessel',
@@ -40,21 +40,20 @@ export class ViewclausePage implements OnInit {
     'Article 5 Working hours rest and leave': 'contract-clauses-working-hours-rest-and-leave',
     'Article 6 Labor protection and benefits': 'contract-clauses-labor-protection-and-benefits',
     'Attachments': 'contract-clauses-attachments',
-  }
+  };
 
   editableClauses = Object.values(this.clauseMapping);
-  isEditable: boolean = false;
-  editBtnText: string = 'Edit Clause';
+  isEditable = false;
+  editBtnText = 'Edit Clause';
   clauseDetails: any;
-  clauseContent: any;
   pageData: any;
   htmlContent: any;
-  pageName: string = '';
+  pageName = '';
   allVessels: any = [];
   vesselDetails: any;
   commonText: any;
-  isVesselOwner: boolean = false;
-  isWorker: boolean = false;
+  isVesselOwner = false;
+  isWorker = false;
   currentLanguage = 'en-us';
 
   constructor(
@@ -89,11 +88,11 @@ export class ViewclausePage implements OnInit {
     this.pageData = this.contentService.getContentByPropertyName(this.clauseContentObjectMapping[this.clauseDetails?.kind]);
     this.pageName = this.pageData?.pageName;
     this.editBtnText = this.commonText?.editClause;
-    
-    let pageContent = this.pageData?.pageContent;
-    let pageTextArray = pageContent?.[0]?.description;
+
+    const pageContent = this.pageData?.pageContent;
+    const pageTextArray = pageContent?.[0]?.description;
     let textHtml = '';
-    
+
     pageTextArray.forEach((element, idx) => {
       if (idx === 0) {
         textHtml += element?.paragraph;
@@ -105,14 +104,14 @@ export class ViewclausePage implements OnInit {
         textHtml += element?.paragraph;
       }
     });
-    let formValues = await this.orderDataForClause(this.clauseDetails?.kind, this.clauseDetails?.data);
-    this.htmlContent = this.fillPlaceHolders(textHtml, formValues)
+    const formValues = await this.orderDataForClause(this.clauseDetails?.kind, this.clauseDetails?.data);
+    this.htmlContent = this.fillPlaceHolders(textHtml, formValues);
   }
 
   fillPlaceHolders(inputString, placeholderValues) {
     let result = inputString;
     for (const key in placeholderValues) {
-      if (placeholderValues.hasOwnProperty(key)) {
+      if (Object.prototype.hasOwnProperty.call(placeholderValues, key)) {
         const placeholder = new RegExp(`{{${key}}}`, 'g');
         result = result.replace(placeholder, placeholderValues[key]);
       }
@@ -121,19 +120,17 @@ export class ViewclausePage implements OnInit {
   }
 
   async orderDataForClause(clauseType, data) {
-    let parsedObject = JSON.parse(data);
+    const parsedObject = JSON.parse(data);
     switch (clauseType) {
       case 'contract-clauses-parties-requirement-vessel':
-        let clauseOneData = await this.orderClauseOneData(parsedObject);
-        return clauseOneData
+        return await this.orderClauseOneData(parsedObject);
       default:
-        let replacement = await this.orderOtherClauses(parsedObject);
-        return replacement;
+        return await this.orderOtherClauses(parsedObject);
     }
   }
 
   async orderClauseOneData(data) {
-    let response = {};
+    const result: any = {};
 
     // TODO: remove after all old records are synced
     // This is a fix for old records that have different keys for rep details
@@ -142,16 +139,16 @@ export class ViewclausePage implements OnInit {
       representative: data?.representative ?? data?.respresentative,
       repAddress: data?.repAddress ?? data?.address,
       repTelephone: data?.repTelephone ?? data?.tel,
-    }
+    };
     // End of fix
 
     for (const [key, value] of Object.entries(data)) {
       const formattedValue  = this.formatClauseValues(key, value);
-      response[key] = formattedValue;
+      result[key] = formattedValue;
     }
     // clause one has two entries, so we need to add the second entry
     if  (this.clauseDetails?.partyB !== undefined || this.clauseDetails?.partyB !== null) {
-      let partyBClauseDetails = await this.contractDataService.retrieveClauseDetails(this.clauseDetails?.partyB);
+      const partyBClauseDetails = await this.contractDataService.retrieveClauseDetails(this.clauseDetails?.partyB);
 
       // TODO: remove after all old records are synced/updated
       // This is a fix for old records that have different keys for crew details
@@ -161,7 +158,7 @@ export class ViewclausePage implements OnInit {
           ...crewContent,
           crewAddress: crewContent?.crewAddress ?? crewContent?.address,
           crewTelephone: crewContent?.crewTelephone ?? crewContent?.telephone,
-        }
+        };
         partyBClauseDetails.content = JSON.stringify(crewContent);
       }
       let crewData = await JSON.parse(partyBClauseDetails.data);
@@ -170,20 +167,20 @@ export class ViewclausePage implements OnInit {
           ...crewData,
           crewAddress: crewData?.crewAddress ?? crewData?.address,
           crewTelephone: crewData?.crewTelephone ?? crewData?.telephone,
-        }
+        };
         partyBClauseDetails.data = JSON.stringify(crewData);
       }
       // End of fix
-      
-      let partyBDetails = partyBClauseDetails ? JSON.parse(partyBClauseDetails?.content) : {};
+
+      const partyBDetails = partyBClauseDetails ? JSON.parse(partyBClauseDetails?.content) : {};
       for (const [key, value] of Object.entries(partyBDetails)) {
         const formattedValue  = this.formatClauseValues(key, value);
-        response[key] = formattedValue;
+        result[key] = formattedValue;
       }
     }
-    response['vesselName'] = this.vesselDetails?.name;
-    response['vesselRegNo'] = this.vesselDetails?.regNo;
-    return response;
+    result.vesselName = this.vesselDetails?.name;
+    result.vesselRegNo = this.vesselDetails?.regNo;
+    return result;
   }
 
   // TODO: log data, sync fetch clause documents, attachments clause
@@ -193,12 +190,12 @@ export class ViewclausePage implements OnInit {
       delete data.paymentFrequencyDetails;
     }
 
-    let response = {};
+    const result = {};
     for (const [key, value] of Object.entries(data)) {
       const formattedValue  = this.formatClauseValues(key, value);
-      response[key] = formattedValue;
+      result[key] = formattedValue;
     }
-    return response;
+    return result;
   }
 
   formatClauseValues(key: string, value: any) {
@@ -209,9 +206,9 @@ export class ViewclausePage implements OnInit {
     if (key?.toLowerCase().includes('date')) {
       return this.sharedMethods.formatLocalDate(value, this.currentLanguage);
     } else if (key === 'partyASignature' || key === 'partyBSignature') {
-      return `<img class="image" src="${value}" alt="image">`; 
+      return `<img class="image" src="${value}" alt="image">`;
     } else if (this.pageName === 'contract-clauses-parties-to-this-contract-content' && key === 'vessel') {
-      const vessel = this.allVessels.find((vessel) => vessel.appRef === value);
+      const vessel = this.allVessels.find((v) => v.appRef === value);
       this.vesselDetails = vessel;
       return vessel?.name;
     } else if (this.pageName === 'contract-clauses-parties-to-this-contract-content' && key === 'crewMemberRole') {
@@ -234,11 +231,11 @@ export class ViewclausePage implements OnInit {
       const data = JSON.parse(details?.data);
       if (details?.kind === 'contract-clauses-attachments' && (data?.partyASignature || data?.partyBSignature)) {
         for (const [key, value] of Object.entries(data)) {
-          if (key === 'partyASignature' || key === 'partyBSignature') { 
+          if (key === 'partyASignature' || key === 'partyBSignature') {
             data[key] = typeof value === 'string' && value?.endsWith('.pdf') ? { docType: 'pdf', fileUri: value} : {docType: 'image', webPath: value};
           }
         }
-        
+
         details = {
           ...details,
           data: JSON.stringify(data),
