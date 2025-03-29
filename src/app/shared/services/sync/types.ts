@@ -2,7 +2,7 @@ export interface CreateCompanyResp {
     status: string;
     data: Data;
   }
-  
+
   export interface Data {
     id: string;
     deleted: boolean;
@@ -22,7 +22,7 @@ export interface CreateCompanyResp {
     addressLine2: string;
     addressLine3: string;
   }
-  
+
 export interface CreateVesselResp {
   status: string;
   data:   VesselData;
@@ -182,25 +182,12 @@ export interface GetClausesResponse {
   url:        string;
   ok:         boolean;
   type:       number;
-  body:       Body[];
+  body:       ClauseBody;
 }
 
-export interface Body {
-  id:        string;
-  contract:  string;
-  name:      string;
-  order:     null;
-  status:    null;
-  deleted:   boolean;
-  createdAt: string;
-  updatedAt: string;
-  deletedAt: null;
-  createdBy: string;
-  updatedBy: string;
-  deletedBy: null;
-  appRef:    string;
-  kind:      string;
-  content:   string;
+export interface ClauseBody {
+  status: string;
+  data:   ContractClauseData[];
 }
 
 

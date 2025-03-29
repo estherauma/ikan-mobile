@@ -30,18 +30,18 @@ export class ViewPage implements OnInit {
     'contract-clauses-means-to-address-breach-of-contract': 'contract-clauses-means-to-address-breach-of-contract-content',
     'contract-clauses-dispute-settlement': 'contract-clauses-dispute-settlement-content',
     'contract-clauses-miscellaneous': 'contract-clauses-miscellaneous-content'
-  }
+  };
   commonText: any;
   pageTitle: string;
   contract;
   contractClauses = [];
   done = false; // TODO: add done logic
   partiesRequirementId: string;
-  createClauseText: string = 'Add new clause';
+  createClauseText = 'Add new clause';
   pageText: any;
-  editContractText: string = 'Edit contract';
-  isVesselOwner: boolean = false;
-  isWorker: boolean = false;
+  editContractText = 'Edit contract';
+  isVesselOwner = false;
+  isWorker = false;
   currentLanguage = 'en-us';
 
   constructor(
@@ -82,9 +82,7 @@ export class ViewPage implements OnInit {
         response.forEach((entry) => {
           // Avoid adding the clause twice.
           // TODO: Add logic to check if clause is included when creating clauses
-          const clauseIncluded = this.contractClauses.some((clause) => {
-            return clause.title === entry.name;
-          });
+          const clauseIncluded = this.contractClauses.some((clause) => clause.title === entry.name);
           if (clauseIncluded) {
             return;
           }
@@ -100,10 +98,10 @@ export class ViewPage implements OnInit {
               translatedTitle: clauseDetails?.pageTitle,
               id: entry.id,
               kind: entry.kind,
-              entry: entry,
+              entry,
               data: entry.content,
               order: this.addOrderDataToClause(entry.kind)
-            })
+            });
           }
         });
         // order contractClauses by order
@@ -129,7 +127,7 @@ export class ViewPage implements OnInit {
       'contract-clauses-dispute-settlement': 9,
       'contract-clauses-miscellaneous': 10,
       'contract-clauses-attachments': 11,
-    }
+    };
     return clauseOrder[clauseKind];
   }
 

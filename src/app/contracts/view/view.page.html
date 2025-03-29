@@ -99,6 +99,7 @@
         [partyB]="partiesRequirementId"
         [isFirst]="i===0"
         [isLast]="i===(contractClauses?.length-1)"
+        [contract]="contract"
       ></app-placementoffercard>
     </div>
     <div class="ion-margin-vertical" [ngClass]="{'action-buttons': !done}">
