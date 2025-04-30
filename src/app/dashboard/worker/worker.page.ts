@@ -17,9 +17,9 @@ import { env } from 'src/environments/environment';
 export class WorkerPage implements OnInit {
   commonText: any;
   user: UserData;
-  name: string = '';
+  name = '';
   isProduction = env.production;
-  showTriggerButton: boolean = false;
+  showTriggerButton = false;
 
   sLists = [
     {
@@ -29,7 +29,7 @@ export class WorkerPage implements OnInit {
     },
     {
       title: 'Contracts',
-      icon: '/assets/icon/offers.svg', 
+      icon: '/assets/icon/offers.svg',
       url: '/contracts/home'
     },
     {
@@ -63,7 +63,7 @@ export class WorkerPage implements OnInit {
       this.pushNotifications.checkAndroidPNsPermissions();
     }
     await this.setupPage();
-    this.analytics.trackEvent(pageEventNames.viewWorkerDashboard, this.sharedmethods.analyticsEventParams)
+    this.analytics.trackEvent(pageEventNames.viewWorkerDashboard, this.sharedmethods.analyticsEventParams);
   }
 
   async setupPage() {
@@ -77,8 +77,8 @@ export class WorkerPage implements OnInit {
       // for item in slists, update title with menuContent
       this.sLists.forEach((item) => {
         Object.entries(menuContent).forEach((x) => {
-          if (x[1]['url'] === item.url) {
-            item['title'] = x[1]['label'];
+          if (x[1].url === item.url) {
+            item.title = x[1].label;
           }
         });
       });

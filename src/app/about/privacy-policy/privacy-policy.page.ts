@@ -12,7 +12,7 @@ import { StorageKeys } from 'src/app/shared/types/api-types';
   styleUrls: ['./privacy-policy.page.scss'],
 })
 export class PrivacyPolicyPage implements OnInit {
-  
+
   pageContent: any;
   pageTitle: any;
   showMenuButton = true;

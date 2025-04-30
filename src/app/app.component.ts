@@ -77,13 +77,13 @@ export class AppComponent implements OnInit, OnDestroy {
       await StatusBar.show();
     };
     this.handleBackButtonNavigation();
-    await this.sharedMethods.addNetworkEventListener((async(network) => {
+    await this.sharedMethods.addNetworkEventListener(async(network) => {
       this.networkListener = network.networkListener;
       if (network.connected) {
         await this.contentService.compareContent();
         this.checkSetupComplete();
       }
-    }));
+    });
     await this.contentService.setUpAppData().then(() => {
       this.checkSetupComplete();
       this.commonText = this.contentService.commonText;
@@ -101,9 +101,9 @@ export class AppComponent implements OnInit, OnDestroy {
       // identify last item in a menu section
       menuData.forEach((el, index) => {
         if (index === menuData.length - 1 ) {
-          el.last = false
+          el.last = false;
         } else {
-          const nextItem = menuData[index + 1]
+          const nextItem = menuData[index + 1];
           const nextSection = nextItem?.position - nextItem?.position % 100;
           const currentSection = el.position - el.position % 100;
           if (currentSection !== nextSection) {
@@ -112,7 +112,7 @@ export class AppComponent implements OnInit, OnDestroy {
             el.last = false;
           }
         }
-        
+
         if (el.url === '/delete-account') {
           el.isDeleteAccount = true;
         }
@@ -151,7 +151,7 @@ export class AppComponent implements OnInit, OnDestroy {
             }
 
             await this.pushNotifications.setup();
-           
+
             this.router.navigate([this.authService.getCurrentUserBaseUrlFromRole(user?.role)]);
           }
         }
@@ -178,7 +178,7 @@ export class AppComponent implements OnInit, OnDestroy {
       await LocalNotifications.removeAllListeners();
       this.authService.logOut();
       this.router.navigate(['']);
-    } else if(this.appPages[index].url === '/sync') {
+    } else if (this.appPages[index].url === '/sync') {
       await this.sharedMethods.showToast(this.contentService.commonText?.syncingData || 'Syncing data...', 'long');
       this.syncService.syncData();
     } else if (this.appPages[index].url === '/tfa-video') {
@@ -224,14 +224,14 @@ export class AppComponent implements OnInit, OnDestroy {
           text: this.commonText?.cancel,
           role: 'cancel',
           cssClass: 'secondary',
-        }, 
+        },
         {
           text: this.commonText?.delete,
           handler: async() => {
             await this.sharedMethods.showWaitLoader(this.commonText?.deletingAccountWaitMessage);
             const userId = this.userData?.id;
-            return this.apiService.delete('accounts/users', userId).subscribe(async(resp) => {
-              if (resp?.['status'] === 'OK' || !resp) {
+            return this.apiService.delete('accounts/users', userId).subscribe(async(resp: any) => {
+              if (resp?.status === 'OK' || !resp) {
                 await this.dbService.dropDatabase().then(async() => {
                   this.dbService.executedMigrations = [];
                   await this.dbService.checkDbPlatformAndRunMigration();
@@ -253,7 +253,7 @@ export class AppComponent implements OnInit, OnDestroy {
   }
 
   handleBackButtonNavigation() {
-    this.platform.backButton.subscribeWithPriority(-1, async () => {
+    this.platform.backButton.subscribeWithPriority(-1, async() => {
       // store url as it changes during navigation
       const targetUrl = this.router.url;
       const user: UserData = await this.sharedMethods.readDataFromStorage(StorageKeys.userData);
