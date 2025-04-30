@@ -86,6 +86,7 @@ export enum StorageKeys {
   currentUserOnlineContractsAppRefs = 'currentUserOnlineContracts',
   currentUserContracts = 'currentUserContracts',
   completedConsentForms = 'completedConsentForms',
+  offlineAnalyticsEvents = 'offlineAnalyticsEvents',
 }
 
 export interface UserData {
