@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { FormControl, FormGroup } from '@angular/forms';
 import { ModalController } from '@ionic/angular';
 import { BaseformPage } from 'src/app/shared/components/baseform/baseform.page';
 import { AnalyticsService } from 'src/app/shared/services/analytics/analytics.service';
-import { appEventNames, pageEventNames } from 'src/app/shared/services/analytics/event-names';
+import { AppEventNames, PageEventNames } from 'src/app/shared/services/analytics/event-names';
 import { ApiService } from 'src/app/shared/services/api/api.service';
 import { ContentService } from 'src/app/shared/services/content/content.service';
 import { SharedmethodsService } from 'src/app/shared/services/sharedmethods/sharedmethods.service';
@@ -20,7 +20,7 @@ export class TrainingVideoComponent extends BaseformPage  implements OnInit {
   video: any;
   networkStatus = false;
   defaultThumbnail = '/assets/icon/default-thumbnail.jpg';
-  disclaimerText: string = '';
+  disclaimerText = '';
 
   constructor(
     public contentService: ContentService,
@@ -30,7 +30,7 @@ export class TrainingVideoComponent extends BaseformPage  implements OnInit {
     public surveysDataService: SurveyDataService,
     public analyticsService: AnalyticsService
   ) {
-    super(contentService)
+    super(contentService);
   }
 
   async ngOnInit() {
@@ -51,13 +51,13 @@ export class TrainingVideoComponent extends BaseformPage  implements OnInit {
       entry.options[1] = { ...entry.options[1], value: 'False' };
     });
     this.pageFormGroup = new FormGroup(this.group);
-    this.analyticsService.trackEvent(pageEventNames.tfaVideo, this.sharedMethods.analyticsEventParams)
+    this.analyticsService.trackEvent(PageEventNames.tfaVideo, this.sharedMethods.analyticsEventParams);
   }
 
   getFormQuestions(data) {
     return data?.pageContent?.filter((e) => e.type === 'questions');
   }
-  
+
   formatVideoUrl(url: string) {
     return url?.replace('watch?v=', 'embed/');
   }
@@ -65,8 +65,8 @@ export class TrainingVideoComponent extends BaseformPage  implements OnInit {
   onPlay(data) {}
 
   getVideoType(url: string) {
-    return url?.endsWith('mp4') ? 'video/mp4' : 
-    url?.endsWith('webm') ? 'video/webm' : 
+    return url?.endsWith('mp4') ? 'video/mp4' :
+    url?.endsWith('webm') ? 'video/webm' :
     (url?.endsWith('ogv') || url?.endsWith('ogg')) ? 'video/ogg' :
     url?.endsWith('mov') ? 'video/quicktime':
     url?.endsWith('avi') ? 'video/x-msvideo':
@@ -85,11 +85,11 @@ export class TrainingVideoComponent extends BaseformPage  implements OnInit {
     const user = await this.sharedMethods.getUserData();
     const videoResponses = [];
     this.formQuestions.forEach((item) => {
-      if (!item?.displayquestion) return;
-      
+      if (!item?.displayquestion) {return;}
+
       if (formData[item.key]) {
         const untranslatedQtn = this.contentService.getUntranslatedInlineQuestion('tfa-training-video', item?.key);
-        
+
         let isFollowUpQuestionAnswered = false;
         let followUpQuestionResponse = formData[item?.followUpQuestion?.key] ?? null;
         if (item?.hasFollowUpQuestion && formData[item?.followUpQuestion?.key]) {
@@ -97,7 +97,7 @@ export class TrainingVideoComponent extends BaseformPage  implements OnInit {
           const unTranslatedFollowupQtn = untranslatedQtn?.options?.find(
             (opt) => opt?.followUpQuestion?.key === item?.followUpQuestion?.key)?.followUpQuestion;
           item.followUpQuestion.unTranslatedFollowupQtnText = unTranslatedFollowupQtn?.question;
-          
+
           if (Array.isArray(followUpQuestionResponse)) {
             followUpQuestionResponse = followUpQuestionResponse.length ? followUpQuestionResponse.join(', ') : null;
           }
@@ -128,13 +128,13 @@ export class TrainingVideoComponent extends BaseformPage  implements OnInit {
     }
 
     await this.sharedMethods.saveDataToStorage(StorageKeys.watchedTFAVideo, true);
-    this.analyticsService.trackEvent(appEventNames.submitTrainingVideo, this.sharedMethods.analyticsEventParams)
+    this.analyticsService.trackEvent(AppEventNames.submitTrainingVideo, this.sharedMethods.analyticsEventParams);
     this.sharedMethods?.hideLoader();
     this.modalCtrl.dismiss();
   }
 
   onCancel() {
-    this.analyticsService.trackEvent(appEventNames.cancelTrainingVideo, this.sharedMethods.analyticsEventParams)
+    this.analyticsService.trackEvent(AppEventNames.cancelTrainingVideo, this.sharedMethods.analyticsEventParams);
     this.modalCtrl?.dismiss();
   }
 }

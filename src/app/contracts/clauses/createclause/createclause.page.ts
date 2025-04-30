@@ -8,7 +8,7 @@ import { ContentService } from 'src/app/shared/services/content/content.service'
 import { SharedmethodsService } from 'src/app/shared/services/sharedmethods/sharedmethods.service';
 import { ContractDataService } from '../../data/contract-data.service';
 import { AnalyticsService } from 'src/app/shared/services/analytics/analytics.service';
-import { pageEventNames } from 'src/app/shared/services/analytics/event-names';
+import { PageEventNames } from 'src/app/shared/services/analytics/event-names';
 
 @Component({
   selector: 'app-createclause',
@@ -44,7 +44,7 @@ export class CreateclausePage extends BaseformPage implements OnInit {
   ngOnInit() {
     this.commonText = this.contentService?.commonText;
     this.pageSetup();
-    this.analytics.trackEvent(pageEventNames.createClause, this.sharedMethods.analyticsEventParams);
+    this.analytics.trackEvent(PageEventNames.createClause, this.sharedMethods.analyticsEventParams);
   }
 
   pageSetup() {

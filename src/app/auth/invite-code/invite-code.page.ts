@@ -3,7 +3,7 @@ import { FormControl, Validators, FormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
 import { BaseformPage } from 'src/app/shared/components/baseform/baseform.page';
 import { AnalyticsService } from 'src/app/shared/services/analytics/analytics.service';
-import { pageEventNames } from 'src/app/shared/services/analytics/event-names';
+import { PageEventNames } from 'src/app/shared/services/analytics/event-names';
 import { ApiService } from 'src/app/shared/services/api/api.service';
 import { ContentService } from 'src/app/shared/services/content/content.service';
 import { SharedmethodsService } from 'src/app/shared/services/sharedmethods/sharedmethods.service';
@@ -42,7 +42,7 @@ export class InviteCodePage extends BaseformPage implements OnInit {
   }
 
   ngOnInit(): void {
-    this.analytics.trackEvent(pageEventNames.inviteCode, this.sharedMethods.analyticsEventParams);
+    this.analytics.trackEvent(PageEventNames.inviteCode, this.sharedMethods.analyticsEventParams);
   }
 
   async onSubmit(data) {

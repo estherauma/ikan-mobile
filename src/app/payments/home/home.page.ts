@@ -10,7 +10,7 @@ import {
 } from 'src/app/shared/types/api-types';
 import { SharedmethodsService } from 'src/app/shared/services/sharedmethods/sharedmethods.service';
 import { AnalyticsService } from 'src/app/shared/services/analytics/analytics.service';
-import { pageEventNames } from 'src/app/shared/services/analytics/event-names';
+import { PageEventNames } from 'src/app/shared/services/analytics/event-names';
 
 @Component({
   selector: 'app-home',
@@ -121,7 +121,7 @@ export class HomePage implements OnInit {
       this.vesselCompanyText = this.chineseVesselCompanyText;
     }
 
-    this.analyticsService.trackEvent(pageEventNames.viewPayments, this.sharedMethods.analyticsEventParams);
+    this.analyticsService.trackEvent(PageEventNames.viewPayments, this.sharedMethods.analyticsEventParams);
   }
 
   async getCurrentUser() {

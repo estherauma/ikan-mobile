@@ -1,4 +1,4 @@
-export enum pageEventNames {
+export enum PageEventNames {
     privacyPolicy = 'page_privacy_policy',
     termsOfUse = 'page_terms_of_use',
     profile = 'page_profile',
@@ -91,7 +91,7 @@ export enum pageEventNames {
 
 }
 
-export enum appEventNames {
+export enum AppEventNames {
     // TFA video
     cancelTrainingVideo = 'cancel_training_video',
     submitTrainingVideo = 'submit_training_video_resp',

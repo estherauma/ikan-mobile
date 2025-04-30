@@ -7,7 +7,7 @@ import { SharedmethodsService } from 'src/app/shared/services/sharedmethods/shar
 import { ContractDataService } from '../../data/contract-data.service';
 import { VesselsDataService } from 'src/app/vessels/data/vessels-data.service';
 import { AnalyticsService } from 'src/app/shared/services/analytics/analytics.service';
-import { pageEventNames } from 'src/app/shared/services/analytics/event-names';
+import { PageEventNames } from 'src/app/shared/services/analytics/event-names';
 import { SyncService } from 'src/app/shared/services/sync/sync.service';
 
 @Component({
@@ -91,7 +91,7 @@ export class CreatedetailPage extends BaseformPage implements OnInit {
       }
       await this.pageSetup();
     });
-    this.analytics.trackEvent(pageEventNames.createClauseDetails, this.sharedMethods.analyticsEventParams);
+    this.analytics.trackEvent(PageEventNames.createClauseDetails, this.sharedMethods.analyticsEventParams);
   }
 
   async pageSetup() {

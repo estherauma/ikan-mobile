@@ -4,7 +4,7 @@ import { Router } from '@angular/router';
 import { ModalController } from '@ionic/angular';
 import { BaseformPage } from 'src/app/shared/components/baseform/baseform.page';
 import { AnalyticsService } from 'src/app/shared/services/analytics/analytics.service';
-import { pageEventNames } from 'src/app/shared/services/analytics/event-names';
+import { PageEventNames } from 'src/app/shared/services/analytics/event-names';
 import { ContentService } from 'src/app/shared/services/content/content.service';
 import { SharedmethodsService } from 'src/app/shared/services/sharedmethods/sharedmethods.service';
 
@@ -35,7 +35,7 @@ export class CreatePage extends BaseformPage implements OnInit {
 
   ngOnInit() {
     this.submitButtonText = this.contentService.commonText?.create;
-    this.analytics.trackEvent(pageEventNames.createWorker, this.sharedMethods.analyticsEventParams)
+    this.analytics.trackEvent(PageEventNames.createWorker, this.sharedMethods.analyticsEventParams)
   }
 
   async onSubmit(formData) {

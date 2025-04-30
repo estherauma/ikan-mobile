@@ -1,10 +1,10 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { FormControl, Validators, FormGroup } from '@angular/forms';
+import { FormControl, FormGroup } from '@angular/forms';
 import { PaymentsDataService } from 'src/app/payments/data/payments-data.service';
 import { ProfilesDataService } from 'src/app/profiles/data/profiles-data.service';
 import { BaseformPage } from 'src/app/shared/components/baseform/baseform.page';
 import { AnalyticsService } from 'src/app/shared/services/analytics/analytics.service';
-import { pageEventNames } from 'src/app/shared/services/analytics/event-names';
+import { PageEventNames } from 'src/app/shared/services/analytics/event-names';
 import { ContentService } from 'src/app/shared/services/content/content.service';
 import { SharedmethodsService } from 'src/app/shared/services/sharedmethods/sharedmethods.service';
 import { ProfileData } from 'src/app/shared/services/sync/types';
@@ -17,7 +17,7 @@ import { ProfileData } from 'src/app/shared/services/sync/types';
 export class PaymentsPage extends BaseformPage implements OnInit {
   @Input() page: 'loggedin-user-payments' | 'vo-workers-payments' = 'loggedin-user-payments';
   @Input() workerInfo: any;
-  
+
   submitButtonText = 'Save';
   acctFormQtns: any;
   beneficiaryFormQtns: any;
@@ -31,15 +31,15 @@ export class PaymentsPage extends BaseformPage implements OnInit {
   profileData: ProfileData;
   acctPageText: any;
   benficiaryPageText: any;
-  isViewAcct: boolean = false;
-  isViewBeneficiary: boolean = false;
-  isEditingAcct: boolean = false;
-  isEditingBeneficiary: boolean = false;
-  isAddingAcct: boolean = false;
-  isAddingBeneficiary: boolean = false;
-  acctPageTitle: string = '';
-  beneficiaryPageTitle: string = '';
-  
+  isViewAcct = false;
+  isViewBeneficiary = false;
+  isEditingAcct = false;
+  isEditingBeneficiary = false;
+  isAddingAcct = false;
+  isAddingBeneficiary = false;
+  acctPageTitle = '';
+  beneficiaryPageTitle = '';
+
   constructor(
     public contentService: ContentService,
     public sharedMethods: SharedmethodsService,
@@ -52,7 +52,7 @@ export class PaymentsPage extends BaseformPage implements OnInit {
 
   async ngOnInit() {
     await this.pageSetup();
-    this.analtyics.trackEvent(pageEventNames.workerProfilePayments, this.sharedMethods.analyticsEventParams);
+    this.analtyics.trackEvent(PageEventNames.workerProfilePayments, this.sharedMethods.analyticsEventParams);
   }
 
   async pageSetup() {
@@ -98,7 +98,7 @@ export class PaymentsPage extends BaseformPage implements OnInit {
       const value = this.isEditingAcct ? (this.acctData?.[entry.key] || '') : '';
       this.acctGroup[entry.key] = new FormControl(value, validators);
     });
-    
+
     this.acctFormGroup = new FormGroup(this.acctGroup);
 
     // Beneficiary form
@@ -227,13 +227,13 @@ export class PaymentsPage extends BaseformPage implements OnInit {
     }
   }
 
-  async editBeneficiary () {
+  async editBeneficiary() {
     this.isEditingBeneficiary = true;
     await this.pageSetup();
     this.isViewBeneficiary = false;
   }
 
-  async addNewBeneficiary () {
+  async addNewBeneficiary() {
     this.isEditingAcct = false;
     this.isEditingBeneficiary = false;
     this.isAddingBeneficiary = true;
@@ -241,7 +241,7 @@ export class PaymentsPage extends BaseformPage implements OnInit {
     this.isViewBeneficiary = false;
   }
 
-  async cancelBeneficiaryEdit () {
+  async cancelBeneficiaryEdit() {
     this.isEditingBeneficiary = false;
     this.isAddingBeneficiary = true;
     this.isViewBeneficiary = true;

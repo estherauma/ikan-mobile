@@ -6,7 +6,7 @@ import { TrainingVideoComponent } from '../training-video/training-video.compone
 import { SharedmethodsService } from 'src/app/shared/services/sharedmethods/sharedmethods.service';
 import { StorageKeys, UserRole } from 'src/app/shared/types/api-types';
 import { AnalyticsService } from 'src/app/shared/services/analytics/analytics.service';
-import { pageEventNames } from 'src/app/shared/services/analytics/event-names';
+import { PageEventNames } from 'src/app/shared/services/analytics/event-names';
 
 @Component({
   selector: 'app-home',
@@ -49,7 +49,7 @@ export class HomePage implements OnInit {
     if (user?.role === UserRole.worker && !watchedTFAVideo) {
       await this.showTrainingVideo();
     }
-    this.analyticsService.trackEvent(pageEventNames.learningHubHome, this.sharedMethods.analyticsEventParams)
+    this.analyticsService.trackEvent(PageEventNames.learningHubHome, this.sharedMethods.analyticsEventParams)
   }
 
   onClick(item) {

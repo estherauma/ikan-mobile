@@ -4,7 +4,7 @@ import { ModalController } from '@ionic/angular';
 import { ContentService } from 'src/app/shared/services/content/content.service';
 import { ArchivedWoPage } from '../archived-wo/archived-wo.page';
 import { AnalyticsService } from 'src/app/shared/services/analytics/analytics.service';
-import { pageEventNames } from 'src/app/shared/services/analytics/event-names';
+import { PageEventNames } from 'src/app/shared/services/analytics/event-names';
 import { SharedmethodsService } from 'src/app/shared/services/sharedmethods/sharedmethods.service';
 
 @Component({
@@ -56,7 +56,7 @@ export class ViewPage implements OnInit {
     // For editing form
     const stepOneData = this.contentService.getContentByPropertyName('vessels-createstepone');
     this.stepOneQtns = stepOneData?.formQuestions;
-    this.analytics.trackEvent(pageEventNames.viewVessel, this.sharedMethods.analyticsEventParams);
+    this.analytics.trackEvent(PageEventNames.viewVessel, this.sharedMethods.analyticsEventParams);
   }
 
   getParams() {

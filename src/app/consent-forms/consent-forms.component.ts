@@ -4,7 +4,7 @@ import { register } from 'swiper/element/bundle';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { AnalyticsService } from '../shared/services/analytics/analytics.service';
 import { SharedmethodsService } from '../shared/services/sharedmethods/sharedmethods.service';
-import { pageEventNames, appEventNames } from '../shared/services/analytics/event-names';
+import { PageEventNames, AppEventNames } from '../shared/services/analytics/event-names';
 import { Router } from '@angular/router';
 import { StorageKeys } from '../shared/types/api-types';
 import { SurveyDataService } from '../survey/data/survey-data.service';
@@ -22,7 +22,7 @@ export class ConsentFormsComponent  implements OnInit {
 
   pages = [];
   showPrevBtn = false;
-  audioUrl: string = '';
+  audioUrl = '';
   consentFormGroup: FormGroup;
   formQuestions: any = [];
   commonText: any;
@@ -36,7 +36,7 @@ export class ConsentFormsComponent  implements OnInit {
   ) { }
 
   async ngOnInit() {
-    this.analyticsService.trackEvent(pageEventNames.viewConsentForm, this.sharedMethods.analyticsEventParams);
+    this.analyticsService.trackEvent(PageEventNames.viewConsentForm, this.sharedMethods.analyticsEventParams);
     this.commonText = this.contentService?.commonText;
     const pageOne = this.contentService.getContentByPropertyName('worker-consent-form-one');
     this.pages.push(pageOne);
@@ -51,7 +51,7 @@ export class ConsentFormsComponent  implements OnInit {
    * and angular routerLink doesn't work with innerHTML
    * we need to manually handle the click event on anchor tags
    * and navigate to the correct route within the app
-  */
+   */
   @HostListener('document:click', ['$event'])
   handleClick(event: MouseEvent) {
     const target = event.target as HTMLElement;
@@ -101,7 +101,7 @@ export class ConsentFormsComponent  implements OnInit {
     audio.play();
   }
 
-  async submitForm(){
+  async submitForm() {
     const key = 'i-have-read-and-understood-all-of-the-information-above-and-consent-to-have-my-de-identified-data-from-ikan-used-as-part-of-the-research-study';
     const date = this.sharedMethods.getCurrentDateTime('date');
     const user = await this.sharedMethods.readDataFromStorage(StorageKeys.userData);
@@ -122,9 +122,9 @@ export class ConsentFormsComponent  implements OnInit {
       this.sharedMethods.showToast(this.commonText?.errSavingResponses);
     } else {
       if (this.consentFormGroup.value?.[key]) {
-        this.analyticsService.trackEvent(appEventNames.acceptedConsentFormConditions, this.sharedMethods.analyticsEventParams);
+        this.analyticsService.trackEvent(AppEventNames.acceptedConsentFormConditions, this.sharedMethods.analyticsEventParams);
       } else {
-        this.analyticsService.trackEvent(appEventNames.rejectedConsentFormConditions, this.sharedMethods.analyticsEventParams);
+        this.analyticsService.trackEvent(AppEventNames.rejectedConsentFormConditions, this.sharedMethods.analyticsEventParams);
       }
 
       await this.sharedMethods.saveDataToStorage(StorageKeys.completedConsentForms, true);

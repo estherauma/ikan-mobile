@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { AnalyticsService } from 'src/app/shared/services/analytics/analytics.service';
-import { pageEventNames } from 'src/app/shared/services/analytics/event-names';
+import { PageEventNames } from 'src/app/shared/services/analytics/event-names';
 import { SharedmethodsService } from 'src/app/shared/services/sharedmethods/sharedmethods.service';
 
 @Component({
@@ -21,7 +21,7 @@ export class DetailsPage implements OnInit {
 
   async ngOnInit() {
     await this.getParams();
-    this.analytics.trackEvent(pageEventNames.viewAgent, this.sharedMethods.analyticsEventParams);
+    this.analytics.trackEvent(PageEventNames.viewAgent, this.sharedMethods.analyticsEventParams);
   }
 
   getParams() {
