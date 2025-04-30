@@ -17,6 +17,7 @@ import { App } from '@capacitor/app';
 import { Location } from '@angular/common';
 import { LocalNotifications  } from '@capacitor/local-notifications';
 import { ApiService } from './shared/services/api/api.service';
+import { AnalyticsService } from './shared/services/analytics/analytics.service';
 
 @Component({
   selector: 'app-root',
@@ -46,6 +47,7 @@ export class AppComponent implements OnInit, OnDestroy {
     public location: Location,
     public alertController: AlertController,
     public apiService: ApiService,
+    public analyticsService: AnalyticsService,
   ) {
     this.authService.setUpAuthData();
     this.checkLoginStatus();
@@ -67,6 +69,7 @@ export class AppComponent implements OnInit, OnDestroy {
       }
     });
     this.setupDB();
+    this.analyticsService.uploadOfflineEvents();
   }
 
   async ngOnInit() {
