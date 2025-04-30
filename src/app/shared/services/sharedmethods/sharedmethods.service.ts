@@ -36,6 +36,7 @@ export class SharedmethodsService {
       this.isIos = false;
       this.isAndroid = true;
     }
+    this.getDeviceUuid();
     this.currentPlatform = this.getCurrentPlatform();
     this.setAnalyticsEventParams();
   }
