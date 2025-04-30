@@ -171,13 +171,14 @@ export enum NotificationActionId {
   test = 'test',
 }
 
-export interface analyticsEventsData{
+export interface AnalyticsEventsData {
   appLanguage: string;
   role: string;
   isIos: boolean;
   isAndroid: boolean;
   accountId: string;
   deviceId: string;
+  createdAt: number;
 }
 
 export enum HubQuestionStatus {

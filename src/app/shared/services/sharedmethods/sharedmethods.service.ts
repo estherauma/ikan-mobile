@@ -4,7 +4,7 @@ import { Network } from '@capacitor/network';
 import { Toast } from '@capacitor/toast';
 import { Preferences } from '@capacitor/preferences';
 import { PluginListenerHandle } from '@capacitor/core';
-import { StorageKeys, analyticsEventsData } from '../../types/api-types';
+import { StorageKeys, AnalyticsEventsData } from '../../types/api-types';
 import { Device } from '@capacitor/device';
 import {v4 as uuidv4} from 'uuid';
 import { UserRole } from '../../types/api-types';
@@ -21,7 +21,7 @@ export class SharedmethodsService {
   networkListener: PluginListenerHandle;
   isIos = false;
   isAndroid = false;
-  public analyticsEventParams: analyticsEventsData;
+  public analyticsEventParams: AnalyticsEventsData;
   currentPlatform: string = '';
   loader: any;
 
@@ -322,13 +322,15 @@ export class SharedmethodsService {
   async setAnalyticsEventParams() {
     const user = await this.readDataFromStorage(StorageKeys.userData);
     const language = await this.readDataFromStorage(StorageKeys.currentLanguage);
-    let params:analyticsEventsData = {
+    const now = Date.now();
+    const params: AnalyticsEventsData = {
       appLanguage: language,
       role: user?.role,
       isIos: this.isIos,
       isAndroid: this.isAndroid,
       accountId: user?.id?.slice(-8) || null,
-      deviceId: this.deviceUuid?.slice(-8) || null
+      deviceId: this.deviceUuid?.slice(-8) || null,
+      createdAt: now,
     };
     this.analyticsEventParams = params;
   }
