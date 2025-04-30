@@ -6,7 +6,7 @@ import { CompaniesDataService } from '../data/companies-data.service';
 import { ContentService } from 'src/app/shared/services/content/content.service';
 import { SharedmethodsService } from 'src/app/shared/services/sharedmethods/sharedmethods.service';
 import { AnalyticsService } from 'src/app/shared/services/analytics/analytics.service';
-import { pageEventNames } from 'src/app/shared/services/analytics/event-names';
+import { PageEventNames } from 'src/app/shared/services/analytics/event-names';
 
 @Component({
   selector: 'app-home',
@@ -45,7 +45,7 @@ export class HomePage implements OnInit {
     this.commonText = this.contentService.commonText;
     this.newText = this.commonText?.new;
     this.pageTitle = this.commonText?.companies;
-    this.analytics.trackEvent(pageEventNames.listCompany, this.sharedMethods.analyticsEventParams);
+    this.analytics.trackEvent(PageEventNames.listCompany, this.sharedMethods.analyticsEventParams);
   }
 
   async createCompany() {

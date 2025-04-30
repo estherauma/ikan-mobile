@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { BaseformPage } from 'src/app/shared/components/baseform/baseform.page';
 import { AnalyticsService } from 'src/app/shared/services/analytics/analytics.service';
-import { pageEventNames } from 'src/app/shared/services/analytics/event-names';
+import { PageEventNames } from 'src/app/shared/services/analytics/event-names';
 import { ContentService } from 'src/app/shared/services/content/content.service';
 import { SharedmethodsService } from 'src/app/shared/services/sharedmethods/sharedmethods.service';
 import { env } from 'src/environments/environment';
@@ -31,7 +31,7 @@ export class HowToSignupPage implements OnInit {
     this.pageText = this.sharedMethods.convertAdditionalTextToObj(pageData?.additionalText);
     this.title = pageData?.pageTitle;
     this.description = this.pageText?.description;
-    this.analytics.trackEvent(pageEventNames.howToSignUp, this.sharedMethods.analyticsEventParams)
+    this.analytics.trackEvent(PageEventNames.howToSignUp, this.sharedMethods.analyticsEventParams)
   }
 
   onCreateLogin() {

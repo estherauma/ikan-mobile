@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { AnalyticsService } from 'src/app/shared/services/analytics/analytics.service';
-import { pageEventNames } from 'src/app/shared/services/analytics/event-names';
+import { PageEventNames } from 'src/app/shared/services/analytics/event-names';
 import { PushNotificationsService } from 'src/app/shared/services/push-notifications/push-notifications.service';
 import { SharedmethodsService } from 'src/app/shared/services/sharedmethods/sharedmethods.service';
 
@@ -41,7 +41,7 @@ export class BuyerPage implements OnInit {
     if (!this.pushNotifications.preventSecondNotificationPrompt) {
       this.pushNotifications.checkAndroidPNsPermissions();
     }
-    this.analytics.trackEvent(pageEventNames.viewBuyerDashboard, this.sharedMethods.analyticsEventParams);
+    this.analytics.trackEvent(PageEventNames.viewBuyerDashboard, this.sharedMethods.analyticsEventParams);
   }
 
   generateNewReport() {}

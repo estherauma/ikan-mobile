@@ -4,13 +4,13 @@ import { Network } from '@capacitor/network';
 import { Toast } from '@capacitor/toast';
 import { Preferences } from '@capacitor/preferences';
 import { PluginListenerHandle } from '@capacitor/core';
-import { StorageKeys, analyticsEventsData } from '../../types/api-types';
+import { StorageKeys, AnalyticsEventsData } from '../../types/api-types';
 import { Device } from '@capacitor/device';
 import {v4 as uuidv4} from 'uuid';
 import { UserRole } from '../../types/api-types';
 import { Validators } from '@angular/forms';
 import { CameraSource } from '@capacitor/camera';
-import { formatDate } from "@angular/common";
+import { formatDate } from '@angular/common';
 
 
 @Injectable({
@@ -21,8 +21,8 @@ export class SharedmethodsService {
   networkListener: PluginListenerHandle;
   isIos = false;
   isAndroid = false;
-  public analyticsEventParams: analyticsEventsData;
-  currentPlatform: string = '';
+  public analyticsEventParams: AnalyticsEventsData;
+  currentPlatform = '';
   loader: any;
 
   constructor(
@@ -36,6 +36,7 @@ export class SharedmethodsService {
       this.isIos = false;
       this.isAndroid = true;
     }
+    this.getDeviceUuid();
     this.currentPlatform = this.getCurrentPlatform();
     this.setAnalyticsEventParams();
   }
@@ -57,7 +58,7 @@ export class SharedmethodsService {
       message,
       duration
     });
-    await loading.present()
+    await loading.present();
   }
 
   async hideLoader() {
@@ -154,10 +155,10 @@ export class SharedmethodsService {
     if (!date) {
       return date;
     }
-    
+
     let locale = 'en-us';
     let format = 'dd MMM yyyy';
-    
+
     if (currentLanguage === 'qm-zh') {
       locale = 'zh';
       format = 'yyyy年MM月dd日';
@@ -228,13 +229,13 @@ export class SharedmethodsService {
   // TODO: refactor fn
   getChapterBackground(id, type ='chapter') {
     if (id === '1') {
-      if (type === 'subchapter') return 'assets/imgs/bg-pre-departure-tinted.svg'
+      if (type === 'subchapter') {return 'assets/imgs/bg-pre-departure-tinted.svg';}
       return 'assets/imgs/bg-pre-departure.svg';
     } else if (id === '2') {
-      if (type === 'subchapter') return 'assets/imgs/bg-life-on-board-tinted.svg'
+      if (type === 'subchapter') {return 'assets/imgs/bg-life-on-board-tinted.svg';}
       return 'assets/imgs/bg-life-on-board.svg';
     } else if (id === '3') {
-      if (type === 'subchapter') return 'assets/imgs/bg-your-work-tinted.svg'
+      if (type === 'subchapter') {return 'assets/imgs/bg-your-work-tinted.svg';}
       return 'assets/imgs/bg-your-work.svg';
     }
     return '';
@@ -269,7 +270,7 @@ export class SharedmethodsService {
     } else if (!isActive) {
       status = 'inactive';
     }
-  
+
     return commonText?.[status];
   }
 
@@ -288,13 +289,14 @@ export class SharedmethodsService {
 
   /**
    * Check if a date is within a time frame
+   *
    * @param dateToCheck The date to check
    * @param timeFrameInWeeks The timeframe in weeks
    * @param startDate The date to start the time frame from
    * @returns True if the date is within the time frame, false otherwise
    * @example
    * isDateWithinTimeFrame(new Date('2021-01-01'), 1, new Date('2021-01-01')) // true
-    */
+   */
   isDateWithinTimeFrame(dateToCheck: Date, timeFrameInWeeks = 0, startDate = new Date()) {
     const endDate = new Date(startDate);
     endDate.setDate(endDate.getDate() + (timeFrameInWeeks * 7));
@@ -314,21 +316,21 @@ export class SharedmethodsService {
   }
 
   convertCamelToSnakeCase(text: string) {
-    return text.replace(/(?:^|\.?)([A-Z0-9])/g,  (x, y) => {
-      return "_" + y.toLowerCase();
-    }).replace(/^_/, "");
+    return text.replace(/(?:^|\.?)([A-Z0-9])/g,  (x, y) => '_' + y.toLowerCase()).replace(/^_/, '');
   }
 
   async setAnalyticsEventParams() {
     const user = await this.readDataFromStorage(StorageKeys.userData);
     const language = await this.readDataFromStorage(StorageKeys.currentLanguage);
-    let params:analyticsEventsData = {
+    const now = Date.now();
+    const params: AnalyticsEventsData = {
       appLanguage: language,
       role: user?.role,
       isIos: this.isIos,
       isAndroid: this.isAndroid,
       accountId: user?.id?.slice(-8) || null,
-      deviceId: this.deviceUuid?.slice(-8) || null
+      deviceId: this.deviceUuid?.slice(-8) || null,
+      createdAt: now,
     };
     this.analyticsEventParams = params;
   }
@@ -404,12 +406,9 @@ export class SharedmethodsService {
         {
           text: commonText?.save,
           cssClass: 'save-btn',
-          handler: (data) => {
-            return { fileName: data.fileName};
-          }
+          handler: (data) => ({ fileName: data.fileName})
         }
       ],
-      
     });
     return alert;
   }
@@ -478,8 +477,8 @@ export class SharedmethodsService {
   }
 
   checkIf2ObjectsAreEqual(object1, object2) {
-    if (!object1 || !object2) return false;
-    
+    if (!object1 || !object2) {return false;}
+
     const keys1 = Object.keys(object1);
     const keys2 = Object.keys(object2);
 
@@ -487,7 +486,7 @@ export class SharedmethodsService {
       return false;
     }
 
-    for (let key of keys1) {
+    for (const key of keys1) {
       if (object1[key] !== object2[key]) {
         return false;
       }

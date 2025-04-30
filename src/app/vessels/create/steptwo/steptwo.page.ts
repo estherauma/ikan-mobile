@@ -7,7 +7,7 @@ import { ContentService } from 'src/app/shared/services/content/content.service'
 import { SharedmethodsService } from 'src/app/shared/services/sharedmethods/sharedmethods.service';
 import { VesselsDataService } from '../../data/vessels-data.service';
 import { AnalyticsService } from 'src/app/shared/services/analytics/analytics.service';
-import { pageEventNames } from 'src/app/shared/services/analytics/event-names';
+import { PageEventNames } from 'src/app/shared/services/analytics/event-names';
 import { SyncService } from 'src/app/shared/services/sync/sync.service';
 
 @Component({
@@ -68,7 +68,7 @@ export class SteptwoPage extends BaseformPage implements OnInit {
     });
 
     this.pageFormGroup = new FormGroup(this.group);
-    this.analytics.trackEvent(pageEventNames.createVessel2, this.sharedMethods.analyticsEventParams);
+    this.analytics.trackEvent(PageEventNames.createVessel2, this.sharedMethods.analyticsEventParams);
   }
 
   async onSubmit(formData) {

@@ -7,7 +7,7 @@ import { ContentService } from 'src/app/shared/services/content/content.service'
 import { DBService } from 'src/app/shared/services/database/db.service';
 import { SharedmethodsService } from 'src/app/shared/services/sharedmethods/sharedmethods.service';
 import { AnalyticsService } from 'src/app/shared/services/analytics/analytics.service';
-import { pageEventNames } from 'src/app/shared/services/analytics/event-names';
+import { PageEventNames } from 'src/app/shared/services/analytics/event-names';
 
 @Component({
   selector: 'app-home',
@@ -46,7 +46,7 @@ export class HomePage implements OnInit {
     this.newText = this.commonText?.new;
     this.statusFilterLabel = this.commonText?.filterByStatus ?? this.statusFilterLabel;
     this.filterOptions = this.contentService.getFormOptions('vessels-createsteptwo', 'status');
-    this.analytics.trackEvent(pageEventNames.listVessels, this.sharedMethods.analyticsEventParams)
+    this.analytics.trackEvent(PageEventNames.listVessels, this.sharedMethods.analyticsEventParams)
   }
 
   ionViewWillEnter() {

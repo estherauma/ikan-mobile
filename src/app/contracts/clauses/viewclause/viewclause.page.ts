@@ -5,7 +5,7 @@ import { ContentService } from 'src/app/shared/services/content/content.service'
 import { VesselsDataService } from 'src/app/vessels/data/vessels-data.service';
 import { AlertController } from '@ionic/angular';
 import { AnalyticsService } from 'src/app/shared/services/analytics/analytics.service';
-import { pageEventNames } from 'src/app/shared/services/analytics/event-names';
+import { PageEventNames } from 'src/app/shared/services/analytics/event-names';
 import { SharedmethodsService } from 'src/app/shared/services/sharedmethods/sharedmethods.service';
 import { AuthService } from 'src/app/shared/services/auth/auth.service';
 import { UserRole } from 'src/app/shared/types/api-types';
@@ -75,7 +75,7 @@ export class ViewclausePage implements OnInit {
       this.isVesselOwner = this.authService.userRole === UserRole.vesselOwner;
       this.isWorker = this.authService.userRole === UserRole.worker;
     });
-    this.analytics.trackEvent(pageEventNames.viewClause, this.sharedMethods.analyticsEventParams);
+    this.analytics.trackEvent(PageEventNames.viewClause, this.sharedMethods.analyticsEventParams);
   }
 
   async pageSetup() {

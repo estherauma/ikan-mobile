@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { AnalyticsService } from 'src/app/shared/services/analytics/analytics.service';
-import { pageEventNames } from 'src/app/shared/services/analytics/event-names';
+import { PageEventNames } from 'src/app/shared/services/analytics/event-names';
 import { ContentService } from 'src/app/shared/services/content/content.service';
 import { SharedmethodsService } from 'src/app/shared/services/sharedmethods/sharedmethods.service';
 import { UserData } from 'src/app/shared/types/api-types';
@@ -42,7 +42,7 @@ export class PaymentDetailsPage  implements OnInit {
     this.currentLanguage = this.contentService?.currentLanguage;
     this.currentUser = await this.sharedmethods.getUserData();
 
-    this.analyticsService.trackEvent(pageEventNames.viewPaymentDetails, this.sharedmethods.analyticsEventParams);
+    this.analyticsService.trackEvent(PageEventNames.viewPaymentDetails, this.sharedmethods.analyticsEventParams);
   }
 
   // TODO: change statuses

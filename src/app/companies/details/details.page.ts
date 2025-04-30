@@ -5,7 +5,7 @@ import { ContentService } from 'src/app/shared/services/content/content.service'
 import { CreatePage } from '../create/create.page';
 import { SharedmethodsService } from 'src/app/shared/services/sharedmethods/sharedmethods.service';
 import { AnalyticsService } from 'src/app/shared/services/analytics/analytics.service';
-import { pageEventNames } from 'src/app/shared/services/analytics/event-names';
+import { PageEventNames } from 'src/app/shared/services/analytics/event-names';
 
 @Component({
   selector: 'app-details',
@@ -31,7 +31,7 @@ export class DetailsPage implements OnInit {
       this.company = params;
       this.pageTitle = params.name;
     });
-    this.analytics.trackEvent(pageEventNames.viewCompany, this.sharedMethods.analyticsEventParams);
+    this.analytics.trackEvent(PageEventNames.viewCompany, this.sharedMethods.analyticsEventParams);
   }
 
   async editCompany(data){

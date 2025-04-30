@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { AnalyticsService } from 'src/app/shared/services/analytics/analytics.service';
-import { pageEventNames } from 'src/app/shared/services/analytics/event-names';
+import { PageEventNames } from 'src/app/shared/services/analytics/event-names';
 import { ContentService } from 'src/app/shared/services/content/content.service';
 import { SharedmethodsService } from 'src/app/shared/services/sharedmethods/sharedmethods.service';
 
@@ -21,7 +21,7 @@ export class TermsOfUsePage implements OnInit {
 
   ngOnInit() {
     this.pageSetup()
-    this.analytics.trackEvent(pageEventNames.termsOfUse, this.sharedMethods.analyticsEventParams);
+    this.analytics.trackEvent(PageEventNames.termsOfUse, this.sharedMethods.analyticsEventParams);
   }
 
   pageSetup() {

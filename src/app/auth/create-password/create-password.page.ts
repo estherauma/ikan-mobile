@@ -3,7 +3,7 @@ import { FormControl, Validators, FormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
 import { BaseformPage } from 'src/app/shared/components/baseform/baseform.page';
 import { AnalyticsService } from 'src/app/shared/services/analytics/analytics.service';
-import { pageEventNames } from 'src/app/shared/services/analytics/event-names';
+import { PageEventNames } from 'src/app/shared/services/analytics/event-names';
 import { ContentService } from 'src/app/shared/services/content/content.service';
 import { SharedmethodsService } from 'src/app/shared/services/sharedmethods/sharedmethods.service';
 
@@ -29,7 +29,7 @@ export class CreatePasswordPage extends BaseformPage implements OnInit {
 
   ngOnInit() {
     this.pageSetup();
-    this.analytics.trackEvent(pageEventNames.createPassword, this.sharedMethods.analyticsEventParams);
+    this.analytics.trackEvent(PageEventNames.createPassword, this.sharedMethods.analyticsEventParams);
   }
 
   pageSetup() {

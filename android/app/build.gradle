@@ -8,8 +8,8 @@ android {
         applicationId "com.fiftyeight"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 10012
-        versionName "1.0.12-11"
+        versionCode 10013
+        versionName "1.0.13-01"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         aaptOptions {
              // Files and dirs to omit from the packaged assets dir, modified to accommodate modern web apps.
@@ -35,7 +35,7 @@ android {
           resValue "string", "title_activity_main", "IKAN(Dev)"
           namespace "com.fiftyeight.tuna.dev"
           firebaseAppDistribution {
-            releaseNotes="Remove contract number field"
+            releaseNotes="Offline google analytics"
             groups="scrum,staging-testers"
             serviceCredentialsFile=file("google-services-credentials.json")
             appId="1:712142417730:android:e72fd0aa6261e389d2a2db"
