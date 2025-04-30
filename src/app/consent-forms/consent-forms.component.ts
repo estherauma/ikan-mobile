@@ -65,7 +65,7 @@ export class ConsentFormsComponent  implements OnInit {
 
   setupForm() {
     const group = {};
-    this.formQuestions.forEach(entry => {
+    this.formQuestions?.forEach(entry => {
       const validators = [];
       if (entry.required) {
         validators.push(Validators.required);
