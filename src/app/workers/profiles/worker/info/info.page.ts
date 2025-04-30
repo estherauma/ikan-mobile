@@ -3,7 +3,7 @@ import { FormControl, Validators, FormGroup } from '@angular/forms';
 import { ProfilesDataService } from 'src/app/profiles/data/profiles-data.service';
 import { BaseformPage } from 'src/app/shared/components/baseform/baseform.page';
 import { AnalyticsService } from 'src/app/shared/services/analytics/analytics.service';
-import { pageEventNames } from 'src/app/shared/services/analytics/event-names';
+import { PageEventNames } from 'src/app/shared/services/analytics/event-names';
 import { ContentService } from 'src/app/shared/services/content/content.service';
 import { SharedmethodsService } from 'src/app/shared/services/sharedmethods/sharedmethods.service';
 import { ProfileData } from 'src/app/shared/services/sync/types';
@@ -32,7 +32,7 @@ export class InfoPage extends BaseformPage implements OnInit {
 
   async ngOnInit() {
     await this.pageSetup();
-    this.analytics.trackEvent(pageEventNames.workerProfileinfo, this.sharedMethods.analyticsEventParams)
+    this.analytics.trackEvent(PageEventNames.workerProfileinfo, this.sharedMethods.analyticsEventParams)
   }
 
   async pageSetup() {

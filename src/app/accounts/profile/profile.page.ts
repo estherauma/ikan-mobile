@@ -5,7 +5,7 @@ import { ProfilesDataService } from 'src/app/profiles/data/profiles-data.service
 import { BaseformPage } from 'src/app/shared/components/baseform/baseform.page';
 import { ImageselectComponent } from 'src/app/shared/components/imageselect/imageselect.component';
 import { AnalyticsService } from 'src/app/shared/services/analytics/analytics.service';
-import { pageEventNames } from 'src/app/shared/services/analytics/event-names';
+import { PageEventNames } from 'src/app/shared/services/analytics/event-names';
 import { ContentService } from 'src/app/shared/services/content/content.service';
 import { SharedmethodsService } from 'src/app/shared/services/sharedmethods/sharedmethods.service';
 import { ProfileData } from 'src/app/shared/services/sync/types';
@@ -42,7 +42,7 @@ export class ProfilePage extends BaseformPage implements OnInit {
 
   async ngOnInit() {
     await this.pageSetup();
-    this.analytics.trackEvent(pageEventNames.profile, this.sharedMethods.analyticsEventParams);
+    this.analytics.trackEvent(PageEventNames.profile, this.sharedMethods.analyticsEventParams);
     this.profilesDataService.getAll().subscribe(async(data) => {
       const user = await this.sharedMethods.getUserData();
       const userProfile = data.find((profile) => profile.email === user?.email);

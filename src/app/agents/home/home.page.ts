@@ -6,7 +6,7 @@ import { CreatePage } from '../create/create.page';
 import { AgentsDataService } from '../data/agents-data.service';
 import { ContentService } from 'src/app/shared/services/content/content.service';
 import { AnalyticsService } from 'src/app/shared/services/analytics/analytics.service';
-import { pageEventNames } from 'src/app/shared/services/analytics/event-names';
+import { PageEventNames } from 'src/app/shared/services/analytics/event-names';
 
 @Component({
   selector: 'app-home',
@@ -37,7 +37,7 @@ export class HomePage implements OnInit {
     this.commonText = this.contentService?.commonText;
     this.newText = this.commonText?.new;
     this.pageTitle = this.commonText?.manningAgents;
-    this.analytics.trackEvent(pageEventNames.listAgent, this.sharedMethods.analyticsEventParams);
+    this.analytics.trackEvent(PageEventNames.listAgent, this.sharedMethods.analyticsEventParams);
   }
 
   searchResult(searchResult) {

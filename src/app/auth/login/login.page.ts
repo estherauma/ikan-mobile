@@ -14,7 +14,7 @@ import { SyncService } from 'src/app/shared/services/sync/sync.service';
 import { LocalNotificationsService } from 'src/app/shared/services/local-notifications/local-notifications.service';
 import { LocalNotifications  } from '@capacitor/local-notifications';
 import { AnalyticsService } from 'src/app/shared/services/analytics/analytics.service';
-import { pageEventNames } from 'src/app/shared/services/analytics/event-names';
+import { PageEventNames } from 'src/app/shared/services/analytics/event-names';
 import { PushNotificationsService } from 'src/app/shared/services/push-notifications/push-notifications.service';
 
 @Component({
@@ -47,7 +47,7 @@ export class LoginPage extends BaseformPage implements OnInit {
 
   ngOnInit() {
     this.pageSetup();
-    this.analytics.trackEvent(pageEventNames.login, this.sharedMethods.analyticsEventParams);
+    this.analytics.trackEvent(PageEventNames.login, this.sharedMethods.analyticsEventParams);
   }
 
   pageSetup() {

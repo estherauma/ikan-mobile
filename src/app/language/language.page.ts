@@ -5,7 +5,7 @@ import { StorageKeys, UserData } from '../shared/types/api-types';
 import { Router } from '@angular/router';
 import { AuthService } from '../shared/services/auth/auth.service';
 import { AnalyticsService } from '../shared/services/analytics/analytics.service';
-import { pageEventNames } from '../shared/services/analytics/event-names';
+import { PageEventNames } from '../shared/services/analytics/event-names';
 import { PushNotificationsService } from '../shared/services/push-notifications/push-notifications.service';
 
 @Component({
@@ -36,7 +36,7 @@ export class LanguagePage implements OnInit {
   }
 
   ngOnInit() {
-    this.analytics.trackEvent(pageEventNames.changeLanguage, this.sharedMethods.analyticsEventParams);
+    this.analytics.trackEvent(PageEventNames.changeLanguage, this.sharedMethods.analyticsEventParams);
   }
 
   getAvailableLanguages() {

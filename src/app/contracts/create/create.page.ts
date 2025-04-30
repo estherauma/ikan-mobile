@@ -8,7 +8,7 @@ import { ContentService } from 'src/app/shared/services/content/content.service'
 import { SharedmethodsService } from 'src/app/shared/services/sharedmethods/sharedmethods.service';
 import { ContractDataService } from '../data/contract-data.service';
 import { AnalyticsService } from 'src/app/shared/services/analytics/analytics.service';
-import { pageEventNames } from 'src/app/shared/services/analytics/event-names';
+import { PageEventNames } from 'src/app/shared/services/analytics/event-names';
 import { SyncService } from 'src/app/shared/services/sync/sync.service';
 
 @Component({
@@ -56,7 +56,7 @@ export class CreatePage extends BaseformPage implements OnInit {
     this.submitButtonText = this.isEditing ? this.commonText?.update :this.commonText?.create;
     
     this.pageSetup();
-    this.analytics.trackEvent(pageEventNames.createContract, this.sharedMethods.analyticsEventParams);
+    this.analytics.trackEvent(PageEventNames.createContract, this.sharedMethods.analyticsEventParams);
   }
 
   pageSetup() {

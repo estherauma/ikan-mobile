@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { AnalyticsService } from 'src/app/shared/services/analytics/analytics.service';
-import { pageEventNames } from 'src/app/shared/services/analytics/event-names';
+import { PageEventNames } from 'src/app/shared/services/analytics/event-names';
 import { ContentService } from 'src/app/shared/services/content/content.service';
 import { LocalNotificationsService } from 'src/app/shared/services/local-notifications/local-notifications.service';
 import { PushNotificationsService } from 'src/app/shared/services/push-notifications/push-notifications.service';
@@ -63,7 +63,7 @@ export class WorkerPage implements OnInit {
       this.pushNotifications.checkAndroidPNsPermissions();
     }
     await this.setupPage();
-    this.analytics.trackEvent(pageEventNames.viewWorkerDashboard, this.sharedmethods.analyticsEventParams);
+    this.analytics.trackEvent(PageEventNames.viewWorkerDashboard, this.sharedmethods.analyticsEventParams);
   }
 
   async setupPage() {

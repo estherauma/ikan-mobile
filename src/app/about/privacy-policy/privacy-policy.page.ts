@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { AnalyticsService } from 'src/app/shared/services/analytics/analytics.service';
-import { pageEventNames } from 'src/app/shared/services/analytics/event-names';
+import { PageEventNames } from 'src/app/shared/services/analytics/event-names';
 import { ContentService } from 'src/app/shared/services/content/content.service';
 import { SharedmethodsService } from 'src/app/shared/services/sharedmethods/sharedmethods.service';
 import { StorageKeys } from 'src/app/shared/types/api-types';
@@ -25,7 +25,7 @@ export class PrivacyPolicyPage implements OnInit {
 
   async ngOnInit() {
     await this.pageSetup();
-    this.analytics.trackEvent(pageEventNames.privacyPolicy, this.sharedMethods.analyticsEventParams);
+    this.analytics.trackEvent(PageEventNames.privacyPolicy, this.sharedMethods.analyticsEventParams);
   }
 
   async pageSetup() {

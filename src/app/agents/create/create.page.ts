@@ -7,7 +7,7 @@ import { BaseformPage } from 'src/app/shared/components/baseform/baseform.page';
 import { FormControl, Validators, FormGroup } from '@angular/forms';
 import { ModalController } from '@ionic/angular';
 import { AnalyticsService } from 'src/app/shared/services/analytics/analytics.service';
-import { pageEventNames } from 'src/app/shared/services/analytics/event-names';
+import { PageEventNames } from 'src/app/shared/services/analytics/event-names';
 
 @Component({
   selector: 'app-create',
@@ -33,7 +33,7 @@ export class CreatePage extends BaseformPage implements OnInit {
       this.group[entry.key] = new FormControl('', validators);
     });
     this.pageFormGroup = new FormGroup(this.group);
-    this.analytics.trackEvent(pageEventNames.createAgent, this.sharedMethods.analyticsEventParams);
+    this.analytics.trackEvent(PageEventNames.createAgent, this.sharedMethods.analyticsEventParams);
   }
 
   ngOnInit() {

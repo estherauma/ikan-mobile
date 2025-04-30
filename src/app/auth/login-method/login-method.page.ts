@@ -4,7 +4,7 @@ import { ModalController } from '@ionic/angular';
 import { Subscription } from 'rxjs';
 import { SelectLanguageComponent } from 'src/app/shared/components/select-language/select-language/select-language.component';
 import { AnalyticsService } from 'src/app/shared/services/analytics/analytics.service';
-import { pageEventNames } from 'src/app/shared/services/analytics/event-names';
+import { PageEventNames } from 'src/app/shared/services/analytics/event-names';
 import { ContentService } from 'src/app/shared/services/content/content.service';
 import { SharedmethodsService } from 'src/app/shared/services/sharedmethods/sharedmethods.service';
 import { StorageKeys } from 'src/app/shared/types/api-types';
@@ -55,7 +55,7 @@ export class LoginMethodPage implements OnInit {
         this.langModalPresented = true;
       }
     }
-    this.analytics.trackEvent(pageEventNames.loginMethod, this.sharedMethods.analyticsEventParams);
+    this.analytics.trackEvent(PageEventNames.loginMethod, this.sharedMethods.analyticsEventParams);
   }
 
   getAuthText() {
