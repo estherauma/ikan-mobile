@@ -14,19 +14,24 @@ app-consent-forms {
       color: var(--ikan_darkblue_90);
     }
 
-    .audio-icon {
-      color: var(--ion-color-primary);
-      font-size: 1.5rem;
+    .audio-btn-wrapper {
+      margin: 5px 20px 0 20px;
+      ion-button {
+        color: white;
+        font-weight: bold;
+        --border-radius: 20px;
+        text-transform: none;
+        --padding-top: 2px;
+        --padding-bottom: 2px;
+        min-height: unset;
+        ion-icon {
+          font-size: 1.5rem;
+        }
+      }
     }
 
     .text-area-section {
       width: 100%;
-      position: relative;
-      .audio-icon {
-        position: absolute;
-        right: 20px;
-        z-index: 10;
-      }
       .textarea {
         --background: var(--ikan_skyblue_100);
         margin-bottom: 20px;
