@@ -26,12 +26,20 @@
         <div *ngFor="let section of slide?.pageContent" class="section">
           <!-- text area type -->
           <div *ngIf="section?.type === 'text_area'" class="text-area-section">
-            <ion-icon
-              *ngIf="section?.contentAudio?.url"
-              class="audio-icon"
-              name="volume-medium"
-              (click)="playAudio(section?.contentAudio?.url)"
-            ></ion-icon>
+            <div class="audio-btn-wrapper">
+              <ion-button
+                *ngIf="section?.contentAudio?.url"
+                class="audio-btn"
+                (click)="playAudio(section?.contentAudio?.url)"
+              >
+                <ion-icon
+                  class="audio-icon"
+                  name="volume-medium"
+                  slot="start"
+                ></ion-icon>
+                {{ commonText?.clickHereToListen }}
+              </ion-button>
+            </div>
             <shared-text-area
               *ngIf="section?.type === 'text_area'"
               [data]="section"
