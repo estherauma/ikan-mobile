@@ -33,17 +33,27 @@ export class ConsentFormsComponent  implements OnInit {
     public sharedMethods: SharedmethodsService,
     public router: Router,
     public surveyDataService: SurveyDataService,
-  ) { }
+  ) {
+    this.contentService.watchContent().subscribe(async(res) => {
+      if (res) {
+        await this.pageSetup();
+      }
+    });
+  }
 
   async ngOnInit() {
+    await this.pageSetup();
+  }
+
+  async pageSetup() {
     this.analyticsService.trackEvent(PageEventNames.viewConsentForm, this.sharedMethods.analyticsEventParams);
-    this.commonText = this.contentService?.commonText;
-    const pageOne = this.contentService.getContentByPropertyName('worker-consent-form-one');
+    this.commonText = await this.contentService?.commonText;
+    const pageOne = await this.contentService.getContentByPropertyName('worker-consent-form-one');
     this.pages.push(pageOne);
-    const pageTwo = this.contentService.getContentByPropertyName('worker-consent-form-two');
+    const pageTwo = await this.contentService.getContentByPropertyName('worker-consent-form-two');
     this.pages.push(pageTwo);
-    this.formQuestions = pageTwo?.pageContent?.filter((item) => item?.type === 'questions');
-    this.setupForm();
+    this.formQuestions = await pageTwo?.pageContent?.filter((item) => item?.type === 'questions');
+    await this.setupForm();
   }
 
   /**
@@ -63,9 +73,9 @@ export class ConsentFormsComponent  implements OnInit {
     }
   }
 
-  setupForm() {
+  async setupForm() {
     const group = {};
-    this.formQuestions?.forEach(entry => {
+    await this.formQuestions?.forEach(async(entry) => {
       const validators = [];
       if (entry.required) {
         validators.push(Validators.required);
