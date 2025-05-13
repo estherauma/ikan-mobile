@@ -37,6 +37,24 @@
             height: 5%;
             margin-top: -10px;
           }
+
+          /* md and up (768px) */
+          @media (min-width: 768px) {
+            --padding-top: 15px;
+            --padding-bottom: 15px;
+            --padding-start: 7px;
+            --padding-end: 7px;
+            font-size: 1.1rem !important;
+          }
+
+          /* lg and up (992px) */
+          @media (min-width: 992px) {
+            --padding-top: 20px;
+            --padding-bottom: 20px;
+            --padding-start: 10px;
+            --padding-end: 10px;
+            font-size: 1.3rem !important;
+          }
         }
         ion-select::part(placeholder),
         ion-select::part(text) {
