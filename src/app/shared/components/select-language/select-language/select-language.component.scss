@@ -45,6 +45,7 @@
             --padding-start: 7px;
             --padding-end: 7px;
             font-size: 1.1rem !important;
+            border: 1.5px solid white;
           }
 
           /* lg and up (992px) */
@@ -54,6 +55,7 @@
             --padding-start: 10px;
             --padding-end: 10px;
             font-size: 1.3rem !important;
+            border: 2px solid white;
           }
         }
         ion-select::part(placeholder),
