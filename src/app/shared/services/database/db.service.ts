@@ -28,10 +28,9 @@ export class DBService {
     public http: HttpClient,
     public globalErrorHandler: GlobalErrorHandlerService,
   ) {}
-  
+
   async checkDbPlatformAndRunMigration(seedData = false) {
-    return await this.platform.ready().then(async() => {
-      return await this.sqlite.create({
+    return await this.platform.ready().then(async() => await this.sqlite.create({
         name: 'tunalocal.db',
         location: 'default'
       }).then(async(_db: SQLiteObject) => {
@@ -45,9 +44,12 @@ export class DBService {
           await this.getAndRunPendingMigrations(seedData);
         })
         .catch(e => {
-          this.globalErrorHandler.handleError(e, 'Error in db.service.ts at checkDbPlatformAndRunMigration(). Error creating database or running migrations');
-        });
-    });
+          this.globalErrorHandler.handleError(
+            e,
+            'Error in db.service.ts at checkDbPlatformAndRunMigration(). Error creating database or running migrations'
+          );
+        })
+    );
   }
 
   checkDBStatus() {
@@ -59,11 +61,16 @@ export class DBService {
   }
 
   async createMigrationsTable() {
-    return this.db.executeSql('CREATE TABLE IF NOT EXISTS migrations (id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT, executed_at DATETIME)', [])
-      .then(() => {})
-      .catch(e => {
-        this.globalErrorHandler.handleError(e, 'Error in db.service.ts at createMigrationsTable(). Error creating migrations table or table already exists');
-      });
+    return this.db.executeSql(
+      'CREATE TABLE IF NOT EXISTS migrations (id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT, executed_at DATETIME)',
+      []
+    ).then(() => {})
+    .catch(e => {
+      this.globalErrorHandler.handleError(
+        e,
+        'Error in db.service.ts at createMigrationsTable(). Error creating migrations table or table already exists'
+      );
+    });
   }
 
   async readMigrationsTable() {
@@ -110,29 +117,35 @@ export class DBService {
   }
 
   async runSingleMigrationFile(migrationFileName) {
-    
+
     return this.http.get('assets/migrations/' + migrationFileName, { responseType: 'text' as 'text'})
     .subscribe(async(data: any) => {
         // Rmove comments from the migration file
         data = data.replace(/\/\*[\s\S]*?\*\/|--.*$/gm, '');
-        
+
         const migrationQueries = data.split(';');
         await migrationQueries.forEach(async(query) => {
           query = query.replace(/\r?\n|\r/g, '');
           await this.db.executeSql(query, [])
-          .then(() => {
+          .then((result) => {
             // TODO: remove this line. Left for testing purposes
-            console.log(`Query " ${query} " executed`);
+            console.log(`Query " ${query} " executed`, result);
           })
           .catch(e => {
-            console.error(`Error executing query: ${query}`);
-            this.globalErrorHandler.handleError(e, `Error in db.service.ts at runSingleMigrationFile(). Error executing ${query}`);
+            if (e.code !== 0 || e.message !== 'sqlite3_step failure: not an error') {
+              console.error(`Error executing query: ${query}`, e);
+              this.globalErrorHandler.handleError(e, `Error in db.service.ts at runSingleMigrationFile(). Error executing query: ${query}`);
+            }
           });
         });
         await this.db.executeSql('INSERT INTO migrations (name, executed_at) VALUES (?, ?)', [migrationFileName, new Date()])
-        .then(() => console.error('Migration ' + migrationFileName + ' marked as completed'))
+        .then(() => console.log('Migration ' + migrationFileName + ' marked as completed'))
         .catch(e => {
-          this.globalErrorHandler.handleError(e, `Error in db.service.ts at runSingleMigrationFile(). Error inserting migration ${migrationFileName} into migrations table`); 
+          console.log('errrorrrr-----runSingleMigrationFile----', e);
+          this.globalErrorHandler.handleError(
+            e,
+            `Error in db.service.ts at runSingleMigrationFile(). Error inserting migration ${migrationFileName} into migrations table`
+          );
         });
     });
   }
