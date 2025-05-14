@@ -3,6 +3,7 @@ import { Platform } from '@ionic/angular';
 import { BehaviorSubject } from 'rxjs';
 import { SQLite, SQLiteObject } from '@awesome-cordova-plugins/sqlite/ngx';
 import { SharedmethodsService } from 'src/app/shared/services/sharedmethods/sharedmethods.service';
+import { GlobalErrorHandlerService } from 'src/app/shared/services/error-handler/global-error-handler.service';
 
 @Injectable({
   providedIn: 'root'
@@ -18,6 +19,7 @@ export class SurveyDataService {
     public platform: Platform,
     public sqlite: SQLite,
     public sharedMethods: SharedmethodsService,
+    public globalErrorHandler: GlobalErrorHandlerService,
   ) {
     this.platform.ready().then(async() => {
       this.sqlite.create({
@@ -38,7 +40,7 @@ export class SurveyDataService {
       this.inlineQuestions = data;
     });
   }
-  
+
   async retriveSurveys() {
     const query = 'SELECT * FROM surveys';
     return this.db.executeSql(query, []).then(async(data) => {
@@ -95,6 +97,10 @@ export class SurveyDataService {
       return result.insertId;
     }).catch((error) => {
       console.error(error);
+      this.globalErrorHandler.handleError(
+        error,
+        'Error in survey.data.service.ts at create(). Error creating survey'
+      );
       return null;
     });
   }
@@ -160,7 +166,7 @@ export class SurveyDataService {
     const params = [data.appRef, data.userId, data.subChapter, data.questionKey, data.questionType,
       data.questionText, data.questionResponse, data.followUpQuestionKey, data.followUpQuestionType,
       data.followUpQuestionText, data.followUpQuestionResponse, now, now, user.id, user.id];
-  
+
     return this.db.executeSql(query, params).then(async(result) => {
       await this.retrieveInlineQuestions();
       return result.insertId;
@@ -179,7 +185,7 @@ export class SurveyDataService {
     const params = [data.appRef, data.onlineRef, data.userId, data.subChapter, data.questionKey, data.questionType,
       data.questionText, data.questionResponse, data.followUpQuestionKey, data.followUpQuestionType,
       data.followUpQuestionText, data.followUpQuestionResponse, data.createdAt, data.updatedAt, data.createdBy, data.updatedBy];
-  
+
     return this.db.executeSql(query, params).then(async(result) => {
       await this.retrieveInlineQuestions();
       return result.insertId;
