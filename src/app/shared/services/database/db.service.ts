@@ -104,64 +104,92 @@ export class DBService {
     });
   }
 
-  async getAndRunPendingMigrations(seedData = false) {
-    return this.http.get('assets/migrations/migrations-list.txt', { responseType: 'text' as 'json'})
-    .subscribe(async(data: any) => {
-        this.allMigrationFiles = (data as string)?.split('\n') || [];
-        // remove empty array elements
-        delete this.allMigrationFiles[this.allMigrationFiles.length - 1];
-        this.pendingMigrations = this.allMigrationFiles.filter(x => !this.executedMigrations.includes(x));
-        if (!seedData) {
-          this.pendingMigrations = this.pendingMigrations.filter(file => !file.includes('SeedData'));
-        } else {
-          this.pendingMigrations = this.pendingMigrations.filter(file => file.includes('SeedData'));
-        }
+  async getAndRunPendingMigrations(seedData = false): Promise<void> {
+    try {
+      const data = await lastValueFrom(
+        this.http.get('assets/migrations/migrations-list.txt', { responseType: 'text' as const })
+      );
 
-        this.pendingMigrations.join('').split('');
-        // TODO: remove this line. Left for testing purposes
-        console.log('Pending migrations: ' + this.pendingMigrations);
-        await this.runPendingMigrations(this.pendingMigrations);
-    });
+      // Split file list by lines
+      this.allMigrationFiles = (data as string)?.split('\n').filter(line => line.trim() !== '') || [];
+
+      // Filter migrations already executed
+      this.pendingMigrations = this.allMigrationFiles.filter(
+        x => !this.executedMigrations.includes(x)
+      );
+
+      if (!seedData) {
+        this.pendingMigrations = this.pendingMigrations.filter(file => !file.includes('SeedData'));
+      } else {
+        this.pendingMigrations = this.pendingMigrations.filter(file => file.includes('SeedData'));
+      }
+
+      console.log('Pending migrations:', this.pendingMigrations);
+      await this.runPendingMigrations(this.pendingMigrations);
+    } catch (error) {
+      console.error('Error loading or running pending migrations:', error);
+      this.globalErrorHandler.handleError(error, 'Failed to get and run pending migrations');
+    }
   }
 
-  async runPendingMigrations(pendingMigrations) {
-    return await pendingMigrations.forEach(async(migration) => {
+  async runPendingMigrations(pendingMigrations: string[]) {
+    for (const migration of pendingMigrations) {
       await this.runSingleMigrationFile(migration);
-    });
+    }
   }
 
-  async runSingleMigrationFile(migrationFileName) {
+  async runSingleMigrationFile(migrationFileName: string): Promise<void> {
+    try {
+      const data = await lastValueFrom(
+        this.http.get('assets/migrations/' + migrationFileName, { responseType: 'text' as const })
+      );
+      const cleanedData = data.replace(/\/\*[\s\S]*?\*\/|--.*$/gm, '');
+      // Split into individual queries (by semicolon)
+      const migrationQueries = cleanedData.split(';').map(q => q.trim()).filter(q => q);
 
-    return this.http.get('assets/migrations/' + migrationFileName, { responseType: 'text' as 'text'})
-    .subscribe(async(data: any) => {
-        // Rmove comments from the migration file
-        data = data.replace(/\/\*[\s\S]*?\*\/|--.*$/gm, '');
+      for (const query of migrationQueries) {
+        const trimmedQuery = query.replace(/\r?\n|\r/g, '').trim();
+        if (!trimmedQuery) { continue; }
 
-        const migrationQueries = data.split(';');
-        await migrationQueries.forEach(async(query) => {
-          query = query.replace(/\r?\n|\r/g, '');
-          await this.db.executeSql(query, [])
-          .then((result) => {
-            // TODO: remove this line. Left for testing purposes
-            console.log(`Query " ${query} " executed`, result);
-          })
-          .catch(e => {
-            if (e.code !== 0 || e.message !== 'sqlite3_step failure: not an error') {
-              console.error(`Error executing query: ${query}`, e);
-              this.globalErrorHandler.handleError(e, `Error in db.service.ts at runSingleMigrationFile(). Error executing query: ${query}`);
-            }
-          });
-        });
-        await this.db.executeSql('INSERT INTO migrations (name, executed_at) VALUES (?, ?)', [migrationFileName, new Date()])
-        .then(() => console.log('Migration ' + migrationFileName + ' marked as completed'))
-        .catch(e => {
-          console.log('errrorrrr-----runSingleMigrationFile----', e);
-          this.globalErrorHandler.handleError(
-            e,
-            `Error in db.service.ts at runSingleMigrationFile(). Error inserting migration ${migrationFileName} into migrations table`
-          );
-        });
-    });
+        try {
+          await this.db.executeSql(trimmedQuery, []);
+          console.log(`Query "${trimmedQuery}" executed`,);
+
+          // Insert migration record if query succeeded
+          try {
+            await this.db.executeSql(
+              'INSERT INTO migrations (name, executed_at) VALUES (?, ?)',
+              [migrationFileName, new Date()]
+            );
+            console.log(`Migration "${migrationFileName}" marked as completed.`);
+          } catch (insertError) {
+            console.error('Error inserting migration record:', insertError);
+            this.globalErrorHandler.handleError(
+              insertError,
+              `Error inserting migration ${migrationFileName} into migrations table`
+            );
+          }
+        } catch (queryError) {
+          // Ignore non-errors from SQLite
+          if (
+            queryError.code !== 0 ||
+            queryError.message !== 'sqlite3_step failure: not an error'
+          ) {
+            console.error(`Error executing query: ${trimmedQuery}`, queryError);
+            this.globalErrorHandler.handleError(
+              queryError,
+              `Error executing query: ${trimmedQuery}`
+            );
+          }
+        }
+      }
+    } catch (fileError) {
+      console.error('Error loading migration file:', fileError);
+      this.globalErrorHandler.handleError(
+        fileError,
+        `Failed to load migration file: ${migrationFileName}`
+      );
+    }
   }
 
   async dropDatabase() {
