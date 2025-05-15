@@ -39,6 +39,7 @@ import { DocumentsDataService } from 'src/app/mydocuments/data/documents-data.se
 })
 export class SyncService {
   db: SQLiteObject;
+  isDbInitialized = false;
 
   constructor(
     private platform: Platform,
@@ -57,12 +58,13 @@ export class SyncService {
     private documentsDataService: DocumentsDataService,
   ) {
     this.platform.ready().then(async() => {
-      this.sqlite.create({
-        name: 'tunalocal.db',
-        location: 'default'
-      }).then(async(_db: SQLiteObject) => {
-        this.db = _db;
-      }).catch(e => console.log(e));
+      this.db = await this.dbService.configureDB();
+    });
+
+    this.dbService.isDBsetup().subscribe((res) => {
+      if (res) {
+        this.isDbInitialized = res;
+      }
     });
   }
 
@@ -77,7 +79,7 @@ export class SyncService {
 
   async syncData() {
     const isValid = await this.authService.checkAcessTokenValidity();
-    if (!isValid) {
+    if (!isValid || !this.isDbInitialized) {
       return;
     }
 
