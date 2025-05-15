@@ -103,12 +103,15 @@ export class LocalNotificationsService {
 
         const user = await this.sharedMethods.getUserData();
         const userNotifications = regularNotifications.filter((notif) => notif?.extra?.roles?.includes(user?.role) || !notif.extra?.roles);
+        const pendingNotifications = await LocalNotifications.getPending();
 
         if (userNotifications.length > 0) {
           await LocalNotifications.schedule({ notifications: userNotifications});
         } else {
           // cancel any existing notifications
-          await LocalNotifications.cancel({ notifications: userNotifications });
+          if (pendingNotifications?.notifications?.length) {
+            await LocalNotifications.cancel({ notifications: userNotifications });
+          }
         }
 
 
@@ -149,7 +152,11 @@ export class LocalNotificationsService {
         const dateInRange = this.sharedMethods.isDateWithinTimeFrame(currentDate, notificationsTimeFrame, notificationsStartDate);
         if (dateInRange) {
           // cancel existing regular notifications so that they's no clash
-          await LocalNotifications.cancel({ notifications: userNotifications});
+          let tempNotifs = [];
+          if (userNotifications?.length) {
+            tempNotifs = userNotifications;
+            await LocalNotifications.cancel({ notifications: userNotifications});
+          }
 
           // schedule the preset notificationsconst
           const userPresetNotifications = presetNotifications.filter(
@@ -157,8 +164,10 @@ export class LocalNotificationsService {
           if (userPresetNotifications.length > 0) {
             await LocalNotifications.schedule({ notifications: userPresetNotifications});
           } else {
-            // cancel any existing notifications
-            await LocalNotifications.cancel({ notifications: userPresetNotifications });
+            // reschedule pre-existing user notifications
+            if (tempNotifs?.length) {
+              await LocalNotifications.schedule({ notifications: tempNotifs });
+            }
           }
         }
 
