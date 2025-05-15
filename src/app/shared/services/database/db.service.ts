@@ -4,12 +4,14 @@ import { SQLite, SQLiteObject } from '@awesome-cordova-plugins/sqlite/ngx';
 import { Platform } from '@ionic/angular';
 import { HttpClient } from '@angular/common/http';
 import { GlobalErrorHandlerService } from '../error-handler/global-error-handler.service';
+import { lastValueFrom, Subject } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
 export class DBService {
   db: SQLiteObject;
+  dbObs = new Subject<boolean>();
   executedMigrations: any[] = [];
   allMigrationFiles: any[] = [];
   pendingMigrations: any[] = [];
@@ -20,7 +22,7 @@ export class DBService {
     'budi+technology@50eight.com',
     'tony+technology@50eight.com',
     'samsonkapeyi@50eight.com'
-  ];;
+  ];
 
   constructor(
     private sqlite: SQLite,
@@ -29,27 +31,39 @@ export class DBService {
     public globalErrorHandler: GlobalErrorHandlerService,
   ) {}
 
+  async configureDB() {
+    await this.platform.ready();
+    const db = await this.sqlite.create({
+      name: 'tunalocal.db',
+      location: 'default',
+    }).catch((e) => {
+      console.error(e);
+      return null;
+    });
+
+    return db;
+  }
+
+  isDBsetup() {
+    return this.dbObs.asObservable();
+  }
+
   async checkDbPlatformAndRunMigration(seedData = false) {
-    return await this.platform.ready().then(async() => await this.sqlite.create({
-        name: 'tunalocal.db',
-        location: 'default'
-      }).then(async(_db: SQLiteObject) => {
-          this.db = _db;
-          await this.createMigrationsTable();
-          this.executedMigrations = await this.readMigrationsTable();
-          if (!seedData) {
-            await this.getAndRunPendingMigrations();
-            return;
-          }
-          await this.getAndRunPendingMigrations(seedData);
-        })
-        .catch(e => {
-          this.globalErrorHandler.handleError(
-            e,
-            'Error in db.service.ts at checkDbPlatformAndRunMigration(). Error creating database or running migrations'
-          );
-        })
-    );
+    try {
+      this.db = await this.configureDB();
+      if (this.db) {
+        await this.createMigrationsTable();
+        this.executedMigrations = await this.readMigrationsTable();
+        await this.getAndRunPendingMigrations(seedData);
+
+        this.dbObs.next(true);
+      }
+    } catch (e) {
+      this.globalErrorHandler.handleError(
+        e,
+        'Error in db.service.ts at checkDbPlatformAndRunMigration(). Error creating database or running migrations'
+      );
+    }
   }
 
   checkDBStatus() {
@@ -151,7 +165,7 @@ export class DBService {
   }
 
   async dropDatabase() {
-    return await this.sqlite.deleteDatabase({
+    return this.sqlite.deleteDatabase({
       name: 'tunalocal.db',
       location: 'default'
     }).then(() => console.log('Database deleted'))
@@ -165,7 +179,10 @@ export class DBService {
     const query = `UPDATE ${table} SET app_ref = ? WHERE id = ?`;
     this.db.executeSql(query, params).then(() => {
     }).catch((error) => {
-      this.globalErrorHandler.handleError(error, `Error in db.service.ts at setAppRef(). Failed to update app_ref for id ${id} in the ${table} table`);
+      this.globalErrorHandler.handleError(
+        error,
+        `Error in db.service.ts at setAppRef(). Failed to update app_ref for id ${id} in the ${table} table`
+      );
     });
   }
 
@@ -174,7 +191,10 @@ export class DBService {
     const query = `UPDATE ${table} SET ${field} = ? WHERE app_ref = ?`;
     this.db.executeSql(query, params).then(() => {
     }).catch((error) => {
-      this.globalErrorHandler.handleError(error, `Error in db.service.ts at updateDatabaseField(). Failed to update the ${field} field for app_ref ${appRef} in the ${table} table`);
+      this.globalErrorHandler.handleError(
+        error,
+        `Error in db.service.ts at updateDatabaseField(). Failed to update the ${field} field for app_ref ${appRef} in the ${table} table`
+      );
     });
   }
 
@@ -186,7 +206,10 @@ export class DBService {
         return data.rows.item(0).online_ref;
       }
     }).catch((error) => {
-      this.globalErrorHandler.handleError(error, `Error in db.service.ts at getEntityOnlineRef(). Failed to get online_ref for app_ref ${name} in the ${table} table`);
+      this.globalErrorHandler.handleError(
+        error,
+        `Error in db.service.ts at getEntityOnlineRef(). Failed to get online_ref for app_ref ${name} in the ${table} table`
+      );
     });
   }
 
@@ -194,10 +217,13 @@ export class DBService {
   deleteEntity(table, appRef) {
     const params = [appRef];
     const query = `DELETE FROM ${table} WHERE app_ref = ?`;
-    this.db.executeSql(query, params).then(() => {
-      console.log(`Deleted entity ${appRef} from ${table}`)
+    return this.db.executeSql(query, params).then(() => {
+      console.log(`Deleted entity ${appRef} from ${table}`);
     }).catch((error) => {
-      this.globalErrorHandler.handleError(error, `Error in db.service.ts at deleteEntity(). Failed to delete entity ${appRef} from ${table}`);
+      this.globalErrorHandler.handleError(
+        error,
+        `Error in db.service.ts at deleteEntity(). Failed to delete entity ${appRef} from ${table}`
+      );
     });
   }
 
