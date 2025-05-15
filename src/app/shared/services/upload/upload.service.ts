@@ -168,6 +168,7 @@ export class UploadService {
           return isPdf ? writtenFile?.uri : Capacitor.convertFileSrc(writtenFile?.uri);
         } else {
           console.error('Failed to fetch file', fileData);
+          return null;
         }
       } else {
         const path = await Filesystem.getUri({
@@ -179,6 +180,7 @@ export class UploadService {
       }
     } catch (error) {
       console.error('File download error', error);
+      return null;
     }
   }
 
