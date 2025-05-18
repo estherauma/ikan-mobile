@@ -22,16 +22,16 @@ export class UploadService {
       const result = await FilePicker.pickFiles({
         types
       });
-  
-      if (types[0] === 'application/pdf'){
+
+      if (types[0] === 'application/pdf') {
         const file = result.files[0];
         const fileName = this.sharedMethods.generatePdfFileName(file?.name);
-    
+
         return await this.saveFile(file?.path, fileName, 'pdf');
       } else {
         const file = result.files[0];
         const fileName = file?.name;
-    
+
         return await this.saveFile(file?.path, fileName, 'image');
       }
     } catch (error) {
@@ -41,7 +41,7 @@ export class UploadService {
   }
 
   isPlatformWeb() {
-    if (Capacitor.getPlatform() === 'web') {return true;};
+    if (Capacitor.getPlatform() === 'web') {return true;}
     return false;
   }
 
@@ -75,25 +75,25 @@ export class UploadService {
       }).catch((e) => {
         console.log(e);
       });
-  
+
       const fileUri = await Filesystem.getUri({
         directory: Directory.Data,
         path: fileName
       });
       const webPath = Capacitor.convertFileSrc(fileUri.uri);
-  
+
       if (type === 'image') {
         return {
           fileName,
           webPath,
           docType: type
-        }
+        };
       } else if (type === 'pdf') {
         return {
           fileName,
           uriPath: fileUri.uri,
           docType: type
-        }
+        };
       }
     } catch (error) {
       console.error(`Error in upload.service.ts at saveFile(). Failed to save file. ${fileName}`, error);
@@ -117,7 +117,7 @@ export class UploadService {
 
   async retrieveAndReturnBlob(fileUrl) {
     try {
-      if (!fileUrl) return null;
+      if (!fileUrl) {return null;}
 
       const fileName = fileUrl.split('files/')[1];
       const file = await Filesystem.getUri({
@@ -138,6 +138,7 @@ export class UploadService {
 
   /**
    * Fetches file from the server and saves it to the device's file system.
+   *
    * @param fileUrl path to the file on the server
    * @returns returns the file path on the device
    */
@@ -151,23 +152,24 @@ export class UploadService {
         directory: Directory.Data,
         path: ''
       });
-      
+
       if (!readResult?.files.some(item => item.name === fileName)) {
         const fileData = await fetch(`${env.baseUrl}${fileUrl}`);
 
         if (fileData.ok) {
-          const blob = await fileData.blob();  
+          const blob = await fileData.blob();
           const result = await this.convertBlobToBase64(blob);
-  
+
           const writtenFile =  await Filesystem.writeFile({
             path: isPdf ? this.sharedMethods?.generatePdfFileName(fileName) : fileName,
             data: result as string,
             directory: Directory.Data,
           });
-  
+
           return isPdf ? writtenFile?.uri : Capacitor.convertFileSrc(writtenFile?.uri);
         } else {
           console.error('Failed to fetch file', fileData);
+          return null;
         }
       } else {
         const path = await Filesystem.getUri({
@@ -179,6 +181,7 @@ export class UploadService {
       }
     } catch (error) {
       console.error('File download error', error);
+      return null;
     }
   }
 

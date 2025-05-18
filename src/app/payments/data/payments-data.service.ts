@@ -1,7 +1,8 @@
 import { Injectable } from '@angular/core';
-import { SQLite, SQLiteObject } from '@awesome-cordova-plugins/sqlite/ngx';
+import { SQLiteObject } from '@awesome-cordova-plugins/sqlite/ngx';
 import { Platform } from '@ionic/angular';
 import { BehaviorSubject } from 'rxjs';
+import { DBService } from 'src/app/shared/services/database/db.service';
 
 @Injectable({
   providedIn: 'root',
@@ -15,20 +16,20 @@ export class PaymentsDataService {
   bankAccountsObs = new BehaviorSubject([]);
   beneficiariesObs = new BehaviorSubject([]);
 
-  constructor(public platform: Platform, public sqlite: SQLite) {
-    this.platform.ready().then(async () => {
-      this.sqlite
-        .create({
-          name: 'tunalocal.db',
-          location: 'default',
-        })
-        .then(async (_db: SQLiteObject) => {
-          this.db = _db;
-          this.retrievePayments();
-          this.retrieveBankAccounts();
-          this.retrieveBeneficiaries();
-        })
-        .catch((e) => console.log(e));
+  constructor(
+    public platform: Platform,
+    public dbService: DBService,
+  ) {
+    this.platform.ready().then(async() => {
+      this.db = await this.dbService.configureDB();
+    });
+
+    this.dbService.isDBsetup().subscribe((res) => {
+      if (res) {
+        this.retrievePayments();
+        this.retrieveBankAccounts();
+        this.retrieveBeneficiaries();
+      }
     });
 
     this.getAll().subscribe((payments) => {

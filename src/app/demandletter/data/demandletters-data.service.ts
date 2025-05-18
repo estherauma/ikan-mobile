@@ -1,7 +1,8 @@
 import { Injectable } from '@angular/core';
 import { Platform } from '@ionic/angular';
 import { BehaviorSubject } from 'rxjs';
-import { SQLite, SQLiteObject } from '@awesome-cordova-plugins/sqlite/ngx';
+import { SQLiteObject } from '@awesome-cordova-plugins/sqlite/ngx';
+import { DBService } from 'src/app/shared/services/database/db.service';
 
 @Injectable({
   providedIn: 'root'
@@ -12,16 +13,16 @@ export class DemandlettersDataService {
 
   constructor(
     public platform: Platform,
-    public sqlite: SQLite,
+    public dbService: DBService,
   ) {
     this.platform.ready().then(async() => {
-      this.sqlite.create({
-        name: 'tunalocal.db',
-        location: 'default'
-      }).then(async(_db: SQLiteObject) => {
-        this.db = _db;
+      this.db = await this.dbService.configureDB();
+    });
+
+    this.dbService.isDBsetup().subscribe((res) => {
+      if (res) {
         this.retrieveDemandletters();
-      }).catch(e => console.log(e));
+      }
     });
   }
 

@@ -1,8 +1,9 @@
 import { Injectable } from '@angular/core';
 import { Platform } from '@ionic/angular';
 import { BehaviorSubject } from 'rxjs';
-import { SQLite, SQLiteObject } from '@awesome-cordova-plugins/sqlite/ngx';
+import { SQLiteObject } from '@awesome-cordova-plugins/sqlite/ngx';
 import { SharedmethodsService } from 'src/app/shared/services/sharedmethods/sharedmethods.service';
+import { DBService } from 'src/app/shared/services/database/db.service';
 
 @Injectable({
   providedIn: 'root'
@@ -14,18 +15,18 @@ export class VesselsDataService {
 
   constructor(
     public platform: Platform,
-    public sqlite: SQLite,
+    public dbService: DBService,
     public sharedMethods: SharedmethodsService,
   ) {
     this.platform.ready().then(async() => {
-      this.sqlite.create({
-        name: 'tunalocal.db',
-        location: 'default'
-      }).then(async(_db: SQLiteObject) => {
-        this.db = _db;
+      this.db = await this.dbService.configureDB();
+    });
+
+    this.dbService.isDBsetup().subscribe(async(res) => {
+      if (res) {
         await this.retriveVessels();
         await this.getVesselImages();
-      }).catch(e => console.log(e));
+      }
     });
 
     this.getAll().subscribe((data) => {
