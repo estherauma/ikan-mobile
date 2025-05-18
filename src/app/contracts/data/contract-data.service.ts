@@ -1,7 +1,8 @@
 import { Injectable } from '@angular/core';
-import { SQLite, SQLiteObject } from '@awesome-cordova-plugins/sqlite/ngx';
+import { SQLiteObject } from '@awesome-cordova-plugins/sqlite/ngx';
 import { Platform } from '@ionic/angular';
 import { BehaviorSubject } from 'rxjs';
+import { DBService } from 'src/app/shared/services/database/db.service';
 import { SharedmethodsService } from 'src/app/shared/services/sharedmethods/sharedmethods.service';
 
 @Injectable({
@@ -16,18 +17,18 @@ export class ContractDataService {
 
   constructor(
     private platform: Platform,
-    private sqlite: SQLite,
+    private dbService: DBService,
     public sharedMethods: SharedmethodsService,
   ) {
     this.platform.ready().then(async() => {
-      this.sqlite.create({
-        name: 'tunalocal.db',
-        location: 'default'
-      }).then(async(_db: SQLiteObject) => {
-        this.db = _db;
+      this.db = await this.dbService.configureDB();
+    });
+
+    this.dbService.isDBsetup().subscribe(async(res) => {
+      if (res) {
         await this.retrieveContracts();
         await this.retrieveAllClauses();
-      }).catch(e => console.log(e));
+      }
     });
 
     this.getAll().subscribe((data) => {

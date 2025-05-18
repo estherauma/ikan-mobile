@@ -8,6 +8,7 @@ import { PageEventNames, AppEventNames } from '../shared/services/analytics/even
 import { Router } from '@angular/router';
 import { StorageKeys } from '../shared/types/api-types';
 import { SurveyDataService } from '../survey/data/survey-data.service';
+import { GlobalErrorHandlerService } from '../shared/services/error-handler/global-error-handler.service';
 
 register();
 @Component({
@@ -33,6 +34,7 @@ export class ConsentFormsComponent  implements OnInit {
     public sharedMethods: SharedmethodsService,
     public router: Router,
     public surveyDataService: SurveyDataService,
+    public globalErrorHandler: GlobalErrorHandlerService,
   ) {
     this.contentService.watchContent().subscribe(async(res) => {
       if (res) {
@@ -112,33 +114,40 @@ export class ConsentFormsComponent  implements OnInit {
   }
 
   async submitForm() {
-    const key = 'i-have-read-and-understood-all-of-the-information-above-and-consent-to-have-my-de-identified-data-from-ikan-used-as-part-of-the-research-study';
-    const date = this.sharedMethods.getCurrentDateTime('date');
-    const user = await this.sharedMethods.readDataFromStorage(StorageKeys.userData);
-    const consentQtn = this.formQuestions.find((qtn) => qtn.key === key);
-    const untranslatedQtn = this.contentService.getUntranslatedInlineQuestion('worker-consent-form-two', key);
-    const consentObj = {
-      appRef: this.sharedMethods.generateAppRef(),
-      surveyDate: date,
-      questionKey: consentQtn.key,
-      questionType: consentQtn.questionType,
-      questionText: untranslatedQtn?.label || untranslatedQtn?.question,
-      questionResponse: !!this.consentFormGroup.value?.[key],
-      userId: user?.id,
-    };
+    try {
+      const key = 'i-have-read-and-understood-all-of-the-information-above-and-consent-to-have-my-de-identified-data-from-ikan-used-as-part-of-the-research-study';
+      const date = this.sharedMethods.getCurrentDateTime('date');
+      const user = await this.sharedMethods.readDataFromStorage(StorageKeys.userData);
+      const consentQtn = this.formQuestions.find((qtn) => qtn.key === key);
+      const untranslatedQtn = this.contentService.getUntranslatedInlineQuestion('worker-consent-form-two', key);
+      const consentObj = {
+        appRef: this.sharedMethods.generateAppRef(),
+        surveyDate: date,
+        questionKey: consentQtn.key,
+        questionType: consentQtn.questionType,
+        questionText: untranslatedQtn?.label || untranslatedQtn?.question,
+        questionResponse: !!this.consentFormGroup.value?.[key],
+        userId: user?.id,
+      };
 
-    const insertId = await this.surveyDataService.create(consentObj);
-    if (!insertId) {
-      this.sharedMethods.showToast(this.commonText?.errSavingResponses);
-    } else {
-      if (this.consentFormGroup.value?.[key]) {
-        this.analyticsService.trackEvent(AppEventNames.acceptedConsentFormConditions, this.sharedMethods.analyticsEventParams);
+      const insertId = await this.surveyDataService.create(consentObj);
+      if (!insertId) {
+        this.sharedMethods.showToast(this.commonText?.errSavingResponses);
       } else {
-        this.analyticsService.trackEvent(AppEventNames.rejectedConsentFormConditions, this.sharedMethods.analyticsEventParams);
-      }
+        if (this.consentFormGroup.value?.[key]) {
+          this.analyticsService.trackEvent(AppEventNames.acceptedConsentFormConditions, this.sharedMethods.analyticsEventParams);
+        } else {
+          this.analyticsService.trackEvent(AppEventNames.rejectedConsentFormConditions, this.sharedMethods.analyticsEventParams);
+        }
 
-      await this.sharedMethods.saveDataToStorage(StorageKeys.completedConsentForms, true);
-      this.router.navigate(['dashboard/worker'], { replaceUrl: true });
+        await this.sharedMethods.saveDataToStorage(StorageKeys.completedConsentForms, true);
+        this.router.navigate(['dashboard/worker'], { replaceUrl: true });
+      }
+    } catch (error) {
+      this.globalErrorHandler.handleError(
+        error,
+        'Error in consent-forms.component.ts at submitForm(). Error submitting consent form.'
+      );
     }
   }
 }

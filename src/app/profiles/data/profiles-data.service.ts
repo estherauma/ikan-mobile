@@ -2,29 +2,29 @@ import { Injectable } from '@angular/core';
 import { SQLite, SQLiteObject } from '@awesome-cordova-plugins/sqlite/ngx';
 import { Platform } from '@ionic/angular';
 import { BehaviorSubject } from 'rxjs';
-import { SharedmethodsService } from 'src/app/shared/services/sharedmethods/sharedmethods.service';
+import { DBService } from 'src/app/shared/services/database/db.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ProfilesDataService {
-  db: SQLiteObject
+  db: SQLiteObject;
   profiles: any = [];
   profilesObs = new BehaviorSubject([]);
 
   constructor(
     private platform: Platform,
     private sqlite: SQLite,
-    private sharedMethods: SharedmethodsService,
+    private dbService: DBService,
   ) {
     this.platform.ready().then(async() => {
-      this.sqlite.create({
-        name: 'tunalocal.db',
-        location: 'default'
-      }).then(async(_db: SQLiteObject) => {
-        this.db = _db;
+      this.db = await this.dbService.configureDB();
+    });
+
+    this.dbService.isDBsetup().subscribe((res) => {
+      if (res) {
         this.retrieveProfiles();
-      }).catch(e => console.log(e));
+      }
     });
 
     this.getAll().subscribe((data) => {
