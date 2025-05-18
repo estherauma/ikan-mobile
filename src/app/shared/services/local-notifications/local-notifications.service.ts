@@ -110,7 +110,7 @@ export class LocalNotificationsService {
         } else {
           // cancel any existing notifications
           if (pendingNotifications?.notifications?.length) {
-            await LocalNotifications.cancel({ notifications: userNotifications });
+            await LocalNotifications.cancel({ notifications: pendingNotifications?.notifications });
           }
         }
 
