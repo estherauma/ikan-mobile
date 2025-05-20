@@ -17,10 +17,12 @@ import { StorageKeys } from 'src/app/shared/types/api-types';
 export class LoginMethodPage implements OnInit {
   pageText: any;
   pageTitle = 'Login Method';
-  // inviteCodeAuth and usernameAuth initialized with values for 
+  // inviteCodeAuth and usernameAuth initialized with values for
   // the first few seconds before content is fetched from the api
   inviteCodeAuth: string = 'I have an invite code'.toUpperCase();
   usernameAuth: string = 'Login with username/email'.toUpperCase();
+  // translate
+  loginWithPhoneNumberText: string = 'Login with phone number'.toUpperCase();
   watchContent: Subscription;
   langModalPresented = false;
   modalDisplaying = false;
@@ -73,6 +75,8 @@ export class LoginMethodPage implements OnInit {
   loginWithUsername() {
     this.router.navigate(['login'], {replaceUrl: true});
   }
+
+  loginWithPhoneNumber() {}
 
   async presentSelectLangModal() {
     this.modalDisplaying = true;
