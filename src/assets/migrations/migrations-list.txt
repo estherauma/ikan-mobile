@@ -21,3 +21,4 @@
 1718883954125_alterSurveysAddInlineQuestions.sql
 1734532965926_reworkPaymentsTable.sql
 1739174759145_updatePaymentsTable.sql
+1747755035523_alterProfilesVerifyPhoneNumber.sql
