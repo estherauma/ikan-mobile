@@ -340,3 +340,31 @@ ion-modal.workers-create-modal {
     }
   }
 }
+
+.verify-phone-number-alert .alert-wrapper {
+  .alert-head {
+    h2 {
+      font-size: 1.35rem;
+      color: #191970;
+    }
+  }
+  .alert-message {
+    max-height: unset;
+    color: #2e2d2c;
+
+    ul {
+      padding-left: 25px;
+    }
+  }
+  .alert-button {
+    border: unset;
+    text-transform: none;
+  }
+  .cancel-btn {
+    background: #dcdada;
+  }
+  .verify-btn {
+    background: var(--ion-color-primary);
+    color: white !important;
+  }
+}
