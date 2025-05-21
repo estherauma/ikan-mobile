@@ -177,8 +177,7 @@ export class LoginPage extends BaseformPage implements OnInit {
         }
       }, async(err: HttpErrorResponse) => {
         this.sharedMethods.hideLoader();
-        if (err.error?.detail === 'User does not exist') {
-        // if (err.error?.detail === 'Your phone number is not verified. Please verify it before logging in. OR log in with email.') {
+        if (err.error?.detail === 'Your phone number is not verified. Please verify it before logging in. OR log in with email.') {
           await this.showVerifyPhoneNumberAlert();
         } else {
           this.sharedMethods.showToast(err.error?.detail);
