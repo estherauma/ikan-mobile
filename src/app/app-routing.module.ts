@@ -50,11 +50,11 @@ const routes: Routes = [
   },
   {
     path: 'auth/verify-phone-number',
-    loadChildren: () => import('./auth/verify-phone-number/verify-phone-number-routing.module').then( m => m.VerifyPhoneNumberRoutingModule)
+    loadChildren: () => import('./auth/verify-phone-number/verify-phone-number.module').then( m => m.VerifyPhoneNumberModule)
   },
   {
     path: 'auth/verify-code',
-    loadChildren: () => import('./auth/verify-code/verify-code-routing.module').then( m => m.VerifyCodeRoutingModule)
+    loadChildren: () => import('./auth/verify-code/verify-code.module').then( m => m.VerifyCodeModule)
   },
   {
     path: 'baseform',
