@@ -2,7 +2,7 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators, AbstractControl, ValidationErrors } from '@angular/forms';
 import { Router } from '@angular/router';
-import { MenuController, ModalController } from '@ionic/angular';
+import { AlertController, MenuController, ModalController } from '@ionic/angular';
 import { AuthService } from 'src/app/shared/services/auth/auth.service';
 import { BaseformPage } from 'src/app/shared/components/baseform/baseform.page';
 import { ApiService } from 'src/app/shared/services/api/api.service';
@@ -27,7 +27,6 @@ export class LoginPage extends BaseformPage implements OnInit {
   passwordEyeIcon = Icons.iconEyeClosed;
   testEmails;
   pageText: any;
-  showVerifyPhoneNumber = false;
 
   constructor(
     public contentService: ContentService,
@@ -42,6 +41,7 @@ export class LoginPage extends BaseformPage implements OnInit {
     public modalController: ModalController,
     public analytics: AnalyticsService,
     public pushNotificationsService: PushNotificationsService,
+    public alertController: AlertController,
   ) {
     super(contentService);
   }
@@ -158,7 +158,7 @@ export class LoginPage extends BaseformPage implements OnInit {
           this.localNotifications.scheduleNotifications(this.contentService.commonText);
 
           // sync data
-          await this.sharedMethods.showWaitLoader(this.commonText?.syncingData || 'Syncing data...');
+          await this.sharedMethods.showWaitLoader(this.contentService.commonText?.syncingData || 'Syncing data...');
           await this.syncService.syncData();
           await this.sharedMethods.dismissLoader();
 
@@ -175,9 +175,14 @@ export class LoginPage extends BaseformPage implements OnInit {
           await this.sharedMethods.saveDataToStorage(StorageKeys.isRoleSet, true);
           this.handleRedirection(res.data.userData?.role);
         }
-      }, (err: HttpErrorResponse) => {
+      }, async(err: HttpErrorResponse) => {
         this.sharedMethods.hideLoader();
-        this.sharedMethods.showToast(err.error?.detail);
+        if (err.error?.detail === 'User does not exist') {
+        // if (err.error?.detail === 'Your phone number is not verified. Please verify it before logging in. OR log in with email.') {
+          await this.showVerifyPhoneNumberAlert();
+        } else {
+          this.sharedMethods.showToast(err.error?.detail);
+        }
       }
     );
   }
@@ -199,5 +204,30 @@ export class LoginPage extends BaseformPage implements OnInit {
 
   goBack() {
     this.router.navigate(['auth/login-method'], { replaceUrl: true });
+  }
+
+  async showVerifyPhoneNumberAlert() {
+    const alert = await this.alertController.create({
+      header: this.pageText?.verifyPhoneNumberHeader || 'Verify Phone Number', // translate
+      message: this.pageText?.verifyPhoneNumberMessage || 'Your phone number is not verified. Please verify it before logging in. OR log in with email.', // translate
+      cssClass: 'tuna-alert verify-phone-number-alert',
+      buttons: [
+        {
+          text: this.contentService.commonText?.cancel,
+          role: 'cancel',
+          cssClass: 'cancel-btn',
+        },
+        {
+          text: this.pageText?.verifyButtonText || 'Verify',
+          cssClass: 'verify-btn',
+          handler: () => {
+            // navigate to verify phone number page
+            this.router.navigate(['auth/verify-phone-number'], { replaceUrl: true });
+          }
+        }
+      ]
+    });
+
+    await alert.present();
   }
 }
