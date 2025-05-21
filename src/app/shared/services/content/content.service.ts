@@ -176,6 +176,7 @@ export class ContentService {
     });
   }
 
+  // translate/update labels on prismic
   getLoginPageData() {
     if (this.appContent != null) {
       const content = this.appContent?.[`${this.currentLanguage}`];
@@ -192,7 +193,7 @@ export class ContentService {
         formQuestions: [
             {
                 key: 'email',
-                label: 'Email',
+                label: 'Email or Phone number',
                 options: null,
                 helptext: null,
                 questionType: 'textBox',

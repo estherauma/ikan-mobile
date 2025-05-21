@@ -1,6 +1,6 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { FormControl, FormGroup, Validators, AbstractControl, ValidationErrors } from '@angular/forms';
 import { Router } from '@angular/router';
 import { MenuController, ModalController } from '@ionic/angular';
 import { AuthService } from 'src/app/shared/services/auth/auth.service';
@@ -27,6 +27,8 @@ export class LoginPage extends BaseformPage implements OnInit {
   passwordEyeIcon = Icons.iconEyeClosed;
   testEmails;
   pageText: any;
+  emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+  phonePattern = /^([+]?[\s0-9 ]+)?(\d{3}|[ (]?[0-9]+[) ])?([- ]?[\s]?[0-9])+$/;
 
   constructor(
     public contentService: ContentService,
@@ -62,8 +64,10 @@ export class LoginPage extends BaseformPage implements OnInit {
         this.group[entry.key] = new FormControl('', [Validators.required]);
       }
 
+      // We are using the email key and not emailOrPhone for backward compatibility
+      // with the old login page
       if (entry.key === 'email') {
-        this.group[entry.key] = new FormControl('', [Validators.required, Validators.email]);
+        this.group[entry.key] = new FormControl('qwert', [Validators.required, this.emailOrPhoneValidator]);
       }
     });
     this.pageFormGroup = new FormGroup(this.group);
@@ -76,6 +80,18 @@ export class LoginPage extends BaseformPage implements OnInit {
     });
   }
 
+  emailOrPhoneValidator(control: AbstractControl): ValidationErrors | null {
+    const value = control.value;
+    if (!value) { return null; }
+
+    const isEmail = value.match(this.emailPattern);
+    const isPhone = value.match(this.phonePattern);
+
+    // We are using the email key and not emailOrPhone for backward compatibility
+    // with the old login page
+    return isEmail || isPhone ? null : { email: true };
+  }
+
   ionViewWillEnter() {
     this.menuCtrl.enable(false);
   }
@@ -83,13 +99,35 @@ export class LoginPage extends BaseformPage implements OnInit {
   setUpForm(): void {}
 
   async onSubmit(formData) {
+    this.sharedMethods.showLoader(this.contentService.commonText?.loadingText);
+    // We are using the email key and not emailOrPhone for backward compatibility
+    // with the old login page
+    const isEmail = formData.email.trim().match(this.emailPattern);
+    const isPhone = formData.email.trim().match(this.phonePattern);
+    if (!isEmail && !isPhone) {
+      // translate
+      this.sharedMethods.hideLoader();
+      this.sharedMethods.showToast(this.pageText?.emailOrPhoneErrorText || 'Please enter a valid email or phone number');
+      return;
+    }
+
+    // Extract email or phone number from formData
+    let email = null;
+    let phoneNumber = null;
+    if (isEmail) {
+      email = formData.email.trim();
+    }
+    if (isPhone) {
+      phoneNumber = formData.email.trim();
+    }
+
     formData = {
       ...formData,
-      email: formData.email.trim(),
+      email,
+      phoneNumber,
       password: formData.password.trim()
     };
-    
-    this.sharedMethods.showLoader(this.contentService.commonText?.loadingText);
+
     const response = await this.apiServices.post('accounts/login', formData, true);
     response.subscribe(
       async(res: LoginSuccessReponse) => {
@@ -97,7 +135,7 @@ export class LoginPage extends BaseformPage implements OnInit {
           this.pageFormGroup.reset();
           await this.sharedMethods.saveDataToStorage(StorageKeys.apiToken, res.data.token);
           await this.sharedMethods.saveDataToStorage(StorageKeys.userData, res.data.userData);
-          
+
           // set api headers for sync service that requires saved token
           await this.apiServices.setApiRequestHeaders();
           await this.authService.setUpAuthData();
@@ -119,7 +157,7 @@ export class LoginPage extends BaseformPage implements OnInit {
           await this.sharedMethods.showWaitLoader(this.commonText?.syncingData || 'Syncing data...');
           await this.syncService.syncData();
           await this.sharedMethods.dismissLoader();
-          
+
           // enable menu
           this.menuCtrl.enable(true);
           if (this.testEmails.includes(res.data.userData?.email)) {
@@ -140,10 +178,9 @@ export class LoginPage extends BaseformPage implements OnInit {
     );
   }
 
-
   async handleRedirection(role) {
     const helpScreens = await this.sharedMethods.readDataFromStorage(StorageKeys.isFirstLogin);
-    const user: UserData = await this.sharedMethods.readDataFromStorage(StorageKeys.userData);
+    // const user: UserData = await this.sharedMethods.readDataFromStorage(StorageKeys.userData);
     if (!helpScreens) {
       this.router.navigate([this.authService.getCurrentUserBaseUrlFromRole(role)], { replaceUrl: true });
     } else {
