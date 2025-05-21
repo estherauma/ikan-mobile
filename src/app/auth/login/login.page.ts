@@ -27,8 +27,7 @@ export class LoginPage extends BaseformPage implements OnInit {
   passwordEyeIcon = Icons.iconEyeClosed;
   testEmails;
   pageText: any;
-  emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
-  phonePattern = /^([+]?[\s0-9 ]+)?(\d{3}|[ (]?[0-9]+[) ])?([- ]?[\s]?[0-9])+$/;
+  showVerifyPhoneNumber = false;
 
   constructor(
     public contentService: ContentService,
@@ -67,7 +66,7 @@ export class LoginPage extends BaseformPage implements OnInit {
       // We are using the email key and not emailOrPhone for backward compatibility
       // with the old login page
       if (entry.key === 'email') {
-        this.group[entry.key] = new FormControl('qwert', [Validators.required, this.emailOrPhoneValidator]);
+        this.group[entry.key] = new FormControl('', [Validators.required, this.emailOrPhoneValidator]);
       }
     });
     this.pageFormGroup = new FormGroup(this.group);
@@ -84,8 +83,11 @@ export class LoginPage extends BaseformPage implements OnInit {
     const value = control.value;
     if (!value) { return null; }
 
-    const isEmail = value.match(this.emailPattern);
-    const isPhone = value.match(this.phonePattern);
+    const emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+    const phonePattern = /^([+]?[\s0-9 ]+)?(\d{3}|[ (]?[0-9]+[) ])?([- ]?[\s]?[0-9])+$/;
+
+    const isEmail = value.match(emailPattern);
+    const isPhone = value.match(phonePattern);
 
     // We are using the email key and not emailOrPhone for backward compatibility
     // with the old login page
@@ -102,8 +104,10 @@ export class LoginPage extends BaseformPage implements OnInit {
     this.sharedMethods.showLoader(this.contentService.commonText?.loadingText);
     // We are using the email key and not emailOrPhone for backward compatibility
     // with the old login page
-    const isEmail = formData.email.trim().match(this.emailPattern);
-    const isPhone = formData.email.trim().match(this.phonePattern);
+    const emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+    const phonePattern = /^([+]?[\s0-9 ]+)?(\d{3}|[ (]?[0-9]+[) ])?([- ]?[\s]?[0-9])+$/;
+    const isEmail = formData.email.trim().match(emailPattern);
+    const isPhone = formData.email.trim().match(phonePattern);
     if (!isEmail && !isPhone) {
       // translate
       this.sharedMethods.hideLoader();
