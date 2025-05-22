@@ -143,23 +143,27 @@ export class SyncService {
   async syncVessels() {
     const vessels = this.vesselServ.vessels;
     if (vessels.length > 0) {
+      const user = await this.sharedMethods.getUserData();
       vessels.forEach(async(vessel) => {
-        const vesselId = vessel.id;
-        const vesselToUpload = Object.assign({}, vessel);
-        delete vesselToUpload.id;
-        if (!vesselToUpload.onlineRef) {
-          this.apiService.post('vessels', vesselToUpload).subscribe(async(response: CreateVesselResp) => {
-            if (response?.status === 'OK') {
-              await this.dbService.updateDatabaseField('vessels', 'online_ref', response?.data?.id, vesselToUpload.appRef);
-              await this.postVesselImage(vessel, response?.data?.id);
-            }
-          });
-        } else {
-          this.apiService.put('vessels', vesselToUpload.onlineRef, vesselToUpload).subscribe(async(response) => {
-            if (response?.['status'] === 'OK') {
-              await this.postVesselImage(vessel, vesselToUpload.onlineRef);
-            }
-          });
+        if (user?.id === vessel?.createdBy) {
+          const vesselId = vessel.id;
+          const vesselToUpload = Object.assign({}, vessel);
+          delete vesselToUpload.id;
+          if (!vesselToUpload.onlineRef) {
+            this.apiService.post('vessels', vesselToUpload).subscribe(async(response: CreateVesselResp) => {
+              if (response?.status === 'OK') {
+                await this.dbService.updateDatabaseField('vessels', 'online_ref', response?.data?.id, vesselToUpload.appRef);
+                await this.postVesselImage(vessel, response?.data?.id);
+              }
+            });
+          } else {
+
+            this.apiService.put('vessels', vesselToUpload.onlineRef, vesselToUpload).subscribe(async(response: any) => {
+              if (response?.status === 'OK') {
+                await this.postVesselImage(vessel, vesselToUpload.onlineRef);
+              }
+            });
+          }
         }
       });
     }
