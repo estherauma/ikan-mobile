@@ -28,6 +28,7 @@ export class VerifyPhoneNumberComponent  implements OnInit {
   selectedCode = '';
   commonText: any;
   previousUrl = null;
+  numberType = null;
 
   constructor(
     public router: Router,
@@ -41,6 +42,7 @@ export class VerifyPhoneNumberComponent  implements OnInit {
     this.activatedRoute.queryParams.subscribe((queryParams) => {
       if (queryParams && Object.keys(queryParams).length > 0) {
         this.previousUrl = queryParams?.previousUrl ?? null;
+        this.numberType = queryParams?.numberType ?? null;
       }
     });
   }
@@ -94,7 +96,7 @@ export class VerifyPhoneNumberComponent  implements OnInit {
       const data = {
         phoneNumber: phoneNumberWithCode,
         userId: userId ?? null,
-        // type: 'mobile,'
+        type: this.numberType,
         previousUrl: this.previousUrl,
       };
 

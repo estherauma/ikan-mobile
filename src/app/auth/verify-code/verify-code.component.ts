@@ -80,7 +80,7 @@ export class VerifyCodeComponent  implements OnInit {
     const data = {
       phoneNumber: this.params?.phoneNumber,
       userId: this.params?.userId,
-      type: this.params?.type,
+      type: this.params?.numberType,
       regenerate: true,
     };
     const res: any = await lastValueFrom(this.apiService.post('accounts/generate-otp', data, true));
@@ -119,7 +119,7 @@ export class VerifyCodeComponent  implements OnInit {
       const data = {
         phoneNumber: this.params?.phoneNumber,
         userId: this.params?.userId,
-        type: this.params?.type,
+        type: this.params?.numberType,
         otpCode: code,
       };
       const res: any = await lastValueFrom(this.apiService.post('accounts/verify-otp', data, true));
