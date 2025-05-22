@@ -104,7 +104,10 @@ export class SyncService {
   async syncCompanies() {
     const companies = this.companyServ.companies;
     if (companies.length > 0) {
+      const user = await this.sharedMethods.getUserData();
       companies.forEach(async(company) => {
+        if (user?.id !== company?.createdBy) { return; }
+
         const companyId = company.id;
         const companyToUpload = Object.assign({}, company);
         delete companyToUpload.id;
