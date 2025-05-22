@@ -871,12 +871,15 @@ export class SyncService {
   async syncMyDocuments() {
     const allDocs = this.documentsDataService.allDocuments;
     if (allDocs?.length) {
+      const user = await this.sharedMethods.getUserData();
       allDocs.forEach(async(document) => {
+        if (user?.id !== document?.createdBy) { return; }
+
         if (document.isDeleted && !document.onlineRef) {
           await this.documentsDataService.deleteDocument(document.id);
         } else if (document.isDeleted && document.onlineRef) {
-          this.apiService.delete('mydocuments', document.onlineRef).subscribe(async(response) => {
-            if (response?.['status'] === 'OK' || !response) {
+          this.apiService.delete('mydocuments', document.onlineRef).subscribe(async(response: any) => {
+            if (response?.status === 'OK' || !response) {
               await this.documentsDataService.deleteDocument(document.id);
             } else {
               console.error(`Failed to delete document ${document.fileName} from the api`, response);
@@ -893,22 +896,22 @@ export class SyncService {
             const docData =  new FormData();
             docData.append('fileContent', file);
             docData.append('entityType', 'my_document');
-            this.apiService.post('file-upload', docData).subscribe((uploadResponse) => {
-              if (uploadResponse?.['status'] === 'OK') {
-                documentToUpload.fileUrl = uploadResponse?.['data']?.fileLocation;
+            this.apiService.post('file-upload', docData).subscribe((uploadResponse: any) => {
+              if (uploadResponse?.status === 'OK') {
+                documentToUpload.fileUrl = uploadResponse?.data?.fileLocation;
                 const dataToSave = {...documentToUpload, user: documentToUpload.userId};
 
                 if (!documentToUpload.onlineRef) {
-                  this.apiService.post('mydocuments', dataToSave).subscribe((response) => {
-                    if (response?.['status'] === 'OK') {
-                      this.dbService.updateDatabaseField('documents', 'online_ref', response?.['data']?.id, documentToUpload.appRef);
+                  this.apiService.post('mydocuments', dataToSave).subscribe((response: any) => {
+                    if (response?.status === 'OK') {
+                      this.dbService.updateDatabaseField('documents', 'online_ref', response?.data?.id, documentToUpload.appRef);
                     } else {
                       console.error(`Failed to sync document ${document.fileName} to the api`, response);
                     }
                   });
                 } else {
-                  this.apiService.put('mydocuments', documentToUpload.onlineRef, dataToSave).subscribe((response) => {
-                    if (response?.['status'] !== 'OK')  {
+                  this.apiService.put('mydocuments', documentToUpload.onlineRef, dataToSave).subscribe((response: any) => {
+                    if (response?.status !== 'OK')  {
                       console.error(`Failed to sync document ${document.fileName} to the api`, response);
                     }
                   });
@@ -924,8 +927,8 @@ export class SyncService {
   }
 
   async fetchMyDocuments() {
-    return this.apiService.get('mydocuments').subscribe((response) => {
-      if (response?.['status'] === 200 && response.body.data.length > 0) {
+    return this.apiService.get('mydocuments').subscribe((response: any) => {
+      if (response?.status === 200 && response.body.data.length > 0) {
         response.body.data.forEach(async(doc) => {
           this.dbService.checkIfEntryExists('documents', doc.appRef).then(async(exists) => {
             if (!exists) {
