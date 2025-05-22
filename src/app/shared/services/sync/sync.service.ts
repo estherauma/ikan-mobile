@@ -509,20 +509,23 @@ export class SyncService {
   async syncInlineQuestions() {
     const questions = this.surveyDataService.inlineQuestions;
     if (questions?.length) {
+      const user = await this.sharedMethods.getUserData();
       questions.forEach((question) => {
+        if (user?.id !== question?.createdBy) { return; }
+        
         const questionId = question.id;
         const questionToUpload = Object.assign({}, question);
         delete questionToUpload.id;
         questionToUpload.user = questionToUpload.userId;
         if (!questionToUpload.onlineRef) {
-          this.apiService.post('inline-questions', questionToUpload).subscribe(async(response) => {
-            if (response['status'] === 'OK') {
-              this.dbService.updateDatabaseField('inline_questions', 'online_ref', response['data']['id'], question.appRef);
+          this.apiService.post('inline-questions', questionToUpload).subscribe(async(response: any) => {
+            if (response?.status === 'OK') {
+              this.dbService.updateDatabaseField('inline_questions', 'online_ref', response.data.id, question.appRef);
             }
           });
         } else {
-          this.apiService.put('inline-questions', questionToUpload.onlineRef, questionToUpload).subscribe(async(response) => {
-            if (response?.['status'] !== 'OK') {
+          this.apiService.put('inline-questions', questionToUpload.onlineRef, questionToUpload).subscribe(async(response: any) => {
+            if (response?.status !== 'OK') {
               console.error('Failed to update inline question', response);
             }
           });
