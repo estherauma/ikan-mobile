@@ -140,7 +140,7 @@ export class AppComponent implements OnInit, OnDestroy {
           const user: UserData = await this.sharedMethods.readDataFromStorage(StorageKeys.userData);
           const now = new Date().toUTCString();
           if ( this.authService.tokenExpiryDate < new Date(now)) {
-            this.logOut();
+            await this.logOut();
           } else {
             // TODO: Service isn't returning role and is returning
             // Ensure auth service returns role immediately
@@ -158,7 +158,8 @@ export class AppComponent implements OnInit, OnDestroy {
       });
   }
 
-  logOut() {
+  async logOut() {
+    await this.syncData();
     this.authService.logOut();
     this.router.navigate(['/login']);
   }
@@ -168,7 +169,7 @@ export class AppComponent implements OnInit, OnDestroy {
     const tokenExpiryDateTime = new Date(0);
     tokenExpiryDateTime.setUTCSeconds(tokenExpiryDateInUTCSeconds);
     if (tokenExpiryDateTime < new Date(now)) {
-      this.logOut();
+      await this.logOut();
       this.sharedMethods.showLoader(this.contentService.commonText?.loginToProceed);
     }
   }
@@ -176,6 +177,7 @@ export class AppComponent implements OnInit, OnDestroy {
   async onClick(index) {
     if (this.appPages[index].url === '/logout') {
       await LocalNotifications.removeAllListeners();
+      await this.syncData();
       this.authService.logOut();
       this.router.navigate(['']);
     } else if (this.appPages[index].url === '/sync') {
