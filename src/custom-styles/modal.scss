@@ -4,12 +4,8 @@ ion-backdrop {
 
 .select-lang-modal {
   --background: transparent !important;
-
-  app-select-language {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-  }
+  --height: 100%;
+  --width: 100%;
 }
 
 // See https://stackoverflow.com/questions/46972950/ionic-make-modal-page-fit-content-height

@@ -39,6 +39,7 @@ import { DocumentsDataService } from 'src/app/mydocuments/data/documents-data.se
 })
 export class SyncService {
   db: SQLiteObject;
+  isDbInitialized = false;
 
   constructor(
     private platform: Platform,
@@ -57,12 +58,13 @@ export class SyncService {
     private documentsDataService: DocumentsDataService,
   ) {
     this.platform.ready().then(async() => {
-      this.sqlite.create({
-        name: 'tunalocal.db',
-        location: 'default'
-      }).then(async(_db: SQLiteObject) => {
-        this.db = _db;
-      }).catch(e => console.log(e));
+      this.db = await this.dbService.configureDB();
+    });
+
+    this.dbService.isDBsetup().subscribe((res) => {
+      if (res) {
+        this.isDbInitialized = res;
+      }
     });
   }
 
@@ -77,7 +79,7 @@ export class SyncService {
 
   async syncData() {
     const isValid = await this.authService.checkAcessTokenValidity();
-    if (!isValid) {
+    if (!isValid || !this.isDbInitialized) {
       return;
     }
 
@@ -213,20 +215,22 @@ export class SyncService {
                   const vesselImage = await this.vesselServ.getVesselImageByVesselId(vessel.id);
                   if (!vesselImage) {
                     await this.uploadService.fetchAndSaveFile(image.imageUrl).then(async(fileUri) => {
-                      const user = await this.sharedMethods.getUserData();
-                      const now = this.sharedMethods.getCurrentDateTime();
-                      const saveObj = {
-                        vesselId: vessel.id,
-                        appRef: image.appRef || this.sharedMethods.generateAppRef(),
-                        description: image.description,
-                        imageUrl: fileUri,
-                        onlineRef: image.id,
-                        createdAt: image.createdAt ??  now,
-                        updatedAt: image.updatedAt ??  now,
-                        createdBy: image.createdBy ?? user?.id,
-                        updatedBy: image.updatedBy ?? user?.id,
-                      };
-                      await this.vesselServ.saveOnlineVesselImage(saveObj).then(() => {});
+                      if (fileUri) {
+                        const user = await this.sharedMethods.getUserData();
+                        const now = this.sharedMethods.getCurrentDateTime();
+                        const saveObj = {
+                          vesselId: vessel.id,
+                          appRef: image.appRef || this.sharedMethods.generateAppRef(),
+                          description: image.description,
+                          imageUrl: fileUri,
+                          onlineRef: image.id,
+                          createdAt: image.createdAt ??  now,
+                          updatedAt: image.updatedAt ??  now,
+                          createdBy: image.createdBy ?? user?.id,
+                          updatedBy: image.updatedBy ?? user?.id,
+                        };
+                        await this.vesselServ.saveOnlineVesselImage(saveObj).then(() => {});
+                      }
                     });
                   }
                 }
@@ -340,20 +344,22 @@ export class SyncService {
             const contractDocument = await this.contractServ.getContractDocumentByField('contract_id', contract.id);
             if (!contractDocument) {
               await this.uploadService.fetchAndSaveFile(doc.url).then(async(fileUri) => {
-                const user = await this.sharedMethods.getUserData();
-                const now = this.sharedMethods.getCurrentDateTime();
-                const saveObj = {
-                  contractId: contract.id,
-                  name: doc.name,
-                  url: fileUri,
-                  status: doc.status,
-                  onlineRef: doc.id,
-                  createdAt: doc.createdAt ??  now,
-                  updatedAt: doc.updatedAt ??  now,
-                  createdBy: doc.createdBy ?? user?.id,
-                  updatedBy: doc.updatedBy ?? user?.id,
-                };
-                await this.contractServ.saveOnlineContractDocument(saveObj).then(() => {});
+                if (fileUri) {
+                  const user = await this.sharedMethods.getUserData();
+                  const now = this.sharedMethods.getCurrentDateTime();
+                  const saveObj = {
+                    contractId: contract.id,
+                    name: doc.name,
+                    url: fileUri,
+                    status: doc.status,
+                    onlineRef: doc.id,
+                    createdAt: doc.createdAt ??  now,
+                    updatedAt: doc.updatedAt ??  now,
+                    createdBy: doc.createdBy ?? user?.id,
+                    updatedBy: doc.updatedBy ?? user?.id,
+                  };
+                  await this.contractServ.saveOnlineContractDocument(saveObj).then(() => {});
+                }
               });
             }
           }
@@ -442,7 +448,9 @@ export class SyncService {
                     for (const [key, value] of Object.entries(content)) {
                       if (key === 'partyASignature' || key === 'partyBSignature') {
                         await this.uploadService.fetchAndSaveFile(value).then(async(fileUri) => {
-                          content[key] = fileUri;
+                          if (fileUri) {
+                            content[key] = fileUri;
+                          }
                         });
                       }
                     }
@@ -563,7 +571,9 @@ export class SyncService {
           await this.profilesDataService.saveOnlineProfile(dataToSave).then(async(id) => {
             if (dataToSave?.profileImage) {
               await this.uploadService.fetchAndSaveFile(dataToSave.profileImage).then(async(fileUri) => {
-                await this.profilesDataService.updateProfilesField(dataToSave.email, 'profile_image', fileUri);
+                if (fileUri) {
+                  await this.profilesDataService.updateProfilesField(dataToSave.email, 'profile_image', fileUri);
+                }
               });
             }
             await this.fetchBankAccounts(dataToSave.id);
@@ -582,7 +592,9 @@ export class SyncService {
             await this.profilesDataService.update(dataToSave).then(async(id) => {
               if (dataToSave?.profileImage) {
                 await this.uploadService.fetchAndSaveFile(dataToSave.profileImage).then(async(fileUri) => {
-                  await this.profilesDataService.updateProfilesField(dataToSave.email, 'profile_image', fileUri);
+                  if (fileUri) {
+                    await this.profilesDataService.updateProfilesField(dataToSave.email, 'profile_image', fileUri);
+                  }
                 });
               }
               await this.fetchBankAccounts(dataToSave.id);
@@ -615,7 +627,9 @@ export class SyncService {
                 await this.profilesDataService.saveOnlineProfile(dataToSave).then(async() => {
                   if (dataToSave?.profileImage) {
                     await this.uploadService.fetchAndSaveFile(dataToSave.profileImage).then(async(fileUri) => {
-                      await this.profilesDataService.updateProfilesField(dataToSave.email, 'profile_image', fileUri);
+                      if (fileUri) {
+                        await this.profilesDataService.updateProfilesField(dataToSave.email, 'profile_image', fileUri);
+                      }
                     });
                   }
                   await this.fetchBankAccounts(dataToSave.id);
@@ -633,7 +647,9 @@ export class SyncService {
                   await this.profilesDataService.update(dataToSave).then(async() => {
                     if (dataToSave?.profileImage) {
                       await this.uploadService.fetchAndSaveFile(dataToSave.profileImage).then(async(fileUri) => {
-                        await this.profilesDataService.updateProfilesField(dataToSave.email, 'profile_image', fileUri);
+                        if (fileUri) {
+                          await this.profilesDataService.updateProfilesField(dataToSave.email, 'profile_image', fileUri);
+                        }
                       });
                     }
                     await this.fetchBankAccounts(dataToSave.id);
@@ -897,19 +913,21 @@ export class SyncService {
           this.dbService.checkIfEntryExists('documents', doc.appRef).then(async(exists) => {
             if (!exists) {
               await this.uploadService.fetchAndSaveFile(doc.fileUrl).then(async(fileUri) => {
-                const user = await this.sharedMethods.getUserData();
-                const now = this.sharedMethods.getCurrentDateTime();
-                const dataToSave = {
-                  ...doc,
-                  userId: doc.user,
-                  fileUrl: fileUri,
-                  createdAt: doc.createdAt ??  now,
-                  updatedAt: doc.updatedAt ??  now,
-                  createdBy: doc.createdBy ?? user?.id,
-                  updatedBy: doc.updatedBy ?? user?.id,
-                  onlineRef: doc.id,
-                };
-                await this.documentsDataService.saveOnlineDocument(dataToSave).then(() => {});
+                if (fileUri) {
+                  const user = await this.sharedMethods.getUserData();
+                  const now = this.sharedMethods.getCurrentDateTime();
+                  const dataToSave = {
+                    ...doc,
+                    userId: doc.user,
+                    fileUrl: fileUri,
+                    createdAt: doc.createdAt ??  now,
+                    updatedAt: doc.updatedAt ??  now,
+                    createdBy: doc.createdBy ?? user?.id,
+                    updatedBy: doc.updatedBy ?? user?.id,
+                    onlineRef: doc.id,
+                  };
+                  await this.documentsDataService.saveOnlineDocument(dataToSave).then(() => {});
+                }
               });
             }
           });
@@ -990,19 +1008,21 @@ export class SyncService {
           await this.dbService.checkIfEntryExists('passports', passport.appRef).then(async(exists) => {
             if (!exists) {
               await this.uploadService.fetchAndSaveFile(passport.imageUrl).then(async(fileUri) => {
-                const user = await this.sharedMethods.getUserData();
-                const now = this.sharedMethods.getCurrentDateTime();
-                const dataToSave = {
-                  ...passport,
-                  userId: passport.user,
-                  imageUrl: fileUri,
-                  createdAt: passport.createdAt ??  now,
-                  updatedAt: passport.updatedAt ??  now,
-                  createdBy: passport.createdBy ?? user?.id,
-                  updatedBy: passport.updatedBy ?? user?.id,
-                  onlineRef: passport.id,
-                };
-                await this.documentsDataService.saveOnlinePassport(dataToSave).then(() => {});
+                if (fileUri) {
+                  const user = await this.sharedMethods.getUserData();
+                  const now = this.sharedMethods.getCurrentDateTime();
+                  const dataToSave = {
+                    ...passport,
+                    userId: passport.user,
+                    imageUrl: fileUri,
+                    createdAt: passport.createdAt ??  now,
+                    updatedAt: passport.updatedAt ??  now,
+                    createdBy: passport.createdBy ?? user?.id,
+                    updatedBy: passport.updatedBy ?? user?.id,
+                    onlineRef: passport.id,
+                  };
+                  await this.documentsDataService.saveOnlinePassport(dataToSave).then(() => {});
+                }
               });
             }
           });

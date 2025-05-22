@@ -35,7 +35,7 @@ android {
           resValue "string", "title_activity_main", "IKAN(Dev)"
           namespace "com.fiftyeight.tuna.dev"
           firebaseAppDistribution {
-            releaseNotes="Refactor audio display on consent forms"
+            releaseNotes="Login with email or phone number"
             groups="scrum,staging-testers"
             serviceCredentialsFile=file("google-services-credentials.json")
             appId="1:712142417730:android:e72fd0aa6261e389d2a2db"
