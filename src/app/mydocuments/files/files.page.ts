@@ -26,12 +26,12 @@ export class FilesPage implements OnInit {
   documentSelectedModal;
   confirmModal;
   documents: DocumentType[] = [];
-  isSelecting: boolean = false;
+  isSelecting = false;
   selectedDocuments: DocumentType[] = [];
   commonText: any;
   docsCommonText: any;
   currentLanguage = 'en-us';
-  
+
   constructor(
     public modalCtrl: ModalController,
     public router: Router,
@@ -60,7 +60,8 @@ export class FilesPage implements OnInit {
   searchResult(data) {}
 
   async addDocument() {
-    const newDoc = await this.sharedMethods.addDocument(this.commonText, this.alertController, this.uploadService, this.documentsDataService, this.docsCommonText, false);
+    const newDoc = await this.sharedMethods.addDocument(
+      this.commonText, this.alertController, this.uploadService, this.documentsDataService, this.docsCommonText, false);
     if (newDoc) {
       this.getDocuments();
       await this.syncService.syncMyDocuments();
@@ -143,7 +144,7 @@ export class FilesPage implements OnInit {
     const alert = await this.alertController.create(alertProps);
     await alert.present();
   }
-  
+
   async deleteDocs(docs: DocumentType[]) {
     for (const doc of docs) {
       if (doc?.onlineRef) {

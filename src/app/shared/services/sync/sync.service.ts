@@ -187,10 +187,10 @@ export class SyncService {
         imageData.append('updatedAt', vesselImage.updatedAt);
         imageData.append('createdBy', vesselImage.createdBy);
         imageData.append('updatedBy', vesselImage.updatedBy);
-        this.apiService.post('file-upload', imageData).subscribe((res) => {
-          if (res?.['status'] === 'OK') {
+        this.apiService.post('file-upload', imageData).subscribe((res: any) => {
+          if (res?.status === 'OK') {
             if (!vesselImage.onlineRef) {
-              this.dbService.updateDatabaseField('vessel_images', 'online_ref', res?.['data']['vesselImage']?.id, vesselImage.app_ref);
+              this.dbService.updateDatabaseField('vessel_images', 'online_ref', res?.data.vesselImage?.id, vesselImage.app_ref);
             }
           } else {
             console.error(`Failed to sync vessel image for vessel ${vessel.name} to the api`, res);
@@ -305,13 +305,13 @@ export class SyncService {
         docData.append('updatedAt', contractDocument.updatedAt);
         docData.append('createdBy', contractDocument.createdBy);
         docData.append('updatedBy', contractDocument.updatedBy);
-        this.apiService.post('file-upload', docData).subscribe((res) => {
-          if (res?.['status'] === 'OK') {
+        this.apiService.post('file-upload', docData).subscribe((res: any) => {
+          if (res?.status === 'OK') {
             if (!contractDocument.onlineRef) {
               this.contractServ.updateContractDocumentFieldByContractId(
                 contractDocument.contract_id,
                 'online_ref',
-                res?.['data']['contractDocument']?.id
+                res?.data.contractDocument?.id
               );
             }
           } else {
@@ -400,8 +400,8 @@ export class SyncService {
           // }
         });
       } else {
-        this.apiService.put('contracts-clauses', clause.onlineRef, clauseToUpload).subscribe(async(response) => {
-          if (response?.['status'] === 'OK') {
+        this.apiService.put('contracts-clauses', clause.onlineRef, clauseToUpload).subscribe(async(response: any) => {
+          if (response?.status === 'OK') {
             await this.syncContractClausesAttachments(clause);
           } else {
             console.error('Failed to update contract clause', response);
@@ -424,8 +424,8 @@ export class SyncService {
               attachmentData.append('entityType', 'contract_clause_attachment');
               attachmentData.append('clauseAppRef', clause.appRef);
               attachmentData.append('contentField', key);
-              this.apiService.post('file-upload', attachmentData).subscribe((res) => {
-                if (res?.['status'] !== 'OK')  {
+              this.apiService.post('file-upload', attachmentData).subscribe((res: any) => {
+                if (res?.status !== 'OK')  {
                   console.error(`Failed to sync contract clause attachment for clause ${clause.name} to the api`, res);
                 }
               });
@@ -764,8 +764,8 @@ export class SyncService {
       imageData.append('fileContent', imageFile);
       imageData.append('entityType', 'profile_picture');
       imageData.append('userId', profileOnlineRef);
-      this.apiService.post('file-upload', imageData).subscribe((res) => {
-        if (res?.['status'] !== 'OK') {
+      this.apiService.post('file-upload', imageData).subscribe((res: any) => {
+        if (res?.status !== 'OK') {
           console.error(`Failed to sync profile image for user ${profile.email} to the api`, res);
         }
       });
@@ -1054,8 +1054,8 @@ export class SyncService {
   }
 
   async fetchPayments() {
-    return this.apiService.get('payments').subscribe((response) => {
-      if (response?.['status'] === 200 && response.body.length > 0) {
+    return this.apiService.get('payments').subscribe((response: any) => {
+      if (response?.status === 200 && response.body.length > 0) {
         response.body.forEach(async(payment) => {
           const user = await this.sharedMethods.getUserData();
           const now = this.sharedMethods.getCurrentDateTime();
