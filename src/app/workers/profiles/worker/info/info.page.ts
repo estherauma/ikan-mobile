@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { FormControl, Validators, FormGroup } from '@angular/forms';
+import { FormControl, FormGroup } from '@angular/forms';
+import { Router } from '@angular/router';
 import { ProfilesDataService } from 'src/app/profiles/data/profiles-data.service';
 import { BaseformPage } from 'src/app/shared/components/baseform/baseform.page';
 import { AnalyticsService } from 'src/app/shared/services/analytics/analytics.service';
@@ -18,14 +19,15 @@ export class InfoPage extends BaseformPage implements OnInit {
   submitButtonText = 'Save';
   userData: UserData;
   profileData: ProfileData;
-  isViewInfo: boolean = false;
+  isViewInfo = false;
   viewInfo: any = {};
 
   constructor(
     public contentService: ContentService,
     public sharedMethods: SharedmethodsService,
     public profilesDataService: ProfilesDataService,
-    public analytics: AnalyticsService
+    public analytics: AnalyticsService,
+    public router: Router,
   ) {
     super(contentService);
   }
@@ -76,7 +78,7 @@ export class InfoPage extends BaseformPage implements OnInit {
     data.updatedAt = now;
     const profileExists = await this.profilesDataService.checkIfProfileExists(data.email);
     if (profileExists) {
-      data = { ...this.profileData, ...data}
+      data = { ...this.profileData, ...data};
       const result = await this.profilesDataService.update(data);
       if (result?.rowsAffected > 0) {
         await this.pageSetup();
@@ -110,5 +112,22 @@ export class InfoPage extends BaseformPage implements OnInit {
       return '';
     }
     return this.formQuestions.find((el) => el.key === 'country')?.options?.find((opt) => opt.value === value)?.label || '';
+  }
+
+  async verifyPhoneNumber(type: string) {
+    let phoneNumber = null;
+    if (type === 'mobile' && this.profileData?.mobile) {
+      phoneNumber = this.profileData?.mobile;
+    } else if (type === 'telephone' && this.profileData?.telephone) {
+      phoneNumber = this.profileData?.telephone;
+    }
+
+    const queryParams = {
+      phoneNumber,
+      numberType: type,
+      previousUrl: this.router.url,
+    };
+
+    this.router.navigate(['auth/verify-phone-number'], { replaceUrl: true, queryParams });
   }
 }

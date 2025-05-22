@@ -49,16 +49,32 @@
             <ion-col size="12">
                 <ion-label class="label">{{ viewInfo?.telephone }}</ion-label>
             </ion-col>
-            <ion-col size="12">
+            <ion-col size="12" class="tel-num-val-col">
                 <ion-label class="value">{{ profileData?.telephone }}</ion-label>
+                <ion-button
+                    *ngIf="!profileData?.isTelephoneVerified"
+                    class="verify-btn"
+                    (click)="verifyPhoneNumber('telephone')"
+                >
+                <!-- translate -->
+                {{ commonText?.verify || 'Verify' }}
+                </ion-button>
             </ion-col>
         </ion-row>
         <ion-row *ngIf="profileData?.mobile">
             <ion-col size="12">
                 <ion-label class="label">{{ viewInfo?.mobile }}</ion-label>
             </ion-col>
-            <ion-col size="12">
+            <ion-col size="12" class="tel-num-val-col">
                 <ion-label class="value">{{ profileData?.mobile }}</ion-label>
+                <ion-button
+                    *ngIf="!profileData?.isMobileVerified"
+                    class="verify-btn"
+                    (click)="verifyPhoneNumber('mobile')"
+                >
+                <!-- translate -->
+                {{ commonText?.verify || 'Verify' }}
+                </ion-button>
             </ion-col>
         </ion-row>
         
