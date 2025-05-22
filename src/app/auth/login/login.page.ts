@@ -8,7 +8,7 @@ import { BaseformPage } from 'src/app/shared/components/baseform/baseform.page';
 import { ApiService } from 'src/app/shared/services/api/api.service';
 import { ContentService } from 'src/app/shared/services/content/content.service';
 import { SharedmethodsService } from 'src/app/shared/services/sharedmethods/sharedmethods.service';
-import { FieldType, Icons, LoginSuccessReponse, StorageKeys, UserData, UserRole } from 'src/app/shared/types/api-types';
+import { FieldType, Icons, LoginSuccessReponse, StorageKeys } from 'src/app/shared/types/api-types';
 import { DBService } from 'src/app/shared/services/database/db.service';
 import { SyncService } from 'src/app/shared/services/sync/sync.service';
 import { LocalNotificationsService } from 'src/app/shared/services/local-notifications/local-notifications.service';
@@ -66,6 +66,7 @@ export class LoginPage extends BaseformPage implements OnInit {
       // We are using the email key and not emailOrPhone for backward compatibility
       // with the old login page
       if (entry.key === 'email') {
+        entry.label = this.pageText?.emailOrPhoneLabel ?? entry.label;
         this.group[entry.key] = new FormControl('', [Validators.required, this.emailOrPhoneValidator]);
       }
     });
@@ -109,9 +110,8 @@ export class LoginPage extends BaseformPage implements OnInit {
     const isEmail = formData.email.trim().match(emailPattern);
     const isPhone = formData.email.trim().match(phonePattern);
     if (!isEmail && !isPhone) {
-      // translate
       this.sharedMethods.hideLoader();
-      this.sharedMethods.showToast(this.pageText?.emailOrPhoneErrorText || 'Please enter a valid email or phone number');
+      this.sharedMethods.showToast(this.pageText?.noEmailOrPhoneError || 'Please enter a valid email or phone number');
       return;
     }
 
@@ -207,11 +207,10 @@ export class LoginPage extends BaseformPage implements OnInit {
 
   async showUnverifiedNumberAlert() {
     const alert = await this.alertController.create({
-      header: this.pageText?.unrecognisedNumber || 'Unrecognised Phone Number', // translate
-      // translate
+      header: this.pageText?.unverifiedNumber,
       message:  new IonicSafeString(`
-        <p style="text-align: center;">${ this.pageText?.message || 'This number is either not verified or not registered to the system.' }</p>
-        <p style="text-align: center;"><strong>${ this.pageText?.proceedWithAccountDeletion || 'If not verified, log in with your email, go to profiles and verify the phone number.' }</strong></p>
+        <p style="text-align: center;">${ this.pageText?.unverifiedNumberMessage }</p>
+        <p style="text-align: center;"><strong>${ this.pageText?.unverifiedNumberSubText }</strong></p>
       `),
       cssClass: 'tuna-alert unverified-phone-number-alert',
       buttons: [
