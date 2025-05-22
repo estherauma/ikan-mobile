@@ -54,6 +54,7 @@
             formControlName="phoneNumber"
             inputmode="tel"
             [placeholder]="pageText?.phoneNumber || 'Phone Number'"
+            minlength="6"
             [ngClass]="{
               'has-value': pageFormGroup?.value?.phoneNumber
             }"
@@ -66,7 +67,7 @@
             class="submit-btn"
             shape="round"
             [disabled]="pageFormGroup.invalid"
-            (click)="onSubmit($event)"
+            (click)="onSubmit(pageFormGroup.value)"
           >
             {{ submitButtonText }}
           </ion-button>

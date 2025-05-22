@@ -1,13 +1,14 @@
 import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { lastValueFrom } from 'rxjs';
 import { AnalyticsService } from 'src/app/shared/services/analytics/analytics.service';
 import { PageEventNames } from 'src/app/shared/services/analytics/event-names';
 import { ApiService } from 'src/app/shared/services/api/api.service';
 import { ContentService } from 'src/app/shared/services/content/content.service';
 import { SharedmethodsService } from 'src/app/shared/services/sharedmethods/sharedmethods.service';
+import { UserData } from 'src/app/shared/types/api-types';
 
 @Component({
   selector: 'app-verify-phone-number',
@@ -26,15 +27,23 @@ export class VerifyPhoneNumberComponent  implements OnInit {
   phoneNumberRegex = /\+?(\(\+?\d{1,3}\)([- ])?)?\d{1,}(?:[- ]\d+)*/;
   selectedCode = '';
   commonText: any;
+  previousUrl = null;
 
   constructor(
     public router: Router,
     public contentService: ContentService,
     public sharedMethods: SharedmethodsService,
-    public apiServices: ApiService,
+    public apiService: ApiService,
     public analytics: AnalyticsService,
     public http: HttpClient,
-  ) { }
+    public activatedRoute: ActivatedRoute,
+  ) {
+    this.activatedRoute.queryParams.subscribe((queryParams) => {
+      if (queryParams && Object.keys(queryParams).length > 0) {
+        this.previousUrl = queryParams?.previousUrl ?? null;
+      }
+    });
+  }
 
   async ngOnInit() {
     await this.pageSetup();
@@ -54,7 +63,6 @@ export class VerifyPhoneNumberComponent  implements OnInit {
     group.phoneNumber = new FormControl('', [Validators.required, Validators.pattern(this.phoneNumberRegex)]);
 
     this.pageFormGroup = new FormGroup(group);
-    console.log('Form Group', this.pageFormGroup);
   }
 
   async getCountryOptions() {
@@ -75,7 +83,35 @@ export class VerifyPhoneNumberComponent  implements OnInit {
     this.selectedCode = this.countryOptions.find((country) => country?.dial_code === event.detail.value)?.dial_code;
   }
 
-  onSubmit(formData) {
-    console.log('Form submitted', formData);
+  async onSubmit(formData) {
+    await this.sharedMethods.showWaitLoader(this.commonText?.submittingYourData);
+    try {
+      const countryCode = formData.countryCode;
+      const phoneNumber = formData.phoneNumber;
+      const phoneNumberWithCode = `${countryCode}${phoneNumber}`.replace(/\s/g, '');
+      const userData: UserData = await this.sharedMethods.getUserData();
+      const userId = userData?.id;
+      const data = {
+        phoneNumber: phoneNumberWithCode,
+        userId: userId ?? null,
+        // type: 'mobile,'
+        previousUrl: this.previousUrl,
+      };
+
+      const response: any = await lastValueFrom(this.apiService.post('accounts/verify-phone-number', data, true));
+      if (response?.status && response?.status !== 'error') {
+        await this.sharedMethods.dismissLoader();
+        this.router.navigate(['auth/verify-code'], {replaceUrl: true, queryParams: data });
+      } else {
+        await this.sharedMethods.dismissLoader();
+        // translate
+        this.sharedMethods.showToast(this.pageText?.errorGeneratingCode || 'Error generating code 11');
+      }
+    } catch (error) {
+      console.error('Error in onSubmit', error);
+      await this.sharedMethods.dismissLoader();
+      // translate
+      this.sharedMethods.showToast(this.pageText?.errorGeneratingCode || 'Error generating code 22');
+    }
   }
 }
