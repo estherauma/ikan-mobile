@@ -54,9 +54,10 @@ export class VerifyCodeComponent  implements OnInit {
 
   async pageSetup() {
     this.commonText = this.contentService.getCommonText();
-    const pageData = this.contentService.getContentByPropertyName('verify-code');
+    const pageData = this.contentService.getContentByPropertyName('verify-phone-number');
     this.pageTitle = pageData?.pageTitle;
     this.pageText = this.sharedMethods?.convertAdditionalTextToObj(pageData?.additionalText);
+    this.submitButtonText = this.commonText?.verify;
 
     const group: any = {};
     // add inputs to the form group
@@ -85,16 +86,14 @@ export class VerifyCodeComponent  implements OnInit {
     };
     const res: any = await lastValueFrom(this.apiService.post('accounts/generate-otp', data, true));
     if (res?.status) {
-      // translate
-      await this.sharedMethods.showToast(this.pageText?.resendCodeSuccessMessage || 'Code resent successfully');
+      await this.sharedMethods.showToast(this.pageText?.resendCodeSuccessMessage);
       // Clear the input fields
       this.inputs.forEach((input) => {
         input.value = '';
       });
       this.inputs.first.setFocus();
     } else {
-      // translate
-      await this.sharedMethods.showToast(this.pageText?.resendCodeErrorMessage || 'Error resending code');
+      await this.sharedMethods.showToast(this.pageText?.resendCodeErrorMessage);
     }
   }
 
@@ -125,8 +124,7 @@ export class VerifyCodeComponent  implements OnInit {
       const res: any = await lastValueFrom(this.apiService.post('accounts/verify-otp', data, true));
       if (res?.status && res?.status !== 'error') {
         await this.sharedMethods.dismissLoader();
-        // translate
-        this.sharedMethods.showToast(this.pageText?.verificationSuccessMessage || 'Verification successful');
+        this.sharedMethods.showToast(this.pageText?.verificationSuccessMessage);
         if (this.params?.previousUrl) {
           this.router.navigate([this.params?.previousUrl], { replaceUrl: true });
         } else {
@@ -136,14 +134,12 @@ export class VerifyCodeComponent  implements OnInit {
         }
       } else {
         await this.sharedMethods.dismissLoader();
-        // translate
-        this.sharedMethods.showToast(this.pageText?.verificationErrorMessage || 'Error verifying code');
+        this.sharedMethods.showToast(this.pageText?.verificationErrorMessage);
       }
     } catch (error) {
-      console.error('Error in onSubmit', error);
+      console.error('Error verifying phone number', error);
       await this.sharedMethods.dismissLoader();
-      // translate
-      this.sharedMethods.showToast(this.pageText?.verificationErrorMessage || 'Error verifying code');
+      this.sharedMethods.showToast(this.pageText?.verificationErrorMessage);
     }
   }
 }

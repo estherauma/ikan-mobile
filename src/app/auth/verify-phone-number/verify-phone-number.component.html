@@ -16,14 +16,12 @@
       <ion-row>
         <ion-col size="12">
           <h2 class="form-title">
-            <!-- translate -->
-            {{ pageText?.verifyPhoneNumber || 'Verify Phone Number' }}
+            {{ pageText?.verifyPhoneNumber }}
           </h2>
         </ion-col>
         <ion-col size="12">
           <p class="form-subtitle">
-            <!-- translate -->
-            {{ pageText?.verifyPhoneNumberSubtext || 'We will send you a One Time Password on your phone number' }}
+            {{ pageText?.verifyPhoneNumberSubtext }}
           </p>
         </ion-col>
       </ion-row>
@@ -49,11 +47,9 @@
           </ion-select>
         </ion-col>
         <ion-col size="9">
-          <!-- translate -->
           <ion-input
             formControlName="phoneNumber"
             inputmode="tel"
-            [placeholder]="pageText?.phoneNumber || 'Phone Number'"
             minlength="6"
             [ngClass]="{
               'has-value': pageFormGroup?.value?.phoneNumber

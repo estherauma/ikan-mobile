@@ -17,7 +17,6 @@ import { UserData } from 'src/app/shared/types/api-types';
 })
 export class VerifyPhoneNumberComponent  implements OnInit {
 
-  // translate
   submitButtonText = 'Get Code';
   countryOptions;
   btnDisabled = true;
@@ -55,6 +54,8 @@ export class VerifyPhoneNumberComponent  implements OnInit {
   async pageSetup() {
     this.commonText = this.contentService.getCommonText();
     const pageData = this.contentService.getContentByPropertyName('verify-phone-number');
+    this.pageText = this.sharedMethods.convertAdditionalTextToObj(pageData?.additionalText);
+    this.submitButtonText = this.pageText?.getCode;
     this.pageTitle = pageData?.pageTitle;
     this.countryOptions = await this.getCountryOptions();
 
@@ -106,14 +107,12 @@ export class VerifyPhoneNumberComponent  implements OnInit {
         this.router.navigate(['auth/verify-code'], {replaceUrl: true, queryParams: data });
       } else {
         await this.sharedMethods.dismissLoader();
-        // translate
-        this.sharedMethods.showToast(this.pageText?.errorGeneratingCode || 'Error generating code 11');
+        this.sharedMethods.showToast(this.pageText?.errorGeneratingCode);
       }
     } catch (error) {
       console.error('Error in onSubmit', error);
       await this.sharedMethods.dismissLoader();
-      // translate
-      this.sharedMethods.showToast(this.pageText?.errorGeneratingCode || 'Error generating code 22');
+      this.sharedMethods.showToast(this.pageText?.errorGeneratingCode);
     }
   }
 }

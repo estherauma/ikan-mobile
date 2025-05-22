@@ -16,22 +16,19 @@
       <ion-row>
         <ion-col size="12">
           <h2 class="form-title">
-            <!-- translate -->
-            {{ pageText?.verifyPhoneNumber || 'Enter code' }}
+            {{ pageText?.enterCode }}
           </h2>
         </ion-col>
         <ion-col size="12">
           <p class="form-subtitle">
-            <!-- translate -->
-            {{ pageText?.verifyPhoneNumberSubtext || 'Please enter the 4 digit code we have sent to the mobile number you provided.' }}
+            {{ pageText?.verifyCodeSubText }}
           </p>
         </ion-col>
         <ion-col size="12">
           <p class="form-subtitle resend-code">
-            <!-- translate -->
-            {{ pageText?.resendCode || 'Did not recieve a code? ' }}
+            {{ pageText?.didNotReceiveCode }}
             <a (click)="clickToResendCode()">
-              {{ pageText?.clickToResendCode || 'Click here to resend' }}
+              {{ pageText?.clickHereToResend }}
             </a>
           </p>
         </ion-col>
