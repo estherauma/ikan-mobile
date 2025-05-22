@@ -112,5 +112,38 @@ export class VerifyCodeComponent  implements OnInit {
     }
   }
 
-  onSubmit(formData) {}
+  async onSubmit(formData) {
+    try {
+      await this.sharedMethods.showWaitLoader(this.commonText?.submittingYourData);
+      const code = Object.values(formData).join('');
+      const data = {
+        phoneNumber: this.params?.phoneNumber,
+        userId: this.params?.userId,
+        type: this.params?.type,
+        otpCode: code,
+      };
+      const res: any = await lastValueFrom(this.apiService.post('accounts/verify-otp', data, true));
+      if (res?.status && res?.status !== 'error') {
+        await this.sharedMethods.dismissLoader();
+        // translate
+        this.sharedMethods.showToast(this.pageText?.verificationSuccessMessage || 'Verification successful');
+        if (this.params?.previousUrl) {
+          this.router.navigate([this.params?.previousUrl], { replaceUrl: true });
+        } else {
+          const userData: UserData = await this.sharedMethods.getUserData();
+          const url = this.authService.getCurrentUserBaseUrlFromRole(userData?.role);
+          this.router.navigate([url], { replaceUrl: true });
+        }
+      } else {
+        await this.sharedMethods.dismissLoader();
+        // translate
+        this.sharedMethods.showToast(this.pageText?.verificationErrorMessage || 'Error verifying code');
+      }
+    } catch (error) {
+      console.error('Error in onSubmit', error);
+      await this.sharedMethods.dismissLoader();
+      // translate
+      this.sharedMethods.showToast(this.pageText?.verificationErrorMessage || 'Error verifying code');
+    }
+  }
 }
