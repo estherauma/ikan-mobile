@@ -39,42 +39,43 @@
       <ion-row>
         <ion-col>
           <ion-input
+            #code1
             id="code-1"
             formControlName="code-1"
             maxlength="1"
-            (ionInput)="onInputChange($event, 1)"
-            (keyup.backspace)="onBackspace($event, 1)"
+            (ionInput)="onInputChange($event, code2)"
             inputmode="numeric"
-            [autofocus]="!pageFormGroup?.value?.['code-1']"
           ></ion-input>
         </ion-col>
         <ion-col>
           <ion-input
+            #code2
             id="code-2"
             formControlName="code-2"
             maxlength="1"
-            (ionInput)="onInputChange($event, 2)"
-            (keyup.backspace)="onBackspace($event, 2)"
+            (ionInput)="onInputChange($event, code3)"
+            (keyup.backspace)="onBackspace($event, code1)"
             inputmode="numeric"
           ></ion-input>
         </ion-col>
         <ion-col>
           <ion-input
+            #code3
             id="code-3"
             formControlName="code-3"
             maxlength="1"
-            (ionInput)="onInputChange($event, 3)"
-            (keyup.backspace)="onBackspace($event, 3)"
+            (ionInput)="onInputChange($event, code4)"
+            (keyup.backspace)="onBackspace($event, code2)"
             inputmode="numeric"
           ></ion-input>
         </ion-col>
         <ion-col>
           <ion-input
+            #code4
             id="code-4"
             formControlName="code-4"
             maxlength="1"
-            (ionInput)="onInputChange($event, 4)"
-            (keyup.backspace)="onBackspace($event, 4)"
+            (keyup.backspace)="onBackspace($event, code3)"
             inputmode="numeric"
           ></ion-input>
         </ion-col>
@@ -85,7 +86,7 @@
             class="submit-btn"
             shape="round"
             [disabled]="pageFormGroup.invalid"
-            (click)="onSubmit($event)"
+            (click)="onSubmit(pageFormGroup.value)"
           >
             {{ submitButtonText }}
           </ion-button>
