@@ -76,7 +76,27 @@ export class VerifyCodeComponent  implements OnInit {
     this.router.navigate(['auth/verify-phone-number'], { replaceUrl: true });
   }
 
-  clickToResendCode() {}
+  async clickToResendCode() {
+    const data = {
+      phoneNumber: this.params?.phoneNumber,
+      userId: this.params?.userId,
+      type: this.params?.type,
+      regenerate: true,
+    };
+    const res: any = await lastValueFrom(this.apiService.post('accounts/generate-otp', data, true));
+    if (res?.status) {
+      // translate
+      await this.sharedMethods.showToast(this.pageText?.resendCodeSuccessMessage || 'Code resent successfully');
+      // Clear the input fields
+      this.inputs.forEach((input) => {
+        input.value = '';
+      });
+      this.inputs.first.setFocus();
+    } else {
+      // translate
+      await this.sharedMethods.showToast(this.pageText?.resendCodeErrorMessage || 'Error resending code');
+    }
+  }
 
   onInputChange(event: Event, nextInput: IonInput) {
     const input = event.target as HTMLInputElement;
