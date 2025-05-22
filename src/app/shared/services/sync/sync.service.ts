@@ -512,7 +512,7 @@ export class SyncService {
       const user = await this.sharedMethods.getUserData();
       questions.forEach((question) => {
         if (user?.id !== question?.createdBy) { return; }
-        
+
         const questionId = question.id;
         const questionToUpload = Object.assign({}, question);
         delete questionToUpload.id;
@@ -716,7 +716,7 @@ export class SyncService {
         return this.apiService.post(
           'accounts/profile',
           profileToUpload, false,
-          {user_id: profile?.onlineRef}
+          {userId: profile?.onlineRef}
         ).subscribe(async(response: CreateProfileResponse) => {
           if (response?.status === 'OK') {
             if (hasProfileImage) {
@@ -776,7 +776,7 @@ export class SyncService {
     return this.apiService.get(
       'accounts/bank-details',
       false,
-      {user_id: profileOnlineRef}
+      {userId: profileOnlineRef}
     ).subscribe((response: GetBankAccountsResponse) => {
       if (response.status === 200 && response.body.data.length > 0) {
         response.body.data.forEach((bankAccount) => {
@@ -801,6 +801,8 @@ export class SyncService {
   async syncBankAccounts(profileId, userOnlineRef ) {
     const accounts = await this.paymentsDataService.getUserBankAccounts(profileId);
     accounts.forEach(async(account) => {
+      if (userOnlineRef !== account?.createdBy) { return; }
+
       const acctToUpload = Object.assign({}, account);
       delete acctToUpload.id;
       acctToUpload.userId = userOnlineRef;
@@ -822,7 +824,7 @@ export class SyncService {
     return this.apiService.get(
       'accounts/beneficiaries-bank-details',
       false,
-      {user_id: profileOnlineRef}
+      {userId: profileOnlineRef}
     ).subscribe((response: GetBeneficiaryResponse) => {
       if (response.status === 200 && response.body.data.length > 0) {
         response.body.data.forEach((beneficiary) => {
@@ -847,6 +849,8 @@ export class SyncService {
   async syncBeneficiaries(profileId, userOnlineRef) {
     const beneficiaries = await this.paymentsDataService.getUserBeneficiaries(profileId);
     beneficiaries.forEach(async(beneficiary) => {
+      if (userOnlineRef !== beneficiary?.createdBy) { return; }
+
       const dataToUpload = Object.assign({}, beneficiary);
       delete dataToUpload.id;
       dataToUpload.userId = userOnlineRef;
