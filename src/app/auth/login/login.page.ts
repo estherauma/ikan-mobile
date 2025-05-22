@@ -2,7 +2,7 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators, AbstractControl, ValidationErrors } from '@angular/forms';
 import { Router } from '@angular/router';
-import { AlertController, MenuController, ModalController } from '@ionic/angular';
+import { AlertController, IonicSafeString, MenuController, ModalController } from '@ionic/angular';
 import { AuthService } from 'src/app/shared/services/auth/auth.service';
 import { BaseformPage } from 'src/app/shared/components/baseform/baseform.page';
 import { ApiService } from 'src/app/shared/services/api/api.service';
@@ -178,7 +178,7 @@ export class LoginPage extends BaseformPage implements OnInit {
       }, async(err: HttpErrorResponse) => {
         this.sharedMethods.hideLoader();
         if (err.error?.detail === 'Your phone number is not verified. Please verify it before logging in. OR log in with email.') {
-          await this.showVerifyPhoneNumberAlert();
+          await this.showUnverifiedNumberAlert();
         } else {
           this.sharedMethods.showToast(err.error?.detail);
         }
@@ -205,25 +205,21 @@ export class LoginPage extends BaseformPage implements OnInit {
     this.router.navigate(['auth/login-method'], { replaceUrl: true });
   }
 
-  async showVerifyPhoneNumberAlert() {
+  async showUnverifiedNumberAlert() {
     const alert = await this.alertController.create({
-      header: this.pageText?.verifyPhoneNumberHeader || 'Verify Phone Number', // translate
-      message: this.pageText?.verifyPhoneNumberMessage || 'Your phone number is not verified. Please verify it before logging in. OR log in with email.', // translate
-      cssClass: 'tuna-alert verify-phone-number-alert',
+      header: this.pageText?.unrecognisedNumber || 'Unrecognised Phone Number', // translate
+      // translate
+      message:  new IonicSafeString(`
+        <p style="text-align: center;">${ this.pageText?.message || 'This number is either not verified or not registered to the system.' }</p>
+        <p style="text-align: center;"><strong>${ this.pageText?.proceedWithAccountDeletion || 'If not verified, log in with your email, go to profiles and verify the phone number.' }</strong></p>
+      `),
+      cssClass: 'tuna-alert unverified-phone-number-alert',
       buttons: [
         {
-          text: this.contentService.commonText?.cancel,
+          text: this.contentService.commonText?.ok,
           role: 'cancel',
           cssClass: 'cancel-btn',
         },
-        {
-          text: this.pageText?.verifyButtonText || 'Verify',
-          cssClass: 'verify-btn',
-          handler: () => {
-            // navigate to verify phone number page
-            this.router.navigate(['auth/verify-phone-number'], { replaceUrl: true });
-          }
-        }
       ]
     });
 

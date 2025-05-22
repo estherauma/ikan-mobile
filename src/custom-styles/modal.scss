@@ -341,7 +341,7 @@ ion-modal.workers-create-modal {
   }
 }
 
-.verify-phone-number-alert .alert-wrapper {
+.unverified-phone-number-alert .alert-wrapper {
   .alert-head {
     h2 {
       font-size: 1.35rem;
@@ -361,9 +361,6 @@ ion-modal.workers-create-modal {
     text-transform: none;
   }
   .cancel-btn {
-    background: #dcdada;
-  }
-  .verify-btn {
     background: var(--ion-color-primary);
     color: white !important;
   }
