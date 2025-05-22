@@ -215,7 +215,7 @@ export class SyncService {
         })).subscribe(() => {
           // fetch the vessel images after the vessels have been fetched
           this.apiService.get('vessels-images').subscribe((resp: any) => {
-            if (resp?.['status'] === 200 && resp.body.length > 0) {
+            if (resp?.status === 200 && resp.body.length > 0) {
               resp.body.forEach(async(image) => {
                 const vessel = await this.vesselServ.getVesselByField('onlineRef', image.vessel);
                 if (vessel && !vessel.imageFile.webPath) {
@@ -252,7 +252,10 @@ export class SyncService {
   async syncContracts() {
     const contracts  = this.contractServ.contracts;
     if (contracts.length > 0) {
+      const user = await this.sharedMethods.getUserData();
       contracts.forEach((contract) => {
+        if (user?.id !== contract?.createdBy) { return; }
+
         contract.startDate = new Date(contract.startDate).toISOString().split('T')[0];
         contract.endDate = new Date(contract.endDate).toISOString().split('T')[0];
         const tempContractId = contract.id;
@@ -276,8 +279,8 @@ export class SyncService {
             }
           });
         } else {
-          this.apiService.put('contracts', contractToUpload.onlineRef, contractToUpload).subscribe(async(response) => {
-            if (response?.['status'] === 'OK') {
+          this.apiService.put('contracts', contractToUpload.onlineRef, contractToUpload).subscribe(async(response: any) => {
+            if (response?.status === 'OK') {
               await this.postContractDocument(contract);
               await this.syncContractClauses(contract.id, contract.onlineRef);
             }
