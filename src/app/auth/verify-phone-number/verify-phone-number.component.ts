@@ -78,7 +78,7 @@ export class VerifyPhoneNumberComponent  implements OnInit {
   }
 
   goBack() {
-    this.router.navigate(['login'], { replaceUrl: true });
+    this.router.navigate([this.previousUrl], { replaceUrl: true });
   }
 
   onCountryCodeChange(event) {
