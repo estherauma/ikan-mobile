@@ -4,12 +4,8 @@ ion-backdrop {
 
 .select-lang-modal {
   --background: transparent !important;
-
-  app-select-language {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-  }
+  --height: 100%;
+  --width: 100%;
 }
 
 // See https://stackoverflow.com/questions/46972950/ionic-make-modal-page-fit-content-height
@@ -141,7 +137,7 @@ ion-modal.my-own-class {
         color: #191970;
       }
     }
-    
+
     .alert-message {
       max-height: unset;
       color: #2e2d2c;
@@ -338,5 +334,31 @@ ion-modal.workers-create-modal {
         height: 50px;
       }
     }
+  }
+}
+
+.unverified-phone-number-alert .alert-wrapper {
+  .alert-head {
+    border-bottom: 1px solid #eaedf6;
+    h2 {
+      font-size: 1.35rem;
+      color: #191970;
+    }
+  }
+  .alert-message {
+    max-height: unset;
+    color: #2e2d2c;
+
+    ul {
+      padding-left: 25px;
+    }
+  }
+  .alert-button {
+    border: unset;
+    text-transform: none;
+  }
+  .cancel-btn {
+    background: var(--ion-color-primary);
+    color: white !important;
   }
 }

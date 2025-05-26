@@ -17,10 +17,10 @@ import { StorageKeys } from 'src/app/shared/types/api-types';
 export class LoginMethodPage implements OnInit {
   pageText: any;
   pageTitle = 'Login Method';
-  // inviteCodeAuth and usernameAuth initialized with values for 
+  // inviteCodeAuth and usernameAuth initialized with values for
   // the first few seconds before content is fetched from the api
   inviteCodeAuth: string = 'I have an invite code'.toUpperCase();
-  usernameAuth: string = 'Login with username/email'.toUpperCase();
+  loginWithEmailOrPhoneNumberText: string = 'Login with email or phone number'.toUpperCase();
   watchContent: Subscription;
   langModalPresented = false;
   modalDisplaying = false;
@@ -48,7 +48,7 @@ export class LoginMethodPage implements OnInit {
     this.pageText = this.sharedMethods.convertAdditionalTextToObj(pageData?.additionalText);
     if (this.pageText && Object.keys(this.pageText).length > 0) {
       this.inviteCodeAuth = this.pageText?.inviteCodeAuth || this.inviteCodeAuth;
-      this.usernameAuth = this.pageText?.usernameAuth || this.usernameAuth;
+      this.loginWithEmailOrPhoneNumberText = this.pageText?.loginWithEmailOrPhoneNumberText || this.loginWithEmailOrPhoneNumberText;
 
       if (!(await this.savedCurrentLanguage())) {
         await this.presentSelectLangModal();
@@ -62,15 +62,14 @@ export class LoginMethodPage implements OnInit {
     const pageData = this.contentService.getContentByPropertyName('login-method');
     this.pageText = this.sharedMethods.convertAdditionalTextToObj(pageData?.additionalText);
     this.inviteCodeAuth = this.pageText?.inviteCodeAuth;
-    this.usernameAuth = this.pageText?.usernameAuth;
-
+    this.loginWithEmailOrPhoneNumberText = this.pageText?.loginWithEmailOrPhoneNumberText;
   }
 
   toInviteCodeScreen() {
     this.router.navigate(['auth/invite-code']);
   }
 
-  loginWithUsername() {
+  loginWithEmailOrPhoneNumber() {
     this.router.navigate(['login'], {replaceUrl: true});
   }
 
@@ -87,7 +86,7 @@ export class LoginMethodPage implements OnInit {
       if (data.data) {
         this.pageText = data.data?.loginMethodData;
         this.inviteCodeAuth = this.pageText?.inviteCodeAuth;
-        this.usernameAuth = this.pageText?.usernameAuth;
+        this.loginWithEmailOrPhoneNumberText = this.pageText?.loginWithEmailOrPhoneNumberText;
       }
       this.modalDisplaying = false;
     });

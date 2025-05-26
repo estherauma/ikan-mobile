@@ -1,14 +1,14 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { FormControl, FormGroup, Validators, AbstractControl, ValidationErrors } from '@angular/forms';
 import { Router } from '@angular/router';
-import { MenuController, ModalController } from '@ionic/angular';
+import { AlertController, IonicSafeString, MenuController, ModalController } from '@ionic/angular';
 import { AuthService } from 'src/app/shared/services/auth/auth.service';
 import { BaseformPage } from 'src/app/shared/components/baseform/baseform.page';
 import { ApiService } from 'src/app/shared/services/api/api.service';
 import { ContentService } from 'src/app/shared/services/content/content.service';
 import { SharedmethodsService } from 'src/app/shared/services/sharedmethods/sharedmethods.service';
-import { FieldType, Icons, LoginSuccessReponse, StorageKeys, UserData, UserRole } from 'src/app/shared/types/api-types';
+import { FieldType, Icons, LoginSuccessReponse, StorageKeys } from 'src/app/shared/types/api-types';
 import { DBService } from 'src/app/shared/services/database/db.service';
 import { SyncService } from 'src/app/shared/services/sync/sync.service';
 import { LocalNotificationsService } from 'src/app/shared/services/local-notifications/local-notifications.service';
@@ -41,6 +41,7 @@ export class LoginPage extends BaseformPage implements OnInit {
     public modalController: ModalController,
     public analytics: AnalyticsService,
     public pushNotificationsService: PushNotificationsService,
+    public alertController: AlertController,
   ) {
     super(contentService);
   }
@@ -62,8 +63,11 @@ export class LoginPage extends BaseformPage implements OnInit {
         this.group[entry.key] = new FormControl('', [Validators.required]);
       }
 
+      // We are using the email key and not emailOrPhone for backward compatibility
+      // with the old login page
       if (entry.key === 'email') {
-        this.group[entry.key] = new FormControl('', [Validators.required, Validators.email]);
+        entry.label = this.pageText?.emailOrPhoneLabel ?? entry.label;
+        this.group[entry.key] = new FormControl('', [Validators.required, this.emailOrPhoneValidator]);
       }
     });
     this.pageFormGroup = new FormGroup(this.group);
@@ -76,6 +80,21 @@ export class LoginPage extends BaseformPage implements OnInit {
     });
   }
 
+  emailOrPhoneValidator(control: AbstractControl): ValidationErrors | null {
+    const value = control.value;
+    if (!value) { return null; }
+
+    const emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+    const phonePattern = /^([+]?[\s0-9 ]+)?(\d{3}|[ (]?[0-9]+[) ])?([- ]?[\s]?[0-9])+$/;
+
+    const isEmail = value.match(emailPattern);
+    const isPhone = value.match(phonePattern);
+
+    // We are using the email key and not emailOrPhone for backward compatibility
+    // with the old login page
+    return isEmail || isPhone ? null : { email: true };
+  }
+
   ionViewWillEnter() {
     this.menuCtrl.enable(false);
   }
@@ -83,13 +102,36 @@ export class LoginPage extends BaseformPage implements OnInit {
   setUpForm(): void {}
 
   async onSubmit(formData) {
+    this.sharedMethods.showLoader(this.contentService.commonText?.loadingText);
+    // We are using the email key and not emailOrPhone for backward compatibility
+    // with the old login page
+    const emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+    const phonePattern = /^([+]?[\s0-9 ]+)?(\d{3}|[ (]?[0-9]+[) ])?([- ]?[\s]?[0-9])+$/;
+    const isEmail = formData.email.trim().match(emailPattern);
+    const isPhone = formData.email.trim().match(phonePattern);
+    if (!isEmail && !isPhone) {
+      this.sharedMethods.hideLoader();
+      this.sharedMethods.showToast(this.pageText?.noEmailOrPhoneError || 'Please enter a valid email or phone number');
+      return;
+    }
+
+    // Extract email or phone number from formData
+    let email = null;
+    let phoneNumber = null;
+    if (isEmail) {
+      email = formData.email.trim();
+    }
+    if (isPhone) {
+      phoneNumber = formData.email.trim();
+    }
+
     formData = {
       ...formData,
-      email: formData.email.trim(),
+      email,
+      phoneNumber,
       password: formData.password.trim()
     };
-    
-    this.sharedMethods.showLoader(this.contentService.commonText?.loadingText);
+
     const response = await this.apiServices.post('accounts/login', formData, true);
     response.subscribe(
       async(res: LoginSuccessReponse) => {
@@ -97,7 +139,7 @@ export class LoginPage extends BaseformPage implements OnInit {
           this.pageFormGroup.reset();
           await this.sharedMethods.saveDataToStorage(StorageKeys.apiToken, res.data.token);
           await this.sharedMethods.saveDataToStorage(StorageKeys.userData, res.data.userData);
-          
+
           // set api headers for sync service that requires saved token
           await this.apiServices.setApiRequestHeaders();
           await this.authService.setUpAuthData();
@@ -116,10 +158,10 @@ export class LoginPage extends BaseformPage implements OnInit {
           this.localNotifications.scheduleNotifications(this.contentService.commonText);
 
           // sync data
-          await this.sharedMethods.showWaitLoader(this.commonText?.syncingData || 'Syncing data...');
+          await this.sharedMethods.showWaitLoader(this.contentService.commonText?.syncingData || 'Syncing data...');
           await this.syncService.syncData();
           await this.sharedMethods.dismissLoader();
-          
+
           // enable menu
           this.menuCtrl.enable(true);
           if (this.testEmails.includes(res.data.userData?.email)) {
@@ -133,17 +175,19 @@ export class LoginPage extends BaseformPage implements OnInit {
           await this.sharedMethods.saveDataToStorage(StorageKeys.isRoleSet, true);
           this.handleRedirection(res.data.userData?.role);
         }
-      }, (err: HttpErrorResponse) => {
+      }, async(err: HttpErrorResponse) => {
         this.sharedMethods.hideLoader();
-        this.sharedMethods.showToast(err.error?.detail);
+        if (err.error?.detail === 'Your phone number is not verified. Please verify it before logging in. OR log in with email.') {
+          await this.showUnverifiedNumberAlert();
+        } else {
+          this.sharedMethods.showToast(err.error?.detail);
+        }
       }
     );
   }
 
-
   async handleRedirection(role) {
     const helpScreens = await this.sharedMethods.readDataFromStorage(StorageKeys.isFirstLogin);
-    const user: UserData = await this.sharedMethods.readDataFromStorage(StorageKeys.userData);
     if (!helpScreens) {
       this.router.navigate([this.authService.getCurrentUserBaseUrlFromRole(role)], { replaceUrl: true });
     } else {
@@ -158,5 +202,25 @@ export class LoginPage extends BaseformPage implements OnInit {
 
   goBack() {
     this.router.navigate(['auth/login-method'], { replaceUrl: true });
+  }
+
+  async showUnverifiedNumberAlert() {
+    const alert = await this.alertController.create({
+      header: this.pageText?.unverifiedNumber,
+      message:  new IonicSafeString(`
+        <p style="text-align: center;">${ this.pageText?.unverifiedNumberMessage }</p>
+        <p style="text-align: center;"><strong>${ this.pageText?.unverifiedNumberSubText }</strong></p>
+      `),
+      cssClass: 'tuna-alert unverified-phone-number-alert',
+      buttons: [
+        {
+          text: this.contentService.commonText?.ok,
+          role: 'cancel',
+          cssClass: 'cancel-btn',
+        },
+      ]
+    });
+
+    await alert.present();
   }
 }

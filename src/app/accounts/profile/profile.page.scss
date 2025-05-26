@@ -2,7 +2,7 @@ ion-content {
   width: 100%;
   height: 100%;
   background: var(--ikan_skyblue_100);
-  
+
   .profile-image {
     background: var(--ikan_skyblue_100);
     padding: 0 20px 30px;
@@ -34,8 +34,8 @@ ion-content {
       width: 120px;
       border-radius: 50%;
       position: relative;
-  
-      .image{
+
+      .image {
         object-fit: cover;
         width: 100%;
         height: 100%;
@@ -43,7 +43,7 @@ ion-content {
       }
 
       .img {
-        border: 2px solid #80D8FE;
+        border: 2px solid #80d8fe;
       }
     }
     .edit-icon {
@@ -86,7 +86,7 @@ ion-content {
       padding: 20px;
 
       h1 {
-        color: #80D8FE;
+        color: #80d8fe;
         font-size: 1.3rem;
         margin-bottom: 20px;
       }
@@ -116,8 +116,28 @@ ion-content {
           font-size: 0.95rem;
         }
       }
+      ion-row {
+        width: 100%;
+      }
       ion-col {
         padding: 2px 5px;
+      }
+      .tel-num-val-col {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        ion-button {
+          --background: var(--ikan_darkblue_90);
+          --color: white;
+          font-size: 0.85rem;
+          font-weight: bold;
+          --border-radius: 20px;
+          text-transform: none;
+          min-width: 80px;
+          min-height: 28px;
+          --padding-bottom: 0;
+          --padding-top: 0;
+        }
       }
 
       ion-row {
@@ -127,14 +147,14 @@ ion-content {
       .label {
         font-family: interRegular;
         font-size: 0.95rem;
-        color: #3565FF;
-        --color: #3565FF;
+        color: #3565ff;
+        --color: #3565ff;
       }
 
       .value {
         font-size: 1.2rem;
       }
-      
+
       .address {
         ion-label {
           margin: 0 0 0 5px;

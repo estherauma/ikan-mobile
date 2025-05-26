@@ -12,7 +12,7 @@ import { StorageKeys } from 'src/app/shared/types/api-types';
 export class SelectLanguageComponent  implements OnInit {
   availableLanguages: any = [];
   languageDataLoading = false;
-  currentLanguage = 'en-us'
+  currentLanguage = 'en-us';
   commonText: any;
 
   constructor(

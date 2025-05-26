@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { FormControl, Validators, FormGroup } from '@angular/forms';
+import { FormControl, FormGroup } from '@angular/forms';
+import { Router } from '@angular/router';
 import { ModalController } from '@ionic/angular';
 import { ProfilesDataService } from 'src/app/profiles/data/profiles-data.service';
 import { BaseformPage } from 'src/app/shared/components/baseform/baseform.page';
@@ -17,16 +18,16 @@ import { UserData, UserRole } from 'src/app/shared/types/api-types';
   styleUrls: ['./profile.page.scss'],
 })
 export class ProfilePage extends BaseformPage implements OnInit {
-  pageTitle: string = 'My Profile'
-  imageUrl: string = '';
+  pageTitle = 'My Profile';
+  imageUrl = '';
   userData: UserData;
   profileData: ProfileData;
   regFormQtns: any;
   regGroup = {};
   regFormGroup: FormGroup;
   regPageText: any;
-  isAgent: boolean = false;
-  isViewProfile: boolean = false;
+  isAgent = false;
+  isViewProfile = false;
   viewData: any = {};
   docsCommonText: any;
 
@@ -36,6 +37,7 @@ export class ProfilePage extends BaseformPage implements OnInit {
     public profilesDataService: ProfilesDataService,
     public analytics: AnalyticsService,
     public modalController: ModalController,
+    public router: Router,
   ) {
     super(contentService);
   }
@@ -76,7 +78,7 @@ export class ProfilePage extends BaseformPage implements OnInit {
     this.formQuestions = pageData?.formQuestions;
     this.formQuestions?.forEach((entry) => {
       this.viewData[entry.key] = entry?.label;
-      
+
       // this field will not be displayed
       if (entry.key === 'address') {
         return;
@@ -94,7 +96,7 @@ export class ProfilePage extends BaseformPage implements OnInit {
     this.regFormQtns = regPageData?.formQuestions;
     this.regFormQtns?.forEach((entry) => {
       this.viewData[entry.key] = entry?.label;
-      
+
       // this field will not be displayed
       if (entry.key === 'registrationDetails') {
         return;
@@ -116,7 +118,7 @@ export class ProfilePage extends BaseformPage implements OnInit {
     data.updatedAt = now;
     const profileExists = await this.profilesDataService.checkIfProfileExists(data.email);
     if (profileExists) {
-      data = { ...this.profileData, ...data}
+      data = { ...this.profileData, ...data};
       const result = await this.profilesDataService.update(data);
       if (result?.rowsAffected > 0) {
         await this.pageSetup();
@@ -191,5 +193,22 @@ export class ProfilePage extends BaseformPage implements OnInit {
         this.sharedMethods.showToast(this.docsCommonText?.profilePictureUpdateFailure);
       }
     });
+  }
+
+  async verifyPhoneNumber(type: string) {
+    let phoneNumber = null;
+    if (type === 'mobile' && this.profileData?.mobile) {
+      phoneNumber = this.profileData?.mobile;
+    } else if (type === 'telephone' && this.profileData?.telephone) {
+      phoneNumber = this.profileData?.telephone;
+    }
+
+    const queryParams = {
+      phoneNumber,
+      numberType: type,
+      previousUrl: this.router.url,
+    };
+
+    this.router.navigate(['auth/verify-phone-number'], { replaceUrl: true, queryParams });
   }
 }

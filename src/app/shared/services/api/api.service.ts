@@ -112,7 +112,10 @@ export class ApiService {
             resolve(null);
           });
       } catch (error) {
-        this.globalErrorHandler.handleError(error, 'Error in api.service.ts at uploadPushNotificationData(). Failed to upload push notification data.');
+        this.globalErrorHandler.handleError(
+          error,
+          'Error in api.service.ts at uploadPushNotificationData(). Failed to upload push notification data.'
+        );
         return null;
       }
     });
