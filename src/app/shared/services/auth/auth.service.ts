@@ -33,7 +33,7 @@ export class AuthService {
     if (this.userData) {
       this.userRole = this.userData?.role;
       this.currentUser.next(this.userData);
-  
+
       this.userToken = await this.sharedMethods.readDataFromStorage(StorageKeys.apiToken);
       if (this.userToken) {
         const decodedAccessToken = this.decodeAccessToken(this.userToken);
@@ -70,7 +70,7 @@ export class AuthService {
     return this.currentUser.asObservable();
   }
 
-  logOut() {
+  async logOut() {
     Preferences.remove({ key: StorageKeys.apiToken });
     Preferences.remove({ key: StorageKeys.userData });
     Preferences.remove({ key: StorageKeys.isRoleSet });
@@ -78,20 +78,20 @@ export class AuthService {
   }
 
   alterMenuBasedOnRole(menuItems: Array<any>) {
-    let finalMenu = [];
+    const finalMenu = [];
     menuItems.forEach((menuItem) => {
       // show change role based on number of user roles
-      if(this.userData?.roles?.length > 1 && menuItem.url === '/select-role') {
+      if (this.userData?.roles?.length > 1 && menuItem.url === '/select-role') {
         menuItem.enabled = true;
       }
       if (menuItem?.roles == null) {
         return;
       }
-      let allowedRoles = menuItem.roles.split(',').map((role) => role.trim());
+      const allowedRoles = menuItem.roles.split(',').map((role) => role.trim());
       if (menuItem?.enabled && (allowedRoles.includes(this.userRole) || allowedRoles.includes('all'))) {
        finalMenu.push(menuItem);
       }
-    })
+    });
     return finalMenu;
   }
 

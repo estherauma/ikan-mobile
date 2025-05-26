@@ -104,7 +104,10 @@ export class SyncService {
   async syncCompanies() {
     const companies = this.companyServ.companies;
     if (companies.length > 0) {
+      const user = await this.sharedMethods.getUserData();
       companies.forEach(async(company) => {
+        if (user?.id !== company?.createdBy) { return; }
+
         const companyId = company.id;
         const companyToUpload = Object.assign({}, company);
         delete companyToUpload.id;
@@ -143,7 +146,10 @@ export class SyncService {
   async syncVessels() {
     const vessels = this.vesselServ.vessels;
     if (vessels.length > 0) {
+      const user = await this.sharedMethods.getUserData();
       vessels.forEach(async(vessel) => {
+        if (user?.id !== vessel?.createdBy) { return; }
+
         const vesselId = vessel.id;
         const vesselToUpload = Object.assign({}, vessel);
         delete vesselToUpload.id;
@@ -155,8 +161,9 @@ export class SyncService {
             }
           });
         } else {
-          this.apiService.put('vessels', vesselToUpload.onlineRef, vesselToUpload).subscribe(async(response) => {
-            if (response?.['status'] === 'OK') {
+
+          this.apiService.put('vessels', vesselToUpload.onlineRef, vesselToUpload).subscribe(async(response: any) => {
+            if (response?.status === 'OK') {
               await this.postVesselImage(vessel, vesselToUpload.onlineRef);
             }
           });
@@ -180,10 +187,10 @@ export class SyncService {
         imageData.append('updatedAt', vesselImage.updatedAt);
         imageData.append('createdBy', vesselImage.createdBy);
         imageData.append('updatedBy', vesselImage.updatedBy);
-        this.apiService.post('file-upload', imageData).subscribe((res) => {
-          if (res?.['status'] === 'OK') {
+        this.apiService.post('file-upload', imageData).subscribe((res: any) => {
+          if (res?.status === 'OK') {
             if (!vesselImage.onlineRef) {
-              this.dbService.updateDatabaseField('vessel_images', 'online_ref', res?.['data']['vesselImage']?.id, vesselImage.app_ref);
+              this.dbService.updateDatabaseField('vessel_images', 'online_ref', res?.data.vesselImage?.id, vesselImage.app_ref);
             }
           } else {
             console.error(`Failed to sync vessel image for vessel ${vessel.name} to the api`, res);
@@ -208,7 +215,7 @@ export class SyncService {
         })).subscribe(() => {
           // fetch the vessel images after the vessels have been fetched
           this.apiService.get('vessels-images').subscribe((resp: any) => {
-            if (resp?.['status'] === 200 && resp.body.length > 0) {
+            if (resp?.status === 200 && resp.body.length > 0) {
               resp.body.forEach(async(image) => {
                 const vessel = await this.vesselServ.getVesselByField('onlineRef', image.vessel);
                 if (vessel && !vessel.imageFile.webPath) {
@@ -245,7 +252,10 @@ export class SyncService {
   async syncContracts() {
     const contracts  = this.contractServ.contracts;
     if (contracts.length > 0) {
+      const user = await this.sharedMethods.getUserData();
       contracts.forEach((contract) => {
+        if (user?.id !== contract?.createdBy) { return; }
+
         contract.startDate = new Date(contract.startDate).toISOString().split('T')[0];
         contract.endDate = new Date(contract.endDate).toISOString().split('T')[0];
         const tempContractId = contract.id;
@@ -269,8 +279,8 @@ export class SyncService {
             }
           });
         } else {
-          this.apiService.put('contracts', contractToUpload.onlineRef, contractToUpload).subscribe(async(response) => {
-            if (response?.['status'] === 'OK') {
+          this.apiService.put('contracts', contractToUpload.onlineRef, contractToUpload).subscribe(async(response: any) => {
+            if (response?.status === 'OK') {
               await this.postContractDocument(contract);
               await this.syncContractClauses(contract.id, contract.onlineRef);
             }
@@ -295,13 +305,13 @@ export class SyncService {
         docData.append('updatedAt', contractDocument.updatedAt);
         docData.append('createdBy', contractDocument.createdBy);
         docData.append('updatedBy', contractDocument.updatedBy);
-        this.apiService.post('file-upload', docData).subscribe((res) => {
-          if (res?.['status'] === 'OK') {
+        this.apiService.post('file-upload', docData).subscribe((res: any) => {
+          if (res?.status === 'OK') {
             if (!contractDocument.onlineRef) {
               this.contractServ.updateContractDocumentFieldByContractId(
                 contractDocument.contract_id,
                 'online_ref',
-                res?.['data']['contractDocument']?.id
+                res?.data.contractDocument?.id
               );
             }
           } else {
@@ -390,8 +400,8 @@ export class SyncService {
           // }
         });
       } else {
-        this.apiService.put('contracts-clauses', clause.onlineRef, clauseToUpload).subscribe(async(response) => {
-          if (response?.['status'] === 'OK') {
+        this.apiService.put('contracts-clauses', clause.onlineRef, clauseToUpload).subscribe(async(response: any) => {
+          if (response?.status === 'OK') {
             await this.syncContractClausesAttachments(clause);
           } else {
             console.error('Failed to update contract clause', response);
@@ -414,8 +424,8 @@ export class SyncService {
               attachmentData.append('entityType', 'contract_clause_attachment');
               attachmentData.append('clauseAppRef', clause.appRef);
               attachmentData.append('contentField', key);
-              this.apiService.post('file-upload', attachmentData).subscribe((res) => {
-                if (res?.['status'] !== 'OK')  {
+              this.apiService.post('file-upload', attachmentData).subscribe((res: any) => {
+                if (res?.status !== 'OK')  {
                   console.error(`Failed to sync contract clause attachment for clause ${clause.name} to the api`, res);
                 }
               });
@@ -499,20 +509,23 @@ export class SyncService {
   async syncInlineQuestions() {
     const questions = this.surveyDataService.inlineQuestions;
     if (questions?.length) {
+      const user = await this.sharedMethods.getUserData();
       questions.forEach((question) => {
+        if (user?.id !== question?.createdBy) { return; }
+
         const questionId = question.id;
         const questionToUpload = Object.assign({}, question);
         delete questionToUpload.id;
         questionToUpload.user = questionToUpload.userId;
         if (!questionToUpload.onlineRef) {
-          this.apiService.post('inline-questions', questionToUpload).subscribe(async(response) => {
-            if (response['status'] === 'OK') {
-              this.dbService.updateDatabaseField('inline_questions', 'online_ref', response['data']['id'], question.appRef);
+          this.apiService.post('inline-questions', questionToUpload).subscribe(async(response: any) => {
+            if (response?.status === 'OK') {
+              this.dbService.updateDatabaseField('inline_questions', 'online_ref', response.data.id, question.appRef);
             }
           });
         } else {
-          this.apiService.put('inline-questions', questionToUpload.onlineRef, questionToUpload).subscribe(async(response) => {
-            if (response?.['status'] !== 'OK') {
+          this.apiService.put('inline-questions', questionToUpload.onlineRef, questionToUpload).subscribe(async(response: any) => {
+            if (response?.status !== 'OK') {
               console.error('Failed to update inline question', response);
             }
           });
@@ -703,7 +716,7 @@ export class SyncService {
         return this.apiService.post(
           'accounts/profile',
           profileToUpload, false,
-          {user_id: profile?.onlineRef}
+          {userId: profile?.onlineRef}
         ).subscribe(async(response: CreateProfileResponse) => {
           if (response?.status === 'OK') {
             if (hasProfileImage) {
@@ -751,8 +764,8 @@ export class SyncService {
       imageData.append('fileContent', imageFile);
       imageData.append('entityType', 'profile_picture');
       imageData.append('userId', profileOnlineRef);
-      this.apiService.post('file-upload', imageData).subscribe((res) => {
-        if (res?.['status'] !== 'OK') {
+      this.apiService.post('file-upload', imageData).subscribe((res: any) => {
+        if (res?.status !== 'OK') {
           console.error(`Failed to sync profile image for user ${profile.email} to the api`, res);
         }
       });
@@ -763,7 +776,7 @@ export class SyncService {
     return this.apiService.get(
       'accounts/bank-details',
       false,
-      {user_id: profileOnlineRef}
+      {userId: profileOnlineRef}
     ).subscribe((response: GetBankAccountsResponse) => {
       if (response.status === 200 && response.body.data.length > 0) {
         response.body.data.forEach((bankAccount) => {
@@ -788,6 +801,8 @@ export class SyncService {
   async syncBankAccounts(profileId, userOnlineRef ) {
     const accounts = await this.paymentsDataService.getUserBankAccounts(profileId);
     accounts.forEach(async(account) => {
+      if (userOnlineRef !== account?.createdBy) { return; }
+
       const acctToUpload = Object.assign({}, account);
       delete acctToUpload.id;
       acctToUpload.userId = userOnlineRef;
@@ -809,7 +824,7 @@ export class SyncService {
     return this.apiService.get(
       'accounts/beneficiaries-bank-details',
       false,
-      {user_id: profileOnlineRef}
+      {userId: profileOnlineRef}
     ).subscribe((response: GetBeneficiaryResponse) => {
       if (response.status === 200 && response.body.data.length > 0) {
         response.body.data.forEach((beneficiary) => {
@@ -834,6 +849,8 @@ export class SyncService {
   async syncBeneficiaries(profileId, userOnlineRef) {
     const beneficiaries = await this.paymentsDataService.getUserBeneficiaries(profileId);
     beneficiaries.forEach(async(beneficiary) => {
+      if (userOnlineRef !== beneficiary?.createdBy) { return; }
+
       const dataToUpload = Object.assign({}, beneficiary);
       delete dataToUpload.id;
       dataToUpload.userId = userOnlineRef;
@@ -854,12 +871,15 @@ export class SyncService {
   async syncMyDocuments() {
     const allDocs = this.documentsDataService.allDocuments;
     if (allDocs?.length) {
+      const user = await this.sharedMethods.getUserData();
       allDocs.forEach(async(document) => {
+        if (user?.id !== document?.createdBy) { return; }
+
         if (document.isDeleted && !document.onlineRef) {
           await this.documentsDataService.deleteDocument(document.id);
         } else if (document.isDeleted && document.onlineRef) {
-          this.apiService.delete('mydocuments', document.onlineRef).subscribe(async(response) => {
-            if (response?.['status'] === 'OK' || !response) {
+          this.apiService.delete('mydocuments', document.onlineRef).subscribe(async(response: any) => {
+            if (response?.status === 'OK' || !response) {
               await this.documentsDataService.deleteDocument(document.id);
             } else {
               console.error(`Failed to delete document ${document.fileName} from the api`, response);
@@ -876,22 +896,22 @@ export class SyncService {
             const docData =  new FormData();
             docData.append('fileContent', file);
             docData.append('entityType', 'my_document');
-            this.apiService.post('file-upload', docData).subscribe((uploadResponse) => {
-              if (uploadResponse?.['status'] === 'OK') {
-                documentToUpload.fileUrl = uploadResponse?.['data']?.fileLocation;
+            this.apiService.post('file-upload', docData).subscribe((uploadResponse: any) => {
+              if (uploadResponse?.status === 'OK') {
+                documentToUpload.fileUrl = uploadResponse?.data?.fileLocation;
                 const dataToSave = {...documentToUpload, user: documentToUpload.userId};
 
                 if (!documentToUpload.onlineRef) {
-                  this.apiService.post('mydocuments', dataToSave).subscribe((response) => {
-                    if (response?.['status'] === 'OK') {
-                      this.dbService.updateDatabaseField('documents', 'online_ref', response?.['data']?.id, documentToUpload.appRef);
+                  this.apiService.post('mydocuments', dataToSave).subscribe((response: any) => {
+                    if (response?.status === 'OK') {
+                      this.dbService.updateDatabaseField('documents', 'online_ref', response?.data?.id, documentToUpload.appRef);
                     } else {
                       console.error(`Failed to sync document ${document.fileName} to the api`, response);
                     }
                   });
                 } else {
-                  this.apiService.put('mydocuments', documentToUpload.onlineRef, dataToSave).subscribe((response) => {
-                    if (response?.['status'] !== 'OK')  {
+                  this.apiService.put('mydocuments', documentToUpload.onlineRef, dataToSave).subscribe((response: any) => {
+                    if (response?.status !== 'OK')  {
                       console.error(`Failed to sync document ${document.fileName} to the api`, response);
                     }
                   });
@@ -907,8 +927,8 @@ export class SyncService {
   }
 
   async fetchMyDocuments() {
-    return this.apiService.get('mydocuments').subscribe((response) => {
-      if (response?.['status'] === 200 && response.body.data.length > 0) {
+    return this.apiService.get('mydocuments').subscribe((response: any) => {
+      if (response?.status === 200 && response.body.data.length > 0) {
         response.body.data.forEach(async(doc) => {
           this.dbService.checkIfEntryExists('documents', doc.appRef).then(async(exists) => {
             if (!exists) {
@@ -939,7 +959,9 @@ export class SyncService {
   async syncPassports() {
     const passports = this.documentsDataService.passports;
     if (passports.length > 0) {
+      const user = await this.sharedMethods.getUserData();
       passports.forEach(async(passport) => {
+        if (user?.id !== passport?.createdBy) { return; }
         const dataToSave = Object.assign({}, passport);
         delete dataToSave.id;
         delete dataToSave.imageUrl;
@@ -950,18 +972,18 @@ export class SyncService {
           if (passport.isDeleted) {
             await this.documentsDataService.deletePassport(passport.id);
           } else {
-            this.apiService.post('passports', dataToSave).subscribe(async(response) => {
-              if (response?.['status'] === 'OK') {
-                this.dbService.updateDatabaseField('passports', 'online_ref', response?.['data']?.id, passport.appRef);
+            this.apiService.post('passports', dataToSave).subscribe(async(response: any) => {
+              if (response?.status === 'OK') {
+                this.dbService.updateDatabaseField('passports', 'online_ref', response?.data?.id, passport.appRef);
                 const file = await this.uploadService.retrieveAndReturnBlob(passport.imageUrl);
                 if (file) {
                   const imageData = new FormData();
                   imageData.append('fileContent', file);
                   imageData.append('entityType', 'passport');
-                  imageData.append('passportId', response?.['data']?.id);
+                  imageData.append('passportId', response?.data?.id);
 
-                  this.apiService.post('file-upload', imageData).subscribe((res) => {
-                    if (res?.['status'] !== 'OK') {
+                  this.apiService.post('file-upload', imageData).subscribe((res: any) => {
+                    if (res?.status !== 'OK') {
                       console.error(`Failed to sync passport image, ${passport.appRef} to the api`, res);
                     }
                   });
@@ -971,24 +993,24 @@ export class SyncService {
           }
         } else {
           if (passport.isDeleted) {
-            this.apiService.delete('passports', passport.onlineRef).subscribe(async(response) => {
-              if (response?.['status'] === 'OK' || !response) {
+            this.apiService.delete('passports', passport.onlineRef).subscribe(async(response: any) => {
+              if (response?.status === 'OK' || !response) {
                 await this.documentsDataService.deletePassport(passport.id);
               } else {
                 console.error(`Failed to delete passport ${passport.appRef} from the api`, response);
               }
             });
           } else {
-            this.apiService.put('passports', passport.onlineRef, dataToSave).subscribe(async(response) => {
-              if (response?.['status'] === 'OK') {
+            this.apiService.put('passports', passport.onlineRef, dataToSave).subscribe(async(response: any) => {
+              if (response?.status === 'OK') {
                 const file = await this.uploadService.retrieveAndReturnBlob(passport.imageUrl);
                 if (file) {
                   const imageData = new FormData();
                   imageData.append('fileContent', file);
                   imageData.append('entityType', 'passport');
                   imageData.append('passportId', passport.onlineRef);
-                  this.apiService.post('file-upload', imageData).subscribe((res) => {
-                    if (res?.['status'] !== 'OK') {
+                  this.apiService.post('file-upload', imageData).subscribe((res: any) => {
+                    if (res?.status !== 'OK') {
                       console.error(`Failed to sync passport image, ${passport.appRef} to the api`, res);
                     }
                   });
@@ -1002,8 +1024,8 @@ export class SyncService {
   }
 
   async fetchPassports() {
-    return this.apiService.get('passports').subscribe((response) => {
-      if (response?.['status'] === 200 && response.body.data.length > 0) {
+    return this.apiService.get('passports').subscribe((response: any) => {
+      if (response?.status === 200 && response.body.data.length > 0) {
         response.body.data.forEach(async(passport) => {
           await this.dbService.checkIfEntryExists('passports', passport.appRef).then(async(exists) => {
             if (!exists) {
@@ -1032,8 +1054,8 @@ export class SyncService {
   }
 
   async fetchPayments() {
-    return this.apiService.get('payments').subscribe((response) => {
-      if (response?.['status'] === 200 && response.body.length > 0) {
+    return this.apiService.get('payments').subscribe((response: any) => {
+      if (response?.status === 200 && response.body.length > 0) {
         response.body.forEach(async(payment) => {
           const user = await this.sharedMethods.getUserData();
           const now = this.sharedMethods.getCurrentDateTime();
