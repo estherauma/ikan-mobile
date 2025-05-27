@@ -32,13 +32,13 @@ export class FormComponent implements OnInit {
   @Input() nonFieldErrors: any = [];
   @Input() isSubmitting = false;
   @Input() autocomplete = true;
-  @Input() uploadPictureIcon: string = 'assets/icon/camera.svg';
-  @Input() uploadPictureText: string = '';
-  @Input() uploadDocIcon: string = 'assets/icon/pdf.svg';
-  @Input() uploadDocText: string = '';
-  @Input() showCancelButton: boolean = false;
-  @Input() showSurveyDisclaimer: boolean = false;
-  @Input() disclaimerText: string = '';
+  @Input() uploadPictureIcon = 'assets/icon/camera.svg';
+  @Input() uploadPictureText = '';
+  @Input() uploadDocIcon = 'assets/icon/pdf.svg';
+  @Input() uploadDocText = '';
+  @Input() showCancelButton = false;
+  @Input() showSurveyDisclaimer = false;
+  @Input() disclaimerText = '';
 
   @Output() formValues = new EventEmitter<any>();
   @Output() cancel = new EventEmitter<any>();
@@ -135,7 +135,7 @@ export class FormComponent implements OnInit {
           return data?.data?.imageData;
         }
       });
-      
+
     } catch (error) {
       console.error(error);
     }
@@ -173,7 +173,7 @@ export class FormComponent implements OnInit {
         this.tunaFormGroup.patchValue({
           [question.key]: data.data.location
         });
-      };
+      }
     });
   }
 
