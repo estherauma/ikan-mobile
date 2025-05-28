@@ -35,7 +35,9 @@ export class FormComponent implements OnInit {
   @Input() uploadPictureIcon = 'assets/icon/camera.svg';
   @Input() uploadPictureText = '';
   @Input() uploadDocIcon = 'assets/icon/pdf.svg';
+  @Input() selectFileIcon = 'assets/icon/documents.svg';
   @Input() uploadDocText = '';
+  @Input() selectFileText  = 'Select file'; // translate
   @Input() showCancelButton = false;
   @Input() showSurveyDisclaimer = false;
   @Input() disclaimerText = '';
@@ -70,6 +72,7 @@ export class FormComponent implements OnInit {
     this.typeHereText = this.commonText?.typeHere;
     this.uploadPictureText = this.commonText?.uploadPicture;
     this.uploadDocText = this.commonText?.uploadDocument;
+    this.selectFileText = this.commonText?.selectFile ?? this.selectFileText;
     this.selectDateText = this.commonText?.selectADate;
     this.submitButtonText = this.submitButtonText || this.commonText?.submit;
     this.tunaFormquestions?.map(question => {
@@ -112,12 +115,42 @@ export class FormComponent implements OnInit {
     return obj;
   }
 
-  async onUpload(key) {
+  async onPdfUpload(key) {
     const file = await this.uploadService.chooseFile();
 
     this.tunaFormGroup.patchValue({
       [key]: file
     });
+  }
+
+  async onFileUpload(key) {
+    const alert = await this.alertController.create({
+      cssClass: 'tuna-alert select-file-alert',
+      header: this.commonText?.selectFilePrompt,
+      buttons: [
+        {
+          text: this.commonText?.selectPdfFile || 'Select pdf file--', // translate
+          handler: async() => {
+            await this.onPdfUpload(key);
+            await alert.dismiss();
+          }
+        },
+        {
+          text: this.commonText?.takePicture || 'Take picture--', // translate
+          handler: async() => {
+            await this.takePicture(key);
+            await alert.dismiss();
+          }
+        },
+        {
+          text: this.commonText?.cancel,
+          role: 'cancel',
+          cssClass: 'secondary'
+        },
+      ]
+    });
+
+    await alert.present();
   }
 
   async takePicture(key) {
@@ -126,18 +159,19 @@ export class FormComponent implements OnInit {
         component: ImageselectComponent,
         cssClass: 'notification-modal'
       });
-      modal.present();
+      await modal.present();
 
-      modal.onDidDismiss().then((data) => {
-        if (data?.data?.imageData) {
-          const val = data?.data?.imageData;
+      await modal.onDidDismiss().then(async(data) => {
+        if (await data?.data?.imageData) {
+          const val = await data?.data?.imageData;
           this.updateFieldValue(key, val);
           return data?.data?.imageData;
         }
       });
-
+      return null;
     } catch (error) {
       console.error(error);
+      return null;
     }
   }
 
