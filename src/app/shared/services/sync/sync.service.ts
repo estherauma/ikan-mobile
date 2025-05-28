@@ -105,8 +105,8 @@ export class SyncService {
     const companies = this.companyServ.companies;
     if (companies.length > 0) {
       const user = await this.sharedMethods.getUserData();
-      companies.forEach(async(company) => {
-        if (user?.id !== company?.createdBy) { return; }
+      for (const company of companies) {
+        if (user?.id !== company?.createdBy) { continue; }
 
         const companyId = company.id;
         const companyToUpload = Object.assign({}, company);
@@ -122,7 +122,7 @@ export class SyncService {
             console.log(response);
           });
         }
-      });
+      };
     }
   }
 
@@ -147,8 +147,8 @@ export class SyncService {
     const vessels = this.vesselServ.vessels;
     if (vessels.length > 0) {
       const user = await this.sharedMethods.getUserData();
-      vessels.forEach(async(vessel) => {
-        if (user?.id !== vessel?.createdBy) { return; }
+      for (const vessel of vessels) {
+        if (user?.id !== vessel?.createdBy) { continue; }
 
         const vesselId = vessel.id;
         const vesselToUpload = Object.assign({}, vessel);
@@ -168,7 +168,7 @@ export class SyncService {
             }
           });
         }
-      });
+      };
     }
   }
 
@@ -253,8 +253,8 @@ export class SyncService {
     const contracts  = this.contractServ.contracts;
     if (contracts.length > 0) {
       const user = await this.sharedMethods.getUserData();
-      contracts.forEach(async(contract) => {
-        if (user?.id !== contract?.createdBy) { return; }
+      for (const contract of contracts) {
+        if (user?.id !== contract?.createdBy) { continue; }
 
         contract.startDate = new Date(contract.startDate).toISOString().split('T')[0];
         contract.endDate = new Date(contract.endDate).toISOString().split('T')[0];
@@ -307,7 +307,7 @@ export class SyncService {
             }
           });
         }
-      });
+      };
     }
   }
 
@@ -539,8 +539,8 @@ export class SyncService {
     const questions = this.surveyDataService.inlineQuestions;
     if (questions?.length) {
       const user = await this.sharedMethods.getUserData();
-      questions.forEach((question) => {
-        if (user?.id !== question?.createdBy) { return; }
+      for (const question of questions) {
+        if (user?.id !== question?.createdBy) { continue; }
 
         const questionId = question.id;
         const questionToUpload = Object.assign({}, question);
@@ -559,7 +559,7 @@ export class SyncService {
             }
           });
         }
-      });
+      };
     }
   }
 
@@ -829,8 +829,8 @@ export class SyncService {
 
   async syncBankAccounts(profileId, userOnlineRef ) {
     const accounts = await this.paymentsDataService.getUserBankAccounts(profileId);
-    accounts.forEach(async(account) => {
-      if (userOnlineRef !== account?.createdBy) { return; }
+    for (const account of accounts) {
+      if (userOnlineRef !== account?.createdBy) { continue; }
 
       const acctToUpload = Object.assign({}, account);
       delete acctToUpload.id;
@@ -846,7 +846,7 @@ export class SyncService {
       } else {
         // update api record
       }
-    });
+    }
   }
 
   async fetchBeneficiaries(profileOnlineRef) {
@@ -877,8 +877,8 @@ export class SyncService {
 
   async syncBeneficiaries(profileId, userOnlineRef) {
     const beneficiaries = await this.paymentsDataService.getUserBeneficiaries(profileId);
-    beneficiaries.forEach(async(beneficiary) => {
-      if (userOnlineRef !== beneficiary?.createdBy) { return; }
+    for (const beneficiary of beneficiaries) {
+      if (userOnlineRef !== beneficiary?.createdBy) { continue; }
 
       const dataToUpload = Object.assign({}, beneficiary);
       delete dataToUpload.id;
@@ -894,15 +894,15 @@ export class SyncService {
       } else {
         // update api record
       }
-    });
+    }
   }
 
   async syncMyDocuments() {
     const allDocs = this.documentsDataService.allDocuments;
     if (allDocs?.length) {
       const user = await this.sharedMethods.getUserData();
-      allDocs.forEach(async(document) => {
-        if (user?.id !== document?.createdBy) { return; }
+      for (const document of allDocs) {
+        if (user?.id !== document?.createdBy) { continue; }
 
         if (document.isDeleted && !document.onlineRef) {
           await this.documentsDataService.deleteDocument(document.id);
@@ -951,7 +951,7 @@ export class SyncService {
             });
           }
         }
-      });
+      }
     }
   }
 
@@ -989,8 +989,8 @@ export class SyncService {
     const passports = this.documentsDataService.passports;
     if (passports.length > 0) {
       const user = await this.sharedMethods.getUserData();
-      passports.forEach(async(passport) => {
-        if (user?.id !== passport?.createdBy) { return; }
+      for (const passport of passports) {
+        if (user?.id !== passport?.createdBy) { continue; }
         const dataToSave = Object.assign({}, passport);
         delete dataToSave.id;
         delete dataToSave.imageUrl;
@@ -1048,7 +1048,7 @@ export class SyncService {
             });
           }
         }
-      });
+      }
     }
   }
 

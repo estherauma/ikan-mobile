@@ -161,13 +161,12 @@ export class FormComponent implements OnInit {
       });
       await modal.present();
 
-      await modal.onDidDismiss().then(async(data) => {
-        if (await data?.data?.imageData) {
-          const val = await data?.data?.imageData;
-          this.updateFieldValue(key, val);
-          return data?.data?.imageData;
-        }
-      });
+      const data = await modal.onDidDismiss();
+      if (await data?.data?.imageData) {
+        const val = await data?.data?.imageData;
+        this.updateFieldValue(key, val);
+        return data?.data?.imageData;
+      }
       return null;
     } catch (error) {
       console.error(error);
