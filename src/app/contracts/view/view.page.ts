@@ -182,7 +182,7 @@ export class ViewPage implements OnInit {
       cssClass: 'notification-modal',
       component: CreatePage,
       componentProps: {
-        contractDetails,
+        contractDetails: JSON.stringify(contractDetails),
         isEditing: true,
       }
     });
