@@ -37,7 +37,7 @@ export class FormComponent implements OnInit {
   @Input() uploadDocIcon = 'assets/icon/pdf.svg';
   @Input() selectFileIcon = 'assets/icon/documents.svg';
   @Input() uploadDocText = '';
-  @Input() selectFileText  = 'Select file'; // translate
+  @Input() selectFileText  = 'Select file';
   @Input() showCancelButton = false;
   @Input() showSurveyDisclaimer = false;
   @Input() disclaimerText = '';
@@ -129,14 +129,14 @@ export class FormComponent implements OnInit {
       header: this.commonText?.selectFilePrompt,
       buttons: [
         {
-          text: this.commonText?.selectPdfFile || 'Select pdf file--', // translate
+          text: this.commonText?.selectPdfFile,
           handler: async() => {
             await this.onPdfUpload(key);
             await alert.dismiss();
           }
         },
         {
-          text: this.commonText?.takePicture || 'Take picture--', // translate
+          text: this.commonText?.takePicture,
           handler: async() => {
             await this.takePicture(key);
             await alert.dismiss();
