@@ -253,7 +253,7 @@ export class SyncService {
     const contracts  = this.contractServ.contracts;
     if (contracts.length > 0) {
       const user = await this.sharedMethods.getUserData();
-      contracts.forEach((contract) => {
+      contracts.forEach(async(contract) => {
         if (user?.id !== contract?.createdBy) { return; }
 
         contract.startDate = new Date(contract.startDate).toISOString().split('T')[0];
@@ -261,9 +261,30 @@ export class SyncService {
         const tempContractId = contract.id;
         const contractToUpload = Object.assign({}, contract);
         delete contractToUpload.id;
-        if (!contractToUpload.taiwaneseCompany) { delete contractToUpload.taiwaneseCompany; }
-        if (!contractToUpload.indonesianCompany) {delete contractToUpload.indonesianCompany; }
+
         if (!contractToUpload.description) { delete contractToUpload.description; }
+        if (!contractToUpload.taiwaneseCompany) {
+          delete contractToUpload.taiwaneseCompany;
+        } else {
+          const taiwaneseCompanyId = Number(contractToUpload.taiwaneseCompany);
+          const taiwanCompany = await this.companyServ.getCompanyById(taiwaneseCompanyId);
+          if (taiwanCompany) {
+            contractToUpload.taiwaneseCompany = taiwanCompany.onlineRef;
+          } else {
+            delete contractToUpload.taiwaneseCompany;
+          }
+        }
+        if (!contractToUpload.indonesianCompany) {
+          delete contractToUpload.indonesianCompany;
+        } else {
+          const indonesianCompanyId = Number(contractToUpload.indonesianCompany);
+          const indonesianCompany = await this.companyServ.getCompanyById(indonesianCompanyId);
+          if (indonesianCompany) {
+            contractToUpload.indonesianCompany = indonesianCompany.onlineRef;
+          } else {
+            delete contractToUpload.indonesianCompany;
+          }
+        }
 
         if (!contract.onlineRef) {
           this.apiService.post('contracts', contractToUpload).subscribe(async(response: CreateContractResp) => {
@@ -332,6 +353,14 @@ export class SyncService {
           await this.dbService.checkIfEntryExists('contracts', contract.appRef)
           .then(async(exists) => {
             if (!exists) {
+              if (contract?.taiwaneseCompany) {
+                const taiwaneseCompany = await this.companyServ.getCompanyByField('onlineRef', contract.taiwaneseCompany);
+                contract.taiwaneseCompany = taiwaneseCompany?.id || null;
+              }
+              if (contract?.indonesianCompany) {
+                const indonesianCompany = await this.companyServ.getCompanyByField('onlineRef', contract.indonesianCompany);
+                contract.indonesianCompany = indonesianCompany?.id || null;
+              }
               await this.contractServ.saveOnlineContract(contract)
               .then((id) => { console.log ( `Contract ${contract.name} saved with id ${id}`); });
             }
@@ -349,7 +378,7 @@ export class SyncService {
     return this.apiService.get('contracts-documents').subscribe((response) => {
       if (response.status === 200 && response.body.length > 0) {
         response.body.forEach(async(doc) => {
-          const contract = this.contractServ.getContractByField('onlineRef', doc.contract);
+          const contract = await this.contractServ.getContractByField('onlineRef', doc.contract);
           if (contract) {
             const contractDocument = await this.contractServ.getContractDocumentByField('contract_id', contract.id);
             if (!contractDocument) {
