@@ -75,6 +75,15 @@ export class CompaniesDataService {
     }
   }
 
+  async getCompanyByField(field: string, value: any) {
+    try {
+      return await this.companies.find((entry) => entry[field] === value);
+    } catch (e) {
+      console.log(e);
+      return null;
+    }
+  }
+
   async create(data) {
     const query = 'INSERT INTO companies (name, description, status, country, telephone, \
       email, address_line_1, address_line_2, address_line_3, created_at, updated_at, created_by, \
