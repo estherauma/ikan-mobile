@@ -270,6 +270,8 @@ export class AppComponent implements OnInit, OnDestroy {
   }
 
   async syncData() {
+    const hasInternet = await this.sharedMethods.checkInternetConnectionStatus();
+    if (!hasInternet) { return; }
     await this.sharedMethods.showWaitLoader(this.commonText?.syncingData || 'Syncing data...');
     const user: UserData = await this.sharedMethods.readDataFromStorage(StorageKeys.userData);
     if (user) {
