@@ -105,8 +105,8 @@ export class SyncService {
     const companies = this.companyServ.companies;
     if (companies.length > 0) {
       const user = await this.sharedMethods.getUserData();
-      companies.forEach(async(company) => {
-        if (user?.id !== company?.createdBy) { return; }
+      for (const company of companies) {
+        if (user?.id !== company?.createdBy) { continue; }
 
         const companyId = company.id;
         const companyToUpload = Object.assign({}, company);
@@ -122,7 +122,7 @@ export class SyncService {
             console.log(response);
           });
         }
-      });
+      };
     }
   }
 
@@ -147,8 +147,8 @@ export class SyncService {
     const vessels = this.vesselServ.vessels;
     if (vessels.length > 0) {
       const user = await this.sharedMethods.getUserData();
-      vessels.forEach(async(vessel) => {
-        if (user?.id !== vessel?.createdBy) { return; }
+      for (const vessel of vessels) {
+        if (user?.id !== vessel?.createdBy) { continue; }
 
         const vesselId = vessel.id;
         const vesselToUpload = Object.assign({}, vessel);
@@ -168,7 +168,7 @@ export class SyncService {
             }
           });
         }
-      });
+      };
     }
   }
 
@@ -253,17 +253,38 @@ export class SyncService {
     const contracts  = this.contractServ.contracts;
     if (contracts.length > 0) {
       const user = await this.sharedMethods.getUserData();
-      contracts.forEach((contract) => {
-        if (user?.id !== contract?.createdBy) { return; }
+      for (const contract of contracts) {
+        if (user?.id !== contract?.createdBy) { continue; }
 
         contract.startDate = new Date(contract.startDate).toISOString().split('T')[0];
         contract.endDate = new Date(contract.endDate).toISOString().split('T')[0];
         const tempContractId = contract.id;
         const contractToUpload = Object.assign({}, contract);
         delete contractToUpload.id;
-        if (!contractToUpload.taiwaneseCompany) { delete contractToUpload.taiwaneseCompany; }
-        if (!contractToUpload.indonesianCompany) {delete contractToUpload.indonesianCompany; }
+
         if (!contractToUpload.description) { delete contractToUpload.description; }
+        if (!contractToUpload.taiwaneseCompany) {
+          delete contractToUpload.taiwaneseCompany;
+        } else {
+          const taiwaneseCompanyId = Number(contractToUpload.taiwaneseCompany);
+          const taiwanCompany = await this.companyServ.getCompanyById(taiwaneseCompanyId);
+          if (taiwanCompany) {
+            contractToUpload.taiwaneseCompany = taiwanCompany.onlineRef;
+          } else {
+            delete contractToUpload.taiwaneseCompany;
+          }
+        }
+        if (!contractToUpload.indonesianCompany) {
+          delete contractToUpload.indonesianCompany;
+        } else {
+          const indonesianCompanyId = Number(contractToUpload.indonesianCompany);
+          const indonesianCompany = await this.companyServ.getCompanyById(indonesianCompanyId);
+          if (indonesianCompany) {
+            contractToUpload.indonesianCompany = indonesianCompany.onlineRef;
+          } else {
+            delete contractToUpload.indonesianCompany;
+          }
+        }
 
         if (!contract.onlineRef) {
           this.apiService.post('contracts', contractToUpload).subscribe(async(response: CreateContractResp) => {
@@ -286,7 +307,7 @@ export class SyncService {
             }
           });
         }
-      });
+      };
     }
   }
 
@@ -332,6 +353,14 @@ export class SyncService {
           await this.dbService.checkIfEntryExists('contracts', contract.appRef)
           .then(async(exists) => {
             if (!exists) {
+              if (contract?.taiwaneseCompany) {
+                const taiwaneseCompany = await this.companyServ.getCompanyByField('onlineRef', contract.taiwaneseCompany);
+                contract.taiwaneseCompany = taiwaneseCompany?.id || null;
+              }
+              if (contract?.indonesianCompany) {
+                const indonesianCompany = await this.companyServ.getCompanyByField('onlineRef', contract.indonesianCompany);
+                contract.indonesianCompany = indonesianCompany?.id || null;
+              }
               await this.contractServ.saveOnlineContract(contract)
               .then((id) => { console.log ( `Contract ${contract.name} saved with id ${id}`); });
             }
@@ -349,7 +378,7 @@ export class SyncService {
     return this.apiService.get('contracts-documents').subscribe((response) => {
       if (response.status === 200 && response.body.length > 0) {
         response.body.forEach(async(doc) => {
-          const contract = this.contractServ.getContractByField('onlineRef', doc.contract);
+          const contract = await this.contractServ.getContractByField('onlineRef', doc.contract);
           if (contract) {
             const contractDocument = await this.contractServ.getContractDocumentByField('contract_id', contract.id);
             if (!contractDocument) {
@@ -510,8 +539,8 @@ export class SyncService {
     const questions = this.surveyDataService.inlineQuestions;
     if (questions?.length) {
       const user = await this.sharedMethods.getUserData();
-      questions.forEach((question) => {
-        if (user?.id !== question?.createdBy) { return; }
+      for (const question of questions) {
+        if (user?.id !== question?.createdBy) { continue; }
 
         const questionId = question.id;
         const questionToUpload = Object.assign({}, question);
@@ -530,7 +559,7 @@ export class SyncService {
             }
           });
         }
-      });
+      };
     }
   }
 
@@ -800,8 +829,8 @@ export class SyncService {
 
   async syncBankAccounts(profileId, userOnlineRef ) {
     const accounts = await this.paymentsDataService.getUserBankAccounts(profileId);
-    accounts.forEach(async(account) => {
-      if (userOnlineRef !== account?.createdBy) { return; }
+    for (const account of accounts) {
+      if (userOnlineRef !== account?.createdBy) { continue; }
 
       const acctToUpload = Object.assign({}, account);
       delete acctToUpload.id;
@@ -817,7 +846,7 @@ export class SyncService {
       } else {
         // update api record
       }
-    });
+    }
   }
 
   async fetchBeneficiaries(profileOnlineRef) {
@@ -848,8 +877,8 @@ export class SyncService {
 
   async syncBeneficiaries(profileId, userOnlineRef) {
     const beneficiaries = await this.paymentsDataService.getUserBeneficiaries(profileId);
-    beneficiaries.forEach(async(beneficiary) => {
-      if (userOnlineRef !== beneficiary?.createdBy) { return; }
+    for (const beneficiary of beneficiaries) {
+      if (userOnlineRef !== beneficiary?.createdBy) { continue; }
 
       const dataToUpload = Object.assign({}, beneficiary);
       delete dataToUpload.id;
@@ -865,15 +894,15 @@ export class SyncService {
       } else {
         // update api record
       }
-    });
+    }
   }
 
   async syncMyDocuments() {
     const allDocs = this.documentsDataService.allDocuments;
     if (allDocs?.length) {
       const user = await this.sharedMethods.getUserData();
-      allDocs.forEach(async(document) => {
-        if (user?.id !== document?.createdBy) { return; }
+      for (const document of allDocs) {
+        if (user?.id !== document?.createdBy) { continue; }
 
         if (document.isDeleted && !document.onlineRef) {
           await this.documentsDataService.deleteDocument(document.id);
@@ -922,7 +951,7 @@ export class SyncService {
             });
           }
         }
-      });
+      }
     }
   }
 
@@ -960,8 +989,8 @@ export class SyncService {
     const passports = this.documentsDataService.passports;
     if (passports.length > 0) {
       const user = await this.sharedMethods.getUserData();
-      passports.forEach(async(passport) => {
-        if (user?.id !== passport?.createdBy) { return; }
+      for (const passport of passports) {
+        if (user?.id !== passport?.createdBy) { continue; }
         const dataToSave = Object.assign({}, passport);
         delete dataToSave.id;
         delete dataToSave.imageUrl;
@@ -1019,7 +1048,7 @@ export class SyncService {
             });
           }
         }
-      });
+      }
     }
   }
 

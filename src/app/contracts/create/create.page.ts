@@ -52,9 +52,12 @@ export class CreatePage extends BaseformPage implements OnInit {
   ngOnInit() {
     this.commonText = this.contentService?.commonText;
     this.isEditing = this.navParams.get('isEditing');
-    this.contractDetails = this.navParams.get('contractDetails');
+    const contractDetails = this.navParams.get('contractDetails');
+    if (this.contractDetails) {
+      this.contractDetails = JSON.parse(contractDetails);
+    }
     this.submitButtonText = this.isEditing ? this.commonText?.update :this.commonText?.create;
-    
+
     this.pageSetup();
     this.analytics.trackEvent(PageEventNames.createContract, this.sharedMethods.analyticsEventParams);
   }
@@ -65,6 +68,11 @@ export class CreatePage extends BaseformPage implements OnInit {
     this.pageTitle = this.isEditing ? this.pageText?.editContract : pageData?.pageTitle;
     this.formQuestions = pageData?.formQuestions;
     this.formQuestions.forEach((entry) => {
+      if (entry.key === 'file') {
+        entry.helpText = null;
+        entry.questionType = 'file';
+      }
+
       const validators = this.sharedMethods.getFormValidators(entry);
       if (this.isEditing && this.contractDetails[entry.key]) {
         this.group[entry.key] = new FormControl(this.contractDetails[entry.key], validators);
@@ -73,7 +81,7 @@ export class CreatePage extends BaseformPage implements OnInit {
       }
     });
     this.pageFormGroup = new FormGroup(this.group);
-    
+
     this.companiesDataService.getAll().subscribe((data) => {
       data.forEach((entry) => {
         if (entry.country === ' Taiwan' || entry.country === 'Taiwan') {
@@ -102,11 +110,11 @@ export class CreatePage extends BaseformPage implements OnInit {
       formData.created_at = now;
       const insertId =  await this.contractsDataService.create(formData);
       if (insertId) {
-        if (formData?.file?.uriPath || formData?.file?.fileUrl) {
+        if (formData?.file?.uriPath || formData?.file?.webPath  || formData?.file?.fileUrl) {
           const contractFileData = {
             contract_id: insertId,
             name: formData?.file.fileName, // TODO: change to actual name not generated one
-            url: formData?.file.uriPath || formData?.file.fileUrl,
+            url: formData?.file.uriPath || formData?.file?.webPath || formData?.file.fileUrl,
             status: '', // TODO: update status
           };
           const docInsertId = await this.contractsDataService.createContractDocument(contractFileData);
@@ -115,7 +123,7 @@ export class CreatePage extends BaseformPage implements OnInit {
           }
         }
         await this.createStaticContractClauses(insertId);
-        
+
         await this.syncService.syncContracts();
         this.modalCtrl.dismiss();
       } else {
@@ -130,29 +138,38 @@ export class CreatePage extends BaseformPage implements OnInit {
             const fileEditData = {
               contract_id: formData.id,
               name: formData?.file.fileName, // TODO: change to actual name not generated one
-              url: formData?.file.uriPath || formData?.file.fileUrl,
+              url: formData?.file?.uriPath || formData?.file?.webPath || formData?.file.fileUrl,
               status: '', // TODO: update status
             };
-            const result = await this.contractsDataService.updateContractDocument(formData.id, fileEditData);
-            if (result?.rowsAffected <= 0) {
+            const res = await this.contractsDataService.updateContractDocument(formData.id, fileEditData);
+            if (res?.rowsAffected <= 0) {
               this.sharedMethods.showToast(this.pageText?.errSavingDocument);
             } else {
+              let fileDetails = null;
+              if (res.doc && res.doc.url && res.doc.url.endsWith('.pdf')) {
+                fileDetails = {
+                  uriPath: res.doc.url,
+                  fileName: res.doc.name,
+                  docType: 'pdf'
+                };
+              } else if (res.doc && res.doc.url && !res.doc.url.endsWith('.pdf')) {
+                fileDetails = {
+                  webPath: res.doc.url,
+                  fileName: res.doc.name,
+                  docType: 'image'
+                };
+              }
               contractDetails = {
                 ...contractDetails,
-                file: {
-                  uriPath: result.doc.url,
-                  fileUrl: result.doc.url,
-                  fileName: result.doc.name,
-                  docType: 'pdf'
-                }
+                file: fileDetails,
               };
             }
           } else {
-            if (formData?.file?.uriPath || formData?.file?.fileUrl) {
+            if (formData?.file?.uriPath || formData?.file?.webPath || formData?.file?.fileUrl) {
               const contractFileData = {
                 contract_id: formData.id,
                 name: formData?.file.fileName, // TODO: change to actual name not generated one
-                url: formData?.file.uriPath || formData?.file.fileUrl,
+                url: formData?.file?.uriPath || formData?.file?.webPath || formData?.file.fileUrl,
                 status: '', // TODO: update status
               };
               const savedDocId = await this.contractsDataService.createContractDocument(contractFileData);
@@ -160,14 +177,24 @@ export class CreatePage extends BaseformPage implements OnInit {
                 this.sharedMethods.showToast(this.pageText?.errSavingDocument);
               } else {
                 const savedDoc = await this.contractsDataService.getContractDocumentByField('id', savedDocId);
-                contractDetails = {
-                  ...contractDetails,
-                  file: {
+
+                let savedFileDetails = null;
+                if (savedDoc && savedDoc.url && savedDoc.url.endsWith('.pdf')) {
+                  savedFileDetails = {
                     uriPath: savedDoc.url,
-                    fileUrl: savedDoc.url,
                     fileName: savedDoc.name,
                     docType: 'pdf'
-                  }
+                  };
+                } else if (savedDoc && savedDoc.url && !savedDoc.url.endsWith('.pdf')) {
+                  savedFileDetails = {
+                    webPath: savedDoc.url,
+                    fileName: savedDoc.name,
+                    docType: 'image'
+                  };
+                }
+                contractDetails = {
+                  ...contractDetails,
+                  file: savedFileDetails,
                 };
               }
             }
@@ -184,25 +211,25 @@ export class CreatePage extends BaseformPage implements OnInit {
   async createStaticContractClauses(contractId) {
     // Article 3, 4, 7, 8, 9 10 have static content and we need to create clauses for them from here
     const clauseMapping = {
-      'article3': 'contract-clauses-accident-medical-and-life-insurance',
-      'article4': 'contract-clauses-transportation-severance-food-accomodation',
-      'article7':'contract-clause-requirements-that-party-b-must-comply-with',
-      'article8': 'contract-clauses-means-to-address-breach-of-contract',
-      'article9': 'contract-clauses-dispute-settlement',
-      'article10': 'contract-clauses-miscellaneous'
-    }
+      article3: 'contract-clauses-accident-medical-and-life-insurance',
+      article4: 'contract-clauses-transportation-severance-food-accomodation',
+      article7:'contract-clause-requirements-that-party-b-must-comply-with',
+      article8: 'contract-clauses-means-to-address-breach-of-contract',
+      article9: 'contract-clauses-dispute-settlement',
+      article10: 'contract-clauses-miscellaneous'
+    };
     const userData = await this.sharedMethods.getUserData();
     for (const [key, value] of Object.entries(clauseMapping)) {
       const now = this.sharedMethods.getCurrentDateTime();
-      const clauseData = this.contentService.getContentByPropertyName(`${value}-content`)
-      let contractClauseData = {}
-      contractClauseData['content'] = JSON.stringify({});
-      contractClauseData['app_ref'] = this.sharedMethods.generateAppRef();
-      contractClauseData['created_by'] = userData.id;
-      contractClauseData['updated_by'] = userData.id;
-      contractClauseData['created_at'] = contractClauseData['updated_at'] = now;
-      contractClauseData['kind'] = value;
-      contractClauseData['name'] = clauseData?.pageTitle;
+      const clauseData = this.contentService.getContentByPropertyName(`${value}-content`);
+      const contractClauseData: any = {};
+      contractClauseData.content = JSON.stringify({});
+      contractClauseData.app_ref = this.sharedMethods.generateAppRef();
+      contractClauseData.created_by = userData.id;
+      contractClauseData.updated_by = userData.id;
+      contractClauseData.created_at = contractClauseData.updated_at = now;
+      contractClauseData.kind = value;
+      contractClauseData.name = clauseData?.pageTitle;
       this.contractsDataService.saveContractClause(contractId, contractClauseData);
     }
 
