@@ -181,8 +181,13 @@ export class AppComponent implements OnInit, OnDestroy {
       this.authService.logOut();
       this.router.navigate(['']);
     } else if (this.appPages[index].url === '/sync') {
-      await this.sharedMethods.showToast(this.contentService.commonText?.syncingData || 'Syncing data...', 'long');
-      this.syncService.syncData();
+      const hasInternet = await this.sharedMethods.checkInternetConnectionStatus();
+      if (!hasInternet) {
+        return this.sharedMethods.showToast(this.contentService.commonText?.noInternetConnection, 'long');
+      } else {
+        await this.sharedMethods.showToast(this.contentService.commonText?.syncingData || 'Syncing data...', 'long');
+        this.syncService.syncData();
+      }
     } else if (this.appPages[index].url === '/tfa-video') {
       await this.showTrainingVideo();
     } else if (this.appPages[index].url === '/myprofile') {
