@@ -42,12 +42,9 @@ export class ContractDataService {
   async retrieveContracts() {
     const query = 'SELECT \
       a.*, \
-        json_object(\
-          "fileId", b.id,\
-          "fileName", b.name,\
-          "fileUrl", b.url,\
-          "docType", "pdf"\
-      ) AS file\
+      b.id AS fileId, \
+      b.name AS fileName, \
+      b.url AS fileUrl \
       FROM \
         contracts a\
       LEFT JOIN \
@@ -74,7 +71,7 @@ export class ContractDataService {
             updatedAt: data.rows.item(i).updated_at,
             createdBy: data.rows.item(i).created_by,
             updatedBy: data.rows.item(i).updated_by,
-            file: this.getFile(data.rows.item(i).file),
+            file: this.getFile(data.rows.item(i)),
           });
         }
       }
@@ -83,9 +80,25 @@ export class ContractDataService {
     }).catch((e) => console.log(e));
   }
 
-  getFile(data) {
-    const file = JSON.parse(data);
-    return Object.values(file).every(value => value !== null) ? file : null;
+  getFile(item) {
+    if (!item.fileId || !item.fileUrl) {
+      return null;
+    } else if (item.fileUrl && item.fileUrl.endsWith('.pdf')) {
+      return {
+        fileId: item.fileId,
+        fileName: item.fileName,
+        uriPath: item.fileUrl,
+        docType: 'pdf'
+      };
+    } else if (item.fileUrl && !item.fileUrl.endsWith('.pdf')) {
+      return {
+        fileId: item.fileId,
+        fileName: item.fileName,
+        webPath: item.fileUrl,
+        docType: 'image'
+      };
+    }
+    return null;
   }
 
   getAll() {
