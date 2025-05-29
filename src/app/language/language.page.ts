@@ -7,6 +7,7 @@ import { AuthService } from '../shared/services/auth/auth.service';
 import { AnalyticsService } from '../shared/services/analytics/analytics.service';
 import { PageEventNames } from '../shared/services/analytics/event-names';
 import { PushNotificationsService } from '../shared/services/push-notifications/push-notifications.service';
+import { Platform } from '@ionic/angular';
 
 @Component({
   selector: 'app-language',
@@ -17,6 +18,7 @@ export class LanguagePage implements OnInit {
   currentLanguage = 'en-us';
   availableLanguages = [];
   pageTitle: string;
+  isLanguageSelected = false;
 
   constructor(
     public contentServ: ContentService,
@@ -25,6 +27,7 @@ export class LanguagePage implements OnInit {
     public sharedMethods: SharedmethodsService,
     public analytics: AnalyticsService,
     public pushNotificationsService: PushNotificationsService,
+    public platform: Platform,
   ) {
     this.getAvailableLanguages();
     this.sharedMethods.readDataFromStorage(StorageKeys.currentLanguage)
@@ -47,15 +50,20 @@ export class LanguagePage implements OnInit {
     this.contentServ.compareContent();
   }
 
+  changeLanguage(e) {
+    this.currentLanguage = e?.detail?.value;
+    this.isLanguageSelected = true;
+  }
 
-  async changeLanguage(selectedLanguage) {
-    await this.sharedMethods.saveDataToStorage(StorageKeys.currentLanguage,selectedLanguage?.detail?.value);
+  async onSubmit() {
+    await this.sharedMethods.saveDataToStorage(StorageKeys.currentLanguage, this.currentLanguage);
     await this.contentServ.updateCurrentLanguage();
     this.contentServ.contentObs.next(true);
 
-    await this.pushNotificationsService.setup();
-    
+    if (!this.platform.is('desktop') && !this.platform.is('mobileweb')) {
+      await this.pushNotificationsService.setup();
+    }
     const user: UserData = await this.sharedMethods.readDataFromStorage(StorageKeys.userData);
-    this.router.navigate([this.authService.getCurrentUserBaseUrlFromRole(user.role)], {replaceUrl: true});
+    this.router.navigate([this.authService.getCurrentUserBaseUrlFromRole(user?.role)], {replaceUrl: true});
   }
 }
