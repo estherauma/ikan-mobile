@@ -17,10 +17,10 @@ export class ContentService {
   public contentObs = new Subject<boolean>();
   watchContentSubscription: Subscription;
   appContent: Content;
-  currentLanguage: string = 'en-us';
+  currentLanguage = 'en-us';
   commonText: any;
   menuContent = new Subject<any>();
-  currentSurveyCategory: string = '';
+  currentSurveyCategory = '';
 
   constructor(
     public apiService: ApiService,
@@ -73,7 +73,7 @@ export class ContentService {
       if (content?.status === 'OK') {
         this.writeLocalContent(StorageKeys.appContent, content.data[0]);
         this.appContent = content.data[0].content;
-        
+
         this.contentObs.next(true);
       }
     });
@@ -84,8 +84,8 @@ export class ContentService {
     // ToDo: If device time is ahead of servertime, user will not get updated content
     // Provide fix for this
     if (currentContentCreateAt) {
-      let endPoint = `content/compare?app_content_created_at=`;
-      let finalEndpoint = endPoint + encodeURIComponent(currentContentCreateAt);
+      const endPoint = `content/compare?app_content_created_at=`;
+      const finalEndpoint = endPoint + encodeURIComponent(currentContentCreateAt);
       const response = this.apiService.get(finalEndpoint, true);
       response.subscribe((res: HttpResponse<any>) => {
         const content = res.body;
@@ -111,7 +111,7 @@ export class ContentService {
             const vesselQtn = vesselDoc?.pageContent?.find(
               (item) => item?.type === 'questions' && item.key === 'is_this_the_vessel_you_are_working_on_the_one_you_were_assigned_to'
             );
-        
+
             if (vesselQtn) {
               vesselQtn.question = vesselQtn.question.replace('[vessel_name_from_system]', userVessel?.name.toUpperCase());
             }
@@ -152,7 +152,7 @@ export class ContentService {
       this.currentLanguage = lang;
       this.updateCommonText();
       this.updateSideMenu();
-    } 
+    }
   }
 
   updateCommonText() {
@@ -257,12 +257,12 @@ export class ContentService {
 
   getSurveyData() {
     const content = this.appContent?.[`${this.currentLanguage}`];
-    if (!content) return {};
-    
+    if (!content) {return {};}
+
     const allDocs: Array<any> = Object.values(content);
     const contentDocs = allDocs?.filter((doc) => ((doc?.type === 'create_content_area' && (!isNaN(parseFloat(doc?.pageName)) || doc?.pageName.includes('ikan-feedback')))));
 
-    let result = {};
+    const result = {};
     contentDocs?.forEach(async(item) => {
       const qtns = item?.pageContent?.filter(x => x?.type === 'questions');
       if (qtns?.length) {
@@ -281,7 +281,7 @@ export class ContentService {
 
   async saveSurveyCategories() {
     const savedCategories = await this.sharedMethods.readDataFromStorage(StorageKeys.surveyCategories);
-    if(!savedCategories || !savedCategories?.length) {
+    if (!savedCategories || !savedCategories?.length) {
       const categories = await this.getAllCategories();
       await this.sharedMethods.saveDataToStorage(StorageKeys.surveyCategories, categories);
     }
@@ -292,11 +292,11 @@ export class ContentService {
     if (!category) {
       let allCategories;
       allCategories = await this.sharedMethods.readDataFromStorage(StorageKeys.surveyCategories);
-      if(!allCategories?.length) {
+      if (!allCategories?.length) {
         allCategories = this.getAllCategories();
         await this.saveSurveyCategories();
       }
-      
+
       // get random category
       // const randomIndex = Math.floor(Math.random() * allCategories.length);
       // const randomCategory = allCategories[randomIndex];
@@ -304,7 +304,7 @@ export class ContentService {
     }
     this.currentSurveyCategory = category;
     const surveyData =  this.getSurveyData();
-    
+
     return surveyData[category]?.map((qn) => ({
       category: null,
       displayquestion: qn?.displayquestion,
@@ -316,7 +316,7 @@ export class ContentService {
       options: qn.options?.length ? qn.options.map(x => ({
         label: x.option,
         value: x.value,
-        ...x 
+        ...x
       })) : [],
     })) ?? [];
   }
@@ -335,29 +335,29 @@ export class ContentService {
 
   getFormOptionTranslation(pageName: string, inputKey: string, optionValue: string) {
     const options = this.getFormOptions(pageName, inputKey);
-    if (!options.length) return optionValue;
-    
+    if (!options.length) {return optionValue;}
+
     const opt = options.find(x => x.value === optionValue);
     return opt?.label ?? optionValue;
   }
 
   /**
-   * Adds values to content_area question options 
+   * Adds values to content_area question options
    * The options/labels are in the selected language
    * The values are in English irrespective of the selected language
    */
-  addQuestionOptionValues(){
+  addQuestionOptionValues() {
     const content = this.appContent?.[`${this.currentLanguage}`];
     const englishContent = this.appContent?.['en-us'];
-    if (!content || !englishContent) return;
-    
+    if (!content || !englishContent) {return;}
+
     const allDocs: Array<any> = Object.values(content);
     const allEnglishDocs: Array<any> = Object.values(englishContent);
 
     allDocs?.forEach((doc) => {
       if (doc?.type === 'create_content_area' && (!isNaN(parseFloat(doc?.pageName)) || doc?.pageName.includes('ikan-feedback'))) {
         const englishDoc = allEnglishDocs.find(x => x?.pageName === doc?.pageName);
-        if (!englishDoc) return;
+        if (!englishDoc) {return;}
 
         doc?.pageContent?.forEach((section) => {
           if (section?.type === 'questions') {
@@ -378,15 +378,16 @@ export class ContentService {
 
   /**
    * returns untranslated inline question (english version)
+   *
    * @param subChapterId
    * @param questionKey
    */
   getUntranslatedInlineQuestion(subChapterId: string, questionKey: string) {
     const englishContent = this.appContent?.['en-us'];
-    if (!englishContent) return null;
-    
+    if (!englishContent) {return null;}
+
     const englishDoc = englishContent?.[subChapterId];
-    if (!englishDoc) return null;
+    if (!englishDoc) {return null;}
 
     const qtn = englishDoc?.pageContent?.find(x => x?.type === 'questions' && x?.key === questionKey);
     return qtn;
@@ -394,10 +395,10 @@ export class ContentService {
 
   getUntranlatedSurveyQuestion(pageName, questionKey) {
     const englishContent = this.appContent?.['en-us'];
-    if (!englishContent) return null;
-    
+    if (!englishContent) {return null;}
+
     const englishDoc = englishContent?.[pageName];
-    if (!englishDoc) return null;
+    if (!englishDoc) {return null;}
 
     const qtn = englishDoc?.formQuestions?.find(x => x?.key === questionKey);
     return qtn;
