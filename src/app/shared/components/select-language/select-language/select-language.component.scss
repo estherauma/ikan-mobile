@@ -1,5 +1,5 @@
 .content-wrapper {
-  background: #3565FF url('/assets/imgs/auth_background.png') no-repeat fixed;
+  background: #3565ff url("/assets/imgs/auth_background.png") no-repeat fixed;
   background-position: bottom;
   background-size: 100% 80%;
   width: 100%;
@@ -18,14 +18,14 @@
     .selector-col {
       margin-top: 80px;
       ion-item {
-        --background:  #1B57ED;
+        --background: #1b57ed;
         width: 90%;
         margin: auto;
 
         ion-select {
           color: #ffffff;
           --color: #ffffff;
-          background:  #1B57ED;
+          background: #1b57ed;
           width: 100%;
           border: 1px solid white;
           border-radius: 30px !important;
@@ -66,6 +66,31 @@
         }
         ion-select::part(icon) {
           opacity: 0;
+        }
+      }
+    }
+
+    .button-col {
+      display: flex;
+      justify-content: center;
+      margin-top: 20px;
+      ion-button {
+        min-width: 75%;
+        --border-radius: 20px;
+        min-height: 44px;
+        --background: var(--ikan_darkblue_90);
+        font-size: 1rem;
+        font-weight: bold;
+        text-transform: none;
+
+        @media (min-width: 768px) {
+          min-height: 50px;
+          font-size: 1.1rem !important;
+        }
+
+        @media (min-width: 992px) {
+          min-height: 60px;
+          font-size: 1.3rem !important;
         }
       }
     }

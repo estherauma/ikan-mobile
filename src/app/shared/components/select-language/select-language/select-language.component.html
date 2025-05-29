@@ -11,14 +11,24 @@
         <ion-select
           interface="action-sheet"
           placeholder="Choose your language"
-          [disabled]="languageDataLoading"
           (ionChange)="onLanguageSelect($event)"
+          [value]="selectedLanguage"
         >
           <ion-select-option *ngFor="let language of availableLanguages" [value]="language?.localeCode">
             {{ language?.label }}
           </ion-select-option>
         </ion-select>
       </ion-item>
+    </ion-col>
+    
+    <ion-col size="12" size-md="9" size-lg="7" class="button-col">
+      <ion-button
+        fill="solid"
+        [disabled]="!isLanguageSelected"
+        (click)="onSubmit()"
+      >
+        {{ 'Submit' }}
+      </ion-button>
     </ion-col>
   </ion-row>
 </div>
