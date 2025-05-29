@@ -1,7 +1,13 @@
-<app-header [pageTitle] = "pageTitle"></app-header>
+<app-header></app-header>
 
 <ion-content>
-  <div id="list_wrapper">
+  <ion-row class="page-title-row">
+    <ion-col size="12">
+      <h1>{{ pageTitle }}</h1>
+    </ion-col>
+  </ion-row>
+  
+  <div class="list-wrapper">
     <ion-grid>
       <ion-radio-group (ionChange)="changeLanguage($event)" value="{{currentLanguage}}">
         <ion-row *ngFor="let item of availableLanguages">
@@ -14,6 +20,16 @@
         </ion-row>
       </ion-radio-group>
     </ion-grid>
+  </div>
+
+  <div class="submit-btn-wrapper">
+    <ion-button
+        fill="solid"
+        [disabled]="!isLanguageSelected"
+        (click)="onSubmit()"
+      >
+        {{ 'Submit' }}
+      </ion-button>
   </div>
 
 </ion-content>
