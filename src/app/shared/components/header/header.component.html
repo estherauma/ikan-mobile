@@ -9,9 +9,10 @@
         <ion-title>{{pageTitle}}</ion-title>
       </div>
       <div class="section-two">
-        <ion-menu-button  *ngIf="showMenuButton">
-          <img src='/assets/icon/menu-icon.svg'>
-        </ion-menu-button>
+        <div *ngIf="showMenuButton" class="menu" (click)="openMenu()">
+          <ion-icon slot="start" name="menu-outline" class="menu-icon"></ion-icon>
+          <ion-label>{{menuText}}</ion-label>
+        </div>
       </div>
     </div>
   </ion-toolbar>
