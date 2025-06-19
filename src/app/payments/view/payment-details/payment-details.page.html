@@ -85,12 +85,14 @@
                 currentLanguage ) }}
               </p>
               
-              <h4 *ngIf="paymentDetails?.confirmedDate">{{ paymentsCommonText?.paymentConfirmed }}:</h4>
-              <!-- TODO: change date-->
-              <p>
-                {{ sharedmethods.formatLocalDate(
-                paymentDetails?.confirmedDate, currentLanguage ) }}
-              </p>
+              <ng-container *ngIf="paymentDetails?.confirmedDate">
+                <h4>{{ paymentsCommonText?.paymentConfirmed }}:</h4>
+                <!-- TODO: change date-->
+                <p>
+                  {{ sharedmethods.formatLocalDate(
+                  paymentDetails?.confirmedDate, currentLanguage ) }}
+                </p>
+              </ng-container>
             </div>
 
             <div class="section-wrapper">
@@ -183,11 +185,13 @@
                 currentLanguage ) }}
               </p>
               
-              <h4>{{ paymentsCommonText?.paymentConfirmed }}:</h4>
-              <p>
-                {{ sharedmethods.formatLocalDate(
-                paymentDetails?.confirmedDate, currentLanguage ) }}
-              </p>
+              <ng-container *ngIf="paymentDetails?.confirmedDate">
+                <h4>{{ paymentsCommonText?.paymentConfirmed }}:</h4>
+                <p>
+                  {{ sharedmethods.formatLocalDate(
+                  paymentDetails?.confirmedDate, currentLanguage ) }}
+                </p>
+              </ng-container>
             </div>
             
             <div class="section-wrapper">
