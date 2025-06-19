@@ -16,7 +16,7 @@ export class PaymentDetailsPage  implements OnInit {
   commonText: any;
   paymentsCommonText: any;
   paymentDetails: any;
-  paymentIconUrl: string = 'assets/icon/gray_thumbs_up.svg';
+  paymentIconUrl = 'assets/icon/gray_thumbs_up.svg';
   currentUser: UserData;
   currentLanguage = 'en-us';
 
@@ -56,5 +56,20 @@ export class PaymentDetailsPage  implements OnInit {
       iconUrl = 'assets/icon/red_thumbs_down.svg';
     }
     return iconUrl;
+  }
+
+  getPaymentMethodLabel(paymentMethod: string): string {
+    if (paymentMethod === 'bank_transfer') {
+      return this.paymentsCommonText?.bankTransfer || 'Bank Transfer';
+    } else if (paymentMethod === 'cash') {
+      return this.paymentsCommonText?.cash || 'Cash';
+    } else if (paymentMethod === 'both') {
+      return this.paymentsCommonText?.cashAndBankTransfer || 'Cash and Bank Transfer';
+    }
+    return this.paymentsCommonText?.[paymentMethod] || paymentMethod;
+  }
+
+  getLabel(key: string): string {
+    return this.paymentsCommonText?.[key] || key;
   }
 }

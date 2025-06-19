@@ -82,9 +82,8 @@
               *ngFor="let payment of group.payments"
               class="payment-item"
             >
-              <!-- TODO: check whther to use createdat or payment date -->
               <!-- TODO: remove dummy text/ add translations -->
-              <app-paymentbreakdowncard
+              <app-payment-card
                 [statusClass]="{
                   'pending': payment.status === 'Pending',
                   'confirmed': payment.status === 'Confirmed',
@@ -94,11 +93,12 @@
                 iconUrl="assets/icon/single_payment_blue.svg"
                 [amount]="payment?.totalUsdAmountReceived"
                 [currency]="'$'"
-                [paymentMadeOn]="payment?.createdAt"
-                [paymentConfirmedOn]="payment?.confirmedDate"
+                [payee]="payment?.user?.firstName + ' ' + payment?.user?.lastName"
+                [paymentDate]="payment?.createdAt"
+                [confirmationDate]="payment?.confirmedDate"
                 (onClick)="goToPaymentDetail(payment)"
               >
-              </app-paymentbreakdowncard>
+              </app-payment-card>
             </div>
           </div>
         </div>

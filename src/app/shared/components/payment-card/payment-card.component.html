@@ -1,0 +1,83 @@
+<div
+  class="payment-card"
+  (click)="onClickCard($event)"
+  [ngClass]="{ 'no-status': !showStatus }"
+>
+  <div class="payment-card-content">
+    <!-- TODO: style acccording to status -->
+    <!-- Status row -->
+    <ion-row *ngIf="showStatus" class="status-row">
+      <ion-col size="12" class="status-col">
+        <ion-text class="status" [ngClass]="statusClass">{{ status }}</ion-text>
+      </ion-col>
+    </ion-row>
+    
+    <!-- Icon & details row -->
+    <ion-row class="icon-row">
+      <!-- Icon col -->
+      <ion-col size="2" class="icon-col">
+        <div class="icon-wrapper">
+          <ion-img class="icon" [src]="iconUrl"></ion-img>
+        </div>
+      </ion-col>
+      
+      <!-- Details col -->
+      <ion-col size="10" class="details-col">
+        <p *ngIf="showType" class="type">{{ type }}</p>
+        <p class="amount">
+          <span>{{ currency }}</span> {{ amount }}
+        </p>
+        <p class="payee">
+          {{ paymentsCommonText?.payee }}:
+          <span>
+            {{ payee }}
+          </span>
+        </p>
+        <p>
+          {{ paymentsCommonText?.paymentDate }}:
+          <span>
+            {{
+              sharedmethods.formatLocalDate(paymentDate, currentLanguage)
+            }}
+          </span>
+        </p>
+        <p *ngIf="confirmationDate">
+          {{ paymentsCommonText?.paymentConfirmed }}:
+          <span>
+            {{
+              sharedmethods.formatLocalDate(confirmationDate, currentLanguage)
+            }}
+          </span>
+        </p>
+      </ion-col>
+    </ion-row>
+
+    <!-- Confirmation & Grievance prompt row -->
+    <ion-row>
+      <!-- Confirmation prompt col -->
+      <ion-col
+        *ngIf="currentUser?.role === 'worker' && showConfirmationPrompt"
+        size="6"
+        class="prompt-col confirm-col"
+        (click)="goToConfirmPayment()"
+      >
+        <ion-icon class="icon" src="assets/icon/gray_thumbs_up.svg"></ion-icon>
+        <p>{{ commonText?.confirm }}</p>
+      </ion-col>
+
+      <!-- Grievance prompt col -->
+      <ion-col
+        *ngIf="currentUser?.role === 'worker' && showGrievancePrompt"
+        size="6"
+        class="prompt-col grievance-col"
+        (click)="goToRaiseGrievance()"
+      >
+        <ion-icon class="icon" src="assets/icon/gray_thumbs_down.svg"></ion-icon>
+        <p>{{ commonText?.report }}</p>
+      </ion-col>
+    </ion-row>
+  </div>
+  <div class="chevron-container">
+    <ion-icon class="chevron" name="chevron-forward-outline"></ion-icon>
+  </div>
+</div>

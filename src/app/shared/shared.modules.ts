@@ -22,7 +22,6 @@ import { BadgeComponent } from './components/badge/badge.component';
 import { GenericmodalComponent } from './components/genericmodal/genericmodal.component';
 import { MaincardComponent } from './components/maincard/maincard.component';
 import { ProgressbarComponent } from './components/progressbar/progressbar.component';
-import { PaymentbreakdowncardComponent } from './components/paymentbreakdowncard/paymentbreakdowncard.component';
 import { ImageselectComponent } from './components/imageselect/imageselect.component';
 import { UsercontractcardComponent } from './components/usercontractcard/usercontractcard.component';
 import { DocumentuploadComponent } from './components/documentupload/documentupload.component';
@@ -45,6 +44,7 @@ import { FilesPage } from '../mydocuments/files/files.page';
 import { EssentialsComponent } from '../mydocuments/essentials/essentials.component';
 import { ViewImageComponent } from '../mydocuments/view-image/view-image.component';
 import { ViewPassportComponent } from '../mydocuments/view-passport/view-passport.component';
+import { PaymentCardComponent } from './components/payment-card/payment-card.component';
 
 
 @NgModule({
@@ -77,7 +77,7 @@ import { ViewPassportComponent } from '../mydocuments/view-passport/view-passpor
     BadgeComponent,
     VesselownercardComponent,
     GenericmodalComponent,
-    PaymentbreakdowncardComponent,
+    PaymentCardComponent,
     ImageselectComponent,
     UsercontractcardComponent,
     DocumentuploadComponent,
@@ -122,7 +122,7 @@ import { ViewPassportComponent } from '../mydocuments/view-passport/view-passpor
     BadgeComponent,
     VesselownercardComponent,
     GenericmodalComponent,
-    PaymentbreakdowncardComponent,
+    PaymentCardComponent,
     ImageselectComponent,
     UsercontractcardComponent,
     DocumentuploadComponent,

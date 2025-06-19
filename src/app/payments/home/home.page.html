@@ -90,7 +90,7 @@
       </ion-row>
 
       <div *ngFor="let payment of userPayments" class="payment-wrapper">
-        <app-paymentbreakdowncard
+        <app-payment-card
           [statusClass]="{
                   'pending': payment.status === 'Pending',
                   'confirmed': payment.status === 'Confirmed',
@@ -100,10 +100,10 @@
           iconUrl="assets/icon/single_payment_blue.svg"
           currency="$"
           [amount]="payment?.totalUsdAmountReceived"
-          [paymentMadeOn]="payment?.paymentDate"
+          [paymentDate]="payment?.paymentDate"
           (onClick)="goToPaymentDetail(payment)"
         >
-        </app-paymentbreakdowncard>
+        </app-payment-card>
       </div>
     </div>
   </ion-grid>
