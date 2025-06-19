@@ -8,6 +8,7 @@ import { UserData, StorageKeys } from 'src/app/shared/types/api-types';
 import { AnalyticsService } from 'src/app/shared/services/analytics/analytics.service';
 import { PageEventNames } from 'src/app/shared/services/analytics/event-names';
 import { ProfilesDataService } from 'src/app/profiles/data/profiles-data.service';
+import { firstValueFrom } from 'rxjs';
 
 type GroupedVesselPayments = {
   date: string;
@@ -24,9 +25,9 @@ export class VesselPaymentsPage implements OnInit {
   commonText: any;
   paymentsCommonText: any;
   currentUser: UserData;
-  currentLanguage: string = 'en-us';
+  currentLanguage = 'en-us';
   vessel: any;
-  pageTitle: string = 'Vessel Payments';
+  pageTitle = 'Vessel Payments';
   filterOptions = [
     { title: 'closed', value: 'closed' },
     { title: 'opened', value: 'opened' },
@@ -67,11 +68,10 @@ export class VesselPaymentsPage implements OnInit {
     this.activatedRoute.queryParams.subscribe(async(params) => {
       if (params?.vessel) {
         this.vessel = JSON.parse(params.vessel);
-        this.profileDataService.getAll().subscribe((data) => {
-          this.allUsers = data;
-        });
+        const users = await firstValueFrom(this.profileDataService.getAll());
+        this.allUsers = users;
 
-        this.paymentsDataService.getAll().subscribe(async (data) => {
+        this.paymentsDataService.getAll().subscribe(async(data) => {
           this.currentUser = await this.sharedMethods.readDataFromStorage(
             StorageKeys.userData
           );

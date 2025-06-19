@@ -12,6 +12,7 @@ import { SharedmethodsService } from 'src/app/shared/services/sharedmethods/shar
 import { AnalyticsService } from 'src/app/shared/services/analytics/analytics.service';
 import { PageEventNames } from 'src/app/shared/services/analytics/event-names';
 import { ProfilesDataService } from 'src/app/profiles/data/profiles-data.service';
+import { firstValueFrom } from 'rxjs';
 
 @Component({
   selector: 'app-home',
@@ -60,7 +61,7 @@ export class HomePage implements OnInit {
   vesselCompanyText = 'Details about this vessel company';
   chineseVesselCompanyText = '有關該船隻公司的詳細信息';
 
-  pageTitle: string = 'Payments';
+  pageTitle = 'Payments';
   organizations = [...this.filterDataSet];
 
   filterOptions = [
@@ -85,10 +86,7 @@ export class HomePage implements OnInit {
     public analyticsService: AnalyticsService,
     public profileDataService: ProfilesDataService,
   ) {
-    this.profileDataService.getAll().subscribe((data) => {
-      this.allUsers = data;
-    });
-    this.vesselsDataService.getAll().subscribe(async (data) => {
+    this.vesselsDataService.getAll().subscribe(async(data) => {
       await this.getCurrentUser();
       // TODO: filter data based on user role
       // filtering by createdBy because the vessels are only displayed for VOs
@@ -96,8 +94,11 @@ export class HomePage implements OnInit {
         (vessel) => vessel.createdBy === this.currentUser.id
       );
     });
-    this.paymentsDataService.getAll().subscribe(async (data) => {
+    this.paymentsDataService.getAll().subscribe(async(data) => {
       await this.getCurrentUser();
+      const users = await firstValueFrom(this.profileDataService.getAll());
+      this.allUsers = users;
+
       if (this.currentUser?.role === UserRole.worker) {
         this.userPayments = data?.filter(
           (payment) => payment.userId === this.currentUser.id
