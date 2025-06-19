@@ -11,6 +11,7 @@ import {
 import { SharedmethodsService } from 'src/app/shared/services/sharedmethods/sharedmethods.service';
 import { AnalyticsService } from 'src/app/shared/services/analytics/analytics.service';
 import { PageEventNames } from 'src/app/shared/services/analytics/event-names';
+import { ProfilesDataService } from 'src/app/profiles/data/profiles-data.service';
 
 @Component({
   selector: 'app-home',
@@ -70,6 +71,7 @@ export class HomePage implements OnInit {
   vessels = [];
   currentUser: UserData;
   userPayments = [];
+  allUsers = [];
 
   // remove after fixing filtering
   // TODO: fix filtering
@@ -81,7 +83,11 @@ export class HomePage implements OnInit {
     public paymentsDataService: PaymentsDataService,
     public sharedMethods: SharedmethodsService,
     public analyticsService: AnalyticsService,
+    public profileDataService: ProfilesDataService,
   ) {
+    this.profileDataService.getAll().subscribe((data) => {
+      this.allUsers = data;
+    });
     this.vesselsDataService.getAll().subscribe(async (data) => {
       await this.getCurrentUser();
       // TODO: filter data based on user role
@@ -101,6 +107,21 @@ export class HomePage implements OnInit {
           (payment) => payment.createdBy === this.currentUser.id
         );
       }
+
+      // Add user & vessel details to payments
+      this.userPayments = this.userPayments.map((payment) => {
+        const vessel = this.vessels.find(
+          (v) => v.onlineRef === payment.vesselId
+        );
+        const user = this.allUsers.find(
+          (u) => u.onlineRef === payment.userId
+        );
+        return {
+          ...payment,
+          vessel: vessel ?? null,
+          user: user ?? null,
+        };
+      });
     });
   }
 
@@ -144,8 +165,6 @@ export class HomePage implements OnInit {
   }
 
   goToPaymentDetail(paymentDetails) {
-    const vessel = this.vessels.find((v) => v.onlineRef === paymentDetails.vesselId);
-    paymentDetails.vessel = vessel;
     const queryParams = { paymentDetails: JSON.stringify(paymentDetails) };
     this.router.navigate(['payments/payment-details'], { queryParams });
   }

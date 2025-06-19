@@ -7,6 +7,7 @@ import { PaymentsDataService } from '../../data/payments-data.service';
 import { UserData, StorageKeys } from 'src/app/shared/types/api-types';
 import { AnalyticsService } from 'src/app/shared/services/analytics/analytics.service';
 import { PageEventNames } from 'src/app/shared/services/analytics/event-names';
+import { ProfilesDataService } from 'src/app/profiles/data/profiles-data.service';
 
 type GroupedVesselPayments = {
   date: string;
@@ -51,6 +52,7 @@ export class VesselPaymentsPage implements OnInit {
   unFilteredData = [];
   vesselPayments = [];
   groupedVesselPayments: GroupedVesselPayments[] = [];
+  allUsers = [];
 
   constructor(
     public router: Router,
@@ -60,10 +62,15 @@ export class VesselPaymentsPage implements OnInit {
     public sharedMethods: SharedmethodsService,
     public activatedRoute: ActivatedRoute,
     public analyticsService: AnalyticsService,
+    public profileDataService: ProfilesDataService,
   ) {
     this.activatedRoute.queryParams.subscribe(async(params) => {
       if (params?.vessel) {
         this.vessel = JSON.parse(params.vessel);
+        this.profileDataService.getAll().subscribe((data) => {
+          this.allUsers = data;
+        });
+
         this.paymentsDataService.getAll().subscribe(async (data) => {
           this.currentUser = await this.sharedMethods.readDataFromStorage(
             StorageKeys.userData
@@ -73,6 +80,19 @@ export class VesselPaymentsPage implements OnInit {
               payment.vesselId === this.vessel.onlineRef &&
               payment.createdBy === this.currentUser.id
           );
+
+          // Add user & vessel details to each payment
+          this.vesselPayments = this.vesselPayments.map((payment) => {
+            const user = this.allUsers.find(
+              (u) => u.onlineRef === payment.userId
+            );
+            return {
+              ...payment,
+              user: user ?? null,
+              vessel: this.vessel,
+            };
+          });
+
           // group vessel payments by date
           this.groupedVesselPayments = this.groupPaymentsByDate(
             this.vesselPayments
@@ -119,7 +139,6 @@ export class VesselPaymentsPage implements OnInit {
   filterResult(result) {}
 
   goToPaymentDetail(paymentDetails) {
-    paymentDetails.vessel = this.vessel;
     const queryParams = { paymentDetails: JSON.stringify(paymentDetails) };
     this.router.navigate(['payments/payment-details'], { queryParams });
   }
