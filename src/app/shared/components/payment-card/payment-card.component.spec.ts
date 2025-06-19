@@ -1,19 +1,19 @@
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { IonicModule } from '@ionic/angular';
 
-import { PaymentbreakdowncardComponent } from './paymentbreakdowncard.component';
+import { PaymentCardComponent } from './payment-card.component';
 
-describe('PaymentbreakdowncardComponent', () => {
-  let component: PaymentbreakdowncardComponent;
-  let fixture: ComponentFixture<PaymentbreakdowncardComponent>;
+describe('PaymentCardComponent', () => {
+  let component: PaymentCardComponent;
+  let fixture: ComponentFixture<PaymentCardComponent>;
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      declarations: [ PaymentbreakdowncardComponent ],
+      declarations: [ PaymentCardComponent ],
       imports: [IonicModule.forRoot()]
     }).compileComponents();
 
-    fixture = TestBed.createComponent(PaymentbreakdowncardComponent);
+    fixture = TestBed.createComponent(PaymentCardComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   }));
