@@ -39,6 +39,9 @@ ion-content {
           font-family: "interRegular";
           color: var(--ikan_darkblue_100);
           margin-top: 5px;
+          span {
+            color: #a0abcc;
+          }
         }
         p {
           font-size: 1rem;
@@ -51,7 +54,7 @@ ion-content {
   }
 
   .sub-title-wrapper {
-    margin: 30px 0 10px 0;
+    margin: 50px 0 10px 0;
     p {
       font-size: 1rem;
       font-family: "GatwickBold";
@@ -99,36 +102,39 @@ ion-content {
           padding: 0 10px;
           flex-direction: column;
           margin-bottom: 5px;
-          p {
-            font-size: 1rem;
-            font-family: "interRegular";
-            color: #a0abcc;
-            margin: 2px 0;
-            span {
-              color: var(--ikan_darkblue_100);
+          .section-wrapper {
+            margin-bottom: 10px;
+            p, h2, h3, h4 {
               font-size: 1rem;
+              font-family: "interRegular";
+              margin: 2px 0 10px 0;
             }
-          }
-          .type {
-            color: #3565ff;
-            font-size: 1rem;
-            font-weight: bold;
-          }
-          .amount {
-            font-size: 1rem;
-            font-weight: bold;
-            color: var(--ikan_darkblue_100);
-            span {
-              font-size: 1rem;
+            h2 {
+              color: #3565ff;
+              font-weight: bold;
+            }
+            h3 {
               font-weight: bold;
               color: var(--ikan_darkblue_100);
-              margin-right: 2px;
+              // span {
+              //   font-size: 1rem;
+              //   font-weight: bold;
+              //   color: var(--ikan_darkblue_100);
+              //   margin-right: 2px;
+              // }
             }
-          }
-          .details-title {
-            color: var(--ikan_darkblue_90);
-            font-weight: 600;
-            margin: 10px 0 0 0;
+            h4 {
+              color: #a0abcc;
+              margin: 2px 0;
+            }
+            p {
+              color: var(--ikan_darkblue_100);
+            }
+            .details-title {
+              color: var(--ikan_darkblue_90);
+              font-weight: 600;
+              margin: 10px 0 0 0;
+            }
           }
         }
       }
@@ -173,8 +179,10 @@ ion-content {
       }
       .deduction-amount {
         color: var(--ikan_darkblue_100);
-
       }
+    }
+    ion-card-content {
+      padding-bottom: 30px !important;
     }
   }
 }
