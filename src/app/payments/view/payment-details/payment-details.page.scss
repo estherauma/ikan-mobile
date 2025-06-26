@@ -10,44 +10,55 @@ ion-content {
       box-shadow: none;
       padding: 5px 0;
       ion-card-content {
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-        text-align: center;
-        .icon-wrapper {
-          width: 36px;
-          height: 36px;
-          ion-icon {
-            width: 100%;
-            height: 100%;
-            object-fit: contain;
+        .summary-header {
+          display: flex;
+          flex-direction: column;
+          justify-content: center;
+          align-items: center;
+          .icon-wrapper {
+            width: 36px;
+            height: 36px;
+            ion-icon {
+              width: 100%;
+              height: 100%;
+              object-fit: contain;
+            }
           }
-        }
-        h3 {
-          font-size: 1.2rem;
-          font-family: "GatwickBold";
-          color: var(--ikan_blue_100);
-          margin-top: 15px;
-          span {
+          h3 {
             font-size: 1.2rem;
             font-family: "GatwickBold";
+            color: var(--ikan_blue_100);
+            margin-top: 15px;
+            span {
+              font-size: 1.2rem;
+              font-family: "GatwickBold";
+            }
           }
         }
-        h4 {
-          font-size: 1rem;
-          font-family: "interRegular";
-          color: var(--ikan_darkblue_100);
-          margin-top: 5px;
-          span {
+        .summary-body {
+          padding-top: 10px;
+          ion-row {
+            ion-col {
+              padding: 3px 0;
+              display: flex;
+              align-items: center;
+            }
+          }
+          h4 {
+            font-size: 1rem;
+            font-family: "interRegular";
+            color: var(--ikan_darkblue_100);
+          }
+          .label {
             color: #a0abcc;
+            padding-right: 3px;
           }
-        }
-        p {
-          font-size: 1rem;
-          font-family: "interRegular";
-          color: #a0abcc;
-          margin-top: 5px;
+          p {
+            font-size: 1rem;
+            font-family: "interRegular";
+            color: #a0abcc;
+            margin-top: 5px;
+          }
         }
       }
     }
@@ -104,7 +115,10 @@ ion-content {
           margin-bottom: 5px;
           .section-wrapper {
             margin-bottom: 10px;
-            p, h2, h3, h4 {
+            p,
+            h2,
+            h3,
+            h4 {
               font-size: 1rem;
               font-family: "interRegular";
               margin: 2px 0 10px 0;
