@@ -4,43 +4,85 @@
   <div class="summary-wrapper">
     <ion-card class="summary-card">
       <ion-card-content>
-        <div class="icon-wrapper">
-          <!-- TODO: change icon according to status -->
-          <ion-icon [src]="paymentIconUrl" class="icon"></ion-icon>
+        <div class="summary-header">
+          <div class="icon-wrapper">
+            <!-- TODO: change icon according to status -->
+            <ion-icon [src]="paymentIconUrl" class="icon"></ion-icon>
+          </div>
+          <h3>
+            <span>USD</span>
+            {{paymentDetails?.totalUsdAmountReceived}}
+          </h3>
         </div>
-        <h3>
-          <span>USD</span>
-          {{paymentDetails?.totalUsdAmountReceived}}
-        </h3>
-        <h4 class="text-content">
-          <span>{{ paymentsCommonText?.payee }}:</span>
-          {{paymentDetails?.user?.firstName + ' ' + paymentDetails?.user?.lastName}}
-        </h4>
-        <h4 class="text-content">
-          <span>{{ commonText?.vessel }}:</span>
-          {{paymentDetails?.vessel?.name}}
-        </h4>
-        <h4 class="text-content">
-          <span>{{ paymentsCommonText?.paymentDate }}:</span>
-          {{ sharedmethods.formatLocalDate(paymentDetails?.paymentDate, currentLanguage) }}
-        </h4>
-        <h4 class="text-content">
-          <span>{{ paymentsCommonText?.paymentMethod }}:</span>
-          {{ getPaymentMethodLabel(paymentDetails?.paymentMethod) }}
-        </h4>
-        <h4 class="text-content">
-          <span>{{ paymentsCommonText?.paymentPeriod }}:</span>
-          {{ sharedmethods.formatLocalDate(paymentDetails?.startDate, currentLanguage) }} -
-          {{ sharedmethods.formatLocalDate(paymentDetails?.endDate, currentLanguage) }}
-        </h4>
-        <h4 *ngIf="currentUser?.role==='vessel_owner' && paymentDetails?.confirmedDate" class="text-content">
-          <span>{{ paymentsCommonText?.paymentConfirmed }}:</span>
-          {{ sharedmethods.formatLocalDate(paymentDetails?.confirmedDate, currentLanguage) }}
-        </h4>
-        <!-- Commented out for now -->
-        <!-- <p class="status">
-          {{ commonText?.status }}: {{paymentDetails?.status}}
-        </p> -->
+        
+        <div class="summary-body">
+          <ion-row>
+            <ion-col size="6">
+              <h4 class="label">{{ paymentsCommonText?.payee }}:</h4>
+            </ion-col>
+            <ion-col size="6">
+              <h4 class="value">{{paymentDetails?.user?.firstName + ' ' + paymentDetails?.user?.lastName}}</h4>
+            </ion-col>
+          </ion-row>
+
+          <ion-row>
+            <ion-col size="6">
+              <h4 class="label">{{ commonText?.vessel }}:</h4>
+            </ion-col>
+            <ion-col size="6">
+              <h4 class="value">{{paymentDetails?.vessel?.name}}</h4>
+            </ion-col>
+          </ion-row>
+          
+          <ion-row>
+            <ion-col size="6">
+              <h4 class="label">{{ paymentsCommonText?.paymentDate }}:</h4>
+            </ion-col>
+            <ion-col size="6">
+              <h4 class="value">{{ sharedmethods.formatLocalDate(paymentDetails?.paymentDate, currentLanguage) }}</h4>
+            </ion-col>
+          </ion-row>
+          
+          <ion-row>
+            <ion-col size="6">
+              <h4 class="label">{{ paymentsCommonText?.paymentMethod }}:</h4>
+            </ion-col>
+            <ion-col size="6">
+              <h4 class="value">{{ getPaymentMethodLabel(paymentDetails?.paymentMethod) }}</h4>
+            </ion-col>
+          </ion-row>
+          
+          <ion-row>
+            <ion-col size="6">
+              <h4 class="label">{{ paymentsCommonText?.paymentPeriod }}:</h4>
+            </ion-col>
+            <ion-col size="6">
+              <h4 class="value">
+                {{ sharedmethods.formatLocalDate(paymentDetails?.startDate, currentLanguage) }} -
+                {{ sharedmethods.formatLocalDate(paymentDetails?.endDate, currentLanguage) }}
+              </h4>
+            </ion-col>
+          </ion-row>
+          
+          <ion-row *ngIf="currentUser?.role==='vessel_owner' && paymentDetails?.confirmedDate">
+            <ion-col size="6">
+              <h4 class="label">{{ paymentsCommonText?.paymentConfirmed }}:</h4>
+            </ion-col>
+            <ion-col size="6">
+              <h4 class="value">{{ sharedmethods.formatLocalDate(paymentDetails?.confirmedDate, currentLanguage) }}</h4>
+            </ion-col>
+          </ion-row>
+          
+          <!-- Status not implemented yet -->
+          <!-- <ion-row>
+            <ion-col size="6">
+              <h4 class="label">{{ commonText?.status }}:</h4>
+            </ion-col>
+            <ion-col size="6">
+              <h4 class="value">{{paymentDetails?.status}}</h4>
+            </ion-col>
+          </ion-row> -->
+        </div>
       </ion-card-content>
     </ion-card>
   </div>
