@@ -350,6 +350,10 @@ const routes: Routes = [
     path: 'consent-forms',
     loadChildren: () => import('./consent-forms/consent-forms.module').then( m => m.ConsentFormsModule)
   },
+  {
+    path: 'welcome-screens',
+    loadChildren: () => import('./welcome-screens/welcome-screens.module').then(m => m.WelcomeScreensModule)
+  },
 
   // should be last item in the routes
   // add routes above this
