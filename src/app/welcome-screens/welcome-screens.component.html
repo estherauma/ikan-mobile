@@ -1,3 +1,74 @@
-<p>
-  welcome-screens works!
-</p>
+<ion-content>
+  <swiper-container
+    #swiper
+    *ngIf="slides?.length"
+    id="welcome_swiper_element"
+    [slidesPerView]="1"
+    [spaceBetween]="20"
+    [centeredSlides]="true"
+    (slidechange)="onSlideChange($event)">
+    <swiper-slide
+      *ngFor="let slide of slides; let idx = index;"
+      class="slide"
+    >
+      <div class="slider-header">
+        <ion-row>
+          <ion-col *ngIf="slide?.slideAudio?.url" class="audio-col">
+            <ion-icon
+              class="audio-icon"
+              name="volume-high"
+            ></ion-icon>
+          </ion-col>
+          <ion-col class="skip-col">
+            <a>
+              <span>{{ commonText?.skip }}</span>
+              <ion-icon name="chevron-forward-outline"></ion-icon>
+              <ion-icon name="chevron-forward-outline" class="icon-2"></ion-icon>
+            </a>
+          </ion-col>
+        </ion-row>
+      </div>
+      
+      <div class="slide-content">
+        <ng-container *ngFor="let item of slide?.slideContent;">
+          <h1 *ngIf="item.heading1" [innerHTML]="item.heading1" class="title" text-wrap></h1>
+          <h2 *ngIf="item.heading2" [innerHTML]="item.heading2" class="title" text-wrap></h2>
+          <h3 *ngIf="item.heading3" [innerHTML]="item.heading3" class="title" text-wrap></h3>
+          <h4 *ngIf="item.heading4" [innerHTML]="item.heading4" class="title" text-wrap text-center></h4>
+          <h5 *ngIf="item.heading5" [innerHTML]="item.heading5" class="title" text-wrap></h5>
+          <h6 *ngIf="item.heading6" [innerHTML]="item.heading6" class="title" text-wrap></h6>
+          <p *ngIf="item.paragraph" [innerHTML]="sharedMethods?.removeNBSP(item.paragraph)" text-wrap></p>
+          <img *ngIf="item.image" [src]="item.image" alt="Image">
+          <ol type="1" *ngIf="item.orderedList">
+            <li *ngFor="let subListItem of item.orderedList" text-wrap>
+              <p [innerHTML]="sharedMethods?.removeNBSP(subListItem)" text-wrap></p>
+            </li>
+          </ol>
+          <ul *ngIf="item.unorderedList">
+            <li *ngFor="let subListItem of item.unorderedList" [innerHTML]="sharedMethods?.removeNBSP(subListItem)" text-wrap></li>
+          </ul>
+        </ng-container>
+      </div>
+      
+      <div 
+        class="buttons-wrapper"
+        [ngClass]="{'show-prev': idx > 0}"
+      >
+        <ion-button
+          *ngIf="idx > 0"
+          class="prev-btn"
+          shape="round"
+        >
+          {{ commonText?.previous }}
+        </ion-button>
+
+        <ion-button 
+          class="next-btn"
+          shape="round"
+        >
+          {{ idx === slides?.length - 1 ? commonText?.ok : commonText?.next }}
+        </ion-button>
+      </div>
+    </swiper-slide>
+  </swiper-container>
+</ion-content>
