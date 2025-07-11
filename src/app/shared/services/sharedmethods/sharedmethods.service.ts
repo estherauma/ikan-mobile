@@ -500,4 +500,9 @@ export class SharedmethodsService {
     name = name?.replace(/\s+/g, '--'); // remove spaces from name
     return name + '.pdf';
   }
+
+  removeNBSP = (str: string) => {
+    const formattedString = str?.replace(/\u00A0/g, ' '); // replace &nbsp;
+    return formattedString;
+  };
 }
