@@ -87,6 +87,8 @@ export enum StorageKeys {
   currentUserContracts = 'currentUserContracts',
   completedConsentForms = 'completedConsentForms',
   offlineAnalyticsEvents = 'offlineAnalyticsEvents',
+  seenWelcomeScreens = 'seenWelcomeScreens',
+  skippedWelcomeScreens = 'skippedWelcomeScreens',
 }
 
 export interface UserData {
@@ -180,6 +182,7 @@ export interface AnalyticsEventsData {
   accountId: string;
   deviceId: string;
   createdAt: number;
+  data?: any;
 }
 
 export enum HubQuestionStatus {

@@ -2,7 +2,9 @@ import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { ContentService } from '../shared/services/content/content.service';
 import { SharedmethodsService } from '../shared/services/sharedmethods/sharedmethods.service';
 import { Router } from '@angular/router';
+import { AnalyticsService } from '../shared/services/analytics/analytics.service';
 import { StorageKeys, UserData } from '../shared/types/api-types';
+import { AppEventNames, PageEventNames } from '../shared/services/analytics/event-names';
 import { AuthService } from '../shared/services/auth/auth.service';
 
 @Component({
@@ -26,6 +28,7 @@ export class WelcomeScreensComponent  implements OnInit {
     public contentService: ContentService,
     public sharedMethods: SharedmethodsService,
     public router: Router,
+    public analtyicsService: AnalyticsService,
     public authService: AuthService,
   ) {}
 
@@ -36,9 +39,12 @@ export class WelcomeScreensComponent  implements OnInit {
     this.showWelcomeScreens = this.pageContent?.showSlides;
     this.slides = this.pageContent?.slides;
     this.user = await this.sharedMethods.getUserData();
+
+    const eventParams = this.sharedMethods.getAnalyticsEventParams();
+    await this.analtyicsService.trackEvent(PageEventNames.viewWelcomeScreens, eventParams);
   }
 
-  onSlideChange(e) {}
+  onSlideChange() {}
 
   goToPreviousSlide() {
     const swiper = this.swiperRef?.nativeElement?.swiper;
@@ -55,11 +61,22 @@ export class WelcomeScreensComponent  implements OnInit {
   async exitWelcomeScreens() {
     await this.sharedMethods.saveDataToStorage(StorageKeys.seenWelcomeScreens, true);
 
+    const eventParams = this.sharedMethods.getAnalyticsEventParams();
+    await this.analtyicsService.trackEvent(AppEventNames.seenWelcomeScreens, eventParams);
+
     this.router.navigate([this.authService.getCurrentUserBaseUrlFromRole(this.user?.role)]);
   }
 
-  async skipWelcomeScreens() {
+  async skipWelcomeScreens(idx, slide) {
     await this.sharedMethods.saveDataToStorage(StorageKeys.skippedWelcomeScreens, true);
+
+    const eventParams = await this.sharedMethods.getAnalyticsEventParams();
+    const eventData = {
+      lastWatchedSlide: slide?.slideKey || 'Not specified',
+      percentageWatched: `${(idx + 1)/this.slides.length * 100}%`
+    };
+    eventParams.data = eventData;
+    await this.analtyicsService.trackEvent(AppEventNames.skippedWelcomeScreens, eventParams);
 
     this.router.navigate([this.authService.getCurrentUserBaseUrlFromRole(this.user?.role)]);
   }

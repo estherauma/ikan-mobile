@@ -88,6 +88,7 @@ export enum PageEventNames {
     viewPayments = 'page_payments_home',
     viewVesselPayments = 'page_vessel_payments',
     viewPaymentDetails = 'page_payment_details',
+    viewWelcomeScreens = 'page_welcome_screens',
 
 }
 
@@ -99,4 +100,8 @@ export enum AppEventNames {
     // Consent Forms
     acceptedConsentFormConditions = 'accepted_consent_form_conditions',
     rejectedConsentFormConditions = 'rejected_consent_form_conditions',
+
+    // Welcome screens
+    seenWelcomeScreens = 'seen_welcome_screens',
+    skippedWelcomeScreens = 'skipped_welcome_screens',
 }
