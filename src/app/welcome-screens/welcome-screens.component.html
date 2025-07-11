@@ -20,7 +20,7 @@
             ></ion-icon>
           </ion-col>
           <ion-col class="skip-col">
-            <a>
+            <a (click)="skipWelcomeScreens()">
               <span>{{ commonText?.skip }}</span>
               <ion-icon name="chevron-forward-outline"></ion-icon>
               <ion-icon name="chevron-forward-outline" class="icon-2"></ion-icon>
@@ -58,6 +58,7 @@
           *ngIf="idx > 0"
           class="prev-btn"
           shape="round"
+          (click)="goToPreviousSlide()"
         >
           {{ commonText?.previous }}
         </ion-button>
@@ -65,6 +66,7 @@
         <ion-button 
           class="next-btn"
           shape="round"
+          (click)="idx === slides?.length - 1 ? exitWelcomeScreens() : goToNextSlide()"
         >
           {{ idx === slides?.length - 1 ? commonText?.ok : commonText?.next }}
         </ion-button>
