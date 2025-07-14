@@ -10,7 +10,7 @@
     [slidesPerView]="1"
     [spaceBetween]="20"
     [centeredSlides]="true"
-    (swiperslidechange)="onSlideChange()"
+    (swiperslidechange)="onSlideChange($event)"
   >
     <swiper-slide
       *ngFor="let slide of slides; let idx = index;"

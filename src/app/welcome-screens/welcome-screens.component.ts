@@ -42,6 +42,7 @@ export class WelcomeScreensComponent  implements OnInit {
     this.pageTitle = this.pageContent?.pageTitle;
     this.showWelcomeScreens = this.pageContent?.showSlides;
     this.slides = this.pageContent?.slides;
+    this.audioUrl = this.slides?.[0]?.slideAudio?.url || '';
     this.user = await this.sharedMethods.getUserData();
 
     const eventParams = this.sharedMethods.getAnalyticsEventParams();
@@ -49,9 +50,13 @@ export class WelcomeScreensComponent  implements OnInit {
   }
 
 
-  onSlideChange() {
+  onSlideChange(e) {
     // Stop audio if playing
     this.pauseAndResetAudio();
+
+    // preload slide audio
+    const activeIndex = e.detail[0].activeIndex;
+    this.audioUrl = this.slides?.[activeIndex]?.slideAudio?.url || '';
   }
 
   goToPreviousSlide() {
