@@ -1,4 +1,8 @@
 <ion-content>
+  <!-- Hidden audio element -->
+  <audio #audioPlayer [src]="audioUrl" hidden>
+  </audio>
+  
   <swiper-container
     #swiper
     *ngIf="slides?.length"
@@ -6,7 +10,8 @@
     [slidesPerView]="1"
     [spaceBetween]="20"
     [centeredSlides]="true"
-    (slidechange)="onSlideChange($event)">
+    (swiperslidechange)="onSlideChange()"
+  >
     <swiper-slide
       *ngFor="let slide of slides; let idx = index;"
       class="slide"
@@ -17,6 +22,7 @@
             <ion-icon
               class="audio-icon"
               name="volume-high"
+              (click)="playAudio(slide?.slideAudio?.url)"
             ></ion-icon>
           </ion-col>
           <ion-col class="skip-col">

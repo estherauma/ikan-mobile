@@ -20,9 +20,13 @@ export class WelcomeScreensComponent  implements OnInit {
   slides = [];
   commonText: any;
   user: UserData;
+  audioUrl = '';
 
-  @ViewChild('swiper')
+  @ViewChild('swiper', { static: false })
   swiperRef: ElementRef | undefined;
+
+  @ViewChild('audioPlayer')
+  audioPlayerRef!: ElementRef<HTMLAudioElement>;
 
   constructor(
     public contentService: ContentService,
@@ -44,7 +48,11 @@ export class WelcomeScreensComponent  implements OnInit {
     await this.analtyicsService.trackEvent(PageEventNames.viewWelcomeScreens, eventParams);
   }
 
-  onSlideChange() {}
+
+  onSlideChange() {
+    // Stop audio if playing
+    this.pauseAndResetAudio();
+  }
 
   goToPreviousSlide() {
     const swiper = this.swiperRef?.nativeElement?.swiper;
@@ -59,6 +67,9 @@ export class WelcomeScreensComponent  implements OnInit {
   }
 
   async exitWelcomeScreens() {
+    // Stop audio if playing
+    this.pauseAndResetAudio();
+
     await this.sharedMethods.saveDataToStorage(StorageKeys.seenWelcomeScreens, true);
 
     const eventParams = this.sharedMethods.getAnalyticsEventParams();
@@ -68,6 +79,9 @@ export class WelcomeScreensComponent  implements OnInit {
   }
 
   async skipWelcomeScreens(idx, slide) {
+    // Stop audio if playing
+    this.pauseAndResetAudio();
+
     await this.sharedMethods.saveDataToStorage(StorageKeys.skippedWelcomeScreens, true);
 
     const eventParams = await this.sharedMethods.getAnalyticsEventParams();
@@ -79,5 +93,26 @@ export class WelcomeScreensComponent  implements OnInit {
     await this.analtyicsService.trackEvent(AppEventNames.skippedWelcomeScreens, eventParams);
 
     this.router.navigate([this.authService.getCurrentUserBaseUrlFromRole(this.user?.role)]);
+  }
+
+  playAudio(url: string) {
+    this.audioUrl = url;
+    const audio: HTMLAudioElement = this.audioPlayerRef.nativeElement;
+    audio.play();
+  }
+
+  pauseAudio() {
+    const audio: HTMLAudioElement = this.audioPlayerRef.nativeElement;
+    if (audio) {
+      audio.pause();
+    }
+  }
+
+  pauseAndResetAudio() {
+    const audio: HTMLAudioElement = this.audioPlayerRef.nativeElement;
+    if (audio) {
+      audio.pause();
+      audio.currentTime = 0;
+    }
   }
 }
