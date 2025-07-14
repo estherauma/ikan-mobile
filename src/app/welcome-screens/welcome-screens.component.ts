@@ -34,9 +34,22 @@ export class WelcomeScreensComponent  implements OnInit {
     public router: Router,
     public analtyicsService: AnalyticsService,
     public authService: AuthService,
-  ) {}
+  ) {
+    this.contentService.watchContent().subscribe(async(resp) => {
+      if (resp) {
+        await this.setup();
+      }
+    });
+  }
 
   async ngOnInit() {
+    await this.setup();
+
+    const eventParams = this.sharedMethods.getAnalyticsEventParams();
+    await this.analtyicsService.trackEvent(PageEventNames.viewWelcomeScreens, eventParams);
+  }
+
+  async setup() {
     this.commonText = await this.contentService?.commonText;
     this.pageContent = await this.contentService?.getContentByPropertyName('welcome-screens');
     this.pageTitle = this.pageContent?.pageTitle;
@@ -44,11 +57,7 @@ export class WelcomeScreensComponent  implements OnInit {
     this.slides = this.pageContent?.slides;
     this.audioUrl = this.slides?.[0]?.slideAudio?.url || '';
     this.user = await this.sharedMethods.getUserData();
-
-    const eventParams = this.sharedMethods.getAnalyticsEventParams();
-    await this.analtyicsService.trackEvent(PageEventNames.viewWelcomeScreens, eventParams);
   }
-
 
   onSlideChange(e) {
     // Stop audio if playing
