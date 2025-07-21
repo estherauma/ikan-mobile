@@ -57,7 +57,7 @@ export class AuthService {
       case UserRole.buyer:
         return 'dashboard/buyer';
       default:
-        this.sharedMethods.showToast('Invalid user role');
+        // this.sharedMethods.showToast('Invalid user role');
         return '';
     }
   }
