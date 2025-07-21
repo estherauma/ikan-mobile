@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { UserData } from '../shared/types/api-types';
 import { Router } from '@angular/router';
 import { AnalyticsService } from '../shared/services/analytics/analytics.service';
@@ -18,6 +18,12 @@ export class TutorialsComponent  implements OnInit {
   commonText: any;
   user: UserData;
   audioUrl = '';
+
+  @ViewChild('swiper', { static: false })
+  swiperRef: ElementRef | undefined;
+
+  @ViewChild('audioPlayer')
+  audioPlayerRef!: ElementRef<HTMLAudioElement>;
 
   constructor(
     public contentService: ContentService,
@@ -43,17 +49,55 @@ export class TutorialsComponent  implements OnInit {
     console.log('pageContent-----', this.pageContent);
   }
 
-  onSlideChange(e) {}
+  onSlideChange(e) {
+    // Stop audio if playing
+    this.pauseAndResetAudio();
+
+    // preload slide audio
+    const activeIndex = e.detail[0].activeIndex;
+    if (activeIndex === 0) {
+      this.audioUrl = this.pageContent?.welcomeAudio?.url || '';
+    } else if (activeIndex === 1) {
+      this.audioUrl = this.pageContent?.tutorials?.introAudio?.url || '';
+    }
+  }
 
   skipTutorials() {}
 
-  goToNextSlide() {}
+  goToPreviousSlide() {
+    const swiper = this.swiperRef?.nativeElement?.swiper;
+    if (!swiper) { return; }
+    swiper.slidePrev();
+  }
 
-  goToPreviousSlide() {}
+  goToNextSlide() {
+    const swiper = this.swiperRef?.nativeElement.swiper;
+    if (!swiper) { return; }
+    swiper.slideNext();
+  }
 
   exitTutorials() {}
 
   goToTutorialDetail(tutorial) {}
 
-  playAudio(url) {}
+  playAudio(url: string) {
+    this.audioUrl = url;
+    const audio: HTMLAudioElement = this.audioPlayerRef.nativeElement;
+    audio.play();
+  }
+
+  pauseAudio() {
+    const audio: HTMLAudioElement = this.audioPlayerRef.nativeElement;
+    if (audio) {
+      audio.pause();
+    }
+  }
+
+  pauseAndResetAudio() {
+    const audio: HTMLAudioElement = this.audioPlayerRef.nativeElement;
+    if (audio) {
+      audio.pause();
+      audio.currentTime = 0;
+    }
+  }
 }
