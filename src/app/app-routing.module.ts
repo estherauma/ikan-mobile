@@ -354,6 +354,10 @@ const routes: Routes = [
     path: 'welcome-screens',
     loadChildren: () => import('./welcome-screens/welcome-screens.module').then(m => m.WelcomeScreensModule)
   },
+  {
+    path: 'app-tutorials',
+    loadChildren: () => import('./tutorials/tutorials.module').then(m => m.TutorialsModule)
+  },
 
   // should be last item in the routes
   // add routes above this
