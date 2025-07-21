@@ -43,24 +43,7 @@
           ></video>
         </div>
         <h1>{{ pageContent?.welcomeTitle }}</h1>
-        <ng-container *ngFor="let item of pageContent?.welcomeText;">
-          <h1 *ngIf="item.heading1" [innerHTML]="item.heading1" class="title" text-wrap></h1>
-          <h2 *ngIf="item.heading2" [innerHTML]="item.heading2" class="title" text-wrap></h2>
-          <h3 *ngIf="item.heading3" [innerHTML]="item.heading3" class="title" text-wrap></h3>
-          <h4 *ngIf="item.heading4" [innerHTML]="item.heading4" class="title" text-wrap text-center></h4>
-          <h5 *ngIf="item.heading5" [innerHTML]="item.heading5" class="title" text-wrap></h5>
-          <h6 *ngIf="item.heading6" [innerHTML]="item.heading6" class="title" text-wrap></h6>
-          <p *ngIf="item.paragraph" [innerHTML]="sharedMethods?.removeNBSP(item.paragraph)" text-wrap></p>
-          <img *ngIf="item.image" [src]="item.image" alt="Image">
-          <ol type="1" *ngIf="item.orderedList">
-            <li *ngFor="let subListItem of item.orderedList" text-wrap>
-              <p [innerHTML]="sharedMethods?.removeNBSP(subListItem)" text-wrap></p>
-            </li>
-          </ol>
-          <ul *ngIf="item.unorderedList">
-            <li *ngFor="let subListItem of item.unorderedList" [innerHTML]="sharedMethods?.removeNBSP(subListItem)" text-wrap></li>
-          </ul>
-        </ng-container>
+        <app-rich-text [textContent]="pageContent?.welcomeText"></app-rich-text>
       </div>
 
       <div class="buttons-wrapper">
@@ -95,25 +78,7 @@
       
       <div class="slide-content tutorials-slide-content">
         <h1 *ngIf="pageContent?.tutorials?.introTitle">{{ pageContent?.tutorials?.introTitle }}</h1>
-        <ng-container *ngFor="let item of pageContent?.tutorials?.introText;">
-          <h1 *ngIf="item.heading1" [innerHTML]="item.heading1" class="title" text-wrap></h1>
-          <h2 *ngIf="item.heading2" [innerHTML]="item.heading2" class="title" text-wrap></h2>
-          <h3 *ngIf="item.heading3" [innerHTML]="item.heading3" class="title" text-wrap></h3>
-          <h4 *ngIf="item.heading4" [innerHTML]="item.heading4" class="title" text-wrap text-center></h4>
-          <h5 *ngIf="item.heading5" [innerHTML]="item.heading5" class="title" text-wrap></h5>
-          <h6 *ngIf="item.heading6" [innerHTML]="item.heading6" class="title" text-wrap></h6>
-          <p *ngIf="item.paragraph" [innerHTML]="sharedMethods?.removeNBSP(item.paragraph)" text-wrap></p>
-          <img *ngIf="item.image" [src]="item.image" alt="Image">
-          <ol type="1" *ngIf="item.orderedList">
-            <li *ngFor="let subListItem of item.orderedList" text-wrap>
-              <p [innerHTML]="sharedMethods?.removeNBSP(subListItem)" text-wrap></p>
-            </li>
-          </ol>
-          <ul *ngIf="item.unorderedList">
-            <li *ngFor="let subListItem of item.unorderedList" [innerHTML]="sharedMethods?.removeNBSP(subListItem)" text-wrap></li>
-          </ul>
-        </ng-container>
-        
+        <app-rich-text [textContent]="pageContent?.tutorials?.introText"></app-rich-text>
         <ion-row class="tutorials-list">
           <ng-container *ngFor="let tutorial of pageContent?.tutorials?.items; let idx = index;">
             <ion-col size="6" class="tutorial-item" (click)="goToTutorialDetail(tutorial)">
