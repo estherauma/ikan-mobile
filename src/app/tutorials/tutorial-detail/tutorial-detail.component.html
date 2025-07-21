@@ -8,7 +8,7 @@
       <ion-icon
         class="audio-icon"
         name="volume-high"
-        (click)="playAudio(audioUrl)"
+        (click)="playAudio()"
       ></ion-icon>
     </ion-col>
   </ion-row>
@@ -44,5 +44,13 @@
         class="video-el"
       ></video>
     </div>
+  </div>
+
+  <div class="btn-wrapper">
+    <ion-icon
+      name="close-outline"
+      class="arrow-icon"
+      (click)="closeModal()"
+    ></ion-icon>
   </div>
 </ion-content>

@@ -49,4 +49,17 @@ ion-content {
       }
     }
   }
+
+  .btn-wrapper {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+    ion-icon {
+      background: #3565ff;
+      color: white;
+      font-size: 1.5rem;
+      padding: 10px;
+      border-radius: 50%;
+    }
+  }
 }

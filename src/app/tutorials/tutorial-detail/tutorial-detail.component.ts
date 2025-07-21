@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { ModalController, NavParams } from '@ionic/angular';
 import { ContentService } from 'src/app/shared/services/content/content.service';
 import { SharedmethodsService } from 'src/app/shared/services/sharedmethods/sharedmethods.service';
@@ -16,6 +16,9 @@ export class TutorialDetailComponent  implements OnInit {
   videoUrl = '';
   audioUrl = '';
   analyticsEventName = '';
+
+  @ViewChild('audioPlayer')
+  audioPlayerRef!: ElementRef<HTMLAudioElement>;
 
   constructor(
     public contentService: ContentService,
@@ -37,5 +40,12 @@ export class TutorialDetailComponent  implements OnInit {
     this.analyticsEventName = this.navParams.get('analyticsEventName') || '';
   }
 
-  playAudio(url: string) {}
+  closeModal() {
+    this.modalCtrl.dismiss();
+  }
+
+  playAudio() {
+    const audio: HTMLAudioElement = this.audioPlayerRef.nativeElement;
+    audio.play();
+  }
 }
