@@ -1,3 +1,151 @@
-<p>
-  tutorials works!
-</p>
+<ion-content>
+  <!-- Hidden audio element -->
+  <audio #audioPlayer [src]="audioUrl" hidden>
+  </audio>
+  
+  <swiper-container
+    #swiper
+    id="tutorials_swiper_element"
+    [slidesPerView]="1"
+    [spaceBetween]="20"
+    [centeredSlides]="true"
+    (swiperslidechange)="onSlideChange($event)"
+  >
+    <!-- First slide / Home -->
+    <swiper-slide class="slide">
+      <div class="slider-header">
+        <ion-row>
+          <ion-col *ngIf="pageContent?.welcomeAudio?.url" class="audio-col">
+            <ion-icon
+              class="audio-icon"
+              name="volume-high"
+              (click)="playAudio(pageContent?.welcomeAudio?.url)"
+            ></ion-icon>
+          </ion-col>
+          <ion-col class="skip-col">
+            <a (click)="skipTutorials()">
+              <span>{{ commonText?.skip }}</span>
+              <ion-icon name="chevron-forward-outline"></ion-icon>
+              <ion-icon name="chevron-forward-outline" class="icon-2"></ion-icon>
+            </a>
+          </ion-col>
+        </ion-row>
+      </div>
+
+      <div class="slide-content">
+        <div class="video-wrapper">
+          <video
+            *ngIf="pageContent?.welcomeVideo?.url"
+            [src]="pageContent?.welcomeVideo?.url"
+            controls
+            class="welcome-video"
+          ></video>
+        </div>
+        <h1>{{ pageContent?.welcomeTitle }}</h1>
+        <ng-container *ngFor="let item of pageContent?.welcomeText;">
+          <h1 *ngIf="item.heading1" [innerHTML]="item.heading1" class="title" text-wrap></h1>
+          <h2 *ngIf="item.heading2" [innerHTML]="item.heading2" class="title" text-wrap></h2>
+          <h3 *ngIf="item.heading3" [innerHTML]="item.heading3" class="title" text-wrap></h3>
+          <h4 *ngIf="item.heading4" [innerHTML]="item.heading4" class="title" text-wrap text-center></h4>
+          <h5 *ngIf="item.heading5" [innerHTML]="item.heading5" class="title" text-wrap></h5>
+          <h6 *ngIf="item.heading6" [innerHTML]="item.heading6" class="title" text-wrap></h6>
+          <p *ngIf="item.paragraph" [innerHTML]="sharedMethods?.removeNBSP(item.paragraph)" text-wrap></p>
+          <img *ngIf="item.image" [src]="item.image" alt="Image">
+          <ol type="1" *ngIf="item.orderedList">
+            <li *ngFor="let subListItem of item.orderedList" text-wrap>
+              <p [innerHTML]="sharedMethods?.removeNBSP(subListItem)" text-wrap></p>
+            </li>
+          </ol>
+          <ul *ngIf="item.unorderedList">
+            <li *ngFor="let subListItem of item.unorderedList" [innerHTML]="sharedMethods?.removeNBSP(subListItem)" text-wrap></li>
+          </ul>
+        </ng-container>
+      </div>
+
+      <div class="buttons-wrapper">
+        <!-- <ion-button
+          class="next-btn"
+          shape="round"
+          (click)="goToNextSlide()"
+        > -->
+          <ion-icon name="arrow-forward-outline" class="arrow-icon"></ion-icon>
+        <!-- </ion-button> -->
+      </div>
+    </swiper-slide>
+
+    <!-- Second slide / Tutorials list -->
+    <swiper-slide class="slide">
+      <div class="slider-header">
+        <ion-row>
+          <ion-col *ngIf="pageContent?.tutorials?.introAudio?.url" class="audio-col">
+            <ion-icon
+              class="audio-icon"
+              name="volume-high"
+              (click)="playAudio(pageContent?.tutorials?.introAudio?.url)"
+            ></ion-icon>
+          </ion-col>
+          <ion-col class="skip-col">
+            <a (click)="skipTutorials()">
+              <span>{{ commonText?.skip }}</span>
+              <ion-icon name="chevron-forward-outline"></ion-icon>
+              <ion-icon name="chevron-forward-outline" class="icon-2"></ion-icon>
+            </a>
+          </ion-col>
+        </ion-row>
+      </div>
+      
+      <div class="slide-content tutorials-slide-content">
+        <h1 *ngIf="pageContent?.tutorials?.introTitle">{{ pageContent?.tutorials?.introTitle }}</h1>
+        <ng-container *ngFor="let item of pageContent?.tutorials?.introText;">
+          <h1 *ngIf="item.heading1" [innerHTML]="item.heading1" class="title" text-wrap></h1>
+          <h2 *ngIf="item.heading2" [innerHTML]="item.heading2" class="title" text-wrap></h2>
+          <h3 *ngIf="item.heading3" [innerHTML]="item.heading3" class="title" text-wrap></h3>
+          <h4 *ngIf="item.heading4" [innerHTML]="item.heading4" class="title" text-wrap text-center></h4>
+          <h5 *ngIf="item.heading5" [innerHTML]="item.heading5" class="title" text-wrap></h5>
+          <h6 *ngIf="item.heading6" [innerHTML]="item.heading6" class="title" text-wrap></h6>
+          <p *ngIf="item.paragraph" [innerHTML]="sharedMethods?.removeNBSP(item.paragraph)" text-wrap></p>
+          <img *ngIf="item.image" [src]="item.image" alt="Image">
+          <ol type="1" *ngIf="item.orderedList">
+            <li *ngFor="let subListItem of item.orderedList" text-wrap>
+              <p [innerHTML]="sharedMethods?.removeNBSP(subListItem)" text-wrap></p>
+            </li>
+          </ol>
+          <ul *ngIf="item.unorderedList">
+            <li *ngFor="let subListItem of item.unorderedList" [innerHTML]="sharedMethods?.removeNBSP(subListItem)" text-wrap></li>
+          </ul>
+        </ng-container>
+        
+        <ion-row class="tutorials-list">
+          <ng-container *ngFor="let tutorial of pageContent?.tutorials?.items; let idx = index;">
+            <ion-col size="6" class="tutorial-item" (click)="goToTutorialDetail(tutorial)">
+              <div class="item-wrapper">
+                <div class="icon-wrapper">
+                  <ion-icon [name]="tutorial.itemIcon"></ion-icon>
+                </div>
+                <p>{{ tutorial.itemTitle }}</p>
+              </div>
+            </ion-col>
+          </ng-container>
+        </ion-row>
+      </div>
+      
+      <div class="buttons-wrapper show-prev">
+        <ion-button
+          class="prev-btn"
+          shape="round"
+          (click)="goToPreviousSlide()"
+        >
+          {{ commonText?.previous }}
+        </ion-button>
+
+        <ion-button 
+          class="next-btn"
+          shape="round"
+          (click)="exitTutorials()"
+        >
+          {{  commonText?.ok }}
+        </ion-button>
+      </div>
+    </swiper-slide>
+  </swiper-container>
+</ion-content>
