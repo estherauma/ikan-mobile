@@ -27,6 +27,9 @@ export class TutorialsComponent  implements OnInit {
   @ViewChild('audioPlayer')
   audioPlayerRef!: ElementRef<HTMLAudioElement>;
 
+  @ViewChild('videoPlayer')
+  videoPlayerRef!: ElementRef<HTMLVideoElement>;
+
   constructor(
     public contentService: ContentService,
     public sharedMethods: SharedmethodsService,
@@ -64,8 +67,9 @@ export class TutorialsComponent  implements OnInit {
   }
 
   onSlideChange(e) {
-    // Stop audio if playing
+    // Stop audio or video if playing
     this.pauseAndResetAudio();
+    this.stopAndResetVideo();
 
     // preload slide audio
     const activeIndex = e.detail[0].activeIndex;
@@ -77,8 +81,9 @@ export class TutorialsComponent  implements OnInit {
   }
 
   async skipTutorials() {
-    // Stop audio if playing
+    // Stop audio or video if playing
     this.pauseAndResetAudio();
+    this.stopAndResetVideo();
 
     await this.sharedMethods.saveDataToStorage(StorageKeys.skippedAppTutorials, true);
 
@@ -101,8 +106,9 @@ export class TutorialsComponent  implements OnInit {
   }
 
   async exitTutorials() {
-    // Stop audio if playing
+    // Stop audio or video if playing
     this.pauseAndResetAudio();
+    this.stopAndResetVideo();
 
     await this.sharedMethods.saveDataToStorage(StorageKeys.seenAppTutorials, true);
 
@@ -147,6 +153,14 @@ export class TutorialsComponent  implements OnInit {
     if (audio) {
       audio.pause();
       audio.currentTime = 0;
+    }
+  }
+
+  stopAndResetVideo() {
+    const video: HTMLVideoElement = this.videoPlayerRef.nativeElement;
+    if (video) {
+      video.pause();
+      video.currentTime = 0;
     }
   }
 }
