@@ -1,5 +1,6 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { ModalController, NavParams } from '@ionic/angular';
+import { AnalyticsService } from 'src/app/shared/services/analytics/analytics.service';
 import { ContentService } from 'src/app/shared/services/content/content.service';
 import { SharedmethodsService } from 'src/app/shared/services/sharedmethods/sharedmethods.service';
 
@@ -25,10 +26,16 @@ export class TutorialDetailComponent  implements OnInit {
     public sharedMethods: SharedmethodsService,
     public modalCtrl: ModalController,
     public navParams: NavParams,
+    public analyticsService: AnalyticsService,
   ) { }
 
   async ngOnInit() {
     await this.pageSetup();
+
+    if (this.analyticsEventName) {
+      const eventParams = this.sharedMethods.getAnalyticsEventParams();
+      await this.analyticsService.trackEvent(this.analyticsEventName, eventParams);
+    }
   }
 
   async pageSetup() {

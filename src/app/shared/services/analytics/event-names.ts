@@ -88,7 +88,10 @@ export enum PageEventNames {
     viewPayments = 'page_payments_home',
     viewVesselPayments = 'page_vessel_payments',
     viewPaymentDetails = 'page_payment_details',
+
+    // Welcome screens/ tutorials
     viewWelcomeScreens = 'page_welcome_screens',
+    viewAppTutotrials = 'page_app_tutorials',
 
 }
 
@@ -104,4 +107,6 @@ export enum AppEventNames {
     // Welcome screens
     seenWelcomeScreens = 'seen_welcome_screens',
     skippedWelcomeScreens = 'skipped_welcome_screens',
+    skippedAppTutorials = 'skipped_app_tutorials',
+    seenAppTutorials = 'seen_app_tutorials',
 }

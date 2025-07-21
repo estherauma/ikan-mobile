@@ -7,7 +7,7 @@ import { ContentService } from '../shared/services/content/content.service';
 import { SharedmethodsService } from '../shared/services/sharedmethods/sharedmethods.service';
 import { ModalController } from '@ionic/angular';
 import { TutorialDetailComponent } from './tutorial-detail/tutorial-detail.component';
-// import { AppEventNames, PageEventNames } from '../shared/services/analytics/event-names';
+import { AppEventNames, PageEventNames } from '../shared/services/analytics/event-names';
 
 @Component({
   selector: 'app-tutorials',
@@ -39,9 +39,9 @@ export class TutorialsComponent  implements OnInit {
   async ngOnInit() {
     await this.setup();
 
-    // const eventParams = this.sharedMethods.getAnalyticsEventParams();
-    // const eventName = this.pageContent?.analyticsEventName || PageEventNames.viewAppTutotrials;
-    // await this.analtyicsService.trackEvent(eventName, eventParams);
+    const eventParams = this.sharedMethods.getAnalyticsEventParams();
+    const eventName = this.pageContent?.analyticsEventName || PageEventNames.viewAppTutotrials;
+    await this.analtyicsService.trackEvent(eventName, eventParams);
   }
 
   async setup() {
@@ -76,8 +76,8 @@ export class TutorialsComponent  implements OnInit {
 
     await this.sharedMethods.saveDataToStorage(StorageKeys.skippedAppTutorials, true);
 
-    // const eventParams = await this.sharedMethods.getAnalyticsEventParams();
-    // await this.analtyicsService.trackEvent(AppEventNames.skippedAppTutorials, eventParams);
+    const eventParams = await this.sharedMethods.getAnalyticsEventParams();
+    await this.analtyicsService.trackEvent(AppEventNames.skippedAppTutorials, eventParams);
 
     this.router.navigate([this.authService.getCurrentUserBaseUrlFromRole(this.user?.role)], { replaceUrl: true });
   }
@@ -100,8 +100,8 @@ export class TutorialsComponent  implements OnInit {
 
     await this.sharedMethods.saveDataToStorage(StorageKeys.seenAppTutorials, true);
 
-    // const eventParams = this.sharedMethods.getAnalyticsEventParams();
-    // await this.analtyicsService.trackEvent(AppEventNames.seenAppTutorials, eventParams);
+    const eventParams = this.sharedMethods.getAnalyticsEventParams();
+    await this.analtyicsService.trackEvent(AppEventNames.seenAppTutorials, eventParams);
 
     this.router.navigate([this.authService.getCurrentUserBaseUrlFromRole(this.user?.role)], { replaceUrl: true });
   }
