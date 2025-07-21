@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
+import { SharedmethodsService } from '../../services/sharedmethods/sharedmethods.service';
 
 @Component({
   selector: 'app-rich-text',
@@ -7,7 +8,11 @@ import { Component, OnInit } from '@angular/core';
 })
 export class RichTextComponent  implements OnInit {
 
-  constructor() { }
+  @Input() textContent: any;
+
+  constructor(
+    public sharedMethods: SharedmethodsService,
+  ) { }
 
   ngOnInit() {}
 
