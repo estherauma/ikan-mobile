@@ -337,3 +337,16 @@ ion-modal.workers-create-modal {
     }
   }
 }
+
+ion-modal.tutorial-detail-modal {
+  --background: transparent !important;
+
+  --height: 90%;
+
+  .ion-page {
+    width: 90%;
+    border-radius: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+  }
+}
