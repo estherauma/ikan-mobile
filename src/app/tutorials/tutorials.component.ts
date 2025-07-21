@@ -5,6 +5,8 @@ import { AnalyticsService } from '../shared/services/analytics/analytics.service
 import { AuthService } from '../shared/services/auth/auth.service';
 import { ContentService } from '../shared/services/content/content.service';
 import { SharedmethodsService } from '../shared/services/sharedmethods/sharedmethods.service';
+import { ModalController } from '@ionic/angular';
+import { TutorialDetailComponent } from './tutorial-detail/tutorial-detail.component';
 // import { AppEventNames, PageEventNames } from '../shared/services/analytics/event-names';
 
 @Component({
@@ -31,6 +33,7 @@ export class TutorialsComponent  implements OnInit {
     public router: Router,
     public analtyicsService: AnalyticsService,
     public authService: AuthService,
+    public modalController: ModalController,
   ) {}
 
   async ngOnInit() {
@@ -103,7 +106,22 @@ export class TutorialsComponent  implements OnInit {
     this.router.navigate([this.authService.getCurrentUserBaseUrlFromRole(this.user?.role)], { replaceUrl: true });
   }
 
-  goToTutorialDetail(tutorial) {}
+  async goToTutorialDetail(tutorial) {
+    const modal = await this.modalController.create({
+      component: TutorialDetailComponent,
+      cssClass: 'tuna-modal tutorial-detail-modal',
+      componentProps: {
+        title: tutorial?.itemTitle || '',
+        description: tutorial?.itemText,
+        icon: tutorial?.itemIcon,
+        videoUrl: tutorial?.itemVideo?.url,
+        audioUrl: tutorial?.itemAudio?.url,
+        analyticsEventName: tutorial?.itemAnalyticsEventName,
+      },
+      animated: true,
+    });
+    modal.present();
+  }
 
   playAudio(url: string) {
     this.audioUrl = url;
