@@ -89,6 +89,8 @@ export enum StorageKeys {
   offlineAnalyticsEvents = 'offlineAnalyticsEvents',
   seenWelcomeScreens = 'seenWelcomeScreens',
   skippedWelcomeScreens = 'skippedWelcomeScreens',
+  seenAppTutorials = 'seenAppTutorials',
+  skippedAppTutorials = 'skippedAppTutorials',
 }
 
 export interface UserData {

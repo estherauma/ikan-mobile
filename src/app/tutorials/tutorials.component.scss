@@ -1,0 +1,129 @@
+ion-content {
+  swiper-container {
+    height: 100%;
+    background: white;
+    swiper-slide {
+      display: flex;
+      flex-direction: column;
+      padding: 30px;
+
+      ion-button {
+        text-transform: none;
+        box-shadow: none;
+        --box-shadow: none;
+      }
+
+      .slider-header {
+        flex: 0 0 auto;
+        ion-col {
+          display: flex;
+          align-items: center;
+        }
+        .audio-col {
+          ion-icon {
+            font-size: 1.5rem;
+            color: #3565ff;
+          }
+        }
+        .skip-col {
+          justify-content: end;
+          a {
+            display: flex;
+            align-items: center;
+            text-transform: uppercase;
+            span {
+              margin-right: 3px;
+            }
+            .icon-2 {
+              margin-left: -8px;
+            }
+          }
+        }
+      }
+
+      .slide-content {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        // justify-content: center;
+        margin-top: 50px;
+        flex: 1 1 auto;
+        color: #191970;
+        .video-wrapper {
+          width: 90%;
+          height: 200px;
+          position: relative;
+          margin-bottom: 20px;
+          video {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            object-position: center;
+            border-radius: 20px;
+          }
+        }
+        .tutorials-list {
+          width: 100%;
+          display: flex;
+          // justify-content: center;
+          .tutorial-item {
+            padding: 5px 10px;
+            margin-bottom: 10px;
+            cursor: pointer;
+            .item-wrapper {
+              display: flex;
+              flex-direction: column;
+              align-items: center;
+              background-color: #eaedf6;
+              border-radius: 10px;
+              padding: 10px;
+              // box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+              box-shadow: 0 1px 3px #858acd;
+              .icon-wrapper {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                width: 40px;
+                height: 40px;
+                ion-icon {
+                  font-size: 1.5rem;
+                  color: #3565ff;
+                  width: 100%;
+                  height: 100%;
+                  object-fit: contain;
+                }
+              }
+              p {
+                margin: 0;
+                font-size: 1rem;
+              }
+            }
+          }
+        }
+      }
+      .tutorials-slide-content {
+        margin-top: 10px;
+      }
+
+      .buttons-wrapper {
+        flex: 0 0 auto;
+        display: flex;
+        justify-content: center;
+        .prev-btn {
+        }
+        .next-btn {
+        }
+        .arrow-icon {
+          background: #3565ff;
+          color: white;
+          font-size: 1.5rem;
+          padding: 10px;
+          border-radius: 50%;
+        }
+      }
+      .show-prev {
+        justify-content: space-between;
+      }
+    }
+  }
+}

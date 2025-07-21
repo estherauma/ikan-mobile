@@ -88,7 +88,7 @@ export class LoginPage extends BaseformPage implements OnInit {
       email: formData.email.trim(),
       password: formData.password.trim()
     };
-    
+
     this.sharedMethods.showLoader(this.contentService.commonText?.loadingText);
     const response = await this.apiServices.post('accounts/login', formData, true);
     response.subscribe(
@@ -97,7 +97,7 @@ export class LoginPage extends BaseformPage implements OnInit {
           this.pageFormGroup.reset();
           await this.sharedMethods.saveDataToStorage(StorageKeys.apiToken, res.data.token);
           await this.sharedMethods.saveDataToStorage(StorageKeys.userData, res.data.userData);
-          
+
           // set api headers for sync service that requires saved token
           await this.apiServices.setApiRequestHeaders();
           await this.authService.setUpAuthData();
@@ -119,7 +119,7 @@ export class LoginPage extends BaseformPage implements OnInit {
           await this.sharedMethods.showWaitLoader(this.commonText?.syncingData || 'Syncing data...');
           await this.syncService.syncData();
           await this.sharedMethods.dismissLoader();
-          
+
           // enable menu
           this.menuCtrl.enable(true);
           if (this.testEmails.includes(res.data.userData?.email)) {
@@ -130,6 +130,9 @@ export class LoginPage extends BaseformPage implements OnInit {
             return this.router.navigate(['select-role'], { replaceUrl: true });
           }
 
+          // show app tutorials if not seen or skipped
+          await this.showAppTutorials();
+
           await this.sharedMethods.saveDataToStorage(StorageKeys.isRoleSet, true);
           this.handleRedirection(res.data.userData?.role);
         }
@@ -138,6 +141,14 @@ export class LoginPage extends BaseformPage implements OnInit {
         this.sharedMethods.showToast(err.error?.detail);
       }
     );
+  }
+
+  async showAppTutorials() {
+    const skippedAppTutorials = await this.sharedMethods.readDataFromStorage(StorageKeys.skippedAppTutorials);
+    const seenAppTutorials = await this.sharedMethods.readDataFromStorage(StorageKeys.seenAppTutorials);
+    if (!skippedAppTutorials && !seenAppTutorials) {
+      this.router.navigate(['app-tutorials']);
+    }
   }
 
 

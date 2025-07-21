@@ -55,7 +55,6 @@ export class LoginMethodPage implements OnInit {
         this.langModalPresented = true;
       }
     }
-    await this.showWelcomeScreens();
     this.analytics.trackEvent(PageEventNames.loginMethod, this.sharedMethods.analyticsEventParams);
   }
 
@@ -102,13 +101,5 @@ export class LoginMethodPage implements OnInit {
       return true;
     }
     return false;
-  }
-
-  async showWelcomeScreens() {
-    const skippedWelcomeScreens = await this.sharedMethods.readDataFromStorage(StorageKeys.skippedWelcomeScreens);
-    const seenWelcomeScreens = await this.sharedMethods.readDataFromStorage(StorageKeys.seenWelcomeScreens);
-    if (!skippedWelcomeScreens && !seenWelcomeScreens) {
-      this.router.navigate(['welcome-screens']);
-    }
   }
 }
