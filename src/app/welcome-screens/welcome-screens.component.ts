@@ -89,7 +89,7 @@ export class WelcomeScreensComponent  implements OnInit {
     const eventParams = this.sharedMethods.getAnalyticsEventParams();
     await this.analtyicsService.trackEvent(AppEventNames.seenWelcomeScreens, eventParams);
 
-    this.router.navigate([this.authService.getCurrentUserBaseUrlFromRole(this.user?.role)]);
+    this.router.navigate([this.authService.getCurrentUserBaseUrlFromRole(this.user?.role)], { replaceUrl: true });
   }
 
   async skipWelcomeScreens(idx, slide) {
@@ -106,7 +106,7 @@ export class WelcomeScreensComponent  implements OnInit {
     eventParams.data = eventData;
     await this.analtyicsService.trackEvent(AppEventNames.skippedWelcomeScreens, eventParams);
 
-    this.router.navigate([this.authService.getCurrentUserBaseUrlFromRole(this.user?.role)]);
+    this.router.navigate([this.authService.getCurrentUserBaseUrlFromRole(this.user?.role)], { replaceUrl: true });
   }
 
   playAudio(url: string) {

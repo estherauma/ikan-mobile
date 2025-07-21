@@ -73,7 +73,7 @@ export class TutorialsComponent  implements OnInit {
     // const eventParams = await this.sharedMethods.getAnalyticsEventParams();
     // await this.analtyicsService.trackEvent(AppEventNames.skippedAppTutorials, eventParams);
 
-    this.router.navigate([this.authService.getCurrentUserBaseUrlFromRole(this.user?.role)]);
+    this.router.navigate([this.authService.getCurrentUserBaseUrlFromRole(this.user?.role)], { replaceUrl: true });
   }
 
   goToPreviousSlide() {
@@ -88,7 +88,17 @@ export class TutorialsComponent  implements OnInit {
     swiper.slideNext();
   }
 
-  exitTutorials() {}
+  async exitTutorials() {
+    // Stop audio if playing
+    this.pauseAndResetAudio();
+
+    await this.sharedMethods.saveDataToStorage(StorageKeys.seenAppTutorials, true);
+
+    // const eventParams = this.sharedMethods.getAnalyticsEventParams();
+    // await this.analtyicsService.trackEvent(AppEventNames.seenAppTutorials, eventParams);
+
+    this.router.navigate([this.authService.getCurrentUserBaseUrlFromRole(this.user?.role)], { replaceUrl: true });
+  }
 
   goToTutorialDetail(tutorial) {}
 
