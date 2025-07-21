@@ -1,11 +1,11 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
-import { UserData } from '../shared/types/api-types';
+import { StorageKeys, UserData } from '../shared/types/api-types';
 import { Router } from '@angular/router';
 import { AnalyticsService } from '../shared/services/analytics/analytics.service';
 import { AuthService } from '../shared/services/auth/auth.service';
 import { ContentService } from '../shared/services/content/content.service';
 import { SharedmethodsService } from '../shared/services/sharedmethods/sharedmethods.service';
-import { PageEventNames } from '../shared/services/analytics/event-names';
+// import { AppEventNames, PageEventNames } from '../shared/services/analytics/event-names';
 
 @Component({
   selector: 'app-tutorials',
@@ -35,10 +35,9 @@ export class TutorialsComponent  implements OnInit {
 
   async ngOnInit() {
     await this.setup();
-    this.audioUrl = this.pageContent?.welcomeAudio?.url || '';
 
-    const eventParams = this.sharedMethods.getAnalyticsEventParams();
-    const eventName = this.pageContent?.analyticsEventName || PageEventNames.viewAppTutotrials;
+    // const eventParams = this.sharedMethods.getAnalyticsEventParams();
+    // const eventName = this.pageContent?.analyticsEventName || PageEventNames.viewAppTutotrials;
     // await this.analtyicsService.trackEvent(eventName, eventParams);
   }
 
@@ -46,7 +45,10 @@ export class TutorialsComponent  implements OnInit {
     this.commonText = await this.contentService?.commonText;
     console.log('commonText-----', this.commonText);
     this.pageContent = await this.contentService?.getContentByPropertyName('app-tutorials');
+    this.audioUrl = this.pageContent?.welcomeAudio?.url || '';
     console.log('pageContent-----', this.pageContent);
+    this.user = await this.sharedMethods.getUserData();
+    console.log('user-----', this.user);
   }
 
   onSlideChange(e) {
@@ -62,7 +64,17 @@ export class TutorialsComponent  implements OnInit {
     }
   }
 
-  skipTutorials() {}
+  async skipTutorials() {
+    // Stop audio if playing
+    this.pauseAndResetAudio();
+
+    await this.sharedMethods.saveDataToStorage(StorageKeys.skippedAppTutorials, true);
+
+    // const eventParams = await this.sharedMethods.getAnalyticsEventParams();
+    // await this.analtyicsService.trackEvent(AppEventNames.skippedAppTutorials, eventParams);
+
+    this.router.navigate([this.authService.getCurrentUserBaseUrlFromRole(this.user?.role)]);
+  }
 
   goToPreviousSlide() {
     const swiper = this.swiperRef?.nativeElement?.swiper;
