@@ -34,7 +34,13 @@ export class TutorialsComponent  implements OnInit {
     public analtyicsService: AnalyticsService,
     public authService: AuthService,
     public modalController: ModalController,
-  ) {}
+  ) {
+    this.contentService.watchContent().subscribe(async(resp) => {
+      if (resp) {
+        await this.setup();
+      }
+    });
+  }
 
   async ngOnInit() {
     await this.setup();
