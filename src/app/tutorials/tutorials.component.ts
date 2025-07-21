@@ -43,12 +43,15 @@ export class TutorialsComponent  implements OnInit {
 
   async setup() {
     this.commonText = await this.contentService?.commonText;
-    console.log('commonText-----', this.commonText);
     this.pageContent = await this.contentService?.getContentByPropertyName('app-tutorials');
     this.audioUrl = this.pageContent?.welcomeAudio?.url || '';
-    console.log('pageContent-----', this.pageContent);
     this.user = await this.sharedMethods.getUserData();
-    console.log('user-----', this.user);
+    // filter out tutorials that are not applicable to the user role
+    this.pageContent.tutorials.items = this.pageContent?.tutorials?.items.filter(item => (
+      !item?.roles?.length ||
+      item?.roles?.includes('all') ||
+      item?.roles?.includes(this.user?.role)
+    ));
   }
 
   onSlideChange(e) {
