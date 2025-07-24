@@ -150,22 +150,11 @@ export class AppComponent implements OnInit, OnDestroy {
               return this.router.navigate(['/select-role']);
             }
 
-            // show app tutorials if not seen or skipped
-            await this.showAppTutorials();
-
             await this.pushNotifications.setup();
             this.router.navigate([this.authService.getCurrentUserBaseUrlFromRole(user?.role)]);
           }
         }
       });
-  }
-
-  async showAppTutorials() {
-    const skippedAppTutorials = await this.sharedMethods.readDataFromStorage(StorageKeys.skippedAppTutorials);
-    const seenAppTutorials = await this.sharedMethods.readDataFromStorage(StorageKeys.seenAppTutorials);
-    if (!skippedAppTutorials && !seenAppTutorials) {
-      this.router.navigate(['app-tutorials']);
-    }
   }
 
   async logOut() {

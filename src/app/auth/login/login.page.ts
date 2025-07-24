@@ -130,9 +130,6 @@ export class LoginPage extends BaseformPage implements OnInit {
             return this.router.navigate(['select-role'], { replaceUrl: true });
           }
 
-          // show app tutorials if not seen or skipped
-          await this.showAppTutorials();
-
           await this.sharedMethods.saveDataToStorage(StorageKeys.isRoleSet, true);
           this.handleRedirection(res.data.userData?.role);
         }
@@ -141,14 +138,6 @@ export class LoginPage extends BaseformPage implements OnInit {
         this.sharedMethods.showToast(err.error?.detail);
       }
     );
-  }
-
-  async showAppTutorials() {
-    const skippedAppTutorials = await this.sharedMethods.readDataFromStorage(StorageKeys.skippedAppTutorials);
-    const seenAppTutorials = await this.sharedMethods.readDataFromStorage(StorageKeys.seenAppTutorials);
-    if (!skippedAppTutorials && !seenAppTutorials) {
-      this.router.navigate(['app-tutorials']);
-    }
   }
 
 
