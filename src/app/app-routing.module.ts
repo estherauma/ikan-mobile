@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
 import { AuthGuard } from './shared/guards/auth/authguard.guard';
 import { ConsentFormGuard } from './shared/guards/consent-form/consent-form.guard';
+import { TutorialsGuard } from './shared/guards/tutorials/tutorials.guard';
 
 const routes: Routes = [
   {
@@ -135,24 +136,28 @@ const routes: Routes = [
   },
   {
     path: 'dashboard/indonesianagent',
-    loadChildren: () => import('./dashboard/indonesianagent/indonesianagent.module').then( m => m.IndonesianagentPageModule)
+    loadChildren: () => import('./dashboard/indonesianagent/indonesianagent.module').then( m => m.IndonesianagentPageModule),
+    canActivate: [TutorialsGuard],
   },
   {
     path: 'dashboard/vesselowner',
-    loadChildren: () => import('./dashboard/vesselowner/vesselowner.module').then( m => m.VesselownerPageModule)
+    loadChildren: () => import('./dashboard/vesselowner/vesselowner.module').then( m => m.VesselownerPageModule),
+    canActivate: [TutorialsGuard],
   },
   {
     path: 'dashboard/worker',
     loadChildren: () => import('./dashboard/worker/worker.module').then( m => m.WorkerPageModule),
-    canActivate: [ConsentFormGuard],
+    canActivate: [ConsentFormGuard, TutorialsGuard],
   },
   {
     path: 'dashboard/taiwaneseagent',
-    loadChildren: () => import('./dashboard/taiwaneseagent/taiwaneseagent.module').then( m => m.TaiwaneseagentPageModule)
+    loadChildren: () => import('./dashboard/taiwaneseagent/taiwaneseagent.module').then( m => m.TaiwaneseagentPageModule),
+    canActivate: [TutorialsGuard],
   },
   {
     path: 'dashboard/buyer',
-    loadChildren: () => import('./dashboard/buyer/buyer.module').then( m => m.BuyerPageModule)
+    loadChildren: () => import('./dashboard/buyer/buyer.module').then( m => m.BuyerPageModule),
+    canActivate: [TutorialsGuard],
   },
   {
     path: 'profile',
