@@ -93,11 +93,15 @@ export class SubchapterComponent  implements OnInit {
       this.analytics.trackEvent(this.allPageContent.analyticsEventName, this.sharedmethods.analyticsEventParams);
     } else {
       if (this.isCaseStudy) {
-        // TODO: send error to sentry
-        console.log(`No analytics event name found for this case study: ${this.caseStudyUid} ${this.allPageContent?.pageTitle}`);
+        this.globalErrorHandler.handleError(
+          null,
+          `No analytics event name found for this case study: ${this.caseStudyUid} ${this.allPageContent?.pageTitle}`
+        );
       } else {
-        // TODO: send error to sentry
-        console.log(`No analytics event name found for this page: ${this.subChapterId} ${this.allPageContent?.pageTitle}`);
+        this.globalErrorHandler.handleError(
+          null,
+          `No analytics event name found for this subchapter: ${this.subChapterId} ${this.allPageContent?.pageTitle}`
+        );
       }
     }
   }
