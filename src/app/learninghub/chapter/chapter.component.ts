@@ -44,7 +44,7 @@ export class ChapterComponent  implements OnInit {
     if (this.pageContent.analyticsEventName) {
       this.analytics.trackEvent(this.pageContent.analyticsEventName, this.sharedmethods.analyticsEventParams);
     } else {
-      console.log('No analytics event name found for this page')
+      console.log('No analytics event name found for this page');
     }
   }
 
