@@ -34,10 +34,9 @@ export class HomePage implements OnInit {
     const chapters = clickableList?.list;
     this.learningHubChapters = chapters?.map((chapter) => ({
       title: chapter?.label,
-      text : chapter?.description || '',
-      progressBarValue : '0',
-      progressBarType : 'primary',
-      progressBarText: this.contentService?.commonText?.completionStatus,
+      description : chapter?.description || '',
+      // TODO: get progress value
+      progress: 0,
        // TODO: use tuna icon as default
       imageUrl : chapter?.icon || 'https://cdn.pixabay.com/photo/2015/07/17/22/43/student-849825_1280.jpg',
       page: chapter?.page
@@ -49,7 +48,7 @@ export class HomePage implements OnInit {
     if (user?.role === UserRole.worker && !watchedTFAVideo) {
       await this.showTrainingVideo();
     }
-    this.analyticsService.trackEvent(PageEventNames.learningHubHome, this.sharedMethods.analyticsEventParams)
+    this.analyticsService.trackEvent(PageEventNames.learningHubHome, this.sharedMethods.analyticsEventParams);
   }
 
   onClick(item) {
