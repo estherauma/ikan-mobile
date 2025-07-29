@@ -3,6 +3,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { AnalyticsService } from 'src/app/shared/services/analytics/analytics.service';
 import { AuthService } from 'src/app/shared/services/auth/auth.service';
 import { ContentService } from 'src/app/shared/services/content/content.service';
+import { GlobalErrorHandlerService } from 'src/app/shared/services/error-handler/global-error-handler.service';
 import { SharedmethodsService } from 'src/app/shared/services/sharedmethods/sharedmethods.service';
 import { HubQuestionStatus, UserData, UserRole } from 'src/app/shared/types/api-types';
 import { SurveyDataService } from 'src/app/survey/data/survey-data.service';
@@ -33,8 +34,8 @@ export class SubchapterComponent  implements OnInit {
   networkStatus = false;
   savedInlineQuestions = [];
   user: UserData;
-  isWorker: boolean = false;
-  isVesselOwner: boolean = false;
+  isWorker = false;
+  isVesselOwner = false;
 
   constructor(
     public activatedRoute: ActivatedRoute,
@@ -44,6 +45,7 @@ export class SubchapterComponent  implements OnInit {
     public analytics: AnalyticsService,
     public surveyDataService: SurveyDataService,
     public authService: AuthService,
+    public globalErrorHandler: GlobalErrorHandlerService,
   ) {
     this.activatedRoute.params.subscribe(async params => {
       this.subChapterId = params?.subChapterId;
@@ -85,7 +87,7 @@ export class SubchapterComponent  implements OnInit {
       this.savedInlineQuestions = this.surveyDataService.inlineQuestions;
     }
   }
-  
+
   setUpAnalytics() {
     if (this.allPageContent?.analyticsEventName) {
       this.analytics.trackEvent(this.allPageContent.analyticsEventName, this.sharedmethods.analyticsEventParams);
@@ -125,7 +127,7 @@ export class SubchapterComponent  implements OnInit {
           item.status = HubQuestionStatus.pending;
           item.icon = 'help';
         } else if (
-          (item.questionType === 'radio' || item.questionType === 'select') 
+          (item.questionType === 'radio' || item.questionType === 'select')
           && item.value.toLowerCase() === 'yes'
         ) {
           item.status = HubQuestionStatus.answeredYes;
