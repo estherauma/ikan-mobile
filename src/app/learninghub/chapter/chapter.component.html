@@ -37,13 +37,13 @@
           </div>
         </ion-col>
         
-        <ion-col [size]="subChapter?.hasQuiz ? 6 : 7.5" class="text-col">
+        <ion-col [size]="subChapter?.displayQuiz ? 6 : 7.5" class="text-col">
           <h4>{{ subChapter?.name }}</h4>
-          <ion-text class="description">{{ subChapter?.description.length > 45 ? subChapter?.description.slice(0, 45) + '...' : subChapter?.description }}</ion-text>
+          <ion-text class="description">{{ subChapter?.description?.length > 45 ? subChapter?.description.slice(0, 45) + '...' : subChapter?.description }}</ion-text>
         </ion-col>
 
-        <ion-col [size]="subChapter?.hasQuiz ? 4 : 2.5" class="quiz-status-col">
-          <div *ngIf="subChapter?.hasQuiz"  class="quiz-wrapper">
+        <ion-col [size]="subChapter?.displayQuiz ? 4 : 2.5" class="quiz-status-col">
+          <div *ngIf="subChapter?.displayQuiz"  class="quiz-wrapper">
             <div class="icon-wrapper">
               <ion-icon *ngIf="!subChapter?.quizCompleted" name="help-outline" class="help"></ion-icon>
               <ion-icon *ngIf="subChapter?.quizCompleted" name="checkmark" class="checkmark"></ion-icon>
