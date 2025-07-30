@@ -31,6 +31,7 @@ export class QuizComponent  implements OnInit {
     this.commonText = await this.contentService.commonText;
     // this.pageData =  await this.contentService.getContentByPropertyName('quiz');
     this.quizData = await this.getQuizContent();
+    console.log('quizData---', this.quizData)
   }
 
   async getQuizContent() {
@@ -54,8 +55,11 @@ export class QuizComponent  implements OnInit {
         const qtnsToDisplay = subChapterPageContent?.filter((x) => x?.type === 'questions' && x?.displayquestion);
 
         if (qtnsToDisplay?.length) {
+          // get question values
+          const qtnsToDisplayWithValues = await this.getQuestionValues(qtnsToDisplay);
+
           subChapter.title = subChapterTitle;
-          subChapter.questions = qtnsToDisplay;
+          subChapter.questions = qtnsToDisplayWithValues;
           subChaptersResult.push(subChapter);
         }
       });
@@ -69,4 +73,26 @@ export class QuizComponent  implements OnInit {
     return chaptersResult;
   }
 
+  async getQuestionValues(qtns) {
+    const result = [];
+    const savedInlineQuestions: any[] = this.surveyDataService.inlineQuestions;
+
+    await qtns?.forEach(async(qtn) => {
+      const resQtn: any = { ...qtn };
+      const savedQtn = await savedInlineQuestions.find((el) => el.questionKey === qtn.key && el.createdBy === this.user?.id);
+      if (savedQtn) {
+        resQtn.savedQtn = savedQtn;
+        if (qtn?.questionType === 'multi-select') {
+          const values: Array<string> = savedQtn.questionResponse?.split(',');
+          const optValues = values.map((val) => val.trim());
+          resQtn.value = optValues;
+        } else {
+          resQtn.value = savedQtn.questionResponse;
+        }
+      }
+      result.push(resQtn);
+    });
+
+    return result;
+  }
 }
