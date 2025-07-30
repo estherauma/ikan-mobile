@@ -13,8 +13,8 @@ import { SurveyDataService } from 'src/app/survey/data/survey-data.service';
 export class QuestionComponent  implements OnInit {
   questionData: any;
   commonText: any;
-  isYesNoValue: boolean = false;
-  hasFollowupQtn: boolean = false;
+  isYesNoValue = false;
+  hasFollowupQtn = false;
   followupQtnData: any;
   unTranslatedQtn: any;
 
@@ -33,7 +33,7 @@ export class QuestionComponent  implements OnInit {
         this.questionData = JSON.parse(params?.questionData);
       }
     });
-    
+
     this.commonText = this.contentService?.commonText;
     this.unTranslatedQtn = this.contentService.getUntranslatedInlineQuestion(this.questionData?.subChapter, this.questionData?.key);
     if (this.questionData?.questionType === 'radio' || this.questionData?.questionType === 'select') {
@@ -65,7 +65,7 @@ export class QuestionComponent  implements OnInit {
     this.questionData.value = e.detail.value;
     this.getFollowupQtn();
   }
-  
+
   handleSelectChange(e) {
     this.questionData.value = e.detail.value;
     this.getFollowupQtn();
@@ -78,7 +78,7 @@ export class QuestionComponent  implements OnInit {
       if (selectedOption?.followUpQuestion) {
         this.hasFollowupQtn = true;
         this.followupQtnData = selectedOption.followUpQuestion;
-        if(this.followupQtnData?.key === 'See the Get Help section to find a workers union you can consult with') {
+        if (this.followupQtnData?.key === 'See the Get Help section to find a workers union you can consult with') {
           this.followupQtnData.questionType = 'helperText';
         }
         if (this.questionData?.savedQtn?.followUpQuestionResponse) {
@@ -100,7 +100,7 @@ export class QuestionComponent  implements OnInit {
   handleFollowUpInputChange(e) {
     this.followupQtnData.value = e.detail.value;
   }
-  
+
   handleFollowUpSelectChange(e) {
     this.followupQtnData.value = e.detail.value;
   }
@@ -108,8 +108,8 @@ export class QuestionComponent  implements OnInit {
   // Question responses are saved even if followup question is not answered
   // Uncomment code below to only submit if followup question is also answered
   async submitAnswer() {
-    if (!this.questionData?.value) return;
-    
+    if (!this.questionData?.value) {return;}
+
     // Uncomment code below to only submit if followup question is answered
     // if (this.hasFollowupQtn && !this.followupQtnData?.value && this.followupQtnData?.questionType !== 'helperText') {
     //   // TODO: translate
@@ -170,7 +170,7 @@ export class QuestionComponent  implements OnInit {
         this.router.navigate([ 'learninghub/chapters', chapterId, subChapterId ], { replaceUrl: true });
         return;
       }
-      
+
       const dataToUpdate = {
         id: this.questionData?.savedQtn.id,
         questionResponse: this.questionData?.value,
