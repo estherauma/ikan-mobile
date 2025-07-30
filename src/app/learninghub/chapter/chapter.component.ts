@@ -101,8 +101,6 @@ export class ChapterComponent  implements OnInit {
     return details;
   }
 
-
-
   async getQuestionValues(pageContent) {
     const savedInlineQuestions = this.surveyDataService.inlineQuestions;
     if (savedInlineQuestions?.length) {
@@ -124,4 +122,8 @@ export class ChapterComponent  implements OnInit {
     }
   }
 
+  goToQuiz(e: MouseEvent) {
+    e.stopPropagation();
+    this.router.navigate([ 'learninghub/quiz' ]);
+  }
 }

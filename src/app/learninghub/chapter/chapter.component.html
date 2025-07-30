@@ -38,7 +38,7 @@
         </ion-col>
 
         <ion-col [size]="subChapter?.displayQuiz ? 4 : 2.5" class="quiz-status-col">
-          <div *ngIf="subChapter?.displayQuiz"  class="quiz-wrapper">
+          <div *ngIf="subChapter?.displayQuiz" class="quiz-wrapper" (click)="goToQuiz($event)">
             <div class="icon-wrapper">
               <ion-icon *ngIf="!subChapter?.quizCompleted" name="help-outline" class="help"></ion-icon>
               <ion-icon *ngIf="subChapter?.quizCompleted" name="checkmark" class="checkmark"></ion-icon>
