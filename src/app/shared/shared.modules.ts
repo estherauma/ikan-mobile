@@ -20,7 +20,6 @@ import { NotificationcardComponent } from './components/notificationcard/notific
 import { AttachmentComponent } from './components/attachment/attachment.component';
 import { BadgeComponent } from './components/badge/badge.component';
 import { GenericmodalComponent } from './components/genericmodal/genericmodal.component';
-import { MaincardComponent } from './components/maincard/maincard.component';
 import { ProgressbarComponent } from './components/progressbar/progressbar.component';
 import { ImageselectComponent } from './components/imageselect/imageselect.component';
 import { UsercontractcardComponent } from './components/usercontractcard/usercontractcard.component';
@@ -72,7 +71,6 @@ import { RichTextComponent } from './components/rich-text/rich-text.component';
     AuthbgpaperComponent,
     WorkordercardComponent,
     AgentcardComponent,
-    MaincardComponent,
     ProgressbarComponent,
     NotificationcardComponent,
     AttachmentComponent,
@@ -119,7 +117,6 @@ import { RichTextComponent } from './components/rich-text/rich-text.component';
     AuthbgpaperComponent,
     WorkordercardComponent,
     AgentcardComponent,
-    MaincardComponent,
     ProgressbarComponent,
     NotificationcardComponent,
     AttachmentComponent,
