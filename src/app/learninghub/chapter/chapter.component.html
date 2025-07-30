@@ -2,39 +2,66 @@
 
 <ion-content>
   <div>
+    <!-- TODO: add page audio & video to prismic & aggregation -->
+    <!-- TODO: preload audio -->
+    <!-- change urls, add checks -->
+    <!-- create reausable audio btn -->
+    <div class="audio-video-section">
+      <ion-icon
+        class="audio-icon"
+        name="play-outline"
+        (click)="playVideo(pageData?.pageVideo?.mediaData?.url)"
+      ></ion-icon>
+      <ion-icon
+        class="audio-icon"
+        name="volume-high-outline"
+        (click)="playAudio(pageData?.pageAudio?.mediaData?.url)"
+      ></ion-icon>
+    </div>
+    
     <div
-      class="image-section" 
+      class="title-section" 
       [ngStyle]="{'background': 'linear-gradient( rgba(53, 101, 255, 0.6) 100%, rgba(53, 101, 255, 0.6)100%),url(' + bgImgUrl +') no-repeat fixed center / cover'}"
     >
-      <app-title [title]="pageContent?.pageTitle" [isBig]="true" [isLightBlue]="true"></app-title>
-      <!-- TODO: migrate ion-slides to swiperjs -->
-      <!-- <ion-slides pager="true">
-        <ion-slide>
-          <app-title title="Sebelum kamu pergi" [isBig]="true" [isLightBlue]="true"></app-title>
-        </ion-slide>
-        <ion-slide>
-          <app-title title="kamu pergi 2" [isBig]="true" [isLightBlue]="true"></app-title>
-        </ion-slide>
-      </ion-slides> -->
+      <app-title [title]="pageData?.pageTitle" [isBig]="true" [isLightBlue]="true"></app-title>
     </div>
-    <div class="audio-section">
-      <div>
-        <app-audio-player
-          variant="gray-bg" 
-          size="thin"
-          [audioSrc]="pageContent?.pageTitleAudio?.mediaData?.url || ''"
-        ></app-audio-player>
-      </div>
-    </div>
-    <div class="content-section">
-      <div *ngFor="let subChapter of learningHubSubChapters">
-        <app-maincard
-          [imageUrl]="subChapter?.icon"
-          [title]="subChapter?.name"
-          [text]="subChapter?.description"
-          (click)="viewDetails(subChapter)"
-        ></app-maincard>
-      </div>
+    
+    <div class="subchapter-list">
+      <ion-row 
+        *ngFor="let subChapter of learningHubSubChapters"
+        (click)="viewDetails(subChapter)"
+      >
+        <ion-col size="2" class="icon-col">
+          <div class="icon-wrapper">
+            <ion-img *ngIf="subChapter?.icon" [src]="subChapter?.icon" alt="Sub chapter icon"></ion-img>
+          </div>
+        </ion-col>
+        
+        <ion-col [size]="subChapter?.hasQuiz ? 6 : 7.5" class="text-col">
+          <h4>{{ subChapter?.name }}</h4>
+          <ion-text class="description">{{ subChapter?.description.length > 45 ? subChapter?.description.slice(0, 45) + '...' : subChapter?.description }}</ion-text>
+        </ion-col>
+
+        <ion-col [size]="subChapter?.hasQuiz ? 4 : 2.5" class="quiz-status-col">
+          <div *ngIf="subChapter?.hasQuiz"  class="quiz-wrapper">
+            <div class="icon-wrapper">
+              <ion-icon *ngIf="!subChapter?.quizCompleted" name="help-outline" class="help"></ion-icon>
+              <ion-icon *ngIf="subChapter?.quizCompleted" name="checkmark" class="checkmark"></ion-icon>
+            </div>
+            <!-- TODO: add translation -->
+            <p>{{ commonText?.takeQuiz || 'Take quiz' }}</p>
+          </div>
+          
+          <div class="status-wrapper">
+            <div class="icon-wrapper">
+              <ion-icon *ngIf="!subChapter?.isCompleted" name="close" class="close"></ion-icon>
+              <ion-icon *ngIf="subChapter?.isCompleted" name="checkmark" class="checkmark"></ion-icon>
+            </div>
+            <!-- TODO: add translation -->
+            <p>{{ commonText?.completed || 'Completed' }}</p>
+          </div>
+        </ion-col>
+      </ion-row>
     </div>
   </div>
 </ion-content>

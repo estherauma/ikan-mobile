@@ -10,10 +10,12 @@ import { SharedmethodsService } from 'src/app/shared/services/sharedmethods/shar
   styleUrls: ['./chapter.component.scss'],
 })
 export class ChapterComponent  implements OnInit {
-  pageContent: any;
+
+  pageData: any;
   learningHubSubChapters = [];
   chapterId: string;
   bgImgUrl = '';
+  commonText: any;
 
   constructor(
     public router: Router,
@@ -28,21 +30,28 @@ export class ChapterComponent  implements OnInit {
   }
 
   async ngOnInit() {
-    this.pageContent =  await this.contentService.getContentByPropertyName(this.chapterId);
-    const clickableList = (this.pageContent?.pageContent?.find((e) => e.type === 'clickable_list'));
+    this.commonText = await this.contentService.commonText;
+    this.pageData =  await this.contentService.getContentByPropertyName(this.chapterId);
+    const clickableList = (this.pageData?.pageContent?.find((e) => e.type === 'clickable_list'));
     const subChapters = clickableList?.list;
     this.bgImgUrl = this.sharedmethods.getChapterBackground(this.chapterId);
     this.learningHubSubChapters = subChapters?.map((subChapter) => {
       const subChapterTitle = subChapter?.label?.substring(subChapter?.label?.indexOf(' ') + 1) || '';
       return {
-      name: subChapterTitle,
-      description: subChapter?.description || '',
-      icon: subChapter?.icon || this.bgImgUrl, // TODO: use tuna icon as default
-      page: subChapter?.page,
+        name: subChapterTitle,
+        description: subChapter?.description || '',
+        icon: subChapter?.icon || this.bgImgUrl, // TODO: use tuna icon as default
+        page: subChapter?.page,
+        // TODO: add hasQuiz logic
+        hasQuiz: false,
+        // TODO: add quizCompleted logic
+        quizCompleted: false,
+        // TODO: add isCompleted logic
+        isCompleted: false,
       };
     });
-    if (this.pageContent.analyticsEventName) {
-      this.analytics.trackEvent(this.pageContent.analyticsEventName, this.sharedmethods.analyticsEventParams);
+    if (this.pageData.analyticsEventName) {
+      this.analytics.trackEvent(this.pageData.analyticsEventName, this.sharedmethods.analyticsEventParams);
     } else {
       console.log('No analytics event name found for this page');
     }
@@ -51,4 +60,8 @@ export class ChapterComponent  implements OnInit {
   viewDetails(item) {
     this.router.navigate([ 'learninghub/chapters', this.chapterId, item?.page?.uid ]);
   }
+
+  playAudio(url: string) {}
+
+  playVideo(url: string) {}
 }
