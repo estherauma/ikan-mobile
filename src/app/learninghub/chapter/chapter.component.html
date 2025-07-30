@@ -12,11 +12,10 @@
         name="play-outline"
         (click)="playVideo(pageData?.pageVideo?.mediaData?.url)"
       ></ion-icon>
-      <ion-icon
-        class="audio-icon"
-        name="volume-high-outline"
-        (click)="playAudio(pageData?.pageAudio?.mediaData?.url)"
-      ></ion-icon>
+      <app-audio-button
+        [url]="pageData?.pageAudio?.url"
+        background="var(--ikan_yellow_100)"
+      ></app-audio-button>
     </div>
     
     <div
