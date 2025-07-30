@@ -46,6 +46,7 @@ import { ViewPassportComponent } from '../mydocuments/view-passport/view-passpor
 import { PaymentCardComponent } from './components/payment-card/payment-card.component';
 import { TutorialDetailComponent } from '../tutorials/tutorial-detail/tutorial-detail.component';
 import { RichTextComponent } from './components/rich-text/rich-text.component';
+import { AudioButtonComponent } from './components/audio-button/audio-button.component';
 
 
 @NgModule({
@@ -100,6 +101,7 @@ import { RichTextComponent } from './components/rich-text/rich-text.component';
     ViewPassportComponent,
     TutorialDetailComponent,
     RichTextComponent,
+    AudioButtonComponent,
   ],
   exports: [
     SafeurlPipe,
@@ -145,6 +147,7 @@ import { RichTextComponent } from './components/rich-text/rich-text.component';
     ViewPassportComponent,
     TutorialDetailComponent,
     RichTextComponent,
+    AudioButtonComponent,
   ]
 })
 
