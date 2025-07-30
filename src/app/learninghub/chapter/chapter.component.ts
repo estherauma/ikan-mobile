@@ -124,7 +124,4 @@ export class ChapterComponent  implements OnInit {
     }
   }
 
-  playAudio(url: string) {}
-
-  playVideo(url: string) {}
 }

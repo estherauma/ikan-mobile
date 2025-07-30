@@ -210,8 +210,4 @@ export class SubchapterComponent  implements OnInit {
   }
 
   onPlay(e) {}
-
-  playAudio(url: string) {}
-
-  playVideo(url: string) {}
 }
