@@ -2,15 +2,11 @@
 <ion-content>
   <div class="content-wrapper">
     <!-- TODO: add page audio & video to prismic & aggregation -->
-    <!-- TODO: preload audio -->
-    <!-- change urls, add checks -->
-    <!-- create reausable audio btn -->
     <div class="audio-video-section">
-      <ion-icon
-        class="audio-icon"
-        name="play-outline"
-        (click)="playVideo(allPageData?.pageVideo?.mediaData?.url)"
-      ></ion-icon>
+      <app-video-button
+        [url]="allPageData?.pageVideo?.url"
+        background="var(--ikan_yellow_100)"
+      ></app-video-button>
       <app-audio-button
         [url]="allPageData?.pageAudio?.url"
         background="var(--ikan_yellow_100)"
