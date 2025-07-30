@@ -6,7 +6,10 @@
       <app-title [isBig]="true" [isBlue]="true" [title]="title"></app-title>
     </div>
     <div class="cards-wrapper">
-      <ion-row *ngFor="let chapter of learningHubChapters">
+      <ion-row 
+        *ngFor="let chapter of learningHubChapters"
+        (click)="onClick(chapter)"
+      >
         <ion-col size="2" class="icon-col">
           <div class="icon-wrapper">
             <ion-img *ngIf="chapter?.imageUrl" [src]="chapter?.imageUrl" alt="Chapter icon"></ion-img>
