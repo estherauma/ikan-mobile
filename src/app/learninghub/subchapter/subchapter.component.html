@@ -1,21 +1,30 @@
 <app-header [pageTitle]="" [isBackButton]="true"></app-header>
 <ion-content>
   <div class="content-wrapper">
+    <!-- TODO: add page audio & video to prismic & aggregation -->
+    <!-- TODO: preload audio -->
+    <!-- change urls, add checks -->
+    <!-- create reausable audio btn -->
+    <div class="audio-video-section">
+      <ion-icon
+        class="audio-icon"
+        name="play-outline"
+        (click)="playVideo(allPageData?.pageVideo?.mediaData?.url)"
+      ></ion-icon>
+      <ion-icon
+        class="audio-icon"
+        name="volume-high-outline"
+        (click)="playAudio(allPageData?.pageAudio?.mediaData?.url)"
+      ></ion-icon>
+    </div>
+
     <div
-      class="image-section" 
+      class="title-section" 
       [ngStyle]="{'background': 'url(' + imgUrl +') no-repeat fixed center / cover'}"
     >
-    <app-title [title]="allPageContent?.pageTitle" [isBig]="true" [isLightBlue]="true"></app-title>
+      <h1>{{ allPageData?.pageTitle }}</h1>
     </div>
-    <!-- <div class="audio-section">
-      <div>
-        <app-audio-player
-          variant="gray-bg" 
-          size="thin"
-          [audioSrc]="allPageContent?.pageTitleAudio?.mediaData?.url || ''"
-        ></app-audio-player>
-      </div>
-    </div> -->
+    
     <div class="content-section">
       <div *ngFor="let section of pageContent">
         <!-- text area type -->

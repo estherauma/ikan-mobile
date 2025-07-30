@@ -15,7 +15,7 @@ import { SurveyDataService } from 'src/app/survey/data/survey-data.service';
 })
 export class SubchapterComponent  implements OnInit {
   subChapterId: string;
-  allPageContent: any;
+  allPageData: any;
   pageContent: any = [];
   caseStudyInputs = {
     styles: 'case-study',
@@ -73,14 +73,14 @@ export class SubchapterComponent  implements OnInit {
 
   async getContent() {
     if (this.isCaseStudy) {
-      this.allPageContent = this.contentService.getContentByPropertyName(this.caseStudyUid);
-      this.pageContent = this.allPageContent?.pageContent;
+      this.allPageData = this.contentService.getContentByPropertyName(this.caseStudyUid);
+      this.pageContent = this.allPageData?.pageContent;
       const chapterId = this.subChapterId?.split('.')[0];
       this.imgUrl = this.caseStudyImgUrl || this.sharedmethods?.getChapterBackground(chapterId, 'subchapter');
     } else {
-      this.allPageContent = this.contentService.getContentByPropertyName(this.subChapterId);
+      this.allPageData = this.contentService.getContentByPropertyName(this.subChapterId);
       await this.contentService.replaceVesselPlaceholderText();
-      this.pageContent = this.allPageContent?.pageContent;
+      this.pageContent = this.allPageData?.pageContent;
       const chapterId = this.subChapterId?.split('.')[0];
       this.imgUrl = this.sharedmethods?.getChapterBackground(chapterId, 'subchapter');
       this.upNextContent = this.getNextChapterContent();
@@ -89,18 +89,18 @@ export class SubchapterComponent  implements OnInit {
   }
 
   setUpAnalytics() {
-    if (this.allPageContent?.analyticsEventName) {
-      this.analytics.trackEvent(this.allPageContent.analyticsEventName, this.sharedmethods.analyticsEventParams);
+    if (this.allPageData?.analyticsEventName) {
+      this.analytics.trackEvent(this.allPageData.analyticsEventName, this.sharedmethods.analyticsEventParams);
     } else {
       if (this.isCaseStudy) {
         this.globalErrorHandler.handleError(
           null,
-          `No analytics event name found for this case study: ${this.caseStudyUid} ${this.allPageContent?.pageTitle}`
+          `No analytics event name found for this case study: ${this.caseStudyUid} ${this.allPageData?.pageTitle}`
         );
       } else {
         this.globalErrorHandler.handleError(
           null,
-          `No analytics event name found for this subchapter: ${this.subChapterId} ${this.allPageContent?.pageTitle}`
+          `No analytics event name found for this subchapter: ${this.subChapterId} ${this.allPageData?.pageTitle}`
         );
       }
     }
@@ -210,4 +210,8 @@ export class SubchapterComponent  implements OnInit {
   }
 
   onPlay(e) {}
+
+  playAudio(url: string) {}
+
+  playVideo(url: string) {}
 }
