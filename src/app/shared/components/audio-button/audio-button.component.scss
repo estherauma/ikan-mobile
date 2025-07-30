@@ -8,8 +8,11 @@
       margin: 0 3px;
     }
     .no-url {
-      opacity: 0.35;
+      opacity: 0.45;
       pointer-events: none;
     }
   }
+}
+.no-url {
+  pointer-events: none;
 }

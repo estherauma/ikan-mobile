@@ -7,7 +7,7 @@
     hidden
   ></audio>
 
-  <div (click)="toggleAudio()" class="btn-wrapper">
+  <div (click)="toggleAudio()" class="btn-wrapper" [ngClass]="{'no-url': !url}">
     <ion-icon
       *ngIf="!customIcon"
       [name]="isPlaying ? 'pause-outline' : iconName"
