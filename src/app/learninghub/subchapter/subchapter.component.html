@@ -24,7 +24,7 @@
     >
       <h1>{{ allPageData?.pageTitle }}</h1>
     </div>
-    
+
     <div class="content-section">
       <div *ngFor="let section of pageContent">
         <!-- text area type -->
@@ -35,7 +35,9 @@
         ></shared-text-area>
         
         <!-- question type -->
-        <div
+        <!-- Commented out for now -->
+        <!-- Implementation changed and we are displaying qtuestions on a separate page (quiz page) -->
+        <!-- <div
           *ngIf="isWorker && section?.type === 'questions' && section?.displayquestion"
           class="qtn-wrapper"
           (click)="viewQuestion(section)"
@@ -61,7 +63,7 @@
               </p>
             </ion-col>
           </ion-row>
-        </div>
+        </div> -->
     
         <!-- audio type -->
         <app-audio-player

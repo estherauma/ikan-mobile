@@ -1,63 +1,3 @@
-// .content-section {
-//   background-color: #eaedf6;
-//   border-radius: 20px 20px 0px 0px;
-//   z-index: 1;
-//   position: relative;
-//   width: 100%;
-//   margin-top: -25px;
-//   min-height: 80%;
-//   padding: 32px 16px 16px;
-
-//   .qtn-wrapper {
-//     background: white;
-//     margin: 12px;
-//     border-radius: 20px;
-//     ion-col {
-//       display: flex;
-//       justify-content: center;
-//       align-items: center;
-//     }
-//     .icon-col {
-//       border-top-left-radius: 20px;
-//       border-bottom-left-radius: 20px;
-//       background: var(--ikan_light_gray);
-//       ion-icon {
-//         color: white;
-//         font-size: 3rem;
-//         --ionicon-stroke-width: 40px;
-//       }
-//     }
-//     .pending {
-//       ion-icon {
-//         color: var(--ikan_deep_gray);
-//       }
-//     }
-//     .completed {
-//       background: #7cdeff;
-//       ion-icon {
-//         color: var(--ikan_blue_100);
-//       }
-//     }
-//     .qtn-col {
-//       border-top-right-radius: 20px;
-//       border-bottom-right-radius: 20px;
-//       p {
-//         color: var(--ikan_blue_100);
-//         margin: 10px;
-//         font-weight: bold;
-//         span {
-//           .vessel-name {
-//             color: var(--ikan_darkblue_90) !important;
-//           }
-//         }
-//         .q {
-//           margin-right: 5px;
-//         }
-//       }
-//     }
-//   }
-// }
-
 ion-content {
   --background: var(--ikan_skyblue_100);
   .content-wrapper {
@@ -146,3 +86,56 @@ ion-content {
     }
   }
 }
+
+// Commented out for now
+// Implementation changed and we are displaying qtuestions on a separate page (quiz page)
+// .content-section {
+//   .qtn-wrapper {
+//     background: white;
+//     margin: 12px;
+//     border-radius: 20px;
+//     ion-col {
+//       display: flex;
+//       justify-content: center;
+//       align-items: center;
+//     }
+//     .icon-col {
+//       border-top-left-radius: 20px;
+//       border-bottom-left-radius: 20px;
+//       background: var(--ikan_light_gray);
+//       ion-icon {
+//         color: white;
+//         font-size: 3rem;
+//         --ionicon-stroke-width: 40px;
+//       }
+//     }
+//     .pending {
+//       ion-icon {
+//         color: var(--ikan_deep_gray);
+//       }
+//     }
+//     .completed {
+//       background: #7cdeff;
+//       ion-icon {
+//         color: var(--ikan_blue_100);
+//       }
+//     }
+//     .qtn-col {
+//       border-top-right-radius: 20px;
+//       border-bottom-right-radius: 20px;
+//       p {
+//         color: var(--ikan_blue_100);
+//         margin: 10px;
+//         font-weight: bold;
+//         span {
+//           .vessel-name {
+//             color: var(--ikan_darkblue_90) !important;
+//           }
+//         }
+//         .q {
+//           margin-right: 5px;
+//         }
+//       }
+//     }
+//   }
+// }
