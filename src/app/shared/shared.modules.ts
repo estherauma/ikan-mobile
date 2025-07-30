@@ -47,6 +47,7 @@ import { PaymentCardComponent } from './components/payment-card/payment-card.com
 import { TutorialDetailComponent } from '../tutorials/tutorial-detail/tutorial-detail.component';
 import { RichTextComponent } from './components/rich-text/rich-text.component';
 import { AudioButtonComponent } from './components/audio-button/audio-button.component';
+import { VideoButtonComponent } from './components/video-button/video-button.component';
 
 
 @NgModule({
@@ -102,6 +103,7 @@ import { AudioButtonComponent } from './components/audio-button/audio-button.com
     TutorialDetailComponent,
     RichTextComponent,
     AudioButtonComponent,
+    VideoButtonComponent,
   ],
   exports: [
     SafeurlPipe,
@@ -148,6 +150,7 @@ import { AudioButtonComponent } from './components/audio-button/audio-button.com
     TutorialDetailComponent,
     RichTextComponent,
     AudioButtonComponent,
+    VideoButtonComponent,
   ]
 })
 
