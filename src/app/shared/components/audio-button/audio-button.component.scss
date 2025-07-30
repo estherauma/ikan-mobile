@@ -1,0 +1,15 @@
+.audio-button-component {
+  .btn-wrapper {
+    ion-icon,
+    ion-img {
+      font-size: 1.3rem;
+      padding: 5px;
+      border-radius: 50%;
+      margin: 0 3px;
+    }
+    .no-url {
+      opacity: 0.35;
+      pointer-events: none;
+    }
+  }
+}
