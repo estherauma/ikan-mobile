@@ -15,7 +15,7 @@ import { PageEventNames } from 'src/app/shared/services/analytics/event-names';
 })
 export class HomePage implements OnInit {
   title = '';
-  pageContent: any;
+  pageData: any;
   learningHubChapters = [];
 
   constructor(
@@ -28,9 +28,9 @@ export class HomePage implements OnInit {
   ) { }
 
   async ngOnInit() {
-    this.pageContent =  this.contentService.getContentByPropertyName('chapters-list');
-    this.title = this.pageContent?.pageTitle;
-    const clickableList = this.pageContent?.pageContent?.find((e) => e.type === 'clickable_list');
+    this.pageData =  this.contentService.getContentByPropertyName('chapters-list');
+    this.title = this.pageData?.pageTitle;
+    const clickableList = this.pageData?.pageContent?.find((e) => e.type === 'clickable_list');
     const chapters = clickableList?.list;
     this.learningHubChapters = chapters?.map((chapter) => ({
       title: chapter?.label,

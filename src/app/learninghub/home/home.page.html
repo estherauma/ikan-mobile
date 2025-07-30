@@ -2,9 +2,22 @@
 
 <ion-content class="content-skyblue-bg ion-content-custom-position learning-home">
   <app-contentwrapper>
+    <!-- TODO: add page audio & video to prismic & aggregation -->
+    <div class="audio-video-section">
+      <app-video-button
+        [url]="pageData?.pageVideo?.url"
+        background="var(--ikan_yellow_100)"
+      ></app-video-button>
+      <app-audio-button
+        [url]="pageData?.pageAudio?.url"
+        background="var(--ikan_yellow_100)"
+      ></app-audio-button>
+    </div>
+    
     <div class="title-wrapper">
       <app-title [isBig]="true" [isBlue]="true" [title]="title"></app-title>
     </div>
+    
     <div class="cards-wrapper">
       <ion-row 
         *ngFor="let chapter of learningHubChapters"

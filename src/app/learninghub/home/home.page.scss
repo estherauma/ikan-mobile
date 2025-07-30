@@ -1,4 +1,10 @@
 ion-content {
+  .audio-video-section {
+    display: flex;
+    justify-content: end;
+    margin: 20px 10px 0 0;
+  }
+  
   .cards-wrapper {
     ion-row {
       background: white;
