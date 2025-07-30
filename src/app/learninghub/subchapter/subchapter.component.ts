@@ -59,8 +59,8 @@ export class SubchapterComponent  implements OnInit {
   async ngOnInit() {
     this.networkStatus = await this.sharedmethods.checkInternetConnectionStatus();
     this.user = await this.sharedmethods.getUserData();
-        this.isVesselOwner = this.authService.userRole === UserRole.vesselOwner;
-        this.isWorker = this.authService.userRole === UserRole.worker;
+    this.isVesselOwner = this.authService.userRole === UserRole.vesselOwner;
+    this.isWorker = this.authService.userRole === UserRole.worker;
     await this.pageSetup();
     this.setUpAnalytics();
   }
