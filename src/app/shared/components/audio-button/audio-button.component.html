@@ -21,8 +21,8 @@
     ></ion-icon>
     
     <ion-img
-      *ngIf="customIcon"
-      [src]="isPlaying ? 'pause-outline' : customIcon"
+      *ngIf="customIcon && !isPlaying"
+      [src]="customIcon"
       [ngStyle]="{
         'background': background,
         'color': color
@@ -31,5 +31,16 @@
         'no-url': !url
       }"
     ></ion-img>
+    <ion-icon
+      *ngIf="customIcon && isPlaying"
+      name="pause"
+      [ngStyle]="{
+        'background': background,
+        'color': color
+      }"
+      [ngClass]="{
+        'no-url': !url
+      }"
+    ></ion-icon>
   </div>
 </div>
