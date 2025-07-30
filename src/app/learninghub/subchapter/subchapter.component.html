@@ -106,14 +106,17 @@
     class="up-next-section"
     (click)="goToNextChapter()"
   >
-  <ion-label text-wrap>{{ contentService?.commonText?.upNext }}...</ion-label>
-    <app-maincard
-      class="upnext"
-      [imageUrl]="upNextContent?.icon"
-      [title]="upNextContent?.name"
-      [text]="upNextContent?.description"
-      (click)="goToNextChapter()"
-    >
-    </app-maincard>
+    <ion-label text-wrap>{{ contentService?.commonText?.upNext }}...</ion-label>
+    <ion-row (click)="goToNextChapter()">
+      <ion-col size="3">
+        <div class="icon-wrapper">
+          <ion-img [src]="upNextContent?.icon"></ion-img>
+        </div>
+      </ion-col>
+      <ion-col size="9">
+        <h4>{{ upNextContent?.name }}</h4>
+        <ion-text class="description">{{ upNextContent?.description.length > 45 ? upNextContent?.description.slice(0, 45) + '...' : upNextContent?.description }}</ion-text>
+      </ion-col>
+    </ion-row>
   </div>
 </ion-content>
