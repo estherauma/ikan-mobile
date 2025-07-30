@@ -1,0 +1,19 @@
+ion-content {
+  --background: var(--ikan_skyblue_100);
+  --padding-bottom: 30px;
+
+  .audio-video-section {
+    margin: 20px 20px 0 20px;
+    display: flex;
+    justify-content: end;
+  }
+
+  .title-section {
+    h4 {
+      font-family: GatwickBold;
+      font-size: 1.6rem;
+      text-align: center;
+      color: var(--ion-color-primary);
+    }
+  }
+}

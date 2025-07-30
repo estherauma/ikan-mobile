@@ -1,3 +1,20 @@
-<p>
-  quiz works!
-</p>
+<app-header [isBackButton]="true"></app-header>
+
+<ion-content>
+  <!-- TODO: add page audio & video to prismic & aggregation -->
+  <div class="audio-video-section">
+    <app-video-button
+      [url]="pageData?.pageVideo?.url"
+      background="var(--ikan_yellow_100)"
+    ></app-video-button>
+    <app-audio-button
+      [url]="pageData?.pageAudio?.url"
+      background="var(--ikan_yellow_100)"
+    ></app-audio-button>
+  </div>
+
+  <div class="title-section">
+    <!-- TODO: add translation -->
+    <h4>{{ 'Quiz' }}</h4>
+  </div>
+</ion-content>
