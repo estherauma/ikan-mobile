@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AnalyticsService } from 'src/app/shared/services/analytics/analytics.service';
 import { ContentService } from 'src/app/shared/services/content/content.service';
+import { GlobalErrorHandlerService } from 'src/app/shared/services/error-handler/global-error-handler.service';
 import { SharedmethodsService } from 'src/app/shared/services/sharedmethods/sharedmethods.service';
 
 @Component({
@@ -22,7 +23,8 @@ export class ChapterComponent  implements OnInit {
     public contentService: ContentService,
     public activatedRoute: ActivatedRoute,
     public sharedmethods: SharedmethodsService,
-    public analytics: AnalyticsService
+    public analytics: AnalyticsService,
+    public globalErrorHandler: GlobalErrorHandlerService,
   ) {
     this.activatedRoute.params.subscribe(async params => {
       this.chapterId = params?.chapterId;
@@ -54,6 +56,10 @@ export class ChapterComponent  implements OnInit {
       this.analytics.trackEvent(this.pageData.analyticsEventName, this.sharedmethods.analyticsEventParams);
     } else {
       console.log('No analytics event name found for this page');
+      this.globalErrorHandler.handleError(
+        null,
+        `No analytics event name found for this chapter: ${this.chapterId} ${this.pageData?.pageTitle}`
+      );
     }
   }
 
