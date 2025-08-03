@@ -59,9 +59,11 @@ export class QuizComponent  implements OnInit {
         if (qtnsToDisplay?.length) {
           // get question values
           const qtnsToDisplayWithValues = await this.getQuestionValues(qtnsToDisplay);
+          // Add subchapter to each qtn. It's used when submitting data
+          const quizSubChapterQtns = qtnsToDisplayWithValues.map((x) => ({...x, subChapter: subChapterId}));
 
           subChapter.title = subChapterTitle;
-          subChapter.questions = qtnsToDisplayWithValues;
+          subChapter.questions = quizSubChapterQtns;
           subChaptersResult.push(subChapter);
         }
       });
@@ -108,8 +110,7 @@ export class QuizComponent  implements OnInit {
     });
     await modal.present();
     modal.onDidDismiss().then(async() => {
-      // fix page update
-      // await this.pageSetup();
+      await this.pageSetup();
     });
   }
 }
