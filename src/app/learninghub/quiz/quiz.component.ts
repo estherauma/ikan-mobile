@@ -1,8 +1,10 @@
 import { Component, OnInit } from '@angular/core';
+import { ModalController } from '@ionic/angular';
 import { ContentService } from 'src/app/shared/services/content/content.service';
 import { SharedmethodsService } from 'src/app/shared/services/sharedmethods/sharedmethods.service';
 import { UserData } from 'src/app/shared/types/api-types';
 import { SurveyDataService } from 'src/app/survey/data/survey-data.service';
+import { QuestionComponent } from '../question/question.component';
 
 @Component({
   selector: 'app-quiz',
@@ -20,6 +22,7 @@ export class QuizComponent  implements OnInit {
     public contentService: ContentService,
     public surveyDataService: SurveyDataService,
     public sharedmethods: SharedmethodsService,
+    public modalCtrl: ModalController,
   ) { }
 
   async ngOnInit() {
@@ -31,7 +34,6 @@ export class QuizComponent  implements OnInit {
     this.commonText = await this.contentService.commonText;
     // this.pageData =  await this.contentService.getContentByPropertyName('quiz');
     this.quizData = await this.getQuizContent();
-    console.log('quizData---', this.quizData)
   }
 
   async getQuizContent() {
@@ -94,5 +96,20 @@ export class QuizComponent  implements OnInit {
     });
 
     return result;
+  }
+
+  async openQuestion(questionData) {
+    const modal = await this.modalCtrl.create({
+      cssClass: 'tuna-modal quiz-qtn-modal',
+      component: QuestionComponent,
+      componentProps: {
+        questionData
+      }
+    });
+    await modal.present();
+    modal.onDidDismiss().then(async() => {
+      // fix page update
+      // await this.pageSetup();
+    });
   }
 }
