@@ -15,6 +15,33 @@
 
   <div class="title-section">
     <!-- TODO: add translation -->
-    <h4>{{ 'Quiz' }}</h4>
+    <h3>{{ commonText?.quiz || 'Quiz' }}</h3>
+  </div>
+
+  <div class="content-section">
+    <div *ngFor="let chapter of quizData" class="chapter">
+      <h4 class="chapter-title">{{ chapter.title }}</h4>
+
+      <div *ngFor="let subChapter of chapter?.subChapters" class="subchpater-list">
+        <h5 class="subchapter-title">{{ subChapter.title }}</h5>
+
+        <div class="question-list">
+          <ion-row 
+            *ngFor="let item of subChapter?.questions"
+            (click)="openQuestion(item)"
+          >
+            <ion-col size="10" class="text-col">
+              <p class="qtn">{{ item?.question }}</p>
+            </ion-col>
+            <ion-col size="2">
+              <div class="icon-wrapper">
+                <ion-icon *ngIf="!item?.value" name="help-outline" class="help"></ion-icon>
+                <ion-icon *ngIf="item?.value" name="checkmark" class="checkmark"></ion-icon>
+              </div>
+            </ion-col>
+          </ion-row>
+        </div>
+      </div>
+    </div>
   </div>
 </ion-content>
