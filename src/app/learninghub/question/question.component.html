@@ -1,5 +1,4 @@
-<app-header></app-header>
-<ion-content>
+
   <div class="container">
     <div class="question-section">
       <ion-row>
@@ -19,6 +18,7 @@
             class="text-container"
           >
             <ion-input
+              mode="md"
               class="input"
               [placeholder]="commonText?.typeYourAnswerHere"
               autofocus
@@ -33,6 +33,7 @@
             class="select-container"
           >
             <ion-select
+              mode="md"
               class="input"
               label-placement="stacked"
               [placeholder]="commonText?.pleaseSelect"
@@ -50,6 +51,7 @@
             class="select-container"
           >
             <ion-select
+              mode="md"
               class="input"
               label-placement="stacked"
               [placeholder]="commonText?.pleaseSelect"
@@ -69,7 +71,7 @@
               (ionChange)="handleSelectChange($event)"
             >
               <ion-item  *ngFor="let option of questionData?.options" lines="none">
-                <ion-radio [value]="option?.value" labelPlacement="end">{{ option?.option }}</ion-radio>
+                <ion-radio [value]="option?.value" labelPlacement="end" mode="md">{{ option?.option }}</ion-radio>
               </ion-item>
             </ion-radio-group>
           </div>
@@ -86,15 +88,9 @@
                     (click)="selectOption(option?.value)"
                     [ngClass]="{ 'option-has-value': questionData?.value === option?.value }"
                   >
-                    <ion-radio slot="start" value="{{ option?.value }}"></ion-radio>
+                    <ion-radio slot="start" value="{{ option?.value }}" mode="md"></ion-radio>
                     <ion-icon [name]="option?.icon"></ion-icon>
                   </div>
-                <ion-img
-                  *ngIf="hasFollowupQtn && questionData?.value === option?.value"
-                  class="cutout-icon"
-                  src="assets/imgs/cutout-rectangle-blue.svg"
-                >
-                </ion-img>
                 </ion-col>
               </ion-row>
             </ion-radio-group>
@@ -185,7 +181,7 @@
           (ionChange)="handleFollowUpSelectChange($event)"
         >
           <ion-item *ngFor="let option of followupQtnData?.options" lines="none">
-            <ion-radio [value]="option?.value" labelPlacement="end">{{ option?.option }}</ion-radio>
+            <ion-radio [value]="option?.value" labelPlacement="end" mode="md">{{ option?.option }}</ion-radio>
           </ion-item>
         </ion-radio-group>
       </div>
@@ -197,4 +193,3 @@
       </ion-row>
     </div>
   </div>
-</ion-content>
