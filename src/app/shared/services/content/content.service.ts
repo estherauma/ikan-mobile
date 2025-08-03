@@ -33,6 +33,7 @@ export class ContentService {
     this.watchContentSubscription = this.watchContent().subscribe(async(res) => {
       if (res) {
         await this.updateAllContent();
+        await this.replaceVesselPlaceholderText();
       }
     });
     this.saveSurveyCategories();

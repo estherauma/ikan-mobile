@@ -20,7 +20,6 @@ import { NotificationcardComponent } from './components/notificationcard/notific
 import { AttachmentComponent } from './components/attachment/attachment.component';
 import { BadgeComponent } from './components/badge/badge.component';
 import { GenericmodalComponent } from './components/genericmodal/genericmodal.component';
-import { MaincardComponent } from './components/maincard/maincard.component';
 import { ProgressbarComponent } from './components/progressbar/progressbar.component';
 import { ImageselectComponent } from './components/imageselect/imageselect.component';
 import { UsercontractcardComponent } from './components/usercontractcard/usercontractcard.component';
@@ -47,6 +46,8 @@ import { ViewPassportComponent } from '../mydocuments/view-passport/view-passpor
 import { PaymentCardComponent } from './components/payment-card/payment-card.component';
 import { TutorialDetailComponent } from '../tutorials/tutorial-detail/tutorial-detail.component';
 import { RichTextComponent } from './components/rich-text/rich-text.component';
+import { AudioButtonComponent } from './components/audio-button/audio-button.component';
+import { VideoButtonComponent } from './components/video-button/video-button.component';
 
 
 @NgModule({
@@ -72,7 +73,6 @@ import { RichTextComponent } from './components/rich-text/rich-text.component';
     AuthbgpaperComponent,
     WorkordercardComponent,
     AgentcardComponent,
-    MaincardComponent,
     ProgressbarComponent,
     NotificationcardComponent,
     AttachmentComponent,
@@ -102,6 +102,8 @@ import { RichTextComponent } from './components/rich-text/rich-text.component';
     ViewPassportComponent,
     TutorialDetailComponent,
     RichTextComponent,
+    AudioButtonComponent,
+    VideoButtonComponent,
   ],
   exports: [
     SafeurlPipe,
@@ -119,7 +121,6 @@ import { RichTextComponent } from './components/rich-text/rich-text.component';
     AuthbgpaperComponent,
     WorkordercardComponent,
     AgentcardComponent,
-    MaincardComponent,
     ProgressbarComponent,
     NotificationcardComponent,
     AttachmentComponent,
@@ -148,6 +149,8 @@ import { RichTextComponent } from './components/rich-text/rich-text.component';
     ViewPassportComponent,
     TutorialDetailComponent,
     RichTextComponent,
+    AudioButtonComponent,
+    VideoButtonComponent,
   ]
 })
 

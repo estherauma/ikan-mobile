@@ -15,7 +15,7 @@ import { PageEventNames } from 'src/app/shared/services/analytics/event-names';
 })
 export class HomePage implements OnInit {
   title = '';
-  pageContent: any;
+  pageData: any;
   learningHubChapters = [];
 
   constructor(
@@ -28,16 +28,15 @@ export class HomePage implements OnInit {
   ) { }
 
   async ngOnInit() {
-    this.pageContent =  this.contentService.getContentByPropertyName('chapters-list');
-    this.title = this.pageContent?.pageTitle;
-    const clickableList = this.pageContent?.pageContent?.find((e) => e.type === 'clickable_list');
+    this.pageData =  this.contentService.getContentByPropertyName('chapters-list');
+    this.title = this.pageData?.pageTitle;
+    const clickableList = this.pageData?.pageContent?.find((e) => e.type === 'clickable_list');
     const chapters = clickableList?.list;
     this.learningHubChapters = chapters?.map((chapter) => ({
       title: chapter?.label,
-      text : chapter?.description || '',
-      progressBarValue : '0',
-      progressBarType : 'primary',
-      progressBarText: this.contentService?.commonText?.completionStatus,
+      description : chapter?.description || '',
+      // TODO: get progress value
+      progress: 0,
        // TODO: use tuna icon as default
       imageUrl : chapter?.icon || 'https://cdn.pixabay.com/photo/2015/07/17/22/43/student-849825_1280.jpg',
       page: chapter?.page
@@ -49,7 +48,7 @@ export class HomePage implements OnInit {
     if (user?.role === UserRole.worker && !watchedTFAVideo) {
       await this.showTrainingVideo();
     }
-    this.analyticsService.trackEvent(PageEventNames.learningHubHome, this.sharedMethods.analyticsEventParams)
+    this.analyticsService.trackEvent(PageEventNames.learningHubHome, this.sharedMethods.analyticsEventParams);
   }
 
   onClick(item) {

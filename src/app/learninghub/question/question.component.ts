@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { Router } from '@angular/router';
+import { ModalController, NavParams } from '@ionic/angular';
 import { ContentService } from 'src/app/shared/services/content/content.service';
 import { SharedmethodsService } from 'src/app/shared/services/sharedmethods/sharedmethods.service';
 import { SyncService } from 'src/app/shared/services/sync/sync.service';
@@ -13,27 +14,26 @@ import { SurveyDataService } from 'src/app/survey/data/survey-data.service';
 export class QuestionComponent  implements OnInit {
   questionData: any;
   commonText: any;
-  isYesNoValue: boolean = false;
-  hasFollowupQtn: boolean = false;
+  isYesNoValue = false;
+  hasFollowupQtn = false;
   followupQtnData: any;
   unTranslatedQtn: any;
 
   constructor(
-    public activatedRoute: ActivatedRoute,
     public contentService: ContentService,
     public sharedMethods: SharedmethodsService,
     public surveyDataService: SurveyDataService,
     public router: Router,
     public syncService: SyncService,
+    public navParams: NavParams,
+    public modalCtrl: ModalController,
   ) {}
 
   ngOnInit() {
-    this.activatedRoute.params.subscribe(async params => {
-      if (params?.questionData) {
-        this.questionData = JSON.parse(params?.questionData);
-      }
-    });
-    
+    if (this.navParams) {
+      this.questionData = this.navParams.get('questionData');
+    }
+
     this.commonText = this.contentService?.commonText;
     this.unTranslatedQtn = this.contentService.getUntranslatedInlineQuestion(this.questionData?.subChapter, this.questionData?.key);
     if (this.questionData?.questionType === 'radio' || this.questionData?.questionType === 'select') {
@@ -65,7 +65,7 @@ export class QuestionComponent  implements OnInit {
     this.questionData.value = e.detail.value;
     this.getFollowupQtn();
   }
-  
+
   handleSelectChange(e) {
     this.questionData.value = e.detail.value;
     this.getFollowupQtn();
@@ -78,7 +78,7 @@ export class QuestionComponent  implements OnInit {
       if (selectedOption?.followUpQuestion) {
         this.hasFollowupQtn = true;
         this.followupQtnData = selectedOption.followUpQuestion;
-        if(this.followupQtnData?.key === 'See the Get Help section to find a workers union you can consult with') {
+        if (this.followupQtnData?.key === 'See the Get Help section to find a workers union you can consult with') {
           this.followupQtnData.questionType = 'helperText';
         }
         if (this.questionData?.savedQtn?.followUpQuestionResponse) {
@@ -100,7 +100,7 @@ export class QuestionComponent  implements OnInit {
   handleFollowUpInputChange(e) {
     this.followupQtnData.value = e.detail.value;
   }
-  
+
   handleFollowUpSelectChange(e) {
     this.followupQtnData.value = e.detail.value;
   }
@@ -108,8 +108,11 @@ export class QuestionComponent  implements OnInit {
   // Question responses are saved even if followup question is not answered
   // Uncomment code below to only submit if followup question is also answered
   async submitAnswer() {
-    if (!this.questionData?.value) return;
-    
+    if (!this.questionData?.value) {
+      await this.modalCtrl?.dismiss();
+      return;
+    }
+
     // Uncomment code below to only submit if followup question is answered
     // if (this.hasFollowupQtn && !this.followupQtnData?.value && this.followupQtnData?.questionType !== 'helperText') {
     //   // TODO: translate
@@ -147,10 +150,8 @@ export class QuestionComponent  implements OnInit {
 
       const insertId = await this.surveyDataService.createInlineQuestion(dataToSave);
       if (insertId) {
-        const chapterId = this.questionData.subChapter.split('.')[0];
-        const subChapterId = this.questionData.subChapter;
         await this.syncService.syncInlineQuestions();
-        this.router.navigate([ 'learninghub/chapters', chapterId, subChapterId ], { replaceUrl: true });
+        await this.modalCtrl?.dismiss();
       } else {
         this.sharedMethods.showToast(this.commonText?.errSavingResponses);
       }
@@ -165,12 +166,10 @@ export class QuestionComponent  implements OnInit {
         savedQtn?.followUpQuestionType === this.followupQtnData?.questionType &&
         savedQtn?.followUpQuestionText === this.followupQtnData?.unTranslatedQuestionText
       ) {
-        const chapterId = this.questionData.subChapter.split('.')[0];
-        const subChapterId = this.questionData.subChapter;
-        this.router.navigate([ 'learninghub/chapters', chapterId, subChapterId ], { replaceUrl: true });
+        await this.modalCtrl?.dismiss();
         return;
       }
-      
+
       const dataToUpdate = {
         id: this.questionData?.savedQtn.id,
         questionResponse: this.questionData?.value,
@@ -184,10 +183,8 @@ export class QuestionComponent  implements OnInit {
 
       const updateId = await this.surveyDataService.updateInlineQuestion(dataToUpdate);
       if (updateId) {
-        const chapterId = this.questionData.subChapter.split('.')[0];
-        const subChapterId = this.questionData.subChapter;
         await this.syncService.syncInlineQuestions();
-        this.router.navigate([ 'learninghub/chapters', chapterId, subChapterId ], { replaceUrl: true });
+        await this.modalCtrl?.dismiss();
       } else {
         this.sharedMethods.showToast(this.commonText?.errSavingResponses);
       }

@@ -1,89 +1,132 @@
-.audio-section{
-  display: flex;
-  position: relative;
-  width: 100%;
-  height: 50px;
-  margin-top: -25px;
-  z-index: 1;
-  justify-content: center;
-  align-items: center;
+ion-content {
+  --background: var(--ikan_skyblue_100);
+  .content-wrapper {
+    .audio-video-section {
+      margin: 20px;
+      display: flex;
+      justify-content: end;
+    }
 
-  div {
-    width: 70%;
-  }
-}
-
-.image-section{
-  height: 300px;
-  background-color: rgba(0, 0, 255, 0.5);
-  backdrop-filter: blur(5px);
-  background-repeat: no-repeat;
-  background-size: cover;
-  background-position: center;
-  width: 100%;
-  top: 0;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  padding: 32px;
-}
-
-.content-section {
-  background-color: #EAEDF6;
-  border-radius: 20px 20px 0px 0px;
-  z-index: 1;
-  position: relative;
-  width: 100%;
-  margin-top: -25px;
-  min-height: 80%;
-  padding: 32px 16px 16px;
-
-  .qtn-wrapper {
-    background: white;
-    margin: 12px;
-    border-radius: 20px;
-    ion-col {
+    .title-section {
+      min-height: 150px;
+      background: var(--ikan_darkblue_100);
+      backdrop-filter: blur(5px);
       display: flex;
       justify-content: center;
       align-items: center;
-    }
-    .icon-col {
-      border-top-left-radius: 20px;
-      border-bottom-left-radius: 20px;
-      background: var(--ikan_light_gray);
-      ion-icon {
-        color: white;
-        font-size: 3rem;
-        --ionicon-stroke-width: 40px;
+      padding: 15px;
+      h1 {
+        color: #191970 !important;
+        font-size: 1.8rem !important;
+        text-align: center;
+        font-family: GatwickBold;
       }
     }
-    .pending {
-      ion-icon {
-        color: var(--ikan_deep_gray);
-      }
+
+    .content-section {
+      margin: 30px 10px;
     }
-    .completed {
-      background: #7cdeff;
-      ion-icon {
-        color: var(--ikan_blue_100);
-      }
+  }
+
+  .up-next-section {
+    background-color: #191970;
+    margin: 15px 0px 0px 0px;
+    padding: 20px;
+    border-radius: 20px 20px 0px 0px;
+    position: static;
+    bottom: 0;
+
+    ion-label {
+      color: #80d8fe;
+      font-size: 1rem;
+      font-weight: bold;
+      margin-bottom: 10px;
     }
-    .qtn-col {
-      border-top-right-radius: 20px;
-      border-bottom-right-radius: 20px;
-      p {
-        color: var(--ikan_blue_100);
-        margin: 10px;
-        font-weight: bold;
-        span {
-          .vessel-name {
-            color: var(--ikan_darkblue_90) !important;
+
+    ion-row {
+      margin: 10px 0 0 0;
+      padding: 10px;
+      border-radius: 20px;
+      background: white;
+
+      ion-col {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        .icon-wrapper {
+          width: 60px;
+          height: 60px;
+          ion-img,
+          ion-icon {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
           }
         }
-        .q {
-          margin-right: 5px;
+        h4 {
+          color: #3565ff;
+          font-weight: 800;
+          font-size: 1.1rem;
+          font-family: "interRegular" !important;
+        }
+        ion-text {
+          color: #a0abcc;
+          font-size: 0.875rem;
         }
       }
     }
   }
 }
+
+// Commented out for now
+// Implementation changed and we are displaying qtuestions on a separate page (quiz page)
+// .content-section {
+//   .qtn-wrapper {
+//     background: white;
+//     margin: 12px;
+//     border-radius: 20px;
+//     ion-col {
+//       display: flex;
+//       justify-content: center;
+//       align-items: center;
+//     }
+//     .icon-col {
+//       border-top-left-radius: 20px;
+//       border-bottom-left-radius: 20px;
+//       background: var(--ikan_light_gray);
+//       ion-icon {
+//         color: white;
+//         font-size: 3rem;
+//         --ionicon-stroke-width: 40px;
+//       }
+//     }
+//     .pending {
+//       ion-icon {
+//         color: var(--ikan_deep_gray);
+//       }
+//     }
+//     .completed {
+//       background: #7cdeff;
+//       ion-icon {
+//         color: var(--ikan_blue_100);
+//       }
+//     }
+//     .qtn-col {
+//       border-top-right-radius: 20px;
+//       border-bottom-right-radius: 20px;
+//       p {
+//         color: var(--ikan_blue_100);
+//         margin: 10px;
+//         font-weight: bold;
+//         span {
+//           .vessel-name {
+//             color: var(--ikan_darkblue_90) !important;
+//           }
+//         }
+//         .q {
+//           margin-right: 5px;
+//         }
+//       }
+//     }
+//   }
+// }

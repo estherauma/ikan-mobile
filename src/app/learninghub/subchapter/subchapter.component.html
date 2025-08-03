@@ -1,21 +1,25 @@
 <app-header [pageTitle]="" [isBackButton]="true"></app-header>
 <ion-content>
   <div class="content-wrapper">
+    <!-- TODO: add page audio & video to prismic & aggregation -->
+    <div class="audio-video-section">
+      <app-video-button
+        [url]="allPageData?.pageVideo?.url"
+        background="var(--ikan_yellow_100)"
+      ></app-video-button>
+      <app-audio-button
+        [url]="allPageData?.pageAudio?.url"
+        background="var(--ikan_yellow_100)"
+      ></app-audio-button>
+    </div>
+
     <div
-      class="image-section" 
+      class="title-section" 
       [ngStyle]="{'background': 'url(' + imgUrl +') no-repeat fixed center / cover'}"
     >
-    <app-title [title]="allPageContent?.pageTitle" [isBig]="true" [isLightBlue]="true"></app-title>
+      <h1>{{ allPageData?.pageTitle }}</h1>
     </div>
-    <!-- <div class="audio-section">
-      <div>
-        <app-audio-player
-          variant="gray-bg" 
-          size="thin"
-          [audioSrc]="allPageContent?.pageTitleAudio?.mediaData?.url || ''"
-        ></app-audio-player>
-      </div>
-    </div> -->
+
     <div class="content-section">
       <div *ngFor="let section of pageContent">
         <!-- text area type -->
@@ -26,7 +30,9 @@
         ></shared-text-area>
         
         <!-- question type -->
-        <div
+        <!-- Commented out for now -->
+        <!-- Implementation changed and we are displaying qtuestions on a separate page (quiz page) -->
+        <!-- <div
           *ngIf="isWorker && section?.type === 'questions' && section?.displayquestion"
           class="qtn-wrapper"
           (click)="viewQuestion(section)"
@@ -52,7 +58,7 @@
               </p>
             </ion-col>
           </ion-row>
-        </div>
+        </div> -->
     
         <!-- audio type -->
         <app-audio-player
@@ -106,14 +112,17 @@
     class="up-next-section"
     (click)="goToNextChapter()"
   >
-  <ion-label text-wrap>{{ contentService?.commonText?.upNext }}...</ion-label>
-    <app-maincard
-      class="upnext"
-      [imageUrl]="upNextContent?.icon"
-      [title]="upNextContent?.name"
-      [text]="upNextContent?.description"
-      (click)="goToNextChapter()"
-    >
-    </app-maincard>
+    <ion-label text-wrap>{{ contentService?.commonText?.upNext }}...</ion-label>
+    <ion-row (click)="goToNextChapter()">
+      <ion-col size="3">
+        <div class="icon-wrapper">
+          <ion-img [src]="upNextContent?.icon"></ion-img>
+        </div>
+      </ion-col>
+      <ion-col size="9">
+        <h4>{{ upNextContent?.name }}</h4>
+        <ion-text class="description">{{ upNextContent?.description.length > 45 ? upNextContent?.description.slice(0, 45) + '...' : upNextContent?.description }}</ion-text>
+      </ion-col>
+    </ion-row>
   </div>
 </ion-content>
