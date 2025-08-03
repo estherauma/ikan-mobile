@@ -9,11 +9,75 @@ ion-content {
   }
 
   .title-section {
-    h4 {
+    h3 {
       font-family: GatwickBold;
       font-size: 1.6rem;
       text-align: center;
       color: var(--ion-color-primary);
+    }
+  }
+
+  .content-section {
+    padding: 0 30px 30px 30px;
+    .chapter {
+      margin-bottom: 50px;
+      .chapter-title {
+        font-family: GatwickBold;
+        font-size: 1.3rem;
+        font-weight: 600;
+        color: var(--ikan_darkblue_90);
+      }
+
+      .subchpater-list {
+        .subchapter-title {
+          font-size: 1.1rem;
+          font-weight: 600;
+          color: var(--ikan_darkblue_100);
+          margin-top: 25px;
+          margin-bottom: 20px;
+        }
+
+        .question-list {
+          margin-bottom: 30px;
+          ion-row {
+            background: white;
+            border-radius: 20px;
+            margin-bottom: 20px;
+            ion-col {
+              display: flex;
+              justify-content: center;
+              align-items: center;
+
+              p {
+                color: var(--ikan_darkblue_100);
+              }
+              .icon-wrapper {
+                ion-icon {
+                  border-radius: 50%;
+                  padding: 5px;
+                  font-size: 1.5rem;
+                }
+                .help {
+                  color: white;
+                  background: var(--ikan_yellow_100);
+                }
+                .close {
+                  color: var(--ikan_deep_gray);
+                  background: var(--ikan_skyblue_100);
+                }
+                .checkmark {
+                  color: var(--ikan_darkblue_90);
+                  background: var(--ikan_green_100);
+                }
+              }
+            }
+            .text-col {
+              padding: 10px 20px;
+              justify-content: start;
+            }
+          }
+        }
+      }
     }
   }
 }
