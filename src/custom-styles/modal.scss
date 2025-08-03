@@ -137,7 +137,7 @@ ion-modal.my-own-class {
         color: #191970;
       }
     }
-    
+
     .alert-message {
       max-height: unset;
       color: #2e2d2c;
@@ -342,6 +342,20 @@ ion-modal.tutorial-detail-modal {
   --background: transparent !important;
 
   --height: 90%;
+
+  .ion-page {
+    width: 90%;
+    border-radius: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+  }
+}
+
+ion-modal.quiz-qtn-modal {
+
+  --height: unset;
+  --width: 90%;
+  --border-radius: 20px;
 
   .ion-page {
     width: 90%;
