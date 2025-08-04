@@ -40,8 +40,7 @@
   <div class="video-wrapper" *ngIf="showVideo">
     <video #videoPlayer controls autoplay (ended)="closeVideo()">
       <source [src]="url" type="video/mp4" />
-      <!-- TODO: add translation -->
-      {{ commonText?.browserDoesnotSupportViwTag || 'Your browser does not support the video tag.' }}
+      {{ commonText?.browserDoesnotSupportVideoTag }}
     </video>
   </div>
 </div>
