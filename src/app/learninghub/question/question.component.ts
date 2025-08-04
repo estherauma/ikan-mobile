@@ -144,7 +144,8 @@ export class QuestionComponent  implements OnInit {
         questionResponse: this.questionData?.value,
         followUpQuestionKey: this.followupQtnData ? this.followupQtnData?.key : null,
         followUpQuestionType: this.followupQtnData ? this.followupQtnData?.questionType : null,
-        followUpQuestionText: this.followupQtnData ? (this.followupQtnData?.unTranslatedQuestionText || this.followupQtnData?.question) : null,
+        followUpQuestionText: this.followupQtnData ?
+          (this.followupQtnData?.unTranslatedQuestionText || this.followupQtnData?.question) : null,
         followUpQuestionResponse: this.followupQtnData ? this.followupQtnData?.value : null,
       };
 
@@ -177,7 +178,8 @@ export class QuestionComponent  implements OnInit {
         questionText: this.unTranslatedQtn?.question || this.questionData?.question,
         followUpQuestionKey: this.followupQtnData ? this.followupQtnData?.key : null,
         followUpQuestionType: this.followupQtnData ? this.followupQtnData?.questionType : null,
-        followUpQuestionText: this.followupQtnData ? (this.followupQtnData?.unTranslatedQuestionText || this.followupQtnData?.question) : null,
+        followUpQuestionText: this.followupQtnData ?
+          (this.followupQtnData?.unTranslatedQuestionText || this.followupQtnData?.question) : null,
         followUpQuestionResponse: this.followupQtnData ? this.followupQtnData?.value : null,
       };
 
