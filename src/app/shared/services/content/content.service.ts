@@ -413,4 +413,39 @@ export class ContentService {
       }
     });
   }
+
+  async generateLearningHubProgressData() {
+    const savedLearningHubProgress = await this.sharedMethods.readDataFromStorage(StorageKeys.learningHubProgress);
+    if (savedLearningHubProgress) { return; }
+
+    const user = this.authService.userData;
+    if (!user || !(await this.authService.checkAcessTokenValidity())) {
+      return;
+    }
+
+    const chapterListPageData =  this.getContentByPropertyName('chapters-list');
+    const clickableList = chapterListPageData?.pageContent?.find((e) => e.type === 'clickable_list');
+    const chapters = clickableList?.list;
+    const progressData = await Promise.all(chapters?.map(async(chapter) => {
+      const chapterId = chapter?.page?.uid;
+      const chapterContent = this.getContentByPropertyName(chapterId);
+      const subChapterList = chapterContent?.pageContent?.[0]?.list;
+      const subChapters = subChapterList?.map((sc) => ({
+        id: sc?.page?.uid,
+        completed: false,
+      }));
+
+      return {
+        id: chapter?.page?.uid,
+        subChapters
+      };
+    }));
+
+    // createdAt and updatedAt are added when saving actual progress data
+    const learningHubProgress = {
+      user: user?.id,
+      progressData,
+    };
+    await this.sharedMethods.saveDataToStorage(StorageKeys.learningHubProgress, learningHubProgress);
+  }
 }

@@ -92,6 +92,7 @@ export class AppComponent implements OnInit, OnDestroy {
     this.userData = this.authService.userData;
     this.userEmail = this.authService.userData?.email;
     await this.contentService.saveSurveyCategories();
+    await this.contentService.generateLearningHubProgressData();
   }
 
   setupMenu(menuData) {
