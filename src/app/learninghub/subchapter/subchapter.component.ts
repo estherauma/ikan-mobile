@@ -5,7 +5,7 @@ import { AuthService } from 'src/app/shared/services/auth/auth.service';
 import { ContentService } from 'src/app/shared/services/content/content.service';
 import { GlobalErrorHandlerService } from 'src/app/shared/services/error-handler/global-error-handler.service';
 import { SharedmethodsService } from 'src/app/shared/services/sharedmethods/sharedmethods.service';
-import { HubQuestionStatus, UserData, UserRole } from 'src/app/shared/types/api-types';
+import { HubQuestionStatus, StorageKeys, UserData, UserRole } from 'src/app/shared/types/api-types';
 import { SurveyDataService } from 'src/app/survey/data/survey-data.service';
 
 @Component({
@@ -63,6 +63,7 @@ export class SubchapterComponent  implements OnInit {
     this.isWorker = this.authService.userRole === UserRole.worker;
     await this.pageSetup();
     this.setUpAnalytics();
+    await this.markSubChapterAsCompleted();
   }
 
   async pageSetup() {
@@ -104,6 +105,28 @@ export class SubchapterComponent  implements OnInit {
         );
       }
     }
+  }
+
+  async markSubChapterAsCompleted() {
+    const savedLearningHubProgress = await this.sharedmethods.readDataFromStorage(StorageKeys.learningHubProgress);
+    const chapterId = this.subChapterId?.split('.')[0];
+    const chapterData = savedLearningHubProgress?.progressData?.find(c => c.id === chapterId);
+    const subChapterData = chapterData?.subChapters.find(sc => sc.id === this.subChapterId);
+
+    if (subChapterData?.completed) { return; }
+
+    subChapterData.completed = true;
+
+    // Update learningHubProgress
+    const now = this.sharedmethods.getCurrentDateTime();
+    const learningHubProgress = {
+      createdAt: now, // This will be overridden if alreadys exists
+      createdBy: this.user?.id, // This will be overridden if alreadys exists
+      ...savedLearningHubProgress,
+      updatedAt: now,
+      updatedBy: this.user?.id
+    };
+    await this.sharedmethods.saveDataToStorage(StorageKeys.learningHubProgress, learningHubProgress);
   }
 
   async getQuestionValues() {
