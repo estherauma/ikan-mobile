@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/naming-convention */
-import { Injectable } from '@angular/core';
+import { HostListener, Injectable } from '@angular/core';
 import { ApiService } from '../api/api.service';
 import { DBService } from '../database/db.service';
 import { CompaniesDataService } from 'src/app/companies/data/companies-data.service';
@@ -80,7 +80,7 @@ export class SyncService {
 
   async syncData() {
     const isValid = await this.authService.checkAcessTokenValidity();
-    if (!isValid || !this.isDbInitialized) {
+    if (!isValid || !this.isDbInitialized || !navigator.onLine) {
       return;
     }
 
@@ -102,7 +102,18 @@ export class SyncService {
     await this.fetchPayments();
   }
 
+  @HostListener('window:online', ['$event'])
+  onOnline() {
+    this.syncData();
+  }
+
+
   async syncCompanies() {
+    const isValid = await this.authService.checkAcessTokenValidity();
+    if (!isValid || !this.isDbInitialized || !navigator.onLine) {
+      return;
+    }
+
     const companies = this.companyServ.companies;
     if (companies.length > 0) {
       const user = await this.sharedMethods.getUserData();
@@ -144,6 +155,11 @@ export class SyncService {
   }
 
   async syncVessels() {
+    const isValid = await this.authService.checkAcessTokenValidity();
+    if (!isValid || !this.isDbInitialized || !navigator.onLine) {
+      return;
+    }
+
     const vessels = this.vesselServ.vessels;
     if (vessels.length > 0) {
       const user = await this.sharedMethods.getUserData();
@@ -249,6 +265,11 @@ export class SyncService {
   }
 
   async syncContracts() {
+    const isValid = await this.authService.checkAcessTokenValidity();
+    if (!isValid || !this.isDbInitialized || !navigator.onLine) {
+      return;
+    }
+
     const contracts  = this.contractServ.contracts;
     if (contracts.length > 0) {
       const user = await this.sharedMethods.getUserData();
@@ -407,6 +428,11 @@ export class SyncService {
   }
 
   async syncContractClauses(contractId, contractOnlineRef) {
+    const isValid = await this.authService.checkAcessTokenValidity();
+    if (!isValid || !this.isDbInitialized || !navigator.onLine) {
+      return;
+    }
+
     const clauses = await this.contractServ.retrieveContractClauses(contractId);
     clauses.forEach(async(clause) => {
       // The contract_id has to be the for the online record and not the local before sending to the api
@@ -440,6 +466,11 @@ export class SyncService {
   }
 
   async syncContractClausesAttachments(clause) {
+    const isValid = await this.authService.checkAcessTokenValidity();
+    if (!isValid || !this.isDbInitialized || !navigator.onLine) {
+      return;
+    }
+
     if (clause.kind === 'contract-clauses-attachments') {
       const content = JSON.parse(clause.content);
       if (Object.keys(content).length && (content.partyASignature || content.partyBSignature)) {
@@ -512,6 +543,11 @@ export class SyncService {
   }
 
   async syncSurveyResponses() {
+    const isValid = await this.authService.checkAcessTokenValidity();
+    if (!isValid || !this.isDbInitialized || !navigator.onLine) {
+      return;
+    }
+
     const surveys = this.surveyDataService.surveys;
     if (surveys?.length) {
       surveys.forEach((survey) => {
@@ -535,6 +571,11 @@ export class SyncService {
   }
 
   async syncInlineQuestions() {
+    const isValid = await this.authService.checkAcessTokenValidity();
+    if (!isValid || !this.isDbInitialized || !navigator.onLine) {
+      return;
+    }
+
     const questions = this.surveyDataService.inlineQuestions;
     if (questions?.length) {
       const user = await this.sharedMethods.getUserData();
@@ -589,6 +630,10 @@ export class SyncService {
   }
 
   async syncUsersData() {
+    const isValid = await this.authService.checkAcessTokenValidity();
+    if (!isValid || !this.isDbInitialized || !navigator.onLine) {
+      return;
+    }
     await this.fetchProfile();
     await this.fetchProfilesByRole();
     await this.syncProfiles();
@@ -896,6 +941,11 @@ export class SyncService {
   }
 
   async syncMyDocuments() {
+    const isValid = await this.authService.checkAcessTokenValidity();
+    if (!isValid || !this.isDbInitialized || !navigator.onLine) {
+      return;
+    }
+
     const allDocs = this.documentsDataService.allDocuments;
     if (allDocs?.length) {
       const user = await this.sharedMethods.getUserData();
@@ -983,6 +1033,11 @@ export class SyncService {
   }
 
   async syncPassports() {
+    const isValid = await this.authService.checkAcessTokenValidity();
+    if (!isValid || !this.isDbInitialized || !navigator.onLine) {
+      return;
+    }
+
     const passports = this.documentsDataService.passports;
     if (passports.length > 0) {
       const user = await this.sharedMethods.getUserData();
