@@ -51,7 +51,7 @@
               <ion-icon *ngIf="!subChapter?.isCompleted" name="close" class="close"></ion-icon>
               <ion-icon *ngIf="subChapter?.isCompleted" name="checkmark" class="checkmark"></ion-icon>
             </div>
-            <p>{{ commonText?.completed }}</p>
+            <p>{{ subChapter?.isCompleted ? commonText?.completed : commonText?.incomplete }}</p>
           </div>
         </ion-col>
       </ion-row>
