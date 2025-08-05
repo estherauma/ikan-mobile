@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/naming-convention */
 import { Injectable } from '@angular/core';
 import { ApiService } from '../api/api.service';
 import { DBService } from '../database/db.service';
@@ -108,7 +109,6 @@ export class SyncService {
       for (const company of companies) {
         if (user?.id !== company?.createdBy) { continue; }
 
-        const companyId = company.id;
         const companyToUpload = Object.assign({}, company);
         delete companyToUpload.id;
         if (!companyToUpload.onlineRef) {
@@ -122,7 +122,7 @@ export class SyncService {
             console.log(response);
           });
         }
-      };
+      }
     }
   }
 
@@ -150,7 +150,6 @@ export class SyncService {
       for (const vessel of vessels) {
         if (user?.id !== vessel?.createdBy) { continue; }
 
-        const vesselId = vessel.id;
         const vesselToUpload = Object.assign({}, vessel);
         delete vesselToUpload.id;
         if (!vesselToUpload.onlineRef) {
@@ -168,7 +167,7 @@ export class SyncService {
             }
           });
         }
-      };
+      }
     }
   }
 
@@ -307,7 +306,7 @@ export class SyncService {
             }
           });
         }
-      };
+      }
     }
   }
 
@@ -542,7 +541,6 @@ export class SyncService {
       for (const question of questions) {
         if (user?.id !== question?.createdBy) { continue; }
 
-        const questionId = question.id;
         const questionToUpload = Object.assign({}, question);
         delete questionToUpload.id;
         questionToUpload.user = questionToUpload.userId;
@@ -559,7 +557,7 @@ export class SyncService {
             }
           });
         }
-      };
+      }
     }
   }
 
@@ -610,7 +608,7 @@ export class SyncService {
         dataToSave.updatedBy = dataToSave.updatedBy ?? user?.id;
         const profileExists = await this.profilesDataService.checkIfProfileExists(dataToSave.email);
         if (!profileExists) {
-          await this.profilesDataService.saveOnlineProfile(dataToSave).then(async(id) => {
+          await this.profilesDataService.saveOnlineProfile(dataToSave).then(async() => {
             if (dataToSave?.profileImage) {
               await this.uploadService.fetchAndSaveFile(dataToSave.profileImage).then(async(fileUri) => {
                 if (fileUri) {
@@ -631,7 +629,7 @@ export class SyncService {
             await this.profilesDataService.updateProfileOnlineRef(dataToSave.email, dataToSave.id);
           }
           if (currentDate < newDate) {
-            await this.profilesDataService.update(dataToSave).then(async(id) => {
+            await this.profilesDataService.update(dataToSave).then(async() => {
               if (dataToSave?.profileImage) {
                 await this.uploadService.fetchAndSaveFile(dataToSave.profileImage).then(async(fileUri) => {
                   if (fileUri) {
@@ -915,7 +913,6 @@ export class SyncService {
             }
           });
         } else {
-          const documentId = document.id;
           const documentToUpload = Object.assign({}, document);
           delete documentToUpload.id;
           delete documentToUpload.fileUrl;
@@ -1086,7 +1083,7 @@ export class SyncService {
     return this.apiService.get('payments').subscribe((response: any) => {
       if (response?.status === 200 && response.body.length > 0) {
         response.body.forEach(async(payment) => {
-          const user = await this.sharedMethods.getUserData();
+          // const user = await this.sharedMethods.getUserData();
           const now = this.sharedMethods.getCurrentDateTime();
           const dataToSave = Object.assign({}, payment);
           delete dataToSave.id;
