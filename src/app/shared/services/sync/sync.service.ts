@@ -100,6 +100,7 @@ export class SyncService {
     await this.fetchPassports();
     await this.fetchInlineQuestions();
     await this.fetchPayments();
+    await this.fetchLearningHubProgress();
   }
 
   @HostListener('window:online', ['$event'])
@@ -1161,6 +1162,26 @@ export class SyncService {
             await this.paymentsDataService.saveOnlinePayment(dataToSave).then(() => {});
           }
         });
+      }
+    });
+  }
+
+  async fetchLearningHubProgress() {
+    return this.apiService.get('learninghub-progress').subscribe(async(response: any) => {
+      if (response?.status === 200 && response?.body?.data?.length > 0) {
+        const onlineLearningHubProgress = response.body.data[0];
+        const savedLearningHubProgress = await this.sharedMethods.readDataFromStorage(StorageKeys.learningHubProgress);
+        // Check if device records are up to date
+        if (savedLearningHubProgress && savedLearningHubProgress?.updatedAt) {
+          const currentUpdateDate = new Date(savedLearningHubProgress?.updatedAt);
+          const newUpdateDate = new Date(onlineLearningHubProgress.updatedAt);
+          if (currentUpdateDate > newUpdateDate) {
+            // Since online records are old don't update app records
+            return;
+          }
+        }
+
+        await this.sharedMethods.saveDataToStorage(StorageKeys.learningHubProgress, onlineLearningHubProgress);
       }
     });
   }
