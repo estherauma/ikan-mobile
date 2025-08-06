@@ -33,6 +33,7 @@ export class HomePage implements OnInit {
   }
 
   async ngOnInit() {
+    await this.pageSetup();
 
     const user = await this.sharedMethods.readDataFromStorage(StorageKeys.userData);
     const watchedTFAVideo = await this.sharedMethods.readDataFromStorage(StorageKeys.watchedTFAVideo);

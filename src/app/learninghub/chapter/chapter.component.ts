@@ -40,7 +40,9 @@ export class ChapterComponent  implements OnInit {
   }
 
   async ngOnInit() {
-    if (this.pageData.analyticsEventName) {
+    await this.pageSetup();
+
+    if (this.pageData?.analyticsEventName) {
       this.analytics.trackEvent(this.pageData.analyticsEventName, this.sharedmethods.analyticsEventParams);
     } else {
       this.globalErrorHandler.handleError(
