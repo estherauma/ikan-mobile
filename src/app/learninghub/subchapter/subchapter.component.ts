@@ -5,6 +5,7 @@ import { AuthService } from 'src/app/shared/services/auth/auth.service';
 import { ContentService } from 'src/app/shared/services/content/content.service';
 import { GlobalErrorHandlerService } from 'src/app/shared/services/error-handler/global-error-handler.service';
 import { SharedmethodsService } from 'src/app/shared/services/sharedmethods/sharedmethods.service';
+import { SyncService } from 'src/app/shared/services/sync/sync.service';
 import { HubQuestionStatus, StorageKeys, UserData, UserRole } from 'src/app/shared/types/api-types';
 import { SurveyDataService } from 'src/app/survey/data/survey-data.service';
 
@@ -46,6 +47,7 @@ export class SubchapterComponent  implements OnInit {
     public surveyDataService: SurveyDataService,
     public authService: AuthService,
     public globalErrorHandler: GlobalErrorHandlerService,
+    public syncService: SyncService,
   ) {
     this.activatedRoute.params.subscribe(async params => {
       this.subChapterId = params?.subChapterId;
@@ -127,6 +129,7 @@ export class SubchapterComponent  implements OnInit {
       updatedBy: this.user?.id
     };
     await this.sharedmethods.saveDataToStorage(StorageKeys.learningHubProgress, learningHubProgress);
+    await this.syncService.syncLearningHubProgress();
   }
 
   async getQuestionValues() {

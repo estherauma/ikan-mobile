@@ -93,6 +93,7 @@ export class SyncService {
     await this.syncInlineQuestions();
     await this.syncMyDocuments();
     await this.syncPassports();
+    await this.syncLearningHubProgress();
     await this.fetchCompanies();
     await this.fetchVessels();
     await this.fetchContracts(); // clauses are fetched after contracts have been fetched in the fetchContracts method
@@ -1164,6 +1165,28 @@ export class SyncService {
         });
       }
     });
+  }
+
+  async syncLearningHubProgress() {
+    const isValid = await this.authService.checkAcessTokenValidity();
+    if (!isValid  || !navigator.onLine) {
+      return;
+    }
+
+    const savedLearningHubProgress = await this.sharedMethods.readDataFromStorage(StorageKeys.learningHubProgress);
+    if (!savedLearningHubProgress) {
+      return;
+    }
+
+    const objToUpload = Object.assign({}, savedLearningHubProgress);
+    delete objToUpload.id;
+    delete objToUpload.appRef;
+    this.apiService.post('learninghub-progress/', objToUpload).subscribe(async(response: any) => {
+      if (response?.status !== 'OK') {
+        console.error(`Failed to sync learning hub progress data to the api`, response);
+      }
+    });
+
   }
 
   async fetchLearningHubProgress() {
