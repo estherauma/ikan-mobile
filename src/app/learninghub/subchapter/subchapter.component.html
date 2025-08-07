@@ -27,6 +27,7 @@
           *ngIf="section?.type === 'text_area'"
           [data]="section"
           styles="textarea"
+          [theme]="section?.identifier === 'note_or_tip' ? 'note-or-tip' : ''"
         ></shared-text-area>
         
         <!-- question type -->

@@ -1,4 +1,5 @@
-import { Injectable } from '@angular/core';
+/* eslint-disable @typescript-eslint/naming-convention */
+import { HostListener, Injectable } from '@angular/core';
 import { ApiService } from '../api/api.service';
 import { DBService } from '../database/db.service';
 import { CompaniesDataService } from 'src/app/companies/data/companies-data.service';
@@ -79,7 +80,7 @@ export class SyncService {
 
   async syncData() {
     const isValid = await this.authService.checkAcessTokenValidity();
-    if (!isValid || !this.isDbInitialized) {
+    if (!isValid || !this.isDbInitialized || !navigator.onLine) {
       return;
     }
 
@@ -101,14 +102,24 @@ export class SyncService {
     await this.fetchPayments();
   }
 
+  @HostListener('window:online', ['$event'])
+  onOnline() {
+    this.syncData();
+  }
+
+
   async syncCompanies() {
+    const isValid = await this.authService.checkAcessTokenValidity();
+    if (!isValid || !this.isDbInitialized || !navigator.onLine) {
+      return;
+    }
+
     const companies = this.companyServ.companies;
     if (companies.length > 0) {
       const user = await this.sharedMethods.getUserData();
       for (const company of companies) {
         if (user?.id !== company?.createdBy) { continue; }
 
-        const companyId = company.id;
         const companyToUpload = Object.assign({}, company);
         delete companyToUpload.id;
         if (!companyToUpload.onlineRef) {
@@ -122,7 +133,7 @@ export class SyncService {
             console.log(response);
           });
         }
-      };
+      }
     }
   }
 
@@ -144,13 +155,17 @@ export class SyncService {
   }
 
   async syncVessels() {
+    const isValid = await this.authService.checkAcessTokenValidity();
+    if (!isValid || !this.isDbInitialized || !navigator.onLine) {
+      return;
+    }
+
     const vessels = this.vesselServ.vessels;
     if (vessels.length > 0) {
       const user = await this.sharedMethods.getUserData();
       for (const vessel of vessels) {
         if (user?.id !== vessel?.createdBy) { continue; }
 
-        const vesselId = vessel.id;
         const vesselToUpload = Object.assign({}, vessel);
         delete vesselToUpload.id;
         if (!vesselToUpload.onlineRef) {
@@ -168,7 +183,7 @@ export class SyncService {
             }
           });
         }
-      };
+      }
     }
   }
 
@@ -250,6 +265,11 @@ export class SyncService {
   }
 
   async syncContracts() {
+    const isValid = await this.authService.checkAcessTokenValidity();
+    if (!isValid || !this.isDbInitialized || !navigator.onLine) {
+      return;
+    }
+
     const contracts  = this.contractServ.contracts;
     if (contracts.length > 0) {
       const user = await this.sharedMethods.getUserData();
@@ -307,7 +327,7 @@ export class SyncService {
             }
           });
         }
-      };
+      }
     }
   }
 
@@ -408,6 +428,11 @@ export class SyncService {
   }
 
   async syncContractClauses(contractId, contractOnlineRef) {
+    const isValid = await this.authService.checkAcessTokenValidity();
+    if (!isValid || !this.isDbInitialized || !navigator.onLine) {
+      return;
+    }
+
     const clauses = await this.contractServ.retrieveContractClauses(contractId);
     clauses.forEach(async(clause) => {
       // The contract_id has to be the for the online record and not the local before sending to the api
@@ -441,6 +466,11 @@ export class SyncService {
   }
 
   async syncContractClausesAttachments(clause) {
+    const isValid = await this.authService.checkAcessTokenValidity();
+    if (!isValid || !this.isDbInitialized || !navigator.onLine) {
+      return;
+    }
+
     if (clause.kind === 'contract-clauses-attachments') {
       const content = JSON.parse(clause.content);
       if (Object.keys(content).length && (content.partyASignature || content.partyBSignature)) {
@@ -513,6 +543,11 @@ export class SyncService {
   }
 
   async syncSurveyResponses() {
+    const isValid = await this.authService.checkAcessTokenValidity();
+    if (!isValid || !this.isDbInitialized || !navigator.onLine) {
+      return;
+    }
+
     const surveys = this.surveyDataService.surveys;
     if (surveys?.length) {
       surveys.forEach((survey) => {
@@ -536,13 +571,17 @@ export class SyncService {
   }
 
   async syncInlineQuestions() {
+    const isValid = await this.authService.checkAcessTokenValidity();
+    if (!isValid || !this.isDbInitialized || !navigator.onLine) {
+      return;
+    }
+
     const questions = this.surveyDataService.inlineQuestions;
     if (questions?.length) {
       const user = await this.sharedMethods.getUserData();
       for (const question of questions) {
         if (user?.id !== question?.createdBy) { continue; }
 
-        const questionId = question.id;
         const questionToUpload = Object.assign({}, question);
         delete questionToUpload.id;
         questionToUpload.user = questionToUpload.userId;
@@ -559,7 +598,7 @@ export class SyncService {
             }
           });
         }
-      };
+      }
     }
   }
 
@@ -591,6 +630,10 @@ export class SyncService {
   }
 
   async syncUsersData() {
+    const isValid = await this.authService.checkAcessTokenValidity();
+    if (!isValid || !this.isDbInitialized || !navigator.onLine) {
+      return;
+    }
     await this.fetchProfile();
     await this.fetchProfilesByRole();
     await this.syncProfiles();
@@ -610,7 +653,7 @@ export class SyncService {
         dataToSave.updatedBy = dataToSave.updatedBy ?? user?.id;
         const profileExists = await this.profilesDataService.checkIfProfileExists(dataToSave.email);
         if (!profileExists) {
-          await this.profilesDataService.saveOnlineProfile(dataToSave).then(async(id) => {
+          await this.profilesDataService.saveOnlineProfile(dataToSave).then(async() => {
             if (dataToSave?.profileImage) {
               await this.uploadService.fetchAndSaveFile(dataToSave.profileImage).then(async(fileUri) => {
                 if (fileUri) {
@@ -631,7 +674,7 @@ export class SyncService {
             await this.profilesDataService.updateProfileOnlineRef(dataToSave.email, dataToSave.id);
           }
           if (currentDate < newDate) {
-            await this.profilesDataService.update(dataToSave).then(async(id) => {
+            await this.profilesDataService.update(dataToSave).then(async() => {
               if (dataToSave?.profileImage) {
                 await this.uploadService.fetchAndSaveFile(dataToSave.profileImage).then(async(fileUri) => {
                   if (fileUri) {
@@ -898,6 +941,11 @@ export class SyncService {
   }
 
   async syncMyDocuments() {
+    const isValid = await this.authService.checkAcessTokenValidity();
+    if (!isValid || !this.isDbInitialized || !navigator.onLine) {
+      return;
+    }
+
     const allDocs = this.documentsDataService.allDocuments;
     if (allDocs?.length) {
       const user = await this.sharedMethods.getUserData();
@@ -915,7 +963,6 @@ export class SyncService {
             }
           });
         } else {
-          const documentId = document.id;
           const documentToUpload = Object.assign({}, document);
           delete documentToUpload.id;
           delete documentToUpload.fileUrl;
@@ -986,6 +1033,11 @@ export class SyncService {
   }
 
   async syncPassports() {
+    const isValid = await this.authService.checkAcessTokenValidity();
+    if (!isValid || !this.isDbInitialized || !navigator.onLine) {
+      return;
+    }
+
     const passports = this.documentsDataService.passports;
     if (passports.length > 0) {
       const user = await this.sharedMethods.getUserData();
@@ -1086,7 +1138,7 @@ export class SyncService {
     return this.apiService.get('payments').subscribe((response: any) => {
       if (response?.status === 200 && response.body.length > 0) {
         response.body.forEach(async(payment) => {
-          const user = await this.sharedMethods.getUserData();
+          // const user = await this.sharedMethods.getUserData();
           const now = this.sharedMethods.getCurrentDateTime();
           const dataToSave = Object.assign({}, payment);
           delete dataToSave.id;

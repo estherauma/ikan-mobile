@@ -43,8 +43,7 @@
               <ion-icon *ngIf="!subChapter?.quizCompleted" name="help-outline" class="help"></ion-icon>
               <ion-icon *ngIf="subChapter?.quizCompleted" name="checkmark" class="checkmark"></ion-icon>
             </div>
-            <!-- TODO: add translation -->
-            <p>{{ commonText?.takeQuiz || 'Take quiz' }}</p>
+            <p>{{ commonText?.takeQuiz }}</p>
           </div>
           
           <div class="status-wrapper">
@@ -52,8 +51,7 @@
               <ion-icon *ngIf="!subChapter?.isCompleted" name="close" class="close"></ion-icon>
               <ion-icon *ngIf="subChapter?.isCompleted" name="checkmark" class="checkmark"></ion-icon>
             </div>
-            <!-- TODO: add translation -->
-            <p>{{ commonText?.completed || 'Completed' }}</p>
+            <p>{{ subChapter?.isCompleted ? commonText?.completed : commonText?.incomplete }}</p>
           </div>
         </ion-col>
       </ion-row>

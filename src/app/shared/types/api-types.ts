@@ -91,6 +91,7 @@ export enum StorageKeys {
   skippedWelcomeScreens = 'skippedWelcomeScreens',
   seenAppTutorials = 'seenAppTutorials',
   skippedAppTutorials = 'skippedAppTutorials',
+  learningHubProgress = 'learningHubProgress',
 }
 
 export interface UserData {
