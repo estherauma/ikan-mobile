@@ -75,6 +75,8 @@ export class AuthService {
     Preferences.remove({ key: StorageKeys.userData });
     Preferences.remove({ key: StorageKeys.isRoleSet });
     Preferences.remove({ key: StorageKeys.currentUserOnlineContractsAppRefs });
+    Preferences.remove({ key: StorageKeys.currentUserContracts });
+    Preferences.remove({ key: StorageKeys.learningHubProgress });
   }
 
   alterMenuBasedOnRole(menuItems: Array<any>) {

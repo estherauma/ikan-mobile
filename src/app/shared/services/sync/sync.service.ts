@@ -93,6 +93,7 @@ export class SyncService {
     await this.syncInlineQuestions();
     await this.syncMyDocuments();
     await this.syncPassports();
+    await this.syncLearningHubProgress();
     await this.fetchCompanies();
     await this.fetchVessels();
     await this.fetchContracts(); // clauses are fetched after contracts have been fetched in the fetchContracts method
@@ -100,6 +101,7 @@ export class SyncService {
     await this.fetchPassports();
     await this.fetchInlineQuestions();
     await this.fetchPayments();
+    await this.fetchLearningHubProgress();
   }
 
   @HostListener('window:online', ['$event'])
@@ -1161,6 +1163,48 @@ export class SyncService {
             await this.paymentsDataService.saveOnlinePayment(dataToSave).then(() => {});
           }
         });
+      }
+    });
+  }
+
+  async syncLearningHubProgress() {
+    const isValid = await this.authService.checkAcessTokenValidity();
+    if (!isValid  || !navigator.onLine) {
+      return;
+    }
+
+    const savedLearningHubProgress = await this.sharedMethods.readDataFromStorage(StorageKeys.learningHubProgress);
+    if (!savedLearningHubProgress) {
+      return;
+    }
+
+    const objToUpload = Object.assign({}, savedLearningHubProgress);
+    delete objToUpload.id;
+    delete objToUpload.appRef;
+    this.apiService.post('learninghub-progress/', objToUpload).subscribe(async(response: any) => {
+      if (response?.status !== 'OK') {
+        console.error(`Failed to sync learning hub progress data to the api`, response);
+      }
+    });
+
+  }
+
+  async fetchLearningHubProgress() {
+    return this.apiService.get('learninghub-progress').subscribe(async(response: any) => {
+      if (response?.status === 200 && response?.body?.data?.length > 0) {
+        const onlineLearningHubProgress = response.body.data[0];
+        const savedLearningHubProgress = await this.sharedMethods.readDataFromStorage(StorageKeys.learningHubProgress);
+        // Check if device records are up to date
+        if (savedLearningHubProgress && savedLearningHubProgress?.updatedAt) {
+          const currentUpdateDate = new Date(savedLearningHubProgress?.updatedAt);
+          const newUpdateDate = new Date(onlineLearningHubProgress.updatedAt);
+          if (currentUpdateDate > newUpdateDate) {
+            // Since online records are old don't update app records
+            return;
+          }
+        }
+
+        await this.sharedMethods.saveDataToStorage(StorageKeys.learningHubProgress, onlineLearningHubProgress);
       }
     });
   }
