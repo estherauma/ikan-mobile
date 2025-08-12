@@ -854,7 +854,7 @@
   </div>
 
   <ion-row class="buttons" *ngIf="!useCustomSubmitButton">
-    <ion-col *ngIf="showCancelButton" size="6">
+    <ion-col *ngIf="showCancelButton" size="6" class="cancel-btn-col">
       <app-button
         id="cancel-btn"
         class="form-btn cancel-btn"
@@ -865,7 +865,7 @@
         (onClick)="onCancel()"
       ></app-button>
     </ion-col>
-    <ion-col [size]="showCancelButton ? '6' : '12'">
+    <ion-col [size]="showCancelButton ? '6' : '12'" class="submit-btn-col">
       <app-button
         class="form-btn"
         [class.form-btn-two]="showCancelButton"

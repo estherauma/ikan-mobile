@@ -237,3 +237,13 @@ ion-label.asterisk::after {
     }
   }
 }
+
+:host.login-form {
+  form {
+    .submit-btn-col {
+      display: flex;
+      justify-content: center;
+      margin: 20px 0;
+    }
+  }
+}
