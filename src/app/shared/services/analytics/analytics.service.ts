@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { HostListener, Injectable } from '@angular/core';
 import { FirebaseAnalytics } from '@capacitor-community/firebase-analytics';
 import { SharedmethodsService } from '../sharedmethods/sharedmethods.service';
 import { StorageKeys } from '../../types/api-types';
@@ -50,5 +50,10 @@ export class AnalyticsService {
         await this.sharedMethods.saveDataToStorage(StorageKeys.offlineAnalyticsEvents, failedEvents);
       }
     }
+  }
+
+  @HostListener('window:online', ['$event'])
+  onOnline() {
+    this.uploadOfflineEvents();
   }
 }
