@@ -160,6 +160,11 @@ const routes: Routes = [
     canActivate: [TutorialsGuard],
   },
   {
+    path: 'dashboard/public',
+    loadChildren: () => import('./dashboard/public/public.module').then( m => m.PublicModule ),
+    canActivate: [ TutorialsGuard ],
+  },
+  {
     path: 'profile',
     loadChildren: () => import('./accounts/profile/profile.module').then( m => m.ProfilePageModule)
   },
