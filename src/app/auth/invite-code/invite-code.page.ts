@@ -30,6 +30,7 @@ export class InviteCodePage extends BaseformPage implements OnInit {
     public analytics: AnalyticsService
   ) {
     super(contentService);
+    this.commonText = contentService.commonText;
     const pageData = this.contentService.getContentByPropertyName('accesstoken');
     this.pageTitle = pageData?.pageTitle;
     this.pageCommonText = this.sharedMethods.convertAdditionalTextToObj(pageData?.additionalText);
