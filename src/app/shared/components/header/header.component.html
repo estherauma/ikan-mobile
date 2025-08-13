@@ -17,7 +17,6 @@
         </ion-back-button>
       </ion-col>
       <ion-col size="8.5" class="icons-col" [ngClass]="{'no-back-btn': !showBackButton}">
-        <!-- <ion-title>{{ pageTitle || 'Page title' }}</ion-title> -->
         <div *ngIf="showGetHelp" class="get-help-wrapper" (click)="goToHelp()">
           <ion-icon  src="assets/icon/custom_help.svg" class="get-help-icon"></ion-icon>
           <!-- translate -->

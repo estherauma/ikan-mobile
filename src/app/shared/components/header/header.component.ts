@@ -11,7 +11,7 @@ import { Router } from '@angular/router';
   styleUrls: ['./header.component.scss'],
 })
 export class HeaderComponent implements OnInit {
-  @Input() pageTitle: string;
+
   @Input() showBackButton = true;
   @Input() showMenuButton = true;
   @Input() showGetHelp = true;

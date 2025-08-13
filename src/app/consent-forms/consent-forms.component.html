@@ -1,8 +1,6 @@
-<app-header
-  [showMenuButton]="false"
-  [pageTitle]="commonText?.consentForm"
-></app-header>
+<app-header [showMenuButton]="false"></app-header>
 <ion-content [fullscreen]="true">
+  <h4 class="page-title">{{ commonText?.consentForm }}</h4>
   
   <audio #audioPlayer [src]="audioUrl" hidden>
   </audio>
