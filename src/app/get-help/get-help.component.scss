@@ -1,6 +1,15 @@
-.content-section {
-  background-color: #EAEDF6;
-  width: 100%;
-  min-height: 80%;
-  padding: 32px 16px 16px;
+ion-content {
+  .page-title {
+    text-align: center;
+    font-size: 1.5rem;
+    font-weight: bold;
+    margin: 30px 0 10px 0;
+    color: var(--ion-color-primary);
+  }
+  .content-section {
+    background-color: #eaedf6;
+    width: 100%;
+    min-height: 80%;
+    padding: 20px 16px 16px;
+  }
 }
