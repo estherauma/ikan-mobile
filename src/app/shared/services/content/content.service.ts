@@ -127,10 +127,14 @@ export class ContentService {
     const userContracts = await this.sharedMethods.readDataFromStorage(StorageKeys.currentUserOnlineContractsAppRefs);
     if (userContracts?.length) {
       // TODO: change method when user has multiple contracts
-      // const contract = this.contractDataService.contracts.find((contract) => userContracts.includes(contract.appRef));
-      const contract = this.contractDataService.contracts.find((contract) => contract.appRef === userContracts[0]);
+      // const contract = this.contractDataService.contracts.find((c) => userContracts.includes(c.appRef));
+      const contract = this.contractDataService.contracts.find((c) => c.appRef === userContracts[0]);
       if (contract && contract?.id) {
-        const clause = await this.contractDataService.retrieveClauseByFieldByContractId('kind', 'contract-clauses-parties-requirement-fishers', contract.id);
+        const clause = await this.contractDataService.retrieveClauseByFieldByContractId(
+          'kind',
+          'contract-clauses-parties-requirement-fishers',
+          contract.id
+        );
         if (clause) {
           const clauseData = JSON.parse(clause.content);
           if (clauseData?.vessel) {
