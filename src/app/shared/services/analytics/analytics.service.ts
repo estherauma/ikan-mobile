@@ -2,6 +2,7 @@ import { HostListener, Injectable } from '@angular/core';
 import { FirebaseAnalytics } from '@capacitor-community/firebase-analytics';
 import { SharedmethodsService } from '../sharedmethods/sharedmethods.service';
 import { StorageKeys } from '../../types/api-types';
+import { GlobalErrorHandlerService } from '../error-handler/global-error-handler.service';
 
 @Injectable({
   providedIn: 'root'
@@ -9,7 +10,8 @@ import { StorageKeys } from '../../types/api-types';
 export class AnalyticsService {
 
   constructor(
-    public sharedMethods: SharedmethodsService
+    public sharedMethods: SharedmethodsService,
+    public globalErrorHandler: GlobalErrorHandlerService,
   ) { }
 
   enableCollecion() {
@@ -17,6 +19,16 @@ export class AnalyticsService {
   }
 
   async trackEvent(eventName: string, params?: any) {
+    const isValidEventName = this.isValidEventName(eventName);
+    if (!isValidEventName) {
+      this.globalErrorHandler.handleError(
+        null,
+        `The event name: ${eventName} is invalid. Please check that the event \
+        name is less than 40 characters long, only uses these characters(a-z, A-Z, 0-9, underscore (_)), \
+        does not start with a number and is not a reserved firebase event name.`
+      );
+    }
+
     const hasInternet = await this.sharedMethods.checkInternetConnectionStatus();
     if (hasInternet) {
       await FirebaseAnalytics.logEvent({
@@ -55,5 +67,12 @@ export class AnalyticsService {
   @HostListener('window:online', ['$event'])
   onOnline() {
     this.uploadOfflineEvents();
+  }
+
+  isValidEventName(eventName) {
+    if (typeof eventName !== 'string') {return false;}
+
+    const regex = /^[A-Za-z_][A-Za-z0-9_]{0,39}$/;
+    return regex.test(eventName);
   }
 }
