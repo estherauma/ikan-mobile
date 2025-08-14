@@ -1,6 +1,7 @@
-<app-header [pageTitle]="allContent?.pageTitle" [isBackButton]="true"></app-header>
+<app-header></app-header>
 <ion-content>
   <div class="content-wrapper">
+    <h4 class="page-title">{{ allContent?.pageTitle }}</h4>
     <div class="content-section">
       <div *ngFor="let section of pageContent">
         <shared-text-area

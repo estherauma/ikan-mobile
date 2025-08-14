@@ -26,6 +26,11 @@
       >
     </app-form>
 
+    <p class="signup-text">
+      {{ pageCommonText?.dontHaveInviteCode || "Don't have an inite code?" }}
+      <a  class="signup-link" routerLink="/auth/signup">{{ commonText?.createAccount }}</a>
+    </p>
+
   </div>
     
 </ion-content>
