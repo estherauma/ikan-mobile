@@ -13,6 +13,7 @@
     </div>
     
     <app-form
+      class="login-form"
       [tunaFormGroup]="pageFormGroup"
       [tunaFormquestions]="formQuestions"
       [submitButtonText]="submitButtonText"
@@ -22,6 +23,14 @@
       [passwordEyeIcon]="passwordEyeIcon"
     >
     </app-form>
-    <a class="reset-link" routerLink="/auth/request-password-reset">{{ pageText?.resetPassword }}</a>
+
+    <ion-row class="links-row">
+      <ion-col>
+        <a class="reset-link" routerLink="/auth/request-password-reset">{{ pageText?.resetPassword }}</a>
+      </ion-col>
+      <ion-col>
+        <a class="signup-link" routerLink="/auth/signup">{{ commonText?.createAccount }}</a>
+      </ion-col>
+    </ion-row>
   </div>
 </ion-content>

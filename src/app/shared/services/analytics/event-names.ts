@@ -44,6 +44,7 @@ export enum PageEventNames {
     viewTaiwaneseDashboard = 'page_taiwanese_dashboard',
     viewVesselOwnerDashboard = 'page_vessel_owner_dashboard',
     viewWorkerDashboard = 'page_worker_dashboard',
+    viewPublicDashboard = 'page_public_dashboard',
 
     // get help
     viewGetHelp = 'page_get_help',

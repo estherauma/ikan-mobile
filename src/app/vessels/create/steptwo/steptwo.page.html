@@ -1,8 +1,8 @@
-<app-header [pageTitle]="pageTitle">
-
-</app-header>
+<app-header></app-header>
 
 <ion-content class="ion-padding">
+  <h4 class="page-title">{{ pageTitle }}</h4>
+  
   <app-form
     class="create-vessel-step-2"
     [tunaFormGroup]="pageFormGroup"
