@@ -4,6 +4,7 @@ import { Platform } from '@ionic/angular';
 import { BehaviorSubject } from 'rxjs';
 import { DBService } from 'src/app/shared/services/database/db.service';
 import { SharedmethodsService } from 'src/app/shared/services/sharedmethods/sharedmethods.service';
+import { StorageKeys } from 'src/app/shared/types/api-types';
 
 @Injectable({
   providedIn: 'root'
@@ -124,10 +125,10 @@ export class ContractDataService {
         return false;  // Exit the loop once the condition is met
       }
     });
-  
+
     return contract;
   }
-  
+
 
   create(data) {
     const query = 'INSERT INTO contracts (name, app_ref, internal_ref, start_date, \
@@ -168,7 +169,7 @@ export class ContractDataService {
     const params = [data.name, data.app_ref, data.internal_ref, data.start_date, data.end_date,
       data.description, data.taiwanese_company_id, data.indonesian_company_id, data.type,
       data.updated_at, data.updated_by, data.id];
-    
+
       return this.db.executeSql(query, params).then(async(result) => {
       await this.retrieveContracts();
       const contract = await this.getSingleContract(data.id);
@@ -188,7 +189,7 @@ export class ContractDataService {
     return this.db.executeSql(query, params).then(async(result) => {
       await this.retrieveContracts();
     }).catch((e) => console.log(e));
-  };
+  }
 
   async createContractDocument(data) {
     const query = 'INSERT INTO contract_documents (contract_id, name, url, status, \
@@ -197,7 +198,7 @@ export class ContractDataService {
     const user = await this.sharedMethods.getUserData();
     const params = [ data.contract_id, data.name, data.url, data.status,
       now, now, user?.id, user?.id ];
-    
+
     return this.db.executeSql(query, params).then((result) => {
       this.retrieveContractDocuments();
       return result.insertId;
@@ -209,7 +210,7 @@ export class ContractDataService {
       created_at, updated_at, created_by, updated_by) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)';
     const params = [ data.contractId, data.name, data.url, data.status,
       data.onlineRef, data.createdAt, data.updatedAt, data.createdBy, data.updatedBy ];
-    
+
     return this.db.executeSql(query, params).then(async(result) => {
       await this.retrieveContractDocuments();
       return result.insertId;
@@ -261,7 +262,7 @@ export class ContractDataService {
     const now = this.sharedMethods.getCurrentDateTime();
     const user = await this.sharedMethods.getUserData();
     const params = [data.name, data.url, data.status, now, user?.id, contractId];
-    
+
     return this.db.executeSql(query, params).then(async(result) => {
       await this.retrieveContractDocuments();
       const doc = await this.getContractDocumentByField('contract_id', contractId);
@@ -381,20 +382,18 @@ export class ContractDataService {
       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)';
     const params = [contractId, clauseData.app_ref, clauseData.name, clauseData.kind,
       clauseData.content, clauseData.created_at, clauseData.updated_at,
-      clauseData.created_by, 
+      clauseData.created_by,
       clauseData.updated_by];
-    return this.db.executeSql(query, params).then((result) => {
-      return result.insertId;
-    }).catch((e) => {
+    return this.db.executeSql(query, params).then((result) => result.insertId).catch((e) => {
       console.log(e);
       return null;
     });
   }
 
   updateContractClause(clauseId, clauseData) {
-    const query = 'UPDATE contract_clauses SET content = ?, updated_at = ?, updated_by = ? WHERE id = ?'; 
+    const query = 'UPDATE contract_clauses SET content = ?, updated_at = ?, updated_by = ? WHERE id = ?';
     const params = [clauseData.content, clauseData.updated_at, clauseData.updated_by, clauseId];
-    
+
     return this.db.executeSql(query, params).then(async(result) => {
       const clause = await this.retrieveClauseDetails(clauseId);
       clause.data = clauseData.content;
@@ -415,9 +414,7 @@ export class ContractDataService {
     const params = [clauseData.id, contractId, clauseData.appRef, clauseData.name, clauseData.kind,
       clauseData.content, clauseData.createdAt, clauseData.updatedAt,
       clauseData.createdBy, clauseData.updatedBy];
-    return this.db.executeSql(query, params).then((result) => {
-      return result.insertId;
-    }).catch((e) => {
+    return this.db.executeSql(query, params).then((result) => result.insertId).catch((e) => {
       console.log(e);
       return null;
     });
@@ -473,5 +470,10 @@ export class ContractDataService {
       }
       return result;
     });
+  }
+
+  async getCurrentUserContracts() {
+    const onlineContracts = await this.sharedMethods.readDataFromStorage(StorageKeys.currentUserOnlineContractsAppRefs);
+    return this.contracts.filter(contract => onlineContracts?.includes(contract.appRef));
   }
 }

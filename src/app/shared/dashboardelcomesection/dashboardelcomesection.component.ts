@@ -1,6 +1,9 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { SharedmethodsService } from '../services/sharedmethods/sharedmethods.service';
 import { ProfilesDataService } from 'src/app/profiles/data/profiles-data.service';
+import { UserData, UserRole } from '../types/api-types';
+import { VesselsDataService } from 'src/app/vessels/data/vessels-data.service';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-dashboardelcomesection',
@@ -8,28 +11,49 @@ import { ProfilesDataService } from 'src/app/profiles/data/profiles-data.service
   styleUrls: ['./dashboardelcomesection.component.scss'],
 })
 export class DashboardelcomesectionComponent implements OnInit {
+
+  user: UserData;
   userProfile: any;
 
   @Input() name: string;
   @Input() greeting: string;
-  @Input() profileImageUrl: string = '';
+  @Input() profileImageUrl = '';
+  @Input() workerVessel: any;
 
   @Output() onProfileClick = new EventEmitter<any>();
 
   constructor(
     public sharedMethods: SharedmethodsService,
     public profileDataService: ProfilesDataService,
-  ) {}
+    public vesselsDataService: VesselsDataService,
+    public activatedRoute: ActivatedRoute,
+  ) {
+    this.activatedRoute.params.subscribe(async() => {
+      await this.pageSetup();
+    });
+  }
 
   async ngOnInit() {
-    const user = await this.sharedMethods.getUserData();
-    this.profileDataService.getAll().subscribe((data) => {
-      this.userProfile = data.find((profile) => profile.email === user?.email);
+    await this.pageSetup();
+  }
+
+  async pageSetup() {
+    this.user = await this.sharedMethods.getUserData();
+    this.profileDataService.getAll().subscribe(async(data) => {
+      this.userProfile = await data.find((profile) => profile.email === this.user?.email);
       if (this.userProfile?.profileImage) {
         this.profileImageUrl = this.userProfile?.profileImage;
       }
     });
-    
+
+    if (this.user?.role === UserRole.worker) {
+      this.vesselsDataService.getAll().subscribe(async() => {
+        const workerVessel = await this.vesselsDataService.getWorkerVessel();
+        if (workerVessel) {
+          this.workerVessel = workerVessel;
+        }
+      });
+    }
   }
 
   onIconClick() {

@@ -368,7 +368,10 @@ export class SyncService {
   async fetchContracts() {
     return await lastValueFrom(this.apiService.get('contracts')).then(async(response: GetContractsResponse) => {
       if (response.status === 200 && response.body.data.length > 0) {
-        const userOnlineContracts = response.body.data.map((contract) => contract.appRef);
+        const onlineContracts = response.body.data;
+        // order by createdAt in descending order
+        onlineContracts.sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
+        const userOnlineContracts = onlineContracts.map((contract) => contract.appRef);
         await this.sharedMethods.saveDataToStorage(StorageKeys.currentUserOnlineContractsAppRefs, userOnlineContracts);
 
         forkJoin(response.body.data.map(async(contract) => {
