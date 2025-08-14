@@ -162,9 +162,9 @@ export class VesselsDataService {
     });
   }
 
-  async getVesselImageByVesselId(vessel_id) {
+  async getVesselImageByVesselId(vesselId) {
     const allImages = await this.getVesselImages();
-    const image = allImages.find((entry) => entry.vessel_id === vessel_id);
+    const image = allImages.find((entry) => entry.vessel_id === vesselId);
     return image;
   }
 
