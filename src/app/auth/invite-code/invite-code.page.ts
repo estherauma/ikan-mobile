@@ -30,6 +30,7 @@ export class InviteCodePage extends BaseformPage implements OnInit {
     public analytics: AnalyticsService
   ) {
     super(contentService);
+    this.commonText = contentService.commonText;
     const pageData = this.contentService.getContentByPropertyName('accesstoken');
     this.pageTitle = pageData?.pageTitle;
     this.pageCommonText = this.sharedMethods.convertAdditionalTextToObj(pageData?.additionalText);
@@ -56,7 +57,7 @@ export class InviteCodePage extends BaseformPage implements OnInit {
     this.apiService.post('accounts/verify-access-token', data, true)
       .subscribe(
         (res: IPasswordResetResp) => {
-          if (res?.status == 'OK') {
+          if (res?.status === 'OK') {
             this.sharedMethods.showToast(res?.message);
             this.sharedMethods.hideLoader();
             this.router.navigate(['/login']);

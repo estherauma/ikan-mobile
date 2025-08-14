@@ -51,6 +51,7 @@ export class LoginPage extends BaseformPage implements OnInit {
   }
 
   pageSetup() {
+    this.commonText = this.contentService.commonText;
     const pageData = this.contentService.getLoginPageData();
     this.formQuestions = pageData.formQuestions;
     this.pageTitle = pageData?.pageTitle;
