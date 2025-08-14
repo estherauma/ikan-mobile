@@ -118,7 +118,8 @@ export enum UserRole {
   taiwaneseAgent = 'taiwanese_agent',
   indonesianAgent = 'indonesian_agent',
   worker = 'worker',
-  buyer = 'buyer'
+  buyer = 'buyer',
+  public = 'public',
 }
 
 export interface Blameable {

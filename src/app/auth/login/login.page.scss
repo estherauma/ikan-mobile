@@ -1,27 +1,31 @@
-.center-content{
-    display: flex; 
-    flex-direction: column; 
-    justify-content: center; 
-    height: 100%;
+.center-content {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  height: 100%;
 }
 
-.icon{
-    height:42.26px; width:175px; margin-bottom: 70px;
+.icon {
+  height: 42.26px;
+  width: 175px;
+  margin-bottom: 70px;
 }
 
 ion-label {
-    color: #ffffff
+  color: #ffffff;
 }
 
-.reset-link {
-    color: #80D8FE;
-    margin-top: 20px;
+.links-row {
+  .reset-link,
+  .signup-link {
+    color: #80d8fe;
+  }
 }
 
 .back-icon-wrapper {
-    ion-icon {
-        color: white;
-        margin-bottom: 50px;
-        font-size: 1.2rem;
-    }
+  ion-icon {
+    color: white;
+    margin-bottom: 50px;
+    font-size: 1.2rem;
+  }
 }
