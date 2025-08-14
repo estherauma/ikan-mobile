@@ -3,7 +3,6 @@ import { SharedmethodsService } from '../services/sharedmethods/sharedmethods.se
 import { ProfilesDataService } from 'src/app/profiles/data/profiles-data.service';
 import { UserData, UserRole } from '../types/api-types';
 import { VesselsDataService } from 'src/app/vessels/data/vessels-data.service';
-import { ContentService } from '../services/content/content.service';
 import { ActivatedRoute } from '@angular/router';
 
 @Component({
@@ -27,7 +26,6 @@ export class DashboardelcomesectionComponent implements OnInit {
     public sharedMethods: SharedmethodsService,
     public profileDataService: ProfilesDataService,
     public vesselsDataService: VesselsDataService,
-    public contentService: ContentService,
     public activatedRoute: ActivatedRoute,
   ) {
     this.activatedRoute.params.subscribe(async() => {
@@ -50,7 +48,7 @@ export class DashboardelcomesectionComponent implements OnInit {
 
     if (this.user?.role === UserRole.worker) {
       this.vesselsDataService.getAll().subscribe(async() => {
-        const workerVessel = await this.contentService.getWorkerVessel();
+        const workerVessel = await this.vesselsDataService.getWorkerVessel();
         if (workerVessel) {
           this.workerVessel = workerVessel;
         }

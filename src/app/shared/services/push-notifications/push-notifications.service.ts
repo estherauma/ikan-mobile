@@ -94,7 +94,7 @@ export class PushNotificationsService {
       const voVessels = allVessels?.filter((vessel) => vessel.createdBy === user.id);
       userVessels.push(...voVessels.map((vessel) => vessel.appRef));
     } else if (user?.role === UserRole.worker) {
-      const workerVessel = await this.contentService.getWorkerVessel();
+      const workerVessel = await this.vesselsDataService.getWorkerVessel();
       if (workerVessel && workerVessel?.appRef) {
         userVessels.push(workerVessel?.appRef);
       }

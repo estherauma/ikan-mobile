@@ -4,6 +4,8 @@ import { BehaviorSubject } from 'rxjs';
 import { SQLiteObject } from '@awesome-cordova-plugins/sqlite/ngx';
 import { SharedmethodsService } from 'src/app/shared/services/sharedmethods/sharedmethods.service';
 import { DBService } from 'src/app/shared/services/database/db.service';
+import { StorageKeys } from 'src/app/shared/types/api-types';
+import { ContractDataService } from 'src/app/contracts/data/contract-data.service';
 
 @Injectable({
   providedIn: 'root'
@@ -17,6 +19,7 @@ export class VesselsDataService {
     public platform: Platform,
     public dbService: DBService,
     public sharedMethods: SharedmethodsService,
+    public contractDataService: ContractDataService,
   ) {
     this.platform.ready().then(async() => {
       this.db = await this.dbService.configureDB();
@@ -107,7 +110,7 @@ export class VesselsDataService {
       WHERE id = ?';
     const params = [data.name, data.reg_no, data.type, data.status, data.capacity,
       data.commissioning_date, data.updated_at, data.updated_by, data.id];
-    
+
     return this.db.executeSql(query, params).then(async(result) => {
       await this.retriveVessels();
       const vessel = await this.getVesselByField('id', data.id);
@@ -172,7 +175,7 @@ export class VesselsDataService {
     const user = await this.sharedMethods.getUserData();
     const params = [data?.vessel_id, data?.image_url, data?.description, data.app_ref,
       now, now, user?.id, user?.id];
-    
+
       return this.db.executeSql(query, params).then((result) => {
       this.getVesselImages();
       return result.insertId;
@@ -189,7 +192,7 @@ export class VesselsDataService {
       return result.insertId;
     }).catch(e => console.log(e));
   }
-  
+
   async updateVesselImage(data) {
     const query = 'UPDATE vessel_images SET image_url = ?, description = ?, \
       updated_at = ?, updated_by = ? WHERE id = ?';
@@ -210,4 +213,33 @@ export class VesselsDataService {
   }
 
   deleteVesselImage() { }
+
+  // TODO: Refactor when worker has multiple contracts
+  async getWorkerVessel() {
+    const userContracts = await this.sharedMethods.readDataFromStorage(StorageKeys.currentUserOnlineContractsAppRefs);
+    if (userContracts?.length) {
+      // TODO: change method when user has multiple contracts
+      // const contract = this.contractDataService.contracts.find((c) => userContracts.includes(c.appRef));
+      const contract = this.contractDataService.contracts.find((c) => c.appRef === userContracts[0]);
+      if (contract && contract?.id) {
+        const clause = await this.contractDataService.retrieveClauseByFieldByContractId(
+          'kind',
+          'contract-clauses-parties-requirement-fishers',
+          contract.id
+        );
+        if (clause) {
+          const clauseData = JSON.parse(clause.content);
+          if (clauseData?.vessel) {
+            const vesselRef = clauseData.vessel;
+            const vessels = this.vessels;
+            if (vessels.length) {
+              const vessel = vessels.find((v) => v.appRef === vesselRef);
+              return vessel;
+            }
+          }
+        }
+      }
+    }
+    return null;
+  }
 }
