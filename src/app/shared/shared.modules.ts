@@ -48,6 +48,7 @@ import { TutorialDetailComponent } from '../tutorials/tutorial-detail/tutorial-d
 import { RichTextComponent } from './components/rich-text/rich-text.component';
 import { AudioButtonComponent } from './components/audio-button/audio-button.component';
 import { VideoButtonComponent } from './components/video-button/video-button.component';
+import { ProgressCircleComponent } from './components/progress-circle/progress-circle.component';
 
 
 @NgModule({
@@ -104,6 +105,7 @@ import { VideoButtonComponent } from './components/video-button/video-button.com
     RichTextComponent,
     AudioButtonComponent,
     VideoButtonComponent,
+    ProgressCircleComponent,
   ],
   exports: [
     SafeurlPipe,
@@ -151,6 +153,7 @@ import { VideoButtonComponent } from './components/video-button/video-button.com
     RichTextComponent,
     AudioButtonComponent,
     VideoButtonComponent,
+    ProgressCircleComponent,
   ]
 })
 
