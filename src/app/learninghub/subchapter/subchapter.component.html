@@ -3,14 +3,8 @@
   <div class="content-wrapper">
     <!-- TODO: add page audio & video to prismic & aggregation -->
     <div class="audio-video-section">
-      <app-video-button
-        [url]="allPageData?.pageVideo?.url"
-        background="var(--ikan_yellow_100)"
-      ></app-video-button>
-      <app-audio-button
-        [url]="allPageData?.pageAudio?.url"
-        background="var(--ikan_yellow_100)"
-      ></app-audio-button>
+      <app-video-button [url]="allPageData?.pageVideo?.url"></app-video-button>
+      <app-audio-button [url]="allPageData?.pageAudio?.url"></app-audio-button>
     </div>
 
     <div
