@@ -1,8 +1,8 @@
 import { NgModule } from '@angular/core';
 import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
 import { AuthGuard } from './shared/guards/auth/authguard.guard';
-import { ConsentFormGuard } from './shared/guards/consent-form/consent-form.guard';
 import { TutorialsGuard } from './shared/guards/tutorials/tutorials.guard';
+import { WorkerDashboardGuard } from './shared/guards/worker-dashboard/worker-dashboard.guard';
 
 const routes: Routes = [
   {
@@ -147,7 +147,7 @@ const routes: Routes = [
   {
     path: 'dashboard/worker',
     loadChildren: () => import('./dashboard/worker/worker.module').then( m => m.WorkerPageModule),
-    canActivate: [ConsentFormGuard, TutorialsGuard],
+    canActivate: [WorkerDashboardGuard],
   },
   {
     path: 'dashboard/taiwaneseagent',
