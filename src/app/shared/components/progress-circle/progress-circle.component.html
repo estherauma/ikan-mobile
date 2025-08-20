@@ -1,3 +1,19 @@
-<p>
-  progress-circle works!
-</p>
+<div class="progress-wrapper">
+  <div 
+    class="outer-progress-wrapper"
+    [ngStyle]="{
+      'background': outerProgressColor,
+      'border': outerBorderColor
+    }"
+  >
+    <div
+      class="inner-progress-wrapper"
+      [ngStyle]="{
+        'background': innerProgressColor,
+        'border': innerBorderColor
+      }"
+    >
+      <p>{{ percentage }}%</p>
+    </div>
+  </div>
+</div>
