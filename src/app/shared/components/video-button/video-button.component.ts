@@ -18,7 +18,7 @@ export class VideoButtonComponent  implements OnInit {
   @Input() iconName = 'play-outline'; // It should be a valid ionicon name eg play, volume-high, volume-high-outline etc
   @Input() customIcon: string;
   @Input() color = 'white';
-  @Input() background = 'var(--ion-color-primary)';
+  @Input() background = '#8D4BF6';
 
   @ViewChild('videoPlayer', { static: false })
   videoPlayerRef!: ElementRef<HTMLVideoElement>;
