@@ -368,6 +368,10 @@ const routes: Routes = [
     path: 'app-tutorials',
     loadChildren: () => import('./tutorials/tutorials.module').then(m => m.TutorialsModule)
   },
+  {
+    path: 'my-work-journey',
+    loadChildren: () => import('./my-work-journey/my-work-journey.module').then(m => m.MyWorkJourneyModule)
+  },
 
   // should be last item in the routes
   // add routes above this
