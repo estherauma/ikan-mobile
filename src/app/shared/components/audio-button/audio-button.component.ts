@@ -16,7 +16,7 @@ export class AudioButtonComponent  implements OnInit {
   @Input() iconName = 'volume-high-outline'; // It should be a valid ionicon name eg play-outline, volume-high, volume-high-outline etc
   @Input() customIcon: string;
   @Input() color = 'white';
-  @Input() background = 'var(--ion-color-primary)';
+  @Input() background = '#8D4BF6';
 
   @ViewChild('audioPlayer', { static: false })
   audioPlayerRef!: ElementRef<HTMLAudioElement>;
