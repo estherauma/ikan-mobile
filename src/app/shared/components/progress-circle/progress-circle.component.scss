@@ -1,0 +1,29 @@
+.progress-wrapper {
+  .outer-progress-wrapper {
+    border: 2px solid var(--ion-color-primary);
+    border-radius: 50%;
+    padding: 10px;
+    width: 90px;
+    height: 90px;
+
+    .inner-progress-wrapper {
+      border: 2px solid var(--ion-color-primary);
+      border-radius: 50%;
+      padding: 1px;
+      width: 100%;
+      height: 100%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background: white;
+
+      p {
+        font-size: 14px;
+        font-weight: 600;
+        color: var(--ion-color-primary);
+        text-align: center;
+        margin: 0;
+      }
+    }
+  }
+}

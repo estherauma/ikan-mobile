@@ -1,0 +1,152 @@
+ion-content {
+  --background: var(--ion-color-light);
+  --padding-start: 25px;
+  --padding-end: 25px;
+
+  .audio-video-section {
+    display: flex;
+    justify-content: end;
+    margin: 0px 10px 10px 0;
+  }
+
+  .title-wrapper {
+    .title {
+      font-family: GatwickBold;
+      font-size: 1.85rem;
+      color: var(--ion-color-primary);
+      text-align: center;
+    }
+  }
+
+  .circle-progress-section {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    .progress-container {
+      width: 47.5%;
+      h4 {
+        color: #191970;
+        font-weight: bold;
+        font-size: 1.1rem;
+      }
+      .chart-wrapper {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        background: white;
+        border-radius: 20px;
+        padding: 20px;
+
+        p {
+          color: #a0abcc;
+          text-align: center;
+          margin: 5px 0;
+        }
+      }
+    }
+  }
+
+  .timeline {
+    margin-top: 40px;
+    position: relative;
+
+    .start-step {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+
+      .start-chip {
+        border-radius: 20px;
+        font-weight: bold;
+        font-size: 1.1rem;
+        color: white;
+        background: var(--ion-color-primary);
+        padding: 10px 20px;
+        min-width: 35%;
+        display: flex;
+        justify-content: center;
+      }
+    }
+
+    .steps {
+      ion-row {
+        ion-col {
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          margin: 5px 0;
+        }
+        .outer-icon-wrapper {
+          width: 80px;
+          height: 80px;
+          border-radius: 50%;
+          padding: 7px;
+          background-color: var(--ion-color-primary);
+          display: flex;
+          justify-content: center;
+          align-items: center;
+        }
+        .icon-wrapper {
+          width: 45px;
+          height: 45px;
+          border-radius: 50%;
+          padding: 7px;
+          background-color: var(--ion-color-primary);
+          display: flex;
+          justify-content: center;
+          align-items: center;
+
+          ion-icon {
+            width: calc(100% - 5px);
+            height: calc(100% - 5px);
+            color: white;
+            object-fit: contain;
+            object-position: center;
+          }
+        }
+        .outer-icon-wrapper {
+          .icon-wrapper {
+            width: 100%;
+            height: 100%;
+            padding: 7px;
+            border: 2px solid white;
+          }
+        }
+        .disabled-icon {
+          pointer-events: none;
+          // opacity: 0.5;
+          background: #9ab2ff;
+        }
+        // .inactive-icon {
+        //   display: flex;
+        //   justify-content: flex-start;
+        // }
+
+        .text-wrapper {
+          // width: calc(100% - 110px);
+          color: #191970;
+          h4 {
+            font-family: GatwickBold;
+            font-size: 1.3rem;
+          }
+        }
+      }
+    }
+    .first-step-inactive {
+      margin-top: 25px;
+    }
+  }
+
+  .timeline::before {
+    content: "";
+    position: absolute;
+    left: 16.5%;
+    top: 30px;
+    bottom: 0;
+    width: 2px;
+    height: calc(100% + 60vh);
+    background-color: var(--ion-color-primary);
+    opacity: 0.5;
+  }
+}
