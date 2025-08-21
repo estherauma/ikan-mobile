@@ -66,6 +66,7 @@ export class LocalNotificationsService {
             id: 1,
             schedule: {
               repeats: true,
+              every: 'two-weeks',
               on:
                 {
                   weekday: Weekday.Sunday,
