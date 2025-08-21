@@ -19,11 +19,12 @@ export class WorkerDashboardGuard implements CanActivate {
       return this.router.parseUrl('/consent-forms');
     }
 
-    const skippedAppTutorials = await this.sharedMethods.readDataFromStorage(StorageKeys.skippedAppTutorials);
-    const seenAppTutorials = await this.sharedMethods.readDataFromStorage(StorageKeys.seenAppTutorials);
-    if (!skippedAppTutorials && !seenAppTutorials) {
-      return this.router.parseUrl('/app-tutorials');
-    }
+    // DISABLED FOR NOW
+    // const skippedAppTutorials = await this.sharedMethods.readDataFromStorage(StorageKeys.skippedAppTutorials);
+    // const seenAppTutorials = await this.sharedMethods.readDataFromStorage(StorageKeys.seenAppTutorials);
+    // if (!skippedAppTutorials && !seenAppTutorials) {
+    //   return this.router.parseUrl('/app-tutorials');
+    // }
 
     return true;
   }
