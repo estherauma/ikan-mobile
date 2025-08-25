@@ -12,84 +12,101 @@
     [worker]="workerInfo"
   ></app-pageprofilecontainer>
 
-<div class="contents">
-  <div *ngIf="activeNavItem.id === 'workers-info'">
-    <div class="row-container">
-      <ion-row>
-        <ion-col size="2" class="icon-container">
-          <ion-img src="assets/icon/email_blue.svg"></ion-img>
-        </ion-col>
-        <ion-col size="10" class="value-container">
-          <p>{{workerInfo?.email}}</p>
-        </ion-col>
-      </ion-row>
-      <ion-row>
-        <ion-col size="2" class="icon-container">
-          <ion-img src="assets/icon/phone_blue.svg"></ion-img>
-        </ion-col>
-        <ion-col size="10" class="value-container">
-        <p>{{workerInfo?.telephone || workerInfo?.mobile}}</p>
-        <p *ngIf="workerInfo?.telephone && workerInfo?.mobile">{{workerInfo?.mobile}}</p>
-        </ion-col>
-      </ion-row>
-      <ion-row>
-        <ion-col size="2" class="icon-container">
-          <ion-img src="assets/icon/office_blue.svg"></ion-img>
-        </ion-col>
-        <ion-col size="10" class="value-container">
-          <p *ngIf="workerInfo?.addressLine1">{{workerInfo?.addressLine1}}</p>
-          <p *ngIf="workerInfo?.addressLine2">{{workerInfo?.addressLine2}}</p>
-          <p *ngIf="workerInfo?.addressLine3">{{workerInfo?.addressLine3}}</p>
-          <p *ngIf="workerInfo?.city">{{workerInfo?.city}}</p>
-          <p *ngIf="workerInfo?.country">{{workerInfo?.country}}</p>
-          <p *ngIf="workerInfo?.postalCode">{{workerInfo?.postalCode}}</p>
-        </ion-col>
-      </ion-row>
-      <ion-row>
-        <ion-col size="12"class="edit-btn-container">
-          <app-button
-            class="info-edit-btn"
-            (onClick)="onEdit(workerInfo)"
-            [title]="commonText?.edit"
-            size="small"
-          ></app-button>
-        </ion-col>
-      </ion-row>
-    </div>
-  </div>
-
-  <div *ngIf="activeNavItem.id === 'workers-payment'">
-    <app-payments
-      page="vo-workers-payments"
-      [workerInfo]="workerInfo"
-    ></app-payments>
-  </div>
-
-  <div *ngIf="activeNavItem.id === 'workers-placement'">
-    <div>
-      <div class="ion-margin-top">
-
-        <div>
-          <app-titleblock variant="pending" [title]="commonText?.placementOpportunity"></app-titleblock>
-          <app-title [title]="'[' + commonText?.comingSoon + ']'" variant="h6"></app-title>
-          <!-- <div class="ion-padding list-content">
-            <div>
-              <p>{{ commonText?.status }}:<span> {{ commonText?.sent }}</span> <a class="placement-link">{{ commonText?.viewPlacementOffer }}</a></p>
-              <h5 class="placement-title">{{ commonText?.associatedWorkOrder }}</h5>
-            </div>
-            <div>
-              <app-workordercard 
-              [wo]="wo"
-              >
-              </app-workordercard>
-              <div class="send-reminder-btn">
-                <app-button size="small" [title]="commonText?.sendreminder"></app-button>
-              </div>
-            </div>
-          </div> -->
+  <div class="contents">
+    @if (activeNavItem.id === 'workers-info') {
+      <div>
+        <div class="row-container">
+          <ion-row>
+            <ion-col size="2" class="icon-container">
+              <ion-img src="assets/icon/email_blue.svg"></ion-img>
+            </ion-col>
+            <ion-col size="10" class="value-container">
+              <p>{{workerInfo?.email}}</p>
+            </ion-col>
+          </ion-row>
+          <ion-row>
+            <ion-col size="2" class="icon-container">
+              <ion-img src="assets/icon/phone_blue.svg"></ion-img>
+            </ion-col>
+            <ion-col size="10" class="value-container">
+              <p>{{workerInfo?.telephone || workerInfo?.mobile}}</p>
+              @if (workerInfo?.telephone && workerInfo?.mobile) {
+                <p>{{workerInfo?.mobile}}</p>
+              }
+            </ion-col>
+          </ion-row>
+          <ion-row>
+            <ion-col size="2" class="icon-container">
+              <ion-img src="assets/icon/office_blue.svg"></ion-img>
+            </ion-col>
+            <ion-col size="10" class="value-container">
+              @if (workerInfo?.addressLine1) {
+                <p>{{workerInfo?.addressLine1}}</p>
+              }
+              @if (workerInfo?.addressLine2) {
+                <p>{{workerInfo?.addressLine2}}</p>
+              }
+              @if (workerInfo?.addressLine3) {
+                <p>{{workerInfo?.addressLine3}}</p>
+              }
+              @if (workerInfo?.city) {
+                <p>{{workerInfo?.city}}</p>
+              }
+              @if (workerInfo?.country) {
+                <p>{{workerInfo?.country}}</p>
+              }
+              @if (workerInfo?.postalCode) {
+                <p>{{workerInfo?.postalCode}}</p>
+              }
+            </ion-col>
+          </ion-row>
+          <ion-row>
+            <ion-col size="12"class="edit-btn-container">
+              <app-button
+                class="info-edit-btn"
+                (onClick)="onEdit(workerInfo)"
+                [title]="commonText?.edit"
+                size="small"
+              ></app-button>
+            </ion-col>
+          </ion-row>
         </div>
+      </div>
+    }
 
-        <!-- <div>
+    @if (activeNavItem.id === 'workers-payment') {
+      <div>
+        <app-payments
+          page="vo-workers-payments"
+          [workerInfo]="workerInfo"
+        ></app-payments>
+      </div>
+    }
+
+    @if (activeNavItem.id === 'workers-placement') {
+      <div>
+        <div>
+          <div class="ion-margin-top">
+            <div>
+              <app-titleblock variant="pending" [title]="commonText?.placementOpportunity"></app-titleblock>
+              <app-title [title]="'[' + commonText?.comingSoon + ']'" variant="h6"></app-title>
+              <!-- <div class="ion-padding list-content">
+              <div>
+                <p>{{ commonText?.status }}:<span> {{ commonText?.sent }}</span> <a class="placement-link">{{ commonText?.viewPlacementOffer }}</a></p>
+                <h5 class="placement-title">{{ commonText?.associatedWorkOrder }}</h5>
+              </div>
+              <div>
+                <app-workordercard
+                  [wo]="wo"
+                  >
+                </app-workordercard>
+                <div class="send-reminder-btn">
+                  <app-button size="small" [title]="commonText?.sendreminder"></app-button>
+                </div>
+              </div>
+            </div> -->
+          </div>
+          <!-- <div>
           <app-titleblock [title]="commonText?.placementOpportunity"></app-titleblock>
           <div class="ion-padding list-content">
             <div>
@@ -101,134 +118,130 @@
             </div>
           </div>
         </div>
-
         <div>
           <app-titleblock [title]="commonText?.placementAgreement"></app-titleblock>
           <div class="ion-padding list-content">
           </div>
         </div>
-      
         <div>
           <app-titleblock [title]="commonText?.jobOrderAndServiceOpportunity"></app-titleblock>
           <div class="ion-padding list-content">
           </div>
         </div>
-
         <div>
           <app-titleblock [title]="commonText?.departure"></app-titleblock>
           <div class="ion-padding">
           </div>
         </div> -->
-
       </div>
     </div>
   </div>
+}
 
-  <div *ngIf="activeNavItem.id === 'workers-documents'">
+@if (activeNavItem.id === 'workers-documents') {
+  <div>
     <div class="ion-margin-top">
       <div class="ion-margin">
         <app-title [title]="commonText?.documents" variant="h5"></app-title>
       </div>
       <app-title [title]="'[' + commonText?.comingSoon + ']'" variant="h6"></app-title>
-      
       <!-- <div>
-        <app-titleblock variant="completed" [title]="commonText?.passport"></app-titleblock>
-        <div class="ion-padding ion-margin-bottom">
-          <app-attachment
-            [pdfName]="commonText?.passport"
-            [pdfInfo]="commonText?.clickToViewAndEditUploadedPassportPicture"
-            docLink="/assets/imgs/zila1.jpeg"
-            backUrl="/workers/details/info"
-          ></app-attachment>
-        </div>
+      <app-titleblock variant="completed" [title]="commonText?.passport"></app-titleblock>
+      <div class="ion-padding ion-margin-bottom">
+        <app-attachment
+          [pdfName]="commonText?.passport"
+          [pdfInfo]="commonText?.clickToViewAndEditUploadedPassportPicture"
+          docLink="/assets/imgs/zila1.jpeg"
+          backUrl="/workers/details/info"
+        ></app-attachment>
       </div>
-      <div>
-        <app-titleblock variant="pending" [title]="commonText?.visa"></app-titleblock>
-        <div class="ion-margin-vertical">
-          <app-documentupload type="upload" [name]="commonText?.uploadVisa" [isTransparent]="true"></app-documentupload>
-        </div>
-      </div>
-      <div>
-        <app-titleblock variant="pending" [title]="commonText?.signedEmploymentAgreement"></app-titleblock>
-        <div class="ion-padding">
-          <div class="send-reminder-btn">
-            <app-button size="small" [title]="commonText?.sendreminder"></app-button>
-          </div>
-        </div>
-      </div> -->
     </div>
+    <div>
+      <app-titleblock variant="pending" [title]="commonText?.visa"></app-titleblock>
+      <div class="ion-margin-vertical">
+        <app-documentupload type="upload" [name]="commonText?.uploadVisa" [isTransparent]="true"></app-documentupload>
+      </div>
+    </div>
+    <div>
+      <app-titleblock variant="pending" [title]="commonText?.signedEmploymentAgreement"></app-titleblock>
+      <div class="ion-padding">
+        <div class="send-reminder-btn">
+          <app-button size="small" [title]="commonText?.sendreminder"></app-button>
+        </div>
+      </div>
+    </div> -->
   </div>
+</div>
+}
 
-  <div *ngIf="activeNavItem.id === 'workers-training'">
+@if (activeNavItem.id === 'workers-training') {
+  <div>
     <div>
       <!-- TODO: use training data -->
       <app-title title="Training status" variant="h5"></app-title>
       <app-title [title]="'[' + commonText?.comingSoon + ']'" variant="h6"></app-title>
       <!-- <div>
-        <div class="ion-padding-bottom">
-          <app-progressbar title="Title of completion bar" value="76"></app-progressbar>
-          <app-progressbar title="Title of completion bar"></app-progressbar>
-          <app-progressbar title="Title of completion bar"></app-progressbar>
-          <div class="send-reminder-btn">
-            <app-button size="small" [title]="commonText?.sendreminder"></app-button>
-          </div>
-          <app-progressbar title="Title of completion bar" value="76"></app-progressbar>
+      <div class="ion-padding-bottom">
+        <app-progressbar title="Title of completion bar" value="76"></app-progressbar>
+        <app-progressbar title="Title of completion bar"></app-progressbar>
+        <app-progressbar title="Title of completion bar"></app-progressbar>
+        <div class="send-reminder-btn">
+          <app-button size="small" [title]="commonText?.sendreminder"></app-button>
         </div>
-
-        <div class="ion-padding-bottom">
-          <app-title [title]="commonText?.BP2miTrainingDocument" variant="h5"></app-title>
-          <app-documentupload iconUrl="/assets/icon/documents_blue_lg.svg" type="upload" name="{{ commonText?.uploadSignedBP2mi }}"></app-documentupload>
-        </div> -->
-
-          <!-- TODO: use leaning hub data -->
-        <!-- <div class="ion-padding-bottom">
-          <app-title title="Knowledge base" variant="h5"></app-title>
-          <app-progressbar title="Title of completion bar" value="76"></app-progressbar>
-          <app-progressbar title="During Employment"></app-progressbar>
-          <div class="send-reminder-btn">
-            <app-button size="small" [title]="commonText?.sendreminder"></app-button>
-          </div>
-
-          <app-progressbar title="Post Employment" value="76"></app-progressbar>
-          <div class="send-reminder-btn">
-            <app-button size="small" [title]="commonText?.sendreminder"></app-button>
-          </div>
-        </div> -->
-
-        <!-- Audio Notes -->
-        <!-- <div class="ion-padding"  style="background-color: #F5F5F5;">
-          <ion-text><h1>{{ commonText?.audioNotes }}</h1></ion-text>
-          <div (click)="onRecord()">
-            <ion-row class="ion-align-items-center">
-              <ion-col size="3">
-                <div style="background-color: #e5e5e5; height: 60px; width: 60px; border-radius: 50px; display: flex; justify-content:center; align-items: center;">
-                  <ion-icon size="large" name="mic-outline"></ion-icon>
-                </div>
-              </ion-col>
-              <ion-col size="9">
-                <ion-text>{{ commonText?.recordNewNote }}</ion-text>
-              </ion-col>
-            </ion-row>
-          </div>
-          <div class="ion-padding-vertical">
-            <ion-row *ngFor="let audioRecording of audioRecordings" class="ion-justify-content-between ion-align-items-center">
-              <ion-col size="12"><ion-label>{{audioRecording.name}}</ion-label></ion-col>
-              <ion-col size="6">
-                  <div>
-                    <audio controls autobuffer="autobuffer">
-                      <source [src]="audioRecording.file">
-                      {{ commonText?.browserDoesnotSupportAudioTag }}
-                    </audio>
-                  </div>
-              </ion-col>
-              <ion-col size="2">
-                <ion-icon (click)="onDelete(audioRecording.uniqueName)" size="large" name="trash-outline"></ion-icon>
-              </ion-col>
-            </ion-row>
-          </div>
-        </div>
+        <app-progressbar title="Title of completion bar" value="76"></app-progressbar>
+      </div>
+      <div class="ion-padding-bottom">
+        <app-title [title]="commonText?.BP2miTrainingDocument" variant="h5"></app-title>
+        <app-documentupload iconUrl="/assets/icon/documents_blue_lg.svg" type="upload" name="{{ commonText?.uploadSignedBP2mi }}"></app-documentupload>
       </div> -->
+      <!-- TODO: use leaning hub data -->
+      <!-- <div class="ion-padding-bottom">
+      <app-title title="Knowledge base" variant="h5"></app-title>
+      <app-progressbar title="Title of completion bar" value="76"></app-progressbar>
+      <app-progressbar title="During Employment"></app-progressbar>
+      <div class="send-reminder-btn">
+        <app-button size="small" [title]="commonText?.sendreminder"></app-button>
+      </div>
+      <app-progressbar title="Post Employment" value="76"></app-progressbar>
+      <div class="send-reminder-btn">
+        <app-button size="small" [title]="commonText?.sendreminder"></app-button>
+      </div>
+    </div> -->
+    <!-- Audio Notes -->
+    <!-- <div class="ion-padding"  style="background-color: #F5F5F5;">
+    <ion-text><h1>{{ commonText?.audioNotes }}</h1></ion-text>
+    <div (click)="onRecord()">
+      <ion-row class="ion-align-items-center">
+        <ion-col size="3">
+          <div style="background-color: #e5e5e5; height: 60px; width: 60px; border-radius: 50px; display: flex; justify-content:center; align-items: center;">
+            <ion-icon size="large" name="mic-outline"></ion-icon>
+          </div>
+        </ion-col>
+        <ion-col size="9">
+          <ion-text>{{ commonText?.recordNewNote }}</ion-text>
+        </ion-col>
+      </ion-row>
+    </div>
+    <div class="ion-padding-vertical">
+      <ion-row *ngFor="let audioRecording of audioRecordings" class="ion-justify-content-between ion-align-items-center">
+        <ion-col size="12"><ion-label>{{audioRecording.name}}</ion-label></ion-col>
+        <ion-col size="6">
+          <div>
+            <audio controls autobuffer="autobuffer">
+              <source [src]="audioRecording.file">
+              {{ commonText?.browserDoesnotSupportAudioTag }}
+            </audio>
+          </div>
+        </ion-col>
+        <ion-col size="2">
+          <ion-icon (click)="onDelete(audioRecording.uniqueName)" size="large" name="trash-outline"></ion-icon>
+        </ion-col>
+      </ion-row>
     </div>
   </div>
+</div> -->
+</div>
+</div>
+}
 </div>
 </ion-content>

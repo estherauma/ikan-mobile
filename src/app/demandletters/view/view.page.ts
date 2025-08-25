@@ -55,6 +55,7 @@ export class ViewPage implements OnInit {
 
   showReviewButton() {
     // return !this.ifReviewDemandLetter && this.workOrders.length && this.cooperationAgreementFile;
+    return true;
   }
 
 }

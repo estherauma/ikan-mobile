@@ -2,35 +2,42 @@
   <ion-row>
     <ion-col size="3">
       <div class="img-wrapper">
-        <ion-icon
-          *ngIf="!profileImageUrl"
-          class="user-icon"
-          name="person-circle-outline"
-          (click)="onIconClick()"
-        >
-        </ion-icon>
-        <img
-          *ngIf="sharedMethods.isIos && profileImageUrl"
-          class="user-profile-pic"
-          [src]="profileImageUrl | safeurl"
-          (click)="onIconClick()"
-        />
-        <img
-          *ngIf="sharedMethods.isAndroid && profileImageUrl"
-          class="user-profile-pic"
-          [src]="profileImageUrl"
-          (click)="onIconClick()"
-        />
+        @if (!profileImageUrl) {
+          <ion-icon
+            class="user-icon"
+            name="person-circle-outline"
+            (click)="onIconClick()"
+            >
+          </ion-icon>
+        }
+        @if (sharedMethods.isIos && profileImageUrl) {
+          <img
+            class="user-profile-pic"
+            [src]="profileImageUrl | safeurl"
+            (click)="onIconClick()"
+            />
+        }
+        @if (sharedMethods.isAndroid && profileImageUrl) {
+          <img
+            class="user-profile-pic"
+            [src]="profileImageUrl"
+            (click)="onIconClick()"
+            />
+        }
       </div>
     </ion-col>
     <ion-col size="8" class="greeting-col">
       <h1>{{ name }}</h1>
-      <p *ngIf="user?.role !== 'worker' || (user?.role === 'worker' && !workerVessel)">{{ greeting }}</p>
-      
-      <div *ngIf="user?.role === 'worker' && workerVessel" class="vessel-details">
-        <p>Vessel name: <span>{{ workerVessel?.name }}</span></p>
-        <p>Vessel no.: <span>{{ workerVessel?.regNo}}</span></p>
-      </div>
+      @if (user?.role !== 'worker' || (user?.role === 'worker' && !workerVessel)) {
+        <p>{{ greeting }}</p>
+      }
+
+      @if (user?.role === 'worker' && workerVessel) {
+        <div class="vessel-details">
+          <p>Vessel name: <span>{{ workerVessel?.name }}</span></p>
+          <p>Vessel no.: <span>{{ workerVessel?.regNo}}</span></p>
+        </div>
+      }
     </ion-col>
     <ion-col size="1" class="notification-col">
       <ion-icon class="notification-icon" name="notifications"></ion-icon>

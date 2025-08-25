@@ -11,26 +11,30 @@
         ></app-title>
       </div>
 
-      <div *ngIf="isEditable && isVesselOwner" class="btn-section">
-        <ion-row class="ion-justify-end">
-          <ion-col>
-            <app-button
-              class="edit-clause-btn"
-              [title]="editBtnText"
-              (onClick)="editContractClause()"
-            >
-            </app-button>
-          </ion-col>
-        </ion-row>
-      </div>
+      @if (isEditable && isVesselOwner) {
+        <div class="btn-section">
+          <ion-row class="ion-justify-end">
+            <ion-col>
+              <app-button
+                class="edit-clause-btn"
+                [title]="editBtnText"
+                (onClick)="editContractClause()"
+                >
+              </app-button>
+            </ion-col>
+          </ion-row>
+        </div>
+      }
 
-      <div *ngIf="isEditable && isWorker">
-        <ion-text class="contact-text">
-          {{ commonText?.editClausesContactText }}
-        </ion-text>
-      </div>
+      @if (isEditable && isWorker) {
+        <div>
+          <ion-text class="contact-text">
+            {{ commonText?.editClausesContactText }}
+          </ion-text>
+        </div>
+      }
     </div>
-    
+
     <div class="ion-padding bottom-section">
       <div [innerHtml]="htmlContent">
       </div>

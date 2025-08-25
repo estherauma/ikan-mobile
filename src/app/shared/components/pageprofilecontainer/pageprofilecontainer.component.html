@@ -5,21 +5,24 @@
         <ion-row>
           <ion-col size="12" class="img-col">
             <div class="img-wrapper">
-              <ion-icon
-                *ngIf="!imageUrl"
-                class="image icon"
-                src="assets/icon/ellipse_profile.svg"
-              />
-              <img
-                *ngIf="sharedMethods.isIos && imageUrl"
-                class="image img"
-                [src]="imageUrl | safeurl"
-              />
-              <img
-                *ngIf="sharedMethods.isAndroid && imageUrl"
-                class="image img"
-                [src]="imageUrl"
-              />
+              @if (!imageUrl) {
+                <ion-icon
+                  class="image icon"
+                  src="assets/icon/ellipse_profile.svg"
+                  />
+              }
+              @if (sharedMethods.isIos && imageUrl) {
+                <img
+                  class="image img"
+                  [src]="imageUrl | safeurl"
+                  />
+              }
+              @if (sharedMethods.isAndroid && imageUrl) {
+                <img
+                  class="image img"
+                  [src]="imageUrl"
+                  />
+              }
               <ion-icon
                 class="edit-icon"
                 name="pencil"
@@ -34,9 +37,11 @@
       </div>
     </div>
     <app-title [title]="title" [isLightBlue]="true"></app-title>
-    <app-button *ngIf="isResendInviteBtn" [title]="reSendInviteBtnTitle" config="yellow"></app-button>
+    @if (isResendInviteBtn) {
+      <app-button [title]="reSendInviteBtnTitle" config="yellow"></app-button>
+    }
   </div>
-  <app-pagetabnavigator 
+  <app-pagetabnavigator
     (clickedMenuItem)="onClickedMenu($event)"
     [active]="active"
     [navItems]="navItems"

@@ -7,71 +7,89 @@
         {{ docsCommonText?.addDocument }}
       </ion-button>
     </ion-col>
-    <ion-col size="4" *ngIf="documents.length" class="ion-justify-content-end select-col">
-      <p
-        class="select"
-        (click)="selectDocs()"
-      >
-        {{ commonText?.select }}
-      </p>
-    </ion-col>
+    @if (documents.length) {
+      <ion-col size="4" class="ion-justify-content-end select-col">
+        <p
+          class="select"
+          (click)="selectDocs()"
+          >
+          {{ commonText?.select }}
+        </p>
+      </ion-col>
+    }
   </ion-row>
 
-  <div *ngIf="documents.length > 0" class="documents-wrapper">
-    <ion-row>
-      <ion-col
-        class="ion-padding"
-        size="6"
-        *ngFor="let doc of documents; let i = index"
-        (click)="doc.docType === 'image' ? viewImage(doc) : viewFile(doc)"
-      >
-        <img
-          *ngIf="doc.docType === 'image' && sharedMethods.isIos"
-          [src]="doc.fileUrl | safeurl"
-          [alt]="doc.fileName"
-        />
-
-        <img
-          *ngIf="doc.docType === 'image' && !sharedMethods.isIos"
-          [src]="doc.fileUrl"
-          [alt]="doc.fileName"
-        />
-        <div *ngIf="doc.docType === 'pdf'" class="img doc-icon-wrapper">
-          <img
-            src="assets/icon/documents.svg"
-            [alt]="docsCommonText?.documentsIcon"
-          />
-        </div>
-        <p *ngIf="doc.fileName" class="file-name">{{ doc.fileName }}</p>
-        <p *ngIf="doc.createdAt || doc.updatedAt">
-          {{
-            sharedMethods.formatLocalDate(doc.updatedAt, currentLanguage) ||
-              sharedMethods.formatLocalDate(doc.createdAt, currentLanguage)
-          }}
-        </p>
-        <p *ngIf="doc.fileSize">{{ doc.fileSize }}</p>
-        <ion-icon
-          *ngIf="isSelecting"
-          class="ellipse"
-          name="ellipse"
-          (click)="selectDocument(doc)"
-        ></ion-icon>
-        <ion-icon
-          *ngIf="isSelecting && selectedDocuments.includes(doc)"
-          class="radio"
-          name="radio-button-on"
-          (click)="unSelectDocument(doc)"
-        ></ion-icon>
-      </ion-col>
-    </ion-row>
-  </div>
-
-  <div class="del-share-btns" *ngIf="isSelecting && !!selectedDocuments.length">
-    <div>
-      <ion-icon name="share-outline" (click)="shareDocs()"></ion-icon>
+  @if (documents.length > 0) {
+    <div class="documents-wrapper">
+      <ion-row>
+        @for (doc of documents; track doc; let i = $index) {
+          <ion-col
+            class="ion-padding"
+            size="6"
+            (click)="doc.docType === 'image' ? viewImage(doc) : viewFile(doc)"
+            >
+            @if (doc.docType === 'image' && sharedMethods.isIos) {
+              <img
+                [src]="doc.fileUrl | safeurl"
+                [alt]="doc.fileName"
+                />
+            }
+            @if (doc.docType === 'image' && !sharedMethods.isIos) {
+              <img
+                [src]="doc.fileUrl"
+                [alt]="doc.fileName"
+                />
+            }
+            @if (doc.docType === 'pdf') {
+              <div class="img doc-icon-wrapper">
+                <img
+                  src="assets/icon/documents.svg"
+                  [alt]="docsCommonText?.documentsIcon"
+                  />
+              </div>
+            }
+            @if (doc.fileName) {
+              <p class="file-name">{{ doc.fileName }}</p>
+            }
+            @if (doc.createdAt || doc.updatedAt) {
+              <p>
+                {{
+                sharedMethods.formatLocalDate(doc.updatedAt, currentLanguage) ||
+                sharedMethods.formatLocalDate(doc.createdAt, currentLanguage)
+                }}
+              </p>
+            }
+            @if (doc.fileSize) {
+              <p>{{ doc.fileSize }}</p>
+            }
+            @if (isSelecting) {
+              <ion-icon
+                class="ellipse"
+                name="ellipse"
+                (click)="selectDocument(doc)"
+              ></ion-icon>
+            }
+            @if (isSelecting && selectedDocuments.includes(doc)) {
+              <ion-icon
+                class="radio"
+                name="radio-button-on"
+                (click)="unSelectDocument(doc)"
+              ></ion-icon>
+            }
+          </ion-col>
+        }
+      </ion-row>
     </div>
-    <div>
-      <ion-icon name="trash" (click)="openDelAlert()"></ion-icon>
+  }
+
+  @if (isSelecting && !!selectedDocuments.length) {
+    <div class="del-share-btns">
+      <div>
+        <ion-icon name="share-outline" (click)="shareDocs()"></ion-icon>
+      </div>
+      <div>
+        <ion-icon name="trash" (click)="openDelAlert()"></ion-icon>
+      </div>
     </div>
-  </div>
+  }
 </div>

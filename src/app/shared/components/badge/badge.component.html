@@ -1,4 +1,6 @@
 <div class="badge">
-  <ion-img *ngIf="imageUrl" [src]='imageUrl'></ion-img>
+  @if (imageUrl) {
+    <ion-img [src]='imageUrl'></ion-img>
+  }
 </div>
 

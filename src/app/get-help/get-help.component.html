@@ -3,13 +3,16 @@
   <div class="content-wrapper">
     <h4 class="page-title">{{ allContent?.pageTitle }}</h4>
     <div class="content-section">
-      <div *ngFor="let section of pageContent">
-        <shared-text-area
-          *ngIf="section?.type === 'text_area'"
-          [data]="section"
-          styles="textarea"
-        ></shared-text-area>
-      </div>
+      @for (section of pageContent; track section) {
+        <div>
+          @if (section?.type === 'text_area') {
+            <shared-text-area
+              [data]="section"
+              styles="textarea"
+            ></shared-text-area>
+          }
+        </div>
+      }
     </div>
   </div>
 </ion-content>

@@ -13,23 +13,23 @@
               <ion-card-title class="title blue-dark">{{title}}</ion-card-title>
               <!-- slicing the app ref so we don't display it to the user -->
               <!-- <ion-label>
-                <ion-text class="gray-text">{{ commonText?.contract }}: </ion-text>
-                <ion-text class="blue-text">{{contract?.appRef?.slice(9,13) || contract?.appRef}}</ion-text>
-              </ion-label> <br> -->
-              <ng-container *ngIf="vessel">
-                <ion-label>
-                  <ion-text class="gray-text">{{ commonText?.vessel }}: </ion-text>
-                  <ion-text class="blue-text">{{vessel}}</ion-text>
-                </ion-label> <br>
-              </ng-container>
+              <ion-text class="gray-text">{{ commonText?.contract }}: </ion-text>
+              <ion-text class="blue-text">{{contract?.appRef?.slice(9,13) || contract?.appRef}}</ion-text>
+            </ion-label> <br> -->
+            @if (vessel) {
               <ion-label>
-                <ion-text class="gray-text">{{ commonText?.dates }}: </ion-text>
-                <ion-text class="blue-text">{{dates}}</ion-text>
+                <ion-text class="gray-text">{{ commonText?.vessel }}: </ion-text>
+                <ion-text class="blue-text">{{vessel}}</ion-text>
               </ion-label> <br>
-            </div>
+            }
+            <ion-label>
+              <ion-text class="gray-text">{{ commonText?.dates }}: </ion-text>
+              <ion-text class="blue-text">{{dates}}</ion-text>
+            </ion-label> <br>
           </div>
-        </ion-col>
-      </ion-row>
-    </ion-card-content>
-  </ion-card>
+        </div>
+      </ion-col>
+    </ion-row>
+  </ion-card-content>
+</ion-card>
 </div>

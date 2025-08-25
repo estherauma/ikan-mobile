@@ -8,9 +8,9 @@
   ></audio>
 
   <div (click)="toggleAudio()" class="btn-wrapper" [ngClass]="{'no-url': !url}">
-    <ion-icon
-      *ngIf="!customIcon"
-      [name]="isPlaying ? 'pause-outline' : iconName"
+    @if (!customIcon) {
+      <ion-icon
+        [name]="isPlaying ? 'pause-outline' : iconName"
       [ngStyle]="{
         'background': background,
         'color': color
@@ -18,11 +18,12 @@
       [ngClass]="{
         'no-url': !url
       }"
-    ></ion-icon>
-    
-    <ion-img
-      *ngIf="customIcon && !isPlaying"
-      [src]="customIcon"
+      ></ion-icon>
+    }
+
+    @if (customIcon && !isPlaying) {
+      <ion-img
+        [src]="customIcon"
       [ngStyle]="{
         'background': background,
         'color': color
@@ -30,10 +31,11 @@
       [ngClass]="{
         'no-url': !url
       }"
-    ></ion-img>
-    <ion-icon
-      *ngIf="customIcon && isPlaying"
-      name="pause"
+      ></ion-img>
+    }
+    @if (customIcon && isPlaying) {
+      <ion-icon
+        name="pause"
       [ngStyle]="{
         'background': background,
         'color': color
@@ -41,6 +43,7 @@
       [ngClass]="{
         'no-url': !url
       }"
-    ></ion-icon>
+      ></ion-icon>
+    }
   </div>
 </div>

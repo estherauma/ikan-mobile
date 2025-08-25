@@ -1,14 +1,19 @@
-<div class="chart" [ngClass]="{'custom-border': chartType === 'bar'}"> 
-  <canvas [height]="chartHeight"  [id]="chartId" >{{ chart }}</canvas>  
-  <div 
-  *ngIf="centerText || centerIcon" 
+<div class="chart" [ngClass]="{'custom-border': chartType === 'bar'}">
+  <canvas [height]="chartHeight"  [id]="chartId" >{{ chart }}</canvas>
+  @if (centerText || centerIcon) {
+    <div
   [ngClass]="{
     'blue': centerValueColor === 'blue',
     'white': centerValueColor === 'white'
   }" 
-  class="center-container"
-  >
-    <p *ngIf="centerText">{{centerText}}</p>
-    <ion-icon *ngIf="centerIcon" [name]="centerIcon"></ion-icon>
-  </div>
+      class="center-container"
+      >
+      @if (centerText) {
+        <p>{{centerText}}</p>
+      }
+      @if (centerIcon) {
+        <ion-icon [name]="centerIcon"></ion-icon>
+      }
+    </div>
+  }
 </div>

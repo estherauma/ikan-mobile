@@ -7,48 +7,58 @@
       <app-video-button [url]="pageData?.pageVideo?.url"></app-video-button>
       <app-audio-button [url]="pageData?.pageAudio?.url"></app-audio-button>
     </div>
-    
+
     <div
-      class="title-section" 
+      class="title-section"
       [ngStyle]="{'background': 'linear-gradient( rgba(53, 101, 255, 0.6) 100%, rgba(53, 101, 255, 0.6)100%),url(' + bgImgUrl +') no-repeat fixed center / cover'}"
-    >
+      >
       <app-title [title]="pageData?.pageTitle" [isBig]="true" [isLightBlue]="true"></app-title>
     </div>
-    
-    <div class="subchapter-list">
-      <ion-row 
-        *ngFor="let subChapter of learningHubSubChapters"
-        (click)="viewDetails(subChapter)"
-      >
-        <ion-col size="2" class="icon-col">
-          <div class="icon-wrapper">
-            <ion-img *ngIf="subChapter?.icon" [src]="subChapter?.icon" alt="Sub chapter icon"></ion-img>
-          </div>
-        </ion-col>
-        
-        <ion-col [size]="subChapter?.displayQuiz ? 6 : 7.5" class="text-col">
-          <h4>{{ subChapter?.name }}</h4>
-          <ion-text class="description">{{ subChapter?.description?.length > 45 ? subChapter?.description.slice(0, 45) + '...' : subChapter?.description }}</ion-text>
-        </ion-col>
 
-        <ion-col [size]="subChapter?.displayQuiz ? 4 : 2.5" class="quiz-status-col">
-          <div *ngIf="subChapter?.displayQuiz" class="quiz-wrapper" (click)="goToQuiz($event)">
+    <div class="subchapter-list">
+      @for (subChapter of learningHubSubChapters; track subChapter) {
+        <ion-row
+          (click)="viewDetails(subChapter)"
+          >
+          <ion-col size="2" class="icon-col">
             <div class="icon-wrapper">
-              <ion-icon *ngIf="!subChapter?.quizCompleted" name="help-outline" class="help"></ion-icon>
-              <ion-icon *ngIf="subChapter?.quizCompleted" name="checkmark" class="checkmark"></ion-icon>
+              @if (subChapter?.icon) {
+                <ion-img [src]="subChapter?.icon" alt="Sub chapter icon"></ion-img>
+              }
             </div>
-            <p>{{ commonText?.takeQuiz }}</p>
-          </div>
-          
-          <div class="status-wrapper">
-            <div class="icon-wrapper">
-              <ion-icon *ngIf="!subChapter?.isCompleted" name="close" class="close"></ion-icon>
-              <ion-icon *ngIf="subChapter?.isCompleted" name="checkmark" class="checkmark"></ion-icon>
+          </ion-col>
+          <ion-col [size]="subChapter?.displayQuiz ? 6 : 7.5" class="text-col">
+            <h4>{{ subChapter?.name }}</h4>
+            <ion-text class="description">{{ subChapter?.description?.length > 45 ? subChapter?.description.slice(0, 45) + '...' : subChapter?.description }}</ion-text>
+          </ion-col>
+          <ion-col [size]="subChapter?.displayQuiz ? 4 : 2.5" class="quiz-status-col">
+            @if (subChapter?.displayQuiz) {
+              <div class="quiz-wrapper" (click)="goToQuiz($event)">
+                <div class="icon-wrapper">
+                  @if (!subChapter?.quizCompleted) {
+                    <ion-icon name="help-outline" class="help"></ion-icon>
+                  }
+                  @if (subChapter?.quizCompleted) {
+                    <ion-icon name="checkmark" class="checkmark"></ion-icon>
+                  }
+                </div>
+                <p>{{ commonText?.takeQuiz }}</p>
+              </div>
+            }
+            <div class="status-wrapper">
+              <div class="icon-wrapper">
+                @if (!subChapter?.isCompleted) {
+                  <ion-icon name="close" class="close"></ion-icon>
+                }
+                @if (subChapter?.isCompleted) {
+                  <ion-icon name="checkmark" class="checkmark"></ion-icon>
+                }
+              </div>
+              <p>{{ subChapter?.isCompleted ? commonText?.completed : commonText?.incomplete }}</p>
             </div>
-            <p>{{ subChapter?.isCompleted ? commonText?.completed : commonText?.incomplete }}</p>
-          </div>
-        </ion-col>
-      </ion-row>
+          </ion-col>
+        </ion-row>
+      }
     </div>
   </div>
 </ion-content>
