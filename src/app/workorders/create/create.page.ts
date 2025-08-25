@@ -8,9 +8,10 @@ import { SharedmethodsService } from 'src/app/shared/services/sharedmethods/shar
 import { WorkordersDataService } from '../data/workorders-data.service';
 
 @Component({
-  selector: 'app-create',
-  templateUrl: './create.page.html',
-  styleUrls: ['./create.page.scss'],
+    selector: 'app-create',
+    templateUrl: './create.page.html',
+    styleUrls: ['./create.page.scss'],
+    standalone: false
 })
 export class CreatePage extends BaseformPage implements OnInit {
 

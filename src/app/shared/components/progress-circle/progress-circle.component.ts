@@ -1,9 +1,10 @@
 import { Component, Input, OnInit } from '@angular/core';
 
 @Component({
-  selector: 'app-progress-circle',
-  templateUrl: './progress-circle.component.html',
-  styleUrls: ['./progress-circle.component.scss'],
+    selector: 'app-progress-circle',
+    templateUrl: './progress-circle.component.html',
+    styleUrls: ['./progress-circle.component.scss'],
+    standalone: false
 })
 export class ProgressCircleComponent  implements OnInit {
 

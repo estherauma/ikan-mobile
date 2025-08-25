@@ -11,9 +11,10 @@ import { SurveyDataService } from './data/survey-data.service';
 import { SyncService } from '../shared/services/sync/sync.service';
 
 @Component({
-  selector: 'app-survey',
-  templateUrl: './survey.component.html',
-  styleUrls: ['./survey.component.scss'],
+    selector: 'app-survey',
+    templateUrl: './survey.component.html',
+    styleUrls: ['./survey.component.scss'],
+    standalone: false
 })
 export class SurveyComponent extends BaseformPage  implements OnInit, OnDestroy {
   attemptedFollowUpQtnKeys = {};

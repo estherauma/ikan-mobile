@@ -8,9 +8,10 @@ import { SharedmethodsService } from 'src/app/shared/services/sharedmethods/shar
 import { env } from 'src/environments/environment';
 
 @Component({
-  selector: 'app-how-to-signup',
-  templateUrl: './how-to-signup.page.html',
-  styleUrls: ['./how-to-signup.page.scss'],
+    selector: 'app-how-to-signup',
+    templateUrl: './how-to-signup.page.html',
+    styleUrls: ['./how-to-signup.page.scss'],
+    standalone: false
 })
 export class HowToSignupPage implements OnInit {
   pageText: any;

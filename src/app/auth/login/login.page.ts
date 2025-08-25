@@ -18,9 +18,10 @@ import { PageEventNames } from 'src/app/shared/services/analytics/event-names';
 import { PushNotificationsService } from 'src/app/shared/services/push-notifications/push-notifications.service';
 
 @Component({
-  selector: 'app-login',
-  templateUrl: './login.page.html',
-  styleUrls: ['./login.page.scss'],
+    selector: 'app-login',
+    templateUrl: './login.page.html',
+    styleUrls: ['./login.page.scss'],
+    standalone: false
 })
 export class LoginPage extends BaseformPage implements OnInit {
   passwordFieldType = FieldType.password;

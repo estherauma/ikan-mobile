@@ -2,9 +2,10 @@ import { Component, OnInit } from '@angular/core';
 import { ModalController } from '@ionic/angular';
 
 @Component({
-  selector: 'app-recordoptionmodal',
-  templateUrl: './recordoptionmodal.component.html',
-  styleUrls: ['./recordoptionmodal.component.scss'],
+    selector: 'app-recordoptionmodal',
+    templateUrl: './recordoptionmodal.component.html',
+    styleUrls: ['./recordoptionmodal.component.scss'],
+    standalone: false
 })
 export class RecordoptionmodalComponent implements OnInit {
   title;

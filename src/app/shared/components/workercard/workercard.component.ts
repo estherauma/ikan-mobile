@@ -3,9 +3,10 @@ import { ContentService } from '../../services/content/content.service';
 import { SharedmethodsService } from '../../services/sharedmethods/sharedmethods.service';
 
 @Component({
-  selector: 'app-workercard',
-  templateUrl: './workercard.component.html',
-  styleUrls: ['./workercard.component.scss'],
+    selector: 'app-workercard',
+    templateUrl: './workercard.component.html',
+    styleUrls: ['./workercard.component.scss'],
+    standalone: false
 })
 export class WorkercardComponent implements OnInit {
   commonText: any;

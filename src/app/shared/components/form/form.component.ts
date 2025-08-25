@@ -11,9 +11,10 @@ import { AudioService } from '../../services/audio/audio.service';
 import { FileOpener } from '@capawesome-team/capacitor-file-opener';
 
 @Component({
-  selector: 'app-form',
-  templateUrl: './form.component.html',
-  styleUrls: ['./form.component.scss'],
+    selector: 'app-form',
+    templateUrl: './form.component.html',
+    styleUrls: ['./form.component.scss'],
+    standalone: false
 })
 export class FormComponent implements OnInit {
   // TODO: See after prismic integration if we can change this type to something more meaningful

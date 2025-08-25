@@ -7,9 +7,10 @@ import { SharedmethodsService } from 'src/app/shared/services/sharedmethods/shar
 import { UserData } from 'src/app/shared/types/api-types';
 
 @Component({
-  selector: 'app-payment-details',
-  templateUrl: './payment-details.page.html',
-  styleUrls: ['./payment-details.page.scss'],
+    selector: 'app-payment-details',
+    templateUrl: './payment-details.page.html',
+    styleUrls: ['./payment-details.page.scss'],
+    standalone: false
 })
 export class PaymentDetailsPage  implements OnInit {
 

@@ -5,9 +5,10 @@ import { ContentService } from 'src/app/shared/services/content/content.service'
 import { SharedmethodsService } from 'src/app/shared/services/sharedmethods/sharedmethods.service';
 
 @Component({
-  selector: 'app-twaiwanese',
-  templateUrl: './taiwanese.page.html',
-  styleUrls: ['./taiwanese.page.scss'],
+    selector: 'app-twaiwanese',
+    templateUrl: './taiwanese.page.html',
+    styleUrls: ['./taiwanese.page.scss'],
+    standalone: false
 })
 export class TaiwanesePage extends BaseformPage implements OnInit {
 

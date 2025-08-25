@@ -5,9 +5,10 @@ import { ContentService } from 'src/app/shared/services/content/content.service'
 import { SharedmethodsService } from 'src/app/shared/services/sharedmethods/sharedmethods.service';
 
 @Component({
-  selector: 'app-tutorial-detail',
-  templateUrl: './tutorial-detail.component.html',
-  styleUrls: ['./tutorial-detail.component.scss'],
+    selector: 'app-tutorial-detail',
+    templateUrl: './tutorial-detail.component.html',
+    styleUrls: ['./tutorial-detail.component.scss'],
+    standalone: false
 })
 export class TutorialDetailComponent  implements OnInit {
 

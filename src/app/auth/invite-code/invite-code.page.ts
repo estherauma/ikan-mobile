@@ -10,9 +10,10 @@ import { SharedmethodsService } from 'src/app/shared/services/sharedmethods/shar
 import { FieldType, IPasswordResetResp, Icons } from 'src/app/shared/types/api-types';
 
 @Component({
-  selector: 'app-invite-code',
-  templateUrl: './invite-code.page.html',
-  styleUrls: ['./invite-code.page.scss'],
+    selector: 'app-invite-code',
+    templateUrl: './invite-code.page.html',
+    styleUrls: ['./invite-code.page.scss'],
+    standalone: false
 })
 export class InviteCodePage extends BaseformPage implements OnInit {
 

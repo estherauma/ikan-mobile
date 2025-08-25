@@ -7,9 +7,10 @@ import { ContentService } from 'src/app/shared/services/content/content.service'
 import { AudioService } from 'src/app/shared/services/audio/audio.service';
 
 @Component({
-  selector: 'app-noteplayback',
-  templateUrl: './noteplayback.page.html',
-  styleUrls: ['./noteplayback.page.scss'],
+    selector: 'app-noteplayback',
+    templateUrl: './noteplayback.page.html',
+    styleUrls: ['./noteplayback.page.scss'],
+    standalone: false
 })
 export class NoteplaybackPage implements OnInit {
   commonText: any;

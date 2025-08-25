@@ -3,9 +3,10 @@ import { Router } from '@angular/router';
 
 
 @Component({
-  selector: 'app-placementoffercard',
-  templateUrl: './placementoffercard.component.html',
-  styleUrls: ['./placementoffercard.component.scss'],
+    selector: 'app-placementoffercard',
+    templateUrl: './placementoffercard.component.html',
+    styleUrls: ['./placementoffercard.component.scss'],
+    standalone: false
 })
 export class PlacementoffercardComponent implements OnInit {
   @Input() clauseId = '';

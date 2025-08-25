@@ -6,9 +6,10 @@ import { UploadService } from 'src/app/shared/services/upload/upload.service';
 import { DemandLetter } from '../home/home.page';
 
 @Component({
-  selector: 'app-view',
-  templateUrl: './view.page.html',
-  styleUrls: ['./view.page.scss'],
+    selector: 'app-view',
+    templateUrl: './view.page.html',
+    styleUrls: ['./view.page.scss'],
+    standalone: false
 })
 export class ViewPage implements OnInit {
   pageTitle = 'View Demand Letter';

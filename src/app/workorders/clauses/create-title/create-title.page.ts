@@ -8,9 +8,10 @@ import { SharedmethodsService } from 'src/app/shared/services/sharedmethods/shar
 import { WorkordersDataService } from '../../data/workorders-data.service';
 
 @Component({
-  selector: 'app-create-title',
-  templateUrl: './create-title.page.html',
-  styleUrls: ['./create-title.page.scss'],
+    selector: 'app-create-title',
+    templateUrl: './create-title.page.html',
+    styleUrls: ['./create-title.page.scss'],
+    standalone: false
 })
 export class CreateTitlePage extends BaseformPage implements OnInit {
   workOrderId: number;

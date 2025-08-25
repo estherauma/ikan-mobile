@@ -6,9 +6,10 @@ import { ContentService } from 'src/app/shared/services/content/content.service'
 import { SharedmethodsService } from 'src/app/shared/services/sharedmethods/sharedmethods.service';
 
 @Component({
-  selector: 'app-notecreate',
-  templateUrl: './notecreate.page.html',
-  styleUrls: ['./notecreate.page.scss'],
+    selector: 'app-notecreate',
+    templateUrl: './notecreate.page.html',
+    styleUrls: ['./notecreate.page.scss'],
+    standalone: false
 })
 export class NotecreatePage extends BaseformPage implements OnInit {
   submitButtonText = '';

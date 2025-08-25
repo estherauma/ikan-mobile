@@ -1,3 +1,10 @@
+@use "custom-styles/about.scss";
+@use "custom-styles/auth.scss";
+@use "custom-styles/consent-form.scss";
+@use "custom-styles/learning-hub.scss";
+@use "custom-styles/modal.scss";
+@use "custom-styles/worker.scss";
+
 /*
  * App Global CSS
  * ----------------------------------------------------------------------------
@@ -26,15 +33,7 @@
 @import "@ionic/angular/css/flex-utils.css";
 
 /* Custom Styles */
-@import "./custom-styles/learning-hub.scss";
-@import "./custom-styles/auth.scss";
-@import "./custom-styles/modal.scss";
-@import "./custom-styles/worker.scss";
-@import "./custom-styles/consent-form.scss";
-@import "./custom-styles/about.scss";
 
-@import 'swiper/css';
-@import '@ionic/angular/css/ionic-swiper';
 
 @font-face {   
   font-family: 'GatwickBold';

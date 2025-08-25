@@ -12,9 +12,10 @@ import { GlobalErrorHandlerService } from '../shared/services/error-handler/glob
 
 register();
 @Component({
-  selector: 'app-consent-forms',
-  templateUrl: './consent-forms.component.html',
-  styleUrls: ['./consent-forms.component.scss'],
+    selector: 'app-consent-forms',
+    templateUrl: './consent-forms.component.html',
+    styleUrls: ['./consent-forms.component.scss'],
+    standalone: false
 })
 export class ConsentFormsComponent  implements OnInit {
 

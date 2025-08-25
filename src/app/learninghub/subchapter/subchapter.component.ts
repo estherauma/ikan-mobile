@@ -10,9 +10,10 @@ import { HubQuestionStatus, StorageKeys, UserData, UserRole } from 'src/app/shar
 import { SurveyDataService } from 'src/app/survey/data/survey-data.service';
 
 @Component({
-  selector: 'app-subchapter',
-  templateUrl: './subchapter.component.html',
-  styleUrls: ['./subchapter.component.scss'],
+    selector: 'app-subchapter',
+    templateUrl: './subchapter.component.html',
+    styleUrls: ['./subchapter.component.scss'],
+    standalone: false
 })
 export class SubchapterComponent  implements OnInit {
   subChapterId: string;

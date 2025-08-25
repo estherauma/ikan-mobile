@@ -1,7 +1,8 @@
 import { Directive } from '@angular/core';
 
 @Directive({
-  selector: '[appRedEl]'
+    selector: '[appRedEl]',
+    standalone: false
 })
 export class RedElDirective {
 

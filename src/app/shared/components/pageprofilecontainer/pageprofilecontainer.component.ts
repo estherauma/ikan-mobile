@@ -7,9 +7,10 @@ import { ProfilesDataService } from 'src/app/profiles/data/profiles-data.service
 
 
 @Component({
-  selector: 'app-pageprofilecontainer',
-  templateUrl: './pageprofilecontainer.component.html',
-  styleUrls: ['./pageprofilecontainer.component.scss'],
+    selector: 'app-pageprofilecontainer',
+    templateUrl: './pageprofilecontainer.component.html',
+    styleUrls: ['./pageprofilecontainer.component.scss'],
+    standalone: false
 })
 export class PageprofilecontainerComponent implements OnInit {
   commonText: any;

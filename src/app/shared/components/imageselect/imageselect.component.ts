@@ -5,9 +5,10 @@ import { ModalController } from '@ionic/angular';
 import { CameraSource } from '@capacitor/camera';
 
 @Component({
-  selector: 'app-imageselect',
-  templateUrl: './imageselect.component.html',
-  styleUrls: ['./imageselect.component.scss'],
+    selector: 'app-imageselect',
+    templateUrl: './imageselect.component.html',
+    styleUrls: ['./imageselect.component.scss'],
+    standalone: false
 })
 export class ImageselectComponent implements OnInit {
   addImage = '';

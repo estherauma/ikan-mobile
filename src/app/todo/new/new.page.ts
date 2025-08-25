@@ -3,9 +3,10 @@ import { ModalController } from '@ionic/angular';
 import { BadgeinfoPage } from '../badgeinfo/badgeinfo.page';
 
 @Component({
-  selector: 'app-new',
-  templateUrl: './new.page.html',
-  styleUrls: ['./new.page.scss'],
+    selector: 'app-new',
+    templateUrl: './new.page.html',
+    styleUrls: ['./new.page.scss'],
+    standalone: false
 })
 export class NewPage implements OnInit {
   todos = new Array(4).fill(

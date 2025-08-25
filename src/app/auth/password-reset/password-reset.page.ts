@@ -9,9 +9,10 @@ import { ContentService } from 'src/app/shared/services/content/content.service'
 import { SharedmethodsService } from 'src/app/shared/services/sharedmethods/sharedmethods.service';
 
 @Component({
-  selector: 'app-password-reset',
-  templateUrl: './password-reset.page.html',
-  styleUrls: ['./password-reset.page.scss'],
+    selector: 'app-password-reset',
+    templateUrl: './password-reset.page.html',
+    styleUrls: ['./password-reset.page.scss'],
+    standalone: false
 })
 export class PasswordResetPage extends BaseformPage implements OnInit {
   title='';

@@ -17,9 +17,10 @@ type GroupedVesselPayments = {
 };
 
 @Component({
-  selector: 'app-vessel-payments',
-  templateUrl: './vessel-payments.page.html',
-  styleUrls: ['./vessel-payments.page.scss'],
+    selector: 'app-vessel-payments',
+    templateUrl: './vessel-payments.page.html',
+    styleUrls: ['./vessel-payments.page.scss'],
+    standalone: false
 })
 export class VesselPaymentsPage implements OnInit {
   commonText: any;

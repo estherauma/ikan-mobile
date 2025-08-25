@@ -3,9 +3,10 @@ import { Router, NavigationStart } from '@angular/router';
 import { Subscription } from 'rxjs';
 
 @Component({
-  selector: 'app-audio-button',
-  templateUrl: './audio-button.component.html',
-  styleUrls: ['./audio-button.component.scss'],
+    selector: 'app-audio-button',
+    templateUrl: './audio-button.component.html',
+    styleUrls: ['./audio-button.component.scss'],
+    standalone: false
 })
 export class AudioButtonComponent  implements OnInit {
 

@@ -5,9 +5,10 @@ import { ContentService } from 'src/app/shared/services/content/content.service'
 import { SharedmethodsService } from 'src/app/shared/services/sharedmethods/sharedmethods.service';
 
 @Component({
-  selector: 'app-terms-of-use',
-  templateUrl: './terms-of-use.page.html',
-  styleUrls: ['./terms-of-use.page.scss'],
+    selector: 'app-terms-of-use',
+    templateUrl: './terms-of-use.page.html',
+    styleUrls: ['./terms-of-use.page.scss'],
+    standalone: false
 })
 export class TermsOfUsePage implements OnInit {
   pageContent: any;

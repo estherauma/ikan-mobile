@@ -5,9 +5,10 @@ import { ContentService } from 'src/app/shared/services/content/content.service'
 import { SharedmethodsService } from 'src/app/shared/services/sharedmethods/sharedmethods.service';
 
 @Component({
-  selector: 'app-payment',
-  templateUrl: './payment.page.html',
-  styleUrls: ['./payment.page.scss'],
+    selector: 'app-payment',
+    templateUrl: './payment.page.html',
+    styleUrls: ['./payment.page.scss'],
+    standalone: false
 })
 export class PaymentPage extends BaseformPage implements OnInit {
 

@@ -7,9 +7,10 @@ import { SharedmethodsService } from 'src/app/shared/services/sharedmethods/shar
 import { WorkordersDataService } from '../../data/workorders-data.service';
 
 @Component({
-  selector: 'app-create-details',
-  templateUrl: './create-details.page.html',
-  styleUrls: ['./create-details.page.scss'],
+    selector: 'app-create-details',
+    templateUrl: './create-details.page.html',
+    styleUrls: ['./create-details.page.scss'],
+    standalone: false
 })
 export class CreateDetailsPage extends BaseformPage implements OnInit {
   workOrderId: any;

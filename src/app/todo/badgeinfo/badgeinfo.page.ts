@@ -2,9 +2,10 @@ import { Component, OnInit } from '@angular/core';
 import { ModalController } from '@ionic/angular';
 
 @Component({
-  selector: 'app-badgeinfo',
-  templateUrl: './badgeinfo.page.html',
-  styleUrls: ['./badgeinfo.page.scss'],
+    selector: 'app-badgeinfo',
+    templateUrl: './badgeinfo.page.html',
+    styleUrls: ['./badgeinfo.page.scss'],
+    standalone: false
 })
 export class BadgeinfoPage implements OnInit {
   completed;

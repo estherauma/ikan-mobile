@@ -2,9 +2,10 @@ import { Component, Input, OnInit } from '@angular/core';
 import { SharedmethodsService } from '../../services/sharedmethods/sharedmethods.service';
 
 @Component({
-  selector: 'app-rich-text',
-  templateUrl: './rich-text.component.html',
-  styleUrls: ['./rich-text.component.scss'],
+    selector: 'app-rich-text',
+    templateUrl: './rich-text.component.html',
+    styleUrls: ['./rich-text.component.scss'],
+    standalone: false
 })
 export class RichTextComponent  implements OnInit {
 
