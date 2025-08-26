@@ -10,9 +10,10 @@ import { PageEventNames } from 'src/app/shared/services/analytics/event-names';
 import { SyncService } from 'src/app/shared/services/sync/sync.service';
 
 @Component({
-  selector: 'app-create',
-  templateUrl: './create.page.html',
-  styleUrls: ['./create.page.scss'],
+    selector: 'app-create',
+    templateUrl: './create.page.html',
+    styleUrls: ['./create.page.scss'],
+    standalone: false
 })
 export class CreatePage extends BaseformPage implements OnInit {
   isEditing: boolean = false;

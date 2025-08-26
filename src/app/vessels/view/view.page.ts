@@ -8,9 +8,10 @@ import { PageEventNames } from 'src/app/shared/services/analytics/event-names';
 import { SharedmethodsService } from 'src/app/shared/services/sharedmethods/sharedmethods.service';
 
 @Component({
-  selector: 'app-view',
-  templateUrl: './view.page.html',
-  styleUrls: ['./view.page.scss'],
+    selector: 'app-view',
+    templateUrl: './view.page.html',
+    styleUrls: ['./view.page.scss'],
+    standalone: false
 })
 export class ViewPage implements OnInit {
   pageTitle = 'Vessel Details';

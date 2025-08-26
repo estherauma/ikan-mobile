@@ -8,9 +8,10 @@ import { ContentService } from 'src/app/shared/services/content/content.service'
 import { SharedmethodsService } from 'src/app/shared/services/sharedmethods/sharedmethods.service';
 
 @Component({
-  selector: 'app-create-password',
-  templateUrl: './create-password.page.html',
-  styleUrls: ['./create-password.page.scss'],
+    selector: 'app-create-password',
+    templateUrl: './create-password.page.html',
+    styleUrls: ['./create-password.page.scss'],
+    standalone: false
 })
 export class CreatePasswordPage extends BaseformPage implements OnInit {
   title='';

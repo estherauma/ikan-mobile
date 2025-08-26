@@ -4,9 +4,10 @@ import { NavigationStart, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 
 @Component({
-  selector: 'app-video-button',
-  templateUrl: './video-button.component.html',
-  styleUrls: ['./video-button.component.scss'],
+    selector: 'app-video-button',
+    templateUrl: './video-button.component.html',
+    styleUrls: ['./video-button.component.scss'],
+    standalone: false
 })
 export class VideoButtonComponent  implements OnInit {
 

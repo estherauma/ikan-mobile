@@ -5,13 +5,17 @@
 
   <ion-card>
     <ion-card-content>
-        <ion-grid *ngFor = "let item of documentation">
+      @for (item of documentation; track item) {
+        <ion-grid>
           <ion-item text-wrap>
             <ion-checkbox slot="start" [checked]="item.checked"></ion-checkbox>
             <ion-label>{{item.label}}</ion-label>
           </ion-item>
-          <ion-button color="medium" *ngIf="item.showReminderButton">{{ commonText?.setReminder }}</ion-button>
+          @if (item.showReminderButton) {
+            <ion-button color="medium">{{ commonText?.setReminder }}</ion-button>
+          }
         </ion-grid>
+      }
     </ion-card-content>
   </ion-card>
 

@@ -3,9 +3,10 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { ContentService } from 'src/app/shared/services/content/content.service';
 
 @Component({
-  selector: 'app-details',
-  templateUrl: './details.page.html',
-  styleUrls: ['./details.page.scss'],
+    selector: 'app-details',
+    templateUrl: './details.page.html',
+    styleUrls: ['./details.page.scss'],
+    standalone: false
 })
 export class DetailsPage implements OnInit {
   imageUrl = '';

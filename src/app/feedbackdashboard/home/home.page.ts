@@ -4,9 +4,10 @@ import { SharedmethodsService } from 'src/app/shared/services/sharedmethods/shar
 import { Content } from 'src/app/shared/types/api-types';
 
 @Component({
-  selector: 'app-home',
-  templateUrl: './home.page.html',
-  styleUrls: ['./home.page.scss'],
+    selector: 'app-home',
+    templateUrl: './home.page.html',
+    styleUrls: ['./home.page.scss'],
+    standalone: false
 })
 export class HomePage implements OnInit {
   pageTitle = 'Feedback Dashboard';

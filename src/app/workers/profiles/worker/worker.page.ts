@@ -6,9 +6,10 @@ import { ContentService } from 'src/app/shared/services/content/content.service'
 import { SharedmethodsService } from 'src/app/shared/services/sharedmethods/sharedmethods.service';
 
 @Component({
-  selector: 'app-worker',
-  templateUrl: './worker.page.html',
-  styleUrls: ['./worker.page.scss'],
+    selector: 'app-worker',
+    templateUrl: './worker.page.html',
+    styleUrls: ['./worker.page.scss'],
+    standalone: false
 })
 export class WorkerPage implements OnInit {
   commonText: any;

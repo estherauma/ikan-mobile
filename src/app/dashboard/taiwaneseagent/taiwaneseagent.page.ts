@@ -6,9 +6,10 @@ import { PushNotificationsService } from 'src/app/shared/services/push-notificat
 import { SharedmethodsService } from 'src/app/shared/services/sharedmethods/sharedmethods.service';
 
 @Component({
-  selector: 'app-taiwaneseagent',
-  templateUrl: './taiwaneseagent.page.html',
-  styleUrls: ['./taiwaneseagent.page.scss'],
+    selector: 'app-taiwaneseagent',
+    templateUrl: './taiwaneseagent.page.html',
+    styleUrls: ['./taiwaneseagent.page.scss'],
+    standalone: false
 })
 export class TaiwaneseagentPage implements OnInit {
 

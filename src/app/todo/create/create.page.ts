@@ -6,9 +6,10 @@ import { ContentService } from 'src/app/shared/services/content/content.service'
 import { SharedmethodsService } from 'src/app/shared/services/sharedmethods/sharedmethods.service';
 
 @Component({
-  selector: 'app-create',
-  templateUrl: './create.page.html',
-  styleUrls: ['./create.page.scss'],
+    selector: 'app-create',
+    templateUrl: './create.page.html',
+    styleUrls: ['./create.page.scss'],
+    standalone: false
 })
 export class CreatePage extends BaseformPage implements OnInit {
 

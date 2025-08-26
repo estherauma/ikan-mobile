@@ -3,9 +3,10 @@ import { Component, Input, OnInit } from '@angular/core';
 
 export type ProgressBarType = 'warning' | 'success' | 'primary';
 @Component({
-  selector: 'app-progressbar',
-  templateUrl: './progressbar.component.html',
-  styleUrls: ['./progressbar.component.scss'],
+    selector: 'app-progressbar',
+    templateUrl: './progressbar.component.html',
+    styleUrls: ['./progressbar.component.scss'],
+    standalone: false
 })
 export class ProgressbarComponent implements OnInit {
   @Input() value = '100';

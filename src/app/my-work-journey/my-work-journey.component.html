@@ -44,37 +44,44 @@
         Start
       </ion-chip>
     </div>
-    
+
     <div class="steps" [ngClass]="{'first-step-inactive': !journeyItems[0]?.isActive}">
-      <ion-row *ngFor="let item of journeyItems" class="step">
-        <ion-col size="4" class="icon-col">
-          <div *ngIf="item?.isActive" class="outer-icon-wrapper">
-            <div class="icon-wrapper active-icon" (click)="onClick(item?.route)">
-              <!-- <ion-icon [src]="item?.icon"></ion-icon> -->
-              <ion-icon name="person-outline"></ion-icon>
-            </div>
-          </div>
-          <!-- TODO: add disabled-icon class to inactive & incomplete item -->
-          <div
-            *ngIf="!item?.isActive"
-            class="icon-wrapper inactive-icon disabled-icon"
-            (click)="onClick(item?.route)"
+      @for (item of journeyItems; track item) {
+        <ion-row class="step">
+          <ion-col size="4" class="icon-col">
+            @if (item?.isActive) {
+              <div class="outer-icon-wrapper">
+                <div class="icon-wrapper active-icon" (click)="onClick(item?.route)">
+                  <!-- <ion-icon [src]="item?.icon"></ion-icon> -->
+                  <ion-icon name="person-outline"></ion-icon>
+                </div>
+              </div>
+            }
+            <!-- TODO: add disabled-icon class to inactive & incomplete item -->
+            @if (!item?.isActive) {
+              <div
+                class="icon-wrapper inactive-icon disabled-icon"
+                (click)="onClick(item?.route)"
             [ngClass]="{
               'disabled-icon': !item?.isActive && !item?.isCompleted,
               'inactive-icon': !item?.isActive && !item?.isCompleted
             }"
-          >
-            <!-- <ion-icon [src]="item?.icon"></ion-icon> -->
-            <ion-icon name="person-outline"></ion-icon>
-          </div>
-        </ion-col>
-        <ion-col size="8" class="text-col">
-          <div *ngIf="item?.isActive" class="text-wrapper">
-            <h4>{{ item?.title }}</h4>
-            <p>{{ item?.description }}</p>
-          </div>
-        </ion-col>
-      </ion-row>
+                >
+                <!-- <ion-icon [src]="item?.icon"></ion-icon> -->
+                <ion-icon name="person-outline"></ion-icon>
+              </div>
+            }
+          </ion-col>
+          <ion-col size="8" class="text-col">
+            @if (item?.isActive) {
+              <div class="text-wrapper">
+                <h4>{{ item?.title }}</h4>
+                <p>{{ item?.description }}</p>
+              </div>
+            }
+          </ion-col>
+        </ion-row>
+      }
     </div>
   </div>
 </ion-content>

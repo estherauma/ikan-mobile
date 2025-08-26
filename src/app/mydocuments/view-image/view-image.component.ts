@@ -4,9 +4,10 @@ import { SharedmethodsService } from 'src/app/shared/services/sharedmethods/shar
 import { DocumentType } from 'src/app/shared/types/types';
 
 @Component({
-  selector: 'app-view-image',
-  templateUrl: './view-image.component.html',
-  styleUrls: ['./view-image.component.scss'],
+    selector: 'app-view-image',
+    templateUrl: './view-image.component.html',
+    styleUrls: ['./view-image.component.scss'],
+    standalone: false
 })
 export class ViewImageComponent  implements OnInit {
   imageFile: DocumentType; 

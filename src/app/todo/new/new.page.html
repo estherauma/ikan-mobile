@@ -2,26 +2,28 @@
 <ion-content>
   <h1 class="ion-padding">New</h1>
   <div class="content">
-    <ion-item (click)="onDetails()" lines="none" *ngFor="let todo of todos">
-      <ion-checkbox slot="start" ></ion-checkbox>
-      <ion-card>
-        <ion-card-content>
-          <ion-grid>
-            <ion-row class="ion-align-items-center">
-              <ion-col size="2">
-                <ion-icon name="expand-outline" size="large"></ion-icon>
-              </ion-col>
-              <ion-col size="8">
-                <ion-card-title>{{todo.name}}</ion-card-title>
-                <ion-label>{{todo.detail}}</ion-label>
-              </ion-col>
-              <ion-col size="1">
-                <ion-icon name="chevron-forward-outline" size="large"></ion-icon>
-              </ion-col>
-            </ion-row>
-          </ion-grid>
-        </ion-card-content>
-      </ion-card>
-    </ion-item>
+    @for (todo of todos; track todo) {
+      <ion-item (click)="onDetails()" lines="none">
+        <ion-checkbox slot="start" ></ion-checkbox>
+        <ion-card>
+          <ion-card-content>
+            <ion-grid>
+              <ion-row class="ion-align-items-center">
+                <ion-col size="2">
+                  <ion-icon name="expand-outline" size="large"></ion-icon>
+                </ion-col>
+                <ion-col size="8">
+                  <ion-card-title>{{todo.name}}</ion-card-title>
+                  <ion-label>{{todo.detail}}</ion-label>
+                </ion-col>
+                <ion-col size="1">
+                  <ion-icon name="chevron-forward-outline" size="large"></ion-icon>
+                </ion-col>
+              </ion-row>
+            </ion-grid>
+          </ion-card-content>
+        </ion-card>
+      </ion-item>
+    }
   </div>
 </ion-content>

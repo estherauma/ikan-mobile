@@ -8,38 +8,42 @@
           <ion-text><h1>{{ commonText?.trainingStatus }}</h1></ion-text>
         </ion-col>
         <ion-col size="4">
-            <app-chart chartType="doughnut" [chartDatasets]="datasets"></app-chart>
+          <app-chart chartType="doughnut" [chartDatasets]="datasets"></app-chart>
         </ion-col>
-      </ion-row> 
+      </ion-row>
     </div>
     <div class="ion-padding-vertical">
-      <ion-grid *ngFor="let trainingStatus of trainingStatuses">
-        <ion-row>
-          <ion-col size="12">
-            <ion-label>{{trainingStatus.title}}</ion-label>
-          </ion-col>
-        </ion-row>
-        <ion-row class="ion-align-items-center">
-          <ion-col size="10"><ion-progress-bar [value]="trainingStatus.percentage/100"></ion-progress-bar></ion-col>
-          <ion-col size="2">{{trainingStatus.percentage}}%</ion-col>
-        </ion-row>
-      </ion-grid>
+      @for (trainingStatus of trainingStatuses; track trainingStatus) {
+        <ion-grid>
+          <ion-row>
+            <ion-col size="12">
+              <ion-label>{{trainingStatus.title}}</ion-label>
+            </ion-col>
+          </ion-row>
+          <ion-row class="ion-align-items-center">
+            <ion-col size="10"><ion-progress-bar [value]="trainingStatus.percentage/100"></ion-progress-bar></ion-col>
+            <ion-col size="2">{{trainingStatus.percentage}}%</ion-col>
+          </ion-row>
+        </ion-grid>
+      }
       <div class="ion-padding">
         <ion-text><h3>{{ commonText?.BP2miTrainingDocument }}</h3></ion-text>
         <ion-text> {{ commonText?.status }}: Complete <a> {{ commonText?.viewDoc }}</a></ion-text>
       </div>
       <ion-text><h1 class="ion-padding-start">{{ commonText?.learningHub }}</h1></ion-text>
-      <ion-grid *ngFor="let learningHubStatus of learningHubStatuses">
-        <ion-row>
-          <ion-col size="12">
-            <ion-label>{{learningHubStatus.title}}</ion-label>
-          </ion-col>
-        </ion-row>
-        <ion-row class="ion-align-items-center">
-          <ion-col size="10"><ion-progress-bar [value]="learningHubStatus.percentage/100"></ion-progress-bar></ion-col>
-          <ion-col size="2">{{learningHubStatus.percentage}}%</ion-col>
-        </ion-row>
-      </ion-grid>
+      @for (learningHubStatus of learningHubStatuses; track learningHubStatus) {
+        <ion-grid>
+          <ion-row>
+            <ion-col size="12">
+              <ion-label>{{learningHubStatus.title}}</ion-label>
+            </ion-col>
+          </ion-row>
+          <ion-row class="ion-align-items-center">
+            <ion-col size="10"><ion-progress-bar [value]="learningHubStatus.percentage/100"></ion-progress-bar></ion-col>
+            <ion-col size="2">{{learningHubStatus.percentage}}%</ion-col>
+          </ion-row>
+        </ion-grid>
+      }
     </div>
     <div class="ion-padding"  style="background-color: #F5F5F5;">
       <ion-text><h1>{{ commonText?.audioNotes }}</h1></ion-text>
@@ -56,20 +60,22 @@
         </ion-row>
       </div>
       <div class="ion-padding-vertical">
-        <ion-row *ngFor="let audioRecording of audioRecordings" class="ion-justify-content-between ion-align-items-center">
-          <ion-col size="12"><ion-label>{{audioRecording.name}}</ion-label></ion-col>
-          <ion-col size="6">
+        @for (audioRecording of audioRecordings; track audioRecording) {
+          <ion-row class="ion-justify-content-between ion-align-items-center">
+            <ion-col size="12"><ion-label>{{audioRecording.name}}</ion-label></ion-col>
+            <ion-col size="6">
               <div>
                 <audio controls autobuffer="autobuffer">
                   <source [src]="audioRecording.file">
                   {{ commonText?.browserDoesnotSupportAudioTag }}
                 </audio>
               </div>
-          </ion-col>
-          <ion-col size="2">
-            <ion-icon (click)="onDelete(audioRecording.uniqueName)" size="large" name="trash-outline"></ion-icon>
-          </ion-col>
-        </ion-row>
+            </ion-col>
+            <ion-col size="2">
+              <ion-icon (click)="onDelete(audioRecording.uniqueName)" size="large" name="trash-outline"></ion-icon>
+            </ion-col>
+          </ion-row>
+        }
       </div>
     </div>
   </div>

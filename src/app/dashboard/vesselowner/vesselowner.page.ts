@@ -8,9 +8,10 @@ import { SharedmethodsService } from 'src/app/shared/services/sharedmethods/shar
 import { StorageKeys } from 'src/app/shared/types/api-types';
 
 @Component({
-  selector: 'app-vesselowner',
-  templateUrl: './vesselowner.page.html',
-  styleUrls: ['./vesselowner.page.scss'],
+    selector: 'app-vesselowner',
+    templateUrl: './vesselowner.page.html',
+    styleUrls: ['./vesselowner.page.scss'],
+    standalone: false
 })
 export class VesselownerPage implements OnInit {
   sLists = [

@@ -20,9 +20,10 @@ import { ApiService } from './shared/services/api/api.service';
 import { AnalyticsService } from './shared/services/analytics/analytics.service';
 
 @Component({
-  selector: 'app-root',
-  templateUrl: 'app.component.html',
-  styleUrls: ['app.component.scss'],
+    selector: 'app-root',
+    templateUrl: 'app.component.html',
+    styleUrls: ['app.component.scss'],
+    standalone: false
 })
 export class AppComponent implements OnInit, OnDestroy {
   public appPages = [];

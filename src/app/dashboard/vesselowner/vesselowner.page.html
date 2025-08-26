@@ -1,11 +1,11 @@
 <app-header
   [showBackButton]="false"
->
+  >
 </app-header>
 
 <ion-content>
   <div class="content-container">
-    <app-dashboardelcomesection 
+    <app-dashboardelcomesection
       [greeting]="welcomeText"
       [name]="name"
       (onProfileClick)="goToProfile()"
@@ -13,22 +13,24 @@
     </app-dashboardelcomesection>
 
     <div class="ion-padding page-content">
-      <ion-card *ngFor="let sList of sLists">
-        <ion-card-content [routerLink]="sList.url">
-          <ion-grid>
-            <ion-row>
-              <ion-col size="2">
-                <div class="img-wrapper">
-                  <ion-img [src]="sList.icon" />
-                </div>
-              </ion-col>
-              <ion-col size="10">
-                <ion-card-title>{{sList.title}}</ion-card-title>
-              </ion-col>
-            </ion-row>
-          </ion-grid>
-        </ion-card-content>
-      </ion-card>
+      @for (sList of sLists; track sList) {
+        <ion-card>
+          <ion-card-content [routerLink]="sList.url">
+            <ion-grid>
+              <ion-row>
+                <ion-col size="2">
+                  <div class="img-wrapper">
+                    <ion-img [src]="sList.icon" />
+                  </div>
+                </ion-col>
+                <ion-col size="10">
+                  <ion-card-title>{{sList.title}}</ion-card-title>
+                </ion-col>
+              </ion-row>
+            </ion-grid>
+          </ion-card-content>
+        </ion-card>
+      }
     </div>
   </div>
 </ion-content>

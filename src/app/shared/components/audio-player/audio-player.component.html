@@ -1,8 +1,8 @@
 <div>
   <div>
     <audio #audioPlayer [src]="audioSrc"></audio>
-    <div 
-      class="with-white-bg-and-title" 
+    <div
+      class="with-white-bg-and-title"
       [ngClass]="{
         'white-bg-title-photo': variant === 'white-bg-title-photo',
         'white-bg-title': variant === 'white-bg-title',
@@ -10,27 +10,38 @@
         'gray-bg': variant === 'gray-bg',
         'thin': size === 'thin'
       }"
-    >
-      <h2 *ngIf="title" class="title">{{title}}</h2>
-      <div *ngIf="variant === 'white-bg-title-photo'" class="image-section">
-
-      </div>
+      >
+      @if (title) {
+        <h2 class="title">{{title}}</h2>
+      }
+      @if (variant === 'white-bg-title-photo') {
+        <div class="image-section">
+        </div>
+      }
       <div class="audio-controls-wrapper with-white-bg">
 
         <div class="section">
-            <ion-img *ngIf="!playing" (click)="playAudio()" src="/assets/icon/audio_play_blue.svg"></ion-img>
-            <ion-img *ngIf="playing"  (click)="pauseAudio()" src="/assets/icon/pause_blue.svg"></ion-img>
-            <small class="duration-left">{{ currentTime }}</small>
+          @if (!playing) {
+            <ion-img (click)="playAudio()" src="/assets/icon/audio_play_blue.svg"></ion-img>
+          }
+          @if (playing) {
+            <ion-img  (click)="pauseAudio()" src="/assets/icon/pause_blue.svg"></ion-img>
+          }
+          <small class="duration-left">{{ currentTime }}</small>
         </div>
-  
+
         <div class="progress-section">
           <ion-progress-bar [value]="progress"></ion-progress-bar>
         </div>
-  
+
         <div class="section">
-            <small class="duration-right">{{ duration }}</small>
-            <ion-img (click)="muteAudio()" *ngIf="!isMuted" src="/assets/icon/speaker_gray.svg"></ion-img>
-            <ion-img *ngIf="isMuted" (click)="unmuteAudio()" src="/assets/icon/muted_speaker_grey.svg"></ion-img>
+          <small class="duration-right">{{ duration }}</small>
+          @if (!isMuted) {
+            <ion-img (click)="muteAudio()" src="/assets/icon/speaker_gray.svg"></ion-img>
+          }
+          @if (isMuted) {
+            <ion-img (click)="unmuteAudio()" src="/assets/icon/muted_speaker_grey.svg"></ion-img>
+          }
         </div>
       </div>
     </div>

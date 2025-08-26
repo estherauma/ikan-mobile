@@ -5,9 +5,10 @@ import { SharedmethodsService } from 'src/app/shared/services/sharedmethods/shar
 import { StorageKeys } from 'src/app/shared/types/api-types';
 
 @Component({
-  selector: 'app-select-language',
-  templateUrl: './select-language.component.html',
-  styleUrls: ['./select-language.component.scss'],
+    selector: 'app-select-language',
+    templateUrl: './select-language.component.html',
+    styleUrls: ['./select-language.component.scss'],
+    standalone: false
 })
 export class SelectLanguageComponent  implements OnInit {
   availableLanguages: any = [];

@@ -1,9 +1,4 @@
-import {
-  CUSTOM_ELEMENTS_SCHEMA,
-  NgModule,
-  ErrorHandler,
-  APP_INITIALIZER,
-} from '@angular/core';
+import { CUSTOM_ELEMENTS_SCHEMA, NgModule, ErrorHandler, inject, provideAppInitializer } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { RouteReuseStrategy, Router } from '@angular/router';
 import { IonicModule, IonicRouteStrategy } from '@ionic/angular';
@@ -49,12 +44,9 @@ import { GlobalHttpInterceptor } from './shared/services/error-handler/global-ht
       useValue: Sentry.createErrorHandler({ showDialog: false }),
     },
     { provide: Sentry.TraceService, deps: [Router] },
-    {
-      provide: APP_INITIALIZER,
-      useFactory: () => () => {},
-      deps: [Sentry.TraceService],
-      multi: true,
-    },
+    provideAppInitializer(() => {
+        inject(Sentry.TraceService);
+      }),
     {
       provide: HTTP_INTERCEPTORS,
       useClass: GlobalHttpInterceptor,

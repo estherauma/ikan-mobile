@@ -4,9 +4,10 @@ import { ContentService } from '../../services/content/content.service';
 import { SharedmethodsService } from '../../services/sharedmethods/sharedmethods.service';
 
 @Component({
-  selector: 'app-vesselownercard',
-  templateUrl: './vesselownercard.component.html',
-  styleUrls: ['./vesselownercard.component.scss'],
+    selector: 'app-vesselownercard',
+    templateUrl: './vesselownercard.component.html',
+    styleUrls: ['./vesselownercard.component.scss'],
+    standalone: false
 })
 export class VesselownercardComponent implements OnInit {
   commonText;

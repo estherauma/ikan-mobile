@@ -2,9 +2,10 @@ import { Component, Input, OnInit } from '@angular/core';
 import { ContentService } from '../../services/content/content.service';
 
 @Component({
-  selector: 'app-documentupload',
-  templateUrl: './documentupload.component.html',
-  styleUrls: ['./documentupload.component.scss'],
+    selector: 'app-documentupload',
+    templateUrl: './documentupload.component.html',
+    styleUrls: ['./documentupload.component.scss'],
+    standalone: false
 })
 export class DocumentuploadComponent implements OnInit {
   commonText: any;

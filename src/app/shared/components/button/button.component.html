@@ -1,23 +1,25 @@
 <ion-button
   id="app-btn"
-  [shape]="shape" 
-  [fill]="fill" 
-  (click)="onClick ? onButtonClick() :  null" 
+  [shape]="shape"
+  [fill]="fill"
+  (click)="onClick ? onButtonClick() :  null"
   [size]="size"
   [disabled]="disabled"
   [class]="customClasses"
   [color]="color"
   [type]="type"
->
-  <ion-icon
-    *ngIf="iconPosition === 'left' && iconName"
-    [name]="iconName"
-    class="ion-margin-end"
-  ></ion-icon>
+  >
+  @if (iconPosition === 'left' && iconName) {
+    <ion-icon
+      [name]="iconName"
+      class="ion-margin-end"
+    ></ion-icon>
+  }
   <span>{{title}}</span>
-  <ion-icon
-    *ngIf="iconPosition === 'right' && iconName"
-    [name]="iconName"
-    class="ion-margin-start"
-  ></ion-icon>
+  @if (iconPosition === 'right' && iconName) {
+    <ion-icon
+      [name]="iconName"
+      class="ion-margin-start"
+    ></ion-icon>
+  }
 </ion-button>

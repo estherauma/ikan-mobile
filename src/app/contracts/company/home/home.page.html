@@ -22,47 +22,50 @@
       </ion-grid>
 
 
-    <div>
-      <app-search
-        [searchDataSet]="contracts"
-        (searchResult)="searchResult($event)"
+      <div>
+        <app-search
+          [searchDataSet]="contracts"
+          (searchResult)="searchResult($event)"
         (clear)="clearSearchResult()"></app-search>
-      <ion-grid>
-        <ion-row>
-          <ion-text class="filter-title">{{ commonText?.filter}}</ion-text>
-        </ion-row>
-        <ion-row>
-          <ion-col>
-            <app-filter type="deep-blue-90"
-              filterProperty="status"
-              [options]="filterOptions"
-              [filterDataSet]="contracts"
-              (filterResult)="filterResult($event)"
-            ></app-filter>
-          </ion-col>
+        <ion-grid>
+          <ion-row>
+            <ion-text class="filter-title">{{ commonText?.filter}}</ion-text>
+          </ion-row>
+          <ion-row>
+            <ion-col>
+              <app-filter type="deep-blue-90"
+                filterProperty="status"
+                [options]="filterOptions"
+                [filterDataSet]="contracts"
+                (filterResult)="filterResult($event)"
+              ></app-filter>
+            </ion-col>
 
-          <ion-col>
-            <app-filter 
-              type="deep-blue-90"
-              filterProperty="status"
-              [options]="filterOptions"
-              [filterDataSet]="contracts"
-              (filterResult)="filterResult($event)"
-            ></app-filter>
-          </ion-col>
-        </ion-row>
-      </ion-grid>
+            <ion-col>
+              <app-filter
+                type="deep-blue-90"
+                filterProperty="status"
+                [options]="filterOptions"
+                [filterDataSet]="contracts"
+                (filterResult)="filterResult($event)"
+              ></app-filter>
+            </ion-col>
+          </ion-row>
+        </ion-grid>
+      </div>
     </div>
-  </div>
 
-  <div *ngFor="let contract of contracts" >
-      <app-companycontractcard
-        *ngIf="contract.type === 'Company'"
-        [title]="contract.name"
-        [contract]="contract"
-        [vessel]="contract.vesselOwnerCompany" 
-        [dates]="getContractDates(contract)"
-      ></app-companycontractcard>
-    </div>
+    @for (contract of contracts; track contract) {
+      <div >
+        @if (contract.type === 'Company') {
+          <app-companycontractcard
+            [title]="contract.name"
+            [contract]="contract"
+            [vessel]="contract.vesselOwnerCompany"
+            [dates]="getContractDates(contract)"
+          ></app-companycontractcard>
+        }
+      </div>
+    }
   </app-contentwrapper>
 </ion-content>

@@ -1,24 +1,27 @@
 <ion-toolbar class="ion-padding">
-  <h3 *ngIf="isEditing">{{ editClauseText | uppercase }}</h3>
+  @if (isEditing) {
+    <h3>{{ editClauseText | uppercase }}</h3>
+  }
   <ion-text tex-wrap>{{ pageTitle }}</ion-text>
 </ion-toolbar>
 
 <ion-content class="ion-padding">
   <div class="inner-content">
-    <p
-      *ngIf="isPartyBForm && !vessels?.length"
-      class="no-vessels-text"
-    >
-    {{noVesselsText}}
-    </p>
+    @if (isPartyBForm && !vessels?.length) {
+      <p
+        class="no-vessels-text"
+        >
+        {{noVesselsText}}
+      </p>
+    }
     <app-form
       class="create-clause-detail"
       [tunaFormGroup]="pageFormGroup"
       [tunaFormquestions]="formQuestions"
       [submitButtonText]="submitButtonText"
       (formValue)="onSubmit($event)"
-    >
+      >
     </app-form>
   </div>
-  
+
 </ion-content>

@@ -7,9 +7,10 @@ import { SurveyDataService } from 'src/app/survey/data/survey-data.service';
 import { QuestionComponent } from '../question/question.component';
 
 @Component({
-  selector: 'app-quiz',
-  templateUrl: './quiz.component.html',
-  styleUrls: ['./quiz.component.scss'],
+    selector: 'app-quiz',
+    templateUrl: './quiz.component.html',
+    styleUrls: ['./quiz.component.scss'],
+    standalone: false
 })
 export class QuizComponent  implements OnInit {
 

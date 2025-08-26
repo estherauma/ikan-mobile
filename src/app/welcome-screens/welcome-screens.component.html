@@ -2,64 +2,66 @@
   <!-- Hidden audio element -->
   <audio #audioPlayer [src]="audioUrl" hidden>
   </audio>
-  
-  <swiper-container
-    #swiper
-    *ngIf="slides?.length"
-    id="welcome_swiper_element"
-    [slidesPerView]="1"
-    [spaceBetween]="20"
-    [centeredSlides]="true"
-    (swiperslidechange)="onSlideChange($event)"
-  >
-    <swiper-slide
-      *ngFor="let slide of slides; let idx = index;"
-      class="slide"
-    >
-      <div class="slider-header">
-        <ion-row>
-          <ion-col *ngIf="slide?.slideAudio?.url" class="audio-col">
-            <ion-icon
-              class="audio-icon"
-              name="volume-high"
-              (click)="playAudio(slide?.slideAudio?.url)"
-            ></ion-icon>
-          </ion-col>
-          <ion-col class="skip-col">
-            <a (click)="skipWelcomeScreens(idx, slide)">
-              <span>{{ commonText?.skip }}</span>
-              <ion-icon name="chevron-forward-outline"></ion-icon>
-              <ion-icon name="chevron-forward-outline" class="icon-2"></ion-icon>
-            </a>
-          </ion-col>
-        </ion-row>
-      </div>
-      
-      <div class="slide-content">
-        <app-rich-text [textContent]="slide?.slideContent"></app-rich-text>
-      </div>
-      
-      <div 
-        class="buttons-wrapper"
-        [ngClass]="{'show-prev': idx > 0}"
-      >
-        <ion-button
-          *ngIf="idx > 0"
-          class="prev-btn"
-          shape="round"
-          (click)="goToPreviousSlide()"
-        >
-          {{ commonText?.previous }}
-        </ion-button>
 
-        <ion-button 
-          class="next-btn"
-          shape="round"
-          (click)="idx === slides?.length - 1 ? exitWelcomeScreens() : goToNextSlide()"
-        >
-          {{ idx === slides?.length - 1 ? commonText?.ok : commonText?.next }}
-        </ion-button>
-      </div>
-    </swiper-slide>
-  </swiper-container>
+  @if (slides?.length) {
+    <swiper-container
+      #swiper
+      id="welcome_swiper_element"
+      [slidesPerView]="1"
+      [spaceBetween]="20"
+      [centeredSlides]="true"
+      (swiperslidechange)="onSlideChange($event)"
+      >
+      @for (slide of slides; track slide; let idx = $index) {
+        <swiper-slide
+          class="slide"
+          >
+          <div class="slider-header">
+            <ion-row>
+              @if (slide?.slideAudio?.url) {
+                <ion-col class="audio-col">
+                  <ion-icon
+                    class="audio-icon"
+                    name="volume-high"
+                    (click)="playAudio(slide?.slideAudio?.url)"
+                  ></ion-icon>
+                </ion-col>
+              }
+              <ion-col class="skip-col">
+                <a (click)="skipWelcomeScreens(idx, slide)">
+                  <span>{{ commonText?.skip }}</span>
+                  <ion-icon name="chevron-forward-outline"></ion-icon>
+                  <ion-icon name="chevron-forward-outline" class="icon-2"></ion-icon>
+                </a>
+              </ion-col>
+            </ion-row>
+          </div>
+          <div class="slide-content">
+            <app-rich-text [textContent]="slide?.slideContent"></app-rich-text>
+          </div>
+          <div
+            class="buttons-wrapper"
+            [ngClass]="{'show-prev': idx > 0}"
+            >
+            @if (idx > 0) {
+              <ion-button
+                class="prev-btn"
+                shape="round"
+                (click)="goToPreviousSlide()"
+                >
+                {{ commonText?.previous }}
+              </ion-button>
+            }
+            <ion-button
+              class="next-btn"
+              shape="round"
+              (click)="idx === slides?.length - 1 ? exitWelcomeScreens() : goToNextSlide()"
+              >
+              {{ idx === slides?.length - 1 ? commonText?.ok : commonText?.next }}
+            </ion-button>
+          </div>
+        </swiper-slide>
+      }
+    </swiper-container>
+  }
 </ion-content>

@@ -2,9 +2,10 @@ import { Component, Input, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 
 @Component({
-  selector: 'app-attachment',
-  templateUrl: './attachment.component.html',
-  styleUrls: ['./attachment.component.scss'],
+    selector: 'app-attachment',
+    templateUrl: './attachment.component.html',
+    styleUrls: ['./attachment.component.scss'],
+    standalone: false
 })
 export class AttachmentComponent implements OnInit {
   @Input() pdfInfo = '';

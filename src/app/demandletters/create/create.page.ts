@@ -7,9 +7,10 @@ import { SharedmethodsService } from 'src/app/shared/services/sharedmethods/shar
 import { ModalController } from '@ionic/angular';
 import { Router } from '@angular/router';
 @Component({
-  selector: 'app-create',
-  templateUrl: './create.page.html',
-  styleUrls: ['./create.page.scss'],
+    selector: 'app-create',
+    templateUrl: './create.page.html',
+    styleUrls: ['./create.page.scss'],
+    standalone: false
 })
 export class CreatePage extends BaseformPage implements OnInit {
   constructor(

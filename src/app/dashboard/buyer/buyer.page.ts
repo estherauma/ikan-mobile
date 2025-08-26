@@ -6,9 +6,10 @@ import { PushNotificationsService } from 'src/app/shared/services/push-notificat
 import { SharedmethodsService } from 'src/app/shared/services/sharedmethods/sharedmethods.service';
 
 @Component({
-  selector: 'app-buyer',
-  templateUrl: './buyer.page.html',
-  styleUrls: ['./buyer.page.scss'],
+    selector: 'app-buyer',
+    templateUrl: './buyer.page.html',
+    styleUrls: ['./buyer.page.scss'],
+    standalone: false
 })
 export class BuyerPage implements OnInit {
 

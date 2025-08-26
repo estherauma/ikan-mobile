@@ -4,28 +4,33 @@
   </audio>
 
   <ion-row class="audio-row">
-    <ion-col *ngIf="audioUrl" class="audio-col">
-      <ion-icon
-        class="audio-icon"
-        name="volume-high"
-        (click)="playAudio()"
-      ></ion-icon>
-    </ion-col>
+    @if (audioUrl) {
+      <ion-col class="audio-col">
+        <ion-icon
+          class="audio-icon"
+          name="volume-high"
+          (click)="playAudio()"
+        ></ion-icon>
+      </ion-col>
+    }
   </ion-row>
 
   <div class="content-wrapper">
     <div class="icon-wrapper">
       <ion-icon [name]="icon" class="icon"></ion-icon>
     </div>
-    <h1 *ngIf="title">{{ title }}</h1>
+    @if (title) {
+      <h1>{{ title }}</h1>
+    }
     <app-rich-text [textContent]="description"></app-rich-text>
     <div class="video-wrapper">
-      <video
-        *ngIf="videoUrl"
-        [src]="videoUrl"
-        controls
-        class="video-el"
-      ></video>
+      @if (videoUrl) {
+        <video
+          [src]="videoUrl"
+          controls
+          class="video-el"
+        ></video>
+      }
     </div>
   </div>
 

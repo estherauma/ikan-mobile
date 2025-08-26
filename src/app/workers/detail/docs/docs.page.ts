@@ -2,9 +2,10 @@ import { Component, OnInit } from '@angular/core';
 import { ContentService } from 'src/app/shared/services/content/content.service';
 
 @Component({
-  selector: 'app-docs',
-  templateUrl: './docs.page.html',
-  styleUrls: ['./docs.page.scss'],
+    selector: 'app-docs',
+    templateUrl: './docs.page.html',
+    styleUrls: ['./docs.page.scss'],
+    standalone: false
 })
 export class DocsPage implements OnInit {
   commonText: any;

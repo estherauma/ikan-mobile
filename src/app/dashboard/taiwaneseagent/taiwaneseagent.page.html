@@ -1,16 +1,16 @@
 <app-header
   [showBackButton]="false"
->
+  >
 </app-header>
 
 <ion-content class="content-skyblue-bg ion-content-custom-position">
   <app-contentwrapper>
-  <app-dashboardelcomesection
-    greeting="Welcome back."
-    name="Cici"
-    (onProfileClick)="goToProfile()"
-  >
-  </app-dashboardelcomesection>
+    <app-dashboardelcomesection
+      greeting="Welcome back."
+      name="Cici"
+      (onProfileClick)="goToProfile()"
+      >
+    </app-dashboardelcomesection>
     <div>
       <ion-card>
         <ion-card-content>
@@ -48,23 +48,25 @@
         </ion-card-content>
       </ion-card>
     </div>
-  <div class="ion-padding">
-    <ion-card *ngFor="let sList of sLists">
-      <ion-card-content>
-        <ion-grid>
-          <ion-row>
-            <!-- <ion-col size="3">
-              <ion-thumbnail>
-                <ion-img></ion-img>
-              </ion-thumbnail>
-            </ion-col> -->
-            <ion-col size="12">
-              <ion-card-title>{{sList.title}}</ion-card-title>
-            </ion-col>
-          </ion-row>
-        </ion-grid>
-      </ion-card-content>
-    </ion-card>
+    <div class="ion-padding">
+      @for (sList of sLists; track sList) {
+        <ion-card>
+          <ion-card-content>
+            <ion-grid>
+              <ion-row>
+                <!-- <ion-col size="3">
+                <ion-thumbnail>
+                  <ion-img></ion-img>
+                </ion-thumbnail>
+              </ion-col> -->
+              <ion-col size="12">
+                <ion-card-title>{{sList.title}}</ion-card-title>
+              </ion-col>
+            </ion-row>
+          </ion-grid>
+        </ion-card-content>
+      </ion-card>
+    }
   </div>
 </app-contentwrapper>
 </ion-content>

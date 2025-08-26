@@ -12,21 +12,24 @@
   <ion-row class="card-content">
     <ion-col size="3" class="img-col">
       <div class="card-image-wrapper">
-        <ion-icon
-          *ngIf="!worker?.profileImage"
-          class="image icon"
-          src="assets/icon/ellipse_profile.svg"
-        />
-        <img
-          *ngIf="sharedMethods.isIos && worker?.profileImage"
-          class="image img"
-          [src]="worker?.profileImage | safeurl"
-        />
-        <img
-          *ngIf="sharedMethods.isAndroid && worker?.profileImage"
-          class="image img"
-          [src]="worker?.profileImage"
-        />
+        @if (!worker?.profileImage) {
+          <ion-icon
+            class="image icon"
+            src="assets/icon/ellipse_profile.svg"
+            />
+        }
+        @if (sharedMethods.isIos && worker?.profileImage) {
+          <img
+            class="image img"
+            [src]="worker?.profileImage | safeurl"
+            />
+        }
+        @if (sharedMethods.isAndroid && worker?.profileImage) {
+          <img
+            class="image img"
+            [src]="worker?.profileImage"
+            />
+        }
       </div>
     </ion-col>
 

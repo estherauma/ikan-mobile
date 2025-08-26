@@ -10,9 +10,10 @@ import { SharedmethodsService } from 'src/app/shared/services/sharedmethods/shar
 import { ProfileData } from 'src/app/shared/services/sync/types';
 
 @Component({
-  selector: 'app-payments',
-  templateUrl: './payments.page.html',
-  styleUrls: ['./payments.page.scss'],
+    selector: 'app-payments',
+    templateUrl: './payments.page.html',
+    styleUrls: ['./payments.page.scss'],
+    standalone: false
 })
 export class PaymentsPage extends BaseformPage implements OnInit {
   @Input() page: 'loggedin-user-payments' | 'vo-workers-payments' = 'loggedin-user-payments';

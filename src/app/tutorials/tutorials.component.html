@@ -2,7 +2,7 @@
   <!-- Hidden audio element -->
   <audio #audioPlayer [src]="audioUrl" hidden>
   </audio>
-  
+
   <swiper-container
     #swiper
     id="tutorials_swiper_element"
@@ -10,18 +10,20 @@
     [spaceBetween]="20"
     [centeredSlides]="true"
     (swiperslidechange)="onSlideChange($event)"
-  >
+    >
     <!-- First slide / Home -->
     <swiper-slide class="slide">
       <div class="slider-header">
         <ion-row>
-          <ion-col *ngIf="pageContent?.welcomeAudio?.url" class="audio-col">
-            <ion-icon
-              class="audio-icon"
-              name="volume-high"
-              (click)="playAudio(pageContent?.welcomeAudio?.url)"
-            ></ion-icon>
-          </ion-col>
+          @if (pageContent?.welcomeAudio?.url) {
+            <ion-col class="audio-col">
+              <ion-icon
+                class="audio-icon"
+                name="volume-high"
+                (click)="playAudio(pageContent?.welcomeAudio?.url)"
+              ></ion-icon>
+            </ion-col>
+          }
           <ion-col class="skip-col">
             <a (click)="skipTutorials()">
               <span>{{ commonText?.skip }}</span>
@@ -34,13 +36,14 @@
 
       <div class="slide-content">
         <div class="video-wrapper">
-          <video
-            #videoPlayer
-            *ngIf="pageContent?.welcomeVideo?.url"
-            [src]="pageContent?.welcomeVideo?.url"
-            controls
-            class="welcome-video"
-          ></video>
+          @if (pageContent?.welcomeVideo?.url) {
+            <video
+              #videoPlayer
+              [src]="pageContent?.welcomeVideo?.url"
+              controls
+              class="welcome-video"
+            ></video>
+          }
         </div>
         <h1>{{ pageContent?.welcomeTitle }}</h1>
         <app-rich-text [textContent]="pageContent?.welcomeText"></app-rich-text>
@@ -59,13 +62,15 @@
     <swiper-slide class="slide">
       <div class="slider-header">
         <ion-row>
-          <ion-col *ngIf="pageContent?.tutorials?.introAudio?.url" class="audio-col">
-            <ion-icon
-              class="audio-icon"
-              name="volume-high"
-              (click)="playAudio(pageContent?.tutorials?.introAudio?.url)"
-            ></ion-icon>
-          </ion-col>
+          @if (pageContent?.tutorials?.introAudio?.url) {
+            <ion-col class="audio-col">
+              <ion-icon
+                class="audio-icon"
+                name="volume-high"
+                (click)="playAudio(pageContent?.tutorials?.introAudio?.url)"
+              ></ion-icon>
+            </ion-col>
+          }
           <ion-col class="skip-col">
             <a (click)="skipTutorials()">
               <span>{{ commonText?.skip }}</span>
@@ -75,12 +80,14 @@
           </ion-col>
         </ion-row>
       </div>
-      
+
       <div class="slide-content tutorials-slide-content">
-        <h1 *ngIf="pageContent?.tutorials?.introTitle">{{ pageContent?.tutorials?.introTitle }}</h1>
+        @if (pageContent?.tutorials?.introTitle) {
+          <h1>{{ pageContent?.tutorials?.introTitle }}</h1>
+        }
         <app-rich-text [textContent]="pageContent?.tutorials?.introText"></app-rich-text>
         <ion-row class="tutorials-list">
-          <ng-container *ngFor="let tutorial of pageContent?.tutorials?.items; let idx = index;">
+          @for (tutorial of pageContent?.tutorials?.items; track tutorial; let idx = $index) {
             <ion-col size="6" class="tutorial-item" (click)="goToTutorialDetail(tutorial)">
               <div class="item-wrapper">
                 <div class="icon-wrapper">
@@ -89,24 +96,24 @@
                 <p>{{ tutorial.itemTitle }}</p>
               </div>
             </ion-col>
-          </ng-container>
+          }
         </ion-row>
       </div>
-      
+
       <div class="buttons-wrapper show-prev">
         <ion-button
           class="prev-btn"
           shape="round"
           (click)="goToPreviousSlide()"
-        >
+          >
           {{ commonText?.previous }}
         </ion-button>
 
-        <ion-button 
+        <ion-button
           class="next-btn"
           shape="round"
           (click)="exitTutorials()"
-        >
+          >
           {{  commonText?.ok }}
         </ion-button>
       </div>

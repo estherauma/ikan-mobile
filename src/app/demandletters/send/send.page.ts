@@ -4,9 +4,10 @@ import { AlertController } from '@ionic/angular';
 import { DemandLetter } from '../home/home.page';
 
 @Component({
-  selector: 'app-send',
-  templateUrl: './send.page.html',
-  styleUrls: ['./send.page.scss'],
+    selector: 'app-send',
+    templateUrl: './send.page.html',
+    styleUrls: ['./send.page.scss'],
+    standalone: false
 })
 export class SendPage implements OnInit {
   pageTitle='Send Demand Letter';

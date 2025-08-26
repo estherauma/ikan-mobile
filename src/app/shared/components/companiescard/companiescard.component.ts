@@ -2,9 +2,10 @@ import { Component, OnInit, Input } from '@angular/core';
 import { ContentService } from '../../services/content/content.service';
 
 @Component({
-  selector: 'app-companiescard',
-  templateUrl: './companiescard.component.html',
-  styleUrls: ['./companiescard.component.scss'],
+    selector: 'app-companiescard',
+    templateUrl: './companiescard.component.html',
+    styleUrls: ['./companiescard.component.scss'],
+    standalone: false
 })
 export class CompaniescardComponent implements OnInit {
   commonText;

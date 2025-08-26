@@ -5,9 +5,10 @@ import { ContentService } from 'src/app/shared/services/content/content.service'
 import { SharedmethodsService } from 'src/app/shared/services/sharedmethods/sharedmethods.service';
 
 @Component({
-  selector: 'app-register-success',
-  templateUrl: './register-success.component.html',
-  styleUrls: ['./register-success.component.scss'],
+    selector: 'app-register-success',
+    templateUrl: './register-success.component.html',
+    styleUrls: ['./register-success.component.scss'],
+    standalone: false
 })
 export class RegisterSuccessComponent  implements OnInit {
   pageText: any;

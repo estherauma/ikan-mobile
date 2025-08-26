@@ -6,31 +6,39 @@
       <div>
         <app-title [isBig]="true" [isBlue]="true" title="{{pageTitle}}"></app-title>
       </div>
-      <div *ngFor="let item of notifications" class="ion-margin-top">
-        <ion-text *ngIf="item.title !== 'New'" class="ion-padding-bottom"> <strong>{{item.title}}</strong></ion-text>
-        <ion-badge *ngIf="item.title === 'New'" class="ion-margin-bottom" slot="start">{{item.title}}</ion-badge>
-        <ion-list>
-          <ion-item-sliding *ngFor="let notif of item.content">
-            <ion-item lines="none" fill="solid">
-              <app-notificationcard
-               [notification]="notif"
-               titleColor="blue"
-               [status]="notif.status"
-               ></app-notificationcard>
-            </ion-item>
-            <ion-item-options side="end">
-              <ion-item-option class="ion-item-option-first">
-                <ion-icon name="ellipsis-horizontal-circle"></ion-icon>
-                <p>{{moreText}}</p>
-              </ion-item-option>
-              <ion-item-option class="ion-item-option-second" color="danger">
-                <ion-icon slot="icon-only" name="trash"></ion-icon>
-                <p>Delete</p>
-              </ion-item-option>
-            </ion-item-options>
-          </ion-item-sliding>
-        </ion-list>
-      </div>
+      @for (item of notifications; track item) {
+        <div class="ion-margin-top">
+          @if (item.title !== 'New') {
+            <ion-text class="ion-padding-bottom"> <strong>{{item.title}}</strong></ion-text>
+          }
+          @if (item.title === 'New') {
+            <ion-badge class="ion-margin-bottom" slot="start">{{item.title}}</ion-badge>
+          }
+          <ion-list>
+            @for (notif of item.content; track notif) {
+              <ion-item-sliding>
+                <ion-item lines="none" fill="solid">
+                  <app-notificationcard
+                    [notification]="notif"
+                    titleColor="blue"
+                    [status]="notif.status"
+                  ></app-notificationcard>
+                </ion-item>
+                <ion-item-options side="end">
+                  <ion-item-option class="ion-item-option-first">
+                    <ion-icon name="ellipsis-horizontal-circle"></ion-icon>
+                    <p>{{moreText}}</p>
+                  </ion-item-option>
+                  <ion-item-option class="ion-item-option-second" color="danger">
+                    <ion-icon slot="icon-only" name="trash"></ion-icon>
+                    <p>Delete</p>
+                  </ion-item-option>
+                </ion-item-options>
+              </ion-item-sliding>
+            }
+          </ion-list>
+        </div>
+      }
     </div>
   </app-contentwrapper>
 </ion-content>

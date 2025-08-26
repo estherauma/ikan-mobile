@@ -3,9 +3,10 @@ import { ContentService } from '../../services/content/content.service';
 import { Router } from '@angular/router';
 
 @Component({
-  selector: 'app-companycontractcard',
-  templateUrl: './companycontractcard.component.html',
-  styleUrls: ['./companycontractcard.component.scss'],
+    selector: 'app-companycontractcard',
+    templateUrl: './companycontractcard.component.html',
+    styleUrls: ['./companycontractcard.component.scss'],
+    standalone: false
 })
 export class CompanycontractcardComponent implements OnInit {
   commonText: any;

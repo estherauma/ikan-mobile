@@ -3,7 +3,7 @@ version: 2.1
 jobs:
   build-apk:
     docker:
-      - image: cimg/android:2023.11.1-node
+      - image: cimg/android:2025.08.1-node
     environment:
         JVM_OPTS: -Xmx3200m
     steps:
@@ -11,10 +11,10 @@ jobs:
       - run:
           name: "Install gradle"
           command: |
-            wget https://services.gradle.org/distributions/gradle-4.0.2-bin.zip -P /tmp
+            wget https://services.gradle.org/distributions/gradle-8.11.1-bin.zip -P /tmp
             sudo unzip -d /opt/gradle /tmp/gradle-*.zip
-            echo 'export GRADLE_HOME=/opt/gradle/gradle-4.0.2' >> $BASH_ENV
-            echo 'export PATH=$PATH:/opt/gradle/gradle-4.0.2/bin' >> $BASH_ENV
+            echo 'export GRADLE_HOME=/opt/gradle/gradle-8.11.1' >> $BASH_ENV
+            echo 'export PATH=$PATH:/opt/gradle/gradle-8.11.1/bin' >> $BASH_ENV
             source $BASH_ENV
       - run:
           name: Install dependencies
@@ -54,7 +54,7 @@ jobs:
 
   build-and-release-apk:
     docker:
-      - image: cimg/android:2023.11.1-node
+      - image: cimg/android:2025.08.1-node
     environment:
         JVM_OPTS: -Xmx3200m
     steps:

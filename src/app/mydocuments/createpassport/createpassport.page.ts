@@ -9,9 +9,10 @@ import { DocumentsDataService } from '../data/documents-data.service';
 import { SyncService } from 'src/app/shared/services/sync/sync.service';
 
 @Component({
-  selector: 'app-createpassport',
-  templateUrl: './createpassport.page.html',
-  styleUrls: ['./createpassport.page.scss'],
+    selector: 'app-createpassport',
+    templateUrl: './createpassport.page.html',
+    styleUrls: ['./createpassport.page.scss'],
+    standalone: false
 })
 export class CreatepassportPage extends BaseformPage implements OnInit {
   submitButtonText = 'Submit for review';

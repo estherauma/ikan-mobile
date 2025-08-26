@@ -6,9 +6,10 @@ import { ConfirmmodalComponent } from 'src/app/shared/components/confirmmodal/co
 import { ContentService } from 'src/app/shared/services/content/content.service';
 
 @Component({
-  selector: 'app-training',
-  templateUrl: './list.page.html',
-  styleUrls: ['./list.page.scss'],
+    selector: 'app-training',
+    templateUrl: './list.page.html',
+    styleUrls: ['./list.page.scss'],
+    standalone: false
 })
 export class ListPage implements OnInit {
   commonText: any;

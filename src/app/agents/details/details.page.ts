@@ -5,9 +5,10 @@ import { PageEventNames } from 'src/app/shared/services/analytics/event-names';
 import { SharedmethodsService } from 'src/app/shared/services/sharedmethods/sharedmethods.service';
 
 @Component({
-  selector: 'app-details',
-  templateUrl: './details.page.html',
-  styleUrls: ['./details.page.scss'],
+    selector: 'app-details',
+    templateUrl: './details.page.html',
+    styleUrls: ['./details.page.scss'],
+    standalone: false
 })
 export class DetailsPage implements OnInit {
   agent: any;

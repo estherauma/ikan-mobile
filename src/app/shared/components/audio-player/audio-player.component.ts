@@ -1,9 +1,10 @@
 import { Component, ViewChild, ElementRef, Input } from '@angular/core';
 
 @Component({
-  selector: 'app-audio-player',
-  templateUrl: './audio-player.component.html',
-  styleUrls: ['./audio-player.component.scss'],
+    selector: 'app-audio-player',
+    templateUrl: './audio-player.component.html',
+    styleUrls: ['./audio-player.component.scss'],
+    standalone: false
 })
 export class AudioPlayerComponent {
   @ViewChild('audioPlayer') audioPlayer: ElementRef;

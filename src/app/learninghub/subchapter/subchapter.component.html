@@ -8,30 +8,31 @@
     </div>
 
     <div
-      class="title-section" 
+      class="title-section"
       [ngStyle]="{'background': 'url(' + imgUrl +') no-repeat fixed center / cover'}"
-    >
+      >
       <h1>{{ allPageData?.pageTitle }}</h1>
     </div>
 
     <div class="content-section">
-      <div *ngFor="let section of pageContent">
-        <!-- text area type -->
-        <shared-text-area
-          *ngIf="section?.type === 'text_area'"
-          [data]="section"
-          styles="textarea"
-          [theme]="section?.identifier === 'note_or_tip' ? 'note-or-tip' : ''"
-        ></shared-text-area>
-        
-        <!-- question type -->
-        <!-- Commented out for now -->
-        <!-- Implementation changed and we are displaying qtuestions on a separate page (quiz page) -->
-        <!-- <div
+      @for (section of pageContent; track section) {
+        <div>
+          <!-- text area type -->
+          @if (section?.type === 'text_area') {
+            <shared-text-area
+              [data]="section"
+              styles="textarea"
+              [theme]="section?.identifier === 'note_or_tip' ? 'note-or-tip' : ''"
+            ></shared-text-area>
+          }
+          <!-- question type -->
+          <!-- Commented out for now -->
+          <!-- Implementation changed and we are displaying qtuestions on a separate page (quiz page) -->
+          <!-- <div
           *ngIf="isWorker && section?.type === 'questions' && section?.displayquestion"
           class="qtn-wrapper"
           (click)="viewQuestion(section)"
-        >
+          >
           <ion-row>
             <ion-col
               size="3"
@@ -43,7 +44,7 @@
                   section?.status === 'answeredNo' ||
                   section?.status === 'answeredMaybe',
               }"
-            >
+              >
               <ion-icon [name]="section.icon"></ion-icon>
             </ion-col>
             <ion-col size="9" class="qtn-col">
@@ -54,59 +55,60 @@
             </ion-col>
           </ion-row>
         </div> -->
-    
         <!-- audio type -->
-        <app-audio-player
-          *ngIf="section?.type === 'audio'"
-          [title]="section?.title || ''"
-          [audioSrc]="section?.mediaData?.url || ''"
-          variant="white-bg-title" 
-        ></app-audio-player>
-    
+        @if (section?.type === 'audio') {
+          <app-audio-player
+            [title]="section?.title || ''"
+            [audioSrc]="section?.mediaData?.url || ''"
+            variant="white-bg-title"
+          ></app-audio-player>
+        }
         <!-- case study link -->
-        <shared-case-study
-          *ngIf="section?.type === 'case_study'"
-          [data]="section"
-          [icons]="caseStudyInputs?.icons"
-          [styles]="caseStudyInputs?.styles || ''"
-          (onCaseStudyClick)="handleCaseStudyClick(section)"
-        >
-        </shared-case-study>
-    
+        @if (section?.type === 'case_study') {
+          <shared-case-study
+            [data]="section"
+            [icons]="caseStudyInputs?.icons"
+            [styles]="caseStudyInputs?.styles || ''"
+            (onCaseStudyClick)="handleCaseStudyClick(section)"
+            >
+          </shared-case-study>
+        }
         <!-- warning box type -->
-        <shared-warning-box
-          *ngIf="section?.type === 'warning_box'"
-          [data]="section"
-          defaultIcon="assets/icon/warning-2.svg"
-          styles="warning-box"
-        >
-        </shared-warning-box>
-        
+        @if (section?.type === 'warning_box') {
+          <shared-warning-box
+            [data]="section"
+            defaultIcon="assets/icon/warning-2.svg"
+            styles="warning-box"
+            >
+          </shared-warning-box>
+        }
         <!-- image type -->
-        <shared-image
-          *ngIf="section?.type === 'image'"
-          [data]="section"
-        >
-        </shared-image>
-        
+        @if (section?.type === 'image') {
+          <shared-image
+            [data]="section"
+            >
+          </shared-image>
+        }
         <!-- video type-->
-         <shared-video
-          *ngIf="section?.type === 'video'"
-          [data]="section"
-          [networkStatus]="networkStatus"
-          defaultThumbnail="assets/icon/default-thumbnail.jpg"
-          playIcon="assets/icon/play.svg"
-          (onPlay)="onPlay($event)"
-        >
-        </shared-video>
+        @if (section?.type === 'video') {
+          <shared-video
+            [data]="section"
+            [networkStatus]="networkStatus"
+            defaultThumbnail="assets/icon/default-thumbnail.jpg"
+            playIcon="assets/icon/play.svg"
+            (onPlay)="onPlay($event)"
+            >
+          </shared-video>
+        }
       </div>
-    </div>
+    }
   </div>
+</div>
+@if (upNextContent) {
   <div
-    *ngIf="upNextContent"
     class="up-next-section"
     (click)="goToNextChapter()"
-  >
+    >
     <ion-label text-wrap>{{ contentService?.commonText?.upNext }}...</ion-label>
     <ion-row (click)="goToNextChapter()">
       <ion-col size="3">
@@ -120,4 +122,5 @@
       </ion-col>
     </ion-row>
   </div>
+}
 </ion-content>

@@ -3,9 +3,10 @@ import { ModalController } from '@ionic/angular';
 import { BadgeinfoPage } from '../badgeinfo/badgeinfo.page';
 
 @Component({
-  selector: 'app-badges',
-  templateUrl: './badges.page.html',
-  styleUrls: ['./badges.page.scss'],
+    selector: 'app-badges',
+    templateUrl: './badges.page.html',
+    styleUrls: ['./badges.page.scss'],
+    standalone: false
 })
 export class BadgesPage implements OnInit {
   badges = [

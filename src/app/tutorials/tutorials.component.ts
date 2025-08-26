@@ -10,9 +10,10 @@ import { TutorialDetailComponent } from './tutorial-detail/tutorial-detail.compo
 import { AppEventNames, PageEventNames } from '../shared/services/analytics/event-names';
 
 @Component({
-  selector: 'app-tutorials',
-  templateUrl: './tutorials.component.html',
-  styleUrls: ['./tutorials.component.scss'],
+    selector: 'app-tutorials',
+    templateUrl: './tutorials.component.html',
+    styleUrls: ['./tutorials.component.scss'],
+    standalone: false
 })
 export class TutorialsComponent  implements OnInit {
 

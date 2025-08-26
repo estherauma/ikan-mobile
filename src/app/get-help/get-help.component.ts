@@ -4,9 +4,10 @@ import { AnalyticsService } from '../shared/services/analytics/analytics.service
 import { SharedmethodsService } from '../shared/services/sharedmethods/sharedmethods.service';
 
 @Component({
-  selector: 'app-get-help',
-  templateUrl: './get-help.component.html',
-  styleUrls: ['./get-help.component.scss'],
+    selector: 'app-get-help',
+    templateUrl: './get-help.component.html',
+    styleUrls: ['./get-help.component.scss'],
+    standalone: false
 })
 export class GetHelpComponent  implements OnInit {
   commonText: any;

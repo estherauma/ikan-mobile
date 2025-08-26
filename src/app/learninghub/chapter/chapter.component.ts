@@ -8,9 +8,10 @@ import { StorageKeys, UserData, UserRole } from 'src/app/shared/types/api-types'
 import { SurveyDataService } from 'src/app/survey/data/survey-data.service';
 
 @Component({
-  selector: 'app-chapter',
-  templateUrl: './chapter.component.html',
-  styleUrls: ['./chapter.component.scss'],
+    selector: 'app-chapter',
+    templateUrl: './chapter.component.html',
+    styleUrls: ['./chapter.component.scss'],
+    standalone: false
 })
 export class ChapterComponent  implements OnInit {
 

@@ -6,9 +6,10 @@ import { VesselsDataService } from 'src/app/vessels/data/vessels-data.service';
 import { ActivatedRoute } from '@angular/router';
 
 @Component({
-  selector: 'app-dashboardelcomesection',
-  templateUrl: './dashboardelcomesection.component.html',
-  styleUrls: ['./dashboardelcomesection.component.scss'],
+    selector: 'app-dashboardelcomesection',
+    templateUrl: './dashboardelcomesection.component.html',
+    styleUrls: ['./dashboardelcomesection.component.scss'],
+    standalone: false
 })
 export class DashboardelcomesectionComponent implements OnInit {
 

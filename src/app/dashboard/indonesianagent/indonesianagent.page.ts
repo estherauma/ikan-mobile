@@ -6,9 +6,10 @@ import { PushNotificationsService } from 'src/app/shared/services/push-notificat
 import { SharedmethodsService } from 'src/app/shared/services/sharedmethods/sharedmethods.service';
 
 @Component({
-  selector: 'app-indonesianagent',
-  templateUrl: './indonesianagent.page.html',
-  styleUrls: ['./indonesianagent.page.scss'],
+    selector: 'app-indonesianagent',
+    templateUrl: './indonesianagent.page.html',
+    styleUrls: ['./indonesianagent.page.scss'],
+    standalone: false
 })
 export class IndonesianagentPage implements OnInit {
 

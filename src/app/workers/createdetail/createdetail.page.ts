@@ -11,9 +11,10 @@ import { AnalyticsService } from 'src/app/shared/services/analytics/analytics.se
 import { PageEventNames } from 'src/app/shared/services/analytics/event-names';
 
 @Component({
-  selector: 'app-create',
-  templateUrl: './createdetail.page.html',
-  styleUrls: ['./createdetail.page.scss'],
+    selector: 'app-create',
+    templateUrl: './createdetail.page.html',
+    styleUrls: ['./createdetail.page.scss'],
+    standalone: false
 })
 export class CreateDetailPage extends BaseformPage implements OnInit {
   submitButtonText='Save&Close';

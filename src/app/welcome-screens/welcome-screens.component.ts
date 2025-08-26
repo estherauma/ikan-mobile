@@ -8,9 +8,10 @@ import { AppEventNames, PageEventNames } from '../shared/services/analytics/even
 import { AuthService } from '../shared/services/auth/auth.service';
 
 @Component({
-  selector: 'app-welcome-screens',
-  templateUrl: './welcome-screens.component.html',
-  styleUrls: ['./welcome-screens.component.scss'],
+    selector: 'app-welcome-screens',
+    templateUrl: './welcome-screens.component.html',
+    styleUrls: ['./welcome-screens.component.scss'],
+    standalone: false
 })
 export class WelcomeScreensComponent  implements OnInit {
 

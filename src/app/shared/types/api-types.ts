@@ -66,6 +66,15 @@ export interface FormQuestion {
   helptext:        null;
   questionType:    string;
   displayquestion: boolean;
+  followUpQuestion?: any;
+}
+export interface FollowUpQuestion {
+  key:             string;
+  label:           string;
+  options?:         null;
+  helptext?:        null;
+  questionType:    string;
+  displayquestion: boolean;
 }
 
 export enum StorageKeys {

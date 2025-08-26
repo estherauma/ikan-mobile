@@ -13,9 +13,10 @@ import { FileOpener } from '@capawesome-team/capacitor-file-opener';
 import { SyncService } from 'src/app/shared/services/sync/sync.service';
 
 @Component({
-  selector: 'app-essentials',
-  templateUrl: './essentials.component.html',
-  styleUrls: ['./essentials.component.scss'],
+    selector: 'app-essentials',
+    templateUrl: './essentials.component.html',
+    styleUrls: ['./essentials.component.scss'],
+    standalone: false
 })
 export class EssentialsComponent  implements OnInit {
 

@@ -11,9 +11,10 @@ import { AuthService } from 'src/app/shared/services/auth/auth.service';
 import { UserRole } from 'src/app/shared/types/api-types';
 
 @Component({
-  selector: 'app-viewclause',
-  templateUrl: './viewclause.page.html',
-  styleUrls: ['./viewclause.page.scss'],
+    selector: 'app-viewclause',
+    templateUrl: './viewclause.page.html',
+    styleUrls: ['./viewclause.page.scss'],
+    standalone: false
 })
 export class ViewclausePage implements OnInit {
   // maps to prismic content page keys

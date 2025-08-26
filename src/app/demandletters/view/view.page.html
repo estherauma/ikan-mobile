@@ -4,11 +4,15 @@
   <ion-grid class="ion-padding-horizontal content-container">
     <ion-row class="ion-margin-top ion-align-items-center">
       <ion-col size="8">
-          <img src="/assets/icon/workorders_blue.svg" width="30" height="40" />
+        <img src="/assets/icon/workorders_blue.svg" width="30" height="40" />
       </ion-col>
       <ion-col size="4">
-        <app-button *ngIf="!ifReviewDemandLetter" size="small" title="Save"></app-button>
-        <app-button *ngIf="ifReviewDemandLetter" size="small" title="Edit"></app-button>
+        @if (!ifReviewDemandLetter) {
+          <app-button size="small" title="Save"></app-button>
+        }
+        @if (ifReviewDemandLetter) {
+          <app-button size="small" title="Edit"></app-button>
+        }
       </ion-col>
     </ion-row>
     <app-title [isBlue]="true" [isBig]="true" [title]="demandLetter.name"></app-title>
@@ -19,49 +23,55 @@
       <p class="header-detail"><span>Status</span> {{demandLetter?.status}}</p>
     </div>
   </ion-grid>
-    <div class="letter-details">
-      <div class="ion-padding-horizontal">
-        <p class="title">Demand letter details</p>
-        <!-- <app-attachment
-          *ngIf="!cooperationAgreementFile"
-          pdfName="Cooperate_agreement.pdf"
-          (click)="uploadCopAgreement()"
-          pdfInfo="xx/xx/xxxx"
-        ></app-attachment> -->
-      </div>
-      <ion-card>
-        <ion-card-content>
-          <ion-row>
-            <ion-col size="3">
-              <img src="assets/icon/Attachment.svg"/>
-            </ion-col>
-            <ion-col size="9">
-              <app-title 
-                title="Detail title" 
-                [isBlue]="true"
-              ></app-title>
-              <ion-text class="description">Explainer text</ion-text>
-            </ion-col>
-          </ion-row>
-        </ion-card-content>
-      </ion-card>
-    </div>
+  <div class="letter-details">
+    <div class="ion-padding-horizontal">
+      <p class="title">Demand letter details</p>
+      <!-- <app-attachment
+      *ngIf="!cooperationAgreementFile"
+      pdfName="Cooperate_agreement.pdf"
+      (click)="uploadCopAgreement()"
+      pdfInfo="xx/xx/xxxx"
+    ></app-attachment> -->
+  </div>
+  <ion-card>
+    <ion-card-content>
+      <ion-row>
+        <ion-col size="3">
+          <img src="assets/icon/Attachment.svg"/>
+        </ion-col>
+        <ion-col size="9">
+          <app-title
+            title="Detail title"
+            [isBlue]="true"
+          ></app-title>
+          <ion-text class="description">Explainer text</ion-text>
+        </ion-col>
+      </ion-row>
+    </ion-card-content>
+  </ion-card>
+</div>
 
-    <div class="work-orders-wrapper">
-      <div class="work-orders">
-        <app-title [isBlue]="true" [isSmall]="true" title="Work Orders"></app-title>
-        <div>
-          <app-workordercard *ngFor="let wo of workOrders" [wo]="wo"></app-workordercard>
-        </div>
-      <div class="add-btn ion-padding">
-        <app-button (onClick)="addWorkOrder()" *ngIf="!ifReviewDemandLetter" iconName="add" size="small" title="Add work order"></app-button>
-      </div>
-      </div>
-      <div class="button-section ion-padding">
-        <div>
-          <app-button title="Send Demand Letter" (click)="onSendDemandLetter()"></app-button>
-        </div>
-        <app-button *ngIf="showReviewButton()"  size="small" title="Review Demand Letter" (click)="onReviewDemandLetter()"></app-button>
-      </div>
+<div class="work-orders-wrapper">
+  <div class="work-orders">
+    <app-title [isBlue]="true" [isSmall]="true" title="Work Orders"></app-title>
+    <div>
+      @for (wo of workOrders; track wo) {
+        <app-workordercard [wo]="wo"></app-workordercard>
+      }
     </div>
+    <div class="add-btn ion-padding">
+      @if (!ifReviewDemandLetter) {
+        <app-button (onClick)="addWorkOrder()" iconName="add" size="small" title="Add work order"></app-button>
+      }
+    </div>
+  </div>
+  <div class="button-section ion-padding">
+    <div>
+      <app-button title="Send Demand Letter" (click)="onSendDemandLetter()"></app-button>
+    </div>
+    @if (showReviewButton()) {
+      <app-button  size="small" title="Review Demand Letter" (click)="onReviewDemandLetter()"></app-button>
+    }
+  </div>
+</div>
 </ion-content>

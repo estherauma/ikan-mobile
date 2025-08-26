@@ -7,40 +7,41 @@
       <app-video-button [url]="pageData?.pageVideo?.url"></app-video-button>
       <app-audio-button [url]="pageData?.pageAudio?.url"></app-audio-button>
     </div>
-    
+
     <div class="title-wrapper">
       <app-title [isBig]="true" [isBlue]="true" [title]="title"></app-title>
     </div>
-    
+
     <div class="cards-wrapper">
-      <ion-row 
-        *ngFor="let chapter of learningHubChapters"
-        (click)="onClick(chapter)"
-      >
-        <ion-col size="2" class="icon-col">
-          <div class="icon-wrapper">
-            <ion-img *ngIf="chapter?.imageUrl" [src]="chapter?.imageUrl" alt="Chapter icon"></ion-img>
-          </div>
-        </ion-col>
-        
-        <ion-col size="7" class="text-col">
-          <h4>{{ chapter?.title }}</h4>
-          <ion-text class="description">{{ chapter?.description.length > 45 ? chapter?.description.slice(0, 45) + '...' : chapter?.description }}</ion-text>
-        </ion-col>
-        
-        <ion-col size="3" class="progress-col">
-          <div 
-            class="outer-progress-wrapper"
+      @for (chapter of learningHubChapters; track chapter) {
+        <ion-row
+          (click)="onClick(chapter)"
+          >
+          <ion-col size="2" class="icon-col">
+            <div class="icon-wrapper">
+              @if (chapter?.imageUrl) {
+                <ion-img [src]="chapter?.imageUrl" alt="Chapter icon"></ion-img>
+              }
+            </div>
+          </ion-col>
+          <ion-col size="7" class="text-col">
+            <h4>{{ chapter?.title }}</h4>
+            <ion-text class="description">{{ chapter?.description.length > 45 ? chapter?.description.slice(0, 45) + '...' : chapter?.description }}</ion-text>
+          </ion-col>
+          <ion-col size="3" class="progress-col">
+            <div
+              class="outer-progress-wrapper"
             [ngStyle]="{
               'background': 'conic-gradient(var(--ikan_green_100) 0% ' + chapter?.progress + '%, white ' + chapter?.progress + '% 100%)'
             }"
-          >
-            <div class="inner-progress-wrapper">
-              <p>{{ chapter?.progress }}%</p>
+              >
+              <div class="inner-progress-wrapper">
+                <p>{{ chapter?.progress }}%</p>
+              </div>
             </div>
-          </div>
-        </ion-col>
-      </ion-row>
+          </ion-col>
+        </ion-row>
+      }
     </div>
   </app-contentwrapper>
 </ion-content>

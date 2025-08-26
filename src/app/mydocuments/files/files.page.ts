@@ -13,9 +13,10 @@ import { FileOpener } from '@capawesome-team/capacitor-file-opener';
 import { SyncService } from 'src/app/shared/services/sync/sync.service';
 
 @Component({
-  selector: 'app-files',
-  templateUrl: './files.page.html',
-  styleUrls: ['./files.page.scss'],
+    selector: 'app-files',
+    templateUrl: './files.page.html',
+    styleUrls: ['./files.page.scss'],
+    standalone: false
 })
 export class FilesPage implements OnInit {
   select = false;

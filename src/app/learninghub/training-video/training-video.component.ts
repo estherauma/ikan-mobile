@@ -11,9 +11,10 @@ import { StorageKeys } from 'src/app/shared/types/api-types';
 import { SurveyDataService } from 'src/app/survey/data/survey-data.service';
 
 @Component({
-  selector: 'app-training-video',
-  templateUrl: './training-video.component.html',
-  styleUrls: ['./training-video.component.scss'],
+    selector: 'app-training-video',
+    templateUrl: './training-video.component.html',
+    styleUrls: ['./training-video.component.scss'],
+    standalone: false
 })
 export class TrainingVideoComponent extends BaseformPage  implements OnInit {
   questionHelperText: any;

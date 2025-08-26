@@ -9,9 +9,10 @@ import { SharedmethodsService } from 'src/app/shared/services/sharedmethods/shar
 import { StorageKeys, UserData } from 'src/app/shared/types/api-types';
 
 @Component({
-  selector: 'app-public',
-  templateUrl: './public.component.html',
-  styleUrls: ['./public.component.scss'],
+    selector: 'app-public',
+    templateUrl: './public.component.html',
+    styleUrls: ['./public.component.scss'],
+    standalone: false
 })
 export class PublicComponent  implements OnInit {
   commonText: any;

@@ -1,20 +1,44 @@
 <div class="rich-text-component">
-  <ng-container *ngFor="let item of textContent;">
-    <h1 *ngIf="item.heading1" [innerHTML]="item.heading1" class="title" text-wrap></h1>
-    <h2 *ngIf="item.heading2" [innerHTML]="item.heading2" class="title" text-wrap></h2>
-    <h3 *ngIf="item.heading3" [innerHTML]="item.heading3" class="title" text-wrap></h3>
-    <h4 *ngIf="item.heading4" [innerHTML]="item.heading4" class="title" text-wrap text-center></h4>
-    <h5 *ngIf="item.heading5" [innerHTML]="item.heading5" class="title" text-wrap></h5>
-    <h6 *ngIf="item.heading6" [innerHTML]="item.heading6" class="title" text-wrap></h6>
-    <p *ngIf="item.paragraph" [innerHTML]="sharedMethods?.removeNBSP(item.paragraph)" text-wrap></p>
-    <img *ngIf="item.image" [src]="item.image" alt="Image">
-    <ol type="1" *ngIf="item.orderedList">
-      <li *ngFor="let subListItem of item.orderedList" text-wrap>
-        <p [innerHTML]="sharedMethods?.removeNBSP(subListItem)" text-wrap></p>
-      </li>
-    </ol>
-    <ul *ngIf="item.unorderedList">
-      <li *ngFor="let subListItem of item.unorderedList" [innerHTML]="sharedMethods?.removeNBSP(subListItem)" text-wrap></li>
-    </ul>
-  </ng-container>
+  @for (item of textContent; track item) {
+    @if (item.heading1) {
+      <h1 [innerHTML]="item.heading1" class="title" text-wrap></h1>
+    }
+    @if (item.heading2) {
+      <h2 [innerHTML]="item.heading2" class="title" text-wrap></h2>
+    }
+    @if (item.heading3) {
+      <h3 [innerHTML]="item.heading3" class="title" text-wrap></h3>
+    }
+    @if (item.heading4) {
+      <h4 [innerHTML]="item.heading4" class="title" text-wrap text-center></h4>
+    }
+    @if (item.heading5) {
+      <h5 [innerHTML]="item.heading5" class="title" text-wrap></h5>
+    }
+    @if (item.heading6) {
+      <h6 [innerHTML]="item.heading6" class="title" text-wrap></h6>
+    }
+    @if (item.paragraph) {
+      <p [innerHTML]="sharedMethods?.removeNBSP(item.paragraph)" text-wrap></p>
+    }
+    @if (item.image) {
+      <img [src]="item.image" alt="Image">
+    }
+    @if (item.orderedList) {
+      <ol type="1">
+        @for (subListItem of item.orderedList; track subListItem) {
+          <li text-wrap>
+            <p [innerHTML]="sharedMethods?.removeNBSP(subListItem)" text-wrap></p>
+          </li>
+        }
+      </ol>
+    }
+    @if (item.unorderedList) {
+      <ul>
+        @for (subListItem of item.unorderedList; track subListItem) {
+          <li [innerHTML]="sharedMethods?.removeNBSP(subListItem)" text-wrap></li>
+        }
+      </ul>
+    }
+  }
 </div>

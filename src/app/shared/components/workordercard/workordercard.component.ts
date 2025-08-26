@@ -3,9 +3,10 @@ import { Router } from '@angular/router';
 import { ContentService } from '../../services/content/content.service';
 
 @Component({
-  selector: 'app-workordercard',
-  templateUrl: './workordercard.component.html',
-  styleUrls: ['./workordercard.component.scss'],
+    selector: 'app-workordercard',
+    templateUrl: './workordercard.component.html',
+    styleUrls: ['./workordercard.component.scss'],
+    standalone: false
 })
 export class WorkordercardComponent implements OnInit {
   commonText: any;

@@ -5,9 +5,10 @@ import { UserData } from '../../types/api-types';
 
 export type PaymentType = 'Bank transfer' | 'Beneficiary' | 'Cash' | 'Listing';
 @Component({
-  selector: 'app-payment-card',
-  templateUrl: './payment-card.component.html',
-  styleUrls: ['./payment-card.component.scss'],
+    selector: 'app-payment-card',
+    templateUrl: './payment-card.component.html',
+    styleUrls: ['./payment-card.component.scss'],
+    standalone: false
 })
 export class PaymentCardComponent  implements OnInit {
 

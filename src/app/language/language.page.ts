@@ -10,9 +10,10 @@ import { PushNotificationsService } from '../shared/services/push-notifications/
 import { Platform } from '@ionic/angular';
 
 @Component({
-  selector: 'app-language',
-  templateUrl: './language.page.html',
-  styleUrls: ['./language.page.scss'],
+    selector: 'app-language',
+    templateUrl: './language.page.html',
+    styleUrls: ['./language.page.scss'],
+    standalone: false
 })
 export class LanguagePage implements OnInit {
   currentLanguage = 'en-us';

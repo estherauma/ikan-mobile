@@ -6,9 +6,10 @@ import { ContentService } from 'src/app/shared/services/content/content.service'
 import { SharedmethodsService } from 'src/app/shared/services/sharedmethods/sharedmethods.service';
 
 @Component({
-  selector: 'app-password-reset-success',
-  templateUrl: './password-reset-success.page.html',
-  styleUrls: ['./password-reset-success.page.scss'],
+    selector: 'app-password-reset-success',
+    templateUrl: './password-reset-success.page.html',
+    styleUrls: ['./password-reset-success.page.scss'],
+    standalone: false
 })
 export class PasswordResetSuccessPage implements OnInit {
   commonText: any;

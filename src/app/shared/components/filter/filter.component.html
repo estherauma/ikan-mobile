@@ -6,29 +6,33 @@
   [cancelText]="commonText?.cancel"
   [label]="filterLabel"
   multiple
->
-  <ng-container *ngIf="options?.length">
-    <ion-select-option
-      *ngFor="let option of options"
-      [value]="{ filterProperty, value: option.value}"
-    >
-      {{ option?.title || option?.label}}
-    </ion-select-option>
-  </ng-container>
+  >
+  @if (options?.length) {
+    @for (option of options; track option) {
+      <ion-select-option
+        [value]="{ filterProperty, value: option.value}"
+        >
+        {{ option?.title || option?.label}}
+      </ion-select-option>
+    }
+  }
 
   <!-- grouped options -->
-  <ng-container *ngIf="groupedOptions?.length">
-    <ng-container *ngFor="let group of groupedOptions">
-      <ng-container *ngIf="group?.groupOptions?.length">
+  @if (groupedOptions?.length) {
+    @for (group of groupedOptions; track group) {
+      @if (group?.groupOptions?.length) {
         <ion-select-option disabled class="select-group-label">{{ group?.groupLabel }}</ion-select-option>
-        <ion-select-option
-          *ngFor="let opt of group?.groupOptions"
-          [value]="{filterProperty: group?.filterProperty, value: opt.value}"
-        >
-          {{ opt?.title || opt?.label}}
-        </ion-select-option>
-      </ng-container>
-    </ng-container>
-  </ng-container>
+        @for (opt of group?.groupOptions; track opt) {
+          <ion-select-option
+            [value]="{filterProperty: group?.filterProperty, value: opt.value}"
+            >
+            {{ opt?.title || opt?.label}}
+          </ion-select-option>
+        }
+      }
+    }
+  }
 </ion-select>
-<p *ngIf="noData" class="filter-error">{{ commonText?.noDataMatchingSelectedFilters }}</p>
+@if (noData) {
+  <p class="filter-error">{{ commonText?.noDataMatchingSelectedFilters }}</p>
+}

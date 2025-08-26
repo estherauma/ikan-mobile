@@ -11,9 +11,10 @@ import { CreatePage } from '../create/create.page';
 import { UserRole } from 'src/app/shared/types/api-types';
 
 @Component({
-  selector: 'app-view',
-  templateUrl: './view.page.html',
-  styleUrls: ['./view.page.scss'],
+    selector: 'app-view',
+    templateUrl: './view.page.html',
+    styleUrls: ['./view.page.scss'],
+    standalone: false
 })
 export class ViewPage implements OnInit {
   // Duplicated. See how to DRY

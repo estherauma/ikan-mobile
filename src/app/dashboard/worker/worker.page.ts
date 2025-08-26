@@ -10,9 +10,10 @@ import { UserData, StorageKeys, UserRole } from 'src/app/shared/types/api-types'
 import { env } from 'src/environments/environment';
 
 @Component({
-  selector: 'app-worker',
-  templateUrl: './worker.page.html',
-  styleUrls: ['./worker.page.scss'],
+    selector: 'app-worker',
+    templateUrl: './worker.page.html',
+    styleUrls: ['./worker.page.scss'],
+    standalone: false
 })
 export class WorkerPage implements OnInit {
 
