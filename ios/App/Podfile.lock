@@ -5,10 +5,10 @@ PODS:
     - Capacitor
   - CapacitorCamera (7.0.2):
     - Capacitor
-  - CapacitorCommunityFcm (5.0.3):
+  - CapacitorCommunityFcm (7.1.3):
     - Capacitor
-    - Firebase/Messaging
-  - CapacitorCommunityFirebaseAnalytics (6.0.0):
+    - FirebaseMessaging
+  - CapacitorCommunityFirebaseAnalytics (7.0.1):
     - Capacitor
     - FirebaseAnalytics
   - CapacitorCordova (7.4.3)
@@ -23,7 +23,7 @@ PODS:
     - Capacitor
   - CapacitorLocalNotifications (7.0.2):
     - Capacitor
-  - CapacitorNativeSettings (5.0.1):
+  - CapacitorNativeSettings (7.0.2):
     - Capacitor
   - CapacitorNetwork (7.0.2):
     - Capacitor
@@ -39,19 +39,14 @@ PODS:
     - Capacitor
   - CapacitorToast (7.0.2):
     - Capacitor
-  - CapacitorVoiceRecorder (5.0.0):
+  - CapacitorVoiceRecorder (7.0.6):
     - Capacitor
-  - CapawesomeCapacitorFilePicker (5.3.0):
+  - CapawesomeCapacitorFilePicker (7.2.0):
     - Capacitor
-  - CapawesomeTeamCapacitorFileOpener (5.0.4):
+  - CapawesomeTeamCapacitorFileOpener (7.0.1):
     - Capacitor
   - CordovaPlugins (7.4.3):
     - CapacitorCordova
-  - Firebase/CoreOnly (10.25.0):
-    - FirebaseCore (= 10.25.0)
-  - Firebase/Messaging (10.25.0):
-    - Firebase/CoreOnly
-    - FirebaseMessaging (~> 10.25.0)
   - FirebaseAnalytics (10.25.0):
     - FirebaseAnalytics/AdIdSupport (= 10.25.0)
     - FirebaseCore (~> 10.0)
@@ -177,7 +172,6 @@ DEPENDENCIES:
 
 SPEC REPOS:
   trunk:
-    - Firebase
     - FirebaseAnalytics
     - FirebaseCore
     - FirebaseCoreInternal
@@ -242,15 +236,15 @@ SPEC CHECKSUMS:
   Capacitor: b4741ca7affb32c1b70debd03df92cbf522d8a80
   CapacitorApp: efc1e9748a8ea5d3e789cd82a4f451341cc7ac93
   CapacitorCamera: 6e18d54c8ab30d7dc7b8cd93d96f9b4f57e9202a
-  CapacitorCommunityFcm: 3e42b0f0460c791aa5f2b142113db2e94dcbb797
-  CapacitorCommunityFirebaseAnalytics: dd31faa0a3e6f4d00624080ee5b9439b484cd092
+  CapacitorCommunityFcm: 8b6bd4c26c95643dd954aa886d18b0693280c29f
+  CapacitorCommunityFirebaseAnalytics: b70024dd8bee31e6e5bcc07d8a207454056e30c1
   CapacitorCordova: 435121e81a2df4d0034f0fb11fcefab5104cfdb5
   CapacitorDevice: a50a45f0d075e55e2392c7a4be5404d4f69515de
   CapacitorFilesystem: ac0a386949ed6c295a3dffa129ecd26b881ae5be
   CapacitorHaptics: 09d96bcb5a2b74ede8fd039b4cdf58fc43dcacf1
   CapacitorKeyboard: 056bbe3711830ccb782f1705a8ad183b27b6c51e
   CapacitorLocalNotifications: 0964df8c14ec51aadf2bb4fd6d55fdb1ccfd6721
-  CapacitorNativeSettings: 6e94ed3c0465206756f320df18efc52f053ce3c7
+  CapacitorNativeSettings: f5511eb94cb5700ac4edf54f992d2c0dda1857d6
   CapacitorNetwork: 9b9eaeb417ec0ffa22e2bc33a4c71df10e1d6f06
   CapacitorPreferences: b583b5deb74e564c35968189d25d32c0fd41200d
   CapacitorPushNotifications: 6ffcf5df95f17d71a1b02893549bc4727f80540c
@@ -258,11 +252,10 @@ SPEC CHECKSUMS:
   CapacitorSplashScreen: 8d6c8cb0542a8e81585c593815db8785ed8ce454
   CapacitorStatusBar: 5526833b87fa9c96a2a90c1322bb1f663c04505f
   CapacitorToast: e32c2b61a70d6fbd0633309c0807b4b9811768b4
-  CapacitorVoiceRecorder: 872ea857b497ce2c71afe3e4eb5de0a74290c0db
-  CapawesomeCapacitorFilePicker: 41f486cb4a89c6a7c8a4f5d683dbf96658894182
-  CapawesomeTeamCapacitorFileOpener: 4f6cb29ee321173263d438d23cf7dd2c2be649a2
+  CapacitorVoiceRecorder: b136a5989c9a306d57f0c9fc530be79a06ccf7b2
+  CapawesomeCapacitorFilePicker: 005c33082078c1dd528ba9204aa49e97d62b68b7
+  CapawesomeTeamCapacitorFileOpener: 695c9bc2e9fef125dda9491d9bd206cff1cc93c0
   CordovaPlugins: a53d2acd7f554396124e4d126568fe5329c95c43
-  Firebase: 0312a2352584f782ea56f66d91606891d4607f06
   FirebaseAnalytics: ec00fe8b93b41dc6fe4a28784b8e51da0647a248
   FirebaseCore: 7ec4d0484817f12c3373955bc87762d96842d483
   FirebaseCoreInternal: 910a81992c33715fec9263ca7381d59ab3a750b7
