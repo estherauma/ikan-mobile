@@ -90,3 +90,10 @@ ion-tab-bar {
   height: 100%;
   width: 100%;
 }
+
+ion-toolbar {
+  --padding-top: 25px;
+}
+// :root {
+//   --ion-safe-area-top: 20px;
+// }
