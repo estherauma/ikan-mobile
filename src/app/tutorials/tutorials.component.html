@@ -6,10 +6,11 @@
   <swiper-container
     #swiper
     id="tutorials_swiper_element"
-    [slidesPerView]="1"
-    [spaceBetween]="20"
-    [centeredSlides]="true"
+    slides-per-view="1"
+    space-between="20"
+    centered-slides="true"
     (swiperslidechange)="onSlideChange($event)"
+    (slidechange)="onSlideChange($event)"
     >
     <!-- First slide / Home -->
     <swiper-slide class="slide">
