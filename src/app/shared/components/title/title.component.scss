@@ -34,3 +34,9 @@
     margin: 5px 0;
   }
 }
+
+:host.lb-chapter-title {
+  h1 {
+    color: white !important;
+  }
+}
