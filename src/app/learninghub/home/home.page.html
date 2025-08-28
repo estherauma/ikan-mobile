@@ -11,6 +11,10 @@
       <app-title [isBig]="true" [isBlue]="true" [title]="title"></app-title>
     </div>
 
+    <div class="description-wrapper">
+      <app-rich-text [textContent]="pageData?.pageDescription"></app-rich-text>
+    </div>
+
     <div class="cards-wrapper">
       @for (chapter of learningHubChapters; track chapter) {
         <ion-row

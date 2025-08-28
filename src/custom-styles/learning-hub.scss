@@ -8,7 +8,11 @@
       display: flex;
       align-items: center;
       padding: 0px 25px;
-      margin-bottom: 20px;
+    }
+    .description-wrapper {
+      margin: 0 20px 40px 20px;
+      padding: 0 10px;
+      color: var(--ikan_darkblue_100);
     }
     .cards-wrapper {
       width: 100%;
@@ -26,7 +30,7 @@
       }
     }
     ion-text {
-      color: #A0ABCC;
+      color: #a0abcc;
       font-size: 0.875rem;
     }
     .progress-with-text {
@@ -50,11 +54,11 @@ app-chapter {
           h1 {
             font-weight: 800;
             font-size: 1.125rem;
-            font-family: 'interRegular' !important;
+            font-family: "interRegular" !important;
           }
         }
         ion-text {
-          color: #A0ABCC;
+          color: #a0abcc;
           font-size: 0.875rem;
         }
       }
@@ -65,20 +69,20 @@ app-chapter {
 app-subchapter,
 app-get-help {
   ion-content {
-    background-color: #EAEDF6;
-    --background: #EAEDF6;
+    background-color: #eaedf6;
+    --background: #eaedf6;
     .content-wrapper {
       position: relative;
       width: 100%;
       min-height: 80%;
-      background-color: #EAEDF6;
-      font-family: 'GatwickBold' !important;
+      background-color: #eaedf6;
+      font-family: "GatwickBold" !important;
 
       .textarea {
-        --background: #EAEDF6;
+        --background: #eaedf6;
         color: #000000;
         p {
-          font-family: 'interRegular' !important;
+          font-family: "interRegular" !important;
           font-size: 1rem !important;
           line-height: 24px;
         }
@@ -93,14 +97,13 @@ app-get-help {
           line-height: inherit;
         }
         h2 {
-          font-family: 'GatwickUltraLight' !important;
-          font-family: 'GatwickBold' !important;
-          color: #3565FF !important;
+          font-family: "GatwickUltraLight" !important;
+          font-family: "GatwickBold" !important;
+          color: #3565ff !important;
         }
         div:first-child {
           width: 100%;
         }
-
       }
       .note-or-tip {
         --background: white;
@@ -114,11 +117,10 @@ app-get-help {
         padding: 15px 20px;
       }
       .note-or-tip > div > div:first-of-type p {
-        color: #3565FF;
+        color: #3565ff;
         font-weight: bold;
       }
-      
-      
+
       .sections {
         margin-bottom: 10px;
       }
@@ -129,11 +131,11 @@ app-get-help {
           background-color: white;
           border-radius: 0 0 30px 30px;
           box-shadow: 0.5px 9px 10px #dcd6d626;
-      
+
           .audio-icon {
             margin-top: 10px;
           }
-      
+
           #bookmark_icon {
             height: 30px;
             width: 30px;
@@ -147,11 +149,11 @@ app-get-help {
             float: right;
           }
           h2 {
-            font-family: 'GatwickBold' !important;
-            color: #3565FF !important;
+            font-family: "GatwickBold" !important;
+            color: #3565ff !important;
           }
           p {
-            font-family: 'interRegular' !important;
+            font-family: "interRegular" !important;
             font-size: 1rem !important;
             line-height: 24px;
           }
@@ -175,8 +177,8 @@ app-get-help {
       }
       shared-image {
         .image-wrapper {
-          background-color: #EAEDF6;
-          --background: #EAEDF6;
+          background-color: #eaedf6;
+          --background: #eaedf6;
         }
       }
     }
@@ -195,7 +197,7 @@ app-get-help {
         h4 {
           font-size: 18px;
           margin-top: 40px;
-          margin-bottom: 5px
+          margin-bottom: 5px;
         }
 
         h3 {
@@ -204,7 +206,7 @@ app-get-help {
 
         h2 {
           margin-top: 70px;
-          font-size: 20px
+          font-size: 20px;
         }
       }
     }
