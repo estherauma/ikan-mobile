@@ -7,10 +7,11 @@
     <swiper-container
       #swiper
       id="welcome_swiper_element"
-      [slidesPerView]="1"
-      [spaceBetween]="20"
-      [centeredSlides]="true"
+      slides-per-view="1"
+      space-between="20"
+      centered-slides="true"
       (swiperslidechange)="onSlideChange($event)"
+      (slidechange)="onSlideChange($event)"
       >
       @for (slide of slides; track slide; let idx = $index) {
         <swiper-slide

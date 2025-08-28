@@ -46,10 +46,10 @@ export class ConsentFormsComponent  implements OnInit {
 
   async ngOnInit() {
     await this.pageSetup();
+    this.analyticsService.trackEvent(PageEventNames.viewConsentForm, this.sharedMethods.analyticsEventParams);
   }
 
   async pageSetup() {
-    this.analyticsService.trackEvent(PageEventNames.viewConsentForm, this.sharedMethods.analyticsEventParams);
     this.commonText = await this.contentService?.commonText;
     const pageOne = await this.contentService.getContentByPropertyName('worker-consent-form-one');
     this.pages.push(pageOne);

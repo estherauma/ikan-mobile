@@ -8,14 +8,14 @@
   <swiper-container
     #swiper
     id="swiper_element"
-    [autoHeight]="true"
-    [spaceBetween]="10"
-    >
+    auto-height="true"
+    space-between="10"
+  >
     @for (slide of pages; track slide; let i = $index) {
       <swiper-slide
         class="slide"
         [ngClass]="{ 'second-slide': i === 1 }"
-        >
+      >
         <ion-label class="page-label">
           {{ commonText?.page + " " + (i + 1) + " " + commonText?.of + " " + pages.length }}
         </ion-label>
@@ -93,66 +93,64 @@
                     </ion-select>
                   </div> -->
                   <!-- Radio -->
-                  <!-- <div
-                  *ngIf="section?.questionType === 'radio'"
-                  >
-                  <ion-radio-group
-                    [value]="section?.value || ''"
-                    (ionChange)="handleRadioChange($event)"
+                  <!-- <div *ngIf="section?.questionType === 'radio'">
+                    <ion-radio-group
+                      [value]="section?.value || ''"
+                      (ionChange)="handleRadioChange($event)"
                     >
-                    <ion-item
-                      *ngFor="let option of section?.options"
-                      lines="none"
+                      <ion-item
+                        *ngFor="let option of section?.options"
+                        lines="none"
                       >
-                      <ion-radio [value]="option?.value" labelPlacement="end">
-                        {{ option?.option }}
-                      </ion-radio>
-                    </ion-item>
-                  </ion-radio-group>
-                </div> -->
-              </div>
-            }
-            <!-- heading type -->
-            @if (section?.type === 'heading') {
-              <div class="heading-section">
-                <h1 class="heading-label">
-                  {{ section?.text }}
-                  @if (section?.headingAudio) {
-                    <span>
-                      @if (section?.headingAudio.url) {
-                        <ion-icon
-                          class="audio-icon"
-                          name="volume-medium"
-                          (click)="playAudio(section?.headingAudio.url)"
-                        ></ion-icon>
-                      }
-                    </span>
-                  }
-                </h1>
-              </div>
-            }
-          </div>
-        }
-        <div class="btn-wrapper">
-          @if (showPrevBtn) {
-            <ion-button
-              class="prev-btn swiper-button-prev"
-              shape="round"
-              (click)="goToPrevSlide()"
-              >
-              {{ commonText?.previous }}
-            </ion-button>
+                        <ion-radio [value]="option?.value" labelPlacement="end">
+                          {{ option?.option }}
+                        </ion-radio>
+                      </ion-item>
+                    </ion-radio-group>
+                  </div> -->
+                </div>
+              }
+              <!-- heading type -->
+              @if (section?.type === 'heading') {
+                <div class="heading-section">
+                  <h1 class="heading-label">
+                    {{ section?.text }}
+                    @if (section?.headingAudio) {
+                      <span>
+                        @if (section?.headingAudio.url) {
+                          <ion-icon
+                            class="audio-icon"
+                            name="volume-medium"
+                            (click)="playAudio(section?.headingAudio.url)"
+                          ></ion-icon>
+                        }
+                      </span>
+                    }
+                  </h1>
+                </div>
+              }
+            </div>
           }
-          <ion-button
-            class="next-btn swiper-button-next"
-            shape="round"
-            (click)="i === pages.length - 1 ? submitForm() : goToNextSlide()"
-            >
-            {{ i === pages.length - 1 ? commonText?.submit : commonText?.next }}
-          </ion-button>
+          <div class="btn-wrapper">
+            @if (showPrevBtn) {
+              <ion-button
+                class="prev-btn swiper-button-prev"
+                shape="round"
+                (click)="goToPrevSlide()"
+                >
+                {{ commonText?.previous }}
+              </ion-button>
+            }
+            <ion-button
+              class="next-btn swiper-button-next"
+              shape="round"
+              (click)="i === pages.length - 1 ? submitForm() : goToNextSlide()"
+              >
+              {{ i === pages.length - 1 ? commonText?.submit : commonText?.next }}
+            </ion-button>
+          </div>
         </div>
-      </div>
-    </swiper-slide>
-  }
-</swiper-container>
+      </swiper-slide>
+    }
+  </swiper-container>
 </ion-content>
