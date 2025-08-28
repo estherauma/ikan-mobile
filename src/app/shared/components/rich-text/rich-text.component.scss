@@ -10,3 +10,11 @@ img {
   max-width: 95%;
   object-fit: contain;
 }
+
+
+:host.lb-chapter-description {
+  p {
+    color: white;
+    margin-top: 0;
+  }
+}
