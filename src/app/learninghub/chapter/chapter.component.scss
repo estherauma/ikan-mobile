@@ -3,19 +3,19 @@ ion-content {
   --padding-bottom: 30px;
 
   .audio-video-section {
-    margin: 20px;
+    padding: 20px;
     display: flex;
     justify-content: end;
+    height: 170px;
   }
 
   .title-section {
-    min-height: 150px;
-    background: var(--ikan_darkblue_100);
-    backdrop-filter: blur(5px);
+    background: #1B57ED;
     display: flex;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
-    padding: 15px;
+    padding: 10px 20px;
   }
 
   .subchapter-list {
