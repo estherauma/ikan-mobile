@@ -1,5 +1,5 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
-import { StorageKeys, UserData } from '../shared/types/api-types';
+import { StorageKeys, UserData, UserRole } from '../shared/types/api-types';
 import { Router } from '@angular/router';
 import { AnalyticsService } from '../shared/services/analytics/analytics.service';
 import { AuthService } from '../shared/services/auth/auth.service';
@@ -21,6 +21,8 @@ export class TutorialsComponent  implements OnInit {
   commonText: any;
   user: UserData;
   audioUrl = '';
+  pageText: any;
+  welcomeText = '';
 
   @ViewChild('swiper', { static: false })
   swiperRef: ElementRef | undefined;
@@ -59,6 +61,19 @@ export class TutorialsComponent  implements OnInit {
     this.pageContent = await this.contentService?.getContentByPropertyName('app-tutorials');
     this.audioUrl = this.pageContent?.welcomeAudio?.url || '';
     this.user = await this.sharedMethods.getUserData();
+    this.pageText = this.sharedMethods.convertAdditionalTextToObj(this.pageContent?.additionalText);
+    switch (this.user?.role) {
+      case UserRole.public:
+        this.welcomeText = this.pageText?.publicWelcomeText || '';
+        break;
+      case UserRole.worker:
+        this.welcomeText = this.pageText?.workerWelcomeText || '';
+        break;
+      case UserRole.vesselOwner:
+        this.welcomeText = this.pageText?.voWelcomeText || '';
+        break;
+    }
+    
     // filter out tutorials that are not applicable to the user role
     this.pageContent.tutorials.items = this.pageContent?.tutorials?.items.filter(item => (
       !item?.roles?.length ||

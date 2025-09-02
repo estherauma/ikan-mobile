@@ -47,7 +47,13 @@
           }
         </div>
         <h1>{{ pageContent?.welcomeTitle }}</h1>
-        <app-rich-text [textContent]="pageContent?.welcomeText"></app-rich-text>
+
+        @if (welcomeText) {
+          <p class="welcome-text">{{ welcomeText }}</p>
+        }
+        @if (!welcomeText) {
+          <app-rich-text [textContent]="pageContent?.welcomeText"></app-rich-text>
+        }
       </div>
 
       <div class="buttons-wrapper">
