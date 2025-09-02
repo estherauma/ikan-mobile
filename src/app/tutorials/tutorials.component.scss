@@ -147,6 +147,15 @@ ion-content {
       .show-prev {
         justify-content: space-between;
       }
+      .later-btn {
+        min-width: 30%;
+        max-width: 50%;
+        min-height: unset;
+        height: fit-content;
+        --border-radius: 30px;
+        --padding-top: 12px;
+        --padding-bottom: 12px;
+      }
     }
   }
 }

@@ -115,7 +115,8 @@
         </ion-row>
       </div>
 
-      <div class="buttons-wrapper show-prev">
+      <!-- Disabled for now -->
+      <!-- <div class="buttons-wrapper show-prev">
         <ion-button
           class="prev-btn"
           shape="round"
@@ -130,6 +131,14 @@
           (click)="exitTutorials()"
           >
           {{  commonText?.ok }}
+        </ion-button>
+      </div> -->
+      <div class="buttons-wrapper later-btn-wrapper">
+        <ion-button
+          class="later-btn"
+          (click)="skipTutorials()"
+        >
+          {{ commonText?.later }}
         </ion-button>
       </div>
     </swiper-slide>
