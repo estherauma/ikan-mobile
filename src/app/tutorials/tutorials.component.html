@@ -40,13 +40,19 @@
           @if (pageContent?.welcomeVideo?.url) {
             <video
               #videoPlayer
-              [src]="pageContent?.welcomeVideo?.url"
-              controls
               class="welcome-video"
+              [src]="pageContent?.welcomeVideo?.url"
+              (play)="isVideoPlaying = true"
+              (pause)="isVideoPlaying = false"
+              (ended)="isVideoPlaying = false"
+              [controls]="isVideoPlaying"
             ></video>
+            @if (!isVideoPlaying) {
+              <ion-icon name="play" class="play-icon" (click)="playVideo()"></ion-icon>
+            }
           }
         </div>
-        <h1>{{ pageContent?.welcomeTitle }}</h1>
+        <h1 class="welcome-title">{{ pageContent?.welcomeTitle }}</h1>
 
         @if (welcomeText) {
           <p class="welcome-text">{{ welcomeText }}</p>

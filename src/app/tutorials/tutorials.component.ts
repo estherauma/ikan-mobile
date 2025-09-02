@@ -23,6 +23,7 @@ export class TutorialsComponent  implements OnInit {
   audioUrl = '';
   pageText: any;
   welcomeText = '';
+  isVideoPlaying = false;
 
   @ViewChild('swiper', { static: false })
   swiperRef: ElementRef | undefined;
@@ -172,7 +173,16 @@ export class TutorialsComponent  implements OnInit {
     }
   }
 
+  playVideo() {
+    this.isVideoPlaying = true;
+    const video: HTMLVideoElement = this.videoPlayerRef.nativeElement;
+    if (video) {
+      video.play();
+    }
+  }
+
   stopAndResetVideo() {
+    this.isVideoPlaying = false;
     const video: HTMLVideoElement = this.videoPlayerRef.nativeElement;
     if (video) {
       video.pause();
