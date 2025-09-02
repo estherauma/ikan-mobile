@@ -98,21 +98,27 @@
 
       <div class="slide-content tutorials-slide-content">
         @if (pageContent?.tutorials?.introTitle) {
-          <h1>{{ pageContent?.tutorials?.introTitle }}</h1>
+          <h1 class="intro-title">{{ pageContent?.tutorials?.introTitle }}</h1>
         }
-        <app-rich-text [textContent]="pageContent?.tutorials?.introText"></app-rich-text>
-        <ion-row class="tutorials-list">
+        <app-rich-text [textContent]="pageContent?.tutorials?.introText" class="tutorials-intro-text"></app-rich-text>
+        
+        <div class="tutorial-items-wrapper">
           @for (tutorial of pageContent?.tutorials?.items; track tutorial; let idx = $index) {
-            <ion-col size="6" class="tutorial-item" (click)="goToTutorialDetail(tutorial)">
-              <div class="item-wrapper">
-                <div class="icon-wrapper">
-                  <ion-icon [name]="tutorial.itemIcon"></ion-icon>
-                </div>
-                <p>{{ tutorial.itemTitle }}</p>
+            <div size="12" class="tutorial-item" (click)="goToTutorialDetail(tutorial)">
+              <div class="video-wrapper tutorial-video-wrapper" [ngClass]="{'no-video-wrapper': !tutorial?.itemVideo?.url}">
+                @if (tutorial?.itemVideo?.url) {
+                  <video
+                    #videoPlayer
+                    class="tutorial-video"
+                    [src]="tutorial?.itemVideo?.url"
+                  ></video>
+                }
+                <ion-icon name="play" class="play-icon" (click)="goToTutorialDetail(tutorial)"></ion-icon>
               </div>
-            </ion-col>
+              <p class="tutorial-label">{{ tutorial.itemTitle }}</p>
+            </div>
           }
-        </ion-row>
+        </div>
       </div>
 
       <!-- Disabled for now -->
