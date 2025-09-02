@@ -11,10 +11,26 @@ img {
   object-fit: contain;
 }
 
-
 :host.lb-chapter-description {
   p {
     color: white;
     margin-top: 0;
+  }
+}
+
+:host.tutorials-intro-text {
+  color: #191970;
+  font-weight: bold;
+  margin-bottom: 16px;
+  p {
+    font-size: 1.1rem;
+    margin-bottom: 0;
+    margin-top: 10px;
+  }
+  p:first-child {
+    margin-top: 16px;
+  }
+  p:last-child {
+    margin-bottom: 16px;
   }
 }
