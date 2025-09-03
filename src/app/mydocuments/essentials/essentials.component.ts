@@ -192,7 +192,6 @@ export class EssentialsComponent  implements OnInit {
           await this.getDocDetails();
           await this.syncService.syncMyDocuments();
         } else {
-          // TODO: translate
           this.sharedMethods.showToast(this.docsCommonText?.saveInsuranceDocError || 'Insurance doc error');
         }
       }

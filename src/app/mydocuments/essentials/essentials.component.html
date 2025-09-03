@@ -202,8 +202,7 @@
                   <span>
                     <ion-icon name="add"></ion-icon>
                   </span>
-                  <!-- TODO: translate -->
-                  {{ docsCommonText?.addInsuranceDocument || 'Add insurance doc' }}
+                  {{ docsCommonText?.addInsuranceDocument }}
                 </ion-label>
               </ion-col>
             </ion-row>
@@ -237,8 +236,7 @@
               </ion-col>
               <ion-col size="9" class="details-col">
                 <ion-label>
-                  <!-- TODO: translate -->
-                  {{ docsCommonText?.insuranceDocument || 'Insurance document' }}
+                  {{ docsCommonText?.insuranceDocument }}
                 </ion-label>
                 <p>
                   <span>{{ commonText?.uploaded }}:
@@ -250,7 +248,6 @@
                 </p>
               </ion-col>
             </ion-row>
-            <!-- TODO: translate -->
             <ion-icon class="trash-icon" name="trash-outline" (click)="handleDeleteDocument(insuranceDocDetails, docsCommonText?.deleteInsuranceDocument)"></ion-icon>
           </ion-card-content>
         </ion-card>
