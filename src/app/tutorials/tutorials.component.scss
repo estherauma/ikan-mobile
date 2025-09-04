@@ -45,84 +45,124 @@ ion-content {
         display: flex;
         flex-direction: column;
         align-items: center;
-        // justify-content: center;
+        justify-content: center;
         margin-top: 50px;
-        flex: 1 1 auto;
+        flex: 1;
+        overflow-y: auto;
         color: #191970;
         .video-wrapper {
           width: 90%;
           height: 200px;
           position: relative;
           margin-bottom: 20px;
+          display: flex;
+          justify-content: center;
+          align-items: center;
           video {
             width: 100%;
             height: 100%;
             object-fit: cover;
             object-position: center;
             border-radius: 20px;
+            border: 2px solid #3565ff;
+          }
+          .play-icon {
+            background: white;
+            color: #3565ff;
+            border: 1px solid #3565ff;
+            font-size: 1.5rem;
+            padding: 10px;
+            border-radius: 50%;
+            position: absolute;
           }
         }
-        .tutorials-list {
+        .welcome-title,
+        .intro-title {
+          color: #3565ff;
+          font-family: "GatwickBold";
+        }
+        .welcome-text {
+          text-align: center;
+          color: #3565ff;
+        }
+
+        .tutorial-items-wrapper {
           width: 100%;
-          display: flex;
-          // justify-content: center;
+          margin-bottom: 100px;
           .tutorial-item {
-            padding: 5px 10px;
-            margin-bottom: 10px;
-            cursor: pointer;
-            .item-wrapper {
-              display: flex;
-              flex-direction: column;
-              align-items: center;
-              background-color: #eaedf6;
-              border-radius: 10px;
-              padding: 10px;
-              // box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-              box-shadow: 0 1px 3px #858acd;
-              .icon-wrapper {
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                width: 40px;
-                height: 40px;
-                ion-icon {
-                  font-size: 1.5rem;
-                  color: #3565ff;
-                  width: 100%;
-                  height: 100%;
-                  object-fit: contain;
-                }
-              }
-              p {
-                margin: 0;
-                font-size: 1rem;
-              }
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            border-bottom: 1px solid #191970;
+            margin-top: 30px;
+            padding-bottom: 15px;
+            .tutorial-video-wrapper {
+              width: 60%;
+              height: 120px;
+              margin-bottom: 0;
             }
+            .no-video-wrapper {
+              border-radius: 20px;
+              border: 2px solid #3565ff;
+            }
+            .tutorial-label {
+              color: #191970;
+              font-family: "GatwickBold";
+              text-align: center;
+            }
+          }
+          .tutorial-item:first-child {
+            margin-top: 0;
+          }
+          .tutorial-item:last-child {
+            border-bottom: unset;
           }
         }
       }
       .tutorials-slide-content {
         margin-top: 10px;
+        justify-content: unset;
       }
 
       .buttons-wrapper {
-        flex: 0 0 auto;
         display: flex;
         justify-content: center;
+        position: relative;
         .prev-btn {
         }
         .next-btn {
         }
         .arrow-icon {
-          background: #3565ff;
-          color: white;
+          background: white;
+          color: #3565ff;
+          border: 1px solid #3565ff;
           font-size: 1.5rem;
           padding: 10px;
           border-radius: 50%;
         }
       }
+      .later-btn-wrapper::before {
+        content: "";
+        position: absolute;
+        top: -100px;
+        left: 0;
+        right: 0;
+        height: 100px;
+        pointer-events: none;
+        background: linear-gradient(to bottom, #f5f6f9 0%, transparent 100%);
+      }
       .show-prev {
         justify-content: space-between;
+      }
+      .later-btn {
+        min-width: 30%;
+        max-width: 50%;
+        min-height: unset;
+        height: fit-content;
+        --border-radius: 30px;
+        --padding-top: 12px;
+        --padding-bottom: 12px;
       }
     }
   }

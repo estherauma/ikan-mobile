@@ -3,7 +3,8 @@
   <audio #audioPlayer [src]="audioUrl" hidden>
   </audio>
 
-  <ion-row class="audio-row">
+  <!-- Disabled for now -->
+  <!-- <ion-row class="audio-row">
     @if (audioUrl) {
       <ion-col class="audio-col">
         <ion-icon
@@ -13,23 +14,31 @@
         ></ion-icon>
       </ion-col>
     }
-  </ion-row>
+  </ion-row> -->
 
   <div class="content-wrapper">
-    <div class="icon-wrapper">
+    <!-- <div class="icon-wrapper">
       <ion-icon [name]="icon" class="icon"></ion-icon>
-    </div>
+    </div> -->
     @if (title) {
-      <h1>{{ title }}</h1>
+      <h1 class="title">{{ title }}</h1>
     }
-    <app-rich-text [textContent]="description"></app-rich-text>
-    <div class="video-wrapper">
+    <app-rich-text [textContent]="description" class="tutorial-detail-description"></app-rich-text>
+    
+    <div class="video-wrapper" [ngClass]="{'no-video-wrapper': !videoUrl}">
       @if (videoUrl) {
         <video
-          [src]="videoUrl"
-          controls
+          #videoPlayer
           class="video-el"
+          [src]="videoUrl"
+          (play)="isVideoPlaying = true"
+          (pause)="isVideoPlaying = false"
+          (ended)="isVideoPlaying = false"
+          [controls]="isVideoPlaying"
         ></video>
+        @if (!isVideoPlaying) {
+          <ion-icon name="play" class="play-icon" (click)="playVideo()"></ion-icon>
+        }
       }
     </div>
   </div>
