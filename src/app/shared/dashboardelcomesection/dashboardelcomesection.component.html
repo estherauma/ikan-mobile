@@ -34,8 +34,8 @@
 
       @if (user?.role === 'worker' && workerVessel) {
         <div class="vessel-details">
-          <p>Vessel name: <span>{{ workerVessel?.name }}</span></p>
-          <p>Vessel no.: <span>{{ workerVessel?.regNo}}</span></p>
+          <p>{{ commonText?.vesselName }}: <span>{{ workerVessel?.name }}</span></p>
+          <p>{{ commonText?.vesselNumber }}: <span>{{ workerVessel?.regNo}}</span></p>
         </div>
       }
     </ion-col>
