@@ -1,6 +1,13 @@
 <app-header></app-header>
 <ion-content>
   <div class="content-wrapper">
+    <div class="disclaimer-wrapper">
+      <div class="icon-wrapper">
+        <ion-icon src="assets/icon/Privacy.svg"></ion-icon>
+      </div>
+      <p>{{ allContent?.disclaimerText }}</p>
+    </div>
+    
     <h4 class="page-title">{{ allContent?.pageTitle }}</h4>
     <div class="content-section">
       @for (section of pageContent; track section) {
