@@ -7,9 +7,8 @@ ion-content {
     padding: 0 20px;
     border-radius: 25px;
     .icon-wrapper {
-      width: 90px;
-      height: 90px;
-      margin-right: 20px;
+      width: 60px;
+      height: 60px;
       ion-icon {
         width: 100%;
         height: 100%;
@@ -18,6 +17,7 @@ ion-content {
     }
     p {
       color: #191970;
+      margin: 10px 0;
     }
   }
   .page-title {
