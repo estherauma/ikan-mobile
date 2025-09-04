@@ -18,9 +18,13 @@ export class TutorialDetailComponent  implements OnInit {
   videoUrl = '';
   audioUrl = '';
   analyticsEventName = '';
+  isVideoPlaying = false;
 
   @ViewChild('audioPlayer')
   audioPlayerRef!: ElementRef<HTMLAudioElement>;
+  
+  @ViewChild('videoPlayer')
+  videoPlayerRef!: ElementRef<HTMLVideoElement>;
 
   constructor(
     public contentService: ContentService,
@@ -49,11 +53,46 @@ export class TutorialDetailComponent  implements OnInit {
   }
 
   closeModal() {
+    // Stop audio or video if playing
+    this.pauseAndResetAudio();
+    this.stopAndResetVideo();
     this.modalCtrl.dismiss();
+  }
+
+  pauseAudio() {
+    const audio: HTMLAudioElement = this.audioPlayerRef.nativeElement;
+    if (audio) {
+      audio.pause();
+    }
+  }
+
+  pauseAndResetAudio() {
+    const audio: HTMLAudioElement = this.audioPlayerRef.nativeElement;
+    if (audio) {
+      audio.pause();
+      audio.currentTime = 0;
+    }
   }
 
   playAudio() {
     const audio: HTMLAudioElement = this.audioPlayerRef.nativeElement;
     audio.play();
+  }
+
+  playVideo() {
+    this.isVideoPlaying = true;
+    const video: HTMLVideoElement = this.videoPlayerRef.nativeElement;
+    if (video) {
+      video.play();
+    }
+  }
+
+  stopAndResetVideo() {
+    this.isVideoPlaying = false;
+    const video: HTMLVideoElement = this.videoPlayerRef.nativeElement;
+    if (video) {
+      video.pause();
+      video.currentTime = 0;
+    }
   }
 }
