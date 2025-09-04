@@ -30,11 +30,13 @@ export class EssentialsComponent  implements OnInit {
   userSeamansBookDetails: any;
   seamansBookImageUrl: string = '';
   allEssentialDocuments: any = [];
-  otherEssentialDocuments: any = []; // excludes passport, visa & seamans book as they are displayed separately
+  otherEssentialDocuments: any = []; // excludes passport, visa, seamans book & insurance doc as they are displayed separately
   isEditing: boolean = false;
   passportViewData: any = {};
   hasPassportDetails: boolean = false;
   currentLanguage = 'en-us';
+  insuranceDocDetails: any;
+  insuranceDocImageUrl: string = '';
 
   constructor(
     public router: Router,
@@ -67,13 +69,15 @@ export class EssentialsComponent  implements OnInit {
     }
 
     this.allEssentialDocuments = this.getEssentialDocuments();
-    // excludes passport, visa & seamans book as they are displayed separately
+    // excludes passport, visa, seamans book & insurance doc as they are displayed separately
     this.otherEssentialDocuments = this.getOtherEssentialDocuments();
     
     this.userVisaDetails = this.allEssentialDocuments.find((doc) => doc.fileName === 'ikan-my-visa');
     this.visaImageUrl = this.userVisaDetails?.fileUrl || '';
     this.userSeamansBookDetails = this.allEssentialDocuments.find((doc) => doc.fileName === 'ikan-my-seamans-book');
     this.seamansBookImageUrl = this.userSeamansBookDetails?.fileUrl || '';
+    this.insuranceDocDetails = this.allEssentialDocuments.find((doc) => doc.fileName === 'ikan-insurance-document');
+    this.insuranceDocImageUrl = this.insuranceDocDetails?.fileUrl || '';
   }
 
   async addPassport() {
@@ -125,8 +129,11 @@ export class EssentialsComponent  implements OnInit {
   
   getOtherEssentialDocuments() {
     const allEssentialDocuments = this.getEssentialDocuments();
-    // excludes passport, visa & seamans book as they are displayed separately
-    return allEssentialDocuments.filter((doc) => doc.fileName !== 'ikan-my-passport' && doc.fileName !== 'ikan-my-visa' && doc.fileName !== 'ikan-my-seamans-book');
+    // excludes passport, visa, seamans book & insurance doc as they are displayed separately
+    return allEssentialDocuments.filter((doc) => doc.fileName !== 'ikan-my-passport' &&
+                                              doc.fileName !== 'ikan-my-visa' &&
+                                              doc.fileName !== 'ikan-my-seamans-book' &&
+                                            doc.fileName !== 'ikan-insurance-document');
   }
 
   async addSeamansBook() {
@@ -155,6 +162,37 @@ export class EssentialsComponent  implements OnInit {
           await this.syncService.syncMyDocuments();
         } else {
           this.sharedMethods.showToast(this.docsCommonText?.saveSeamansBookError);
+        }
+      }
+    });
+  }
+
+  async addInsuranceDoc() {
+    const alert = await this.sharedMethods.getSelectImageOrPdfAlert(this.commonText, this.alertController, this.uploadService, this.docsCommonText);
+    await alert.present();
+    await alert.onDidDismiss().then(async (data) => {
+      if (data.role !== 'cancel' && data.data?.fileData && Object.keys(data?.data?.fileData).length) {
+        const { fileData } = data?.data;
+        const now = this.sharedMethods.getCurrentDateTime();
+        const saveObj = {
+          appRef: this.sharedMethods.generateAppRef(),
+          userId: this.userData.id,
+          fileName: 'ikan-insurance-document',
+          fileUrl: fileData.docType === 'image' ? fileData.webPath : fileData.uriPath,
+          fileSize:  '',
+          docType: fileData.docType,
+          isEssential: true,
+          createdAt: now,
+          updatedAt: now,
+          createdBy: this.userData.id,
+          updatedBy: this.userData.id,
+        };
+        const docInsertId = await this.documentsDataService.create(saveObj);
+        if (docInsertId) {
+          await this.getDocDetails();
+          await this.syncService.syncMyDocuments();
+        } else {
+          this.sharedMethods.showToast(this.docsCommonText?.saveInsuranceDocError || 'Insurance doc error');
         }
       }
     });

@@ -15,7 +15,12 @@
       color: white;
       --background: var(--ion-color-primary);
       text-transform: none;
-      --border-radius: 15px;
+      --border-radius: 20px;
+      --padding-top: 10px;
+      --padding-start: 20px;
+      --padding-bottom: 10px;
+      --padding-end: 20px;
+      margin: 20px 0;
 
       ion-icon {
         margin-right: 5px;
