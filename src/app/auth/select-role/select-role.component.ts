@@ -8,9 +8,10 @@ import { SharedmethodsService } from 'src/app/shared/services/sharedmethods/shar
 import { StorageKeys, UserData, UserRole } from 'src/app/shared/types/api-types';
 
 @Component({
-  selector: 'app-select-role',
-  templateUrl: './select-role.component.html',
-  styleUrls: ['./select-role.component.scss'],
+    selector: 'app-select-role',
+    templateUrl: './select-role.component.html',
+    styleUrls: ['./select-role.component.scss'],
+    standalone: false
 })
 export class SelectRoleComponent  implements OnInit {
   commonText: any;

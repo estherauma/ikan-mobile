@@ -10,9 +10,10 @@ import { AnalyticsService } from 'src/app/shared/services/analytics/analytics.se
 import { PageEventNames } from 'src/app/shared/services/analytics/event-names';
 
 @Component({
-  selector: 'app-create',
-  templateUrl: './create.page.html',
-  styleUrls: ['./create.page.scss'],
+    selector: 'app-create',
+    templateUrl: './create.page.html',
+    styleUrls: ['./create.page.scss'],
+    standalone: false
 })
 export class CreatePage extends BaseformPage implements OnInit {
 

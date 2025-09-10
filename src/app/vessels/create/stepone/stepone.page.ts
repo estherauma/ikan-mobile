@@ -9,9 +9,10 @@ import { ContentService } from 'src/app/shared/services/content/content.service'
 import { SharedmethodsService } from 'src/app/shared/services/sharedmethods/sharedmethods.service';
 
 @Component({
-  selector: 'app-stepone',
-  templateUrl: './stepone.page.html',
-  styleUrls: ['./stepone.page.scss'],
+    selector: 'app-stepone',
+    templateUrl: './stepone.page.html',
+    styleUrls: ['./stepone.page.scss'],
+    standalone: false
 })
 export class SteponePage extends BaseformPage implements OnInit {
   submitButtonText = 'Create';

@@ -2,9 +2,10 @@ import { Component, OnInit } from '@angular/core';
 import { ModalController } from '@ionic/angular';
 
 @Component({
-  selector: 'app-confirmmodal',
-  templateUrl: './confirmmodal.component.html',
-  styleUrls: ['./confirmmodal.component.scss'],
+    selector: 'app-confirmmodal',
+    templateUrl: './confirmmodal.component.html',
+    styleUrls: ['./confirmmodal.component.scss'],
+    standalone: false
 })
 export class ConfirmmodalComponent implements OnInit {
   title;

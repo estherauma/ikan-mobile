@@ -1,0 +1,152 @@
+<ion-content>
+  <!-- Hidden audio element -->
+  <audio #audioPlayer [src]="audioUrl" hidden>
+  </audio>
+
+  <swiper-container
+    #swiper
+    id="tutorials_swiper_element"
+    slides-per-view="1"
+    space-between="20"
+    centered-slides="true"
+    (swiperslidechange)="onSlideChange($event)"
+    (slidechange)="onSlideChange($event)"
+    >
+    <!-- First slide / Home -->
+    <swiper-slide class="slide">
+      <!-- Disabled for now -->
+      <!-- <div class="slider-header">
+        <ion-row>
+          @if (pageContent?.welcomeAudio?.url) {
+            <ion-col class="audio-col">
+              <ion-icon
+                class="audio-icon"
+                name="volume-high"
+                (click)="playAudio(pageContent?.welcomeAudio?.url)"
+              ></ion-icon>
+            </ion-col>
+          }
+          <ion-col class="skip-col">
+            <a (click)="skipTutorials()">
+              <span>{{ commonText?.skip }}</span>
+              <ion-icon name="chevron-forward-outline"></ion-icon>
+              <ion-icon name="chevron-forward-outline" class="icon-2"></ion-icon>
+            </a>
+          </ion-col>
+        </ion-row>
+      </div> -->
+
+      <div class="slide-content">
+        <div class="video-wrapper">
+          @if (pageContent?.welcomeVideo?.url) {
+            <video
+              #videoPlayer
+              class="welcome-video"
+              [src]="pageContent?.welcomeVideo?.url"
+              (play)="isVideoPlaying = true"
+              (pause)="isVideoPlaying = false"
+              (ended)="isVideoPlaying = false"
+              [controls]="isVideoPlaying"
+            ></video>
+            @if (!isVideoPlaying) {
+              <ion-icon name="play" class="play-icon" (click)="playVideo()"></ion-icon>
+            }
+          }
+        </div>
+        <h1 class="welcome-title">{{ pageContent?.welcomeTitle }}</h1>
+
+        @if (welcomeText) {
+          <p class="welcome-text">{{ welcomeText }}</p>
+        }
+        @if (!welcomeText) {
+          <app-rich-text [textContent]="pageContent?.welcomeText"></app-rich-text>
+        }
+      </div>
+
+      <div class="buttons-wrapper">
+        <ion-icon
+          name="arrow-forward-outline"
+          class="arrow-icon"
+          (click)="goToNextSlide()"
+        ></ion-icon>
+      </div>
+    </swiper-slide>
+
+    <!-- Second slide / Tutorials list -->
+    <swiper-slide class="slide">
+      <!-- Disabled for now -->
+      <!-- <div class="slider-header">
+        <ion-row>
+          @if (pageContent?.tutorials?.introAudio?.url) {
+            <ion-col class="audio-col">
+              <ion-icon
+                class="audio-icon"
+                name="volume-high"
+                (click)="playAudio(pageContent?.tutorials?.introAudio?.url)"
+              ></ion-icon>
+            </ion-col>
+          }
+          <ion-col class="skip-col">
+            <a (click)="skipTutorials()">
+              <span>{{ commonText?.skip }}</span>
+              <ion-icon name="chevron-forward-outline"></ion-icon>
+              <ion-icon name="chevron-forward-outline" class="icon-2"></ion-icon>
+            </a>
+          </ion-col>
+        </ion-row>
+      </div> -->
+
+      <div class="slide-content tutorials-slide-content">
+        @if (pageContent?.tutorials?.introTitle) {
+          <h1 class="intro-title">{{ pageContent?.tutorials?.introTitle }}</h1>
+        }
+        <app-rich-text [textContent]="pageContent?.tutorials?.introText" class="tutorials-intro-text"></app-rich-text>
+        
+        <div class="tutorial-items-wrapper">
+          @for (tutorial of pageContent?.tutorials?.items; track tutorial; let idx = $index) {
+            <div size="12" class="tutorial-item" (click)="goToTutorialDetail(tutorial)">
+              <div class="video-wrapper tutorial-video-wrapper" [ngClass]="{'no-video-wrapper': !tutorial?.itemVideo?.url}">
+                @if (tutorial?.itemVideo?.url) {
+                  <video
+                    #videoPlayer
+                    class="tutorial-video"
+                    [src]="tutorial?.itemVideo?.url"
+                  ></video>
+                }
+                <ion-icon name="play" class="play-icon"></ion-icon>
+              </div>
+              <p class="tutorial-label">{{ tutorial.itemTitle }}</p>
+            </div>
+          }
+        </div>
+      </div>
+
+      <!-- Disabled for now -->
+      <!-- <div class="buttons-wrapper show-prev">
+        <ion-button
+          class="prev-btn"
+          shape="round"
+          (click)="goToPreviousSlide()"
+          >
+          {{ commonText?.previous }}
+        </ion-button>
+
+        <ion-button
+          class="next-btn"
+          shape="round"
+          (click)="exitTutorials()"
+          >
+          {{  commonText?.ok }}
+        </ion-button>
+      </div> -->
+      <div class="buttons-wrapper later-btn-wrapper">
+        <ion-button
+          class="later-btn"
+          (click)="skipTutorials()"
+        >
+          {{ commonText?.later }}
+        </ion-button>
+      </div>
+    </swiper-slide>
+  </swiper-container>
+</ion-content>

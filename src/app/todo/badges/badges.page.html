@@ -1,23 +1,27 @@
-<app-header [pageTitle]=""></app-header>
+<app-header></app-header>
 
 <ion-content>
-    <div style="background-color: #F5F5F5; height: 100%;">
-        <h1 class='ion-padding'>My Badges</h1>
-        <ion-row>
-            <ion-col *ngFor="let badge of badges" size="3">
-              <ion-row (click)="badge.completed ? onDetails(true) : onDetails(false)" class="ion-align-items-center ion-justify-content-center">
-                <ion-col size="12">
-                  <ion-thumbnail>
-                    <ion-img src=""></ion-img>
-                  </ion-thumbnail>
-                </ion-col>
-                <ion-col size="12">
-                  <ion-card-subtitle>{{badge.name}}</ion-card-subtitle>
-                  <ion-card-subtitle *ngIf="badge.completed">{{badge.date}}</ion-card-subtitle>
-                </ion-col>
-              </ion-row>
+  <div style="background-color: #F5F5F5; height: 100%;">
+    <h1 class='ion-padding'>My Badges</h1>
+    <ion-row>
+      @for (badge of badges; track badge) {
+        <ion-col size="3">
+          <ion-row (click)="badge.completed ? onDetails(true) : onDetails(false)" class="ion-align-items-center ion-justify-content-center">
+            <ion-col size="12">
+              <ion-thumbnail>
+                <ion-img src=""></ion-img>
+              </ion-thumbnail>
+            </ion-col>
+            <ion-col size="12">
+              <ion-card-subtitle>{{badge.name}}</ion-card-subtitle>
+              @if (badge.completed) {
+                <ion-card-subtitle>{{badge.date}}</ion-card-subtitle>
+              }
             </ion-col>
           </ion-row>
-    </div>
+        </ion-col>
+      }
+    </ion-row>
+  </div>
 
 </ion-content>

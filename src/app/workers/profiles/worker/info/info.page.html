@@ -1,127 +1,145 @@
 <div class="content-wrapper">
+  @if (!isViewInfo) {
     <app-form
-        *ngIf="!isViewInfo"
-        class="worker-profile-info"
-        [tunaFormGroup]="pageFormGroup"
-        [tunaFormquestions]="formQuestions"
-        [submitButtonText]="submitButtonText"
-        (formValue)="onSubmit($event)">
+      class="worker-profile-info"
+      [tunaFormGroup]="pageFormGroup"
+      [tunaFormquestions]="formQuestions"
+      [submitButtonText]="submitButtonText"
+      (formValue)="onSubmit($event)">
     </app-form>
+  }
 
-    <div *ngIf="isViewInfo" class="view-info">
-        <ion-row class="btn-row">
-            <ion-col size="12">
-                <app-button
-                    class="edit-profile"
-                    config=""
-                    fill="solid"
-                    [title]="commonText?.edit"
-                    (onClick)="editInfo()"
-                >
-                </app-button>
-            </ion-col>
-        </ion-row>
-        <ion-row *ngIf="profileData?.firstName">
-            <ion-col size="12">
-                <ion-label class="label">{{ viewInfo?.firstName }}</ion-label>
-            </ion-col>
-            <ion-col size="12">
-                <ion-label class="value">{{ profileData?.firstName }}</ion-label>
-            </ion-col>
-        </ion-row>
-        <ion-row *ngIf="profileData?.lastName">
-            <ion-col size="12">
-                <ion-label class="label">{{ viewInfo?.lastName }}</ion-label>
-            </ion-col>
-            <ion-col size="12">
-                <ion-label class="value">{{ profileData?.lastName }}</ion-label>
-            </ion-col>
-        </ion-row>
-        <ion-row *ngIf="profileData?.email">
-            <ion-col size="12">
-                <ion-label class="label">{{ viewInfo?.email }}</ion-label>
-            </ion-col>
-            <ion-col size="12">
-                <ion-label class="value">{{ profileData?.email }}</ion-label>
-            </ion-col>
-        </ion-row>
-        <ion-row *ngIf="profileData?.telephone">
-            <ion-col size="12">
-                <ion-label class="label">{{ viewInfo?.telephone }}</ion-label>
-            </ion-col>
-            <ion-col size="12" class="tel-num-val-col">
-                <ion-label class="value">{{ profileData?.telephone }}</ion-label>
-                <ion-button
-                    *ngIf="!profileData?.isTelephoneVerified"
-                    class="verify-btn"
-                    (click)="verifyPhoneNumber('telephone')"
-                >
-                {{ commonText?.verify }}
-                </ion-button>
-            </ion-col>
-        </ion-row>
-        <ion-row *ngIf="profileData?.mobile">
-            <ion-col size="12">
-                <ion-label class="label">{{ viewInfo?.mobile }}</ion-label>
-            </ion-col>
-            <ion-col size="12" class="tel-num-val-col">
-                <ion-label class="value">{{ profileData?.mobile }}</ion-label>
-                <ion-button
-                    *ngIf="!profileData?.isMobileVerified"
-                    class="verify-btn"
-                    (click)="verifyPhoneNumber('mobile')"
-                >
-                {{ commonText?.verify }}
-                </ion-button>
-            </ion-col>
-        </ion-row>
-        
-      <ion-row *ngIf="profileData?.addressLine1" class="address">
+  @if (isViewInfo) {
+    <div class="view-info">
+      <ion-row class="btn-row">
         <ion-col size="12">
-          <ion-text class="label">{{ viewInfo?.address }}</ion-text>
-        </ion-col>
-        <ion-col *ngIf="profileData?.addressLine1" size="12">
-          <ion-label class="label">{{ viewInfo?.addressLine1 }}</ion-label>
-        </ion-col>
-        <ion-col *ngIf="profileData?.addressLine1" size="12">
-          <ion-label class="value">{{ profileData?.addressLine1 }}</ion-label>
-        </ion-col>
-        <ion-col *ngIf="profileData?.addressLine2" size="12">
-          <ion-label class="label">{{ viewInfo?.addressLine2 }}</ion-label>
-        </ion-col>
-        <ion-col *ngIf="profileData?.addressLine2" size="12">
-          <ion-label class="value">{{ profileData?.addressLine2 }}</ion-label>
-        </ion-col>
-        <ion-col *ngIf="profileData?.addressLine3" size="12">
-          <ion-label class="label">{{ viewInfo?.addressLine3 }}</ion-label>
-        </ion-col>
-        <ion-col *ngIf="profileData?.addressLine3" size="12">
-          <ion-label class="value">{{ profileData?.addressLine3 }}</ion-label>
+          <app-button
+            class="edit-profile"
+            config=""
+            fill="solid"
+            [title]="commonText?.edit"
+            (onClick)="editInfo()"
+            >
+          </app-button>
         </ion-col>
       </ion-row>
-        <ion-row *ngIf="profileData?.city">
-            <ion-col size="12">
-                <ion-label class="label">{{ viewInfo?.city || commonText?.city }}</ion-label>
-            </ion-col>
-            <ion-col size="12">
-                <ion-label class="value">{{ profileData?.city }}</ion-label>
-            </ion-col>
+      @if (profileData?.firstName) {
+        <ion-row>
+          <ion-col size="12">
+            <ion-label class="label">{{ viewInfo?.firstName }}</ion-label>
+          </ion-col>
+          <ion-col size="12">
+            <ion-label class="value">{{ profileData?.firstName }}</ion-label>
+          </ion-col>
         </ion-row>
-        <ion-row *ngIf="profileData?.country">
-            <ion-col size="12">
-                <ion-label class="label">{{ viewInfo?.country || commonText?.country }}</ion-label>
-            </ion-col>
-            <ion-col size="12">
-                <ion-label class="value">{{ getCountryValueTranslation(profileData?.country) }}</ion-label>
-            </ion-col>
+      }
+      @if (profileData?.lastName) {
+        <ion-row>
+          <ion-col size="12">
+            <ion-label class="label">{{ viewInfo?.lastName }}</ion-label>
+          </ion-col>
+          <ion-col size="12">
+            <ion-label class="value">{{ profileData?.lastName }}</ion-label>
+          </ion-col>
         </ion-row>
-        <ion-row *ngIf="profileData?.postalCode">
-            <ion-col size="12">
-                <ion-label class="label">{{ viewInfo?.postalCode || commonText?.postalCode }}</ion-label>
-            </ion-col>
-            <ion-col size="12">
-                <ion-label class="value">{{ profileData?.postalCode }}</ion-label>
-            </ion-col>
+      }
+      @if (profileData?.email) {
+        <ion-row>
+          <ion-col size="12">
+            <ion-label class="label">{{ viewInfo?.email }}</ion-label>
+          </ion-col>
+          <ion-col size="12">
+            <ion-label class="value">{{ profileData?.email }}</ion-label>
+          </ion-col>
         </ion-row>
+      }
+      @if (profileData?.telephone) {
+        <ion-row>
+          <ion-col size="12">
+            <ion-label class="label">{{ viewInfo?.telephone }}</ion-label>
+          </ion-col>
+          <ion-col size="12">
+            <ion-label class="value">{{ profileData?.telephone }}</ion-label>
+          </ion-col>
+        </ion-row>
+      }
+      @if (profileData?.mobile) {
+        <ion-row>
+          <ion-col size="12">
+            <ion-label class="label">{{ viewInfo?.mobile }}</ion-label>
+          </ion-col>
+          <ion-col size="12">
+            <ion-label class="value">{{ profileData?.mobile }}</ion-label>
+          </ion-col>
+        </ion-row>
+      }
+      @if (profileData?.addressLine1) {
+        <ion-row class="address">
+          <ion-col size="12">
+            <ion-text class="label">{{ viewInfo?.address }}</ion-text>
+          </ion-col>
+          @if (profileData?.addressLine1) {
+            <ion-col size="12">
+              <ion-label class="label">{{ viewInfo?.addressLine1 }}</ion-label>
+            </ion-col>
+          }
+          @if (profileData?.addressLine1) {
+            <ion-col size="12">
+              <ion-label class="value">{{ profileData?.addressLine1 }}</ion-label>
+            </ion-col>
+          }
+          @if (profileData?.addressLine2) {
+            <ion-col size="12">
+              <ion-label class="label">{{ viewInfo?.addressLine2 }}</ion-label>
+            </ion-col>
+          }
+          @if (profileData?.addressLine2) {
+            <ion-col size="12">
+              <ion-label class="value">{{ profileData?.addressLine2 }}</ion-label>
+            </ion-col>
+          }
+          @if (profileData?.addressLine3) {
+            <ion-col size="12">
+              <ion-label class="label">{{ viewInfo?.addressLine3 }}</ion-label>
+            </ion-col>
+          }
+          @if (profileData?.addressLine3) {
+            <ion-col size="12">
+              <ion-label class="value">{{ profileData?.addressLine3 }}</ion-label>
+            </ion-col>
+          }
+        </ion-row>
+      }
+      @if (profileData?.city) {
+        <ion-row>
+          <ion-col size="12">
+            <ion-label class="label">{{ viewInfo?.city || commonText?.city }}</ion-label>
+          </ion-col>
+          <ion-col size="12">
+            <ion-label class="value">{{ profileData?.city }}</ion-label>
+          </ion-col>
+        </ion-row>
+      }
+      @if (profileData?.country) {
+        <ion-row>
+          <ion-col size="12">
+            <ion-label class="label">{{ viewInfo?.country || commonText?.country }}</ion-label>
+          </ion-col>
+          <ion-col size="12">
+            <ion-label class="value">{{ getCountryValueTranslation(profileData?.country) }}</ion-label>
+          </ion-col>
+        </ion-row>
+      }
+      @if (profileData?.postalCode) {
+        <ion-row>
+          <ion-col size="12">
+            <ion-label class="label">{{ viewInfo?.postalCode || commonText?.postalCode }}</ion-label>
+          </ion-col>
+          <ion-col size="12">
+            <ion-label class="value">{{ profileData?.postalCode }}</ion-label>
+          </ion-col>
+        </ion-row>
+      }
     </div>
+  }
 </div>

@@ -1,4 +1,4 @@
-<app-header [pageTitle]="pageTitle"></app-header>
+<app-header></app-header>
 
 <ion-content>
 
@@ -34,8 +34,10 @@
   <app-search
     [searchDataSet]="agents"
     (searchResult)="searchResult($event)"
-    (clear)="clearSearchResult()"  ></app-search>
+  (clear)="clearSearchResult()"  ></app-search>
 
   <!-- TODO: Add filter shared component -->
-  <app-agentcard *ngFor="let agent of agents" [agent]="agent"></app-agentcard>
+  @for (agent of agents; track agent) {
+    <app-agentcard [agent]="agent"></app-agentcard>
+  }
 </ion-content>

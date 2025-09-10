@@ -12,9 +12,10 @@ import { GlobalErrorHandlerService } from '../shared/services/error-handler/glob
 
 register();
 @Component({
-  selector: 'app-consent-forms',
-  templateUrl: './consent-forms.component.html',
-  styleUrls: ['./consent-forms.component.scss'],
+    selector: 'app-consent-forms',
+    templateUrl: './consent-forms.component.html',
+    styleUrls: ['./consent-forms.component.scss'],
+    standalone: false
 })
 export class ConsentFormsComponent  implements OnInit {
 
@@ -45,10 +46,10 @@ export class ConsentFormsComponent  implements OnInit {
 
   async ngOnInit() {
     await this.pageSetup();
+    this.analyticsService.trackEvent(PageEventNames.viewConsentForm, this.sharedMethods.analyticsEventParams);
   }
 
   async pageSetup() {
-    this.analyticsService.trackEvent(PageEventNames.viewConsentForm, this.sharedMethods.analyticsEventParams);
     this.commonText = await this.contentService?.commonText;
     const pageOne = await this.contentService.getContentByPropertyName('worker-consent-form-one');
     this.pages.push(pageOne);

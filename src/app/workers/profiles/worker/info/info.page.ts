@@ -11,9 +11,10 @@ import { ProfileData } from 'src/app/shared/services/sync/types';
 import { UserData } from 'src/app/shared/types/api-types';
 
 @Component({
-  selector: 'app-profiles-info',
-  templateUrl: './info.page.html',
-  styleUrls: ['./info.page.scss'],
+    selector: 'app-profiles-info',
+    templateUrl: './info.page.html',
+    styleUrls: ['./info.page.scss'],
+    standalone: false
 })
 export class InfoPage extends BaseformPage implements OnInit {
   submitButtonText = 'Save';

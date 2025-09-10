@@ -1,18 +1,37 @@
 <ion-header class="ion-no-border">
-  <ion-toolbar class="header-toolbar ion-no-border sky-blue-bg" [ngClass]="{'light-blue': isLightBlueBg}" color="transparent" no-border mode="ios">
-    <div class="header-content-container">
-      <div class="section-one">
-        <div *ngIf="isBackButton" class="back-section">
-          <ion-back-button [text]="backText" [defaultHref]="defaultHref" icon="arrow-back-outline">
+  <ion-toolbar
+    class="header-toolbar ion-no-border sky-blue-bg"
+    [ngClass]="{'light-blue': isLightBlueBg}"
+    color="transparent"
+    no-border
+    mode="ios"
+    >
+    <ion-row>
+      <ion-col size="3.5" class="back-col" [ngClass]="{'no-back-btn': !showBackButton}">
+        @if (showBackButton) {
+          <ion-back-button
+            [text]="commonText?.back"
+            [defaultHref]="defaultHref"
+            icon="arrow-back-outline"
+            >
           </ion-back-button>
-        </div>
-        <ion-title>{{pageTitle}}</ion-title>
-      </div>
-      <div class="section-two">
-        <ion-menu-button  *ngIf="showMenuButton">
-          <img src='/assets/icon/menu-icon.svg'>
-        </ion-menu-button>
-      </div>
-    </div>
+        }
+      </ion-col>
+      <ion-col size="8.5" class="icons-col" [ngClass]="{'no-back-btn': !showBackButton}">
+        @if (showGetHelp) {
+          <div class="get-help-wrapper" (click)="goToHelp()">
+            <ion-icon  src="assets/icon/custom_help.svg" class="get-help-icon"></ion-icon>
+            <!-- translate -->
+            <ion-label>{{ commonText?.help || 'Help' }}</ion-label>
+          </div>
+        }
+        @if (showMenuButton) {
+          <div class="menu-wrapper" (click)="openMenu()">
+            <ion-icon name="menu-outline" class="menu-icon"></ion-icon>
+            <ion-label>{{ commonText?.menu || 'Menu' }}</ion-label>
+          </div>
+        }
+      </ion-col>
+    </ion-row>
   </ion-toolbar>
 </ion-header>

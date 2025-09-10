@@ -5,9 +5,10 @@ import { SharedmethodsService } from 'src/app/shared/services/sharedmethods/shar
 
 export type Segment = 'essentials' | 'myfiles';
 @Component({
-  selector: 'app-home',
-  templateUrl: './home.page.html',
-  styleUrls: ['./home.page.scss'],
+    selector: 'app-home',
+    templateUrl: './home.page.html',
+    styleUrls: ['./home.page.scss'],
+    standalone: false
 })
 export class HomePage implements OnInit {
   commonText: any;

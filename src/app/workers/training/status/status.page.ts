@@ -5,9 +5,10 @@ import { AudioService } from 'src/app/shared/services/audio/audio.service';
 import { ContentService } from 'src/app/shared/services/content/content.service';
 
 @Component({
-  selector: 'app-status',
-  templateUrl: './status.page.html',
-  styleUrls: ['./status.page.scss'],
+    selector: 'app-status',
+    templateUrl: './status.page.html',
+    styleUrls: ['./status.page.scss'],
+    standalone: false
 })
 export class StatusPage implements OnInit {
   commonText: any;

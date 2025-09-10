@@ -3,18 +3,21 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { AnalyticsService } from 'src/app/shared/services/analytics/analytics.service';
 import { AuthService } from 'src/app/shared/services/auth/auth.service';
 import { ContentService } from 'src/app/shared/services/content/content.service';
+import { GlobalErrorHandlerService } from 'src/app/shared/services/error-handler/global-error-handler.service';
 import { SharedmethodsService } from 'src/app/shared/services/sharedmethods/sharedmethods.service';
-import { HubQuestionStatus, UserData, UserRole } from 'src/app/shared/types/api-types';
+import { SyncService } from 'src/app/shared/services/sync/sync.service';
+import { HubQuestionStatus, StorageKeys, UserData, UserRole } from 'src/app/shared/types/api-types';
 import { SurveyDataService } from 'src/app/survey/data/survey-data.service';
 
 @Component({
-  selector: 'app-subchapter',
-  templateUrl: './subchapter.component.html',
-  styleUrls: ['./subchapter.component.scss'],
+    selector: 'app-subchapter',
+    templateUrl: './subchapter.component.html',
+    styleUrls: ['./subchapter.component.scss'],
+    standalone: false
 })
 export class SubchapterComponent  implements OnInit {
   subChapterId: string;
-  allPageContent: any;
+  allPageData: any;
   pageContent: any = [];
   caseStudyInputs = {
     styles: 'case-study',
@@ -33,8 +36,8 @@ export class SubchapterComponent  implements OnInit {
   networkStatus = false;
   savedInlineQuestions = [];
   user: UserData;
-  isWorker: boolean = false;
-  isVesselOwner: boolean = false;
+  isWorker = false;
+  isVesselOwner = false;
 
   constructor(
     public activatedRoute: ActivatedRoute,
@@ -44,6 +47,8 @@ export class SubchapterComponent  implements OnInit {
     public analytics: AnalyticsService,
     public surveyDataService: SurveyDataService,
     public authService: AuthService,
+    public globalErrorHandler: GlobalErrorHandlerService,
+    public syncService: SyncService,
   ) {
     this.activatedRoute.params.subscribe(async params => {
       this.subChapterId = params?.subChapterId;
@@ -57,10 +62,11 @@ export class SubchapterComponent  implements OnInit {
   async ngOnInit() {
     this.networkStatus = await this.sharedmethods.checkInternetConnectionStatus();
     this.user = await this.sharedmethods.getUserData();
-        this.isVesselOwner = this.authService.userRole === UserRole.vesselOwner;
-        this.isWorker = this.authService.userRole === UserRole.worker;
+    this.isVesselOwner = this.authService.userRole === UserRole.vesselOwner;
+    this.isWorker = this.authService.userRole === UserRole.worker;
     await this.pageSetup();
     this.setUpAnalytics();
+    await this.markSubChapterAsCompleted();
   }
 
   async pageSetup() {
@@ -71,33 +77,60 @@ export class SubchapterComponent  implements OnInit {
 
   async getContent() {
     if (this.isCaseStudy) {
-      this.allPageContent = this.contentService.getContentByPropertyName(this.caseStudyUid);
-      this.pageContent = this.allPageContent?.pageContent;
+      this.allPageData = this.contentService.getContentByPropertyName(this.caseStudyUid);
+      this.pageContent = this.allPageData?.pageContent;
       const chapterId = this.subChapterId?.split('.')[0];
       this.imgUrl = this.caseStudyImgUrl || this.sharedmethods?.getChapterBackground(chapterId, 'subchapter');
     } else {
-      this.allPageContent = this.contentService.getContentByPropertyName(this.subChapterId);
+      this.allPageData = this.contentService.getContentByPropertyName(this.subChapterId);
       await this.contentService.replaceVesselPlaceholderText();
-      this.pageContent = this.allPageContent?.pageContent;
+      this.pageContent = this.allPageData?.pageContent;
       const chapterId = this.subChapterId?.split('.')[0];
       this.imgUrl = this.sharedmethods?.getChapterBackground(chapterId, 'subchapter');
       this.upNextContent = this.getNextChapterContent();
       this.savedInlineQuestions = this.surveyDataService.inlineQuestions;
     }
   }
-  
+
   setUpAnalytics() {
-    if (this.allPageContent?.analyticsEventName) {
-      this.analytics.trackEvent(this.allPageContent.analyticsEventName, this.sharedmethods.analyticsEventParams);
+    if (this.allPageData?.analyticsEventName) {
+      this.analytics.trackEvent(this.allPageData.analyticsEventName, this.sharedmethods.analyticsEventParams);
     } else {
       if (this.isCaseStudy) {
-        // TODO: send error to sentry
-        console.log(`No analytics event name found for this case study: ${this.caseStudyUid} ${this.allPageContent?.pageTitle}`);
+        this.globalErrorHandler.handleError(
+          null,
+          `No analytics event name found for this case study: ${this.caseStudyUid} ${this.allPageData?.pageTitle}`
+        );
       } else {
-        // TODO: send error to sentry
-        console.log(`No analytics event name found for this page: ${this.subChapterId} ${this.allPageContent?.pageTitle}`);
+        this.globalErrorHandler.handleError(
+          null,
+          `No analytics event name found for this subchapter: ${this.subChapterId} ${this.allPageData?.pageTitle}`
+        );
       }
     }
+  }
+
+  async markSubChapterAsCompleted() {
+    const savedLearningHubProgress = await this.sharedmethods.readDataFromStorage(StorageKeys.learningHubProgress);
+    const chapterId = this.subChapterId?.split('.')[0];
+    const chapterData = savedLearningHubProgress?.progressData?.find(c => c.id === chapterId);
+    const subChapterData = chapterData?.subChapters.find(sc => sc.id === this.subChapterId);
+
+    if (subChapterData?.completed) { return; }
+
+    subChapterData.completed = true;
+
+    // Update learningHubProgress
+    const now = this.sharedmethods.getCurrentDateTime();
+    const learningHubProgress = {
+      createdAt: now, // This will be overridden if alreadys exists
+      createdBy: this.user?.id, // This will be overridden if alreadys exists
+      ...savedLearningHubProgress,
+      updatedAt: now,
+      updatedBy: this.user?.id
+    };
+    await this.sharedmethods.saveDataToStorage(StorageKeys.learningHubProgress, learningHubProgress);
+    await this.syncService.syncLearningHubProgress();
   }
 
   async getQuestionValues() {
@@ -125,7 +158,7 @@ export class SubchapterComponent  implements OnInit {
           item.status = HubQuestionStatus.pending;
           item.icon = 'help';
         } else if (
-          (item.questionType === 'radio' || item.questionType === 'select') 
+          (item.questionType === 'radio' || item.questionType === 'select')
           && item.value.toLowerCase() === 'yes'
         ) {
           item.status = HubQuestionStatus.answeredYes;

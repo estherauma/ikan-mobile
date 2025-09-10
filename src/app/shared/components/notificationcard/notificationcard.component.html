@@ -13,27 +13,30 @@
         </div>
       </div>
       <div class="title-section ion-margin-vertical ion-padding-end">
-        <ion-card-title 
+        <ion-card-title
         [ngClass]="{
           'deep-blue': titleColor === 'deep-blue',
           'color-blue': titleColor === 'blue'
         }"
         >{{notification.title}}</ion-card-title>
         <p>{{notification.text}}</p>
-        <app-audio-player 
-        *ngIf="notification.hasAttachment && notification.attachmentType === 'audio'"
-        [audioSrc]=""
-        size="thin"
-        variant = 'gray-bg'
-        ></app-audio-player>
-        <div *ngIf="notification.hasAttachment && notification.attachmentType === 'pdf'">
-          <app-attachment
-          [pdfInfo]="notification.pdfInfo"
-          [pdfName]="notification.pdfTitle"
-          variant="gray"
-          ></app-attachment>
-          <!-- <p class="link">Click to visit external <a>link</a></p> -->
-        </div>
+        @if (notification.hasAttachment && notification.attachmentType === 'audio') {
+          <app-audio-player
+            [audioSrc]=""
+            size="thin"
+            variant = 'gray-bg'
+          ></app-audio-player>
+        }
+        @if (notification.hasAttachment && notification.attachmentType === 'pdf') {
+          <div>
+            <app-attachment
+              [pdfInfo]="notification.pdfInfo"
+              [pdfName]="notification.pdfTitle"
+              variant="gray"
+            ></app-attachment>
+            <!-- <p class="link">Click to visit external <a>link</a></p> -->
+          </div>
+        }
       </div>
     </div>
   </div>

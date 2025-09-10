@@ -1,9 +1,10 @@
 import { Component, Input, OnInit } from '@angular/core';
 
 @Component({
-  selector: 'app-notificationcard',
-  templateUrl: './notificationcard.component.html',
-  styleUrls: ['./notificationcard.component.scss'],
+    selector: 'app-notificationcard',
+    templateUrl: './notificationcard.component.html',
+    styleUrls: ['./notificationcard.component.scss'],
+    standalone: false
 })
 export class NotificationcardComponent implements OnInit {
   @Input() statusContainer: 'skyblue-status-container' | 'gray-status-container' = 'skyblue-status-container';

@@ -9,9 +9,10 @@ import { SharedmethodsService } from 'src/app/shared/services/sharedmethods/shar
 import { ProfilesDataService } from 'src/app/profiles/data/profiles-data.service';
 
 @Component({
-  selector: 'app-detail',
-  templateUrl: './detail.page.html',
-  styleUrls: ['./detail.page.scss'],
+    selector: 'app-detail',
+    templateUrl: './detail.page.html',
+    styleUrls: ['./detail.page.scss'],
+    standalone: false
 })
 export class DetailPage extends BaseformPage implements OnInit {
   iconBase = 'assets/icon';

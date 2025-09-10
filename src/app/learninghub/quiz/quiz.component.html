@@ -1,0 +1,49 @@
+<app-header></app-header>
+
+<ion-content>
+  <!-- TODO: add page audio & video to prismic & aggregation -->
+  <div class="audio-video-section">
+    <app-video-button [url]="pageData?.pageVideo?.url"></app-video-button>
+    <app-audio-button [url]="pageData?.pageAudio?.url"></app-audio-button>
+  </div>
+
+  <div class="title-section">
+    <h3>{{ commonText?.quiz }}</h3>
+    <p>{{ commonText?.quizExplainerText }}</p>
+    <p>{{ commonText?.quizExplainerSubText }}</p>
+  </div>
+
+  <div class="content-section">
+    @for (chapter of quizData; track chapter) {
+      <div class="chapter">
+        <h4 class="chapter-title">{{ chapter.title }}</h4>
+        @for (subChapter of chapter?.subChapters; track subChapter) {
+          <div class="subchpater-list">
+            <h5 class="subchapter-title">{{ subChapter.title }}</h5>
+            <div class="question-list">
+              @for (item of subChapter?.questions; track item) {
+                <ion-row
+                  (click)="openQuestion(item)"
+                  >
+                  <ion-col size="10" class="text-col">
+                    <p class="qtn">{{ item?.question }}</p>
+                  </ion-col>
+                  <ion-col size="2">
+                    <div class="icon-wrapper">
+                      @if (!item?.value) {
+                        <ion-icon name="help-outline" class="help"></ion-icon>
+                      }
+                      @if (item?.value) {
+                        <ion-icon name="checkmark" class="checkmark"></ion-icon>
+                      }
+                    </div>
+                  </ion-col>
+                </ion-row>
+              }
+            </div>
+          </div>
+        }
+      </div>
+    }
+  </div>
+</ion-content>

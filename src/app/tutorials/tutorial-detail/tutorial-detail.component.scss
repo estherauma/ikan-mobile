@@ -1,0 +1,85 @@
+ion-content {
+  --padding-start: 20px;
+  --padding-end: 20px;
+  --padding-top: 20px;
+  --padding-bottom: 20px;
+  .audio-row {
+    .audio-col {
+      display: flex;
+      align-items: center;
+      justify-content: end;
+      ion-icon {
+        font-size: 1.5rem;
+        color: #3565ff;
+      }
+    }
+  }
+
+  .content-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 20px;
+    color: #191970;
+    .icon-wrapper {
+      ion-icon {
+        font-size: 3rem;
+        color: #3565ff;
+      }
+    }
+    h1 {
+      text-align: center;
+      font-weight: 500;
+      margin-bottom: 10px;
+      color: #3565ff;
+      font-family: "GatwickBold";
+    }
+    p {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+    .video-wrapper {
+      width: 90%;
+      height: 200px;
+      position: relative;
+      margin: 20px 5px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      video {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        object-position: center;
+        border-radius: 20px;
+        border: 2px solid #3565ff;
+      }
+      .play-icon {
+        background: white;
+        color: #3565ff;
+        border: 1px solid #3565ff;
+        font-size: 1.5rem;
+        padding: 10px;
+        border-radius: 50%;
+        position: absolute;
+      }
+    }
+    .no-video-wrapper {
+      border-radius: 20px;
+      border: 2px solid #3565ff;
+    }
+  }
+
+  .btn-wrapper {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+    ion-icon {
+      background: #3565ff;
+      color: white;
+      font-size: 1.5rem;
+      padding: 10px;
+      border-radius: 50%;
+    }
+  }
+}

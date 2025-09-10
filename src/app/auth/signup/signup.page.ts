@@ -9,9 +9,10 @@ import { ContentService } from 'src/app/shared/services/content/content.service'
 import { SharedmethodsService } from 'src/app/shared/services/sharedmethods/sharedmethods.service';
 
 @Component({
-  selector: 'app-signup',
-  templateUrl: './signup.page.html',
-  styleUrls: ['./signup.page.scss'],
+    selector: 'app-signup',
+    templateUrl: './signup.page.html',
+    styleUrls: ['./signup.page.scss'],
+    standalone: false
 })
 export class SignupPage extends BaseformPage implements OnInit {
   pageText: any;

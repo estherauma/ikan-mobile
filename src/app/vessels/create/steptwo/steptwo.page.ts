@@ -11,9 +11,10 @@ import { PageEventNames } from 'src/app/shared/services/analytics/event-names';
 import { SyncService } from 'src/app/shared/services/sync/sync.service';
 
 @Component({
-  selector: 'app-steptwo',
-  templateUrl: './steptwo.page.html',
-  styleUrls: ['./steptwo.page.scss'],
+    selector: 'app-steptwo',
+    templateUrl: './steptwo.page.html',
+    styleUrls: ['./steptwo.page.scss'],
+    standalone: false
 })
 export class SteptwoPage extends BaseformPage implements OnInit {
   submitButtonText = 'Save';

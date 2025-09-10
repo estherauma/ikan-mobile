@@ -9,40 +9,41 @@
       [defaultThumbnail]="defaultThumbnail"
       playIcon="assets/icon/play.svg"
       (onPlay)="onPlay($event)"
-    >
+      >
     </shared-video>
 
     <!-- For other video types -->
     <!-- <video controls>
-      <source
-        [src]="video?.mediaData?.url"
-        [type]="getVideoType(video?.mediaData?.url)"
+    <source
+      [src]="video?.mediaData?.url"
+      [type]="getVideoType(video?.mediaData?.url)"
       >
-      Your browser does not support the video tag.
-    </video> -->
+    Your browser does not support the video tag.
+  </video> -->
 
-  </div>
-  <div class="questions">
+</div>
+<div class="questions">
+  @if (questionHelperText) {
     <shared-text-area
-      *ngIf="questionHelperText"
       [data]="questionHelperText"
       styles="textarea"
-    >
+      >
     </shared-text-area>
+  }
 
-    <app-form
-      class="training-video-form"
-      btnFill="solid"
-      [showCancelButton]="true"
-      [tunaFormGroup]="pageFormGroup"
-      [tunaFormquestions]="formQuestions"
-      [submitButtonText]="commonText?.submit"
-      [showSurveyDisclaimer]="true"
-      [disclaimerText]="disclaimerText"
-      (formValue)="onSubmit($event)"
-      (cancel)="onCancel()"
+  <app-form
+    class="training-video-form"
+    btnFill="solid"
+    [showCancelButton]="true"
+    [tunaFormGroup]="pageFormGroup"
+    [tunaFormquestions]="formQuestions"
+    [submitButtonText]="commonText?.submit"
+    [showSurveyDisclaimer]="true"
+    [disclaimerText]="disclaimerText"
+    (formValue)="onSubmit($event)"
+    (cancel)="onCancel()"
     >
-    </app-form>
-  </div>
+  </app-form>
+</div>
 
 </div>

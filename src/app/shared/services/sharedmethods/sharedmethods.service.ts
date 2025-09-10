@@ -333,6 +333,23 @@ export class SharedmethodsService {
       createdAt: now,
     };
     this.analyticsEventParams = params;
+    return params;
+  }
+
+  async getAnalyticsEventParams() {
+    const currentParams = this.analyticsEventParams;
+    if (
+      !currentParams?.appLanguage ||
+      !currentParams?.role ||
+      !currentParams?.accountId ||
+      !currentParams?.deviceId
+    ) {
+      const updatedParams = await this.setAnalyticsEventParams();
+      return updatedParams;
+    }
+    const now = Date.now();
+    currentParams.createdAt = now;
+    return currentParams;
   }
 
   getCurrentPlatform() {
@@ -500,4 +517,9 @@ export class SharedmethodsService {
     name = name?.replace(/\s+/g, '--'); // remove spaces from name
     return name + '.pdf';
   }
+
+  removeNBSP = (str: string) => {
+    const formattedString = str?.replace(/\u00A0/g, ' '); // replace &nbsp;
+    return formattedString;
+  };
 }

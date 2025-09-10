@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { CanActivate, Router } from '@angular/router';
+import { CanActivate, Router, UrlTree } from '@angular/router';
 import { SharedmethodsService } from '../../services/sharedmethods/sharedmethods.service';
 import { StorageKeys } from '../../types/api-types';
 
@@ -12,16 +12,13 @@ export class ConsentFormGuard implements CanActivate {
     private sharedMethods: SharedmethodsService,
     private router: Router,
   ) { }
-  
-  async canActivate(): Promise<boolean> {
-    const completedConsentForm = await this.sharedMethods.readDataFromStorage(StorageKeys.completedConsentForms);
 
+  async canActivate(): Promise<UrlTree | boolean> {
+    const completedConsentForm = await this.sharedMethods.readDataFromStorage(StorageKeys.completedConsentForms);
     if (!completedConsentForm) {
-      this.router.navigate(['/consent-forms'], { replaceUrl: true });
-      return false;
+      return this.router.parseUrl('/consent-forms');
     }
 
     return true;
   }
-  
 }

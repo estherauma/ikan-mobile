@@ -6,9 +6,10 @@ import { ContentService } from 'src/app/shared/services/content/content.service'
 import { SharedmethodsService } from 'src/app/shared/services/sharedmethods/sharedmethods.service';
 
 @Component({
-  selector: 'app-deductions',
-  templateUrl: './deductions.page.html',
-  styleUrls: ['./deductions.page.scss'],
+    selector: 'app-deductions',
+    templateUrl: './deductions.page.html',
+    styleUrls: ['./deductions.page.scss'],
+    standalone: false
 })
 export class DeductionsPage extends BaseformPage  implements OnInit {
   commonText: any;

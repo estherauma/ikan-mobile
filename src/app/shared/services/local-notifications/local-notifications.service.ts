@@ -66,6 +66,7 @@ export class LocalNotificationsService {
             id: 1,
             schedule: {
               repeats: true,
+              every: 'two-weeks',
               on:
                 {
                   weekday: Weekday.Sunday,
@@ -78,24 +79,25 @@ export class LocalNotificationsService {
               roles: [UserRole.worker,]
             }
           },
-          {
-            title: commonText?.surveyNotificationTitle,
-            body: commonText?.surveyNotificationBody,
-            id: 2,
-            schedule: {
-              repeats: true,
-              on:
-                {
-                  weekday: Weekday.Thursday,
-                  hour: 18,
-                  minute: 0,
-                }
-              }, // Notification will run every Thursday
-            actionTypeId: NotificationActionId.survey,
-            extra: {
-              roles: [UserRole.worker,]
-            }
-          },
+          // THURSDAY NOTIFICATION DISABLED FOR NOW
+          // {
+          //   title: commonText?.surveyNotificationTitle,
+          //   body: commonText?.surveyNotificationBody,
+          //   id: 2,
+          //   schedule: {
+          //     repeats: true,
+          //     on:
+          //       {
+          //         weekday: Weekday.Thursday,
+          //         hour: 18,
+          //         minute: 0,
+          //       }
+          //     }, // Notification will run every Thursday
+          //   actionTypeId: NotificationActionId.survey,
+          //   extra: {
+          //     roles: [UserRole.worker,]
+          //   }
+          // },
 
           // ADD NOTIFICATIONS HERE
           // id should be different for each notification otherwise it will override the previous one

@@ -10,7 +10,7 @@ export class GlobalErrorHandlerService implements ErrorHandler {
   constructor() {
     // add release to Sentry
     // code will only run on device
-    App.getInfo().then((info) => {;
+    App.getInfo().then((info) => {
       const newOptions: Sentry.BrowserOptions = {
         release: info?.version,
       };

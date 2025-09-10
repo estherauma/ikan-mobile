@@ -245,6 +245,7 @@ ion-modal.workers-create-modal {
   }
 }
 
+.select-file-alert .alert-wrapper,
 .parties-edit-alert .alert-wrapper,
 .add-file-alert .alert-wrapper {
   width: 100%;
@@ -360,5 +361,31 @@ ion-modal.workers-create-modal {
   .cancel-btn {
     background: var(--ion-color-primary);
     color: white !important;
+  }
+}
+
+ion-modal.tutorial-detail-modal {
+  --background: transparent !important;
+
+  --height: 90%;
+
+  .ion-page {
+    width: 90%;
+    border-radius: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+  }
+}
+
+ion-modal.quiz-qtn-modal {
+  --height: unset;
+  --width: 90%;
+  --border-radius: 20px;
+
+  .ion-page {
+    width: 90%;
+    border-radius: 20px;
+    left: 50%;
+    transform: translateX(-50%);
   }
 }

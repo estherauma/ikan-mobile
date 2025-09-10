@@ -7,6 +7,8 @@ import { PaymentsDataService } from '../../data/payments-data.service';
 import { UserData, StorageKeys } from 'src/app/shared/types/api-types';
 import { AnalyticsService } from 'src/app/shared/services/analytics/analytics.service';
 import { PageEventNames } from 'src/app/shared/services/analytics/event-names';
+import { ProfilesDataService } from 'src/app/profiles/data/profiles-data.service';
+import { firstValueFrom } from 'rxjs';
 
 type GroupedVesselPayments = {
   date: string;
@@ -15,17 +17,18 @@ type GroupedVesselPayments = {
 };
 
 @Component({
-  selector: 'app-vessel-payments',
-  templateUrl: './vessel-payments.page.html',
-  styleUrls: ['./vessel-payments.page.scss'],
+    selector: 'app-vessel-payments',
+    templateUrl: './vessel-payments.page.html',
+    styleUrls: ['./vessel-payments.page.scss'],
+    standalone: false
 })
 export class VesselPaymentsPage implements OnInit {
   commonText: any;
   paymentsCommonText: any;
   currentUser: UserData;
-  currentLanguage: string = 'en-us';
+  currentLanguage = 'en-us';
   vessel: any;
-  pageTitle: string = 'Vessel Payments';
+  pageTitle = 'Vessel Payments';
   filterOptions = [
     { title: 'closed', value: 'closed' },
     { title: 'opened', value: 'opened' },
@@ -51,6 +54,7 @@ export class VesselPaymentsPage implements OnInit {
   unFilteredData = [];
   vesselPayments = [];
   groupedVesselPayments: GroupedVesselPayments[] = [];
+  allUsers = [];
 
   constructor(
     public router: Router,
@@ -60,11 +64,15 @@ export class VesselPaymentsPage implements OnInit {
     public sharedMethods: SharedmethodsService,
     public activatedRoute: ActivatedRoute,
     public analyticsService: AnalyticsService,
+    public profileDataService: ProfilesDataService,
   ) {
     this.activatedRoute.queryParams.subscribe(async(params) => {
       if (params?.vessel) {
         this.vessel = JSON.parse(params.vessel);
-        this.paymentsDataService.getAll().subscribe(async (data) => {
+        const users = await firstValueFrom(this.profileDataService.getAll());
+        this.allUsers = users;
+
+        this.paymentsDataService.getAll().subscribe(async(data) => {
           this.currentUser = await this.sharedMethods.readDataFromStorage(
             StorageKeys.userData
           );
@@ -73,6 +81,19 @@ export class VesselPaymentsPage implements OnInit {
               payment.vesselId === this.vessel.onlineRef &&
               payment.createdBy === this.currentUser.id
           );
+
+          // Add user & vessel details to each payment
+          this.vesselPayments = this.vesselPayments.map((payment) => {
+            const user = this.allUsers.find(
+              (u) => u.onlineRef === payment.userId
+            );
+            return {
+              ...payment,
+              user: user ?? null,
+              vessel: this.vessel,
+            };
+          });
+
           // group vessel payments by date
           this.groupedVesselPayments = this.groupPaymentsByDate(
             this.vesselPayments
@@ -119,7 +140,6 @@ export class VesselPaymentsPage implements OnInit {
   filterResult(result) {}
 
   goToPaymentDetail(paymentDetails) {
-    paymentDetails.vessel = this.vessel;
     const queryParams = { paymentDetails: JSON.stringify(paymentDetails) };
     this.router.navigate(['payments/payment-details'], { queryParams });
   }

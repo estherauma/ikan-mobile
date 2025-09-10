@@ -18,9 +18,10 @@ import { PageEventNames } from 'src/app/shared/services/analytics/event-names';
 import { PushNotificationsService } from 'src/app/shared/services/push-notifications/push-notifications.service';
 
 @Component({
-  selector: 'app-login',
-  templateUrl: './login.page.html',
-  styleUrls: ['./login.page.scss'],
+    selector: 'app-login',
+    templateUrl: './login.page.html',
+    styleUrls: ['./login.page.scss'],
+    standalone: false
 })
 export class LoginPage extends BaseformPage implements OnInit {
   passwordFieldType = FieldType.password;
@@ -52,6 +53,7 @@ export class LoginPage extends BaseformPage implements OnInit {
   }
 
   pageSetup() {
+    this.commonText = this.contentService.commonText;
     const pageData = this.contentService.getLoginPageData();
     this.formQuestions = pageData.formQuestions;
     this.pageTitle = pageData?.pageTitle;
@@ -132,6 +134,7 @@ export class LoginPage extends BaseformPage implements OnInit {
       password: formData.password.trim()
     };
 
+    this.sharedMethods.showLoader(this.contentService.commonText?.loadingText);
     const response = await this.apiServices.post('accounts/login', formData, true);
     response.subscribe(
       async(res: LoginSuccessReponse) => {

@@ -6,21 +6,22 @@ import { ContentService } from 'src/app/shared/services/content/content.service'
 import { LocalNotificationsService } from 'src/app/shared/services/local-notifications/local-notifications.service';
 import { PushNotificationsService } from 'src/app/shared/services/push-notifications/push-notifications.service';
 import { SharedmethodsService } from 'src/app/shared/services/sharedmethods/sharedmethods.service';
-import { UserData, StorageKeys } from 'src/app/shared/types/api-types';
+import { UserData, StorageKeys, UserRole } from 'src/app/shared/types/api-types';
 import { env } from 'src/environments/environment';
 
 @Component({
-  selector: 'app-worker',
-  templateUrl: './worker.page.html',
-  styleUrls: ['./worker.page.scss'],
+    selector: 'app-worker',
+    templateUrl: './worker.page.html',
+    styleUrls: ['./worker.page.scss'],
+    standalone: false
 })
 export class WorkerPage implements OnInit {
+
   commonText: any;
   user: UserData;
   name = '';
   isProduction = env.production;
   showTriggerButton = false;
-
   sLists = [
     {
       title: 'My Documents',
@@ -74,14 +75,14 @@ export class WorkerPage implements OnInit {
     await this.contentService.updateCurrentLanguage();
     const menuContent = await this.contentService.getMenuContent();
 
-      // for item in slists, update title with menuContent
-      this.sLists.forEach((item) => {
-        Object.entries(menuContent).forEach((x) => {
-          if (x[1].url === item.url) {
-            item.title = x[1].label;
-          }
-        });
+    // for item in slists, update title with menuContent
+    this.sLists.forEach((item) => {
+      Object.entries(menuContent).forEach((x) => {
+        if (x[1].url === item.url) {
+          item.title = x[1].label;
+        }
       });
+    });
 
     const splitString = /\s*,\s*|\s*,\s*/; // split by comma and remove spaces
     const allowedTestUsers = this.commonText?.allowedTestUsers ? this.commonText?.allowedTestUsers.split(splitString) : [];

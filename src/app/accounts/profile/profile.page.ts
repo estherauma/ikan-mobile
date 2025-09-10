@@ -13,9 +13,10 @@ import { ProfileData } from 'src/app/shared/services/sync/types';
 import { UserData, UserRole } from 'src/app/shared/types/api-types';
 
 @Component({
-  selector: 'app-profile',
-  templateUrl: './profile.page.html',
-  styleUrls: ['./profile.page.scss'],
+    selector: 'app-profile',
+    templateUrl: './profile.page.html',
+    styleUrls: ['./profile.page.scss'],
+    standalone: false
 })
 export class ProfilePage extends BaseformPage implements OnInit {
   pageTitle = 'My Profile';

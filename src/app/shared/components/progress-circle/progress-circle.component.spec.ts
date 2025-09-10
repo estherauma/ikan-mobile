@@ -1,19 +1,19 @@
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { IonicModule } from '@ionic/angular';
 
-import { MaincardComponent } from './maincard.component';
+import { ProgressCircleComponent } from './progress-circle.component';
 
-describe('MaincardComponent', () => {
-  let component: MaincardComponent;
-  let fixture: ComponentFixture<MaincardComponent>;
+describe('ProgressCircleComponent', () => {
+  let component: ProgressCircleComponent;
+  let fixture: ComponentFixture<ProgressCircleComponent>;
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      declarations: [ MaincardComponent ],
+      declarations: [ ProgressCircleComponent ],
       imports: [IonicModule.forRoot()]
     }).compileComponents();
 
-    fixture = TestBed.createComponent(MaincardComponent);
+    fixture = TestBed.createComponent(ProgressCircleComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   }));

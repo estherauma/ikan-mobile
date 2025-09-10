@@ -4,9 +4,10 @@ import { AudioService } from 'src/app/shared/services/audio/audio.service';
 import { ContentService } from 'src/app/shared/services/content/content.service';
 
 @Component({
-  selector: 'app-recordnote',
-  templateUrl: './recordnote.page.html',
-  styleUrls: ['./recordnote.page.scss'],
+    selector: 'app-recordnote',
+    templateUrl: './recordnote.page.html',
+    styleUrls: ['./recordnote.page.scss'],
+    standalone: false
 })
 export class RecordnotePage implements OnInit {
   commonText: any;

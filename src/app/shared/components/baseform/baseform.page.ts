@@ -3,9 +3,10 @@ import { FormGroup } from '@angular/forms';
 import { ContentService } from '../../services/content/content.service';
 
 @Component({
-  selector: 'app-baseform',
-  templateUrl: './baseform.page.html',
-  styleUrls: ['./baseform.page.scss'],
+    selector: 'app-baseform',
+    templateUrl: './baseform.page.html',
+    styleUrls: ['./baseform.page.scss'],
+    standalone: false
 })
 export class BaseformPage implements OnInit {
   commonText: any;

@@ -1,4 +1,4 @@
-<app-header [pageTitle]=""></app-header>
+<app-header></app-header>
 
 
 <ion-content>
@@ -17,7 +17,7 @@
           <app-chart chartType="doughnut" [chartDatasets]="datasets"></app-chart>
         </div>
       </ion-col>
-    </ion-row> 
+    </ion-row>
   </div>
   <app-search
     [searchDataSet]="searchAndFilterDataSet"
@@ -56,37 +56,41 @@
     </ion-row>
   </ion-grid>
   <ion-accordion-group>
-    <ion-accordion [value]="i" *ngFor="let training of trainings;  let i = index">
-      <ion-item slot="header" color="light">
-        <div class="training-title-container">
-          <ion-label>{{training.title}}</ion-label>
-          <div class="training-progress-container">
-            <div class="training-progress-bar">
-              <ion-progress-bar value="0.8"></ion-progress-bar>
+    @for (training of trainings; track training; let i = $index) {
+      <ion-accordion [value]="i">
+        <ion-item slot="header" color="light">
+          <div class="training-title-container">
+            <ion-label>{{training.title}}</ion-label>
+            <div class="training-progress-container">
+              <div class="training-progress-bar">
+                <ion-progress-bar value="0.8"></ion-progress-bar>
+              </div>
+              <ion-label><small>4/5(80%)</small></ion-label>
             </div>
-            <ion-label><small>4/5(80%)</small></ion-label>
           </div>
+        </ion-item>
+        <div class="ion-padding" slot="content">
+          @for (question of training.questions; track question) {
+            <ion-card (click)="onQuestionClick()" class="white-bg">
+              <ion-card-content>
+                <ion-grid>
+                  <ion-row class="ion-align-items-center">
+                    <ion-col size="3">
+                      <ion-thumbnail>
+                        <ion-img src=""></ion-img>
+                      </ion-thumbnail>
+                    </ion-col>
+                    <ion-col size="8">
+                      <ion-card-title>{{ commonText?.questionTime }}!</ion-card-title>
+                      <ion-icon name="checkmark-circle-outline"></ion-icon>
+                    </ion-col>
+                  </ion-row>
+                </ion-grid>
+              </ion-card-content>
+            </ion-card>
+          }
         </div>
-      </ion-item>
-      <div class="ion-padding" slot="content">
-        <ion-card (click)="onQuestionClick()" *ngFor="let question of training.questions" class="white-bg">
-          <ion-card-content>
-            <ion-grid>
-              <ion-row class="ion-align-items-center">
-                <ion-col size="3">
-                  <ion-thumbnail>
-                    <ion-img src=""></ion-img>
-                  </ion-thumbnail>
-                </ion-col>
-                <ion-col size="8">
-                  <ion-card-title>{{ commonText?.questionTime }}!</ion-card-title>
-                  <ion-icon name="checkmark-circle-outline"></ion-icon>
-                </ion-col>
-              </ion-row>
-            </ion-grid>
-          </ion-card-content>
-        </ion-card>
-      </div>
-    </ion-accordion>
+      </ion-accordion>
+    }
   </ion-accordion-group>
 </ion-content>

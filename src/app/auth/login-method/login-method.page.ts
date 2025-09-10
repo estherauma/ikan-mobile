@@ -10,9 +10,10 @@ import { SharedmethodsService } from 'src/app/shared/services/sharedmethods/shar
 import { StorageKeys } from 'src/app/shared/types/api-types';
 
 @Component({
-  selector: 'app-login-method',
-  templateUrl: './login-method.page.html',
-  styleUrls: ['./login-method.page.scss'],
+    selector: 'app-login-method',
+    templateUrl: './login-method.page.html',
+    styleUrls: ['./login-method.page.scss'],
+    standalone: false
 })
 export class LoginMethodPage implements OnInit {
   pageText: any;

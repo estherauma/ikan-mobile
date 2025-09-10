@@ -1,4 +1,4 @@
-<app-header [isLightBlueBg]="true" [pageTitle]="">
+<app-header [isLightBlueBg]="true">
 
 </app-header>
 
@@ -57,32 +57,46 @@
       </ion-grid>
     </div>
 
-    <div *ngIf="workOrders.length === 0">
-      <ion-card>
-        <ion-card-content>
-          {{ noWorkOrdersText }}
-        </ion-card-content>
-      </ion-card>
-    </div>
+    @if (workOrders.length === 0) {
+      <div>
+        <ion-card>
+          <ion-card-content>
+            {{ noWorkOrdersText }}
+          </ion-card-content>
+        </ion-card>
+      </div>
+    }
 
-    <div *ngIf="select">
-      <ion-row *ngFor="let wo of workOrders" class="ion-align-items-center">
-        <ion-checkbox></ion-checkbox>
-        <app-workordercard [wo]="wo"></app-workordercard>
-      </ion-row>
-    </div>
-    <div *ngIf="!select">
-      <app-workordercard *ngFor="let wo of workOrders" [wo]="wo"></app-workordercard>
-    </div>
+    @if (select) {
+      <div>
+        @for (wo of workOrders; track wo) {
+          <ion-row class="ion-align-items-center">
+            <ion-checkbox></ion-checkbox>
+            <app-workordercard [wo]="wo"></app-workordercard>
+          </ion-row>
+        }
+      </div>
+    }
+    @if (!select) {
+      <div>
+        @for (wo of workOrders; track wo) {
+          <app-workordercard [wo]="wo"></app-workordercard>
+        }
+      </div>
+    }
   </app-contentwrapper>
 </ion-content>
 <div class="bottom-element">
-  <div *ngIf="!select" (click)="onSelect()">
-    {{selectText}}
-  </div>
-  <div *ngIf="select" (click)="onCancel()">
-    {{cancelText}}
-  </div>
+  @if (!select) {
+    <div (click)="onSelect()">
+      {{selectText}}
+    </div>
+  }
+  @if (select) {
+    <div (click)="onCancel()">
+      {{cancelText}}
+    </div>
+  }
   <div>
     <ion-icon name="ellipsis-vertical-outline" size="large"></ion-icon>
   </div>

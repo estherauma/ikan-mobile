@@ -52,7 +52,8 @@ export class PushNotificationsService {
       return;
     }
     await PushNotifications.register();
-    await this.getFCMToken(); // bit of duplication here since function is called after registration event, but neede for when listener is not triggered
+    // bit of duplication here since function is called after registration event, but neede for when listener is not triggered
+    await this.getFCMToken();
     this.addListeners();
     this.notificationsPermission = true;
   }
@@ -65,7 +66,7 @@ export class PushNotificationsService {
     const messagingRepos = [ 'tuna-messaging', 'tuna-push-notifications' ];
     const currentLanguage = this.contentService.currentLanguage;
     const vessels = await this.getCurrentUserVessels();
-    
+
     this.pushNotificationData = {
       appId: 'tuna', // to identify it from other products on push notifications server
       language: currentLanguage,
@@ -83,23 +84,23 @@ export class PushNotificationsService {
     if (!user) {
       return [];
     }
-    
+
     const userVessels = [];
     let allVessels = [];
     this.vesselsDataService.getAll().subscribe((data) => {
       allVessels = data;
     });
-    
+
     if (user?.role === UserRole.vesselOwner) {
       const voVessels = allVessels?.filter((vessel) => vessel.createdBy === user.id);
       userVessels.push(...voVessels.map((vessel) => vessel.appRef));
     } else if (user?.role === UserRole.worker) {
-      const workerVessel = await this.contentService.getWorkerVessel();
+      const workerVessel = await this.vesselsDataService.getWorkerVessel();
       if (workerVessel && workerVessel?.appRef) {
         userVessels.push(workerVessel?.appRef);
       }
     }
-    
+
     return userVessels;
   }
 
@@ -122,7 +123,10 @@ export class PushNotificationsService {
         value: JSON.stringify(this.pushNotificationData),
       });
     } catch (error) {
-      this.globalErrorHandler.handleError(error, 'Error in push-notifications.service.ts at savePushNotificationData(). Failed to save push notification data');
+      this.globalErrorHandler.handleError(
+        error,
+        'Error in push-notifications.service.ts at savePushNotificationData(). Failed to save push notification data'
+      );
     }
   }
 
@@ -147,10 +151,13 @@ export class PushNotificationsService {
           return;
         }
       }
-      
+
       await this.apiService.uploadPushNotificationData(pushNotificationData);
     } catch (error) {
-      this.globalErrorHandler.handleError(error, 'Error in push-notifications.service.ts at uploadPushNotificationData(). Failed to upload push notification data');
+      this.globalErrorHandler.handleError(
+        error,
+        'Error in push-notifications.service.ts at uploadPushNotificationData(). Failed to upload push notification data'
+      );
     }
   }
 
@@ -190,7 +197,10 @@ export class PushNotificationsService {
         },
       );
     } catch (error) {
-      this.globalErrorHandler.handleError(error, 'Error in push-notifications.service.ts at addListeners(). Failed to add listeners to push notifications');
+      this.globalErrorHandler.handleError(
+        error,
+        'Error in push-notifications.service.ts at addListeners(). Failed to add listeners to push notifications'
+      );
     }
   }
 
@@ -221,7 +231,10 @@ export class PushNotificationsService {
         }
       }
     } catch (error) {
-      this.globalErrorHandler.handleError(error, 'Error in push-notifications.service.ts at subscribeMessagingTopics(). Failed to subscribe to messaging topics');
+      this.globalErrorHandler.handleError(
+        error,
+        'Error in push-notifications.service.ts at subscribeMessagingTopics(). Failed to subscribe to messaging topics'
+      );
     }
   }
 
@@ -247,7 +260,10 @@ export class PushNotificationsService {
         }
       }
     } catch (error) {
-      this.globalErrorHandler.handleError(error, 'Error in push-notifications.service.ts at unsubscribeMessagingTopics(). Failed to unsubscribe from messaging topics');
+      this.globalErrorHandler.handleError(
+        error,
+        'Error in push-notifications.service.ts at unsubscribeMessagingTopics(). Failed to unsubscribe from messaging topics'
+      );
     }
   }
 
@@ -277,7 +293,7 @@ export class PushNotificationsService {
             const dataToUpdate = { ...savedNotificationData, tokenExpired: true };
             this.apiService.uploadPushNotificationData(dataToUpdate);
           }
-          
+
           // update preferences regardless since other data might have changed not just the token
           this.setSaveUploadPushNotificationData();
         })
@@ -298,7 +314,10 @@ export class PushNotificationsService {
       }
       return true;
     } catch (error) {
-      this.globalErrorHandler.handleError(error, 'Error in push-notifications.service.ts at checkFCMTokenExpiry(). Failed to check FCM token expiry');
+      this.globalErrorHandler.handleError(
+        error,
+        'Error in push-notifications.service.ts at checkFCMTokenExpiry(). Failed to check FCM token expiry'
+      );
       return false;
     }
   }
@@ -308,7 +327,10 @@ export class PushNotificationsService {
       FCM.deleteInstance()
         .then(() => true)
         .catch((err) => {
-          this.globalErrorHandler.handleError(err, 'Error in push-notifications.service.ts at deleteFCMInstance(). Failed to delete FCM instance');
+          this.globalErrorHandler.handleError(
+            err,
+            'Error in push-notifications.service.ts at deleteFCMInstance(). Failed to delete FCM instance'
+          );
           return false;
         });
     }
@@ -338,7 +360,10 @@ export class PushNotificationsService {
       await this.showPNsPrompt();
     } catch (error) {
       console.error(error);
-      this.globalErrorHandler.handleError(error, 'Error in push-notifications.service.ts at checkAndroidPNsPermissions(). Failed to check android push notification permissions');
+      this.globalErrorHandler.handleError(
+        error,
+        'Error in push-notifications.service.ts at checkAndroidPNsPermissions(). Failed to check android push notification permissions'
+      );
       return;
     }
   }
@@ -374,7 +399,10 @@ export class PushNotificationsService {
         option: AndroidSettings.AppNotification,
       });
     } catch (error) {
-      this.globalErrorHandler.handleError(error, 'Error in push-notifications.service.ts at showAppNotificationSettings(). Failed to show app notification settings');
+      this.globalErrorHandler.handleError(
+        error,
+        'Error in push-notifications.service.ts at showAppNotificationSettings(). Failed to show app notification settings'
+      );
     }
   }
 }

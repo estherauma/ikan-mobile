@@ -1,0 +1,87 @@
+ion-content {
+  .audio-video-section {
+    display: flex;
+    justify-content: end;
+    margin: 20px 10px 0 0;
+  }
+  
+  .cards-wrapper {
+    ion-row {
+      background: white;
+      margin: 0px 0 25px 0;
+      padding: 16px;
+      border-radius: 20px;
+      box-shadow: 0 3px 1px -2px rgba(0, 0, 0, 0.2),
+        0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 1px 5px 0 rgba(0, 0, 0, 0.12);
+      ion-col {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+      }
+
+      .icon-col {
+        .icon-wrapper {
+          width: 40px;
+          height: 40px;
+          // background: #3565ff;
+          // color: white;
+          // padding: 3px;
+          // border-radius: 5px;
+          ion-img,
+          ion-icon {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+          }
+        }
+      }
+
+      .text-col {
+        align-items: start;
+        padding-left: 16px;
+        padding-right: 16px;
+        h4 {
+          font-size: 1.1rem;
+          font-weight: 600;
+          margin: 0;
+          color: var(--ikan_darkblue_100);
+        }
+        .description {
+          font-size: 14px;
+          color: var(--ion-color-medium);
+        }
+      }
+
+      .progress-col {
+        .outer-progress-wrapper {
+          border: 2px solid var(--ion-color-primary);
+          border-radius: 50%;
+          padding: 7px;
+          width: 65px;
+          height: 65px;
+
+          .inner-progress-wrapper {
+            border: 2px solid var(--ion-color-primary);
+            border-radius: 50%;
+            padding: 1px;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: white;
+
+            p {
+              font-size: 14px;
+              font-weight: 600;
+              color: var(--ion-color-primary);
+              text-align: center;
+              margin: 0;
+            }
+          }
+        }
+      }
+    }
+  }
+}

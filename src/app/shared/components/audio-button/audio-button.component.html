@@ -1,0 +1,49 @@
+<div class="audio-button-component">
+  <!-- Hidden audio element -->
+  <audio
+    #audioPlayer
+    [src]="url"
+    (ended)="isPlaying = false"
+    hidden
+  ></audio>
+
+  <div (click)="toggleAudio()" class="btn-wrapper" [ngClass]="{'no-url': !url}">
+    @if (!customIcon) {
+      <ion-icon
+        [name]="isPlaying ? 'pause-outline' : iconName"
+      [ngStyle]="{
+        'background': background,
+        'color': color
+      }"
+      [ngClass]="{
+        'no-url': !url
+      }"
+      ></ion-icon>
+    }
+
+    @if (customIcon && !isPlaying) {
+      <ion-img
+        [src]="customIcon"
+      [ngStyle]="{
+        'background': background,
+        'color': color
+      }"
+      [ngClass]="{
+        'no-url': !url
+      }"
+      ></ion-img>
+    }
+    @if (customIcon && isPlaying) {
+      <ion-icon
+        name="pause"
+      [ngStyle]="{
+        'background': background,
+        'color': color
+      }"
+      [ngClass]="{
+        'no-url': !url
+      }"
+      ></ion-icon>
+    }
+  </div>
+</div>

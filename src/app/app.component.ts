@@ -20,9 +20,10 @@ import { ApiService } from './shared/services/api/api.service';
 import { AnalyticsService } from './shared/services/analytics/analytics.service';
 
 @Component({
-  selector: 'app-root',
-  templateUrl: 'app.component.html',
-  styleUrls: ['app.component.scss'],
+    selector: 'app-root',
+    templateUrl: 'app.component.html',
+    styleUrls: ['app.component.scss'],
+    standalone: false
 })
 export class AppComponent implements OnInit, OnDestroy {
   public appPages = [];
@@ -92,6 +93,7 @@ export class AppComponent implements OnInit, OnDestroy {
     this.userData = this.authService.userData;
     this.userEmail = this.authService.userData?.email;
     await this.contentService.saveSurveyCategories();
+    await this.contentService.generateLearningHubProgressData();
   }
 
   setupMenu(menuData) {
@@ -140,7 +142,7 @@ export class AppComponent implements OnInit, OnDestroy {
           const user: UserData = await this.sharedMethods.readDataFromStorage(StorageKeys.userData);
           const now = new Date().toUTCString();
           if ( this.authService.tokenExpiryDate < new Date(now)) {
-            this.logOut();
+            await this.logOut();
           } else {
             // TODO: Service isn't returning role and is returning
             // Ensure auth service returns role immediately
@@ -151,14 +153,14 @@ export class AppComponent implements OnInit, OnDestroy {
             }
 
             await this.pushNotifications.setup();
-
             this.router.navigate([this.authService.getCurrentUserBaseUrlFromRole(user?.role)]);
           }
         }
       });
   }
 
-  logOut() {
+  async logOut() {
+    await this.syncData();
     this.authService.logOut();
     this.router.navigate(['/login']);
   }
@@ -168,7 +170,7 @@ export class AppComponent implements OnInit, OnDestroy {
     const tokenExpiryDateTime = new Date(0);
     tokenExpiryDateTime.setUTCSeconds(tokenExpiryDateInUTCSeconds);
     if (tokenExpiryDateTime < new Date(now)) {
-      this.logOut();
+      await this.logOut();
       this.sharedMethods.showLoader(this.contentService.commonText?.loginToProceed);
     }
   }
@@ -176,11 +178,17 @@ export class AppComponent implements OnInit, OnDestroy {
   async onClick(index) {
     if (this.appPages[index].url === '/logout') {
       await LocalNotifications.removeAllListeners();
+      await this.syncData();
       this.authService.logOut();
       this.router.navigate(['']);
     } else if (this.appPages[index].url === '/sync') {
-      await this.sharedMethods.showToast(this.contentService.commonText?.syncingData || 'Syncing data...', 'long');
-      this.syncService.syncData();
+      const hasInternet = await this.sharedMethods.checkInternetConnectionStatus();
+      if (!hasInternet) {
+        return this.sharedMethods.showToast(this.contentService.commonText?.noInternetConnection, 'long');
+      } else {
+        await this.sharedMethods.showToast(this.contentService.commonText?.syncingData || 'Syncing data...', 'long');
+        this.syncService.syncData();
+      }
     } else if (this.appPages[index].url === '/tfa-video') {
       await this.showTrainingVideo();
     } else if (this.appPages[index].url === '/myprofile') {
@@ -268,6 +276,8 @@ export class AppComponent implements OnInit, OnDestroy {
   }
 
   async syncData() {
+    const hasInternet = await this.sharedMethods.checkInternetConnectionStatus();
+    if (!hasInternet) { return; }
     await this.sharedMethods.showWaitLoader(this.commonText?.syncingData || 'Syncing data...');
     const user: UserData = await this.sharedMethods.readDataFromStorage(StorageKeys.userData);
     if (user) {

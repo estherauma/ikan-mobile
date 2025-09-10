@@ -7,9 +7,10 @@ import { DocumentsDataService } from '../data/documents-data.service';
 import { CreatepassportPage } from '../createpassport/createpassport.page';
 
 @Component({
-  selector: 'app-view-passport',
-  templateUrl: './view-passport.component.html',
-  styleUrls: ['./view-passport.component.scss'],
+    selector: 'app-view-passport',
+    templateUrl: './view-passport.component.html',
+    styleUrls: ['./view-passport.component.scss'],
+    standalone: false
 })
 export class ViewPassportComponent  implements OnInit {
   userPassportDetails;

@@ -1,5 +1,4 @@
-<app-header [pageTitle]="">
-</app-header>
+<app-header></app-header>
 
 <ion-content>
   <ion-grid>
@@ -45,17 +44,19 @@
   </ion-grid>
   <div style="background-color: #ffffff;" class="ion-margin">
     <ion-grid>
-      <ion-row *ngFor="let report of reports" class="ion-align-items-center ion-padding" style="border-bottom: 1px dotted black;">
-        <ion-col size="3">
-          <ion-thumbnail>
-            <ion-img [src]=""></ion-img>
-          </ion-thumbnail>
-        </ion-col>
-        <ion-col size="9">
-          <ion-text><h1 style="margin-top: 0px; padding-top:0px;">{{report.name}}</h1></ion-text>
-          <ion-label>{{report.date}}  {{report.time}}</ion-label>
-        </ion-col>
-      </ion-row>
+      @for (report of reports; track report) {
+        <ion-row class="ion-align-items-center ion-padding" style="border-bottom: 1px dotted black;">
+          <ion-col size="3">
+            <ion-thumbnail>
+              <ion-img [src]=""></ion-img>
+            </ion-thumbnail>
+          </ion-col>
+          <ion-col size="9">
+            <ion-text><h1 style="margin-top: 0px; padding-top:0px;">{{report.name}}</h1></ion-text>
+            <ion-label>{{report.date}}  {{report.time}}</ion-label>
+          </ion-col>
+        </ion-row>
+      }
     </ion-grid>
   </div>
 </ion-content>

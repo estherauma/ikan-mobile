@@ -5,15 +5,16 @@ import { SharedmethodsService } from 'src/app/shared/services/sharedmethods/shar
 import { StorageKeys } from 'src/app/shared/types/api-types';
 
 @Component({
-  selector: 'app-select-language',
-  templateUrl: './select-language.component.html',
-  styleUrls: ['./select-language.component.scss'],
+    selector: 'app-select-language',
+    templateUrl: './select-language.component.html',
+    styleUrls: ['./select-language.component.scss'],
+    standalone: false
 })
 export class SelectLanguageComponent  implements OnInit {
   availableLanguages: any = [];
-  languageDataLoading = false;
-  currentLanguage = 'en-us';
   commonText: any;
+  selectedLanguage: string;
+  isLanguageSelected = false;
 
   constructor(
     public contentService: ContentService,
@@ -32,13 +33,17 @@ export class SelectLanguageComponent  implements OnInit {
 
 
   async onLanguageSelect(e) {
-    await this.sharedMethods.saveDataToStorage(StorageKeys.currentLanguage, e?.detail?.value);
+    this.selectedLanguage = e?.detail?.value;
+    this.isLanguageSelected = true;
+  }
+
+  async onSubmit() {
+    await this.sharedMethods.saveDataToStorage(StorageKeys.currentLanguage, this.selectedLanguage);
     await this.contentService.updateCurrentLanguage();
-    const pageData = this.contentService.getContentByPropertyName('login-method');
+    const pageData = await this.contentService.getContentByPropertyName('login-method');
     const loginMethodData = this.sharedMethods.convertAdditionalTextToObj(pageData?.additionalText);
-    this.modalController?.dismiss({
+    await this.modalController.dismiss({
       loginMethodData
     });
   }
-
 }

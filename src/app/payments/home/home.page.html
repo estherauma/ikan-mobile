@@ -1,60 +1,61 @@
-<app-header [pageTitle]=""></app-header>
+<app-header></app-header>
 
 <ion-content class="content-skyblue-bg">
   <ion-grid>
     <div class="title-search-filter">
       <!-- Create functionality disabled for now -->
       <!-- <ion-row class="ion-justify-content-end">
-        <app-button
-          iconName="add-outline"
-          [title]="commonText?.new"
-        ></app-button>
-      </ion-row> -->
+      <app-button
+        iconName="add-outline"
+        [title]="commonText?.new"
+      ></app-button>
+    </ion-row> -->
 
-      <ion-row class="title-row">
-        <ion-col size="12">
-          <ion-img src="assets/icon/payments.svg" class="icon"></ion-img>
-        </ion-col>
-        <ion-col size="12">
-          <app-title
-            class="payments-page"
-            [title]="paymentsCommonText?.payments"
-            [isBlue]="true"
-          ></app-title>
-        </ion-col>
-      </ion-row>
+    <ion-row class="title-row">
+      <ion-col size="12">
+        <ion-img src="assets/icon/payments.svg" class="icon"></ion-img>
+      </ion-col>
+      <ion-col size="12">
+        <app-title
+          class="payments-page"
+          [title]="paymentsCommonText?.payments"
+          [isBlue]="true"
+        ></app-title>
+      </ion-col>
+    </ion-row>
 
-      <!-- TODO: change search/filter datasets according to role -->
-      <!-- Search functionality disabled for now -->
-      <!-- <ion-row class="search-row">
-        <ion-col size="12">
-          <app-search
-            [searchDataSet]="filterDataSet"
-            (searchResult)="searchResult($event)"
-          ></app-search>
-        </ion-col>
-      </ion-row> -->
+    <!-- TODO: change search/filter datasets according to role -->
+    <!-- Search functionality disabled for now -->
+    <!-- <ion-row class="search-row">
+    <ion-col size="12">
+      <app-search
+        [searchDataSet]="filterDataSet"
+        (searchResult)="searchResult($event)"
+      ></app-search>
+    </ion-col>
+  </ion-row> -->
 
-      <ion-row class="filter-row">
-        <ion-col size="12">
-          <app-filter
-            filterProperty="status"
-            [options]="filterOptions"
-            [filterDataSet]="filterDataSet"
-            (filterResult)="filterResult($event)"
-            [filterLabel]="commonText?.filterByStatus"
-          ></app-filter>
-        </ion-col>
-      </ion-row>
-    </div>
+  <ion-row class="filter-row">
+    <ion-col size="12">
+      <app-filter
+        filterProperty="status"
+        [options]="filterOptions"
+        [filterDataSet]="filterDataSet"
+        (filterResult)="filterResult($event)"
+        [filterLabel]="commonText?.filterByStatus"
+      ></app-filter>
+    </ion-col>
+  </ion-row>
+</div>
 
-    <!-- Vessel Owner View -->
-    <div *ngIf="currentUser?.role==='vessel_owner'" class="vo-view">
+<!-- Vessel Owner View -->
+@if (currentUser?.role==='vessel_owner') {
+  <div class="vo-view">
+    @for (vessel of vessels; track vessel) {
       <ion-row
-        *ngFor="let vessel of vessels"
         class="vessel-row"
         (click)="goToVesselPayments(vessel)"
-      >
+        >
         <ion-col size="3" class="icon-col">
           <div class="icon-wrapper">
             <ion-img
@@ -63,34 +64,40 @@
             ></ion-img>
           </div>
         </ion-col>
-
         <ion-col size="9" class="name-col">
           <ion-card-title class="name"> {{vessel?.name}}</ion-card-title>
         </ion-col>
       </ion-row>
-    </div>
+    }
+  </div>
+}
 
-    <!-- Worker/Fisher View -->
-    <div *ngIf="currentUser?.role==='worker'" class="worker-view">
-      <ion-row class="sub-title-row">
-        <ion-col size="12">
-          <p class="sub-title">
-            {{ paymentsCommonText?.paymentHistory }}
-            <span *ngIf="userPayments?.length">
+<!-- Worker/Fisher View -->
+@if (currentUser?.role==='worker') {
+  <div class="worker-view">
+    <ion-row class="sub-title-row">
+      <ion-col size="12">
+        <p class="sub-title">
+          {{ paymentsCommonText?.paymentHistory }}
+          @if (userPayments?.length) {
+            <span>
               ({{ userPayments?.length + ' ' + paymentsCommonText?.payments }})
             </span>
-          </p>
-        </ion-col>
-        <!-- No existing payments -->
-        <ion-col *ngIf="!userPayments?.length" size="12">
+          }
+        </p>
+      </ion-col>
+      <!-- No existing payments -->
+      @if (!userPayments?.length) {
+        <ion-col size="12">
           <p class="no-payments">
             {{ paymentsCommonText?.noPayments }}
           </p>
         </ion-col>
-      </ion-row>
-
-      <div *ngFor="let payment of userPayments" class="payment-wrapper">
-        <app-paymentbreakdowncard
+      }
+    </ion-row>
+    @for (payment of userPayments; track payment) {
+      <div class="payment-wrapper">
+        <app-payment-card
           [statusClass]="{
                   'pending': payment.status === 'Pending',
                   'confirmed': payment.status === 'Confirmed',
@@ -100,11 +107,13 @@
           iconUrl="assets/icon/single_payment_blue.svg"
           currency="$"
           [amount]="payment?.totalUsdAmountReceived"
-          [paymentMadeOn]="payment?.paymentDate"
+          [paymentDate]="payment?.paymentDate"
           (onClick)="goToPaymentDetail(payment)"
-        >
-        </app-paymentbreakdowncard>
+          >
+        </app-payment-card>
       </div>
-    </div>
-  </ion-grid>
+    }
+  </div>
+}
+</ion-grid>
 </ion-content>

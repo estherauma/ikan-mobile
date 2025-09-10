@@ -2,9 +2,10 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
-  selector: 'app-select',
-  templateUrl: './select.page.html',
-  styleUrls: ['./select.page.scss'],
+    selector: 'app-select',
+    templateUrl: './select.page.html',
+    styleUrls: ['./select.page.scss'],
+    standalone: false
 })
 export class SelectPage implements OnInit {
 

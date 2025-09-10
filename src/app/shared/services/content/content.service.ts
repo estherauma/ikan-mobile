@@ -7,7 +7,6 @@ import { HttpResponse } from '@angular/common/http';
 import { Subject, Subscription } from 'rxjs';
 import { AuthService } from '../auth/auth.service';
 import { GetContractsResponse } from '../sync/types';
-import { ContractDataService } from 'src/app/contracts/data/contract-data.service';
 import { VesselsDataService } from 'src/app/vessels/data/vessels-data.service';
 
 @Injectable({
@@ -26,13 +25,13 @@ export class ContentService {
     public apiService: ApiService,
     public sharedMethods: SharedmethodsService,
     public authService: AuthService,
-    public contractDataService: ContractDataService,
-    public vesselDataService: VesselsDataService,
+    public vesselsDataService: VesselsDataService,
   ) {
     this.setUpAppData();
     this.watchContentSubscription = this.watchContent().subscribe(async(res) => {
       if (res) {
         await this.updateAllContent();
+        await this.replaceVesselPlaceholderText();
       }
     });
     this.saveSurveyCategories();
@@ -103,7 +102,7 @@ export class ContentService {
   // TODO: update when worker has multiple contracts
   async replaceVesselPlaceholderText() {
     if (this.authService.userRole === UserRole.worker) {
-      const userVessel = await this.getWorkerVessel();
+      const userVessel = await this.vesselsDataService.getWorkerVessel();
       if (userVessel && userVessel?.name) {
         Object.entries(this.appContent).forEach(([lang, data]) => {
           const vesselDoc = data['1.9'];
@@ -119,31 +118,6 @@ export class ContentService {
         });
       }
     }
-  }
-
-  // Refactor when worker has multiple contracts AND move to vesseldataservice
-  async getWorkerVessel() {
-    const userContracts = await this.sharedMethods.readDataFromStorage(StorageKeys.currentUserOnlineContractsAppRefs);
-    if (userContracts?.length) {
-      // TODO: change method when user has multiple contracts
-      // const contract = this.contractDataService.contracts.find((contract) => userContracts.includes(contract.appRef));
-      const contract = this.contractDataService.contracts.find((contract) => contract.appRef === userContracts[0]);
-      if (contract && contract?.id) {
-        const clause = await this.contractDataService.retrieveClauseByFieldByContractId('kind', 'contract-clauses-parties-requirement-fishers', contract.id);
-        if (clause) {
-          const clauseData = JSON.parse(clause.content);
-          if (clauseData?.vessel) {
-            const vesselRef = clauseData.vessel;
-            const vessels = this.vesselDataService.vessels;
-            if (vessels.length) {
-              const vessel = vessels.find((v) => v.appRef === vesselRef);
-              return vessel;
-            }
-          }
-        }
-      }
-    }
-    return null;
   }
 
   async updateCurrentLanguage() {
@@ -260,7 +234,10 @@ export class ContentService {
     if (!content) {return {};}
 
     const allDocs: Array<any> = Object.values(content);
-    const contentDocs = allDocs?.filter((doc) => ((doc?.type === 'create_content_area' && (!isNaN(parseFloat(doc?.pageName)) || doc?.pageName.includes('ikan-feedback')))));
+    const contentDocs = allDocs?.filter((doc) => (
+      (doc?.type === 'create_content_area' &&
+        (!isNaN(parseFloat(doc?.pageName)) || doc?.pageName.includes('ikan-feedback')))
+      ));
 
     const result = {};
     contentDocs?.forEach(async(item) => {
@@ -411,5 +388,40 @@ export class ContentService {
         await this.sharedMethods.saveDataToStorage(StorageKeys.currentUserOnlineContractsAppRefs, userOnlineContracts);
       }
     });
+  }
+
+  async generateLearningHubProgressData() {
+    const savedLearningHubProgress = await this.sharedMethods.readDataFromStorage(StorageKeys.learningHubProgress);
+    if (savedLearningHubProgress) { return; }
+
+    const user = this.authService.userData;
+    if (!user || !(await this.authService.checkAcessTokenValidity())) {
+      return;
+    }
+
+    const chapterListPageData =  this.getContentByPropertyName('chapters-list');
+    const clickableList = chapterListPageData?.pageContent?.find((e) => e.type === 'clickable_list');
+    const chapters = clickableList?.list;
+    const progressData = await Promise.all(chapters?.map(async(chapter) => {
+      const chapterId = chapter?.page?.uid;
+      const chapterContent = this.getContentByPropertyName(chapterId);
+      const subChapterList = chapterContent?.pageContent?.[0]?.list;
+      const subChapters = subChapterList?.map((sc) => ({
+        id: sc?.page?.uid,
+        completed: false,
+      }));
+
+      return {
+        id: chapter?.page?.uid,
+        subChapters
+      };
+    }));
+
+    // createdAt and updatedAt are added when saving actual progress data
+    const learningHubProgress = {
+      user: user?.id,
+      progressData,
+    };
+    await this.sharedMethods.saveDataToStorage(StorageKeys.learningHubProgress, learningHubProgress);
   }
 }

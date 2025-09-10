@@ -1,4 +1,4 @@
-<app-header [pageTitle]=""></app-header>
+<app-header></app-header>
 
 <ion-content [fullscreen]="true" class="content-skyblue-bg">
   <div class="wrapper">
@@ -6,9 +6,11 @@
   </div>
 </ion-content>
 <div class="bottom-element">
-  <div *ngIf="backUrl" (click)="onClose()">
-    {{closeText}}
-  </div>
+  @if (backUrl) {
+    <div (click)="onClose()">
+      {{closeText}}
+    </div>
+  }
   <div>
     <ion-icon name="ellipsis-vertical-outline" size="large"></ion-icon>
   </div>

@@ -11,9 +11,10 @@ import { PageEventNames } from 'src/app/shared/services/analytics/event-names';
 import { SyncService } from 'src/app/shared/services/sync/sync.service';
 
 @Component({
-  selector: 'app-createdetail',
-  templateUrl: './createdetail.page.html',
-  styleUrls: ['./createdetail.page.scss'],
+    selector: 'app-createdetail',
+    templateUrl: './createdetail.page.html',
+    styleUrls: ['./createdetail.page.scss'],
+    standalone: false
 })
 export class CreatedetailPage extends BaseformPage implements OnInit {
   clauseMapping = {

@@ -2,9 +2,10 @@ import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { Router } from '@angular/router';
 
 @Component({
-  selector: 'app-pagetabnavigator',
-  templateUrl: './pagetabnavigator.component.html',
-  styleUrls: ['./pagetabnavigator.component.scss'],
+    selector: 'app-pagetabnavigator',
+    templateUrl: './pagetabnavigator.component.html',
+    styleUrls: ['./pagetabnavigator.component.scss'],
+    standalone: false
 })
 export class PagetabnavigatorComponent implements OnInit {
   @Input() navItems: any[] = [];

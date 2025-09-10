@@ -8,9 +8,10 @@ import { SharedmethodsService } from 'src/app/shared/services/sharedmethods/shar
 import { StorageKeys } from 'src/app/shared/types/api-types';
 
 @Component({
-  selector: 'app-vesselowner',
-  templateUrl: './vesselowner.page.html',
-  styleUrls: ['./vesselowner.page.scss'],
+    selector: 'app-vesselowner',
+    templateUrl: './vesselowner.page.html',
+    styleUrls: ['./vesselowner.page.scss'],
+    standalone: false
 })
 export class VesselownerPage implements OnInit {
   sLists = [
@@ -52,15 +53,15 @@ export class VesselownerPage implements OnInit {
       },
     ],
   };
-  feedbackDashboardMessage: string = '';
-  welcomeText: string = '';
-  welcomeMessage: string = '';
-  welcomeCardTitle: string = '';
-  overalStat: string = '';
-  stat1: string = '';
-  stat2: string = '';
-  stat3: string = '';
-  name: string = '';
+  feedbackDashboardMessage = '';
+  welcomeText = '';
+  welcomeMessage = '';
+  welcomeCardTitle = '';
+  overalStat = '';
+  stat1 = '';
+  stat2 = '';
+  stat3 = '';
+  name = '';
   menuContent: any;
   commonText: any;
 
@@ -74,7 +75,7 @@ export class VesselownerPage implements OnInit {
   ) {
     this.menuContent = this.contentService.getMenuContent();
     this.setupPage();
-    this.contentService.watchContent().subscribe(async (resp) => {
+    this.contentService.watchContent().subscribe(async(resp) => {
       if (resp) {
         this.commonText = this.contentService.commonText;
         this.menuContent = await this.contentService.getMenuContent();
@@ -114,10 +115,10 @@ export class VesselownerPage implements OnInit {
     };
 
     // for item in slists, update title with menuContent
-    this.sLists.forEach((item) => {
-      Object.entries(this.menuContent).forEach((x) => {
-        if (x[1]['url'] === item.url) {
-          item['title'] = x[1]['label'];
+    this.sLists.forEach((item: any) => {
+      Object.entries(this.menuContent).forEach((x: any) => {
+        if (x[1].url === item.url) {
+          item.title = x[1].label;
         }
       });
     });

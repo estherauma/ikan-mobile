@@ -46,6 +46,7 @@ export enum PageEventNames {
     viewTaiwaneseDashboard = 'page_taiwanese_dashboard',
     viewVesselOwnerDashboard = 'page_vessel_owner_dashboard',
     viewWorkerDashboard = 'page_worker_dashboard',
+    viewPublicDashboard = 'page_public_dashboard',
 
     // get help
     viewGetHelp = 'page_get_help',
@@ -91,6 +92,10 @@ export enum PageEventNames {
     viewVesselPayments = 'page_vessel_payments',
     viewPaymentDetails = 'page_payment_details',
 
+    // Welcome screens/ tutorials
+    viewWelcomeScreens = 'page_welcome_screens',
+    viewAppTutotrials = 'page_app_tutorials',
+
 }
 
 export enum AppEventNames {
@@ -101,4 +106,10 @@ export enum AppEventNames {
     // Consent Forms
     acceptedConsentFormConditions = 'accepted_consent_form_conditions',
     rejectedConsentFormConditions = 'rejected_consent_form_conditions',
+
+    // Welcome screens
+    seenWelcomeScreens = 'seen_welcome_screens',
+    skippedWelcomeScreens = 'skipped_welcome_screens',
+    skippedAppTutorials = 'skipped_app_tutorials',
+    seenAppTutorials = 'seen_app_tutorials',
 }

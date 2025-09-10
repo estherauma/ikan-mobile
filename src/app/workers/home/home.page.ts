@@ -11,9 +11,10 @@ import { AnalyticsService } from 'src/app/shared/services/analytics/analytics.se
 import { PageEventNames } from 'src/app/shared/services/analytics/event-names';
 
 @Component({
-  selector: 'app-home',
-  templateUrl: './home.page.html',
-  styleUrls: ['./home.page.scss'],
+    selector: 'app-home',
+    templateUrl: './home.page.html',
+    styleUrls: ['./home.page.scss'],
+    standalone: false
 })
 export class HomePage implements OnInit {
   pageTitle = '';

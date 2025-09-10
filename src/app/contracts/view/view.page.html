@@ -1,4 +1,4 @@
-<app-header [pageTitle]="pageTitle" [isBackButton]="true"> </app-header>
+<app-header> </app-header>
 
 <ion-content>
   <div class="ion-padding detail-section">
@@ -7,18 +7,21 @@
         <ion-col>
           <ion-row class="ion-justify-content-end">
             <div>
-              <app-button
-                class="edit-contract-btn"
-                *ngIf="isVesselOwner"
-                [title]="editContractText"
-                (onClick)="editContract()"
-              >
-              </app-button>
-              <div *ngIf="isWorker">
-                <p class="contact-text">
-                  {{ commonText?.editContractsContactText }}
-                </p>
-              </div>
+              @if (isVesselOwner) {
+                <app-button
+                  class="edit-contract-btn"
+                  [title]="editContractText"
+                  (onClick)="editContract()"
+                  >
+                </app-button>
+              }
+              @if (isWorker) {
+                <div>
+                  <p class="contact-text">
+                    {{ commonText?.editContractsContactText }}
+                  </p>
+                </div>
+              }
             </div>
           </ion-row>
         </ion-col>
@@ -27,68 +30,71 @@
 
     <!-- slicing the app ref so we don't display it to the user -->
     <!-- <ion-text>
-      <span class="gray">{{ commonText?.appRef }}:</span>
-      {{contract?.appRef?.slice(9,13) || contract?.appRef}}
-    </ion-text> -->
-    <ion-text>
-      <h1 class="name">{{contract?.name}}</h1>
-    </ion-text>
+    <span class="gray">{{ commonText?.appRef }}:</span>
+    {{contract?.appRef?.slice(9,13) || contract?.appRef}}
+  </ion-text> -->
+  <ion-text>
+    <h1 class="name">{{contract?.name}}</h1>
+  </ion-text>
 
-    <ion-text>
-      <h1>{{contract?.companyName}}</h1>
-    </ion-text>
+  <ion-text>
+    <h1>{{contract?.companyName}}</h1>
+  </ion-text>
 
-    <ion-text class="block">
-      <span class="gray">{{ commonText?.vessel }}:</span>
-      {{contract?.vesselName}}
-    </ion-text>
-    <ion-text class="block">
-      <span class="gray">{{ commonText?.dates }}:</span>
-      {{ sharedMethods.formatLocalDate(contract?.startDate, currentLanguage) }} -
-      {{ sharedMethods.formatLocalDate(contract?.endDate, currentLanguage) }}
-    </ion-text>
-    <br />
+  <ion-text class="block">
+    <span class="gray">{{ commonText?.vessel }}:</span>
+    {{contract?.vesselName}}
+  </ion-text>
+  <ion-text class="block">
+    <span class="gray">{{ commonText?.dates }}:</span>
+    {{ sharedMethods.formatLocalDate(contract?.startDate, currentLanguage) }} -
+    {{ sharedMethods.formatLocalDate(contract?.endDate, currentLanguage) }}
+  </ion-text>
+  <br />
 
-    <ion-text class="block">
-      <span class="gray">{{ commonText?.taiwaneseRepresentative }}:</span>
-      {{ getCompanyName(contract?.taiwaneseCompany) }}
-    </ion-text>
-    <ion-text class="block">
-      <span class="gray">{{ commonText?.indonesianRepresentative }}:</span>
-      {{ getCompanyName(contract?.indonesianCompany) }}
-      <p></p>
-    </ion-text>
-  </div>
+  <ion-text class="block">
+    <span class="gray">{{ commonText?.taiwaneseRepresentative }}:</span>
+    {{ getCompanyName(contract?.taiwaneseCompany) }}
+  </ion-text>
+  <ion-text class="block">
+    <span class="gray">{{ commonText?.indonesianRepresentative }}:</span>
+    {{ getCompanyName(contract?.indonesianCompany) }}
+    <p></p>
+  </ion-text>
+</div>
 
-  <div class="workorders-wrapper ion-padding">
-    <div class="workorders-container">
-      <div class="clause-sub-title">
-        <app-title
-          [title]="commonText?.clauses"
-          [isSmall]="false"
-          [isBlue]="true"
-        ></app-title>
-      </div>
+<div class="workorders-wrapper ion-padding">
+  <div class="workorders-container">
+    <div class="clause-sub-title">
+      <app-title
+        [title]="commonText?.clauses"
+        [isSmall]="false"
+        [isBlue]="true"
+      ></app-title>
+    </div>
 
-      <ion-grid *ngIf="contractClauses?.length">
+    @if (contractClauses?.length) {
+      <ion-grid>
         <ion-row class="ion-justify-content-between ion-align-items-baseline">
           <ion-col>
             <ion-row class="ion-justify-content-end">
               <div>
-                <app-button
-                  *ngIf="isVesselOwner"
-                  (onClick)="createClause()"
-                  iconName="add-outline"
-                  [title]="createClauseText"
-                ></app-button>
+                @if (isVesselOwner) {
+                  <app-button
+                    (onClick)="createClause()"
+                    iconName="add-outline"
+                    [title]="createClauseText"
+                  ></app-button>
+                }
               </div>
             </ion-row>
           </ion-col>
         </ion-row>
       </ion-grid>
+    }
 
+    @for (clause of contractClauses; track clause; let i = $index) {
       <app-placementoffercard
-        *ngFor="let clause of contractClauses; let i=index"
         class="placement-card"
         [clauseId]="clause.id"
         [clauseKind]="clause.kind"
@@ -102,15 +108,17 @@
         [isLast]="i===(contractClauses?.length-1)"
         [contract]="contract"
       ></app-placementoffercard>
-    </div>
-    <div class="ion-margin-vertical" [ngClass]="{'action-buttons': !done}">
+    }
+  </div>
+  <div class="ion-margin-vertical" [ngClass]="{'action-buttons': !done}">
+    @if (!done && isVesselOwner) {
       <app-button
         (onClick)="createClause()"
-        *ngIf="!done && isVesselOwner"
         [title]="createClauseText"
         size="small"
         iconName="add-outline"
       ></app-button>
-    </div>
+    }
   </div>
+</div>
 </ion-content>

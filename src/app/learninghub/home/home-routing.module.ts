@@ -20,6 +20,10 @@ const routes: Routes = [
     path: 'tfa-training-video',
     loadChildren: () => import('../training-video/training-video.module').then( m => m.TrainingVideoModule)
   },
+  {
+    path: 'quiz',
+    loadChildren: () => import('../quiz/quiz.module').then( m => m.QuizModule)
+  }
 ];
 
 @NgModule({

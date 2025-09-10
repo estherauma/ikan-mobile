@@ -6,9 +6,10 @@ import { CreateTitlePage } from '../clauses/create-title/create-title.page';
 import { WorkordersDataService } from '../data/workorders-data.service';
 
 @Component({
-  selector: 'app-view',
-  templateUrl: './view.page.html',
-  styleUrls: ['./view.page.scss'],
+    selector: 'app-view',
+    templateUrl: './view.page.html',
+    styleUrls: ['./view.page.scss'],
+    standalone: false
 })
 export class ViewPage implements OnInit {
   pageTitle = 'View Work Order';

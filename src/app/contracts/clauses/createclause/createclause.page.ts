@@ -11,9 +11,10 @@ import { AnalyticsService } from 'src/app/shared/services/analytics/analytics.se
 import { PageEventNames } from 'src/app/shared/services/analytics/event-names';
 
 @Component({
-  selector: 'app-createclause',
-  templateUrl: './createclause.page.html',
-  styleUrls: ['./createclause.page.scss'],
+    selector: 'app-createclause',
+    templateUrl: './createclause.page.html',
+    styleUrls: ['./createclause.page.scss'],
+    standalone: false
 })
 export class CreateclausePage extends BaseformPage implements OnInit {
   contractId: any;

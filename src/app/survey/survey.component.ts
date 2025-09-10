@@ -11,16 +11,17 @@ import { SurveyDataService } from './data/survey-data.service';
 import { SyncService } from '../shared/services/sync/sync.service';
 
 @Component({
-  selector: 'app-survey',
-  templateUrl: './survey.component.html',
-  styleUrls: ['./survey.component.scss'],
+    selector: 'app-survey',
+    templateUrl: './survey.component.html',
+    styleUrls: ['./survey.component.scss'],
+    standalone: false
 })
 export class SurveyComponent extends BaseformPage  implements OnInit, OnDestroy {
   attemptedFollowUpQtnKeys = {};
   surveySource = '';
-  surveyTopic: string = '';
-  disclaimerText: string = '';
-  pageName: string = 'survey';
+  surveyTopic = '';
+  disclaimerText = '';
+  pageName = 'survey';
 
   constructor(
     public contentService: ContentService,
@@ -33,7 +34,7 @@ export class SurveyComponent extends BaseformPage  implements OnInit, OnDestroy 
     public surveysDataService: SurveyDataService,
     public syncService: SyncService,
   ) {
-    super(contentService)
+    super(contentService);
   }
 
   async ngOnInit() {
@@ -59,15 +60,15 @@ export class SurveyComponent extends BaseformPage  implements OnInit, OnDestroy 
     }
 
     this.formQuestions.forEach(entry => {
-      if (!entry?.displayquestion) return;
+      if (!entry?.displayquestion) {return;}
       const validators = this.sharedMethods.getFormValidators(entry);
       this.group[entry.key] = new FormControl('', validators);
     });
     this.pageFormGroup = new FormGroup(this.group);
 
     this.formQuestions.forEach((entry) => {
-      if (!entry?.displayquestion) return;
-      
+      if (!entry?.displayquestion) {return;}
+
       if (entry?.options) {
         this.pageFormGroup.controls?.[entry.key]?.valueChanges.subscribe((value) => {
           // Remove previous option from formGroup
@@ -81,7 +82,7 @@ export class SurveyComponent extends BaseformPage  implements OnInit, OnDestroy 
             entry.hasFollowUpQuestion = true;
             entry.followUpQuestion = currentOption?.[0]?.followUpQuestion;
             const followupValidators = this.sharedMethods.getFormValidators(entry.followUpQuestion);
-            
+
             if (entry.followUpQuestion?.key === 'See the Get Help section to find a workers union you can consult with') {
               entry.followUpQuestion.questionType = 'p';
             } else {
@@ -119,7 +120,7 @@ export class SurveyComponent extends BaseformPage  implements OnInit, OnDestroy 
     const user = await this.sharedMethods.readDataFromStorage(StorageKeys.userData);
     const surveyData = [];
     this.formQuestions.forEach((qtn) => {
-      if (!qtn?.displayquestion) return;
+      if (!qtn?.displayquestion) {return;}
 
       // check if question has response and if response is an array, check it has at least one item
       if (formData[qtn.key] && (!Array.isArray(formData[qtn.key]) || formData[qtn.key].length)) {
@@ -129,21 +130,23 @@ export class SurveyComponent extends BaseformPage  implements OnInit, OnDestroy 
         } else {
           untranslatedQtn = this.contentService.getUntranslatedInlineQuestion(this.pageName, qtn?.key);
         }
-        
+
         let isFollowUpQuestionAnswered = false;
         let followUpQuestionResponse = formData[qtn?.followUpQuestion?.key] ?? null;
-        // check if question has followup question and if followup question has response and if response is an array, check it has at least one item
+        // check if question has followup question &&
+        // if followup question has response &&
+        // if response is an array, check it has at least one item
         if (qtn?.hasFollowUpQuestion && formData[qtn?.followUpQuestion?.key]) {
           isFollowUpQuestionAnswered = true;
           const unTranslatedFollowupQtn = untranslatedQtn?.options?.find(
             (opt) => opt?.followUpQuestion?.key === qtn?.followUpQuestion?.key)?.followUpQuestion;
           qtn.followUpQuestion.unTranslatedFollowupQtnText = unTranslatedFollowupQtn?.label || unTranslatedFollowupQtn?.question;
-          
+
           if (Array.isArray(followUpQuestionResponse)) {
             followUpQuestionResponse = followUpQuestionResponse.length ? followUpQuestionResponse.join(', ') : null;
           }
         }
-        
+
         surveyData.push({
           appRef: this.sharedMethods.generateAppRef(),
           surveyDate: date,
@@ -161,7 +164,7 @@ export class SurveyComponent extends BaseformPage  implements OnInit, OnDestroy 
     });
 
     if (surveyData?.length) {
-      surveyData.forEach(async (item) => {
+      surveyData.forEach(async(item) => {
         const insertId =  await this.surveysDataService.create(item);
         if (!insertId) {
           this.sharedMethods.showToast(this.commonText?.errSavingResponses || 'Error saving responses');

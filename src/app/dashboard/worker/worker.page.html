@@ -1,21 +1,23 @@
 <app-header
-  [isBackButton]="false"
->
+  [showBackButton]="false"
+  >
 </app-header>
 
 <ion-content>
   <div class="content-container">
-    <app-dashboardelcomesection 
+    <app-dashboardelcomesection
       [greeting]="commonText?.fdbkWelcomeText"
       [name]="name"
       (onProfileClick)="goToWorkerProfile()"
-    >
+      >
     </app-dashboardelcomesection>
 
     <div class="page-content">
-      <div *ngIf="showTriggerButton" class="notif-btn-wrapper">
-        <ion-button class="notif-btn" (click)="triggerNotifications()">Trigger Notifications</ion-button>
-      </div>
+      @if (showTriggerButton) {
+        <div class="notif-btn-wrapper">
+          <ion-button class="notif-btn" (click)="triggerNotifications()">Trigger Notifications</ion-button>
+        </div>
+      }
       <div class="ion-padding cards-wrapper">
         <div>
           <ion-card
@@ -34,11 +36,12 @@
           </ion-card>
         </div>
         <div>
-          <ion-card *ngFor="let sList of sLists">
-            <ion-card-content [routerLink]="sList?.url">
-              <ion-grid>
-                <ion-row>
-                  <!-- <ion-col size="3">
+          @for (sList of sLists; track sList) {
+            <ion-card>
+              <ion-card-content [routerLink]="sList?.url">
+                <ion-grid>
+                  <ion-row>
+                    <!-- <ion-col size="3">
                     <ion-thumbnail>
                       <img [src]="sList?.icon" width="10" height="10" />
                     </ion-thumbnail>
@@ -50,8 +53,9 @@
               </ion-grid>
             </ion-card-content>
           </ion-card>
-        </div>
+        }
       </div>
     </div>
   </div>
+</div>
 </ion-content>

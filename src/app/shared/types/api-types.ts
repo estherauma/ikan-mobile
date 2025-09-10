@@ -66,6 +66,15 @@ export interface FormQuestion {
   helptext:        null;
   questionType:    string;
   displayquestion: boolean;
+  followUpQuestion?: any;
+}
+export interface FollowUpQuestion {
+  key:             string;
+  label:           string;
+  options?:         null;
+  helptext?:        null;
+  questionType:    string;
+  displayquestion: boolean;
 }
 
 export enum StorageKeys {
@@ -87,6 +96,11 @@ export enum StorageKeys {
   currentUserContracts = 'currentUserContracts',
   completedConsentForms = 'completedConsentForms',
   offlineAnalyticsEvents = 'offlineAnalyticsEvents',
+  seenWelcomeScreens = 'seenWelcomeScreens',
+  skippedWelcomeScreens = 'skippedWelcomeScreens',
+  seenAppTutorials = 'seenAppTutorials',
+  skippedAppTutorials = 'skippedAppTutorials',
+  learningHubProgress = 'learningHubProgress',
 }
 
 export interface UserData {
@@ -113,7 +127,8 @@ export enum UserRole {
   taiwaneseAgent = 'taiwanese_agent',
   indonesianAgent = 'indonesian_agent',
   worker = 'worker',
-  buyer = 'buyer'
+  buyer = 'buyer',
+  public = 'public',
 }
 
 export interface Blameable {
@@ -180,6 +195,7 @@ export interface AnalyticsEventsData {
   accountId: string;
   deviceId: string;
   createdAt: number;
+  data?: any;
 }
 
 export enum HubQuestionStatus {

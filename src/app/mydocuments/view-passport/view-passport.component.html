@@ -33,10 +33,10 @@
       <ion-col size="6">
         <ion-label class="value">
           {{
-            sharedMethods.formatLocalDate(
-              userPassportDetails?.dateOfIssue,
-              currentLanguage
-            )
+          sharedMethods.formatLocalDate(
+          userPassportDetails?.dateOfIssue,
+          currentLanguage
+          )
           }}
         </ion-label>
       </ion-col>
@@ -48,10 +48,10 @@
       <ion-col size="6">
         <ion-label class="value">
           {{
-            sharedMethods.formatLocalDate(
-              userPassportDetails?.dateOfExpiry,
-              currentLanguage
-            )
+          sharedMethods.formatLocalDate(
+          userPassportDetails?.dateOfExpiry,
+          currentLanguage
+          )
           }}
         </ion-label>
       </ion-col>
@@ -60,8 +60,12 @@
       <ion-col size="12"></ion-col>
       <ion-col size="12" class="image-col">
         <ion-row class="image-preview">
-          <img *ngIf="sharedMethods.isIos" [src]="userPassportDetails.imageUrl | safeurl" />
-          <img *ngIf="!sharedMethods.isIos" [src]="userPassportDetails.imageUrl" />
+          @if (sharedMethods.isIos) {
+            <img [src]="userPassportDetails.imageUrl | safeurl" />
+          }
+          @if (!sharedMethods.isIos) {
+            <img [src]="userPassportDetails.imageUrl" />
+          }
         </ion-row>
       </ion-col>
     </ion-row>
@@ -70,7 +74,7 @@
         <ion-button
           class="edit-btn"
           (click)="editPassport(userPassportDetails)"
-        >
+          >
           {{ commonText?.edit }}
         </ion-button>
       </ion-col>
@@ -78,7 +82,7 @@
         <ion-button
           class="del-btn"
           (click)="deletePassport(userPassportDetails)"
-        >
+          >
           {{ commonText?.delete }}
         </ion-button>
       </ion-col>

@@ -1,47 +1,47 @@
-<app-header [isBackButton]="true" [pageTitle]="" [isLightBlueBg]="true"></app-header>
+<app-header [isLightBlueBg]="true"></app-header>
 
 <ion-content class="content-skyblue-bg ion-content-custom-position">
   <app-contentwrapper>
 
-  <div>
-    <ion-grid>
-      <ion-row class="ion-justify-content-between ion-align-items-baseline">
-        <ion-col>
-          <img src="/assets/icon/workorders_blue.svg" width="20" height="40" />
-        </ion-col>
-        <ion-col>
-          <ion-row class="ion-justify-content-end">
-            <div>
-              <app-button (onClick)="createVessel()" iconName="add-outline" title="{{newText}}"></app-button>
-            </div>
-          </ion-row>
-        </ion-col>
-      </ion-row>
-      <ion-row class="title">
-        <app-title [isBlue]="true" [title]="pageTitle"></app-title>
-      </ion-row>
-    </ion-grid>
-
-    <!-- search and filters -->
     <div>
-      <app-search
-        [searchDataSet]="vessels"
-        (searchResult)="searchResult($event)"
-        (clear)="clearSearchResult()"></app-search>
       <ion-grid>
-        <ion-row>
-          <ion-col size="12" size-sm="6">
-            <app-filter
-              type="deep-blue-90"
-              filterProperty="status"
-              [options]="filterOptions"
-              [filterDataSet]="unFilteredData"
-              (filterResult)="filterResult($event)"
-              [filterLabel]="statusFilterLabel"
-            ></app-filter>
+        <ion-row class="ion-justify-content-between ion-align-items-baseline">
+          <ion-col>
+            <img src="/assets/icon/workorders_blue.svg" width="20" height="40" />
           </ion-col>
+          <ion-col>
+            <ion-row class="ion-justify-content-end">
+              <div>
+                <app-button (onClick)="createVessel()" iconName="add-outline" title="{{newText}}"></app-button>
+              </div>
+            </ion-row>
+          </ion-col>
+        </ion-row>
+        <ion-row class="title">
+          <app-title [isBlue]="true" [title]="pageTitle"></app-title>
+        </ion-row>
+      </ion-grid>
 
-          <!-- <ion-col size="12" size-sm="6">
+      <!-- search and filters -->
+      <div>
+        <app-search
+          [searchDataSet]="vessels"
+          (searchResult)="searchResult($event)"
+        (clear)="clearSearchResult()"></app-search>
+        <ion-grid>
+          <ion-row>
+            <ion-col size="12" size-sm="6">
+              <app-filter
+                type="deep-blue-90"
+                filterProperty="status"
+                [options]="filterOptions"
+                [filterDataSet]="unFilteredData"
+                (filterResult)="filterResult($event)"
+                [filterLabel]="statusFilterLabel"
+              ></app-filter>
+            </ion-col>
+
+            <!-- <ion-col size="12" size-sm="6">
             <app-filter
               type="deep-blue-90"
               filterProperty="status"
@@ -57,9 +57,11 @@
     </div>
   </div>
 
-  <div *ngFor="let vessel of vessels">
-    <app-vesselownercard [vessel]="vessel"></app-vesselownercard>
-  </div>
+  @for (vessel of vessels; track vessel) {
+    <div>
+      <app-vesselownercard [vessel]="vessel"></app-vesselownercard>
+    </div>
+  }
 
-  </app-contentwrapper>
+</app-contentwrapper>
 </ion-content>

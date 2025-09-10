@@ -23,13 +23,13 @@
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
 	<key>NSMicrophoneUsageDescription</key>
-	<string>We prioritize your privacy and ensure that your audio data is used only within the app for the specified purposes. We do not share or store audio data without your explicit consent.</string>
+	<string>We need access to your microphone to enable audio features within the app. Your audio data is processed locally, never shared, and only used for the app’s intended functionality.</string>
 	<key>NSCameraUsageDescription</key>
-	<string>We need access to the camera to allow you to take photos or videos.</string>
+	<string>We need access to the camera to allow you to take photos or videos of your passport, visa and related required documents in the app.</string>
 	<key>NSPhotoLibraryAddUsageDescription</key>
-	<string>We need access to your photo library to save photos or videos to your photo library after capturing or editing media.</string>
+	<string>We need access to your photo library to save photos of your passport, visa nd related documents in theapp to your photo library after capturing or editing media.</string>
 	<key>NSPhotoLibraryUsageDescription</key>
-	<string>We need access to your photo library so you can select and upload images or videos from your device.</string>
+	<string>We need access to your photo library so you can select and upload images of your passport, visa and related required documents in the app. </string>
 	<key>UILaunchStoryboardName</key>
 	<string>LaunchScreen</string>
 	<key>UIMainStoryboardFile</key>
@@ -53,5 +53,7 @@
 	</array>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<true/>
+	<key>ITSAppUsesNonExemptEncryption</key>
+	<false/>
 </dict>
 </plist>

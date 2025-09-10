@@ -1,4 +1,4 @@
-<app-header [isBackButton]="true" [pageTitle]="pageTitle"></app-header>
+<app-header></app-header>
 
 <ion-content [fullscreen]="true">
   <ion-text>
@@ -6,13 +6,16 @@
   </ion-text>
 
   <div class="content-section">
-    <div *ngFor="let section of pageContent">
-      <!-- text area type -->
-      <shared-text-area
-        *ngIf="section?.type === 'text_area'"
-        [data]="section"
-        styles="textarea"
-      ></shared-text-area>
-    </div>
+    @for (section of pageContent; track section) {
+      <div>
+        <!-- text area type -->
+        @if (section?.type === 'text_area') {
+          <shared-text-area
+            [data]="section"
+            styles="textarea"
+          ></shared-text-area>
+        }
+      </div>
+    }
   </div>
 </ion-content>

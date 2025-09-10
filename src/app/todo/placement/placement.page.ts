@@ -4,9 +4,10 @@ import { BaseformPage } from 'src/app/shared/components/baseform/baseform.page';
 import { ContentService } from 'src/app/shared/services/content/content.service';
 
 @Component({
-  selector: 'app-placement',
-  templateUrl: './placement.page.html',
-  styleUrls: ['./placement.page.scss'],
+    selector: 'app-placement',
+    templateUrl: './placement.page.html',
+    styleUrls: ['./placement.page.scss'],
+    standalone: false
 })
 export class PlacementPage extends BaseformPage implements OnInit {
   wo = {

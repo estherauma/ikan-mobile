@@ -1,0 +1,51 @@
+<div class="video-button-component">
+  <div (click)="isPlaying ?closeVideo(): playVideo()" class="btn-wrapper" [ngClass]="{'no-url': !url}">
+    @if (!customIcon) {
+      <ion-icon
+        [name]="isPlaying ? 'close' : iconName"
+      [ngStyle]="{
+        'background': background,
+        'color': color
+      }"
+      [ngClass]="{
+        'no-url': !url
+      }"
+      ></ion-icon>
+    }
+
+    @if (customIcon && !isPlaying) {
+      <ion-img
+        [src]="customIcon"
+      [ngStyle]="{
+        'background': background,
+        'color': color
+      }"
+      [ngClass]="{
+        'no-url': !url
+      }"
+      ></ion-img>
+    }
+    @if (customIcon && isPlaying) {
+      <ion-icon
+        name="close"
+      [ngStyle]="{
+        'background': background,
+        'color': color
+      }"
+      [ngClass]="{
+        'no-url': !url
+      }"
+      ></ion-icon>
+    }
+  </div>
+
+  <!-- View video -->
+  @if (showVideo) {
+    <div class="video-wrapper">
+      <video #videoPlayer controls autoplay (ended)="closeVideo()">
+        <source [src]="url" type="video/mp4" />
+        {{ commonText?.browserDoesnotSupportVideoTag }}
+      </video>
+    </div>
+  }
+</div>

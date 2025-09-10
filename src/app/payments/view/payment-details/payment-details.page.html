@@ -4,32 +4,100 @@
   <div class="summary-wrapper">
     <ion-card class="summary-card">
       <ion-card-content>
-        <div class="icon-wrapper">
-          <!-- TODO: change icon according to status -->
-          <ion-icon [src]="paymentIconUrl" class="icon"></ion-icon>
+        <div class="summary-header">
+          <div class="icon-wrapper">
+            <!-- TODO: change icon according to status -->
+            <ion-icon [src]="paymentIconUrl" class="icon"></ion-icon>
+          </div>
+          <h3>
+            <span>USD</span>
+            {{paymentDetails?.totalUsdAmountReceived}}
+          </h3>
         </div>
-        <h3>
-          <span>USD</span>
-          {{paymentDetails?.totalUsdAmountReceived}}
-        </h3>
-        <h4 class="text-content">{{paymentDetails?.vessel?.name}}</h4>
-        <!-- Commented out for now -->
-        <!-- <p class="status">
-          {{ commonText?.status }}: {{paymentDetails?.status}}
-        </p> -->
-      </ion-card-content>
-    </ion-card>
-  </div>
 
-  <div class="sub-title-wrapper">
-    <p class="sub-title">{{ paymentsCommonText?.paymentBreakdown }}</p>
-  </div>
+        <div class="summary-body">
+          <ion-row>
+            <ion-col size="6">
+              <h4 class="label">{{ paymentsCommonText?.payee }}:</h4>
+            </ion-col>
+            <ion-col size="6">
+              <h4 class="value">{{paymentDetails?.user?.firstName + ' ' + paymentDetails?.user?.lastName}}</h4>
+            </ion-col>
+          </ion-row>
 
-  <!-- display if paymentMethod is bank_transfer or both -->
+          <ion-row>
+            <ion-col size="6">
+              <h4 class="label">{{ commonText?.vessel }}:</h4>
+            </ion-col>
+            <ion-col size="6">
+              <h4 class="value">{{paymentDetails?.vessel?.name}}</h4>
+            </ion-col>
+          </ion-row>
+
+          <ion-row>
+            <ion-col size="6">
+              <h4 class="label">{{ paymentsCommonText?.paymentDate }}:</h4>
+            </ion-col>
+            <ion-col size="6">
+              <h4 class="value">{{ sharedmethods.formatLocalDate(paymentDetails?.paymentDate, currentLanguage) }}</h4>
+            </ion-col>
+          </ion-row>
+
+          <ion-row>
+            <ion-col size="6">
+              <h4 class="label">{{ paymentsCommonText?.paymentMethod }}:</h4>
+            </ion-col>
+            <ion-col size="6">
+              <h4 class="value">{{ getPaymentMethodLabel(paymentDetails?.paymentMethod) }}</h4>
+            </ion-col>
+          </ion-row>
+
+          <ion-row>
+            <ion-col size="6">
+              <h4 class="label">{{ paymentsCommonText?.paymentPeriod }}:</h4>
+            </ion-col>
+            <ion-col size="6">
+              <h4 class="value">
+                {{ sharedmethods.formatLocalDate(paymentDetails?.startDate, currentLanguage) }} -
+                {{ sharedmethods.formatLocalDate(paymentDetails?.endDate, currentLanguage) }}
+              </h4>
+            </ion-col>
+          </ion-row>
+
+          @if (currentUser?.role==='vessel_owner' && paymentDetails?.confirmedDate) {
+            <ion-row>
+              <ion-col size="6">
+                <h4 class="label">{{ paymentsCommonText?.paymentConfirmed }}:</h4>
+              </ion-col>
+              <ion-col size="6">
+                <h4 class="value">{{ sharedmethods.formatLocalDate(paymentDetails?.confirmedDate, currentLanguage) }}</h4>
+              </ion-col>
+            </ion-row>
+          }
+
+          <!-- Status not implemented yet -->
+          <!-- <ion-row>
+          <ion-col size="6">
+            <h4 class="label">{{ commonText?.status }}:</h4>
+          </ion-col>
+          <ion-col size="6">
+            <h4 class="value">{{paymentDetails?.status}}</h4>
+          </ion-col>
+        </ion-row> -->
+      </div>
+    </ion-card-content>
+  </ion-card>
+</div>
+
+<div class="sub-title-wrapper">
+  <p class="sub-title">{{ paymentsCommonText?.paymentBreakdown }}</p>
+</div>
+
+<!-- display if paymentMethod is bank_transfer or both -->
+@if (paymentDetails?.paymentMethod !== 'cash') {
   <div
-    *ngIf="paymentDetails?.paymentMethod !== 'cash'"
     class="bank-transfer-wrapper"
-  >
+    >
     <ion-card>
       <ion-card-content>
         <ion-row>
@@ -39,110 +107,92 @@
             </div>
           </ion-col>
           <ion-col size="10" class="details-col">
-            <p class="type">{{ paymentsCommonText?.bankTransfer }}</p>
-            <p class="amount">
-              {{paymentDetails?.bankTransferCurrency}} {{ paymentDetails?.bankTransferAmount || '0' }}
-            </p>
-            <ng-container
-              *ngIf="paymentDetails?.bankTransferCurrency && paymentDetails?.bankTransferCurrency !== 'USD'"
-            >
-              <p>
-                {{ paymentsCommonText?.exchangeRate }}:
-                <span>
+            <div class="section-wrapper">
+              <h2 class="type">{{ paymentsCommonText?.bankTransfer }}</h2>
+              <h3 class="amount">
+                {{paymentDetails?.bankTransferCurrency}} {{ paymentDetails?.bankTransferAmount || '0' }}
+              </h3>
+              @if (paymentDetails?.bankTransferCurrency && paymentDetails?.bankTransferCurrency !== 'USD') {
+                <h4>{{ paymentsCommonText?.exchangeRate }}:</h4>
+                <p>
                   1 USD = {{ paymentDetails?.bankTransferCurrency }} {{
                   paymentDetails?.bankTransferExchangeRate }}
-                </span>
-              </p>
-            </ng-container>
-            <p>
-              {{ paymentsCommonText?.paymentMade }}:
-              <span>
+                </p>
+              }
+              <h4>{{ paymentsCommonText?.paymentMade }}:</h4>
+              <p>
                 {{ sharedmethods.formatLocalDate( paymentDetails?.paymentDate,
                 currentLanguage ) }}
-              </span>
-            </p>
-            <p>
-              {{ paymentsCommonText?.paymentConfirmed }}:
-              <!-- TODO: change date-->
-              <span>
-                {{ sharedmethods.formatLocalDate(
-                paymentDetails?.confirmedDate, currentLanguage ) }}
-              </span>
-            </p>
-
-            <p class="details-title">{{ paymentsCommonText?.bankDetails }}</p>
-            <p>
-              {{ paymentsCommonText?.bankAccountName }}:
-              <span>{{ paymentDetails?.bankAccountName }}</span>
-            </p>
-            <p>
-              {{ paymentsCommonText?.bankAccountNumber }}:
-              <span>{{ paymentDetails?.bankAccountNumber }}</span>
-            </p>
-            <p>
-              {{ paymentsCommonText?.bankName }}:
-              <span>{{ paymentDetails?.bankName }}</span>
-            </p>
-            <ng-container *ngIf="paymentDetails?.bankTransferBeneficiaryRelationship && paymentDetails?.bankTransferBeneficiaryRelationship !== 'self'">
-              <p class="details-title">
-                {{ paymentsCommonText?.beneficiaryDetails }}
               </p>
-              <p>
-                {{ paymentsCommonText?.beneficiaryName }}:
-                <span>{{ paymentDetails?.bankTransferBeneficiaryName }}</span>
-              </p>
-              <p>
-                {{ paymentsCommonText?.beneficiaryRelationship }}:
-                <span>
-                  {{ paymentDetails?.bankTransferBeneficiaryRelationship }}
-                </span>
-              </p>
-              <p>
-                {{ paymentsCommonText?.beneficiaryContact }}:
-                <span>
-                  {{ paymentDetails?.bankTransferBeneficiaryContact }}
-                </span>
-              </p>
-              <!-- <p>
-                {{ paymentsCommonText?.beneficiaryContactPlatform }}:
-                <span>
-                  {{ paymentDetails?.bankTransferBeneficiaryContactPlatform
-                  }}
-                </span>
-              </p> -->
-            </ng-container>
+              @if (paymentDetails?.confirmedDate) {
+                <h4>{{ paymentsCommonText?.paymentConfirmed }}:</h4>
+                <!-- TODO: change date-->
+                <p>
+                  {{ sharedmethods.formatLocalDate(
+                  paymentDetails?.confirmedDate, currentLanguage ) }}
+                </p>
+              }
+            </div>
+            <div class="section-wrapper">
+              <p class="details-title">{{ paymentsCommonText?.bankDetails }}</p>
+              <h4>{{ paymentsCommonText?.bankAccountName }}:</h4>
+              <p>{{ paymentDetails?.bankAccountName }}</p>
+              <h4>{{ paymentsCommonText?.bankAccountNumber }}:</h4>
+              <p>{{ paymentDetails?.bankAccountNumber }}</p>
+              <h4>{{ paymentsCommonText?.bankName }}:</h4>
+              <p>{{ paymentDetails?.bankName }}</p>
+            </div>
+            @if (paymentDetails?.bankTransferBeneficiaryRelationship && paymentDetails?.bankTransferBeneficiaryRelationship !== 'self') {
+              <div
+                class="section-wrapper"
+                >
+                <p class="details-title">
+                  {{ paymentsCommonText?.beneficiaryDetails }}
+                </p>
+                <h4>{{ paymentsCommonText?.beneficiaryName }}:</h4>
+                <p>{{ paymentDetails?.bankTransferBeneficiaryName }}</p>
+                <h4>{{ paymentsCommonText?.beneficiaryRelationship }}:</h4>
+                <p>{{ getLabel(paymentDetails?.bankTransferBeneficiaryRelationship) }}</p>
+                <h4>{{ paymentsCommonText?.beneficiaryContact }}:</h4>
+                <p>{{ paymentDetails?.bankTransferBeneficiaryContact }}</p>
+                <!-- <h4>{{ paymentsCommonText?.beneficiaryContactPlatform }}:</h4>
+                <p>{{ paymentDetails?.bankTransferBeneficiaryContactPlatform}}</p> -->
+              </div>
+            }
           </ion-col>
         </ion-row>
       </ion-card-content>
-
-      <ion-row *ngIf="currentUser?.role === 'worker'" class="buttons-row">
-        <ion-col>
-          <ion-button fill="clear">
-            <ion-icon
-              class="icon"
-              src="assets/icon/gray_thumbs_up.svg"
-            ></ion-icon>
-            {{ commonText?.confirm }}
-          </ion-button>
-        </ion-col>
-        <ion-col>
-          <ion-button fill="clear">
-            <ion-icon
-              class="icon"
-              src="assets/icon/gray_thumbs_down.svg"
-            ></ion-icon>
-            {{ commonText?.report }}
-          </ion-button>
-        </ion-col>
-      </ion-row>
+      @if (currentUser?.role === 'worker') {
+        <ion-row class="buttons-row">
+          <ion-col>
+            <ion-button fill="clear">
+              <ion-icon
+                class="icon"
+                src="assets/icon/gray_thumbs_up.svg"
+              ></ion-icon>
+              {{ commonText?.confirm }}
+            </ion-button>
+          </ion-col>
+          <ion-col>
+            <ion-button fill="clear">
+              <ion-icon
+                class="icon"
+                src="assets/icon/gray_thumbs_down.svg"
+              ></ion-icon>
+              {{ commonText?.report }}
+            </ion-button>
+          </ion-col>
+        </ion-row>
+      }
     </ion-card>
   </div>
+}
 
-  <!-- display if paymentMethod is cash or both -->
+<!-- display if paymentMethod is cash or both -->
+@if (paymentDetails?.paymentMethod !== 'bank_transfer') {
   <div
-    *ngIf="paymentDetails?.paymentMethod !== 'bank_transfer'"
     class="cash-transaction-wrapper"
-  >
+    >
     <ion-card>
       <ion-card-content>
         <ion-row>
@@ -152,85 +202,76 @@
             </div>
           </ion-col>
           <ion-col size="10" class="details-col">
-            <p class="type">{{ paymentsCommonText?.cash }}</p>
-            <p class="amount">{{ paymentDetails?.cashCurrency }} {{ paymentDetails?.cashAmount || '0' }}</p>
-            <ng-container *ngIf="paymentDetails?.cashCurrency && paymentDetails?.cashCurrency !== 'USD'">
+            <div class="section-wrapper">
+              <h2 class="type">{{ paymentsCommonText?.cash }}</h2>
+              <h3 class="amount">{{ paymentDetails?.cashCurrency }} {{ paymentDetails?.cashAmount || '0' }}</h3>
+              @if (paymentDetails?.cashCurrency && paymentDetails?.cashCurrency !== 'USD') {
+                <h4>{{ paymentsCommonText?.exchangeRate }}:</h4>
+                <p>
+                  1 USD = {{ paymentDetails?.cashCurrency }} {{ paymentDetails?.cashExchangeRate }}
+                </p>
+              }
+              <h4>{{ paymentsCommonText?.paymentMade }}:</h4>
               <p>
-                {{ paymentsCommonText?.exchangeRate }}:
-                <span
-                  >1 USD = {{ paymentDetails?.cashCurrency }} {{
-                  paymentDetails?.cashExchangeRate }}</span
-                >
-              </p>
-            </ng-container>
-            <p>
-              {{ paymentsCommonText?.paymentMade }}:
-              <span>
                 {{ sharedmethods.formatLocalDate( paymentDetails?.paymentDate,
                 currentLanguage ) }}
-              </span>
-            </p>
-            <p>
-              {{ paymentsCommonText?.paymentConfirmed }}:
-              <span>
-                {{ sharedmethods.formatLocalDate(
-                paymentDetails?.confirmedDate, currentLanguage ) }}
-              </span>
-            </p>
-            <ng-container *ngIf="paymentDetails?.cashBeneficiaryRelationship && paymentDetails?.cashBeneficiaryRelationship !== 'self'">
-              <p class="details-title">
-                {{ paymentsCommonText?.beneficiaryDetails }}
               </p>
-              <p>
-                {{ paymentsCommonText?.beneficiaryName }}:
-                <span>{{ paymentDetails?.cashBeneficiaryName }}</span>
-              </p>
-              <p>
-                {{ paymentsCommonText?.beneficiaryRelationship }}:
-                <span>{{ paymentDetails?.cashBeneficiaryRelationship }}</span>
-              </p>
-              <p>
-                {{ paymentsCommonText?.beneficiaryContact }}:
-                <span>{{ paymentDetails?.cashBeneficiaryContact }}</span>
-              </p>
-              <!-- <p>
-                {{ paymentsCommonText?.beneficiaryContactPlatform }}:
-                <span>
-                  {{ paymentDetails?.cashBeneficiaryContactPlatform }}
-                </span>
-              </p> -->
-            </ng-container>
+              @if (paymentDetails?.confirmedDate) {
+                <h4>{{ paymentsCommonText?.paymentConfirmed }}:</h4>
+                <p>
+                  {{ sharedmethods.formatLocalDate(
+                  paymentDetails?.confirmedDate, currentLanguage ) }}
+                </p>
+              }
+            </div>
+            <div class="section-wrapper">
+              @if (paymentDetails?.cashBeneficiaryRelationship && paymentDetails?.cashBeneficiaryRelationship !== 'self') {
+                <p class="details-title">
+                  {{ paymentsCommonText?.beneficiaryDetails }}
+                </p>
+                <h4>{{ paymentsCommonText?.beneficiaryName }}:</h4>
+                <p>{{ paymentDetails?.cashBeneficiaryName }}</p>
+                <h4>{{ paymentsCommonText?.beneficiaryRelationship }}:</h4>
+                <p>{{ getLabel(paymentDetails?.cashBeneficiaryRelationship) }}</p>
+                <h4>{{ paymentsCommonText?.beneficiaryContact }}:</h4>
+                <p>{{ paymentDetails?.cashBeneficiaryContact }}</p>
+                <!-- <h4>{{ paymentsCommonText?.beneficiaryContactPlatform }}:</h4>
+                <p>{{ paymentDetails?.cashBeneficiaryContactPlatform }}</p> -->
+              }
+            </div>
           </ion-col>
         </ion-row>
       </ion-card-content>
-
-      <ion-row *ngIf="currentUser?.role === 'worker'" class="buttons-row">
-        <ion-col>
-          <ion-button fill="clear">
-            <ion-icon
-              class="icon"
-              src="assets/icon/gray_thumbs_up.svg"
-            ></ion-icon>
-            {{ commonText?.confirm }}
-          </ion-button>
-        </ion-col>
-        <ion-col>
-          <ion-button fill="clear">
-            <ion-icon
-              class="icon"
-              src="assets/icon/gray_thumbs_down.svg"
-            ></ion-icon>
-            {{ commonText?.report }}
-          </ion-button>
-        </ion-col>
-      </ion-row>
+      @if (currentUser?.role === 'worker') {
+        <ion-row class="buttons-row">
+          <ion-col>
+            <ion-button fill="clear">
+              <ion-icon
+                class="icon"
+                src="assets/icon/gray_thumbs_up.svg"
+              ></ion-icon>
+              {{ commonText?.confirm }}
+            </ion-button>
+          </ion-col>
+          <ion-col>
+            <ion-button fill="clear">
+              <ion-icon
+                class="icon"
+                src="assets/icon/gray_thumbs_down.svg"
+              ></ion-icon>
+              {{ commonText?.report }}
+            </ion-button>
+          </ion-col>
+        </ion-row>
+      }
     </ion-card>
   </div>
+}
 
+@if (paymentDetails?.deductions && paymentDetails?.deductions?.length > 0) {
   <div
-    *ngIf="paymentDetails?.deductions && paymentDetails?.deductions?.length > 0"
     class="deductions-wrapper"
-  >
+    >
     <ion-card>
       <ion-card-content>
         <ion-row>
@@ -240,41 +281,45 @@
             </div>
           </ion-col>
           <ion-col size="10" class="details-col">
-            <p class="type">{{ paymentsCommonText?.deductions }}</p>
+            <h2 class="type">{{ paymentsCommonText?.deductions }}</h2>
             <ion-row class="deductions-header">
-              <ion-col size="5" class="details-title">{{ paymentsCommonText?.item }}</ion-col>
-              <ion-col size="7" class="details-title">{{ paymentsCommonText?.amount }}</ion-col>
+              <ion-col size="7" class="details-title">{{ paymentsCommonText?.item }}</ion-col>
+              <ion-col size="5" class="details-title">{{ paymentsCommonText?.amount }}</ion-col>
             </ion-row>
-            <ion-row *ngFor="let deduction of paymentDetails?.deductions" class="deduction-row">
-              <ion-col size="5" class="item">{{ deduction?.name }}</ion-col>
-              <ion-col size="7" class="deduction-amount">{{ deduction?.currency }} {{ deduction?.amount }}</ion-col>
-            </ion-row>
+            @for (deduction of paymentDetails?.deductions; track deduction) {
+              <ion-row class="deduction-row">
+                <ion-col size="7" class="item">{{ getLabel(deduction?.name) }}</ion-col>
+                <ion-col size="5" class="deduction-amount">{{ deduction?.currency }} {{ deduction?.amount }}</ion-col>
+              </ion-row>
+            }
           </ion-col>
         </ion-row>
       </ion-card-content>
-
-      <ion-row *ngIf="currentUser?.role === 'worker'" class="buttons-row">
-        <ion-col>
-          <ion-button fill="clear">
-            <ion-icon
-              class="icon"
-              src="assets/icon/gray_thumbs_up.svg"
-            ></ion-icon>
-            {{ commonText?.confirm }}
-          </ion-button>
-        </ion-col>
-        <ion-col>
-          <ion-button fill="clear">
-            <ion-icon
-              class="icon"
-              src="assets/icon/gray_thumbs_down.svg"
-            ></ion-icon>
-            {{ commonText?.report }}
-          </ion-button>
-        </ion-col>
-      </ion-row>
+      @if (currentUser?.role === 'worker') {
+        <ion-row class="buttons-row">
+          <ion-col>
+            <ion-button fill="clear">
+              <ion-icon
+                class="icon"
+                src="assets/icon/gray_thumbs_up.svg"
+              ></ion-icon>
+              {{ commonText?.confirm }}
+            </ion-button>
+          </ion-col>
+          <ion-col>
+            <ion-button fill="clear">
+              <ion-icon
+                class="icon"
+                src="assets/icon/gray_thumbs_down.svg"
+              ></ion-icon>
+              {{ commonText?.report }}
+            </ion-button>
+          </ion-col>
+        </ion-row>
+      }
     </ion-card>
   </div>
+}
 
-  <!-- TODO: for VO view add button linking to the web data upload -->
+<!-- TODO: for VO view add button linking to the web data upload -->
 </ion-content>

@@ -1,27 +1,30 @@
-<ion-card 
-(click)="viewDetails(vessel)" 
+<ion-card
+  (click)="viewDetails(vessel)"
 [ngClass]="{
   'is-no-border-shadow': isNoBorderShadow,
   'transparent-bg': background === 'transparent'
 }"
->
+  >
   <ion-card-content>
     <div class="vessel-image-container">
-      <img
-        *ngIf="!vessel.imageFile.webPath"
-        src="assets/icon/boat_with_blue_bg.svg"
-        class="no-image"
-      />
-      <img
-        *ngIf="sharedMethods.isIos && vessel.imageFile.webPath"
-        [src]="vessel.imageFile.webPath | safeurl"
-      />
-      <img
-        *ngIf="!sharedMethods.isIos && vessel.imageFile.webPath"
-        [src]="vessel.imageFile.webPath"
-      />
+      @if (!vessel.imageFile.webPath) {
+        <img
+          src="assets/icon/boat_with_blue_bg.svg"
+          class="no-image"
+          />
+      }
+      @if (sharedMethods.isIos && vessel.imageFile.webPath) {
+        <img
+          [src]="vessel.imageFile.webPath | safeurl"
+          />
+      }
+      @if (!sharedMethods.isIos && vessel.imageFile.webPath) {
+        <img
+          [src]="vessel.imageFile.webPath"
+          />
+      }
     </div>
-    
+
     <ion-grid>
       <ion-row>
         <ion-col size="3">

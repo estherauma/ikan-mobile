@@ -3,9 +3,10 @@ import { ActivatedRoute } from '@angular/router';
 import { DomSanitizer } from '@angular/platform-browser';
 
 @Component({
-  selector: 'app-clauses',
-  templateUrl: './clauses.page.html',
-  styleUrls: ['./clauses.page.scss'],
+    selector: 'app-clauses',
+    templateUrl: './clauses.page.html',
+    styleUrls: ['./clauses.page.scss'],
+    standalone: false
 })
 export class ClausesPage implements OnInit {
   clause;

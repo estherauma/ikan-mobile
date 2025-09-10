@@ -50,16 +50,25 @@
 }
 
 .pdf-preview {
-
-  background-color: var(--ion-color-blue-dark);
+  background-color: var(--ikan_skyblue_100);
   display: flex;
   justify-content: center;
   align-items: center;
   margin-bottom: 5px;
-
+  position: relative;
+  padding: 20px 10px 0 10px;
+  border-radius: 20px;
+  
   img {
-    height: 80px;
-    width: 80px;
+    height: 60px;
+    width: 60px;
+  }
+
+  p {
+    font-weight: bold;
+    font-style: italic;
+    font-size: 0.9rem;
+    color: var(--ikan_darkblue_100);
   }
 
   .trash-icon {
@@ -74,8 +83,7 @@
   }
 }
 
-
-ion-input{
+ion-input {
   --height: 60px;
 }
 
@@ -85,13 +93,13 @@ ion-select {
 }
 
 .form-input {
-  background-color: white; 
+  background-color: white;
   border-radius: 10px;
   color: var(--ikan_darkblue_100);
   --color: var(--ikan_darkblue_100);
 }
 
-.text-section{
+.text-section {
   padding-left: 8px;
 }
 
@@ -103,7 +111,7 @@ ion-select {
   color: var(--ikan_blue_100);
 }
 
-.text-darkblue{
+.text-darkblue {
   color: var(--ikan_darkblue_100);
 }
 
@@ -151,11 +159,11 @@ ion-label.asterisk::after {
 :host.training-video-form,
 :host.create-passport-form {
   .form-input {
-    background: #EAEDF6;
+    background: #eaedf6;
   }
   .upload-wrapper {
     div {
-    background-color: #EAEDF6;
+      background-color: #eaedf6;
     }
   }
 }
@@ -163,10 +171,9 @@ ion-label.asterisk::after {
 :host.training-video-form,
 :host.survey-form {
   form {
-
     ion-radio-group {
       ion-item {
-        --background: #EAEDF6;
+        --background: #eaedf6;
 
         ion-radio {
           width: unset;
@@ -184,7 +191,7 @@ ion-label.asterisk::after {
     background: var(--ion-color-primary);
     padding: 20px;
 
-    ion-label{
+    ion-label {
       color: white;
     }
 
@@ -193,7 +200,7 @@ ion-label.asterisk::after {
     }
 
     .title {
-      color: #80D8FE;
+      color: #80d8fe;
     }
   }
 }
@@ -204,13 +211,12 @@ ion-label.asterisk::after {
   }
 }
 
-
 :host.profile-form {
   form {
     background: var(--ikan_skyblue_100);
     padding: 20px;
 
-    ion-label{
+    ion-label {
       color: var(--ikan_darkblue_90);
     }
   }
@@ -221,13 +227,23 @@ ion-label.asterisk::after {
     background: var(--ikan_light_gray);
     padding: 20px;
 
-    ion-label{
+    ion-label {
       color: var(--ikan_darkblue_90);
     }
 
     .pdf-container {
       margin: 15px 0;
       border-radius: 10px;
+    }
+  }
+}
+
+:host.login-form {
+  form {
+    .submit-btn-col {
+      display: flex;
+      justify-content: center;
+      margin: 20px 0;
     }
   }
 }
