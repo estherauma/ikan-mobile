@@ -14,6 +14,7 @@ import { UserData } from 'src/app/shared/types/api-types';
   selector: 'app-verify-phone-number',
   templateUrl: './verify-phone-number.component.html',
   styleUrls: ['./verify-phone-number.component.scss'],
+  standalone: false
 })
 export class VerifyPhoneNumberComponent  implements OnInit {
 

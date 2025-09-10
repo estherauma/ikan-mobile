@@ -16,6 +16,7 @@ import { UserData } from 'src/app/shared/types/api-types';
   selector: 'app-verify-code',
   templateUrl: './verify-code.component.html',
   styleUrls: ['./verify-code.component.scss'],
+  standalone: false
 })
 export class VerifyCodeComponent  implements OnInit {
 
