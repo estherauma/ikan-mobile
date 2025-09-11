@@ -53,7 +53,7 @@ export class TutorialsComponent  implements OnInit {
     await this.setup();
 
     const eventParams = this.sharedMethods.getAnalyticsEventParams();
-    const eventName = this.pageContent?.analyticsEventName || PageEventNames.viewAppTutotrials;
+    const eventName = this.pageContent?.analyticsEventName || PageEventNames.viewAppTutorials;
     await this.analtyicsService.trackEvent(eventName, eventParams);
   }
 

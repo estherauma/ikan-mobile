@@ -92,8 +92,10 @@ export enum PageEventNames {
 
     // Welcome screens/ tutorials
     viewWelcomeScreens = 'page_welcome_screens',
-    viewAppTutotrials = 'page_app_tutorials',
+    viewAppTutorials = 'page_app_tutorials',
 
+    // My documents
+    viewMyDocuments = 'page_my_documents',
 }
 
 export enum AppEventNames {
