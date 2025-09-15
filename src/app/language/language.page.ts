@@ -20,6 +20,7 @@ export class LanguagePage implements OnInit {
   availableLanguages = [];
   pageTitle: string;
   isLanguageSelected = false;
+  commonText: any;
 
   constructor(
     public contentServ: ContentService,
@@ -39,7 +40,8 @@ export class LanguagePage implements OnInit {
     });
   }
 
-  ngOnInit() {
+  async ngOnInit() {
+    this.commonText = await this.contentServ.commonText;
     this.analytics.trackEvent(PageEventNames.changeLanguage, this.sharedMethods.analyticsEventParams);
   }
 

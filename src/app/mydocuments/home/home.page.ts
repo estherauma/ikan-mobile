@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { AnalyticsService } from 'src/app/shared/services/analytics/analytics.service';
+import { PageEventNames } from 'src/app/shared/services/analytics/event-names';
 import { ContentService } from 'src/app/shared/services/content/content.service';
 import { SharedmethodsService } from 'src/app/shared/services/sharedmethods/sharedmethods.service';
 
@@ -20,13 +22,17 @@ export class HomePage implements OnInit {
     public router: Router,
     public contentService: ContentService,
     private sharedMethods: SharedmethodsService,
+    public analyticsService: AnalyticsService,
   ) { }
 
-  ngOnInit() {
+  async ngOnInit() {
     this.commonText = this.contentService?.commonText;
     this.pageTitle = this.commonText?.documents;
     const docsPageData = this.contentService.getContentByPropertyName('my-documents-common-text');
     this.docsCommonText = this.sharedMethods.convertAdditionalTextToObj(docsPageData?.additionalText);
+
+    const eventParams = await this.sharedMethods.getAnalyticsEventParams();
+    await this.analyticsService.trackEvent(PageEventNames.viewMyDocuments, eventParams);
   }
 
   onSegmentChange(e) {
