@@ -312,6 +312,9 @@ export class SharedmethodsService {
     if (entry.questionType === 'email' || entry.questionType === 'emailAddress') {
       validators.push(Validators.email);
     }
+    if (entry.questionType === 'tel' || entry.questionType === 'telephone') {
+      validators.push(Validators.pattern(/^\+[1-9]\d{1,14}$/));
+    }
     return validators;
   }
 
