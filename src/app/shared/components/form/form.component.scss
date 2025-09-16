@@ -58,7 +58,7 @@
   position: relative;
   padding: 20px 10px 0 10px;
   border-radius: 20px;
-  
+
   img {
     height: 60px;
     width: 60px;
@@ -201,6 +201,12 @@ ion-label.asterisk::after {
 
     .title {
       color: #80d8fe;
+    }
+    ion-label.asterisk::after {
+      color: hotpink;
+    }
+    .error-text {
+      color: hotpink;
     }
   }
 }
