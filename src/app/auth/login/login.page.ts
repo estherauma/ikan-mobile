@@ -108,7 +108,8 @@ export class LoginPage extends BaseformPage implements OnInit {
     // We are using the email key and not emailOrPhone for backward compatibility
     // with the old login page
     const emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
-    const phonePattern = /^([+]?[\s0-9 ]+)?(\d{3}|[ (]?[0-9]+[) ])?([- ]?[\s]?[0-9])+$/;
+    // const phonePattern = /^([+]?[\s0-9 ]+)?(\d{3}|[ (]?[0-9]+[) ])?([- ]?[\s]?[0-9])+$/;
+    const phonePattern = /^\+[1-9]\d{1,14}$/;
     const isEmail = formData.email.trim().match(emailPattern);
     const isPhone = formData.email.trim().match(phonePattern);
     if (!isEmail && !isPhone) {
@@ -133,8 +134,14 @@ export class LoginPage extends BaseformPage implements OnInit {
       phoneNumber,
       password: formData.password.trim()
     };
+    
+    // Remove fields with null values
+    Object.keys(formData).forEach(key => {
+      if (formData[key] === null) {
+        delete formData[key];
+      }
+    });
 
-    this.sharedMethods.showLoader(this.contentService.commonText?.loadingText);
     const response = await this.apiServices.post('accounts/login', formData, true);
     response.subscribe(
       async(res: LoginSuccessReponse) => {
@@ -179,10 +186,11 @@ export class LoginPage extends BaseformPage implements OnInit {
           this.handleRedirection(res.data.userData?.role);
         }
       }, async(err: HttpErrorResponse) => {
-        this.sharedMethods.hideLoader();
+        await this.sharedMethods.hideLoader();
         if (err.error?.detail === 'Your phone number is not verified. Please verify it before logging in. OR log in with email.') {
           await this.showUnverifiedNumberAlert();
         } else {
+          console.error('Login error: ', err);
           this.sharedMethods.showToast(err.error?.detail);
         }
       }
