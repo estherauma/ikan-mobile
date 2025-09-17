@@ -49,7 +49,6 @@ export class VerifyCodeComponent  implements OnInit {
     this.activatedRoute.queryParams.subscribe((queryParams) => {
       if (queryParams && Object.keys(queryParams).length > 0) {
         this.params = queryParams;
-        console.log('Params', this.params);
       }
     });
   }
