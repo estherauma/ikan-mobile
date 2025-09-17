@@ -84,6 +84,7 @@ ion-content {
     .profile-view {
       background: var(--ikan_skyblue_100);
       padding: 20px;
+      padding-bottom: 50px;
 
       h1 {
         color: #80d8fe;
@@ -124,7 +125,7 @@ ion-content {
       }
       .tel-num-val-col {
         display: flex;
-        justify-content: space-between;
+        // justify-content: space-between;
         align-items: center;
         ion-button {
           --background: var(--ikan_darkblue_90);
@@ -137,16 +138,18 @@ ion-content {
           min-height: 28px;
           --padding-bottom: 0;
           --padding-top: 0;
+          margin-left: 20px;
         }
       }
 
       ion-row {
-        margin: 15px 0 0 0;
+        margin: 0 0 15px 0;
       }
 
       .label {
         font-family: interRegular;
-        font-size: 0.95rem;
+        font-size: 1rem;
+        font-weight: bold;
         color: #3565ff;
         --color: #3565ff;
       }
