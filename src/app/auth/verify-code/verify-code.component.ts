@@ -30,6 +30,7 @@ export class VerifyCodeComponent  implements OnInit {
   pageText: any;
   commonText: any;
   params: any;
+  userData: UserData;
 
   constructor(
     public router: Router,
@@ -66,6 +67,8 @@ export class VerifyCodeComponent  implements OnInit {
     group['code-2'] = new FormControl('', [Validators.required]);
     group['code-3'] = new FormControl('', [Validators.required]);
     group['code-4'] = new FormControl('', [Validators.required]);
+    group['code-5'] = new FormControl('', [Validators.required]);
+    group['code-6'] = new FormControl('', [Validators.required]);
 
     this.pageFormGroup = new FormGroup(group);
   }
@@ -82,10 +85,10 @@ export class VerifyCodeComponent  implements OnInit {
     const data = {
       phoneNumber: this.params?.phoneNumber,
       userId: this.params?.userId,
-      type: this.params?.numberType,
+      type: this.params?.type,
       regenerate: true,
     };
-    const res: any = await lastValueFrom(this.apiService.post('accounts/generate-otp', data, true));
+    const res: any = await lastValueFrom(this.apiService.post('accounts/generate-otp/', data, true));
     if (res?.status) {
       await this.sharedMethods.showToast(this.pageText?.resendCodeSuccessMessage);
       // Clear the input fields
@@ -119,10 +122,10 @@ export class VerifyCodeComponent  implements OnInit {
       const data = {
         phoneNumber: this.params?.phoneNumber,
         userId: this.params?.userId,
-        type: this.params?.numberType,
+        type: this.params?.type,
         otpCode: code,
       };
-      const res: any = await lastValueFrom(this.apiService.post('accounts/verify-otp', data, true));
+      const res: any = await lastValueFrom(this.apiService.post('accounts/verify-otp/', data, true));
       if (res?.status && res?.status !== 'error') {
         await this.sharedMethods.dismissLoader();
         this.sharedMethods.showToast(this.pageText?.verificationSuccessMessage);

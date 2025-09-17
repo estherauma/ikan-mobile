@@ -72,7 +72,29 @@
             id="code-4"
             formControlName="code-4"
             maxlength="1"
+            (ionInput)="onInputChange($event, code5)"
             (keyup.backspace)="onBackspace($event, code3)"
+            inputmode="numeric"
+          ></ion-input>
+        </ion-col>
+        <ion-col>
+          <ion-input
+            #code5
+            id="code-5"
+            formControlName="code-5"
+            maxlength="1"
+            (ionInput)="onInputChange($event, code6)"
+            (keyup.backspace)="onBackspace($event, code4)"
+            inputmode="numeric"
+          ></ion-input>
+        </ion-col>
+        <ion-col>
+          <ion-input
+            #code6
+            id="code-6"
+            formControlName="code-6"
+            maxlength="1"
+            (keyup.backspace)="onBackspace($event, code5)"
             inputmode="numeric"
           ></ion-input>
         </ion-col>
