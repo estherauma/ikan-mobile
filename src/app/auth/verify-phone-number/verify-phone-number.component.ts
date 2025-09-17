@@ -7,6 +7,7 @@ import { AnalyticsService } from 'src/app/shared/services/analytics/analytics.se
 import { PageEventNames } from 'src/app/shared/services/analytics/event-names';
 import { ApiService } from 'src/app/shared/services/api/api.service';
 import { ContentService } from 'src/app/shared/services/content/content.service';
+import { GlobalErrorHandlerService } from 'src/app/shared/services/error-handler/global-error-handler.service';
 import { SharedmethodsService } from 'src/app/shared/services/sharedmethods/sharedmethods.service';
 import { UserData } from 'src/app/shared/types/api-types';
 
@@ -40,6 +41,7 @@ export class VerifyPhoneNumberComponent  implements OnInit {
     public analytics: AnalyticsService,
     public http: HttpClient,
     public activatedRoute: ActivatedRoute,
+    public globalErrorHandler: GlobalErrorHandlerService,
   ) {
     this.activatedRoute.queryParams.subscribe((queryParams) => {
       if (queryParams && Object.keys(queryParams).length > 0) {
@@ -119,6 +121,10 @@ export class VerifyPhoneNumberComponent  implements OnInit {
       }
     } catch (error) {
       console.error('Error in onSubmit', error);
+      this.globalErrorHandler.handleError(
+        error,
+        'Error generating OTP code.'
+      );
       await this.sharedMethods.dismissLoader();
       this.sharedMethods.showToast(this.pageText?.errorGeneratingCode);
     }

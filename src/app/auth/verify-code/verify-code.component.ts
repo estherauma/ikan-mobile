@@ -9,6 +9,7 @@ import { PageEventNames } from 'src/app/shared/services/analytics/event-names';
 import { ApiService } from 'src/app/shared/services/api/api.service';
 import { AuthService } from 'src/app/shared/services/auth/auth.service';
 import { ContentService } from 'src/app/shared/services/content/content.service';
+import { GlobalErrorHandlerService } from 'src/app/shared/services/error-handler/global-error-handler.service';
 import { SharedmethodsService } from 'src/app/shared/services/sharedmethods/sharedmethods.service';
 import { SyncService } from 'src/app/shared/services/sync/sync.service';
 import { UserData } from 'src/app/shared/types/api-types';
@@ -43,6 +44,7 @@ export class VerifyCodeComponent  implements OnInit {
     public activatedRoute: ActivatedRoute,
     public authService: AuthService,
     public syncService: SyncService,
+    public globalErrorHandler: GlobalErrorHandlerService,
   ) {
     this.activatedRoute.queryParams.subscribe((queryParams) => {
       if (queryParams && Object.keys(queryParams).length > 0) {
@@ -148,6 +150,10 @@ export class VerifyCodeComponent  implements OnInit {
       }
     } catch (error) {
       console.error('Error verifying phone number', error);
+      this.globalErrorHandler.handleError(
+        error,
+        'Error verifying phone number.'
+      );
       await this.sharedMethods.dismissLoader();
       this.sharedMethods.showToast(this.pageText?.verificationErrorMessage);
     }
