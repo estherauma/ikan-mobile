@@ -24,11 +24,13 @@ export class VerifyPhoneNumberComponent  implements OnInit {
   pageFormGroup: FormGroup;
   pageTitle: any;
   pageText: any;
-  phoneNumberRegex = /\+?(\(\+?\d{1,3}\)([- ])?)?\d{1,}(?:[- ]\d+)*/;
+  // phoneNumberRegex = /\+?(\(\+?\d{1,3}\)([- ])?)?\d{1,}(?:[- ]\d+)*/;
+  phoneNumberRegex = /^\+[1-9]\d{1,14}$/;
   selectedCode = '';
   commonText: any;
   previousUrl = null;
   numberType = null;
+  phoneNumber: any;
 
   constructor(
     public router: Router,
@@ -43,6 +45,7 @@ export class VerifyPhoneNumberComponent  implements OnInit {
       if (queryParams && Object.keys(queryParams).length > 0) {
         this.previousUrl = queryParams?.previousUrl ?? null;
         this.numberType = queryParams?.numberType ?? null;
+        this.phoneNumber = queryParams?.phoneNumber ?? null;
       }
     });
   }
@@ -60,12 +63,15 @@ export class VerifyPhoneNumberComponent  implements OnInit {
     this.pageTitle = pageData?.pageTitle;
     this.countryOptions = await this.getCountryOptions();
 
-    const group: any = {};
-    // add country code to the form group
-    group.countryCode = new FormControl(this.selectedCode, [Validators.required]);
-    // add phone number to the form group
-    group.phoneNumber = new FormControl('', [Validators.required, Validators.pattern(this.phoneNumberRegex)]);
+    // const group: any = {};
+    // // add country code to the form group
+    // group.countryCode = new FormControl(this.selectedCode, [Validators.required]);
+    // // add phone number to the form group
+    // group.phoneNumber = new FormControl('', [Validators.required, Validators.pattern(this.phoneNumberRegex)]);
 
+    const group: any = {
+      phoneNumber: new FormControl(this.phoneNumber, [Validators.required, Validators.pattern(this.phoneNumberRegex)])
+    };
     this.pageFormGroup = new FormGroup(group);
   }
 
@@ -90,19 +96,20 @@ export class VerifyPhoneNumberComponent  implements OnInit {
   async onSubmit(formData) {
     await this.sharedMethods.showWaitLoader(this.commonText?.submittingYourData);
     try {
-      const countryCode = formData.countryCode;
-      const phoneNumber = formData.phoneNumber;
-      const phoneNumberWithCode = `${countryCode}${phoneNumber}`.replace(/\s/g, '');
+      // const countryCode = formData.countryCode;
+      // const phoneNumber = formData.phoneNumber;
+      // const phoneNumberWithCode = `${countryCode}${phoneNumber}`.replace(/\s/g, '');
       const userData: UserData = await this.sharedMethods.getUserData();
       const userId = userData?.id;
       const data = {
-        phoneNumber: phoneNumberWithCode,
+        // phoneNumber: phoneNumberWithCode,
+        phoneNumber: formData.phoneNumber,
         userId: userId ?? null,
         type: this.numberType,
         previousUrl: this.previousUrl,
       };
 
-      const response: any = await lastValueFrom(this.apiService.post('accounts/verify-phone-number', data, true));
+      const response: any = await lastValueFrom(this.apiService.post('accounts/generate-otp/', data, true));
       if (response?.status && response?.status !== 'error') {
         await this.sharedMethods.dismissLoader();
         this.router.navigate(['auth/verify-code'], {replaceUrl: true, queryParams: data });
