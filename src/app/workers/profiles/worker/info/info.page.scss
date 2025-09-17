@@ -4,13 +4,13 @@
     background: rgba(211, 218, 238, 0.7);
     width: 100%;
     min-height: 80%;
-    padding: 20px;
+    padding: 20px 20px 50px 20px;
     ion-col {
       padding: 2px 5px;
     }
     .tel-num-val-col {
       display: flex;
-      justify-content: space-between;
+      // justify-content: space-between;
       align-items: center;
       ion-button {
         --background: var(--ikan_darkblue_90);
@@ -23,10 +23,11 @@
         min-height: 28px;
         --padding-bottom: 0;
         --padding-top: 0;
+        margin-left: 20px;
       }
     }
-    .ion-row {
-      margin: 15px 0 0 0;
+    ion-row {
+      margin: 0 0 15px 0;
     }
     .btn-row {
       margin: 0;
@@ -34,7 +35,8 @@
 
     .label {
       font-family: interRegular;
-      font-size: 0.95rem;
+      font-size: 1rem;
+      font-weight: bold;
       color: #3565ff;
       --color: #3565ff;
     }
