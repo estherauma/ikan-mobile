@@ -10,6 +10,7 @@ import { ApiService } from 'src/app/shared/services/api/api.service';
 import { AuthService } from 'src/app/shared/services/auth/auth.service';
 import { ContentService } from 'src/app/shared/services/content/content.service';
 import { SharedmethodsService } from 'src/app/shared/services/sharedmethods/sharedmethods.service';
+import { SyncService } from 'src/app/shared/services/sync/sync.service';
 import { UserData } from 'src/app/shared/types/api-types';
 
 @Component({
@@ -41,10 +42,12 @@ export class VerifyCodeComponent  implements OnInit {
     public http: HttpClient,
     public activatedRoute: ActivatedRoute,
     public authService: AuthService,
+    public syncService: SyncService,
   ) {
     this.activatedRoute.queryParams.subscribe((queryParams) => {
       if (queryParams && Object.keys(queryParams).length > 0) {
         this.params = queryParams;
+        console.log('Params', this.params);
       }
     });
   }
@@ -127,6 +130,9 @@ export class VerifyCodeComponent  implements OnInit {
       };
       const res: any = await lastValueFrom(this.apiService.post('accounts/verify-otp/', data, true));
       if (res?.status && res?.status !== 'error') {
+        // sync api profile changes to device
+        await this.syncService.fetchProfile();
+        
         await this.sharedMethods.dismissLoader();
         this.sharedMethods.showToast(this.pageText?.verificationSuccessMessage);
         if (this.params?.previousUrl) {
