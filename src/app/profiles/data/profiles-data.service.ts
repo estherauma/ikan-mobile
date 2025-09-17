@@ -44,7 +44,7 @@ export class ProfilesDataService {
         for (let i = 0; i < data.rows.length; i++) {
           profiles.push({
             id: data.rows.item(i).id,
-            deleted: (data.rows.item(i).deleted || data.rows.item(i).deleted === 'true') ? true : false,
+            deleted: this.getBooleanValue(data.rows.item(i).deleted),
             createdAt: data.rows.item(i).created_at,
             updatedAt: data.rows.item(i).updated_at,
             deletedAt: data.rows.item(i).deleted_at,
@@ -55,10 +55,9 @@ export class ProfilesDataService {
             firstName: data.rows.item(i).first_name,
             lastName: data.rows.item(i).last_name,
             telephone: data.rows.item(i).telephone,
-            isTelephoneVerified: (data.rows.item(i).is_telephone_verified || data.rows.item(i).is_telephone_verified === 'true')
-              ? true : false,
+            isTelephoneVerified: this.getBooleanValue(data.rows.item(i).is_telephone_verified),
             mobile: data.rows.item(i).mobile,
-            isMobileVerified: (data.rows.item(i).is_mobile_verified || data.rows.item(i).is_mobile_verified === 'true') ? true : false,
+            isMobileVerified: this.getBooleanValue(data.rows.item(i).is_mobile_verified),
             addressLine1: data.rows.item(i).address_line_1,
             addressLine2: data.rows.item(i).address_line_2,
             addressLine3: data.rows.item(i).address_line_3,
@@ -69,8 +68,8 @@ export class ProfilesDataService {
             registrationNumber: data.rows.item(i).registration_number,
             passportNumber: data.rows.item(i).passport_number,
             position: data.rows.item(i).position,
-            isActive: (data.rows.item(i).is_active || data.rows.item(i).is_active === 'true') ? true : false,
-            isVerified: (data.rows.item(i).is_verified || data.rows.item(i).is_verified === 'true') ? true : false,
+            isActive: this.getBooleanValue(data.rows.item(i).is_active),
+            isVerified: this.getBooleanValue(data.rows.item(i).is_verified),
             lastLogin: data.rows.item(i).last_login,
             userRole: data.rows.item(i).user_role,
             onlineRef: data.rows.item(i).online_ref,
@@ -83,6 +82,13 @@ export class ProfilesDataService {
       console.error(e);
       return [];
     });
+  }
+
+  getBooleanValue(value: any) {
+    if (value && (value !== 'false' && value !== '0')) {
+      return true;
+    }
+    return false;
   }
 
   async getProfilesByRole(userRole: string) {
