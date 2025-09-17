@@ -107,11 +107,8 @@ export class LoginPage extends BaseformPage implements OnInit {
     this.sharedMethods.showLoader(this.contentService.commonText?.loadingText);
     // We are using the email key and not emailOrPhone for backward compatibility
     // with the old login page
-    const emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
-    // const phonePattern = /^([+]?[\s0-9 ]+)?(\d{3}|[ (]?[0-9]+[) ])?([- ]?[\s]?[0-9])+$/;
-    const phonePattern = /^\+[1-9]\d{1,14}$/;
-    const isEmail = formData.email.trim().match(emailPattern);
-    const isPhone = formData.email.trim().match(phonePattern);
+    const isEmail = formData.email.trim().match(this.sharedMethods.emailPattern);
+    const isPhone = formData.email.trim().match(this.sharedMethods.phoneNumberPattern);
     if (!isEmail && !isPhone) {
       this.sharedMethods.hideLoader();
       this.sharedMethods.showToast(this.pageText?.noEmailOrPhoneError || 'Please enter a valid email or phone number');

@@ -25,8 +25,6 @@ export class VerifyPhoneNumberComponent  implements OnInit {
   pageFormGroup: FormGroup;
   pageTitle: any;
   pageText: any;
-  // phoneNumberRegex = /\+?(\(\+?\d{1,3}\)([- ])?)?\d{1,}(?:[- ]\d+)*/;
-  phoneNumberRegex = /^\+[1-9]\d{1,14}$/;
   selectedCode = '';
   commonText: any;
   previousUrl = null;
@@ -72,7 +70,7 @@ export class VerifyPhoneNumberComponent  implements OnInit {
     // group.phoneNumber = new FormControl('', [Validators.required, Validators.pattern(this.phoneNumberRegex)]);
 
     const group: any = {
-      phoneNumber: new FormControl(this.phoneNumber, [Validators.required, Validators.pattern(this.phoneNumberRegex)])
+      phoneNumber: new FormControl(this.phoneNumber, [Validators.required, Validators.pattern(this.sharedMethods.phoneNumberPattern)]),
     };
     this.pageFormGroup = new FormGroup(group);
   }
