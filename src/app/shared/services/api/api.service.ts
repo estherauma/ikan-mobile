@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { env } from 'src/environments/environment';
-import { Observable } from 'rxjs';
+import { lastValueFrom, Observable } from 'rxjs';
 import { PushNotificationData, StorageKeys } from 'src/app/shared/types/api-types';
 import { Preferences } from '@capacitor/preferences';
 import { SharedmethodsService } from '../sharedmethods/sharedmethods.service';
@@ -119,5 +119,19 @@ export class ApiService {
         return null;
       }
     });
+  }
+
+  async checkIfPhoneNumberIsUnique(value: string, userId: string = null): Promise<boolean> {
+    const phone_number = value.trim();
+    const user_id = userId;
+    if (!phone_number) {
+      return false;
+    }
+    if (!navigator.onLine) {
+      return false;
+    }
+    
+    const result: any = await lastValueFrom(this.post('accounts/check-unique-phone-number/', { phone_number, user_id }));
+    return result?.unique || false;
   }
 }

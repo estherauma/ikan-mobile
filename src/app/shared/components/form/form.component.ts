@@ -5,10 +5,13 @@ import { UploadService } from 'src/app/shared/services/upload/upload.service';
 import { ImageselectComponent } from '../imageselect/imageselect.component';
 import { RecordoptionmodalComponent } from '../recordoptionmodal/recordoptionmodal.component';
 import { ContentService } from '../../services/content/content.service';
-import { FieldType, Icons } from '../../types/api-types';
+import { FieldType, Icons, UserData } from '../../types/api-types';
 import { SharedmethodsService } from '../../services/sharedmethods/sharedmethods.service';
 import { AudioService } from '../../services/audio/audio.service';
 import { FileOpener } from '@capawesome-team/capacitor-file-opener';
+import { ApiService } from '../../services/api/api.service';
+import { of, map, catchError } from 'rxjs';
+import { GlobalErrorHandlerService } from '../../services/error-handler/global-error-handler.service';
 
 @Component({
     selector: 'app-form',
@@ -55,6 +58,7 @@ export class FormComponent implements OnInit {
   commonText: any;
   docsCommonText: any;
   currentLanguage = 'en-us';
+  userData: UserData;
 
   constructor(
     public uploadService: UploadService,
@@ -63,9 +67,12 @@ export class FormComponent implements OnInit {
     public sharedMethods: SharedmethodsService,
     public audioService: AudioService,
     public alertController: AlertController,
+    public apiService: ApiService,
+    public globalErrorHandler: GlobalErrorHandlerService,
   ) { }
 
-  ngOnInit() {
+  async ngOnInit() {
+    this.userData = await this.sharedMethods.getUserData();
     this.commonText = this.contentService?.commonText;
     this.currentLanguage = this.contentService?.currentLanguage;
     const docsPageData = this.contentService.getContentByPropertyName('my-documents-common-text');
@@ -97,6 +104,51 @@ export class FormComponent implements OnInit {
       }
 
     });
+
+    this.tunaFormquestions?.forEach((question) => {
+      if (question?.displayquestion && (question?.questionType === 'tel' || question?.questionType === 'telephone')) {
+        const telControl = this.tunaFormGroup.get(question.key);
+        if (telControl) {
+          telControl.setAsyncValidators(this.validatePhone(question.key));
+          // Temporarily disabled because the api calls are cancelled when the user types fast
+          // set updateOn to blur to avoid too many API calls
+          // (telControl as any)._updateOn = 'blur';
+          
+          // re-validate when the value changes
+          telControl.valueChanges.subscribe(() => {
+            if (telControl.dirty) {
+              telControl.updateValueAndValidity({ onlySelf: true, emitEvent: false });
+            }
+          });
+        }
+      }
+    });
+  }
+
+  validatePhone(control: string) {
+    return (): any => {
+      const ctrl = this.tunaFormGroup?.controls[control];
+      if (!ctrl?.value) { return of(null); }
+      // Return no error if user is offline
+      if (!navigator.onLine) {
+        return of(null);
+      }
+      const phone_number = ctrl?.value?.trim();
+      const user_id = this.userData?.id ?? undefined;
+      return this.apiService.post('accounts/check-unique-phone-number/', { phone_number, user_id }).pipe(
+        map((res: any) => (res?.unique ? null : { phoneNumberTaken: true })),
+        catchError((e) => {
+          console.error('Error validating phone number', e);
+          this.globalErrorHandler.handleError(
+            e,
+            'Error validating phone number. Error in form.component.ts at validatePhone().',
+          );
+          // Return no validation error if there is a server error
+          // So we don't block the user from proceeding if there's a server issue (it's captured above)
+          return of(null)
+        })
+      );
+    };
   }
 
   onSubmit(event) {
