@@ -1,0 +1,116 @@
+<ion-content>
+  <app-authbgpaper></app-authbgpaper>
+  
+  <div class="ion-padding content-wrapper">
+    <div class="back-icon-wrapper">
+      <ion-icon icon="arrow-back-outline" (click)="goBack()"></ion-icon>
+    </div>
+    <div class="logo-wrapper">
+      <ion-img class="icon" src="assets/imgs/logo_svg.svg"></ion-img>
+    </div>
+    <form
+      *ngIf="pageFormGroup"
+      [formGroup]="pageFormGroup"
+      class="verify-code-form"
+    >
+      <ion-row>
+        <ion-col size="12">
+          <h2 class="form-title">
+            {{ pageText?.enterCode }}
+          </h2>
+        </ion-col>
+        <ion-col size="12">
+          <p class="form-subtitle">
+            {{ pageText?.verifyCodeSubText }}
+          </p>
+        </ion-col>
+        <ion-col size="12">
+          <p class="form-subtitle resend-code">
+            {{ pageText?.didNotReceiveCode }}
+            <a (click)="clickToResendCode()">
+              {{ pageText?.clickHereToResend }}
+            </a>
+          </p>
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col>
+          <ion-input
+            #code1
+            id="code-1"
+            formControlName="code-1"
+            maxlength="1"
+            (ionInput)="onInputChange($event, code2)"
+            inputmode="numeric"
+          ></ion-input>
+        </ion-col>
+        <ion-col>
+          <ion-input
+            #code2
+            id="code-2"
+            formControlName="code-2"
+            maxlength="1"
+            (ionInput)="onInputChange($event, code3)"
+            (keyup.backspace)="onBackspace($event, code1)"
+            inputmode="numeric"
+          ></ion-input>
+        </ion-col>
+        <ion-col>
+          <ion-input
+            #code3
+            id="code-3"
+            formControlName="code-3"
+            maxlength="1"
+            (ionInput)="onInputChange($event, code4)"
+            (keyup.backspace)="onBackspace($event, code2)"
+            inputmode="numeric"
+          ></ion-input>
+        </ion-col>
+        <ion-col>
+          <ion-input
+            #code4
+            id="code-4"
+            formControlName="code-4"
+            maxlength="1"
+            (ionInput)="onInputChange($event, code5)"
+            (keyup.backspace)="onBackspace($event, code3)"
+            inputmode="numeric"
+          ></ion-input>
+        </ion-col>
+        <ion-col>
+          <ion-input
+            #code5
+            id="code-5"
+            formControlName="code-5"
+            maxlength="1"
+            (ionInput)="onInputChange($event, code6)"
+            (keyup.backspace)="onBackspace($event, code4)"
+            inputmode="numeric"
+          ></ion-input>
+        </ion-col>
+        <ion-col>
+          <ion-input
+            #code6
+            id="code-6"
+            formControlName="code-6"
+            maxlength="1"
+            (keyup.backspace)="onBackspace($event, code5)"
+            inputmode="numeric"
+          ></ion-input>
+        </ion-col>
+      </ion-row>
+      <ion-row class="submit-btn-row">
+        <ion-col size="12">
+          <ion-button
+            class="submit-btn"
+            shape="round"
+            [disabled]="pageFormGroup.invalid"
+            (click)="onSubmit(pageFormGroup.value)"
+          >
+            {{ submitButtonText }}
+          </ion-button>
+        </ion-col>
+      </ion-row>
+    </form>
+  </div>
+</ion-content>

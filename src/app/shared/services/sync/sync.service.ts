@@ -646,19 +646,40 @@ export class SyncService {
 
   // fetches current user's profile only
   async fetchProfile() {
-    return this.apiService.get('accounts/profile').subscribe(async(response: GetProfileResponse) => {
-      if (response.status === 200 && response.body.data) {
-        const user = await this.sharedMethods.getUserData();
-        const now = this.sharedMethods.getCurrentDateTime();
-        const role = response.body.data?.roles?.length ? response.body.data?.roles.join(',') : '';
-        const dataToSave = {...response.body.data, userRole: role};
-        dataToSave.createdAt = dataToSave.createdAt ??  now;
-        dataToSave.updatedAt = dataToSave.updatedAt ??  now;
-        dataToSave.createdBy = dataToSave.createdBy ?? user?.id;
-        dataToSave.updatedBy = dataToSave.updatedBy ?? user?.id;
-        const profileExists = await this.profilesDataService.checkIfProfileExists(dataToSave.email);
-        if (!profileExists) {
-          await this.profilesDataService.saveOnlineProfile(dataToSave).then(async() => {
+    const response: GetProfileResponse = await lastValueFrom(this.apiService.get('accounts/profile'));
+    if (response.status === 200 && response.body.data) {
+      const user = await this.sharedMethods.getUserData();
+      const now = this.sharedMethods.getCurrentDateTime();
+      const role = response.body.data?.roles?.length ? response.body.data?.roles.join(',') : '';
+      const dataToSave = {...response.body.data, userRole: role};
+      dataToSave.createdAt = dataToSave.createdAt ??  now;
+      dataToSave.updatedAt = dataToSave.updatedAt ??  now;
+      dataToSave.createdBy = dataToSave.createdBy ?? user?.id;
+      dataToSave.updatedBy = dataToSave.updatedBy ?? user?.id;
+      const profileExists = await this.profilesDataService.checkIfProfileExists(dataToSave.email);
+      if (!profileExists) {
+        await this.profilesDataService.saveOnlineProfile(dataToSave).then(async() => {
+          if (dataToSave?.profileImage) {
+            await this.uploadService.fetchAndSaveFile(dataToSave.profileImage).then(async(fileUri) => {
+              if (fileUri) {
+                await this.profilesDataService.updateProfilesField(dataToSave.email, 'profile_image', fileUri);
+              }
+            });
+          }
+          await this.fetchBankAccounts(dataToSave.id);
+          await this.fetchBeneficiaries(dataToSave.id);
+        }).catch((e) => console.error(e));
+      } else {
+        const currentProfile = await this.profilesDataService.getSingleProfile(dataToSave.email);
+        const currentDate = new Date(currentProfile?.updatedAt);
+        const newDate = new Date(dataToSave?.updatedAt);
+
+        if (!currentProfile?.onlineRef) {
+          // update onlineref if not exists
+          await this.profilesDataService.updateProfileOnlineRef(dataToSave.email, dataToSave.id);
+        }
+        if (currentDate < newDate) {
+          await this.profilesDataService.update(dataToSave).then(async() => {
             if (dataToSave?.profileImage) {
               await this.uploadService.fetchAndSaveFile(dataToSave.profileImage).then(async(fileUri) => {
                 if (fileUri) {
@@ -668,32 +689,10 @@ export class SyncService {
             }
             await this.fetchBankAccounts(dataToSave.id);
             await this.fetchBeneficiaries(dataToSave.id);
-          }).catch((e) => console.error(e));
-        } else {
-          const currentProfile = await this.profilesDataService.getSingleProfile(dataToSave.email);
-          const currentDate = new Date(currentProfile?.updatedAt);
-          const newDate = new Date(dataToSave?.updatedAt);
-
-          if (!currentProfile?.onlineRef) {
-            // update onlineref if not exists
-            await this.profilesDataService.updateProfileOnlineRef(dataToSave.email, dataToSave.id);
-          }
-          if (currentDate < newDate) {
-            await this.profilesDataService.update(dataToSave).then(async() => {
-              if (dataToSave?.profileImage) {
-                await this.uploadService.fetchAndSaveFile(dataToSave.profileImage).then(async(fileUri) => {
-                  if (fileUri) {
-                    await this.profilesDataService.updateProfilesField(dataToSave.email, 'profile_image', fileUri);
-                  }
-                });
-              }
-              await this.fetchBankAccounts(dataToSave.id);
-              await this.fetchBeneficiaries(dataToSave.id);
-            });
-          }
+          });
         }
       }
-    });
+    }
   }
 
   // fetches profiles by role

@@ -166,7 +166,7 @@ export class ContentService {
         formQuestions: [
             {
                 key: 'email',
-                label: 'Email',
+                label: 'Email or Phone number',
                 options: null,
                 helptext: null,
                 questionType: 'textBox',

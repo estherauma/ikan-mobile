@@ -50,6 +50,14 @@ const routes: Routes = [
     loadChildren: () => import('./auth/login/login.module').then( m => m.LoginPageModule)
   },
   {
+    path: 'auth/verify-phone-number',
+    loadChildren: () => import('./auth/verify-phone-number/verify-phone-number.module').then( m => m.VerifyPhoneNumberModule)
+  },
+  {
+    path: 'auth/verify-code',
+    loadChildren: () => import('./auth/verify-code/verify-code.module').then( m => m.VerifyCodeModule)
+  },
+  {
     path: 'baseform',
     loadChildren: () => import('./shared/components/baseform/baseform.module').then( m => m.BaseformPageModule)
   },

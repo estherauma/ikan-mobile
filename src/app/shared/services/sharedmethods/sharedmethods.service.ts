@@ -24,6 +24,10 @@ export class SharedmethodsService {
   public analyticsEventParams: AnalyticsEventsData;
   currentPlatform = '';
   loader: any;
+  // Temporarily disabling phone pattern to allow all formats
+  // phonePattern = /^([+]?[\s0-9 ]+)?(\d{3}|[ (]?[0-9]+[) ])?([- ]?[\s]?[0-9])+$/;
+  phoneNumberPattern = /^\+[1-9]\d{1,14}$/;
+  emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
 
   constructor(
     public loadingCtrl: LoadingController,
@@ -311,6 +315,9 @@ export class SharedmethodsService {
     }
     if (entry.questionType === 'email' || entry.questionType === 'emailAddress') {
       validators.push(Validators.email);
+    }
+    if (entry.questionType === 'tel' || entry.questionType === 'telephone') {
+      validators.push(Validators.pattern(this.phoneNumberPattern));
     }
     return validators;
   }

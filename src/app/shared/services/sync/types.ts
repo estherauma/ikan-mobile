@@ -264,7 +264,9 @@ export interface ProfileData {
   firstName:            string | null;
   lastName:             string | null;
   telephone:            string | null;
+  isTelephoneVerified: boolean;
   mobile:               string | null;
+  isMobileVerified:     boolean;
   addressLine1:         string | null;
   addressLine2:         string | null;
   addressLine3:         string | null;

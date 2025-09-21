@@ -1,0 +1,90 @@
+<ion-content>
+  <app-authbgpaper></app-authbgpaper>
+
+  <div class="ion-padding content-wrapper">
+    <div class="back-icon-wrapper">
+      <ion-icon icon="arrow-back-outline" (click)="goBack()"></ion-icon>
+    </div>
+    <div class="logo-wrapper">
+      <ion-img class="icon" src="assets/imgs/logo_svg.svg"></ion-img>
+    </div>
+    <form
+      *ngIf="pageFormGroup"
+      [formGroup]="pageFormGroup"
+      class="verify-phone-number-form"
+    >
+      <ion-row>
+        <ion-col size="12">
+          <h2 class="form-title">
+            {{ pageText?.verifyPhoneNumber }}
+          </h2>
+        </ion-col>
+        <ion-col size="12">
+          <p class="form-subtitle">
+            {{ pageText?.verifyPhoneNumberSubtext }}
+          </p>
+        </ion-col>
+      </ion-row>
+      <!-- <ion-row>
+        <ion-col size="3">
+          <ion-select
+            [label]="selectedCode"
+            formControlName="countryCode"
+            interface="popover"
+            (ionChange)="onCountryCodeChange($event)"
+            [ngClass]="{
+              'selected-code': selectedCode
+            }"
+            [okText]="commonText?.ok"
+            [cancelText]="commonText?.cancel"
+          >
+            <ion-select-option
+              *ngFor="let country of countryOptions"
+              [value]="country?.dial_code"
+            >
+            {{ country?.flag }} {{ country?.code }} ({{ country?.dial_code }})
+          </ion-select-option>
+          </ion-select>
+        </ion-col>
+        <ion-col size="9">
+          <ion-input
+            formControlName="phoneNumber"
+            inputmode="tel"
+            minlength="6"
+            [ngClass]="{
+              'has-value': pageFormGroup?.value?.phoneNumber
+            }"
+          ></ion-input>
+        </ion-col>
+      </ion-row> -->
+      <ion-row>
+        <ion-col size="12">
+          <ion-input
+            inputmode="tel"
+            placeholder="+1234567890"
+            formControlName="phoneNumber"
+          ></ion-input>
+        </ion-col>
+        @if (pageFormGroup?.controls?.phoneNumber?.errors?.pattern) {
+          <ion-col size="12">
+            <!-- TODO: translate -->
+            <p class="error-text">{{ commonText?.invalidPhoneNumberError || 'Invalid phone number' }}</p>
+          </ion-col>
+        }
+      </ion-row>
+      
+      <ion-row class="submit-btn-row">
+        <ion-col size="12">
+          <ion-button
+            class="submit-btn"
+            shape="round"
+            [disabled]="pageFormGroup.invalid"
+            (click)="onSubmit(pageFormGroup.value)"
+          >
+            {{ submitButtonText }}
+          </ion-button>
+        </ion-col>
+      </ion-row>
+    </form>
+  </div>
+</ion-content>

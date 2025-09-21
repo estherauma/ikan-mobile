@@ -22,6 +22,8 @@ export enum PageEventNames {
     requestPasswordReset = 'page_request_password_reset',
     signup = 'page_signup',
     loginMethod = 'page_login_method',
+    verifyPhoneNumber = 'page_verify_phone_number',
+    verifyCode = 'page_verify_code',
 
     // companies
     createCompany = 'page_company_create',

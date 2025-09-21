@@ -58,8 +58,17 @@
           <ion-col size="12">
             <ion-label class="label">{{ viewInfo?.telephone }}</ion-label>
           </ion-col>
-          <ion-col size="12">
+          <ion-col size="12" class="tel-num-val-col">
             <ion-label class="value">{{ profileData?.telephone }}</ion-label>
+            @if (!profileData?.isTelephoneVerified) {
+              <ion-button
+                class="verify-btn"
+                (click)="verifyPhoneNumber('telephone')"
+                shape="round"
+              >
+              {{ commonText?.verify }}
+              </ion-button>
+            }
           </ion-col>
         </ion-row>
       }
@@ -68,15 +77,24 @@
           <ion-col size="12">
             <ion-label class="label">{{ viewInfo?.mobile }}</ion-label>
           </ion-col>
-          <ion-col size="12">
+          <ion-col size="12" class="tel-num-val-col">
             <ion-label class="value">{{ profileData?.mobile }}</ion-label>
+            @if (!profileData?.isMobileVerified) {
+              <ion-button
+                class="verify-btn"
+                (click)="verifyPhoneNumber('mobile')"
+                shape="round"
+              >
+              {{ commonText?.verify }}
+              </ion-button>
+            }
           </ion-col>
         </ion-row>
       }
       @if (profileData?.addressLine1) {
         <ion-row class="address">
           <ion-col size="12">
-            <ion-text class="label">{{ viewInfo?.address }}</ion-text>
+            <ion-text class="label adress-text">{{ viewInfo?.address }}</ion-text>
           </ion-col>
           @if (profileData?.addressLine1) {
             <ion-col size="12">

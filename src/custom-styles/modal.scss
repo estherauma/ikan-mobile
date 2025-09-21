@@ -338,6 +338,32 @@ ion-modal.workers-create-modal {
   }
 }
 
+.unverified-phone-number-alert .alert-wrapper {
+  .alert-head {
+    border-bottom: 1px solid #eaedf6;
+    h2 {
+      font-size: 1.35rem;
+      color: #191970;
+    }
+  }
+  .alert-message {
+    max-height: unset;
+    color: #2e2d2c;
+
+    ul {
+      padding-left: 25px;
+    }
+  }
+  .alert-button {
+    border: unset;
+    text-transform: none;
+  }
+  .cancel-btn {
+    background: var(--ion-color-primary);
+    color: white !important;
+  }
+}
+
 ion-modal.tutorial-detail-modal {
   --background: transparent !important;
 
@@ -352,7 +378,6 @@ ion-modal.tutorial-detail-modal {
 }
 
 ion-modal.quiz-qtn-modal {
-
   --height: unset;
   --width: 90%;
   --border-radius: 20px;
