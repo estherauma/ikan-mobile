@@ -132,6 +132,12 @@
                       <p class="error-text">{{ commonText?.invalidPhoneNumberError || 'Invalid phone number' }}</p>
                     </ion-col>
                   }
+                  @if (tunaFormGroup?.controls[question.key]?.errors?.phoneNumberTaken && tunaFormGroup.controls[question.key]?.touched) {
+                    <ion-col size="12">
+                      <!-- TODO: translate -->
+                      <p class="error-text">{{ commonText?.numberRegisteredToAnotherUser || 'Already registered....' }}</p>
+                    </ion-col>
+                  }
                 </ion-row>
               </ion-grid>
             </div>
@@ -160,6 +166,12 @@
                     <ion-col size="12">
                       <!-- TODO: translate -->
                       <p class="error-text">{{ commonText?.invalidPhoneNumberError || 'Invalid phone number' }}</p>
+                    </ion-col>
+                  }
+                  @if (tunaFormGroup?.controls[question.key]?.errors?.phoneNumberTaken) {
+                    <ion-col size="12">
+                      <!-- TODO: translate -->
+                      <p class="error-text">{{ commonText?.numberRegisteredToAnotherUser || 'Already registered....' }}</p>
                     </ion-col>
                   }
                 </ion-row>
