@@ -67,8 +67,7 @@
         </ion-col>
         @if (pageFormGroup?.controls?.phoneNumber?.errors?.pattern) {
           <ion-col size="12">
-            <!-- TODO: translate -->
-            <p class="error-text">{{ commonText?.invalidPhoneNumberError || 'Invalid phone number' }}</p>
+            <p class="error-text">{{ commonText?.invalidPhoneNumberError }}</p>
           </ion-col>
         }
       </ion-row>
