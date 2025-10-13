@@ -380,6 +380,10 @@ const routes: Routes = [
     path: 'my-work-journey',
     loadChildren: () => import('./my-work-journey/my-work-journey.module').then(m => m.MyWorkJourneyModule)
   },
+  {
+    path: 'wages',
+    loadChildren: () => import('./wages/home/home.module').then( m => m.HomeModule),
+  },
 
   // should be last item in the routes
   // add routes above this
