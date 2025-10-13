@@ -49,6 +49,7 @@ import { RichTextComponent } from './components/rich-text/rich-text.component';
 import { AudioButtonComponent } from './components/audio-button/audio-button.component';
 import { VideoButtonComponent } from './components/video-button/video-button.component';
 import { ProgressCircleComponent } from './components/progress-circle/progress-circle.component';
+import { AudioVideoButtonsComponent } from './components/audio-video-buttons/audio-video-buttons.component';
 
 
 @NgModule({
@@ -106,6 +107,7 @@ import { ProgressCircleComponent } from './components/progress-circle/progress-c
     AudioButtonComponent,
     VideoButtonComponent,
     ProgressCircleComponent,
+    AudioVideoButtonsComponent,
   ],
   exports: [
     SafeurlPipe,
@@ -154,6 +156,7 @@ import { ProgressCircleComponent } from './components/progress-circle/progress-c
     AudioButtonComponent,
     VideoButtonComponent,
     ProgressCircleComponent,
+    AudioVideoButtonsComponent,
   ]
 })
 
