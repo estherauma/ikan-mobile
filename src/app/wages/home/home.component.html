@@ -40,26 +40,26 @@
   </ion-row> -->
 
   <!-- Vessel Owner View -->
-@if (currentUser?.role==='vessel_owner') {
-  <div class="vo-view">
-    @for (vessel of vessels; track vessel) {
-      <ion-row
-        class="vessel-row"
-        (click)="goToVesselWages(vessel)"
-        >
-        <ion-col size="3" class="icon-col">
-          <div class="icon-wrapper">
-            <ion-icon
-              class="icon"
-              src="assets/icon/boat_large.svg"
-            ></ion-icon>
-          </div>
-        </ion-col>
-        <ion-col size="9" class="name-col">
-          <ion-card-title class="name"> {{vessel?.name}}</ion-card-title>
-        </ion-col>
-      </ion-row>
-    }
-  </div>
-}
+  @if (currentUser?.role==='vessel_owner') {
+    <div class="vo-view">
+      @for (vessel of vessels; track vessel) {
+        <ion-row
+          class="vessel-row"
+          (click)="goToVesselWages(vessel)"
+          >
+          <ion-col size="3" class="icon-col">
+            <div class="icon-wrapper">
+              <ion-icon
+                class="icon"
+                src="assets/icon/boat_large.svg"
+              ></ion-icon>
+            </div>
+          </ion-col>
+          <ion-col size="9" class="name-col">
+            <ion-card-title class="name"> {{vessel?.name}}</ion-card-title>
+          </ion-col>
+        </ion-row>
+      }
+    </div>
+  }
 </ion-content>
