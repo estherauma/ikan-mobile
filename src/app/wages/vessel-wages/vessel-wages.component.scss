@@ -1,0 +1,162 @@
+ion-content {
+  --background: var(--ikan_skyblue_100);
+  --padding-top: 20px;
+  --padding-bottom: 50px;
+  --padding-start: 15px;
+  --padding-end: 15px;
+
+  ion-row {
+    ion-col {
+      padding: 0;
+    }
+  }
+  .title-row {
+    .icon {
+      height: 24px;
+      width: 24px;
+    }
+  }
+  .search-row {
+    margin-top: 5px;
+  }
+  .filter-row {
+    padding-top: 10px;
+    padding-bottom: 20px;
+    ion-col {
+      padding: 3px;
+    }
+  }
+
+  .wages-display {
+    margin: 10px 0 30px 0;
+
+    .sub-title-row {
+      p {
+        font-size: 1rem;
+        font-family: "GatwickBold";
+        color: var(--ikan_darkblue_90);
+      }
+      .no-wages {
+        font-size: 0.9rem;
+        font-family: "interRegular";
+        color: #3565ff;
+      }
+      .sub-title {
+        margin-bottom: 0;
+      }
+    }
+    .list-wrapper {
+      padding: 0;
+      margin: 20px 0;
+      background: var(--ikan_skyblue_100);
+
+      .group-item {
+        --background: var(--ikan_skyblue_100);
+        --inner-border-width: 0 0 2px 0;
+        --border-color: var(--ikan_deep_gray);
+        --padding-start: 2px;
+        --padding-end: 2px;
+        ion-label {
+          color: var(--ikan_darkblue_100);
+          font-size: 1.1rem;
+          font-weight: bold;
+          font-family: "interRegular";
+        }
+        ion-icon {
+          color: var(--ikan_darkblue_100);
+          font-size: 1.4rem;
+          font-weight: bold;
+        }
+      }
+      .not-expanded {
+        margin-bottom: 15px;
+      }
+
+      .group-list-wrapper {
+        padding: 0;
+        margin-bottom: 10px;
+        background: var(--ikan_skyblue_100);
+        .wage-item {
+          --background: var(--ikan_skyblue_100);
+          --inner-border-width: 0;
+          --padding-start: 8px;
+          margin: 15px 0;
+
+          .wage-row {
+            margin: 0;
+            padding: 0 0 10px 10px;
+            background: white;
+            border-radius: 20px;
+            min-height: 90px;
+
+            ion-col {
+              display: flex;
+              justify-content: flex-start;
+            }
+            .status-col {
+              justify-content: flex-end;
+              ion-text {
+                background: #f0525c;
+                padding: 2px 15px;
+                border-radius: 0 20px 0 20px;
+                font-size: 0.8rem;
+              }
+              .pending {
+                background: #f4992d;
+                color: #191970;
+              }
+              .confirmed {
+                background: #74f080;
+                color: #191970;
+              }
+              .rejected {
+                background: #f0525c;
+                color: #eaedf6;
+              }
+            }
+
+            .icon-col {
+              justify-content: center;
+              .icon-wrapper {
+                width: 30px;
+                height: 30px;
+                ion-icon,
+                ion-img {
+                  width: 100%;
+                  height: 100%;
+                  object-fit: contain;
+                }
+              }
+            }
+            .details-col {
+              padding-left: 10px;
+              padding-right: 10px;
+              flex-direction: column;
+              p {
+                font-size: 0.8rem;
+                font-family: "interRegular";
+                color: #a0abcc;
+                margin: 2px 0;
+                span {
+                  color: black;
+                  font-size: 0.8rem;
+                }
+              }
+              .amount {
+                font-size: 1.2rem;
+                font-weight: bold;
+                color: black;
+                span {
+                  font-size: 1.2rem;
+                  font-weight: bold;
+                  color: black;
+                  margin-right: 2px;
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
