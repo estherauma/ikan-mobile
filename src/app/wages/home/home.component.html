@@ -27,7 +27,7 @@
     </ion-col>
   </ion-row>
 
-  <!-- <ion-row class="filter-row">
+  <ion-row class="filter-row">
     <ion-col size="12">
       <app-filter
         filterProperty="status"
@@ -37,7 +37,7 @@
         [filterLabel]="commonText?.filterByStatus"
       ></app-filter>
     </ion-col>
-  </ion-row> -->
+  </ion-row>
 
   <!-- Vessel Owner View -->
   @if (currentUser?.role==='vessel_owner') {
@@ -59,6 +59,53 @@
             <ion-card-title class="name"> {{vessel?.name}}</ion-card-title>
           </ion-col>
         </ion-row>
+      }
+    </div>
+  }
+
+  <!-- Worker/Fisher View -->
+  @if (currentUser?.role==='worker') {
+    <div class="worker-view">
+      <ion-row class="sub-title-row">
+        <ion-col size="12">
+          <p class="sub-title">
+            <!-- TODO: translate -->
+            {{ paymentsCommonText?.wagePaymentHistory || 'Wage payment history' }}
+            @if (userWages?.length) {
+            <!-- TODO: translate -->
+              <span>
+                ({{ userWages?.length + ' ' + (paymentsCommonText?.wagePayments || 'Wage payments') }})
+              </span>
+            }
+          </p>
+        </ion-col>
+        <!-- No existing wages -->
+        @if (!userWages?.length) {
+          <ion-col size="12">
+            <p class="no-wages">
+            <!-- TODO: translate -->
+              {{ paymentsCommonText?.noWagePayments || 'No wage payments yet' }}
+            </p>
+          </ion-col>
+        }
+      </ion-row>
+      @for (wage of userWages; track wage) {
+        <div class="wage-wrapper">
+          <!-- <app-payment-card
+            [statusClass]="{
+                    'pending': wage.status === 'Pending',
+                    'confirmed': wage.status === 'Confirmed',
+                    'rejected': wage.status === 'Rejected',
+                  }"
+            [status]="wage?.status"
+            iconUrl="assets/icon/single_payment_blue.svg"
+            currency="$"
+            [amount]="wage?.totalUsdAmountReceived"
+            [paymentDate]="wage?.paymentDate"
+            (onClick)="goToWageDetail(wage)"
+            >
+          </app-payment-card> -->
+        </div>
       }
     </div>
   }
