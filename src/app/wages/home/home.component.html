@@ -1,3 +1,65 @@
-<p>
-  home works!
-</p>
+<app-header></app-header>
+<ion-content class="content-skyblue-bg">
+  <app-audio-video-buttons
+    [audioUrl]=""
+    [videoUrl]=""
+  ></app-audio-video-buttons>
+
+  <!-- Create functionality disabled for now -->
+  <!-- <ion-row class="ion-justify-content-end">
+    <app-button
+      iconName="add-outline"
+      [title]="commonText?.new"
+    ></app-button>
+  </ion-row> -->
+
+  <ion-row class="title-row">
+    <ion-col size="12" class="icon-col">
+      <ion-img src="assets/icon/payments.svg" class="icon"></ion-img>
+    </ion-col>
+    <ion-col size="12">
+      <!-- TODO: translate -->
+      <app-title
+        class="wages-page"
+        [title]="paymentsCommonText?.wagePayments || 'Wage Payments'"
+        [isBlue]="true"
+      ></app-title>
+    </ion-col>
+  </ion-row>
+
+  <!-- <ion-row class="filter-row">
+    <ion-col size="12">
+      <app-filter
+        filterProperty="status"
+        [options]="filterOptions"
+        [filterDataSet]="filterDataSet"
+        (filterResult)="filterResult($event)"
+        [filterLabel]="commonText?.filterByStatus"
+      ></app-filter>
+    </ion-col>
+  </ion-row> -->
+
+  <!-- Vessel Owner View -->
+@if (currentUser?.role==='vessel_owner') {
+  <div class="vo-view">
+    @for (vessel of vessels; track vessel) {
+      <ion-row
+        class="vessel-row"
+        (click)="goToVesselWages(vessel)"
+        >
+        <ion-col size="3" class="icon-col">
+          <div class="icon-wrapper">
+            <ion-icon
+              class="icon"
+              src="assets/icon/boat_large.svg"
+            ></ion-icon>
+          </div>
+        </ion-col>
+        <ion-col size="9" class="name-col">
+          <ion-card-title class="name"> {{vessel?.name}}</ion-card-title>
+        </ion-col>
+      </ion-row>
+    }
+  </div>
+}
+</ion-content>
