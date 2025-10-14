@@ -12,6 +12,10 @@ const routes: Routes = [
     path: 'home',
     component: HomeComponent,
   },
+  {
+    path: 'vessel-wages',
+    loadChildren: () => import('../vessel-wages/vessel-wages.module').then(m => m.VesselWagesModule)
+  },
 ];
 
 @NgModule({
