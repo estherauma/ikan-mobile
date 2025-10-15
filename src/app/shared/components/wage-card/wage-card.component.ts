@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { ContentService } from '../../services/content/content.service';
 import { SharedmethodsService } from '../../services/sharedmethods/sharedmethods.service';
 
@@ -21,6 +21,8 @@ export class WageCardComponent  implements OnInit {
   @Input() paymentDate: string;
   @Input() payee;
 
+  @Output() onClick = new EventEmitter<any>();
+
   constructor(
     public contentService: ContentService,
     public sharedMethods: SharedmethodsService,
@@ -33,4 +35,7 @@ export class WageCardComponent  implements OnInit {
     this.currentLanguage = this.contentService?.currentLanguage;
   }
 
+  onClickCard(e) {
+    this.onClick.emit(e);
+  }
 }

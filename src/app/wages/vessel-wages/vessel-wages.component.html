@@ -99,6 +99,7 @@
                         [amount]="wage?.usdAmount"
                         [paymentDate]="wage?.paymentDate"
                         [payee]="wage?.user?.firstName + ' ' + wage?.user?.lastName"
+                        (onClick)="goToWageDetail(wage)"
                       ></app-wage-card>
                     </div>
                   }
