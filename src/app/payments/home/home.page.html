@@ -107,6 +107,7 @@
           iconUrl="assets/icon/single_payment_blue.svg"
           currency="$"
           [amount]="payment?.totalUsdAmountReceived"
+          [payee]="payment?.user?.firstName + ' ' + payment?.user?.lastName"
           [paymentDate]="payment?.paymentDate"
           (onClick)="goToPaymentDetail(payment)"
           >
