@@ -1,4 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
+import { ContentService } from '../../services/content/content.service';
+import { SharedmethodsService } from '../../services/sharedmethods/sharedmethods.service';
+
+type WageStatus = 'action_required' | 'issue_pending' | 'confirmed' | 'received';
 
 @Component({
   selector: 'app-wage-card',
@@ -7,9 +11,26 @@ import { Component, OnInit } from '@angular/core';
   standalone: false
 })
 export class WageCardComponent  implements OnInit {
+  
+  commonText: any;
+  paymentsCommonText: any;
+  currentLanguage = 'en-us';
 
-  constructor() { }
+  @Input() status: WageStatus = 'action_required';
+  @Input() amount;
+  @Input() paymentDate: string;
+  @Input() payee;
 
-  ngOnInit() {}
+  constructor(
+    public contentService: ContentService,
+    public sharedMethods: SharedmethodsService,
+  ) { }
+
+  async ngOnInit() {
+    this.commonText = await this.contentService?.commonText;
+    const paymentsPageData = this.contentService.getContentByPropertyName('payments-common-text');
+    this.paymentsCommonText = this.sharedMethods.convertAdditionalTextToObj(paymentsPageData?.additionalText);
+    this.currentLanguage = this.contentService?.currentLanguage;
+  }
 
 }
