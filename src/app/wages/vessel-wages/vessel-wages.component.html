@@ -2,6 +2,12 @@
 
 <ion-content class="content-skyblue-bg">
   <ion-grid>
+    <!-- TODO: add urls -->
+    <app-audio-video-buttons
+      [audioUrl]=""
+      [videoUrl]=""
+    ></app-audio-video-buttons>
+    
     <div class="title-filter">
       <ion-row class="title-row">
         <ion-col size="12">
@@ -50,7 +56,7 @@
               <span>
                 <!-- TODO: translate -->
                 ({{
-                  vesselWages?.length + " " + paymentsCommonText?.wagePayments || 'Wage payments'
+                  vesselWages?.length + " " + (paymentsCommonText?.wagePayments || 'Wage payments')
                 }})
               </span>
             }
@@ -88,25 +94,12 @@
                 <div class="group-list-wrapper">
                   @for (wage of group.wages; track wage) {
                     <div class="wage-item">
-                      <!-- TODO: remove dummy text/ add translations -->
-                      <!-- <app-payment-card
-                        [statusClassOld]="{
-                          'pending': wage.status === 'Pending',
-                          'confirmed': wage.status === 'Confirmed',
-                          'rejected': wage.status === 'Rejected',
-                        }"
-                        [statusOld]="wage?.status || 'Confirmed'"
-                        iconUrlOld="assets/icon/single_payment_blue.svg"
-                        [amountOld]="wage?.totalUsdAmountReceived"
-                        [currencyOld]="'$'"
-                        [payeeOld]="
-                          wage?.user?.firstName + ' ' + wage?.user?.lastName
-                        "
-                        [paymentDateOld]="wage?.createdAt"
-                        [confirmationDateOld]="wage?.confirmedDate"
-                        (onClickOld)="goToWageDetail(wage)"
-                      >
-                      </app-payment-card> -->
+                      <app-wage-card
+                        [status]="wage?.wageTracking?.status"
+                        [amount]="wage?.usdAmount"
+                        [paymentDate]="wage?.paymentDate"
+                        [payee]="wage?.user?.firstName + ' ' + wage?.user?.lastName"
+                      ></app-wage-card>
                     </div>
                   }
                 </div>

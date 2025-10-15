@@ -1,5 +1,6 @@
 <app-header></app-header>
 <ion-content class="content-skyblue-bg">
+  <!-- TODO: add urls -->
   <app-audio-video-buttons
     [audioUrl]=""
     [videoUrl]=""
@@ -91,20 +92,12 @@
       </ion-row>
       @for (wage of userWages; track wage) {
         <div class="wage-wrapper">
-          <!-- <app-payment-card
-            [statusClass]="{
-                    'pending': wage.status === 'Pending',
-                    'confirmed': wage.status === 'Confirmed',
-                    'rejected': wage.status === 'Rejected',
-                  }"
-            [status]="wage?.status"
-            iconUrl="assets/icon/single_payment_blue.svg"
-            currency="$"
-            [amount]="wage?.totalUsdAmountReceived"
+          <app-wage-card
+            [status]="wage?.wageTracking?.status"
+            [amount]="wage?.usdAmount"
             [paymentDate]="wage?.paymentDate"
-            (onClick)="goToWageDetail(wage)"
-            >
-          </app-payment-card> -->
+            [payee]="wage?.user?.firstName + ' ' + wage?.user?.lastName"
+          ></app-wage-card>
         </div>
       }
     </div>
