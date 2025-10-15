@@ -16,6 +16,10 @@ const routes: Routes = [
     path: 'vessel-wages',
     loadChildren: () => import('../vessel-wages/vessel-wages.module').then(m => m.VesselWagesModule)
   },
+  {
+    path: 'wage-details',
+    loadChildren: () => import('../wage-detail/wage-detail.module').then(m => m.WageDetailModule)
+  },
 ];
 
 @NgModule({
