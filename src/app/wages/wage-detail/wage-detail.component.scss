@@ -1,0 +1,97 @@
+ion-content {
+  --background: var(--ikan_skyblue_100);
+  --padding-start: 15px;
+  --padding-end: 15px;
+  --padding-bottom: 50px;
+}
+.content-wrapper {
+  margin-top: 20px;
+  .wage-details-summary {
+    background: white;
+    border-radius: 20px;
+    .status-wrapper {
+      display: flex;
+      justify-content: flex-end;
+      border-top-right-radius: 20px;
+      .status-text {
+        font-size: 0.75rem;
+        font-weight: 600;
+        line-height: 16px;
+        color: var(--ikan_darkblue_100);
+        padding: 5px 20px;
+        margin: 0;
+        border-radius: 0 20px 0 20px;
+      }
+    }
+    .summary-content {
+      padding: 0 20px 20px 20px;
+      .summary-title {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        .icon-wrapper {
+          width: 30px;
+          height: 30px;
+          ion-icon {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            object-position: center;
+          }
+        }
+        .amount {
+          font-family: "GatwickBold";
+          font-size: 1.5rem;
+          font-weight: 600;
+          color: #3565ff;
+          margin-top: 5px;
+          span {
+            font-family: "GatwickBold";
+            font-size: 1.5rem;
+          }
+        }
+      }
+      .summary-body {
+        ion-col {
+          padding: 0;
+          display: flex;
+          align-items: center;
+        }
+        p {
+          font-size: 1rem;
+          font-family: "interRegular";
+          color: var(--ikan_darkblue_100);
+          margin: 7px 0;
+        }
+        .label {
+          color: #a0abcc;
+          font-size: 1rem;
+        }
+      }
+    }
+  }
+}
+.content-action-required {
+  .status-text {
+    background: var(--ikan_yellow_100);
+    color: var(--ikan_darkblue_100) !important;
+  }
+}
+.content-issue-pending {
+  .status-text {
+    background: var(--ikan_red_100);
+    color: white !important;
+  }
+}
+.content-confirmed {
+  .status-text {
+    background: var(--ikan_green_100);
+    color: var(--ikan_darkblue_100) !important;
+  }
+}
+.content-received {
+  .status-text {
+    background: var(--ikan_green_100);
+    color: var(--ikan_darkblue_100) !important;
+  }
+}
