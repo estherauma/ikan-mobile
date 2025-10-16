@@ -28,7 +28,13 @@ export class HeaderComponent implements OnInit {
     public authService: AuthService,
     public menuController: MenuController,
     public router: Router
-  ) { }
+  ) {
+    this.contentService.watchContent().subscribe((resp) => {
+      if (resp) {
+        this.commonText = this.contentService.commonText;
+      }
+    });
+  }
 
   async ngOnInit() {
     this.commonText = this.contentService.commonText;
