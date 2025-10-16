@@ -22,6 +22,7 @@ export class HomeComponent implements OnInit {
   paymentsCommonText: any;
   pageTitle = 'Wage payments';
   unFilteredData = [];
+  allVessels = [];
   vessels = [];
   currentUser: UserData;
   userWages = [];
@@ -81,6 +82,7 @@ export class HomeComponent implements OnInit {
   ) {
     this.vesselsDataService.getAll().subscribe(async (data) => {
       await this.getCurrentUser();
+      this.allVessels = data;
       // TODO: filter data based on user role
       // filtering by createdBy because the vessels are only displayed for VOs
       this.vessels = this.unFilteredData = data?.filter(
@@ -104,9 +106,16 @@ export class HomeComponent implements OnInit {
 
       // Add user & vessel details wages
       this.userWages = this.userWages.map((wage) => {
-        const vessel = this.vessels.find(
-          (v) => v.onlineRef === wage.vesselId
-        );
+        let vessel = null;
+        if (this.currentUser?.role === UserRole.worker) {
+          vessel = this.allVessels.find(
+            (v) => v.onlineRef === wage.vesselId
+          );
+        } else if (this.currentUser?.role === UserRole.vesselOwner) {
+          vessel = this.vessels.find(
+            (v) => v.onlineRef === wage.vesselId
+          );
+        }
         const user = this.allUsers.find(
           (u) => u.onlineRef === wage.userId
         );
