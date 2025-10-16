@@ -3,7 +3,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { ContentService } from 'src/app/shared/services/content/content.service';
 import { SharedmethodsService } from 'src/app/shared/services/sharedmethods/sharedmethods.service';
 import { VesselsDataService } from 'src/app/vessels/data/vessels-data.service';
-import { UserData, StorageKeys } from 'src/app/shared/types/api-types';
+import { UserData, StorageKeys, UserRole } from 'src/app/shared/types/api-types';
 import { AnalyticsService } from 'src/app/shared/services/analytics/analytics.service';
 import { PageEventNames } from 'src/app/shared/services/analytics/event-names';
 import { ProfilesDataService } from 'src/app/profiles/data/profiles-data.service';
@@ -89,6 +89,16 @@ export class VesselWagesComponent  implements OnInit {
             const user = this.allUsers.find(
               (u) => u.onlineRef === wage.userId
             );
+            // For VO, change wage status to 'pending' & 'confirmed'
+            if (this.currentUser?.role === UserRole.vesselOwner) {
+              if (wage.wageTracking?.status === 'action_required' || wage.wageTracking?.status === 'issue_pending') {
+                wage.wageTracking.status = 'pending';
+              }
+              if (wage.wageTracking?.status === 'received') {
+                wage.wageTracking.status = 'confirmed';
+              }
+            }
+            
             return {
               ...wage,
               user: user ?? null,
