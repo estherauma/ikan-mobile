@@ -2,7 +2,7 @@ import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { ContentService } from '../../services/content/content.service';
 import { SharedmethodsService } from '../../services/sharedmethods/sharedmethods.service';
 
-type WageStatus = 'action_required' | 'issue_pending' | 'confirmed' | 'received';
+type WageStatus = 'action_required' | 'issue_pending' | 'received' | 'pending' | 'confirmed';
 
 @Component({
   selector: 'app-wage-card',

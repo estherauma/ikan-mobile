@@ -6,6 +6,7 @@
     .status-wrapper {
       display: flex;
       justify-content: flex-end;
+      border-top-right-radius: 20px;
       .status-text {
         font-size: 0.75rem;
         font-weight: 600;
@@ -72,29 +73,78 @@
       }
     }
   }
+
+  .status-message-wrapper {
+    ion-row {
+      padding: 10px;
+      ion-col {
+        display: flex;
+        justify-content: flex-start;
+        align-items: center;
+        padding: 0;
+      }
+      .icon-col {
+        justify-content: center;
+        .icon-wrapper {
+          ion-icon {
+            font-size: 1.8rem;
+          }
+        }
+      }
+      .message-col {
+        padding-left: 10px;
+        padding-right: 10px;
+        flex-direction: column;
+        p {
+          font-size: 0.9rem;
+          font-family: "interRegular";
+          margin: 2px 0;
+        }
+      }
+    }
+  }
 }
 .card-action-required {
+  background: var(--ikan_yellow_100);
+  .status-text,
+  .status-message {
+    background: var(--ikan_yellow_100);
+    color: var(--ikan_darkblue_100) !important;
+  }
+  .status-alert-icon {
+    color: var(--ikan_darkblue_100);
+  }
+}
+.card-issue-pending {
+  background: var(--ikan_red_100);
+  .status-text,
+  .status-message {
+    background: var(--ikan_red_100);
+    color: white !important;
+  }
+  .status-alert-icon {
+    color: white;
+  }
+}
+.card-received {
+  background: var(--ikan_green_100);
+  .status-text,
+  .status-message {
+    background: var(--ikan_green_100);
+    color: var(--ikan_darkblue_100) !important;
+  }
+  .status-alert-icon {
+    color: var(--ikan_darkblue_100);
+  }
+}
+.card-pending {
   background: var(--ikan_yellow_100);
   .status-text {
     background: var(--ikan_yellow_100);
     color: var(--ikan_darkblue_100) !important;
   }
 }
-.card-issue-pending {
-  background: var(--ikan_red_100);
-  .status-text {
-    background: var(--ikan_red_100);
-    color: white !important;
-  }
-}
 .card-confirmed {
-  background: var(--ikan_green_100);
-  .status-text {
-    background: var(--ikan_green_100);
-    color: var(--ikan_darkblue_100) !important;
-  }
-}
-.card-received {
   background: var(--ikan_green_100);
   .status-text {
     background: var(--ikan_green_100);
