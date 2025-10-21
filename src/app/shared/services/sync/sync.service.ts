@@ -34,6 +34,7 @@ import { PaymentsDataService } from 'src/app/payments/data/payments-data.service
 import { StorageKeys, UserData, UserRole } from '../../types/api-types';
 import { UploadService } from '../upload/upload.service';
 import { DocumentsDataService } from 'src/app/mydocuments/data/documents-data.service';
+import { WagesDataService } from 'src/app/wages/data/wages-data.service';
 
 @Injectable({
   providedIn: 'root'
@@ -57,6 +58,7 @@ export class SyncService {
     private paymentsDataService: PaymentsDataService,
     private uploadService: UploadService,
     private documentsDataService: DocumentsDataService,
+    private wagesDataService: WagesDataService,
   ) {
     this.platform.ready().then(async() => {
       this.db = await this.dbService.configureDB();
@@ -102,6 +104,7 @@ export class SyncService {
     await this.fetchInlineQuestions();
     await this.fetchPayments();
     await this.fetchLearningHubProgress();
+    await this.fetchWages();
   }
 
   @HostListener('window:online', ['$event'])
@@ -1207,6 +1210,46 @@ export class SyncService {
         }
 
         await this.sharedMethods.saveDataToStorage(StorageKeys.learningHubProgress, onlineLearningHubProgress);
+      }
+    });
+  }
+
+  async fetchWages() {
+    return await lastValueFrom(this.apiService.get('wages')).then(async(response: any) => {
+      if (response?.status === 200 && response.body.length > 0) {
+        for (const wage of response.body) {
+          const user = await this.sharedMethods.getUserData();
+          const now = this.sharedMethods.getCurrentDateTime();
+          const wageToSave = {
+            ...wage,
+            onlineRef: wage.id,
+            userId: wage.user,
+            vesselId: wage.vessel,
+            createdAt: wage.createdAt ??  now,
+            updatedAt: wage.updatedAt ??  now,
+            createdBy: wage.createdBy ?? user?.id,
+            updatedBy: wage.updatedBy ?? user?.id,
+          };
+          const wageExists = await this.wagesDataService.checkIfWageExists(wage.id);
+          if (!wageExists) {
+            if (wageToSave?.payslip) {
+              const fileUri = await this.uploadService.fetchAndSaveFile(wageToSave.payslip);
+              wageToSave.payslip = fileUri ?? null;
+            }
+            if (wageToSave?.crewBankTransferReceipt) {
+              const fileUri = await this.uploadService.fetchAndSaveFile(wageToSave.crewBankTransferReceipt);
+              wageToSave.crewBankTransferReceipt = fileUri ?? null;
+            }
+            if (wageToSave?.beneficiaryBankTransferReceipt) {
+              const fileUri = await this.uploadService.fetchAndSaveFile(wageToSave.beneficiaryBankTransferReceipt);
+              wageToSave.beneficiaryBankTransferReceipt = fileUri ?? null;
+            }
+            
+            await this.wagesDataService.saveOnlineWage(wageToSave).then(() => {
+              console.log(`Wage for user ${wageToSave.userId} saved successfully.`);
+            });
+          }
+        }
       }
     });
   }
