@@ -92,6 +92,11 @@ export enum PageEventNames {
     viewVesselPayments = 'page_vessel_payments',
     viewPaymentDetails = 'page_payment_details',
 
+    // Wages
+    viewWages = 'page_wages_home',
+    viewVesselWages = 'page_vessel_wages',
+    viewWageDetails = 'page_wage_details',
+
     // Welcome screens/ tutorials
     viewWelcomeScreens = 'page_welcome_screens',
     viewAppTutorials = 'page_app_tutorials',

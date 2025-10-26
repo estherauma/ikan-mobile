@@ -1,0 +1,86 @@
+<div
+  class="wage-card"
+  [ngClass]="{
+    'card-action-required': status === 'action_required',
+    'card-issue-pending': status === 'issue_pending',
+    'card-received': status === 'received',
+    'card-pending': status === 'pending',
+    'card-confirmed': status === 'confirmed',
+  }"
+>
+  <div class="card">
+    <div class="status-wrapper">
+      <p class="status-text">
+        @if (status === 'action_required') {
+          <!-- TODO: translate -->
+          {{ paymentsCommonText?.actionRequired || 'Action Required' }}
+        }
+        @if (status === 'issue_pending') {
+          <!-- TODO: translate -->
+          {{ paymentsCommonText?.issuePending || 'Issue Pending' }}
+        }
+        @if (status === 'received') {
+          <!-- TODO: translate -->
+          {{ paymentsCommonText?.received || 'Received' }}
+        }
+        @if (status === 'pending') {
+          <!-- TODO: translate -->
+          {{ paymentsCommonText?.pending || 'Pending' }}
+        }
+        @if (status === 'confirmed') {
+          <!-- TODO: translate -->
+          {{ paymentsCommonText?.confirmed || 'Confirmed' }}
+        }
+      </p>
+    </div>
+    <div class="card-content">
+      <ion-row>
+        <ion-col size="1.5" class="icon-col">
+          <div class="icon-wrapper">
+            <ion-icon src="assets/icon/single_payment_blue.svg" alt="payment icon" />
+          </div>
+        </ion-col>
+        <ion-col size="8.5" class="details-col">
+          <h4 class="amount">
+            <span>$</span>{{ amount }}
+          </h4>
+          <p class="payee">
+            <span>{{ paymentsCommonText?.payee }}: </span> {{ payee }}
+          </p>
+          <p class="payment-date">
+            <span> {{ paymentsCommonText?.paymentDate }}: </span> 
+            {{ sharedMethods.formatLocalDate(paymentDate, currentLanguage) }}
+          </p>
+        </ion-col>
+        <ion-col size="2" class="arrow-col">
+          <div class="arrow-wrapper" (click)="onClickCard($event)">
+            <!-- <img src="assets/icon/forward_arrow.svg" alt="arrow icon" /> -->
+            <ion-icon src="assets/icon/forward_arrow.svg"></ion-icon>
+          </div>
+        </ion-col>
+      </ion-row>
+    </div>
+  </div>
+
+  @if (status === 'action_required' || status === 'issue_pending') {
+    <div class="status-message-wrapper">
+      <ion-row>
+        <ion-col size="1.5" class="icon-col">
+          <div class="icon-wrapper">
+            <ion-icon name="alert-outline" alt="alert icon" class="status-alert-icon" />
+          </div>
+        </ion-col>
+        <ion-col size="10.5" class="message-col">
+          <p class="status-message">
+            @if (status === 'action_required') {
+              {{ paymentsCommonText?.actionRequiredMessage || 'Please confirm your wage payments to find out whether you are paid correctly.' }}
+            }
+            @if (status === 'issue_pending') {
+              {{ paymentsCommonText?.issuePendingMessage || 'You reported an issue with your wages. Do you know why the discrepancy?' }}
+            }
+          </p>
+        </ion-col>
+      </ion-row>
+    </div>
+  }
+</div>

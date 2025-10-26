@@ -1,0 +1,93 @@
+<app-header></app-header>
+
+<ion-content [fullscreen]="true">
+  <!-- TODO: add urls -->
+  <app-audio-video-buttons
+    [audioUrl]=""
+    [videoUrl]=""
+  ></app-audio-video-buttons>
+  
+  <div
+    class="content-wrapper"
+    [ngClass]="{
+      'content-action-required': wageDetails?.wageTracking?.status === 'action_required',
+      'content-issue-pending': wageDetails?.wageTracking?.status === 'issue_pending',
+      'content-confirmed': wageDetails?.wageTracking?.status === 'confirmed',
+      'content-received': wageDetails?.wageTracking?.status === 'received'
+    }"
+  >
+    <div class="wage-details-summary">
+      <div class="status-wrapper">
+        <p class="status-text">
+          @if (wageDetails?.wageTracking?.status === 'action_required') {
+            <!-- TODO: translate -->
+            {{ paymentsCommonText?.actionRequired || 'Action Required' }}
+          }
+          @if (wageDetails?.wageTracking?.status === 'issue_pending') {
+            <!-- TODO: translate -->
+            {{ paymentsCommonText?.issuePending || 'Issue Pending' }}
+          }
+          @if (wageDetails?.wageTracking?.status === 'confirmed') {
+            <!-- TODO: translate -->
+            {{ paymentsCommonText?.confirmed || 'Confirmed' }}
+          }
+          @if (wageDetails?.wageTracking?.status === 'received') {
+            <!-- TODO: translate -->
+            {{ paymentsCommonText?.received || 'Received' }}
+          }
+        </p>
+      </div>
+      <div class="summary-content">
+        <div class="summary-title">
+          <div class="icon-wrapper">
+            <ion-icon src="assets/icon/payments.svg" alt="payment icon" />
+          </div>
+          <h4 class="amount">
+            <span>USD</span> {{ wageDetails?.usdAmount }}
+          </h4>
+        </div>
+
+        <div class="summary-body">
+          <ion-row>
+            <ion-col size="5">
+              <p class="label">{{ paymentsCommonText?.payee }}:</p>
+            </ion-col>
+            <ion-col size="7">
+              <p class="value">{{wageDetails?.user?.firstName + ' ' + wageDetails?.user?.lastName}}</p>
+            </ion-col>
+          </ion-row>
+
+          <ion-row>
+            <ion-col size="5">
+              <p class="label">{{ commonText?.vessel }}:</p>
+            </ion-col>
+            <ion-col size="7">
+              <p class="value">{{wageDetails?.vessel?.name}}</p>
+            </ion-col>
+          </ion-row>
+
+          <ion-row>
+            <ion-col size="5">
+              <p class="label">{{ paymentsCommonText?.paymentDate }}:</p>
+            </ion-col>
+            <ion-col size="7">
+              <p class="value">{{ sharedMethods.formatLocalDate(wageDetails?.paymentDate, currentLanguage) }}</p>
+            </ion-col>
+          </ion-row>
+
+          <ion-row>
+            <ion-col size="5">
+              <p class="label">{{ paymentsCommonText?.paymentPeriod }}:</p>
+            </ion-col>
+            <ion-col size="7">
+              <p class="value">
+                {{ sharedMethods.formatLocalDate(wageDetails?.startDate, currentLanguage) }} -
+                {{ sharedMethods.formatLocalDate(wageDetails?.endDate, currentLanguage) }}
+              </p>
+            </ion-col>
+          </ion-row>
+        </div>
+      </div>
+    </div>
+  </div>
+</ion-content>

@@ -1,0 +1,114 @@
+<app-header></app-header>
+
+<ion-content class="content-skyblue-bg">
+  <ion-grid>
+    <!-- TODO: add urls -->
+    <app-audio-video-buttons
+      [audioUrl]=""
+      [videoUrl]=""
+    ></app-audio-video-buttons>
+    
+    <div class="title-filter">
+      <ion-row class="title-row">
+        <ion-col size="12">
+          <ion-img src="assets/icon/payments.svg" class="icon"></ion-img>
+        </ion-col>
+        <ion-col size="12">
+          <!-- TODO: translate -->
+          <app-title
+            [title]="vessel?.name + ' ' + (paymentsCommonText?.wagePayments || 'Wage Payments')"
+            [isBlue]="true"
+          ></app-title>
+        </ion-col>
+      </ion-row>
+
+      <!-- TODO: change search/filter datasets according to role -->
+      <!-- Search functionality disabled for now -->
+      <!-- <ion-row class="search-row">
+      <ion-col size="12">
+        <app-search
+          [searchDataSet]="filterDataSet"
+          (searchResult)="searchResult($event)"
+        ></app-search>
+      </ion-col>
+    </ion-row> -->
+
+      <ion-row class="filter-row">
+        <ion-col size="12">
+          <app-filter
+            filterProperty="status"
+            [options]="filterOptions"
+            [filterDataSet]="filterDataSet"
+            (filterResult)="filterResult($event)"
+            [filterLabel]="commonText?.filterByStatus"
+          ></app-filter>
+        </ion-col>
+      </ion-row>
+    </div>
+
+    <div class="wages-display">
+      <ion-row class="sub-title-row">
+        <ion-col size="12">
+          <p class="sub-title">
+            <!-- TODO: translate -->
+            {{ paymentsCommonText?.wagePaymentHistory || 'Wage payment history' }}
+            @if (vesselWages?.length) {
+              <span>
+                <!-- TODO: translate -->
+                ({{
+                  vesselWages?.length + " " + (paymentsCommonText?.wagePayments || 'Wage payments')
+                }})
+              </span>
+            }
+          </p>
+        </ion-col>
+        <!-- No existing wages -->
+        @if (!vesselWages?.length) {
+          <ion-col size="12">
+            <p class="no-wages">
+              <!-- TODO: translate -->
+              {{ paymentsCommonText?.noWagePayments || 'No wage payments yet' }}
+            </p>
+          </ion-col>
+        }
+      </ion-row>
+
+      <!-- TODO: group wages by date -->
+      @if (vesselWages?.length && groupedVesselWages?.length) {
+        <ion-list class="list-wrapper">
+          @for (group of groupedVesselWages; track group; let i = $index) {
+            <div>
+              <ion-item
+                (click)="toggleGroup(i)"
+                class="group-item"
+                [ngClass]="{ 'not-expanded': !group.isExpanded }"
+                button
+              >
+                <ion-label>{{ group?.date }}</ion-label>
+                <ion-icon
+                  [name]="group.isExpanded ? 'chevron-up' : 'chevron-down'"
+                  slot="end"
+                ></ion-icon>
+              </ion-item>
+              @if (group.isExpanded) {
+                <div class="group-list-wrapper">
+                  @for (wage of group.wages; track wage) {
+                    <div class="wage-item">
+                      <app-wage-card
+                        [status]="wage?.wageTracking?.status"
+                        [amount]="wage?.usdAmount"
+                        [paymentDate]="wage?.paymentDate"
+                        [payee]="wage?.user?.firstName + ' ' + wage?.user?.lastName"
+                        (onClick)="goToWageDetail(wage)"
+                      ></app-wage-card>
+                    </div>
+                  }
+                </div>
+              }
+            </div>
+          }
+        </ion-list>
+      }
+    </div>
+  </ion-grid>
+</ion-content>

@@ -28,7 +28,8 @@
   }
 }
 
-:host.payments-page {
+:host.payments-page,
+:host.wages-page {
   .title {
     font-size: 2rem !important;
     margin: 5px 0;

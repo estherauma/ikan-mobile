@@ -1,0 +1,92 @@
+ion-content {
+  --background: var(--ikan_skyblue_100);
+  --padding-start: 20px;
+  --padding-end: 20px;
+  --padding-bottom: 50px;
+
+  ion-row {
+    ion-col {
+      padding: 0;
+    }
+  }
+  .title-row {
+    .icon {
+      height: 24px;
+      width: 24px;
+    }
+    .icon-col {
+      margin-top: -25px;
+    }
+  }
+  .search-row {
+    margin-top: 5px;
+  }
+  .filter-row {
+    padding-top: 10px;
+    padding-bottom: 20px;
+    ion-col {
+      padding: 3px;
+    }
+  }
+
+  .vo-view {
+    margin: 30px 0;
+    .vessel-row {
+      margin: 20px 0;
+      padding: 10px;
+      background: white;
+      border-radius: 20px;
+      min-height: 90px;
+      ion-col {
+        display: flex;
+        align-items: center;
+      }
+      .icon-col {
+        justify-content: center;
+        .icon-wrapper {
+          width: 70%;
+          height: 70%;
+          ion-icon,
+          ion-img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            object-position: center;
+          }
+        }
+      }
+      .name-col {
+        padding-left: 20px;
+        .name {
+          font-size: 1rem;
+          font-family: "GatwickBold";
+          color: var(--ikan_darkblue_90);
+        }
+      }
+    }
+  }
+
+  .worker-view {
+    margin: 10px 0 30px 0;
+
+    .sub-title-row {
+      p {
+        font-size: 1rem;
+        font-family: "GatwickBold";
+        color: var(--ikan_darkblue_90);
+      }
+      .no-wages {
+        font-size: 0.9rem;
+        font-family: "interRegular";
+        color: #3565FF;
+      }
+      .sub-title {
+        margin-bottom: 0;
+      }
+    }
+
+    .wage-wrapper {
+      margin: 15px 0;
+    }
+  }
+}
