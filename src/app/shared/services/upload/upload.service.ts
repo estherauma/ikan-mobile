@@ -144,8 +144,15 @@ export class UploadService {
    */
   async fetchAndSaveFile(fileUrl) {
     try {
+      if (!fileUrl) {return null;}
+      
+      const pathWithoutParams = fileUrl?.split('?')[0];
+      const parts = pathWithoutParams?.split(`${env.gsBucketName}/`);
+      const filePath = parts?.length > 1 ? parts[1] : parts[0];
+      
       // _ikan_ matches the file name prefix on the api
-      const fileName = fileUrl?.split('_ikan_')[1];
+      const filePathParts = filePath?.split('_ikan_');
+      const fileName = filePathParts?.length > 1 ? filePathParts[1] : filePathParts[0];
       const isPdf = fileName?.endsWith('.pdf');
 
       const readResult = await Filesystem.readdir({
@@ -154,7 +161,8 @@ export class UploadService {
       });
 
       if (!readResult?.files.some(item => item.name === fileName)) {
-        const fileData = await fetch(`${env.baseUrl}${fileUrl}`);
+        const path = `file-download?url=${encodeURIComponent(filePath)}`;
+        const fileData = await fetch(`${env.apiUrl}/${path}`);
 
         if (fileData.ok) {
           const blob = await fileData.blob();
