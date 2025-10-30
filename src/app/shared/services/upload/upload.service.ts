@@ -6,6 +6,7 @@ import { Filesystem, Directory } from '@capacitor/filesystem';
 import { DocumentType, UploadType } from '../../types/types';
 import { env } from 'src/environments/environment';
 import { SharedmethodsService } from '../sharedmethods/sharedmethods.service';
+import { StorageKeys } from '../../types/api-types';
 
 
 @Injectable({
@@ -162,7 +163,11 @@ export class UploadService {
 
       if (!readResult?.files.some(item => item.name === fileName)) {
         const path = `file-download?url=${encodeURIComponent(filePath)}`;
-        const fileData = await fetch(`${env.apiUrl}/${path}`);
+        const accessToken = await this.sharedMethods.readDataFromStorage(StorageKeys.apiToken);
+        const headers = {
+          Authorization: `Bearer ${accessToken}`
+        };
+        const fileData = await fetch(`${env.apiUrl}/${path}`, { headers });
 
         if (fileData.ok) {
           const blob = await fileData.blob();
