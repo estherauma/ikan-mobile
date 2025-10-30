@@ -15,7 +15,8 @@ module.exports.generateEnvironmentFiles = (buildType) => {
                 baseUrl: '${process.env.STAGING_BASE_URL}',
                 environment: 'staging',
                 pushNotificationApi: '${process.env.STAGING_PUSH_NOTIFICATION_URL}',
-                sentryDSN: '${process.env.SENTRY_DSN}'
+                sentryDSN: '${process.env.SENTRY_DSN}',
+                gsBucketName: '${process.env.GS_BUCKET_NAME}',
             };
             `;
             break;
@@ -27,7 +28,8 @@ module.exports.generateEnvironmentFiles = (buildType) => {
                 baseUrl: '${process.env.PRODUCTION_BASE_URL}',
                 environment: 'production',
                 pushNotificationApi: '${process.env.PROD_PUSH_NOTIFICATION_URL}',
-                sentryDSN: '${process.env.SENTRY_DSN}'
+                sentryDSN: '${process.env.SENTRY_DSN}',
+                gsBucketName: '${process.env.GS_BUCKET_NAME}',
             };
             `;
             break;
@@ -39,7 +41,8 @@ module.exports.generateEnvironmentFiles = (buildType) => {
                 baseUrl: '${process.env.TEST_BASE_URL}',
                 environment: 'test',
                 pushNotificationApi: '${process.env.DEV_PUSH_NOTIFICATION_URL}',
-                sentryDSN: '${process.env.SENTRY_DSN}'
+                sentryDSN: '${process.env.SENTRY_DSN}',
+                gsBucketName: '${process.env.GS_BUCKET_NAME}',
             };
             `;
             break;
@@ -51,7 +54,8 @@ module.exports.generateEnvironmentFiles = (buildType) => {
             baseUrl: '${process.env.DEV_BASE_URL}',
             environment: 'development',
             pushNotificationApi: '${process.env.DEV_PUSH_NOTIFICATION_URL}',
-            sentryDSN: '${process.env.SENTRY_DSN}'
+            sentryDSN: '${process.env.SENTRY_DSN}',
+                gsBucketName: '${process.env.GS_BUCKET_NAME}',
         };
         `;
             break;
