@@ -55,7 +55,7 @@ module.exports.generateEnvironmentFiles = (buildType) => {
             environment: 'development',
             pushNotificationApi: '${process.env.DEV_PUSH_NOTIFICATION_URL}',
             sentryDSN: '${process.env.SENTRY_DSN}',
-                gsBucketName: '${process.env.GS_BUCKET_NAME}',
+            gsBucketName: '${process.env.GS_BUCKET_NAME}',
         };
         `;
             break;
