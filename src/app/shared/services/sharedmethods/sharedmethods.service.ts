@@ -54,7 +54,7 @@ export class SharedmethodsService {
   }
 
   async dismissLoader() {
-    this.loader.dismiss();
+    await this.loader?.dismiss();
   }
 
   async showLoader(message: string, duration = 5000) {
