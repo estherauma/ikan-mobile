@@ -979,7 +979,7 @@ export class SyncService {
             const docData =  new FormData();
             docData.append('fileContent', file);
             docData.append('entityType', 'my_document');
-            docData.append('docId', documentToUpload.onlineRef || null);
+            docData.append('docId', documentToUpload.onlineRef || '');
             docData.append('appRef', documentToUpload.appRef);
             docData.append('userId', documentToUpload.userId);
             docData.append('fileName', documentToUpload.fileName);
