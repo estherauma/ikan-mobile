@@ -3,6 +3,8 @@ import { SQLiteObject } from '@awesome-cordova-plugins/sqlite/ngx';
 import { Platform } from '@ionic/angular';
 import { BehaviorSubject } from 'rxjs';
 import { DBService } from 'src/app/shared/services/database/db.service';
+import { SharedmethodsService } from 'src/app/shared/services/sharedmethods/sharedmethods.service';
+import { UserData } from 'src/app/shared/types/api-types';
 
 @Injectable({
   providedIn: 'root'
@@ -12,16 +14,19 @@ export class WagesDataService {
   db: SQLiteObject
   wages: any = [];
   wagesObs = new BehaviorSubject([]);
+  currentUser: UserData;
 
   constructor(
     public platform: Platform,
     public dbService: DBService,
+    public sharedMethods: SharedmethodsService,
   ) {
     this.platform.ready().then(async() => {
       this.db = await this.dbService.configureDB();
     });
 
-    this.dbService.isDBsetup().subscribe((isDBsetup) => {
+    this.dbService.isDBsetup().subscribe(async(isDBsetup) => {
+      this.currentUser = await this.sharedMethods.getUserData();
       if (isDBsetup) {
         this.retrieveWages();
       }
@@ -58,6 +63,9 @@ export class WagesDataService {
             beneficiaryName: data.rows.item(i).beneficiary_name,
             beneficiaryContact: data.rows.item(i).beneficiary_contact,
             beneficiaryContactPlatform: data.rows.item(i).beneficiary_contact_platform,
+            status: data.rows.item(i).status,
+            crewReceivedRightAmount: data.rows.item(i).crew_received_right_amount,
+            beneficiaryReceivedRightAmount: data.rows.item(i).beneficiary_received_right_amount,
             createdAt: data.rows.item(i).created_at,
             updatedAt: data.rows.item(i).updated_at,
             createdBy: data.rows.item(i).created_by,
@@ -65,6 +73,7 @@ export class WagesDataService {
           });
         }
       }
+      console.log('Retrieved wages from local DB', wages);
       this.wagesObs.next(wages);
     });
   }
@@ -73,8 +82,9 @@ export class WagesDataService {
     const query = `INSERT INTO wages (online_ref, user_id, vessel_id, payment_date,\
     start_date, end_date, usd_amount, payslip, crew_bank_transfer_receipt,\
     beneficiary_bank_transfer_receipt, beneficiary_relationship, beneficiary_name,\
-    beneficiary_contact, beneficiary_contact_platform, created_at, updated_at, \
-    created_by, updated_by) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`;
+    beneficiary_contact, beneficiary_contact_platform, status, crew_received_right_amount,\
+    beneficiary_received_right_amount, created_at, updated_at, \
+    created_by, updated_by) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`;
     const params = [
       data.onlineRef,
       data.userId,
@@ -90,6 +100,9 @@ export class WagesDataService {
       data.beneficiaryName,
       data.beneficiaryContact,
       data.beneficiaryContactPlatform,
+      data.status,
+      data.crewReceivedRightAmount,
+      data.beneficiaryReceivedRightAmount,
       data.createdAt,
       data.updatedAt,
       data.createdBy,
