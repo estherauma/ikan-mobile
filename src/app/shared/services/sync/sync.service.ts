@@ -973,31 +973,29 @@ export class SyncService {
           const documentToUpload = Object.assign({}, document);
           delete documentToUpload.id;
           delete documentToUpload.fileUrl;
-
+          
           const file = await this.uploadService.retrieveAndReturnBlob(document.fileUrl);
           if (file) {
             const docData =  new FormData();
             docData.append('fileContent', file);
             docData.append('entityType', 'my_document');
+            docData.append('docId', documentToUpload.onlineRef || '');
+            docData.append('appRef', documentToUpload.appRef);
+            docData.append('userId', documentToUpload.userId);
+            docData.append('fileName', documentToUpload.fileName);
+            docData.append('docType', documentToUpload.docType);
+            docData.append('fileSize', documentToUpload.fileSize.toString());
+            docData.append('isEssential', documentToUpload.isEssential ? 'true' : 'false');
+            docData.append('createdAt', documentToUpload.createdAt);
+            docData.append('updatedAt', documentToUpload.updatedAt);
+            docData.append('createdBy', documentToUpload.createdBy);
+            docData.append('updatedBy', documentToUpload.updatedBy); 
             this.apiService.post('file-upload', docData).subscribe((uploadResponse: any) => {
               if (uploadResponse?.status === 'OK') {
                 documentToUpload.fileUrl = uploadResponse?.data?.fileLocation;
-                const dataToSave = {...documentToUpload, user: documentToUpload.userId};
 
-                if (!documentToUpload.onlineRef) {
-                  this.apiService.post('mydocuments', dataToSave).subscribe((response: any) => {
-                    if (response?.status === 'OK') {
-                      this.dbService.updateDatabaseField('documents', 'online_ref', response?.data?.id, documentToUpload.appRef);
-                    } else {
-                      console.error(`Failed to sync document ${document.fileName} to the api`, response);
-                    }
-                  });
-                } else {
-                  this.apiService.put('mydocuments', documentToUpload.onlineRef, dataToSave).subscribe((response: any) => {
-                    if (response?.status !== 'OK')  {
-                      console.error(`Failed to sync document ${document.fileName} to the api`, response);
-                    }
-                  });
+                if (!documentToUpload.onlineRef && uploadResponse?.data?.document?.id) {
+                  this.dbService.updateDatabaseField('documents', 'online_ref', uploadResponse.data.document.id, documentToUpload.appRef);
                 }
               } else {
                 console.error(`Failed to sync document ${document.fileName} to the api`, uploadResponse);
