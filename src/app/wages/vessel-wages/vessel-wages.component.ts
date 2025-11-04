@@ -91,11 +91,11 @@ export class VesselWagesComponent  implements OnInit {
             );
             // For VO, change wage status to 'pending' & 'confirmed'
             if (this.currentUser?.role === UserRole.vesselOwner) {
-              if (wage.wageTracking?.status === 'action_required' || wage.wageTracking?.status === 'issue_pending') {
-                wage.wageTracking.status = 'pending';
+              if (wage?.status === 'action_required' || wage?.status === 'issue_pending') {
+                wage.status = 'pending';
               }
-              if (wage.wageTracking?.status === 'received') {
-                wage.wageTracking.status = 'confirmed';
+              if (wage?.status === 'received') {
+                wage.status = 'confirmed';
               }
             }
             

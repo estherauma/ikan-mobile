@@ -10,30 +10,35 @@
   <div
     class="content-wrapper"
     [ngClass]="{
-      'content-action-required': wageDetails?.wageTracking?.status === 'action_required',
-      'content-issue-pending': wageDetails?.wageTracking?.status === 'issue_pending',
-      'content-confirmed': wageDetails?.wageTracking?.status === 'confirmed',
-      'content-received': wageDetails?.wageTracking?.status === 'received'
+      'content-action-required': wageDetails?.status === 'action_required',
+      'content-issue-pending': wageDetails?.status === 'issue_pending',
+      'content-confirmed': wageDetails?.status === 'confirmed',
+      'content-pending': wageDetails?.status === 'pending',
+      'content-received': wageDetails?.status === 'received'
     }"
   >
     <div class="wage-details-summary">
       <div class="status-wrapper">
         <p class="status-text">
-          @if (wageDetails?.wageTracking?.status === 'action_required') {
+          @if (wageDetails?.status === 'action_required') {
             <!-- TODO: translate -->
             {{ paymentsCommonText?.actionRequired || 'Action Required' }}
           }
-          @if (wageDetails?.wageTracking?.status === 'issue_pending') {
+          @if (wageDetails?.status === 'issue_pending') {
             <!-- TODO: translate -->
             {{ paymentsCommonText?.issuePending || 'Issue Pending' }}
           }
-          @if (wageDetails?.wageTracking?.status === 'confirmed') {
-            <!-- TODO: translate -->
-            {{ paymentsCommonText?.confirmed || 'Confirmed' }}
-          }
-          @if (wageDetails?.wageTracking?.status === 'received') {
+          @if (wageDetails?.status === 'received') {
             <!-- TODO: translate -->
             {{ paymentsCommonText?.received || 'Received' }}
+          }
+          @if (wageDetails?.status === 'pending') {
+            <!-- TODO: translate -->
+            {{ paymentsCommonText?.pending || 'Pending' }}
+          }
+          @if (wageDetails?.status === 'confirmed') {
+            <!-- TODO: translate -->
+            {{ paymentsCommonText?.confirmed || 'Confirmed' }}
           }
         </p>
       </div>
@@ -43,6 +48,7 @@
             <ion-icon src="assets/icon/payments.svg" alt="payment icon" />
           </div>
           <h4 class="amount">
+            <!-- TODO: translate -->
             <span>USD</span> {{ wageDetails?.usdAmount }}
           </h4>
         </div>
