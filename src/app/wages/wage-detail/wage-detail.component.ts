@@ -39,7 +39,7 @@ export class WageDetailComponent  implements OnInit {
     this.currentLanguage = this.contentService?.currentLanguage;
     this.currentUser = await this.sharedMethods.getUserData();
 
-    const analyticsEventParams =this.sharedMethods.getAnalyticsEventParams();
+    const analyticsEventParams = this.sharedMethods.getAnalyticsEventParams();
     this.analyticsService.trackEvent(PageEventNames.viewWageDetails, analyticsEventParams);
   }
 
