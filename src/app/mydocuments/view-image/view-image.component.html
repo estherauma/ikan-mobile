@@ -1,4 +1,4 @@
-<div class="image-view-wrapper" >
+<div class="image-view-wrapper" [ngClass]="customImageViewClass">
   <ion-icon name="close" (click)="closeImage()"></ion-icon>
   <div class="img-wrapper">
     @if (sharedMethods.isIos) {
