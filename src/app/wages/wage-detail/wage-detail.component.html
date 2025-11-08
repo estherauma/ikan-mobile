@@ -118,6 +118,7 @@
                   (onDocumentLoad)="onPdfLoaded($event)"
                 ></ng2-pdfjs-viewer>
               </div>
+              <ion-icon name="expand-outline" class="expand-icon" (click)="viewPdf(wageDetails.payslip)"></ion-icon>
             } @else {
               <div class="link-wrapper" (click)="viewPdf(wageDetails.payslip)">
                 <img src="assets/icon/pdf.svg" />

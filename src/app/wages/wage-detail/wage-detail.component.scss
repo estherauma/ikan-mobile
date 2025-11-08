@@ -82,6 +82,18 @@ ion-content {
           width: 95%;
         }
       }
+      .expand-icon {
+        position: absolute;
+        bottom: 40px;
+        right: 40px;
+        color: #191970;
+        color: #3565ff;
+        background: white;
+        border-radius: 50%;
+        padding: 5px;
+        font-size: 1.5rem;
+        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+      }
     }
   }
 
