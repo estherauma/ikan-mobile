@@ -6,7 +6,7 @@ ion-content {
 }
 .content-wrapper {
   margin-top: 20px;
-  .wage-details-summary {
+  .summary-section {
     background: white;
     border-radius: 20px;
     .status-wrapper {
@@ -68,6 +68,35 @@ ion-content {
           font-size: 1rem;
         }
       }
+    }
+  }
+
+  .payslip-section {
+    margin: 20px 0;
+    .payslip-wrapper {
+    }
+  }
+
+  .link-wrapper {
+    display: flex;
+    align-items: center;
+    background: white;
+    border-radius: 10px;
+    padding: 10px 15px;
+    min-height: 50px;
+    margin: 20px 0;
+    ion-icon,
+    img {
+      font-size: 1.5rem;
+      color: #3565ff;
+      margin-right: 15px;
+    }
+    p {
+      font-size: 1rem;
+      font-weight: bold;
+      font-family: "interRegular";
+      color: var(--ikan_darkblue_100);
+      margin: 0;
     }
   }
 }
