@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { AnalyticsService } from 'src/app/shared/services/analytics/analytics.service';
 import { PageEventNames } from 'src/app/shared/services/analytics/event-names';
@@ -7,6 +7,8 @@ import { SharedmethodsService } from 'src/app/shared/services/sharedmethods/shar
 import { FileOpener } from '@capawesome-team/capacitor-file-opener';
 import { ModalController } from '@ionic/angular';
 import { ViewImageComponent } from 'src/app/mydocuments/view-image/view-image.component';
+import { Capacitor } from '@capacitor/core';
+import { PdfJsViewerComponent } from 'ng2-pdfjs-viewer';
 
 
 @Component({
@@ -26,6 +28,7 @@ export class WageDetailComponent  implements OnInit {
   payslipPdfUrl: string;
   showSpinner = true;
 
+  @ViewChild('pdfViewer') pdfViewer!: PdfJsViewerComponent;
 
   constructor(
     public contentService: ContentService,
@@ -33,6 +36,7 @@ export class WageDetailComponent  implements OnInit {
     public sharedMethods: SharedmethodsService,
     public analyticsService: AnalyticsService,
     public modalController: ModalController,
+    public cdr: ChangeDetectorRef,
   ) {
     this.activatedRoute.queryParams.subscribe(async(params) => {
       if (params?.wageDetails) {
@@ -47,9 +51,25 @@ export class WageDetailComponent  implements OnInit {
     this.paymentsCommonText = this.sharedMethods.convertAdditionalTextToObj(paymentsPageData?.additionalText);
     this.currentLanguage = this.contentService?.currentLanguage;
     this.currentUser = await this.sharedMethods.getUserData();
-    
+    this.hasInternet = await this.sharedMethods.checkInternetConnectionStatus()
+    if (this.wageDetails?.payslip && this.wageDetails.payslip.endsWith('.pdf')) {
+      const converted = Capacitor.convertFileSrc(this.wageDetails.payslip);
+      this.payslipPdfUrl = converted ?? null;
+    }
     const analyticsEventParams = this.sharedMethods.getAnalyticsEventParams();
     this.analyticsService.trackEvent(PageEventNames.viewWageDetails, analyticsEventParams);
+  }
+
+  onPdfLoaded(event: any) {
+    this.showSpinner = false;
+    this.cdr.detectChanges();
+  }
+
+  onPdfError(error: any) {
+    console.error('PDF failed to load.', error);
+    this.showSpinner = false;
+    this.payslipPdfUrl = '';
+    this.cdr.detectChanges();
   }
 
   async viewPdf(file) {

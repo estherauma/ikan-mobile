@@ -74,6 +74,14 @@ ion-content {
   .payslip-section {
     margin: 20px 0;
     .payslip-wrapper {
+      .pdf-viewer-wrapper {
+        width: 100%;
+        height: 300px;
+
+        .toolbar {
+          width: 95%;
+        }
+      }
     }
   }
 

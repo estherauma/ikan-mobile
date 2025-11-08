@@ -102,11 +102,29 @@
       <div class="payslip-section">
         <div class="payslip-wrapper">
           @if (wageDetails.payslip.endsWith('.pdf')) {
-            <div class="link-wrapper" (click)="viewPdf(wageDetails.payslip)">
-              <img src="assets/icon/pdf.svg" />
-              <!-- TODO: translate -->
-              <p>{{ paymentsCommonText?.viewPayslip || 'View payslip' }}</p>
-            </div>
+            @if (hasInternet && payslipPdfUrl) {
+              <div class="pdf-viewer-wrapper">
+                <ng2-pdfjs-viewer
+                  #pdfViewer
+                  [pdfSrc]="payslipPdfUrl"
+                  [showOpenFile]="false"
+                  [showDownload]="false"
+                  [showPrint]="false"
+                  [showFind]="false"
+                  [showViewBookmark]="false"
+                  [showFullScreen]="true"
+                  [showSpinner]="showSpinner"
+                  (onDocumentError)="onPdfError($event)"
+                  (onDocumentLoad)="onPdfLoaded($event)"
+                ></ng2-pdfjs-viewer>
+              </div>
+            } @else {
+              <div class="link-wrapper" (click)="viewPdf(wageDetails.payslip)">
+                <img src="assets/icon/pdf.svg" />
+                <!-- TODO: translate -->
+                <p>{{ paymentsCommonText?.viewPayslip || 'View payslip' }}</p>
+              </div>
+            }
           } @else {
             <div class="link-wrapper" (click)="viewImage(wageDetails.payslip)">
               <ion-icon name="image-outline"></ion-icon>
