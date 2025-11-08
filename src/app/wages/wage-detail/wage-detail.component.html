@@ -17,7 +17,8 @@
       'content-received': wageDetails?.status === 'received'
     }"
   >
-    <div class="wage-details-summary">
+    <!-- Wage details summary -->
+    <div class="summary-section">
       <div class="status-wrapper">
         <p class="status-text">
           @if (wageDetails?.status === 'action_required') {
@@ -95,5 +96,64 @@
         </div>
       </div>
     </div>
+
+    <!-- Payslip -->
+    @if (wageDetails?.payslip) {
+      <div class="payslip-section">
+        <div class="payslip-wrapper">
+          @if (wageDetails.payslip.endsWith('.pdf')) {
+            <div class="link-wrapper" (click)="viewPdf(wageDetails.payslip)">
+              <img src="assets/icon/pdf.svg" />
+              <!-- TODO: translate -->
+              <p>{{ paymentsCommonText?.viewPayslip || 'View payslip' }}</p>
+            </div>
+          } @else {
+            <div class="link-wrapper" (click)="viewImage(wageDetails.payslip)">
+              <ion-icon name="image-outline"></ion-icon>
+              <!-- TODO: translate -->
+              <p>{{ paymentsCommonText?.viewPayslip || 'View payslip' }}</p>
+            </div>
+          }
+        </div>
+      </div>
+    }
+    
+    <!-- Crew bank transfer receipt -->
+    @if (wageDetails?.crewBankTransferReceipt) {
+      <div class="crew-receipt-section">
+        @if (wageDetails.crewBankTransferReceipt.endsWith('.pdf')) {
+          <div class="link-wrapper" (click)="viewPdf(wageDetails.crewBankTransferReceipt)">
+            <img src="assets/icon/pdf.svg" />
+            <!-- TODO: translate -->
+            <p>{{ paymentsCommonText?.crewBankTransferReceipt || 'Crew bank transfer receipt' }}</p>
+          </div>
+        } @else {
+          <div class="link-wrapper" (click)="viewImage(wageDetails.crewBankTransferReceipt)">
+            <ion-icon name="image-outline"></ion-icon>
+            <!-- TODO: translate -->
+            <p>{{ paymentsCommonText?.crewBankTransferReceipt || 'Crew bank transfer receipt' }}</p>
+          </div>
+        }
+      </div>
+    }
+
+    <!-- Beneficiary bank transfer receipt -->
+    @if (wageDetails?.beneficiaryBankTransferReceipt) {
+      <div class="beneficiary-receipt-section">
+        @if (wageDetails.beneficiaryBankTransferReceipt.endsWith('.pdf')) {
+          <div class="link-wrapper" (click)="viewPdf(wageDetails.beneficiaryBankTransferReceipt)">
+            <img src="assets/icon/pdf.svg" />
+            <!-- TODO: translate -->
+            <p>{{ paymentsCommonText?.beneficiaryBankTransferReceipt || 'Beneficiary bank transfer receipt' }}</p>
+          </div>
+        } @else {
+          <div class="link-wrapper" (click)="viewImage(wageDetails.beneficiaryBankTransferReceipt)">
+            <ion-icon name="image-outline"></ion-icon>
+            <!-- TODO: translate -->
+            <p>{{ paymentsCommonText?.beneficiaryBankTransferReceipt || 'Beneficiary bank transfer receipt' }}</p>
+          </div>
+        }
+      </div>
+    }
   </div>
 </ion-content>
