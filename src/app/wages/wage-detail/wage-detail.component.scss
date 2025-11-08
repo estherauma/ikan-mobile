@@ -82,17 +82,24 @@ ion-content {
           width: 95%;
         }
       }
-      .expand-icon {
-        position: absolute;
-        bottom: 40px;
-        right: 40px;
-        color: #191970;
-        color: #3565ff;
-        background: white;
-        border-radius: 50%;
-        padding: 5px;
-        font-size: 1.5rem;
-        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+      .label-row {
+        ion-col {
+          display: flex;
+          align-items: center;
+          .payslip-label {
+            font-size: 1.5rem;
+            font-family: "GatwickBold";
+            color: var(--ion-color-primary);
+            margin: 0;
+          }
+          .expand-icon {
+            color: var(--ion-color-primary);
+            border: 2px solid var(--ion-color-primary);
+            border-radius: 50%;
+            padding: 5px;
+            font-size: 1.5rem;
+          }
+        }
       }
     }
   }

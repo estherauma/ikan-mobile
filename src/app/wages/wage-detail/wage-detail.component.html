@@ -103,6 +103,14 @@
         <div class="payslip-wrapper">
           @if (wageDetails.payslip.endsWith('.pdf')) {
             @if (hasInternet && payslipPdfUrl) {
+              <ion-row class="label-row">
+                <ion-col size="10">
+                  <h4 class="payslip-label">{{ paymentsCommonText?.yourPayslip || 'Your payslip' }}</h4>
+                </ion-col>
+                <ion-col size="2" class="icon-col">
+                  <ion-icon name="expand-outline" class="expand-icon" (click)="viewPdf(wageDetails.payslip)"></ion-icon>
+                </ion-col>
+              </ion-row>
               <div class="pdf-viewer-wrapper">
                 <ng2-pdfjs-viewer
                   #pdfViewer
@@ -118,7 +126,6 @@
                   (onDocumentLoad)="onPdfLoaded($event)"
                 ></ng2-pdfjs-viewer>
               </div>
-              <ion-icon name="expand-outline" class="expand-icon" (click)="viewPdf(wageDetails.payslip)"></ion-icon>
             } @else {
               <div class="link-wrapper" (click)="viewPdf(wageDetails.payslip)">
                 <img src="assets/icon/pdf.svg" />
