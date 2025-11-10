@@ -186,5 +186,69 @@ swiper-container {
       }
     }
 
+    .steps-container {
+      width: 100%;
+      min-height: 40px;
+      .progress-bar {
+        counter-reset: step;
+        padding: 0;
+        li {
+          list-style-type: none;
+          float: left;
+          width: 50%;
+          position: relative;
+        }
+        li:before {
+          content: "";
+          width: 30px;
+          height: 30px;
+          border: 2px solid #1b57ed;
+          display: block;
+          text-align: center;
+          padding: 3px;
+          margin: 0 auto;
+          border-radius: 50%;
+          background: #EAEDF6;
+        }
+        li:after {
+          content: "";
+          position: absolute;
+          width: 100%;
+          height: 2px;
+          background: #1b57ed;
+          top: 20px;
+          left: 50%;
+          z-index: -1;
+        }
+        li:last-child:after {
+          content: none;
+        }
+        span:before {
+          content: counter(step);
+          counter-increment: step;
+          width: 22px;
+          height: 22px;
+          display: block;
+          text-align: center;
+          margin: 0 auto;
+          padding: 5px;
+          border-radius: 50%;
+          color: #1b57ed;
+          background: #EAEDF6;
+          font-size: 1.2rem;
+          font-weight: bold;
+          position: absolute;
+          top: 4px;
+          left: calc(50% - 5px - 11px);
+        }
+        span.active::before {
+          color: white;
+          background: #1b57ed;
+        }
+        span.completed::before {
+          content: "✓";
+        }
+      }
+    }
   }
 }
