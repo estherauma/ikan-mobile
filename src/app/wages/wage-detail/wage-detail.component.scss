@@ -89,12 +89,12 @@ ion-content {
           .payslip-label {
             font-size: 1.5rem;
             font-family: "GatwickBold";
-            color: var(--ion-color-primary);
+            color: var(--ikan_blue_100);
             margin: 0;
           }
           .expand-icon {
-            color: var(--ion-color-primary);
-            border: 2px solid var(--ion-color-primary);
+            color: var(--ikan_blue_100);
+            border: 2px solid var(--ikan_blue_100);
             border-radius: 50%;
             padding: 5px;
             font-size: 1.5rem;
@@ -149,5 +149,42 @@ ion-content {
   .status-text {
     background: var(--ikan_green_100);
     color: var(--ikan_darkblue_100) !important;
+  }
+}
+
+swiper-container {
+  margin: 20px 0;
+  swiper-slide {
+    .reminder-wrapper {
+      background: var(--ikan_blue_100);
+      color: white;
+      padding: 20px;
+      border-radius: 20px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      .bulb-icon {
+        font-size: 2rem;
+        margin-bottom: 10px;
+        color: var(--ikan_yellow_100);
+      }
+      .reminder-text {
+        font-size: 0.9rem;
+        font-weight: bold;
+        margin: 0 0 10px 0;
+      }
+      .reminder-desc {
+        font-size: 1rem;
+        margin: 0 0 10px 0;
+      }
+      .contract-amount {
+        font-size: 1.5rem;
+        font-weight: bold;
+        margin: 0 0 10px 0;
+      }
+    }
+
   }
 }
