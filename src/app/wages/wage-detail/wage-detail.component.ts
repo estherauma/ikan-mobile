@@ -122,4 +122,16 @@ export class WageDetailComponent  implements OnInit {
 
   // TODO: also save responses when leaving page
   onSubmit() {}
+
+  goToPreviousSlide() {
+    const swiper = this.swiperRef?.nativeElement?.swiper;
+    if (!swiper) { return; }
+    swiper.slidePrev();
+  }
+
+  goToNextSlide() {
+    const swiper = this.swiperRef?.nativeElement?.swiper;
+    if (!swiper) { return; }
+    swiper.slideNext();
+  }
 }

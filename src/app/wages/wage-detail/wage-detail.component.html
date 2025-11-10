@@ -256,7 +256,7 @@
           </ion-button>
         </swiper-slide>
       </swiper-container>
-        
+          
       <ion-row class="disclaimer-row">
         <ion-col size="3" class="icon-col">
           <ion-icon src="assets/icon/Privacy.svg"></ion-icon>
@@ -267,6 +267,19 @@
             {{ paymentsCommonText?.wageTrackingDisclaimerText || "Don't worry - we won't share any information with your employer, agent or family." }}
           </p>
         </ion-col>
+      </ion-row>
+      
+      <ion-row class="next-prev-btns-row">
+        @if (!swiper?.isBeginning) {
+          <ion-col [size]="swiper?.isEnd ? 12 : 6" class="prev-col">
+            <ion-icon class="prev-icon" src="assets/icon/forward_arrow.svg" (click)="goToPreviousSlide()"></ion-icon>
+          </ion-col>
+        }
+        @if (!swiper?.isEnd) {
+          <ion-col [size]="swiper?.isBeginning ? 12 : 6" class="next-col">
+            <ion-icon class="next-icon" src="assets/icon/forward_arrow.svg" (click)="goToNextSlide()"></ion-icon>
+          </ion-col>
+        }
       </ion-row>
     </div>
   </div>
