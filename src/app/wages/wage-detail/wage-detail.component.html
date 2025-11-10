@@ -205,12 +205,12 @@
           </h4>
         </div>
       </swiper-slide>
+      
       <swiper-slide class="slide">
         <div class="steps-container">
           <ul class="progress-bar">
-            <!-- TODO: add logic -->
-            <li><span class="completed"></span></li>
-            <li><span class="active"></span></li>
+            <li><span [ngClass]="{'active': swiper?.activeIndex === 1}"></span></li>
+            <li><span [ngClass]="{'completed': beneficiaryReceivedCorrectAmountValue}"></span></li>
           </ul>
         </div>
         <div class="qtn-wrapper">
@@ -226,12 +226,12 @@
           </ion-radio-group>
         </div>
       </swiper-slide>
+      
       <swiper-slide class="slide">
         <div class="steps-container">
           <ul class="progress-bar">
-            <!-- TODO: add logic -->
-            <li><span class="completed"></span></li>
-            <li><span class="active"></span></li>
+            <li><span [ngClass]="{'completed': crewReceivedCorrectAmountValue}"></span></li>
+            <li><span [ngClass]="{'active': swiper?.activeIndex === 2}"></span></li>
           </ul>
         </div>
         <div class="qtn-wrapper">
