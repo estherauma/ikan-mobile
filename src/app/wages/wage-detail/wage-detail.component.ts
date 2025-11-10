@@ -11,6 +11,8 @@ import { Capacitor } from '@capacitor/core';
 import { PdfJsViewerComponent } from 'ng2-pdfjs-viewer';
 
 
+export type ReceivedCorrectAmountValue = 'yes' | 'no' | 'unsure' | '';
+
 @Component({
   selector: 'app-wage-detail',
   templateUrl: './wage-detail.component.html',
@@ -27,6 +29,8 @@ export class WageDetailComponent  implements OnInit {
   hasInternet = false;
   payslipPdfUrl: string;
   showSpinner = true;
+  crewReceivedCorrectAmountValue: ReceivedCorrectAmountValue = '';
+  beneficiaryReceivedCorrectAmountValue: ReceivedCorrectAmountValue = '';
 
   @ViewChild('pdfViewer') pdfViewer!: PdfJsViewerComponent;
 
@@ -100,5 +104,15 @@ export class WageDetailComponent  implements OnInit {
       },
     });
     await modal.present();
+  }
+
+  onSlideChange(e) {}
+
+  changeCrewReceivedCorrectAmountValue(e) {
+    this.crewReceivedCorrectAmountValue = e.detail.value;
+  }
+
+  changeBeneficiaryReceivedCorrectAmountValue(e) {
+    this.beneficiaryReceivedCorrectAmountValue = e.detail.value;
   }
 }

@@ -250,5 +250,50 @@ swiper-container {
         }
       }
     }
+
+    .qtn-wrapper {
+      padding: 15px;
+      .qtn-label {
+        font-size: 1.2rem;
+        font-weight: bold;
+        text-align: center;
+        color: var(--ikan_darkblue_100);
+      }
+      ion-radio-group {
+        width: 100%;
+        display: block;
+        text-align: center;
+        ion-radio {
+          width: 40%;
+          color: var(--ikan_darkblue_100);
+          border-radius: 20px;
+          margin: 5px;
+          padding: 8px 10px;
+        }
+        ion-radio::part(container) {
+          display: none;
+        }
+        ion-radio.radio-checked::part(container) {
+          display: unset; 
+        }
+        ion-radio::part(label) {
+          width: 100%;
+          margin: 0;
+          text-align: center;
+        }
+        .yes {
+          background: #74F080;
+        }
+        .no {
+          background: #F0525CCC;
+        }
+        .unsure {
+          background: #A0ABCC;
+        }
+        ion-radio::part(mark) {
+          margin-top: 5px;
+        }
+      }
+    }
   }
 }

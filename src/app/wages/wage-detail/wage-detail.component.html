@@ -184,7 +184,7 @@
 
     <!-- Wage questions -->
     <swiper-container
-      #wageQtnSwiper
+      #wageTrackingSwiper
       id="welcome_swiper_element"
       slides-per-view="1"
       space-between="20"
@@ -208,12 +208,45 @@
       <swiper-slide class="slide">
         <div class="steps-container">
           <ul class="progress-bar">
+            <!-- TODO: add logic -->
             <li><span class="completed"></span></li>
             <li><span class="active"></span></li>
           </ul>
         </div>
+        <div class="qtn-wrapper">
+          <!-- TODO: translate -->
+          <p class="qtn-label">{{ paymentsCommonText?.crewReceivedCorrectAmountQtn || 'Did you receive the correct amount paid to you?' }}</p>
+          <ion-radio-group (ionChange)="changeCrewReceivedCorrectAmountValue($event)" [value]="crewReceivedCorrectAmountValue" mode="ios">
+            <!-- TODO: translate -->
+            <ion-radio value="yes" class="yes">{{ paymentsCommonText?.yes || 'Yes' }}</ion-radio>
+            <!-- TODO: translate -->
+            <ion-radio value="no" class="no">{{ paymentsCommonText?.no || 'No' }}</ion-radio>
+            <!-- TODO: translate -->
+            <ion-radio value="unsure" class="unsure">{{ paymentsCommonText?.unsure || 'Unsure' }}</ion-radio>
+          </ion-radio-group>
+        </div>
       </swiper-slide>
-      <swiper-slide class="slide"></swiper-slide>
+      <swiper-slide class="slide">
+        <div class="steps-container">
+          <ul class="progress-bar">
+            <!-- TODO: add logic -->
+            <li><span class="completed"></span></li>
+            <li><span class="active"></span></li>
+          </ul>
+        </div>
+        <div class="qtn-wrapper">
+          <!-- TODO: translate -->
+          <p class="qtn-label">{{ paymentsCommonText?.beneficiaryReceivedCorrectAmountQtn || 'Did your family/friend receive the correct amount paid to them?' }}</p>
+          <ion-radio-group (ionChange)="changeBeneficiaryReceivedCorrectAmountValue($event)" [value]="beneficiaryReceivedCorrectAmountValue" mode="ios">
+            <!-- TODO: translate -->
+            <ion-radio value="yes" class="yes">{{ paymentsCommonText?.yes || 'Yes' }}</ion-radio>
+            <!-- TODO: translate -->
+            <ion-radio value="no" class="no">{{ paymentsCommonText?.no || 'No' }}</ion-radio>
+            <!-- TODO: translate -->
+            <ion-radio value="unsure" class="unsure">{{ paymentsCommonText?.unsure || 'Unsure' }}</ion-radio>
+          </ion-radio-group>
+        </div>
+      </swiper-slide>
       <swiper-slide class="slide"></swiper-slide>
       <swiper-slide class="slide"></swiper-slide>
 
