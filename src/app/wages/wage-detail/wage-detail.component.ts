@@ -119,4 +119,7 @@ export class WageDetailComponent  implements OnInit {
   changeBeneficiaryReceivedCorrectAmountValue(e) {
     this.beneficiaryReceivedCorrectAmountValue = e.detail.value;
   }
+
+  // TODO: also save responses when leaving page
+  onSubmit() {}
 }
