@@ -247,6 +247,8 @@ swiper-container {
         }
         span.completed::before {
           content: "✓";
+          color: #1b57ed;
+          background: #EAEDF6;
         }
       }
     }

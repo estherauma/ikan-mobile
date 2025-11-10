@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, OnInit, ViewChild } from '@angular/core';
+import { ChangeDetectorRef, Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { AnalyticsService } from 'src/app/shared/services/analytics/analytics.service';
 import { PageEventNames } from 'src/app/shared/services/analytics/event-names';
@@ -31,8 +31,10 @@ export class WageDetailComponent  implements OnInit {
   showSpinner = true;
   crewReceivedCorrectAmountValue: ReceivedCorrectAmountValue = '';
   beneficiaryReceivedCorrectAmountValue: ReceivedCorrectAmountValue = '';
+  swiper: any;
 
   @ViewChild('pdfViewer') pdfViewer!: PdfJsViewerComponent;
+  @ViewChild('wageTrackingSwiper', { static: false }) swiperRef: ElementRef | undefined;
 
   constructor(
     public contentService: ContentService,
@@ -60,6 +62,8 @@ export class WageDetailComponent  implements OnInit {
       const converted = Capacitor.convertFileSrc(this.wageDetails.payslip);
       this.payslipPdfUrl = converted ?? null;
     }
+    this.swiper = this.swiperRef?.nativeElement?.swiper;
+    
     const analyticsEventParams = this.sharedMethods.getAnalyticsEventParams();
     this.analyticsService.trackEvent(PageEventNames.viewWageDetails, analyticsEventParams);
   }
