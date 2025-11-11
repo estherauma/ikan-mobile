@@ -79,9 +79,16 @@ export class WageDetailComponent  implements OnInit {
     this.swiper = this.swiperRef?.nativeElement?.swiper;
     this.whyTheDiscrepancyOptions = this.getWhyTheDiscrepancyOptions();
     this.contractData = await this.getContractData();
+    this.prefillValues();
 
     const analyticsEventParams = this.sharedMethods.getAnalyticsEventParams();
     this.analyticsService.trackEvent(PageEventNames.viewWageDetails, analyticsEventParams);
+  }
+
+  prefillValues() {
+    this.crewReceivedCorrectAmountValue = this.wageDetails?.crewReceivedRightAmount ?? '';
+    this.beneficiaryReceivedCorrectAmountValue = this.wageDetails?.beneficiaryReceivedRightAmount ?? '';
+    this.whyTheDiscrepancyValues = this.wageDetails?.whyTheDiscrepancy?.length ? this.wageDetails?.whyTheDiscrepancy : [];
   }
 
   onPdfLoaded(event: any) {
