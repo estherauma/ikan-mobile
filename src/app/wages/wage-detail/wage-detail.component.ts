@@ -1,5 +1,5 @@
 import { ChangeDetectorRef, Component, ElementRef, OnInit, ViewChild } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { AnalyticsService } from 'src/app/shared/services/analytics/analytics.service';
 import { PageEventNames } from 'src/app/shared/services/analytics/event-names';
 import { ContentService } from 'src/app/shared/services/content/content.service';
@@ -43,6 +43,7 @@ export class WageDetailComponent  implements OnInit {
     public analyticsService: AnalyticsService,
     public modalController: ModalController,
     public cdr: ChangeDetectorRef,
+    public router: Router,
   ) {
     this.activatedRoute.queryParams.subscribe(async(params) => {
       if (params?.wageDetails) {
@@ -121,7 +122,9 @@ export class WageDetailComponent  implements OnInit {
   }
 
   // TODO: also save responses when leaving page
-  onSubmit() {}
+  onSubmit() {
+    this.router.navigate(['wages/wage-tracking-help'], { replaceUrl: true });
+  }
 
   goToPreviousSlide() {
     const swiper = this.swiperRef?.nativeElement?.swiper;
