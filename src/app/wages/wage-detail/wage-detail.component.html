@@ -18,84 +18,86 @@
     }"
   >
     <!-- Wage details summary -->
-    <div class="summary-section">
-      <div class="status-wrapper">
-        <p class="status-text">
-          @if (wageDetails?.status === 'action_required') {
-            <!-- TODO: translate -->
-            {{ paymentsCommonText?.actionRequired || 'Action Required' }}
-          }
-          @if (wageDetails?.status === 'issue_pending') {
-            <!-- TODO: translate -->
-            {{ paymentsCommonText?.issuePending || 'Issue Pending' }}
-          }
-          @if (wageDetails?.status === 'received') {
-            <!-- TODO: translate -->
-            {{ paymentsCommonText?.received || 'Received' }}
-          }
-          @if (wageDetails?.status === 'pending') {
-            <!-- TODO: translate -->
-            {{ paymentsCommonText?.pending || 'Pending' }}
-          }
-          @if (wageDetails?.status === 'confirmed') {
-            <!-- TODO: translate -->
-            {{ paymentsCommonText?.confirmed || 'Confirmed' }}
-          }
-        </p>
-      </div>
-      <div class="summary-content">
-        <div class="summary-title">
-          <div class="icon-wrapper">
-            <ion-icon src="assets/icon/payments.svg" alt="payment icon" />
+    @if (wageDetails?.status !== 'action_required') {
+      <div class="summary-section">
+        <div class="status-wrapper">
+          <p class="status-text">
+            @if (wageDetails?.status === 'action_required') {
+              <!-- TODO: translate -->
+              {{ paymentsCommonText?.actionRequired || 'Action Required' }}
+            }
+            @if (wageDetails?.status === 'issue_pending') {
+              <!-- TODO: translate -->
+              {{ paymentsCommonText?.issuePending || 'Issue Pending' }}
+            }
+            @if (wageDetails?.status === 'received') {
+              <!-- TODO: translate -->
+              {{ paymentsCommonText?.received || 'Received' }}
+            }
+            @if (wageDetails?.status === 'pending') {
+              <!-- TODO: translate -->
+              {{ paymentsCommonText?.pending || 'Pending' }}
+            }
+            @if (wageDetails?.status === 'confirmed') {
+              <!-- TODO: translate -->
+              {{ paymentsCommonText?.confirmed || 'Confirmed' }}
+            }
+          </p>
+        </div>
+        <div class="summary-content">
+          <div class="summary-title">
+            <div class="icon-wrapper">
+              <ion-icon src="assets/icon/payments.svg" alt="payment icon" />
+            </div>
+            <h4 class="amount">
+              <!-- TODO: translate -->
+              <span>USD</span> {{ wageDetails?.usdAmount }}
+            </h4>
           </div>
-          <h4 class="amount">
-            <!-- TODO: translate -->
-            <span>USD</span> {{ wageDetails?.usdAmount }}
-          </h4>
-        </div>
 
-        <div class="summary-body">
-          <ion-row>
-            <ion-col size="5">
-              <p class="label">{{ paymentsCommonText?.payee }}:</p>
-            </ion-col>
-            <ion-col size="7">
-              <p class="value">{{wageDetails?.user?.firstName + ' ' + wageDetails?.user?.lastName}}</p>
-            </ion-col>
-          </ion-row>
+          <div class="summary-body">
+            <ion-row>
+              <ion-col size="5">
+                <p class="label">{{ paymentsCommonText?.payee }}:</p>
+              </ion-col>
+              <ion-col size="7">
+                <p class="value">{{wageDetails?.user?.firstName + ' ' + wageDetails?.user?.lastName}}</p>
+              </ion-col>
+            </ion-row>
 
-          <ion-row>
-            <ion-col size="5">
-              <p class="label">{{ commonText?.vessel }}:</p>
-            </ion-col>
-            <ion-col size="7">
-              <p class="value">{{wageDetails?.vessel?.name}}</p>
-            </ion-col>
-          </ion-row>
+            <ion-row>
+              <ion-col size="5">
+                <p class="label">{{ commonText?.vessel }}:</p>
+              </ion-col>
+              <ion-col size="7">
+                <p class="value">{{wageDetails?.vessel?.name}}</p>
+              </ion-col>
+            </ion-row>
 
-          <ion-row>
-            <ion-col size="5">
-              <p class="label">{{ paymentsCommonText?.paymentDate }}:</p>
-            </ion-col>
-            <ion-col size="7">
-              <p class="value">{{ sharedMethods.formatLocalDate(wageDetails?.paymentDate, currentLanguage) }}</p>
-            </ion-col>
-          </ion-row>
+            <ion-row>
+              <ion-col size="5">
+                <p class="label">{{ paymentsCommonText?.paymentDate }}:</p>
+              </ion-col>
+              <ion-col size="7">
+                <p class="value">{{ sharedMethods.formatLocalDate(wageDetails?.paymentDate, currentLanguage) }}</p>
+              </ion-col>
+            </ion-row>
 
-          <ion-row>
-            <ion-col size="5">
-              <p class="label">{{ paymentsCommonText?.paymentPeriod }}:</p>
-            </ion-col>
-            <ion-col size="7">
-              <p class="value">
-                {{ sharedMethods.formatLocalDate(wageDetails?.startDate, currentLanguage) }} -
-                {{ sharedMethods.formatLocalDate(wageDetails?.endDate, currentLanguage) }}
-              </p>
-            </ion-col>
-          </ion-row>
+            <ion-row>
+              <ion-col size="5">
+                <p class="label">{{ paymentsCommonText?.paymentPeriod }}:</p>
+              </ion-col>
+              <ion-col size="7">
+                <p class="value">
+                  {{ sharedMethods.formatLocalDate(wageDetails?.startDate, currentLanguage) }} -
+                  {{ sharedMethods.formatLocalDate(wageDetails?.endDate, currentLanguage) }}
+                </p>
+              </ion-col>
+            </ion-row>
+          </div>
         </div>
       </div>
-    </div>
+    }
 
     <!-- No payslip -->
      @if (!wageDetails?.payslip) {
