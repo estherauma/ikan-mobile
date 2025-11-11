@@ -35,6 +35,9 @@ export class WageDetailComponent  implements OnInit {
   crewReceivedCorrectAmountValue: ReceivedCorrectAmountValue = '';
   beneficiaryReceivedCorrectAmountValue: ReceivedCorrectAmountValue = '';
   swiper: any;
+  showActionQuestion = false;
+  whyTheDiscrepancyValues: string[] = [];
+  whyTheDiscrepancyOptions = [];
 
   @ViewChild('pdfViewer') pdfViewer!: PdfJsViewerComponent;
   @ViewChild('wageTrackingSwiper', { static: false }) swiperRef: ElementRef | undefined;
@@ -51,6 +54,7 @@ export class WageDetailComponent  implements OnInit {
     this.activatedRoute.queryParams.subscribe(async(params) => {
       if (params?.wageDetails) {
         this.wageDetails = JSON.parse(params.wageDetails);
+        this.wageDetails.status = 'issue_pending'
       }
     });
   }
@@ -69,7 +73,8 @@ export class WageDetailComponent  implements OnInit {
       this.payslipPdfUrl = converted ?? null;
     }
     this.swiper = this.swiperRef?.nativeElement?.swiper;
-    
+    this.whyTheDiscrepancyOptions = this.getWhyTheDiscrepancyOptions();
+
     const analyticsEventParams = this.sharedMethods.getAnalyticsEventParams();
     this.analyticsService.trackEvent(PageEventNames.viewWageDetails, analyticsEventParams);
   }
@@ -141,5 +146,56 @@ export class WageDetailComponent  implements OnInit {
     const swiper = this.swiperRef?.nativeElement?.swiper;
     if (!swiper) { return; }
     swiper.slideNext();
+  }
+
+  // TODO: translate
+  getWhyTheDiscrepancyOptions(){
+    return [
+      {
+        value: 'toRepayMoneyOwedToCaptainOrEmployer',
+        label: this.paymentsCommonText?.toRepayMoneyOwedToCaptainOrEmployer || 'To repay money owed to captain / employer',
+        selected: false
+      },
+      {
+        value: 'toRepayMoneyOwedToManningAgent',
+        label: this.paymentsCommonText?.toRepayMoneyOwedToManningAgent || 'To repay money owed to manning agent',
+        selected: false
+      },
+      {
+        value: 'toPayForUnionMembership',
+        label: this.paymentsCommonText?.toPayForUnionMembership || "To pay for union membership",
+        selected: false
+      },
+      {
+        value: 'amNotSure',
+        label: this.paymentsCommonText?.amNotSure || "I'm not sure",
+        selected: false
+      },
+    ];
+  }
+
+  changeWhyTheDiscrepancyValue(e) {
+    const value = e.detail.value;
+    console.log('value', value);
+    const index = this.whyTheDiscrepancyValues.indexOf(value);
+    if (index > -1) {
+      this.whyTheDiscrepancyValues.splice(index, 1);
+    } else {
+      this.whyTheDiscrepancyValues.push(value);
+    }
+    console.log('this.whyTheDiscrepancyValue', this.whyTheDiscrepancyValues);
+  }
+
+  isWhyTheDiscrepancyOptionSelected(value: string) {
+    return this.whyTheDiscrepancyValues.indexOf(value) > -1;
+  }
+
+  goToDiscrepancySection() {
+    this.showActionQuestion = true;
+    this.cdr.detectChanges();
+  }
+
+  goToWageTrackingHelp() {
+    this.router.navigate(['wages/wage-tracking-help'], { replaceUrl: true });
   }
 }

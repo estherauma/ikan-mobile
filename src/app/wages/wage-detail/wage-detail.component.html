@@ -318,5 +318,80 @@
         }
       </ion-row>
     </div>
+
+    @if (isWorker && wageDetails?.status === 'issue_pending') {
+      @if (!showActionQuestion) {
+        <div class="issue-pending-actions-section">
+          <ion-row>
+            <ion-col size="1.5" class="icon-col">
+              <ion-icon src="assets/icon/script.svg" alt="script icon" class="script-icon" />
+            </ion-col>
+            <ion-col size="8.5" class="message-col">
+              <!-- TODO: translate -->
+              <p>You reported an issue with your wages. Do you know why the discrepancy?</p>
+            </ion-col>
+            <ion-col size="2" class="next-icon-col">
+              <ion-icon src="assets/icon/forward_arrow.svg" (click)="goToDiscrepancySection()"></ion-icon>
+            </ion-col>
+          </ion-row>
+
+          <ion-row>
+            <ion-col size="1.5" class="icon-col">
+              <ion-icon src="assets/icon/calendar_with_tick.svg" alt="calendar icon" class="calendar-icon" />
+            </ion-col>
+            <ion-col size="8.5" class="message-col">
+              <!-- TODO: translate -->
+              <p>Want to ask a question or need help? Here are some options.</p>
+            </ion-col>
+            <ion-col size="2" class="next-icon-col">
+              <ion-icon src="assets/icon/forward_arrow.svg" (click)="goToWageTrackingHelp()"></ion-icon>
+            </ion-col>
+          </ion-row>
+        </div>
+      }
+      @if (showActionQuestion) {
+        <div class="issue-pending-action-qtn-section">
+          <ion-row>
+            <ion-col size="10" class="label-col">
+              <p class="label">Help us better understand your situation so that we know how best to help you. Do you know why was there a discrepancy?</p>
+            </ion-col>
+            <ion-col size="2" class="icon-col">
+              <ion-icon src="assets/icon/script.svg" alt="alert icon" class="alert-icon" />
+            </ion-col>
+            <ion-col size="12" class="value-col">
+              <p>Please choose as many as relevant.</p>
+              <ion-list>
+                @for (option of whyTheDiscrepancyOptions; track option.value) {
+                  <ion-item lines="none">
+                    <ion-checkbox
+                      mode=""ios
+                      slot="start"
+                      [value]="option.value"
+                      (ionChange)="changeWhyTheDiscrepancyValue($event)"
+                      [checked]="isWhyTheDiscrepancyOptionSelected(option.value)"
+                    ></ion-checkbox>
+                    <ion-label>
+                      {{ option.label }}
+                    </ion-label>
+                  </ion-item>
+                }
+              </ion-list>
+            </ion-col>
+          </ion-row>
+          
+          <ion-row class="disclaimer-row">
+            <ion-col size="3" class="icon-col">
+              <ion-icon src="assets/icon/Privacy.svg"></ion-icon>
+            </ion-col>
+            <ion-col size="9">
+              <!-- TODO: translate -->
+              <p class="disclaimer-text">
+                {{ paymentsCommonText?.wageTrackingDisclaimerText || "Don't worry - we won't share any information with your employer, agent or family." }}
+              </p>
+            </ion-col>
+          </ion-row>
+        </div>
+      }
+    }
   </div>
 </ion-content>
