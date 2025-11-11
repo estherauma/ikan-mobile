@@ -11,6 +11,7 @@ import { Capacitor } from '@capacitor/core';
 import { PdfJsViewerComponent } from 'ng2-pdfjs-viewer';
 import { StorageKeys, UserRole } from 'src/app/shared/types/api-types';
 import { ContractDataService } from 'src/app/contracts/data/contract-data.service';
+import { WagesDataService } from '../data/wages-data.service';
 
 
 export type ReceivedCorrectAmountValue = 'yes' | 'no' | 'unsure' | '';
@@ -53,6 +54,7 @@ export class WageDetailComponent  implements OnInit {
     public cdr: ChangeDetectorRef,
     public router: Router,
     public contractDataService: ContractDataService,
+    public wageDataService: WagesDataService,
   ) {
     this.activatedRoute.queryParams.subscribe(async(params) => {
       if (params?.wageDetails) {
@@ -135,11 +137,59 @@ export class WageDetailComponent  implements OnInit {
   }
 
   // TODO: also save responses when leaving page
-  onSubmit() {
+  async onSubmit() {
+    await this.sharedMethods.showWaitLoader(this.commonText?.submittingYourData);
+    await this.updateWageDetails();
     const queryParams = {
       contractData: this.contractData ? JSON.stringify(this.contractData) : undefined,
     };
+    await this.sharedMethods.dismissLoader();
     this.router.navigate(['wages/wage-tracking-help'], { replaceUrl: true, queryParams });
+  }
+
+  async updateWageDetails() {
+    const updatedWageDetails = { ...this.wageDetails};
+    const now = this.sharedMethods.getCurrentDateTime();
+    let hasUpdates = false;
+    
+    if (this.crewReceivedCorrectAmountValue !== this.wageDetails.crewReceivedRightAmount) {
+      updatedWageDetails.crewReceivedRightAmount = this.crewReceivedCorrectAmountValue;
+      updatedWageDetails.crewReceivedRightAmountDate = now;
+      hasUpdates = true;
+    }
+    if (this.beneficiaryReceivedCorrectAmountValue !== this.wageDetails.beneficiaryReceivedRightAmount) {
+      updatedWageDetails.beneficiaryReceivedRightAmount = this.beneficiaryReceivedCorrectAmountValue;
+      updatedWageDetails.beneficiaryReceivedRightAmountDate = now;
+      hasUpdates = true;
+    }
+    if (!this.arraysEqual(this.whyTheDiscrepancyValues, this.wageDetails.whyTheDiscrepancy)) {
+      updatedWageDetails.whyTheDiscrepancy = this.whyTheDiscrepancyValues;
+      hasUpdates = true;
+    }
+
+    if (hasUpdates) {
+      if (
+        (updatedWageDetails.crewReceivedRightAmount && updatedWageDetails.crewReceivedRightAmount !== 'yes') || 
+        (updatedWageDetails.beneficiaryReceivedRightAmount && updatedWageDetails.beneficiaryReceivedRightAmount !== 'yes')
+      ) {
+        updatedWageDetails.status = 'issue_pending';
+      } else if (
+        
+        (updatedWageDetails.crewReceivedRightAmount && updatedWageDetails.crewReceivedRightAmount === 'yes') || 
+        (updatedWageDetails.beneficiaryReceivedRightAmount && updatedWageDetails.beneficiaryReceivedRightAmount === 'yes')
+      ) {
+        updatedWageDetails.status = 'received';
+      }
+      
+      updatedWageDetails.updatedAt = now;
+      updatedWageDetails.updatedBy = this.currentUser?.id;
+      await this.wageDataService.update(updatedWageDetails, this.wageDetails.id);
+    }
+  }
+
+  arraysEqual(a, b) {
+    if (a.length !== b.length) return false;
+    return [...a].sort().every((val, i) => val === [...b].sort()[i]);
   }
 
   goToPreviousSlide() {
