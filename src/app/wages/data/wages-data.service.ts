@@ -76,6 +76,11 @@ export class WagesDataService {
           });
         }
       }
+
+      // Sort by status
+      const statusOrder = ['action_required', 'issue_pending', 'received'];
+      wages.sort((a, b) => statusOrder.indexOf(a.status) - statusOrder.indexOf(b.status));
+      
       this.wagesObs.next(wages);
     });
   }
