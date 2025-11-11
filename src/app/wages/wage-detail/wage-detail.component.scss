@@ -90,7 +90,9 @@ ion-content {
 
   .payslip-section {
     margin: 20px 0;
+    background: var(--ikan_red_100);
     .payslip-wrapper {
+      background: var(--ikan_skyblue_100);
       .pdf-viewer-wrapper {
         width: 100%;
         height: 300px;
@@ -119,6 +121,31 @@ ion-content {
         }
       }
     }
+    .status-message-wrapper {
+      border-radius: 0 0 20px 20px;
+      padding: 10px 0;
+      ion-row {
+        padding: 10px;
+        ion-col {
+          display: flex;
+          align-items: center;
+          .alert-icon {
+            font-size: 2.5rem;
+            color: white;
+          }
+          p {
+            font-size: 0.9rem;
+            font-family: "interRegular";
+            color: white;
+            margin: 0;
+            color: white;
+          }
+        }
+      }
+    }
+  }
+  .with-status-messages {
+    border-radius: 0 0 20px 20px;
   }
 
   .link-wrapper {

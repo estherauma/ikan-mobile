@@ -111,7 +111,7 @@
 
     <!-- Payslip -->
     @if (wageDetails?.payslip) {
-      <div class="payslip-section">
+      <div class="payslip-section" [ngClass]="{'with-status-messages': isWorker && wageDetails?.status === 'issue_pending'}">
         <div class="payslip-wrapper">
           @if (wageDetails.payslip.endsWith('.pdf')) {
             @if (hasInternet && payslipPdfUrl) {
@@ -154,6 +154,29 @@
             </div>
           }
         </div>
+
+        @if (isWorker && wageDetails?.status === 'issue_pending') {
+          <div class="status-message-wrapper">
+            <ion-row>
+              <ion-col size="2" class="alert-icon-col">
+                <ion-icon name="alert-outline" alt="alert icon" class="alert-icon" />
+              </ion-col>
+              <ion-col size="10" class="message-col">
+                <!-- TODO: translate -->
+                <p>On 12 September 2025, you said UNSURE to The amount paid to your family/friend, did they receive the amount correctly?.</p>
+              </ion-col>
+            </ion-row>
+            <ion-row>
+              <ion-col size="2" class="alert-icon-col">
+                <ion-icon name="alert-outline" alt="alert icon" class="alert-icon" />
+              </ion-col>
+              <ion-col size="10" class="message-col">
+                <!-- TODO: translate -->
+                <p>On 12 September 2025, you said UNSURE to The amount paid to your family/friend, did they receive the amount correctly?.</p>
+              </ion-col>
+            </ion-row>
+          </div>
+        }
       </div>
     }
     

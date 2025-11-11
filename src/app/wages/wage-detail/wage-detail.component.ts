@@ -9,6 +9,7 @@ import { ModalController } from '@ionic/angular';
 import { ViewImageComponent } from 'src/app/mydocuments/view-image/view-image.component';
 import { Capacitor } from '@capacitor/core';
 import { PdfJsViewerComponent } from 'ng2-pdfjs-viewer';
+import { UserRole } from 'src/app/shared/types/api-types';
 
 
 export type ReceivedCorrectAmountValue = 'yes' | 'no' | 'unsure' | '';
@@ -26,6 +27,8 @@ export class WageDetailComponent  implements OnInit {
   wageDetails: any;
   currentLanguage = 'en-us';
   currentUser: any;
+  isWorker = false;
+  isVesselOwner = false;
   hasInternet = false;
   payslipPdfUrl: string;
   showSpinner = true;
@@ -58,6 +61,8 @@ export class WageDetailComponent  implements OnInit {
     this.paymentsCommonText = this.sharedMethods.convertAdditionalTextToObj(paymentsPageData?.additionalText);
     this.currentLanguage = this.contentService?.currentLanguage;
     this.currentUser = await this.sharedMethods.getUserData();
+    this.isWorker = this.currentUser?.role === UserRole.worker;
+    this.isVesselOwner = this.currentUser?.role === UserRole.vesselOwner;
     this.hasInternet = await this.sharedMethods.checkInternetConnectionStatus()
     if (this.wageDetails?.payslip && this.wageDetails.payslip.endsWith('.pdf')) {
       const converted = Capacitor.convertFileSrc(this.wageDetails.payslip);
