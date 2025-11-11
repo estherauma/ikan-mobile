@@ -96,6 +96,7 @@ export class SyncService {
     await this.syncMyDocuments();
     await this.syncPassports();
     await this.syncLearningHubProgress();
+    await this.syncWages();
     await this.fetchCompanies();
     await this.fetchVessels();
     await this.fetchContracts(); // clauses are fetched after contracts have been fetched in the fetchContracts method
@@ -1279,5 +1280,39 @@ export class SyncService {
         }
       }
     });
+  }
+
+  async syncWages() {
+    const isValid = await this.authService.checkAcessTokenValidity();
+    if (!isValid || !this.isDbInitialized || !navigator.onLine) {
+      return;
+    }
+
+    const wages = this.wagesDataService.wages;
+    if (wages.length > 0) {
+      for (const wage of wages) {
+        const wageToUpload = Object.assign({}, wage);
+        delete wageToUpload.id;
+        wageToUpload.user = wage.userId;
+        wageToUpload.vessel = wage.vesselId;
+        wageToUpload.whyTheDiscrepancy = wageToUpload?.whyTheDiscrepancy?.length ? wageToUpload.whyTheDiscrepancy : null;
+
+        if (!wageToUpload?.onlineRef) {
+          this.apiService.post('wages', wageToUpload).subscribe(async(response: any) => {
+            if (response?.status === 'OK') {
+              await this.wagesDataService.updateOnlineRef(wage.id, response?.data?.id);
+            } else {
+              console.error(`Failed to sync wage for user ${wage.userId} to the api`, response);
+            }
+          });
+        } else {
+          this.apiService.put('wages', wage.onlineRef, wageToUpload).subscribe(async(response: any) => {
+            if (response?.status !== 'OK') {
+              console.error(`Failed to update wage for user ${wage.userId} to the api`, response);
+            }
+          });
+        }
+      }
+    }
   }
 }
