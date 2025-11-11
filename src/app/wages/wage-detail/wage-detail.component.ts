@@ -57,7 +57,6 @@ export class WageDetailComponent  implements OnInit {
     this.activatedRoute.queryParams.subscribe(async(params) => {
       if (params?.wageDetails) {
         this.wageDetails = JSON.parse(params.wageDetails);
-        this.wageDetails.status = 'issue_pending'
       }
     });
   }

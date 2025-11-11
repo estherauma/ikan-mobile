@@ -76,8 +76,6 @@ export class WagesDataService {
           });
         }
       }
-      // rm
-      console.log('Retrieved wages from local DB', wages);
       this.wagesObs.next(wages);
     });
   }
