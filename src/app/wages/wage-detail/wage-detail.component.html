@@ -97,6 +97,16 @@
       </div>
     </div>
 
+    <!-- No payslip -->
+     @if (!wageDetails?.payslip) {
+      <div class="no-payslip-section">
+        <!-- TODO: translate -->
+        <h4 class="payslip-label">{{ paymentsCommonText?.yourPayslip || 'Your payslip' }}</h4>
+        <!-- TODO: translate -->
+        <p class="no-payslip-text">{{ paymentsCommonText?.noPayslipAvailable || 'No payslip available.' }}</p>
+      </div>
+    }
+
     <!-- Payslip -->
     @if (wageDetails?.payslip) {
       <div class="payslip-section">
@@ -105,6 +115,7 @@
             @if (hasInternet && payslipPdfUrl) {
               <ion-row class="label-row">
                 <ion-col size="10">
+                  <!-- TODO: translate -->
                   <h4 class="payslip-label">{{ paymentsCommonText?.yourPayslip || 'Your payslip' }}</h4>
                 </ion-col>
                 <ion-col size="2" class="icon-col">

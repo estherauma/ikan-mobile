@@ -71,6 +71,23 @@ ion-content {
     }
   }
 
+  .no-payslip-section {
+    margin: 20px 0;
+    .payslip-label {
+      font-size: 1.5rem;
+      font-family: "GatwickBold";
+      color: var(--ikan_blue_100);
+      margin: 0;
+    }
+    .no-payslip-text {
+      font-size: 1rem;
+      font-family: "interRegular";
+      color: var(--ikan_darkblue_100);
+      margin-top: 10px;
+      text-align: center;
+    }
+  }
+
   .payslip-section {
     margin: 20px 0;
     .payslip-wrapper {
