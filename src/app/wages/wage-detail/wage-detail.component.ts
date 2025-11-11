@@ -59,6 +59,7 @@ export class WageDetailComponent  implements OnInit {
     this.activatedRoute.queryParams.subscribe(async(params) => {
       if (params?.wageDetails) {
         this.wageDetails = JSON.parse(params.wageDetails);
+        console.log('Wage details:', this.wageDetails);
       }
     });
   }
@@ -83,6 +84,10 @@ export class WageDetailComponent  implements OnInit {
 
     const analyticsEventParams = this.sharedMethods.getAnalyticsEventParams();
     this.analyticsService.trackEvent(PageEventNames.viewWageDetails, analyticsEventParams);
+  }
+
+  async ionViewWillLeave() {
+    await this.updateWageDetails();
   }
 
   prefillValues() {
@@ -143,7 +148,6 @@ export class WageDetailComponent  implements OnInit {
     this.beneficiaryReceivedCorrectAmountValue = e.detail.value;
   }
 
-  // TODO: also save responses when leaving page
   async onSubmit() {
     await this.sharedMethods.showWaitLoader(this.commonText?.submittingYourData);
     await this.updateWageDetails();
