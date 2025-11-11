@@ -20,6 +20,10 @@ const routes: Routes = [
     path: 'wage-details',
     loadChildren: () => import('../wage-detail/wage-detail.module').then(m => m.WageDetailModule)
   },
+  {
+    path: 'wage-tracking-help',
+    loadChildren: () => import('../wage-tracking-help/wage-tracking-help.module').then(m => m.WageTrackingHelpModule)
+  },
 ];
 
 @NgModule({
