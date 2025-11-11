@@ -1247,6 +1247,34 @@ export class SyncService {
             await this.wagesDataService.saveOnlineWage(wageToSave).then(() => {
               console.log(`Wage for user ${wageToSave.userId} saved successfully.`);
             });
+          } else {
+            const currentWage = await this.wagesDataService.wages.find(w => w.onlineRef === wage.id);
+            const currentUpdateDate = new Date(currentWage?.updatedAt);
+            const newUpdateDate = new Date(wage.updatedAt);
+            if (currentUpdateDate < newUpdateDate) {
+              const currentPayslipFilename = currentWage?.payslip ? currentWage.payslip.split('files/')[1] : null;
+              const isOldPayslip = currentPayslipFilename && wage.payslip && wage.payslip.includes(currentPayslipFilename);
+              if (wageToSave?.payslip && !isOldPayslip) {
+                const fileUri = await this.uploadService.fetchAndSaveFile(wageToSave.payslip);
+                wageToSave.payslip = fileUri ?? null;
+              }
+              const currentCrewBankTransferReceiptFilename = currentWage?.crewBankTransferReceipt ? currentWage.crewBankTransferReceipt.split('files/')[1] : null;
+              const isOldCrewBankTransferReceipt = currentCrewBankTransferReceiptFilename && wage.crewBankTransferReceipt && wage.crewBankTransferReceipt.includes(currentCrewBankTransferReceiptFilename);
+              if (wageToSave?.crewBankTransferReceipt && !isOldCrewBankTransferReceipt) {
+                const fileUri = await this.uploadService.fetchAndSaveFile(wageToSave.crewBankTransferReceipt);
+                wageToSave.crewBankTransferReceipt = fileUri ?? null;
+              }
+              const currentBeneficiaryBankTransferReceiptFilename = currentWage?.beneficiaryBankTransferReceipt ? currentWage.beneficiaryBankTransferReceipt.split('files/')[1] : null;
+              const isOldBeneficiaryBankTransferReceipt = currentBeneficiaryBankTransferReceiptFilename && wage.beneficiaryBankTransferReceipt && wage.beneficiaryBankTransferReceipt.includes(currentBeneficiaryBankTransferReceiptFilename);
+              if (wageToSave?.beneficiaryBankTransferReceipt && !isOldBeneficiaryBankTransferReceipt) {
+                const fileUri = await this.uploadService.fetchAndSaveFile(wageToSave.beneficiaryBankTransferReceipt);
+                wageToSave.beneficiaryBankTransferReceipt = fileUri ?? null;
+              }
+
+              await this.wagesDataService.update(wageToSave, currentWage.id).then(() => {
+                console.log(`Wage for user ${wageToSave.userId} updated successfully.`);
+              });
+            }
           }
         }
       }
