@@ -1227,6 +1227,7 @@ export class SyncService {
             updatedAt: wage.updatedAt ??  now,
             createdBy: wage.createdBy ?? user?.id,
             updatedBy: wage.updatedBy ?? user?.id,
+            whyTheDiscrepancy: wage?.whyTheDiscrepancy ? JSON.stringify(wage.whyTheDiscrepancy) : null,
           };
           const wageExists = await this.wagesDataService.checkIfWageExists(wage.id);
           if (!wageExists) {

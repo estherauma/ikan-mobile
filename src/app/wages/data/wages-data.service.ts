@@ -66,6 +66,9 @@ export class WagesDataService {
             status: data.rows.item(i).status,
             crewReceivedRightAmount: data.rows.item(i).crew_received_right_amount,
             beneficiaryReceivedRightAmount: data.rows.item(i).beneficiary_received_right_amount,
+            crewReceivedRightAmountDate: data.rows.item(i).crew_received_right_amount_date,
+            beneficiaryReceivedRightAmountDate: data.rows.item(i).beneficiary_received_right_amount_date,
+            whyTheDiscrepancy: data.rows.item(i).why_the_discrepancy ? JSON.parse(data.rows.item(i).why_the_discrepancy) : null,
             createdAt: data.rows.item(i).created_at,
             updatedAt: data.rows.item(i).updated_at,
             createdBy: data.rows.item(i).created_by,
@@ -83,8 +86,9 @@ export class WagesDataService {
     start_date, end_date, usd_amount, payslip, crew_bank_transfer_receipt,\
     beneficiary_bank_transfer_receipt, beneficiary_relationship, beneficiary_name,\
     beneficiary_contact, beneficiary_contact_platform, status, crew_received_right_amount,\
-    beneficiary_received_right_amount, created_at, updated_at, \
-    created_by, updated_by) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`;
+    beneficiary_received_right_amount, crew_received_right_amount_date,\
+    beneficiary_received_right_amount_date, why_the_discrepancy, created_at, updated_at, \
+    created_by, updated_by) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`;
     const params = [
       data.onlineRef,
       data.userId,
@@ -103,6 +107,9 @@ export class WagesDataService {
       data.status,
       data.crewReceivedRightAmount,
       data.beneficiaryReceivedRightAmount,
+      data.crewReceivedRightAmountDate,
+      data.beneficiaryReceivedRightAmountDate,
+      data.whyTheDiscrepancy,
       data.createdAt,
       data.updatedAt,
       data.createdBy,
@@ -116,6 +123,8 @@ export class WagesDataService {
       return null;
     });
   }
+
+  update(data, wageId) {}
 
   async checkIfWageExists(onlineRef: string) {
     return await this.wages.some((wage) => wage.onlineRef === onlineRef);
