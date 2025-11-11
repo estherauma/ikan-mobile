@@ -54,7 +54,6 @@
         </ion-col>
         <ion-col size="2" class="arrow-col">
           <div class="arrow-wrapper" (click)="onClickCard($event)">
-            <!-- <img src="assets/icon/forward_arrow.svg" alt="arrow icon" /> -->
             <ion-icon src="assets/icon/forward_arrow.svg"></ion-icon>
           </div>
         </ion-col>
@@ -62,7 +61,7 @@
     </div>
   </div>
 
-  @if (status === 'action_required' || status === 'issue_pending') {
+  @if (isWorker && (status === 'action_required' || status === 'issue_pending')) {
     <div class="status-message-wrapper">
       <ion-row>
         <ion-col size="1.5" class="icon-col">
