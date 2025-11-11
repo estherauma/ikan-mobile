@@ -23,3 +23,4 @@
 1739174759145_updatePaymentsTable.sql
 1747755035523_alterProfilesVerifyPhoneNumber.sql
 1760623224898_addWagesTable.sql
+1762887839206_alterWagesAddFields.sql
