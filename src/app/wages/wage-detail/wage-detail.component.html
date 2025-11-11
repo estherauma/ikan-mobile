@@ -239,7 +239,7 @@
               <p class="reminder-desc">{{ paymentsCommonText?.amountShouldReceiveBasedOnContract || 'Based on your contract, this is the amount you should receive:' }}</p>
               <!-- TODO: translate -->
               <h4 class="contract-amount">
-                {{ paymentsCommonText?.USD }} {{ wageDetails?.contractAmount || '550' }} / {{ wageDetails?.contractPeriod || 'month' }}
+                {{ paymentsCommonText?.USD }} {{ contractData?.contractAmount || 'NOT SPECIFIED' }} / {{ paymentsCommonText?.month || 'month' }}
               </h4>
             </div>
           </swiper-slide>

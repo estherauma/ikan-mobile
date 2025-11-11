@@ -9,7 +9,8 @@ import { ModalController } from '@ionic/angular';
 import { ViewImageComponent } from 'src/app/mydocuments/view-image/view-image.component';
 import { Capacitor } from '@capacitor/core';
 import { PdfJsViewerComponent } from 'ng2-pdfjs-viewer';
-import { UserRole } from 'src/app/shared/types/api-types';
+import { StorageKeys, UserRole } from 'src/app/shared/types/api-types';
+import { ContractDataService } from 'src/app/contracts/data/contract-data.service';
 
 
 export type ReceivedCorrectAmountValue = 'yes' | 'no' | 'unsure' | '';
@@ -38,6 +39,7 @@ export class WageDetailComponent  implements OnInit {
   showActionQuestion = false;
   whyTheDiscrepancyValues: string[] = [];
   whyTheDiscrepancyOptions = [];
+  contractData: any;
 
   @ViewChild('pdfViewer') pdfViewer!: PdfJsViewerComponent;
   @ViewChild('wageTrackingSwiper', { static: false }) swiperRef: ElementRef | undefined;
@@ -50,6 +52,7 @@ export class WageDetailComponent  implements OnInit {
     public modalController: ModalController,
     public cdr: ChangeDetectorRef,
     public router: Router,
+    public contractDataService: ContractDataService,
   ) {
     this.activatedRoute.queryParams.subscribe(async(params) => {
       if (params?.wageDetails) {
@@ -74,6 +77,7 @@ export class WageDetailComponent  implements OnInit {
     }
     this.swiper = this.swiperRef?.nativeElement?.swiper;
     this.whyTheDiscrepancyOptions = this.getWhyTheDiscrepancyOptions();
+    this.contractData = await this.getContractData();
 
     const analyticsEventParams = this.sharedMethods.getAnalyticsEventParams();
     this.analyticsService.trackEvent(PageEventNames.viewWageDetails, analyticsEventParams);
@@ -133,7 +137,10 @@ export class WageDetailComponent  implements OnInit {
 
   // TODO: also save responses when leaving page
   onSubmit() {
-    this.router.navigate(['wages/wage-tracking-help'], { replaceUrl: true });
+    const queryParams = {
+      contractData: this.contractData ? JSON.stringify(this.contractData) : undefined,
+    };
+    this.router.navigate(['wages/wage-tracking-help'], { replaceUrl: true, queryParams });
   }
 
   goToPreviousSlide() {
@@ -176,14 +183,12 @@ export class WageDetailComponent  implements OnInit {
 
   changeWhyTheDiscrepancyValue(e) {
     const value = e.detail.value;
-    console.log('value', value);
     const index = this.whyTheDiscrepancyValues.indexOf(value);
     if (index > -1) {
       this.whyTheDiscrepancyValues.splice(index, 1);
     } else {
       this.whyTheDiscrepancyValues.push(value);
     }
-    console.log('this.whyTheDiscrepancyValue', this.whyTheDiscrepancyValues);
   }
 
   isWhyTheDiscrepancyOptionSelected(value: string) {
@@ -196,6 +201,68 @@ export class WageDetailComponent  implements OnInit {
   }
 
   goToWageTrackingHelp() {
-    this.router.navigate(['wages/wage-tracking-help'], { replaceUrl: true });
+    const queryParams = {
+      contractData: this.contractData ? JSON.stringify(this.contractData) : undefined,
+    };
+    this.router.navigate(['wages/wage-tracking-help'], { replaceUrl: true, queryParams });
   }
+
+  // TODO: Refactor when worker has multiple contracts
+  async getContractData() {
+    if (!this.isWorker) {
+      return null;
+    }
+
+    const userContracts = await this.sharedMethods.readDataFromStorage(StorageKeys.currentUserOnlineContractsAppRefs);
+    if (userContracts?.length) {
+      const contract = this.contractDataService.contracts.find((c) => c.appRef === userContracts[0]);
+      if (contract && contract?.id) {
+        const contractData = {};
+        // TODO: check if we are displaying parties or clause 6 to display employer details
+        // const partyAClause = await this.contractDataService.retrieveClauseByFieldByContractId(
+        //   'kind',
+        //   'contract-clauses-parties-requirement-vessel',
+        //   contract.id
+        // );
+        // if (partyAClause) {
+        //   const partyAClauseData = JSON.parse(partyAClause.content);
+        //   contractData['partyA'] = partyAClause;
+        // }
+        
+        const article6Clause = await this.contractDataService.retrieveClauseByFieldByContractId(
+          'kind',
+          'contract-clauses-labor-protection-and-benefits',
+          contract.id
+        );
+        if (article6Clause) {
+          const article6ClauseData = JSON.parse(article6Clause.content);
+          const details = {
+            ...article6Clause,
+            contractId: contract.id,
+            contractOnlineRef: contract.onlineRef,
+            // partyB: '',
+          };
+          contractData['detailsClause'] = article6Clause;
+        }
+
+        const wagesClause = await this.contractDataService.retrieveClauseByFieldByContractId(
+          'kind',
+          'contract-clauses-wage-benefits',
+          contract.id
+        );
+        if (wagesClause) {
+          const wagesClauseData = JSON.parse(wagesClause.content);
+          if (wagesClauseData?.monthlyWage) {
+            contractData['contractAmount'] = wagesClauseData.monthlyWage;
+          }
+        }
+
+        if (Object.keys(contractData).length > 0) {
+          return contractData;
+        }
+      }
+    }
+    return null;
+  }
+
 }
