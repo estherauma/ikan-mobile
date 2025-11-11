@@ -41,9 +41,9 @@ export class WagesDataService {
     return this.wagesObs.asObservable();
   }
 
-  retrieveWages() {
+  async retrieveWages() {
     const query = 'SELECT * FROM wages';
-    this.db.executeSql(query, []).then((data) => {
+    return this.db.executeSql(query, []).then((data) => {
       const wages = [];
       if (data.rows.length > 0) {
         for (let i = 0; i < data.rows.length; i++) {
@@ -76,6 +76,7 @@ export class WagesDataService {
           });
         }
       }
+      // rm
       console.log('Retrieved wages from local DB', wages);
       this.wagesObs.next(wages);
     });
@@ -89,34 +90,15 @@ export class WagesDataService {
     beneficiary_received_right_amount, crew_received_right_amount_date,\
     beneficiary_received_right_amount_date, why_the_discrepancy, created_at, updated_at, \
     created_by, updated_by) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`;
-    const params = [
-      data.onlineRef,
-      data.userId,
-      data.vesselId,
-      data.paymentDate,
-      data.startDate,
-      data.endDate,
-      data.usdAmount,
-      data.payslip,
-      data.crewBankTransferReceipt,
-      data.beneficiaryBankTransferReceipt,
-      data.beneficiaryRelationship,
-      data.beneficiaryName,
-      data.beneficiaryContact,
-      data.beneficiaryContactPlatform,
-      data.status,
-      data.crewReceivedRightAmount,
-      data.beneficiaryReceivedRightAmount,
-      data.crewReceivedRightAmountDate,
-      data.beneficiaryReceivedRightAmountDate,
-      data.whyTheDiscrepancy,
-      data.createdAt,
-      data.updatedAt,
-      data.createdBy,
-      data.updatedBy
+    const params = [data.onlineRef, data.userId, data.vesselId, data.paymentDate, data.startDate,
+      data.endDate, data.usdAmount, data.payslip, data.crewBankTransferReceipt,
+      data.beneficiaryBankTransferReceipt, data.beneficiaryRelationship, data.beneficiaryName, data.beneficiaryContact,
+      data.beneficiaryContactPlatform, data.status, data.crewReceivedRightAmount, data.beneficiaryReceivedRightAmount,
+      data.crewReceivedRightAmountDate, data.beneficiaryReceivedRightAmountDate, data.whyTheDiscrepancy, data.createdAt,
+      data.updatedAt, data.createdBy, data.updatedBy
     ];
-    return this.db.executeSql(query, params).then((result) => {
-      this.retrieveWages();
+    return this.db.executeSql(query, params).then(async(result) => {
+      await this.retrieveWages();
       return result.insertId;
     }).catch((err) => {
       console.error('Error saving wage', err);
@@ -124,7 +106,29 @@ export class WagesDataService {
     });
   }
 
-  update(data, wageId) {}
+  async update(data, wageId) {
+    const query = `UPDATE wages SET vessel_id = ?, payment_date = ?, start_date = ?, end_date = ?, \
+    usd_amount = ?, payslip = ?, crew_bank_transfer_receipt = ?, beneficiary_bank_transfer_receipt = ?, \
+    beneficiary_relationship = ?, beneficiary_name = ?, beneficiary_contact = ?, beneficiary_contact_platform = ?, \
+    status = ?, crew_received_right_amount = ?, beneficiary_received_right_amount = ?, \
+    crew_received_right_amount_date = ?, beneficiary_received_right_amount_date = ?, \
+    why_the_discrepancy = ?, updated_at = ?, updated_by = ? WHERE id = ?`;
+    const params = [
+      data.vesselId, data.paymentDate, data.startDate, data.endDate, data.usdAmount,
+      data.payslip, data.crewBankTransferReceipt, data.beneficiaryBankTransferReceipt, 
+      data.beneficiaryRelationship, data.beneficiaryName, data.beneficiaryContact, 
+      data.beneficiaryContactPlatform, data.status, data.crewReceivedRightAmount, 
+      data.beneficiaryReceivedRightAmount, data.crewReceivedRightAmountDate, data.beneficiaryReceivedRightAmountDate,
+      data.whyTheDiscrepancy, data.updatedAt, data.updatedBy, wageId
+    ];
+    return this.db.executeSql(query, params).then(async(result) => {
+      await this.retrieveWages();
+      return result;
+    }).catch((err) => {
+      console.error('Error updating wage', err);
+      return null;
+    });
+  }
 
   async checkIfWageExists(onlineRef: string) {
     return await this.wages.some((wage) => wage.onlineRef === onlineRef);
