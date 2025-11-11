@@ -218,106 +218,108 @@
       </div>
     }
 
-    <!-- Wage questions -->
-    <div class="tracking-qtns-section">
-      <swiper-container
-        #wageTrackingSwiper
-        id="welcome_swiper_element"
-        slides-per-view="1"
-        space-between="20"
-        centered-slides="true"
-        (swiperslidechange)="onSlideChange($event)"
-        (slidechange)="onSlideChange($event)"
-      >
-        <swiper-slide class="slide">
-          <div class="reminder-wrapper">
-            <ion-icon name="bulb-outline" class="bulb-icon"></ion-icon>
-            <!-- TODO: translate -->
-            <p class="reminder-text">{{ paymentsCommonText?.reminder || 'Reminder' }}</p>
-            <!-- TODO: translate -->
-            <p class="reminder-desc">{{ paymentsCommonText?.amountShouldReceiveBasedOnContract || 'Based on your contract, this is the amount you should receive:' }}</p>
-            <!-- TODO: translate -->
-            <h4 class="contract-amount">
-              {{ paymentsCommonText?.USD }} {{ wageDetails?.contractAmount || '550' }} / {{ wageDetails?.contractPeriod || 'month' }}
-            </h4>
-          </div>
-        </swiper-slide>
-        
-        <swiper-slide class="slide">
-          <div class="steps-container">
-            <ul class="progress-bar">
-              <li><span [ngClass]="{'active': swiper?.activeIndex === 1}"></span></li>
-              <li><span [ngClass]="{'completed': beneficiaryReceivedCorrectAmountValue}"></span></li>
-            </ul>
-          </div>
-          <div class="qtn-wrapper">
-            <!-- TODO: translate -->
-            <p class="qtn-label">{{ paymentsCommonText?.crewReceivedCorrectAmountQtn || 'Did you receive the correct amount paid to you?' }}</p>
-            <ion-radio-group (ionChange)="changeCrewReceivedCorrectAmountValue($event)" [value]="crewReceivedCorrectAmountValue" mode="ios">
+    <!-- Wage tracking questions -->
+    @if (isWorker && wageDetails?.status === 'action_required') {
+      <div class="tracking-qtns-section">
+        <swiper-container
+          #wageTrackingSwiper
+          id="welcome_swiper_element"
+          slides-per-view="1"
+          space-between="20"
+          centered-slides="true"
+          (swiperslidechange)="onSlideChange($event)"
+          (slidechange)="onSlideChange($event)"
+        >
+          <swiper-slide class="slide">
+            <div class="reminder-wrapper">
+              <ion-icon name="bulb-outline" class="bulb-icon"></ion-icon>
               <!-- TODO: translate -->
-              <ion-radio value="yes" class="yes">{{ paymentsCommonText?.yes || 'Yes' }}</ion-radio>
+              <p class="reminder-text">{{ paymentsCommonText?.reminder || 'Reminder' }}</p>
               <!-- TODO: translate -->
-              <ion-radio value="no" class="no">{{ paymentsCommonText?.no || 'No' }}</ion-radio>
+              <p class="reminder-desc">{{ paymentsCommonText?.amountShouldReceiveBasedOnContract || 'Based on your contract, this is the amount you should receive:' }}</p>
               <!-- TODO: translate -->
-              <ion-radio value="unsure" class="unsure">{{ paymentsCommonText?.unsure || 'Unsure' }}</ion-radio>
-            </ion-radio-group>
-          </div>
-        </swiper-slide>
-        
-        <swiper-slide class="slide">
-          <div class="steps-container">
-            <ul class="progress-bar">
-              <li><span [ngClass]="{'completed': crewReceivedCorrectAmountValue}"></span></li>
-              <li><span [ngClass]="{'active': swiper?.activeIndex === 2}"></span></li>
-            </ul>
-          </div>
-          <div class="qtn-wrapper">
-            <!-- TODO: translate -->
-            <p class="qtn-label">{{ paymentsCommonText?.beneficiaryReceivedCorrectAmountQtn || 'Did your family/friend receive the correct amount paid to them?' }}</p>
-            <ion-radio-group (ionChange)="changeBeneficiaryReceivedCorrectAmountValue($event)" [value]="beneficiaryReceivedCorrectAmountValue" mode="ios">
-              <!-- TODO: translate -->
-              <ion-radio value="yes" class="yes">{{ paymentsCommonText?.yes || 'Yes' }}</ion-radio>
-              <!-- TODO: translate -->
-              <ion-radio value="no" class="no">{{ paymentsCommonText?.no || 'No' }}</ion-radio>
-              <!-- TODO: translate -->
-              <ion-radio value="unsure" class="unsure">{{ paymentsCommonText?.unsure || 'Unsure' }}</ion-radio>
-            </ion-radio-group>
-          </div>
-        </swiper-slide>
-        <swiper-slide class="slide submit-slide">
-          <ion-button class="submit-btn" shape="round" (click)="onSubmit()">
-            <!-- {{ commonText?.submit }} -->
-            <!-- TODO: translate -->
-            {{ commonText?.submitResponses || 'Submit responses' }}
-          </ion-button>
-        </swiper-slide>
-      </swiper-container>
+              <h4 class="contract-amount">
+                {{ paymentsCommonText?.USD }} {{ wageDetails?.contractAmount || '550' }} / {{ wageDetails?.contractPeriod || 'month' }}
+              </h4>
+            </div>
+          </swiper-slide>
           
-      <ion-row class="disclaimer-row">
-        <ion-col size="3" class="icon-col">
-          <ion-icon src="assets/icon/Privacy.svg"></ion-icon>
-        </ion-col>
-        <ion-col size="9">
-          <!-- TODO: translate -->
-          <p class="disclaimer-text">
-            {{ paymentsCommonText?.wageTrackingDisclaimerText || "Don't worry - we won't share any information with your employer, agent or family." }}
-          </p>
-        </ion-col>
-      </ion-row>
-      
-      <ion-row class="next-prev-btns-row">
-        @if (!swiper?.isBeginning) {
-          <ion-col [size]="swiper?.isEnd ? 12 : 6" class="prev-col">
-            <ion-icon class="prev-icon" src="assets/icon/forward_arrow.svg" (click)="goToPreviousSlide()"></ion-icon>
+          <swiper-slide class="slide">
+            <div class="steps-container">
+              <ul class="progress-bar">
+                <li><span [ngClass]="{'active': swiper?.activeIndex === 1}"></span></li>
+                <li><span [ngClass]="{'completed': beneficiaryReceivedCorrectAmountValue}"></span></li>
+              </ul>
+            </div>
+            <div class="qtn-wrapper">
+              <!-- TODO: translate -->
+              <p class="qtn-label">{{ paymentsCommonText?.crewReceivedCorrectAmountQtn || 'Did you receive the correct amount paid to you?' }}</p>
+              <ion-radio-group (ionChange)="changeCrewReceivedCorrectAmountValue($event)" [value]="crewReceivedCorrectAmountValue" mode="ios">
+                <!-- TODO: translate -->
+                <ion-radio value="yes" class="yes">{{ paymentsCommonText?.yes || 'Yes' }}</ion-radio>
+                <!-- TODO: translate -->
+                <ion-radio value="no" class="no">{{ paymentsCommonText?.no || 'No' }}</ion-radio>
+                <!-- TODO: translate -->
+                <ion-radio value="unsure" class="unsure">{{ paymentsCommonText?.unsure || 'Unsure' }}</ion-radio>
+              </ion-radio-group>
+            </div>
+          </swiper-slide>
+          
+          <swiper-slide class="slide">
+            <div class="steps-container">
+              <ul class="progress-bar">
+                <li><span [ngClass]="{'completed': crewReceivedCorrectAmountValue}"></span></li>
+                <li><span [ngClass]="{'active': swiper?.activeIndex === 2}"></span></li>
+              </ul>
+            </div>
+            <div class="qtn-wrapper">
+              <!-- TODO: translate -->
+              <p class="qtn-label">{{ paymentsCommonText?.beneficiaryReceivedCorrectAmountQtn || 'Did your family/friend receive the correct amount paid to them?' }}</p>
+              <ion-radio-group (ionChange)="changeBeneficiaryReceivedCorrectAmountValue($event)" [value]="beneficiaryReceivedCorrectAmountValue" mode="ios">
+                <!-- TODO: translate -->
+                <ion-radio value="yes" class="yes">{{ paymentsCommonText?.yes || 'Yes' }}</ion-radio>
+                <!-- TODO: translate -->
+                <ion-radio value="no" class="no">{{ paymentsCommonText?.no || 'No' }}</ion-radio>
+                <!-- TODO: translate -->
+                <ion-radio value="unsure" class="unsure">{{ paymentsCommonText?.unsure || 'Unsure' }}</ion-radio>
+              </ion-radio-group>
+            </div>
+          </swiper-slide>
+          <swiper-slide class="slide submit-slide">
+            <ion-button class="submit-btn" shape="round" (click)="onSubmit()">
+              <!-- {{ commonText?.submit }} -->
+              <!-- TODO: translate -->
+              {{ commonText?.submitResponses || 'Submit responses' }}
+            </ion-button>
+          </swiper-slide>
+        </swiper-container>
+            
+        <ion-row class="disclaimer-row">
+          <ion-col size="3" class="icon-col">
+            <ion-icon src="assets/icon/Privacy.svg"></ion-icon>
           </ion-col>
-        }
-        @if (!swiper?.isEnd) {
-          <ion-col [size]="swiper?.isBeginning ? 12 : 6" class="next-col">
-            <ion-icon class="next-icon" src="assets/icon/forward_arrow.svg" (click)="goToNextSlide()"></ion-icon>
+          <ion-col size="9">
+            <!-- TODO: translate -->
+            <p class="disclaimer-text">
+              {{ paymentsCommonText?.wageTrackingDisclaimerText || "Don't worry - we won't share any information with your employer, agent or family." }}
+            </p>
           </ion-col>
-        }
-      </ion-row>
-    </div>
+        </ion-row>
+        
+        <ion-row class="next-prev-btns-row">
+          @if (!swiper?.isBeginning) {
+            <ion-col [size]="swiper?.isEnd ? 12 : 6" class="prev-col">
+              <ion-icon class="prev-icon" src="assets/icon/forward_arrow.svg" (click)="goToPreviousSlide()"></ion-icon>
+            </ion-col>
+          }
+          @if (!swiper?.isEnd) {
+            <ion-col [size]="swiper?.isBeginning ? 12 : 6" class="next-col">
+              <ion-icon class="next-icon" src="assets/icon/forward_arrow.svg" (click)="goToNextSlide()"></ion-icon>
+            </ion-col>
+          }
+        </ion-row>
+      </div>
+    }
 
     @if (isWorker && wageDetails?.status === 'issue_pending') {
       @if (!showActionQuestion) {
