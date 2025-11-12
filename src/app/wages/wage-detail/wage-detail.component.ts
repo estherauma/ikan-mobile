@@ -205,7 +205,9 @@ export class WageDetailComponent  implements OnInit {
 
   arraysEqual(a, b) {
     if (a?.length !== b?.length) return false;
-    return [...a].sort().every((val, i) => val === [...b].sort()[i]);
+    const sortedA = [...a].sort();
+    const sortedB = [...b].sort();
+    return sortedA.every((val, i) => val === sortedB[i]);
   }
 
   goToPreviousSlide() {
