@@ -88,7 +88,9 @@ export class WageDetailComponent  implements OnInit {
   }
 
   async ionViewWillLeave() {
-    await this.updateWageDetails();
+    if (this.isWorker) {
+      await this.updateWageDetails();
+    }
   }
 
   prefillValues() {
