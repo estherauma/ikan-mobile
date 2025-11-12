@@ -34,9 +34,9 @@ export class WorkerPage implements OnInit {
       url: '/contracts/home'
     },
     {
-      title: 'Payments',
+      title: 'Wage payments',
       icon: '/assets/icon/single_payment_blue.svg',
-      url: '/payments'
+      url: '/wages'
     },
     // {title: 'Placement'},
     // {title: 'To Do'},

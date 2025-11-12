@@ -198,6 +198,8 @@ export class AppComponent implements OnInit, OnDestroy {
       this.router.navigate([this.appPages[index].url], { queryParams: { surveySource: SurveySources.fromMenu } });
     } else if (this.appPages[index].url === '/delete-account') {
       await this.deleteAccount();
+    } else if (this.appPages[index].url === '/payments') {
+      this.router.navigate(['wages']);
     } else {
       this.router.navigate([this.appPages[index].url]);
     }
