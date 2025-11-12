@@ -1307,8 +1307,7 @@ export class SyncService {
             } else if (key === 'payslip' || key === 'crewBankTransferReceipt' || key === 'beneficiaryBankTransferReceipt') {
               const file = await this.uploadService.retrieveAndReturnBlob(value);
               if (file) {
-                const fileData = new FormData();
-                fileData.append(key, file);
+                wageToUpload.append(key, file);
               }
             } else {
               wageToUpload.append(key, value.toString());
