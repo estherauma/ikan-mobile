@@ -136,4 +136,16 @@ export class WagesDataService {
   async checkIfWageExists(onlineRef: string) {
     return await this.wages.some((wage) => wage.onlineRef === onlineRef);
   }
+
+  async updateOnlineRef(wageId, onlineRef) {
+    const query = `UPDATE wages SET online_ref = ? WHERE id = ?`;
+    const params = [onlineRef, wageId];
+    return this.db.executeSql(query, params).then(async(result) => {
+      await this.retrieveWages();
+      return result;
+    }).catch((err) => {
+      console.error('Error updating wage online ref', err);
+      return null;
+    });
+  }
 }
