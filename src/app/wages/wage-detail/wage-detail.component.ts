@@ -12,6 +12,7 @@ import { PdfJsViewerComponent } from 'ng2-pdfjs-viewer';
 import { StorageKeys, UserRole } from 'src/app/shared/types/api-types';
 import { ContractDataService } from 'src/app/contracts/data/contract-data.service';
 import { WagesDataService } from '../data/wages-data.service';
+import { SyncService } from 'src/app/shared/services/sync/sync.service';
 
 
 export type ReceivedCorrectAmountValue = 'yes' | 'no' | 'unsure' | '';
@@ -55,11 +56,11 @@ export class WageDetailComponent  implements OnInit {
     public router: Router,
     public contractDataService: ContractDataService,
     public wageDataService: WagesDataService,
+    public syncService: SyncService,
   ) {
     this.activatedRoute.queryParams.subscribe(async(params) => {
       if (params?.wageDetails) {
         this.wageDetails = JSON.parse(params.wageDetails);
-        console.log('Wage details:', this.wageDetails);
       }
     });
   }
@@ -160,7 +161,7 @@ export class WageDetailComponent  implements OnInit {
 
   async updateWageDetails() {
     const updatedWageDetails = { ...this.wageDetails};
-    const now = this.sharedMethods.getCurrentDateTime();
+    const now = this.sharedMethods.getCurrentDateTime('date');
     let hasUpdates = false;
     
     if (this.crewReceivedCorrectAmountValue !== this.wageDetails.crewReceivedRightAmount) {
@@ -174,32 +175,33 @@ export class WageDetailComponent  implements OnInit {
       hasUpdates = true;
     }
     if (!this.arraysEqual(this.whyTheDiscrepancyValues, this.wageDetails.whyTheDiscrepancy)) {
-      updatedWageDetails.whyTheDiscrepancy = this.whyTheDiscrepancyValues;
+      const json_value = this.whyTheDiscrepancyValues.length ? JSON.stringify(this.whyTheDiscrepancyValues) : null;
+      updatedWageDetails.whyTheDiscrepancy = json_value;
       hasUpdates = true;
     }
 
     if (hasUpdates) {
       if (
-        (updatedWageDetails.crewReceivedRightAmount && updatedWageDetails.crewReceivedRightAmount !== 'yes') || 
+        (updatedWageDetails.crewReceivedRightAmount && updatedWageDetails.crewReceivedRightAmount !== 'yes') &&
         (updatedWageDetails.beneficiaryReceivedRightAmount && updatedWageDetails.beneficiaryReceivedRightAmount !== 'yes')
       ) {
         updatedWageDetails.status = 'issue_pending';
       } else if (
         
-        (updatedWageDetails.crewReceivedRightAmount && updatedWageDetails.crewReceivedRightAmount === 'yes') || 
+        (updatedWageDetails.crewReceivedRightAmount && updatedWageDetails.crewReceivedRightAmount === 'yes') &&
         (updatedWageDetails.beneficiaryReceivedRightAmount && updatedWageDetails.beneficiaryReceivedRightAmount === 'yes')
       ) {
         updatedWageDetails.status = 'received';
       }
       
-      updatedWageDetails.updatedAt = now;
+      updatedWageDetails.updatedAt = new Date().toISOString();
       updatedWageDetails.updatedBy = this.currentUser?.id;
       await this.wageDataService.update(updatedWageDetails, this.wageDetails.id);
     }
   }
 
   arraysEqual(a, b) {
-    if (a.length !== b.length) return false;
+    if (a?.length !== b?.length) return false;
     return [...a].sort().every((val, i) => val === [...b].sort()[i]);
   }
 
