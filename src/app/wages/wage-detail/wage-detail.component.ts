@@ -197,6 +197,7 @@ export class WageDetailComponent  implements OnInit {
       updatedWageDetails.updatedAt = new Date().toISOString();
       updatedWageDetails.updatedBy = this.currentUser?.id;
       await this.wageDataService.update(updatedWageDetails, this.wageDetails.id);
+      await this.syncService.syncWages();
     }
   }
 
