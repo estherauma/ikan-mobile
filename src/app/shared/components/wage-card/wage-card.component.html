@@ -41,12 +41,23 @@
           </div>
         </ion-col>
         <ion-col size="8.5" class="details-col">
-          <h4 class="amount">
-            <span>$</span>{{ amount }}
-          </h4>
-          <p class="payee">
-            <span>{{ paymentsCommonText?.payee }}: </span> {{ payee }}
-          </p>
+          @if (isWorker) {
+            <h4 class="amount detail-highlight">
+              <span>$</span>{{ amount }}
+            </h4>
+            <p class="payee">
+              <span>{{ paymentsCommonText?.payee }}: </span> {{ payee }}
+            </p>
+          }
+          @else {
+            <h4 class="payee detail-highlight">
+              {{ payee }}
+            </h4>
+            <p class="amount">
+              <!-- TODO: translate -->
+              <span>{{ paymentsCommonText?.amount || 'Amount' }}: </span> <span>$</span>{{ amount }}
+            </p>
+          }
           <p class="payment-date">
             <span> {{ paymentsCommonText?.paymentDate }}: </span> 
             {{ sharedMethods.formatLocalDate(paymentDate, currentLanguage) }}
