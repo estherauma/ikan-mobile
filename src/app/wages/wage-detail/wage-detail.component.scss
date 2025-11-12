@@ -195,6 +195,12 @@ ion-content {
     color: var(--ikan_darkblue_100) !important;
   }
 }
+.content-pending {
+  .status-text {
+    background: #f0a751;  // var(--ikan_yellow_100);
+    color: var(--ikan_darkblue_100) !important;
+  }
+}
 
 .tracking-qtns-section {
   margin: 20px 0;
