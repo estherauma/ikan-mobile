@@ -1291,13 +1291,32 @@ export class SyncService {
     const wages = this.wagesDataService.wages;
     if (wages.length > 0) {
       for (const wage of wages) {
-        const wageToUpload = Object.assign({}, wage);
-        delete wageToUpload.id;
-        wageToUpload.user = wage.userId;
-        wageToUpload.vessel = wage.vesselId;
-        wageToUpload.whyTheDiscrepancy = wageToUpload?.whyTheDiscrepancy?.length ? wageToUpload.whyTheDiscrepancy : null;
+        const wageToUpload = new FormData();
+        wageToUpload.append('user', wage.userId);
+        wageToUpload.append('vessel', wage.vesselId);
+        
+        const uploadData = Object.assign({}, wage);
+        delete uploadData.id;
+        delete uploadData.userId;
+        delete uploadData.vesselId;
+        delete uploadData.onlineRef;
+        for (const [key, value] of Object.entries(uploadData)) {
+          if (value !== null && value !== undefined) {
+            if (key === 'whyTheDiscrepancy' && uploadData.whyTheDiscrepancy?.length) {
+              wageToUpload.append(key, JSON.stringify(value));
+            } else if (key === 'payslip' || key === 'crewBankTransferReceipt' || key === 'beneficiaryBankTransferReceipt') {
+              const file = await this.uploadService.retrieveAndReturnBlob(value);
+              if (file) {
+                const fileData = new FormData();
+                fileData.append(key, file);
+              }
+            } else {
+              wageToUpload.append(key, value.toString());
+            }
+          }
+        }
 
-        if (!wageToUpload?.onlineRef) {
+        if (!wage?.onlineRef) {
           this.apiService.post('wages', wageToUpload).subscribe(async(response: any) => {
             if (response?.status === 'OK') {
               await this.wagesDataService.updateOnlineRef(wage.id, response?.data?.id);
