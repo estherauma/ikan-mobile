@@ -73,7 +73,7 @@ export class WageDetailComponent  implements OnInit {
     this.currentUser = await this.sharedMethods.getUserData();
     this.isWorker = this.currentUser?.role === UserRole.worker;
     this.isVesselOwner = this.currentUser?.role === UserRole.vesselOwner;
-    this.hasInternet = await this.sharedMethods.checkInternetConnectionStatus()
+    this.hasInternet = await this.sharedMethods.checkInternetConnectionStatus();
     if (this.wageDetails?.payslip && this.wageDetails.payslip.endsWith('.pdf')) {
       const converted = Capacitor.convertFileSrc(this.wageDetails.payslip);
       this.payslipPdfUrl = converted ?? null;
@@ -183,13 +183,13 @@ export class WageDetailComponent  implements OnInit {
     }
 
     if (hasUpdates) {
+      // TODO: add beneficiaryRelationship check
       if (
         (updatedWageDetails.crewReceivedRightAmount && updatedWageDetails.crewReceivedRightAmount !== 'yes') &&
         (updatedWageDetails.beneficiaryReceivedRightAmount && updatedWageDetails.beneficiaryReceivedRightAmount !== 'yes')
       ) {
         updatedWageDetails.status = 'issue_pending';
       } else if (
-        
         (updatedWageDetails.crewReceivedRightAmount && updatedWageDetails.crewReceivedRightAmount === 'yes') &&
         (updatedWageDetails.beneficiaryReceivedRightAmount && updatedWageDetails.beneficiaryReceivedRightAmount === 'yes')
       ) {
