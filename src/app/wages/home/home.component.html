@@ -93,7 +93,7 @@
       @for (wage of userWages; track wage) {
         <div class="wage-wrapper">
           <app-wage-card
-            [status]="wage?.wageTracking?.status"
+            [status]="wage?.status"
             [amount]="wage?.usdAmount"
             [paymentDate]="wage?.paymentDate"
             [payee]="wage?.user?.firstName + ' ' + wage?.user?.lastName"

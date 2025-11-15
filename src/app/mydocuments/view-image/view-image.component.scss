@@ -20,7 +20,7 @@
       height: 100%;
       object-fit: cover;
       object-position: center;
-      border: none; 
+      border: none;
     }
   }
 
@@ -36,5 +36,19 @@
       text-align: center;
       padding: 10px 70px 30px 70px;
     }
+  }
+}
+
+.wage-image-view-wrapper {
+  height: 100%;
+  .img-wrapper {
+    height: 100%;
+    overflow: hidden;
+    img, .img {
+      transition: transform 0.2s ease;
+    }
+  }
+  .name-wrapper {
+    display: none;
   }
 }

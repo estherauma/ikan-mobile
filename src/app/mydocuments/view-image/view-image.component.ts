@@ -10,7 +10,8 @@ import { DocumentType } from 'src/app/shared/types/types';
     standalone: false
 })
 export class ViewImageComponent  implements OnInit {
-  imageFile: DocumentType; 
+  imageFile: DocumentType;
+  customImageViewClass = '';
 
   constructor(
     public sharedMethods: SharedmethodsService,

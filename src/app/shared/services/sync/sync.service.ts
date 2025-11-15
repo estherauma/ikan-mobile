@@ -96,6 +96,7 @@ export class SyncService {
     await this.syncMyDocuments();
     await this.syncPassports();
     await this.syncLearningHubProgress();
+    await this.syncWages();
     await this.fetchCompanies();
     await this.fetchVessels();
     await this.fetchContracts(); // clauses are fetched after contracts have been fetched in the fetchContracts method
@@ -1227,6 +1228,7 @@ export class SyncService {
             updatedAt: wage.updatedAt ??  now,
             createdBy: wage.createdBy ?? user?.id,
             updatedBy: wage.updatedBy ?? user?.id,
+            whyTheDiscrepancy: wage?.whyTheDiscrepancy ? JSON.stringify(wage.whyTheDiscrepancy) : null,
           };
           const wageExists = await this.wagesDataService.checkIfWageExists(wage.id);
           if (!wageExists) {
@@ -1246,9 +1248,89 @@ export class SyncService {
             await this.wagesDataService.saveOnlineWage(wageToSave).then(() => {
               console.log(`Wage for user ${wageToSave.userId} saved successfully.`);
             });
+          } else {
+            const currentWage = await this.wagesDataService.wages.find(w => w.onlineRef === wage.id);
+            const currentUpdateDate = new Date(currentWage?.updatedAt);
+            const newUpdateDate = new Date(wage.updatedAt);
+            if (currentUpdateDate < newUpdateDate) {
+              const currentPayslipFilename = currentWage?.payslip ? currentWage.payslip.split('files/')[1] : null;
+              const isOldPayslip = currentPayslipFilename && wage.payslip && wage.payslip.includes(currentPayslipFilename);
+              if (wageToSave?.payslip && !isOldPayslip) {
+                const fileUri = await this.uploadService.fetchAndSaveFile(wageToSave.payslip);
+                wageToSave.payslip = fileUri ?? null;
+              }
+              const currentCrewBankTransferReceiptFilename = currentWage?.crewBankTransferReceipt ? currentWage.crewBankTransferReceipt.split('files/')[1] : null;
+              const isOldCrewBankTransferReceipt = currentCrewBankTransferReceiptFilename && wage.crewBankTransferReceipt && wage.crewBankTransferReceipt.includes(currentCrewBankTransferReceiptFilename);
+              if (wageToSave?.crewBankTransferReceipt && !isOldCrewBankTransferReceipt) {
+                const fileUri = await this.uploadService.fetchAndSaveFile(wageToSave.crewBankTransferReceipt);
+                wageToSave.crewBankTransferReceipt = fileUri ?? null;
+              }
+              const currentBeneficiaryBankTransferReceiptFilename = currentWage?.beneficiaryBankTransferReceipt ? currentWage.beneficiaryBankTransferReceipt.split('files/')[1] : null;
+              const isOldBeneficiaryBankTransferReceipt = currentBeneficiaryBankTransferReceiptFilename && wage.beneficiaryBankTransferReceipt && wage.beneficiaryBankTransferReceipt.includes(currentBeneficiaryBankTransferReceiptFilename);
+              if (wageToSave?.beneficiaryBankTransferReceipt && !isOldBeneficiaryBankTransferReceipt) {
+                const fileUri = await this.uploadService.fetchAndSaveFile(wageToSave.beneficiaryBankTransferReceipt);
+                wageToSave.beneficiaryBankTransferReceipt = fileUri ?? null;
+              }
+
+              await this.wagesDataService.update(wageToSave, currentWage.id).then(() => {
+                console.log(`Wage for user ${wageToSave.userId} updated successfully.`);
+              });
+            }
           }
         }
       }
     });
+  }
+
+  async syncWages() {
+    const isValid = await this.authService.checkAcessTokenValidity();
+    if (!isValid || !this.isDbInitialized || !navigator.onLine) {
+      return;
+    }
+
+    const wages = this.wagesDataService.wages;
+    if (wages.length > 0) {
+      for (const wage of wages) {
+        const wageToUpload = new FormData();
+        wageToUpload.append('user', wage.userId);
+        wageToUpload.append('vessel', wage.vesselId);
+        
+        const uploadData = Object.assign({}, wage);
+        delete uploadData.id;
+        delete uploadData.userId;
+        delete uploadData.vesselId;
+        delete uploadData.onlineRef;
+        for (const [key, value] of Object.entries(uploadData)) {
+          if (value !== null && value !== undefined) {
+            if (key === 'whyTheDiscrepancy' && uploadData.whyTheDiscrepancy?.length) {
+              wageToUpload.append(key, JSON.stringify(value));
+            } else if (key === 'payslip' || key === 'crewBankTransferReceipt' || key === 'beneficiaryBankTransferReceipt') {
+              const file = await this.uploadService.retrieveAndReturnBlob(value);
+              if (file) {
+                wageToUpload.append(key, file);
+              }
+            } else {
+              wageToUpload.append(key, value.toString());
+            }
+          }
+        }
+
+        if (!wage?.onlineRef) {
+          this.apiService.post('wages', wageToUpload).subscribe(async(response: any) => {
+            if (response?.status === 'OK') {
+              await this.wagesDataService.updateOnlineRef(wage.id, response?.data?.id);
+            } else {
+              console.error(`Failed to sync wage for user ${wage.userId} to the api`, response);
+            }
+          });
+        } else {
+          this.apiService.put('wages', wage.onlineRef, wageToUpload).subscribe(async(response: any) => {
+            if (response?.status !== 'OK') {
+              console.error(`Failed to update wage for user ${wage.userId} to the api`, response);
+            }
+          });
+        }
+      }
+    }
   }
 }

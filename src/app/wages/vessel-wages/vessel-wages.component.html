@@ -95,7 +95,7 @@
                   @for (wage of group.wages; track wage) {
                     <div class="wage-item">
                       <app-wage-card
-                        [status]="wage?.wageTracking?.status"
+                        [status]="wage?.status"
                         [amount]="wage?.usdAmount"
                         [paymentDate]="wage?.paymentDate"
                         [payee]="wage?.user?.firstName + ' ' + wage?.user?.lastName"

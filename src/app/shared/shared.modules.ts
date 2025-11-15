@@ -51,6 +51,7 @@ import { VideoButtonComponent } from './components/video-button/video-button.com
 import { ProgressCircleComponent } from './components/progress-circle/progress-circle.component';
 import { AudioVideoButtonsComponent } from './components/audio-video-buttons/audio-video-buttons.component';
 import { WageCardComponent } from './components/wage-card/wage-card.component';
+import { SafepdfPipe } from './pipes/safepdf/safepdf.pipe';
 
 
 @NgModule({
@@ -62,6 +63,7 @@ import { WageCardComponent } from './components/wage-card/wage-card.component';
   ],
   declarations: [
     SafeurlPipe,
+    SafepdfPipe,
     FormComponent,
     HeaderComponent,
     SearchComponent,
@@ -113,6 +115,7 @@ import { WageCardComponent } from './components/wage-card/wage-card.component';
   ],
   exports: [
     SafeurlPipe,
+    SafepdfPipe,
     FormComponent,
     HeaderComponent,
     SearchComponent,

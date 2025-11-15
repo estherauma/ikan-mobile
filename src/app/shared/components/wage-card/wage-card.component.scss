@@ -52,7 +52,7 @@
               font-size: 0.9rem;
             }
           }
-          .amount {
+          .detail-highlight {
             color: var(--ikan_darkblue_100);
             font-weight: 600;
             margin: 0;
@@ -106,10 +106,10 @@
   }
 }
 .card-action-required {
-  background: var(--ikan_yellow_100);
+  background: #f0a751;  // var(--ikan_yellow_100);
   .status-text,
   .status-message {
-    background: var(--ikan_yellow_100);
+    background: #f0a751;  // var(--ikan_yellow_100);
     color: var(--ikan_darkblue_100) !important;
   }
   .status-alert-icon {
@@ -139,9 +139,9 @@
   }
 }
 .card-pending {
-  background: var(--ikan_yellow_100);
+  background: #f0a751;  // var(--ikan_yellow_100);
   .status-text {
-    background: var(--ikan_yellow_100);
+    background: #f0a751;  // var(--ikan_yellow_100);
     color: var(--ikan_darkblue_100) !important;
   }
 }

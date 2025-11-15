@@ -10,84 +10,390 @@
   <div
     class="content-wrapper"
     [ngClass]="{
-      'content-action-required': wageDetails?.wageTracking?.status === 'action_required',
-      'content-issue-pending': wageDetails?.wageTracking?.status === 'issue_pending',
-      'content-confirmed': wageDetails?.wageTracking?.status === 'confirmed',
-      'content-received': wageDetails?.wageTracking?.status === 'received'
+      'content-action-required': wageDetails?.status === 'action_required',
+      'content-issue-pending': wageDetails?.status === 'issue_pending',
+      'content-confirmed': wageDetails?.status === 'confirmed',
+      'content-pending': wageDetails?.status === 'pending',
+      'content-received': wageDetails?.status === 'received'
     }"
   >
-    <div class="wage-details-summary">
-      <div class="status-wrapper">
-        <p class="status-text">
-          @if (wageDetails?.wageTracking?.status === 'action_required') {
-            <!-- TODO: translate -->
-            {{ paymentsCommonText?.actionRequired || 'Action Required' }}
-          }
-          @if (wageDetails?.wageTracking?.status === 'issue_pending') {
-            <!-- TODO: translate -->
-            {{ paymentsCommonText?.issuePending || 'Issue Pending' }}
-          }
-          @if (wageDetails?.wageTracking?.status === 'confirmed') {
-            <!-- TODO: translate -->
-            {{ paymentsCommonText?.confirmed || 'Confirmed' }}
-          }
-          @if (wageDetails?.wageTracking?.status === 'received') {
-            <!-- TODO: translate -->
-            {{ paymentsCommonText?.received || 'Received' }}
-          }
-        </p>
-      </div>
-      <div class="summary-content">
-        <div class="summary-title">
-          <div class="icon-wrapper">
-            <ion-icon src="assets/icon/payments.svg" alt="payment icon" />
+    <!-- Wage details summary -->
+    @if (wageDetails?.status !== 'action_required') {
+      <div class="summary-section">
+        <div class="status-wrapper">
+          <p class="status-text">
+            @if (wageDetails?.status === 'action_required') {
+              <!-- TODO: translate -->
+              {{ paymentsCommonText?.actionRequired || 'Action Required' }}
+            }
+            @if (wageDetails?.status === 'issue_pending') {
+              <!-- TODO: translate -->
+              {{ paymentsCommonText?.issuePending || 'Issue Pending' }}
+            }
+            @if (wageDetails?.status === 'received') {
+              <!-- TODO: translate -->
+              {{ paymentsCommonText?.received || 'Received' }}
+            }
+            @if (wageDetails?.status === 'pending') {
+              <!-- TODO: translate -->
+              {{ paymentsCommonText?.pending || 'Pending' }}
+            }
+            @if (wageDetails?.status === 'confirmed') {
+              <!-- TODO: translate -->
+              {{ paymentsCommonText?.confirmed || 'Confirmed' }}
+            }
+          </p>
+        </div>
+        <div class="summary-content">
+          <div class="summary-title">
+            <div class="icon-wrapper">
+              <ion-icon src="assets/icon/payments.svg" alt="payment icon" />
+            </div>
+            <h4 class="amount">
+              <!-- TODO: translate -->
+              <span>USD</span> {{ wageDetails?.usdAmount }}
+            </h4>
           </div>
-          <h4 class="amount">
-            <span>USD</span> {{ wageDetails?.usdAmount }}
-          </h4>
+
+          <div class="summary-body">
+            <ion-row>
+              <ion-col size="5">
+                <p class="label">{{ paymentsCommonText?.payee }}:</p>
+              </ion-col>
+              <ion-col size="7">
+                <p class="value">{{wageDetails?.user?.firstName + ' ' + wageDetails?.user?.lastName}}</p>
+              </ion-col>
+            </ion-row>
+
+            <ion-row>
+              <ion-col size="5">
+                <p class="label">{{ commonText?.vessel }}:</p>
+              </ion-col>
+              <ion-col size="7">
+                <p class="value">{{wageDetails?.vessel?.name}}</p>
+              </ion-col>
+            </ion-row>
+
+            <ion-row>
+              <ion-col size="5">
+                <p class="label">{{ paymentsCommonText?.paymentDate }}:</p>
+              </ion-col>
+              <ion-col size="7">
+                <p class="value">{{ sharedMethods.formatLocalDate(wageDetails?.paymentDate, currentLanguage) }}</p>
+              </ion-col>
+            </ion-row>
+
+            <ion-row>
+              <ion-col size="5">
+                <p class="label">{{ paymentsCommonText?.paymentPeriod }}:</p>
+              </ion-col>
+              <ion-col size="7">
+                <p class="value">
+                  {{ sharedMethods.formatLocalDate(wageDetails?.startDate, currentLanguage) }} -
+                  {{ sharedMethods.formatLocalDate(wageDetails?.endDate, currentLanguage) }}
+                </p>
+              </ion-col>
+            </ion-row>
+          </div>
+        </div>
+      </div>
+    }
+
+    <!-- No payslip -->
+     @if (!wageDetails?.payslip) {
+      <div class="no-payslip-section">
+        <!-- TODO: translate -->
+        <h4 class="payslip-label">{{ paymentsCommonText?.yourPayslip || 'Your payslip' }}</h4>
+        <!-- TODO: translate -->
+        <p class="no-payslip-text">{{ paymentsCommonText?.noPayslipAvailable || 'No payslip available.' }}</p>
+      </div>
+    }
+
+    <!-- Payslip -->
+    @if (wageDetails?.payslip) {
+      <div class="payslip-section" [ngClass]="{'with-status-messages': isWorker && wageDetails?.status === 'issue_pending'}">
+        <div class="payslip-wrapper">
+          @if (wageDetails.payslip.endsWith('.pdf')) {
+            @if (hasInternet && payslipPdfUrl) {
+              <ion-row class="label-row">
+                <ion-col size="10">
+                  <!-- TODO: translate -->
+                  <h4 class="payslip-label">{{ paymentsCommonText?.yourPayslip || 'Your payslip' }}</h4>
+                </ion-col>
+                <ion-col size="2" class="icon-col">
+                  <ion-icon name="expand-outline" class="expand-icon" (click)="viewPdf(wageDetails.payslip)"></ion-icon>
+                </ion-col>
+              </ion-row>
+              <div class="pdf-viewer-wrapper">
+                <ng2-pdfjs-viewer
+                  #pdfViewer
+                  [pdfSrc]="payslipPdfUrl"
+                  [showOpenFile]="false"
+                  [showDownload]="false"
+                  [showPrint]="false"
+                  [showFind]="false"
+                  [showViewBookmark]="false"
+                  [showFullScreen]="true"
+                  [showSpinner]="showSpinner"
+                  (onDocumentError)="onPdfError($event)"
+                  (onDocumentLoad)="onPdfLoaded($event)"
+                ></ng2-pdfjs-viewer>
+              </div>
+            } @else {
+              <div class="link-wrapper" (click)="viewPdf(wageDetails.payslip)">
+                <img src="assets/icon/pdf.svg" />
+                <!-- TODO: translate -->
+                <p>{{ paymentsCommonText?.viewPayslip || 'View payslip' }}</p>
+              </div>
+            }
+          } @else {
+            <div class="link-wrapper" (click)="viewImage(wageDetails.payslip)">
+              <ion-icon name="image-outline"></ion-icon>
+              <!-- TODO: translate -->
+              <p>{{ paymentsCommonText?.viewPayslip || 'View payslip' }}</p>
+            </div>
+          }
         </div>
 
-        <div class="summary-body">
-          <ion-row>
-            <ion-col size="5">
-              <p class="label">{{ paymentsCommonText?.payee }}:</p>
+        @if (isWorker && wageDetails?.status === 'issue_pending') {
+          <div class="status-message-wrapper">
+            <ion-row>
+              <ion-col size="2" class="alert-icon-col">
+                <ion-icon name="alert-outline" alt="alert icon" class="alert-icon" />
+              </ion-col>
+              <ion-col size="10" class="message-col">
+                <!-- TODO: translate -->
+                <p>On 12 September 2025, you said UNSURE to The amount paid to your family/friend, did they receive the amount correctly?.</p>
+              </ion-col>
+            </ion-row>
+            <ion-row>
+              <ion-col size="2" class="alert-icon-col">
+                <ion-icon name="alert-outline" alt="alert icon" class="alert-icon" />
+              </ion-col>
+              <ion-col size="10" class="message-col">
+                <!-- TODO: translate -->
+                <p>On 12 September 2025, you said UNSURE to The amount paid to your family/friend, did they receive the amount correctly?.</p>
+              </ion-col>
+            </ion-row>
+          </div>
+        }
+      </div>
+    }
+    
+    <!-- Crew bank transfer receipt -->
+    @if (wageDetails?.crewBankTransferReceipt) {
+      <div class="crew-receipt-section">
+        @if (wageDetails.crewBankTransferReceipt.endsWith('.pdf')) {
+          <div class="link-wrapper" (click)="viewPdf(wageDetails.crewBankTransferReceipt)">
+            <img src="assets/icon/pdf.svg" />
+            <!-- TODO: translate -->
+            <p>{{ paymentsCommonText?.crewBankTransferReceipt || 'Crew bank transfer receipt' }}</p>
+          </div>
+        } @else {
+          <div class="link-wrapper" (click)="viewImage(wageDetails.crewBankTransferReceipt)">
+            <ion-icon name="image-outline"></ion-icon>
+            <!-- TODO: translate -->
+            <p>{{ paymentsCommonText?.crewBankTransferReceipt || 'Crew bank transfer receipt' }}</p>
+          </div>
+        }
+      </div>
+    }
+
+    <!-- Beneficiary bank transfer receipt -->
+    @if (wageDetails?.beneficiaryBankTransferReceipt) {
+      <div class="beneficiary-receipt-section">
+        @if (wageDetails.beneficiaryBankTransferReceipt.endsWith('.pdf')) {
+          <div class="link-wrapper" (click)="viewPdf(wageDetails.beneficiaryBankTransferReceipt)">
+            <img src="assets/icon/pdf.svg" />
+            <!-- TODO: translate -->
+            <p>{{ paymentsCommonText?.beneficiaryBankTransferReceipt || 'Beneficiary bank transfer receipt' }}</p>
+          </div>
+        } @else {
+          <div class="link-wrapper" (click)="viewImage(wageDetails.beneficiaryBankTransferReceipt)">
+            <ion-icon name="image-outline"></ion-icon>
+            <!-- TODO: translate -->
+            <p>{{ paymentsCommonText?.beneficiaryBankTransferReceipt || 'Beneficiary bank transfer receipt' }}</p>
+          </div>
+        }
+      </div>
+    }
+
+    <!-- Wage tracking questions -->
+    @if (isWorker && wageDetails?.status === 'action_required') {
+      <div class="tracking-qtns-section">
+        <swiper-container
+          #wageTrackingSwiper
+          id="welcome_swiper_element"
+          slides-per-view="1"
+          space-between="20"
+          centered-slides="true"
+          (swiperslidechange)="onSlideChange($event)"
+          (slidechange)="onSlideChange($event)"
+        >
+          <swiper-slide class="slide">
+            <div class="reminder-wrapper">
+              <ion-icon name="bulb-outline" class="bulb-icon"></ion-icon>
+              <!-- TODO: translate -->
+              <p class="reminder-text">{{ paymentsCommonText?.reminder || 'Reminder' }}</p>
+              <!-- TODO: translate -->
+              <p class="reminder-desc">{{ paymentsCommonText?.amountShouldReceiveBasedOnContract || 'Based on your contract, this is the amount you should receive:' }}</p>
+              <!-- TODO: translate -->
+              <h4 class="contract-amount">
+                {{ paymentsCommonText?.USD }} {{ contractData?.contractAmount || 'NOT SPECIFIED' }} / {{ paymentsCommonText?.month || 'month' }}
+              </h4>
+            </div>
+          </swiper-slide>
+          
+          <swiper-slide class="slide">
+            <div class="steps-container">
+              <ul class="progress-bar">
+                <li><span [ngClass]="{'active': swiper?.activeIndex === 1}"></span></li>
+                <li><span [ngClass]="{'completed': beneficiaryReceivedCorrectAmountValue}"></span></li>
+              </ul>
+            </div>
+            <div class="qtn-wrapper">
+              <!-- TODO: translate -->
+              <p class="qtn-label">{{ paymentsCommonText?.crewReceivedCorrectAmountQtn || 'Did you receive the correct amount paid to you?' }}</p>
+              <ion-radio-group (ionChange)="changeCrewReceivedCorrectAmountValue($event)" [value]="crewReceivedCorrectAmountValue" mode="ios">
+                <!-- TODO: translate -->
+                <ion-radio value="yes" class="yes">{{ paymentsCommonText?.yes || 'Yes' }}</ion-radio>
+                <!-- TODO: translate -->
+                <ion-radio value="no" class="no">{{ paymentsCommonText?.no || 'No' }}</ion-radio>
+                <!-- TODO: translate -->
+                <ion-radio value="unsure" class="unsure">{{ paymentsCommonText?.unsure || 'Unsure' }}</ion-radio>
+              </ion-radio-group>
+            </div>
+          </swiper-slide>
+          
+          <swiper-slide class="slide">
+            <div class="steps-container">
+              <ul class="progress-bar">
+                <li><span [ngClass]="{'completed': crewReceivedCorrectAmountValue}"></span></li>
+                <li><span [ngClass]="{'active': swiper?.activeIndex === 2}"></span></li>
+              </ul>
+            </div>
+            <div class="qtn-wrapper">
+              <!-- TODO: translate -->
+              <p class="qtn-label">{{ paymentsCommonText?.beneficiaryReceivedCorrectAmountQtn || 'Did your family/friend receive the correct amount paid to them?' }}</p>
+              <ion-radio-group (ionChange)="changeBeneficiaryReceivedCorrectAmountValue($event)" [value]="beneficiaryReceivedCorrectAmountValue" mode="ios">
+                <!-- TODO: translate -->
+                <ion-radio value="yes" class="yes">{{ paymentsCommonText?.yes || 'Yes' }}</ion-radio>
+                <!-- TODO: translate -->
+                <ion-radio value="no" class="no">{{ paymentsCommonText?.no || 'No' }}</ion-radio>
+                <!-- TODO: translate -->
+                <ion-radio value="unsure" class="unsure">{{ paymentsCommonText?.unsure || 'Unsure' }}</ion-radio>
+              </ion-radio-group>
+            </div>
+          </swiper-slide>
+          <swiper-slide class="slide submit-slide">
+            <ion-button class="submit-btn" shape="round" (click)="onSubmit()">
+              <!-- {{ commonText?.submit }} -->
+              <!-- TODO: translate -->
+              {{ commonText?.submitResponses || 'Submit responses' }}
+            </ion-button>
+          </swiper-slide>
+        </swiper-container>
+            
+        <ion-row class="disclaimer-row">
+          <ion-col size="3" class="icon-col">
+            <ion-icon src="assets/icon/Privacy.svg"></ion-icon>
+          </ion-col>
+          <ion-col size="9">
+            <!-- TODO: translate -->
+            <p class="disclaimer-text">
+              {{ paymentsCommonText?.wageTrackingDisclaimerText || "Don't worry - we won't share any information with your employer, agent or family." }}
+            </p>
+          </ion-col>
+        </ion-row>
+        
+        <ion-row class="next-prev-btns-row">
+          @if (!swiper?.isBeginning) {
+            <ion-col [size]="swiper?.isEnd ? 12 : 6" class="prev-col">
+              <ion-icon class="prev-icon" src="assets/icon/forward_arrow.svg" (click)="goToPreviousSlide()"></ion-icon>
             </ion-col>
-            <ion-col size="7">
-              <p class="value">{{wageDetails?.user?.firstName + ' ' + wageDetails?.user?.lastName}}</p>
+          }
+          @if (!swiper?.isEnd) {
+            <ion-col [size]="swiper?.isBeginning ? 12 : 6" class="next-col">
+              <ion-icon class="next-icon" src="assets/icon/forward_arrow.svg" (click)="goToNextSlide()"></ion-icon>
+            </ion-col>
+          }
+        </ion-row>
+      </div>
+    }
+
+    @if (isWorker && wageDetails?.status === 'issue_pending') {
+      @if (!showActionQuestion) {
+        <div class="issue-pending-actions-section">
+          <ion-row>
+            <ion-col size="1.5" class="icon-col">
+              <ion-icon src="assets/icon/script.svg" alt="script icon" class="script-icon" />
+            </ion-col>
+            <ion-col size="8.5" class="message-col">
+              <!-- TODO: translate -->
+              <p>You reported an issue with your wages. Do you know why the discrepancy?</p>
+            </ion-col>
+            <ion-col size="2" class="next-icon-col">
+              <ion-icon src="assets/icon/forward_arrow.svg" (click)="goToDiscrepancySection()"></ion-icon>
             </ion-col>
           </ion-row>
 
           <ion-row>
-            <ion-col size="5">
-              <p class="label">{{ commonText?.vessel }}:</p>
+            <ion-col size="1.5" class="icon-col">
+              <ion-icon src="assets/icon/calendar_with_tick.svg" alt="calendar icon" class="calendar-icon" />
             </ion-col>
-            <ion-col size="7">
-              <p class="value">{{wageDetails?.vessel?.name}}</p>
+            <ion-col size="8.5" class="message-col">
+              <!-- TODO: translate -->
+              <p>Want to ask a question or need help? Here are some options.</p>
             </ion-col>
-          </ion-row>
-
-          <ion-row>
-            <ion-col size="5">
-              <p class="label">{{ paymentsCommonText?.paymentDate }}:</p>
-            </ion-col>
-            <ion-col size="7">
-              <p class="value">{{ sharedMethods.formatLocalDate(wageDetails?.paymentDate, currentLanguage) }}</p>
+            <ion-col size="2" class="next-icon-col">
+              <ion-icon src="assets/icon/forward_arrow.svg" (click)="goToWageTrackingHelp()"></ion-icon>
             </ion-col>
           </ion-row>
-
+        </div>
+      }
+      @if (showActionQuestion) {
+        <div class="issue-pending-action-qtn-section">
           <ion-row>
-            <ion-col size="5">
-              <p class="label">{{ paymentsCommonText?.paymentPeriod }}:</p>
+            <ion-col size="10" class="label-col">
+              <p class="label">Help us better understand your situation so that we know how best to help you. Do you know why was there a discrepancy?</p>
             </ion-col>
-            <ion-col size="7">
-              <p class="value">
-                {{ sharedMethods.formatLocalDate(wageDetails?.startDate, currentLanguage) }} -
-                {{ sharedMethods.formatLocalDate(wageDetails?.endDate, currentLanguage) }}
+            <ion-col size="2" class="icon-col">
+              <ion-icon src="assets/icon/script.svg" alt="alert icon" class="alert-icon" />
+            </ion-col>
+            <ion-col size="12" class="value-col">
+              <p>Please choose as many as relevant.</p>
+              <ion-list>
+                @for (option of whyTheDiscrepancyOptions; track option.value) {
+                  <ion-item lines="none">
+                    <ion-checkbox
+                      mode="ios"
+                      slot="start"
+                      [value]="option.value"
+                      (ionChange)="changeWhyTheDiscrepancyValue($event)"
+                      [checked]="isWhyTheDiscrepancyOptionSelected(option.value)"
+                    ></ion-checkbox>
+                    <ion-label>
+                      {{ option.label }}
+                    </ion-label>
+                  </ion-item>
+                }
+              </ion-list>
+            </ion-col>
+          </ion-row>
+          
+          <ion-row class="disclaimer-row">
+            <ion-col size="3" class="icon-col">
+              <ion-icon src="assets/icon/Privacy.svg"></ion-icon>
+            </ion-col>
+            <ion-col size="9">
+              <!-- TODO: translate -->
+              <p class="disclaimer-text">
+                {{ paymentsCommonText?.wageTrackingDisclaimerText || "Don't worry - we won't share any information with your employer, agent or family." }}
               </p>
             </ion-col>
           </ion-row>
         </div>
-      </div>
-    </div>
+      }
+    }
   </div>
 </ion-content>
