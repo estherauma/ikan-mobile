@@ -117,15 +117,13 @@ export class WageDetailComponent  implements OnInit {
     } else {
       await FileOpener.openFile({ path: file, mimeType: 'application/pdf' })
         .catch((e) => {
-          console.log('Error opening file', e);
-          // TODO: translate
-          this.sharedMethods.showToast(this.paymentsCommonText?.errorOpeningFile || 'Error opening file');
+          console.error('Error opening file', e);
+          this.sharedMethods.showToast(this.commonText?.errorOpeningFile);
         });
     }
   }
 
   async viewImage(file) {
-    // TODO: translate
     const imageFile = {
       fileUrl: file,
       // fileName: file
@@ -222,27 +220,26 @@ export class WageDetailComponent  implements OnInit {
     swiper.slideNext();
   }
 
-  // TODO: translate
   getWhyTheDiscrepancyOptions(){
     return [
       {
         value: 'toRepayMoneyOwedToCaptainOrEmployer',
-        label: this.paymentsCommonText?.toRepayMoneyOwedToCaptainOrEmployer || 'To repay money owed to captain / employer',
+        label: this.paymentsCommonText?.toRepayMoneyOwedToCaptainOrEmployer,
         selected: false
       },
       {
         value: 'toRepayMoneyOwedToManningAgent',
-        label: this.paymentsCommonText?.toRepayMoneyOwedToManningAgent || 'To repay money owed to manning agent',
+        label: this.paymentsCommonText?.toRepayMoneyOwedToManningAgent,
         selected: false
       },
       {
         value: 'toPayForUnionMembership',
-        label: this.paymentsCommonText?.toPayForUnionMembership || "To pay for union membership",
+        label: this.paymentsCommonText?.toPayForUnionMembership,
         selected: false
       },
       {
         value: 'amNotSure',
-        label: this.paymentsCommonText?.amNotSure || "I'm not sure",
+        label: this.paymentsCommonText?.amNotSure,
         selected: false
       },
     ];
@@ -330,6 +327,23 @@ export class WageDetailComponent  implements OnInit {
       }
     }
     return null;
+  }
+
+  getStatusLabel(status: string) {
+    switch (status) {
+      case 'pending':
+        return this.paymentsCommonText?.pending;
+      case 'action_required':
+        return this.paymentsCommonText?.actionRequired;
+      case 'issue_pending':
+        return this.paymentsCommonText?.issuePending;
+      case 'received':
+        return this.paymentsCommonText?.received;
+      case 'confirmed':
+        return this.paymentsCommonText?.confirmed;
+      default:
+        return status;
+    }
   }
 
 }

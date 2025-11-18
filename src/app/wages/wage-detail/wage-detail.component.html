@@ -22,26 +22,7 @@
       <div class="summary-section">
         <div class="status-wrapper">
           <p class="status-text">
-            @if (wageDetails?.status === 'action_required') {
-              <!-- TODO: translate -->
-              {{ paymentsCommonText?.actionRequired || 'Action Required' }}
-            }
-            @if (wageDetails?.status === 'issue_pending') {
-              <!-- TODO: translate -->
-              {{ paymentsCommonText?.issuePending || 'Issue Pending' }}
-            }
-            @if (wageDetails?.status === 'received') {
-              <!-- TODO: translate -->
-              {{ paymentsCommonText?.received || 'Received' }}
-            }
-            @if (wageDetails?.status === 'pending') {
-              <!-- TODO: translate -->
-              {{ paymentsCommonText?.pending || 'Pending' }}
-            }
-            @if (wageDetails?.status === 'confirmed') {
-              <!-- TODO: translate -->
-              {{ paymentsCommonText?.confirmed || 'Confirmed' }}
-            }
+            {{ getStatusLabel(wageDetails?.status) }}
           </p>
         </div>
         <div class="summary-content">
@@ -50,8 +31,7 @@
               <ion-icon src="assets/icon/payments.svg" alt="payment icon" />
             </div>
             <h4 class="amount">
-              <!-- TODO: translate -->
-              <span>USD</span> {{ wageDetails?.usdAmount }}
+              <span>{{ paymentsCommonText?.USD }}</span> {{ wageDetails?.usdAmount }}
             </h4>
           </div>
 
@@ -102,10 +82,8 @@
     <!-- No payslip -->
      @if (!wageDetails?.payslip) {
       <div class="no-payslip-section">
-        <!-- TODO: translate -->
-        <h4 class="payslip-label">{{ paymentsCommonText?.yourPayslip || 'Your payslip' }}</h4>
-        <!-- TODO: translate -->
-        <p class="no-payslip-text">{{ paymentsCommonText?.noPayslipAvailable || 'No payslip available.' }}</p>
+        <h4 class="payslip-label">{{ paymentsCommonText?.yourPayslip }}</h4>
+        <p class="no-payslip-text">{{ paymentsCommonText?.noPayslipAvailable }}</p>
       </div>
     }
 
@@ -117,8 +95,7 @@
             @if (hasInternet && payslipPdfUrl) {
               <ion-row class="label-row">
                 <ion-col size="10">
-                  <!-- TODO: translate -->
-                  <h4 class="payslip-label">{{ paymentsCommonText?.yourPayslip || 'Your payslip' }}</h4>
+                  <h4 class="payslip-label">{{ paymentsCommonText?.yourPayslip }}</h4>
                 </ion-col>
                 <ion-col size="2" class="icon-col">
                   <ion-icon name="expand-outline" class="expand-icon" (click)="viewPdf(wageDetails.payslip)"></ion-icon>
@@ -142,15 +119,13 @@
             } @else {
               <div class="link-wrapper" (click)="viewPdf(wageDetails.payslip)">
                 <img src="assets/icon/pdf.svg" />
-                <!-- TODO: translate -->
-                <p>{{ paymentsCommonText?.viewPayslip || 'View payslip' }}</p>
+                <p>{{ paymentsCommonText?.viewPayslip }}</p>
               </div>
             }
           } @else {
             <div class="link-wrapper" (click)="viewImage(wageDetails.payslip)">
               <ion-icon name="image-outline"></ion-icon>
-              <!-- TODO: translate -->
-              <p>{{ paymentsCommonText?.viewPayslip || 'View payslip' }}</p>
+              <p>{{ paymentsCommonText?.viewPayslip }}</p>
             </div>
           }
         </div>
@@ -186,14 +161,12 @@
         @if (wageDetails.crewBankTransferReceipt.endsWith('.pdf')) {
           <div class="link-wrapper" (click)="viewPdf(wageDetails.crewBankTransferReceipt)">
             <img src="assets/icon/pdf.svg" />
-            <!-- TODO: translate -->
-            <p>{{ paymentsCommonText?.crewBankTransferReceipt || 'Crew bank transfer receipt' }}</p>
+            <p>{{ paymentsCommonText?.viewCrewBankTransferReceipt }}</p>
           </div>
         } @else {
           <div class="link-wrapper" (click)="viewImage(wageDetails.crewBankTransferReceipt)">
             <ion-icon name="image-outline"></ion-icon>
-            <!-- TODO: translate -->
-            <p>{{ paymentsCommonText?.crewBankTransferReceipt || 'Crew bank transfer receipt' }}</p>
+            <p>{{ paymentsCommonText?.viewCrewBankTransferReceipt }}</p>
           </div>
         }
       </div>
@@ -205,14 +178,12 @@
         @if (wageDetails.beneficiaryBankTransferReceipt.endsWith('.pdf')) {
           <div class="link-wrapper" (click)="viewPdf(wageDetails.beneficiaryBankTransferReceipt)">
             <img src="assets/icon/pdf.svg" />
-            <!-- TODO: translate -->
-            <p>{{ paymentsCommonText?.beneficiaryBankTransferReceipt || 'Beneficiary bank transfer receipt' }}</p>
+            <p>{{ paymentsCommonText?.viewBeneficiaryBankTransferReceipt }}</p>
           </div>
         } @else {
           <div class="link-wrapper" (click)="viewImage(wageDetails.beneficiaryBankTransferReceipt)">
             <ion-icon name="image-outline"></ion-icon>
-            <!-- TODO: translate -->
-            <p>{{ paymentsCommonText?.beneficiaryBankTransferReceipt || 'Beneficiary bank transfer receipt' }}</p>
+            <p>{{ paymentsCommonText?.viewBeneficiaryBankTransferReceipt }}</p>
           </div>
         }
       </div>
@@ -233,13 +204,10 @@
           <swiper-slide class="slide">
             <div class="reminder-wrapper">
               <ion-icon name="bulb-outline" class="bulb-icon"></ion-icon>
-              <!-- TODO: translate -->
-              <p class="reminder-text">{{ paymentsCommonText?.reminder || 'Reminder' }}</p>
-              <!-- TODO: translate -->
-              <p class="reminder-desc">{{ paymentsCommonText?.amountShouldReceiveBasedOnContract || 'Based on your contract, this is the amount you should receive:' }}</p>
-              <!-- TODO: translate -->
+              <p class="reminder-text">{{ paymentsCommonText?.reminder }}</p>
+              <p class="reminder-desc">{{ paymentsCommonText?.amountShouldReceiveBasedOnContract }}</p>
               <h4 class="contract-amount">
-                {{ paymentsCommonText?.USD }} {{ contractData?.contractAmount || 'NOT SPECIFIED' }} / {{ paymentsCommonText?.month || 'month' }}
+                {{ paymentsCommonText?.USD }} {{ contractData?.contractAmount || paymentsCommonText?.notSpecified }} / {{ paymentsCommonText?.month }}
               </h4>
             </div>
           </swiper-slide>
@@ -252,15 +220,11 @@
               </ul>
             </div>
             <div class="qtn-wrapper">
-              <!-- TODO: translate -->
-              <p class="qtn-label">{{ paymentsCommonText?.crewReceivedCorrectAmountQtn || 'Did you receive the correct amount paid to you?' }}</p>
+              <p class="qtn-label">{{ paymentsCommonText?.crewReceivedCorrectAmountQuestion }}</p>
               <ion-radio-group (ionChange)="changeCrewReceivedCorrectAmountValue($event)" [value]="crewReceivedCorrectAmountValue" mode="ios">
-                <!-- TODO: translate -->
-                <ion-radio value="yes" class="yes">{{ paymentsCommonText?.yes || 'Yes' }}</ion-radio>
-                <!-- TODO: translate -->
-                <ion-radio value="no" class="no">{{ paymentsCommonText?.no || 'No' }}</ion-radio>
-                <!-- TODO: translate -->
-                <ion-radio value="unsure" class="unsure">{{ paymentsCommonText?.unsure || 'Unsure' }}</ion-radio>
+                <ion-radio value="yes" class="yes">{{ paymentsCommonText?.yes }}</ion-radio>
+                <ion-radio value="no" class="no">{{ paymentsCommonText?.no }}</ion-radio>
+                <ion-radio value="unsure" class="unsure">{{ paymentsCommonText?.unsure }}</ion-radio>
               </ion-radio-group>
             </div>
           </swiper-slide>
@@ -273,23 +237,18 @@
               </ul>
             </div>
             <div class="qtn-wrapper">
-              <!-- TODO: translate -->
-              <p class="qtn-label">{{ paymentsCommonText?.beneficiaryReceivedCorrectAmountQtn || 'Did your family/friend receive the correct amount paid to them?' }}</p>
+              <p class="qtn-label">{{ paymentsCommonText?.beneficiaryReceivedCorrectAmountQuestion }}</p>
               <ion-radio-group (ionChange)="changeBeneficiaryReceivedCorrectAmountValue($event)" [value]="beneficiaryReceivedCorrectAmountValue" mode="ios">
-                <!-- TODO: translate -->
-                <ion-radio value="yes" class="yes">{{ paymentsCommonText?.yes || 'Yes' }}</ion-radio>
-                <!-- TODO: translate -->
-                <ion-radio value="no" class="no">{{ paymentsCommonText?.no || 'No' }}</ion-radio>
-                <!-- TODO: translate -->
-                <ion-radio value="unsure" class="unsure">{{ paymentsCommonText?.unsure || 'Unsure' }}</ion-radio>
+                <ion-radio value="yes" class="yes">{{ paymentsCommonText?.yes }}</ion-radio>
+                <ion-radio value="no" class="no">{{ paymentsCommonText?.no }}</ion-radio>
+                <ion-radio value="unsure" class="unsure">{{ paymentsCommonText?.unsure }}</ion-radio>
               </ion-radio-group>
             </div>
           </swiper-slide>
           <swiper-slide class="slide submit-slide">
             <ion-button class="submit-btn" shape="round" (click)="onSubmit()">
               <!-- {{ commonText?.submit }} -->
-              <!-- TODO: translate -->
-              {{ commonText?.submitResponses || 'Submit responses' }}
+              {{ paymentsCommonText?.submitResponses }}
             </ion-button>
           </swiper-slide>
         </swiper-container>
@@ -299,9 +258,8 @@
             <ion-icon src="assets/icon/Privacy.svg"></ion-icon>
           </ion-col>
           <ion-col size="9">
-            <!-- TODO: translate -->
             <p class="disclaimer-text">
-              {{ paymentsCommonText?.wageTrackingDisclaimerText || "Don't worry - we won't share any information with your employer, agent or family." }}
+              {{ paymentsCommonText?.wageTrackingDisclaimerText }}
             </p>
           </ion-col>
         </ion-row>
@@ -329,8 +287,7 @@
               <ion-icon src="assets/icon/script.svg" alt="script icon" class="script-icon" />
             </ion-col>
             <ion-col size="8.5" class="message-col">
-              <!-- TODO: translate -->
-              <p>You reported an issue with your wages. Do you know why the discrepancy?</p>
+              <p>{{ paymentsCommonText?.wageIssuesReportedWhatIsTheDiscrepancy }}</p>
             </ion-col>
             <ion-col size="2" class="next-icon-col">
               <ion-icon src="assets/icon/forward_arrow.svg" (click)="goToDiscrepancySection()"></ion-icon>
@@ -342,8 +299,7 @@
               <ion-icon src="assets/icon/calendar_with_tick.svg" alt="calendar icon" class="calendar-icon" />
             </ion-col>
             <ion-col size="8.5" class="message-col">
-              <!-- TODO: translate -->
-              <p>Want to ask a question or need help? Here are some options.</p>
+              <p>{{ paymentsCommonText?.needHelpOrHaveAQuestion }}</p>
             </ion-col>
             <ion-col size="2" class="next-icon-col">
               <ion-icon src="assets/icon/forward_arrow.svg" (click)="goToWageTrackingHelp()"></ion-icon>
@@ -355,13 +311,13 @@
         <div class="issue-pending-action-qtn-section">
           <ion-row>
             <ion-col size="10" class="label-col">
-              <p class="label">Help us better understand your situation so that we know how best to help you. Do you know why was there a discrepancy?</p>
+              <p class="label">{{ paymentsCommonText?.wageIssuesReportedWhatIsTheDiscrepancy }}</p>
             </ion-col>
             <ion-col size="2" class="icon-col">
               <ion-icon src="assets/icon/script.svg" alt="alert icon" class="alert-icon" />
             </ion-col>
             <ion-col size="12" class="value-col">
-              <p>Please choose as many as relevant.</p>
+              <p>{{ paymentsCommonText?.pleaseChooseAsManyAsRelevant }}</p>
               <ion-list>
                 @for (option of whyTheDiscrepancyOptions; track option.value) {
                   <ion-item lines="none">
@@ -386,9 +342,8 @@
               <ion-icon src="assets/icon/Privacy.svg"></ion-icon>
             </ion-col>
             <ion-col size="9">
-              <!-- TODO: translate -->
               <p class="disclaimer-text">
-                {{ paymentsCommonText?.wageTrackingDisclaimerText || "Don't worry - we won't share any information with your employer, agent or family." }}
+                {{ paymentsCommonText?.wageTrackingDisclaimerText }}
               </p>
             </ion-col>
           </ion-row>
