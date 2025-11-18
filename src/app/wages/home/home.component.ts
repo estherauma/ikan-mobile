@@ -133,8 +133,7 @@ export class HomeComponent implements OnInit {
     this.commonText = await this.contentService?.commonText;
     const paymentsPageData = this.contentService.getContentByPropertyName('payments-common-text');
     this.paymentsCommonText = this.sharedMethods.convertAdditionalTextToObj(paymentsPageData?.additionalText);
-    // TODO: translate
-    this.pageTitle = this.paymentsCommonText?.wagePayments || 'Wage payments';
+    this.pageTitle = this.paymentsCommonText?.wagePayments;
     this.filterOptions = [
       { title: this.commonText?.closed, value: 'closed' },
       { title: this.commonText?.opened, value: 'opened' },

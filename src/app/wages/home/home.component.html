@@ -19,10 +19,9 @@
       <ion-img src="assets/icon/payments.svg" class="icon"></ion-img>
     </ion-col>
     <ion-col size="12">
-      <!-- TODO: translate -->
       <app-title
         class="wages-page"
-        [title]="paymentsCommonText?.wagePayments || 'Wage Payments'"
+        [title]="paymentsCommonText?.wagePayments"
         [isBlue]="true"
       ></app-title>
     </ion-col>
@@ -70,12 +69,10 @@
       <ion-row class="sub-title-row">
         <ion-col size="12">
           <p class="sub-title">
-            <!-- TODO: translate -->
-            {{ paymentsCommonText?.wagePaymentHistory || 'Wage payment history' }}
+            {{ paymentsCommonText?.wagePaymentHistory }}
             @if (userWages?.length) {
-            <!-- TODO: translate -->
               <span>
-                ({{ userWages?.length + ' ' + (paymentsCommonText?.wagePayments || 'Wage payments') }})
+                ({{ userWages?.length + ' ' + (paymentsCommonText?.wagePayments) }})
               </span>
             }
           </p>
@@ -84,8 +81,7 @@
         @if (!userWages?.length) {
           <ion-col size="12">
             <p class="no-wages">
-            <!-- TODO: translate -->
-              {{ paymentsCommonText?.noWagePayments || 'No wage payments yet' }}
+              {{ paymentsCommonText?.noWagePayments }}
             </p>
           </ion-col>
         }
