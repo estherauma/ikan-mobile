@@ -11,26 +11,7 @@
   <div class="card">
     <div class="status-wrapper">
       <p class="status-text">
-        @if (status === 'action_required') {
-          <!-- TODO: translate -->
-          {{ paymentsCommonText?.actionRequired || 'Action Required' }}
-        }
-        @if (status === 'issue_pending') {
-          <!-- TODO: translate -->
-          {{ paymentsCommonText?.issuePending || 'Issue Pending' }}
-        }
-        @if (status === 'received') {
-          <!-- TODO: translate -->
-          {{ paymentsCommonText?.received || 'Received' }}
-        }
-        @if (status === 'pending') {
-          <!-- TODO: translate -->
-          {{ paymentsCommonText?.pending || 'Pending' }}
-        }
-        @if (status === 'confirmed') {
-          <!-- TODO: translate -->
-          {{ paymentsCommonText?.confirmed || 'Confirmed' }}
-        }
+        {{ getStatusText() }}
       </p>
     </div>
     <div class="card-content">
@@ -54,8 +35,7 @@
               {{ payee }}
             </h4>
             <p class="amount">
-              <!-- TODO: translate -->
-              <span>{{ paymentsCommonText?.amount || 'Amount' }}: </span> <span>$</span>{{ amount }}
+              <span>{{ paymentsCommonText?.amount }}: </span> <span>$</span>{{ amount }}
             </p>
           }
           <p class="payment-date">
@@ -83,10 +63,10 @@
         <ion-col size="10.5" class="message-col">
           <p class="status-message">
             @if (status === 'action_required') {
-              {{ paymentsCommonText?.actionRequiredMessage || 'Please confirm your wage payments to find out whether you are paid correctly.' }}
+              {{ paymentsCommonText?.pleaseVerifyReceiptOfYourWages }}
             }
             @if (status === 'issue_pending') {
-              {{ paymentsCommonText?.issuePendingMessage || 'You reported an issue with your wages. Do you know why the discrepancy?' }}
+              {{ paymentsCommonText?.wageIssuesReportedWhatIsTheDiscrepancy }}
             }
           </p>
         </ion-col>
