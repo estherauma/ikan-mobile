@@ -112,10 +112,11 @@ export class WageDetailComponent  implements OnInit {
         ? this.sharedMethods.formatLocalDate(this.wageDetails.crewReceivedRightAmountDate, this.currentLanguage)
         : this.sharedMethods.formatLocalDate(this.wageDetails?.updatedAt, this.currentLanguage);
 
-      crewIncorrectMessage.replace('{{value}}', `<span class="value">${crewValueLabel}</span>`);
-      crewIncorrectMessage.replace('{{receivedDate}}', `<span class="received-date">${crewReceivedDate}</span>`);
-      this.issuePendingCrewReceivedIncorrectAmountMessage = crewIncorrectMessage;
-      this.showCrewIssuePendingMessage = crewIncorrectMessage ? true : false;
+      const crewMessage = crewIncorrectMessage
+        .replace('{{value}}', `<span class="value">${crewValueLabel}</span>`)
+        .replace('{{receivedDate}}', `<span class="received-date">${crewReceivedDate}</span>`);
+      this.issuePendingCrewReceivedIncorrectAmountMessage = crewMessage;
+      this.showCrewIssuePendingMessage = crewMessage ? true : false;
     }
     if (this.beneficiaryReceivedCorrectAmountValue && this.beneficiaryReceivedCorrectAmountValue !== 'yes') {
       const beneficiaryIncorrectMessage = this.paymentsCommonText?.issuePendingBeneficiaryReceivedIncorrectAmountMessage || '';
@@ -124,10 +125,11 @@ export class WageDetailComponent  implements OnInit {
         ? this.sharedMethods.formatLocalDate(this.wageDetails.beneficiaryReceivedRightAmountDate, this.currentLanguage)
         : this.sharedMethods.formatLocalDate(this.wageDetails?.updatedAt, this.currentLanguage);
 
-      beneficiaryIncorrectMessage.replace('{{value}}', `<span class="value">${beneficiaryValueLabel}</span>`);
-      beneficiaryIncorrectMessage.replace('{{receivedDate}}', `<span class="received-date">${beneficiaryReceivedDate}</span>`);
-      this.issuePendingBeneficiaryReceivedIncorrectAmountMessage = beneficiaryIncorrectMessage;
-      this.showBeneficiaryIssuePendingMessage = beneficiaryIncorrectMessage ? true : false;
+      const beneficiaryMessage = beneficiaryIncorrectMessage
+        .replace('{{value}}', `<span class="value">${beneficiaryValueLabel}</span>`)
+        .replace('{{receivedDate}}', `<span class="received-date">${beneficiaryReceivedDate}</span>`);
+      this.issuePendingBeneficiaryReceivedIncorrectAmountMessage = beneficiaryMessage;
+      this.showBeneficiaryIssuePendingMessage = beneficiaryMessage ? true : false;
     }
     this.cdr.detectChanges();
   }
