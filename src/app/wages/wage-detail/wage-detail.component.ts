@@ -42,6 +42,10 @@ export class WageDetailComponent  implements OnInit {
   whyTheDiscrepancyValues: string[] = [];
   whyTheDiscrepancyOptions = [];
   contractData: any;
+  issuePendingCrewReceivedIncorrectAmountMessage = '';
+  issuePendingBeneficiaryReceivedIncorrectAmountMessage = '';
+  showCrewIssuePendingMessage = false;
+  showBeneficiaryIssuePendingMessage = false;
 
   @ViewChild('pdfViewer') pdfViewer!: PdfJsViewerComponent;
   @ViewChild('wageTrackingSwiper', { static: false }) swiperRef: ElementRef | undefined;
@@ -82,6 +86,7 @@ export class WageDetailComponent  implements OnInit {
     this.whyTheDiscrepancyOptions = this.getWhyTheDiscrepancyOptions();
     this.contractData = await this.getContractData();
     this.prefillValues();
+    this.getIssuePendingMessages();
 
     const analyticsEventParams = this.sharedMethods.getAnalyticsEventParams();
     this.analyticsService.trackEvent(PageEventNames.viewWageDetails, analyticsEventParams);
@@ -97,6 +102,34 @@ export class WageDetailComponent  implements OnInit {
     this.crewReceivedCorrectAmountValue = this.wageDetails?.crewReceivedRightAmount ?? '';
     this.beneficiaryReceivedCorrectAmountValue = this.wageDetails?.beneficiaryReceivedRightAmount ?? '';
     this.whyTheDiscrepancyValues = this.wageDetails?.whyTheDiscrepancy?.length ? this.wageDetails?.whyTheDiscrepancy : [];
+  }
+
+  getIssuePendingMessages() {
+    if (this.crewReceivedCorrectAmountValue && this.crewReceivedCorrectAmountValue !== 'yes') {
+      const crewIncorrectMessage = this.paymentsCommonText?.issuePendingCrewReceivedIncorrectAmountMessage || '';
+      const crewValueLabel = this.paymentsCommonText?.[this.crewReceivedCorrectAmountValue] || this.crewReceivedCorrectAmountValue;
+      const crewReceivedDate = this.wageDetails?.crewReceivedRightAmountDate
+        ? this.sharedMethods.formatLocalDate(this.wageDetails.crewReceivedRightAmountDate, this.currentLanguage)
+        : this.sharedMethods.formatLocalDate(this.wageDetails?.updatedAt, this.currentLanguage);
+
+      crewIncorrectMessage.replace('{{value}}', `<span class="value">${crewValueLabel}</span>`);
+      crewIncorrectMessage.replace('{{receivedDate}}', `<span class="received-date">${crewReceivedDate}</span>`);
+      this.issuePendingCrewReceivedIncorrectAmountMessage = crewIncorrectMessage;
+      this.showCrewIssuePendingMessage = crewIncorrectMessage ? true : false;
+    }
+    if (this.beneficiaryReceivedCorrectAmountValue && this.beneficiaryReceivedCorrectAmountValue !== 'yes') {
+      const beneficiaryIncorrectMessage = this.paymentsCommonText?.issuePendingBeneficiaryReceivedIncorrectAmountMessage || '';
+      const beneficiaryValueLabel = this.paymentsCommonText?.[this.beneficiaryReceivedCorrectAmountValue] || this.beneficiaryReceivedCorrectAmountValue;
+      const beneficiaryReceivedDate = this.wageDetails?.beneficiaryReceivedRightAmountDate
+        ? this.sharedMethods.formatLocalDate(this.wageDetails.beneficiaryReceivedRightAmountDate, this.currentLanguage)
+        : this.sharedMethods.formatLocalDate(this.wageDetails?.updatedAt, this.currentLanguage);
+
+      beneficiaryIncorrectMessage.replace('{{value}}', `<span class="value">${beneficiaryValueLabel}</span>`);
+      beneficiaryIncorrectMessage.replace('{{receivedDate}}', `<span class="received-date">${beneficiaryReceivedDate}</span>`);
+      this.issuePendingBeneficiaryReceivedIncorrectAmountMessage = beneficiaryIncorrectMessage;
+      this.showBeneficiaryIssuePendingMessage = beneficiaryIncorrectMessage ? true : false;
+    }
+    this.cdr.detectChanges();
   }
 
   onPdfLoaded(event: any) {
