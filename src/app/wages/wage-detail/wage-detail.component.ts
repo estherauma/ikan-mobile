@@ -113,7 +113,7 @@ export class WageDetailComponent  implements OnInit {
         : this.sharedMethods.formatLocalDate(this.wageDetails?.updatedAt, this.currentLanguage);
 
       const crewMessage = crewIncorrectMessage
-        .replace('{{value}}', `<span class="value">${crewValueLabel}</span>`)
+        .replace('{{value}}', `<span class="issue-value">${crewValueLabel.toUpperCase()}</span>`)
         .replace('{{receivedDate}}', `<span class="received-date">${crewReceivedDate}</span>`);
       this.issuePendingCrewReceivedIncorrectAmountMessage = crewMessage;
       this.showCrewIssuePendingMessage = crewMessage ? true : false;
@@ -126,7 +126,7 @@ export class WageDetailComponent  implements OnInit {
         : this.sharedMethods.formatLocalDate(this.wageDetails?.updatedAt, this.currentLanguage);
 
       const beneficiaryMessage = beneficiaryIncorrectMessage
-        .replace('{{value}}', `<span class="value">${beneficiaryValueLabel}</span>`)
+        .replace('{{value}}', `<span class="issue-value">${beneficiaryValueLabel.toUpperCase()}</span>`)
         .replace('{{receivedDate}}', `<span class="received-date">${beneficiaryReceivedDate}</span>`);
       this.issuePendingBeneficiaryReceivedIncorrectAmountMessage = beneficiaryMessage;
       this.showBeneficiaryIssuePendingMessage = beneficiaryMessage ? true : false;
