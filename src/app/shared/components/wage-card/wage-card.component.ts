@@ -49,15 +49,11 @@ export class WageCardComponent  implements OnInit {
   getStatusText() {
     switch (this.status) {
       case 'action_required':
-        return this.paymentsCommonText?.actionRequired || 'Action required';
+        return this.isVesselOwner ? (this.paymentsCommonText?.pending || 'Pending') : (this.paymentsCommonText?.actionRequired || 'Action required');
       case 'issue_pending':
-        return this.paymentsCommonText?.issuePending || 'Issue pending';
+        return this.isVesselOwner ? (this.paymentsCommonText?.pending || 'Pending') : (this.paymentsCommonText?.issuePending || 'Issue pending');
       case 'received':
-        return this.paymentsCommonText?.received || 'Received';
-      case 'pending':
-        return this.paymentsCommonText?.pending || 'Pending';
-      case 'confirmed':
-        return this.paymentsCommonText?.confirmed || 'Confirmed';
+        return this.isVesselOwner ? (this.paymentsCommonText?.confirmed || 'Confirmed') : (this.paymentsCommonText?.received || 'Received');
       default:
         return this.status;
     }

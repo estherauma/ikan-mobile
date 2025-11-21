@@ -93,9 +93,7 @@ export class WageDetailComponent  implements OnInit {
   }
 
   async ionViewWillLeave() {
-    if (this.isWorker) {
-      await this.updateWageDetails();
-    }
+    await this.updateWageDetails();
   }
 
   prefillValues() {
@@ -366,16 +364,12 @@ export class WageDetailComponent  implements OnInit {
 
   getStatusLabel(status: string) {
     switch (status) {
-      case 'pending':
-        return this.paymentsCommonText?.pending;
       case 'action_required':
-        return this.paymentsCommonText?.actionRequired;
+        return this.isVesselOwner ? this.paymentsCommonText?.pending : this.paymentsCommonText?.actionRequired;
       case 'issue_pending':
-        return this.paymentsCommonText?.issuePending;
+        return this.isVesselOwner ? this.paymentsCommonText?.pending : this.paymentsCommonText?.issuePending;
       case 'received':
-        return this.paymentsCommonText?.received;
-      case 'confirmed':
-        return this.paymentsCommonText?.confirmed;
+        return this.isVesselOwner ? this.paymentsCommonText?.confirmed : this.paymentsCommonText?.received;
       default:
         return status;
     }

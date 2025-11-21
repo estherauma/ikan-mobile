@@ -89,14 +89,6 @@ export class VesselWagesComponent  implements OnInit {
             const user = this.allUsers.find(
               (u) => u.onlineRef === wage.userId
             );
-            if (this.currentUser?.role === UserRole.vesselOwner) {
-              if (wage?.status === 'action_required' || wage?.status === 'issue_pending') {
-                wage.status = 'pending';
-              }
-              if (wage?.status === 'received') {
-                wage.status = 'confirmed';
-              }
-            }
             
             return {
               ...wage,
