@@ -214,17 +214,24 @@ export class WageDetailComponent  implements OnInit {
     }
 
     if (hasUpdates) {
-      // TODO: add beneficiaryRelationship check
-      if (
-        (updatedWageDetails.crewReceivedRightAmount && updatedWageDetails.crewReceivedRightAmount !== 'yes') &&
-        (updatedWageDetails.beneficiaryReceivedRightAmount && updatedWageDetails.beneficiaryReceivedRightAmount !== 'yes')
-      ) {
-        updatedWageDetails.status = 'issue_pending';
-      } else if (
-        (updatedWageDetails.crewReceivedRightAmount && updatedWageDetails.crewReceivedRightAmount === 'yes') &&
-        (updatedWageDetails.beneficiaryReceivedRightAmount && updatedWageDetails.beneficiaryReceivedRightAmount === 'yes')
-      ) {
-        updatedWageDetails.status = 'received';
+      if (updatedWageDetails?.beneficiaryRelationship && updatedWageDetails.beneficiaryRelationship !== 'self' ) {
+        if (
+          (updatedWageDetails.crewReceivedRightAmount && updatedWageDetails.crewReceivedRightAmount !== 'yes') &&
+          (updatedWageDetails.beneficiaryReceivedRightAmount && updatedWageDetails.beneficiaryReceivedRightAmount !== 'yes')
+        ) {
+          updatedWageDetails.status = 'issue_pending';
+        } else if (
+          (updatedWageDetails.crewReceivedRightAmount && updatedWageDetails.crewReceivedRightAmount === 'yes') &&
+          (updatedWageDetails.beneficiaryReceivedRightAmount && updatedWageDetails.beneficiaryReceivedRightAmount === 'yes')
+        ) {
+          updatedWageDetails.status = 'received';
+        }
+      } else {
+        if (updatedWageDetails.crewReceivedRightAmount && updatedWageDetails.crewReceivedRightAmount !== 'yes') {
+          updatedWageDetails.status = 'issue_pending';
+        } else if (updatedWageDetails.crewReceivedRightAmount && updatedWageDetails.crewReceivedRightAmount === 'yes') {
+          updatedWageDetails.status = 'received';
+        }
       }
       
       updatedWageDetails.updatedAt = new Date().toISOString();
