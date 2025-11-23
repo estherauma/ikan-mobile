@@ -2,19 +2,18 @@
 
 <ion-content [fullscreen]="true">
   <div class="title-section">
-    <!-- TODO: translate -->
-     <p>We've noted your response.</p>
+     <p>{{ paymentsCommonText?.WeHaveNotedYourResponse }}</p>
   </div>
   
   <div class="info-section">
     <ion-icon name="bulb-outline" class="bulb-icon"></ion-icon>
-    <p>Want to ask a question or need help? Here are some options.</p>
-    <ion-button (click)="goToLearningHubWages()">Read FAQ on wages</ion-button>
-    <p>{{ commonText?.or || 'or' }}</p>
-    <p>Show me contact details for:</p>
-    <ion-button (click)="goToContractDetails()">My employer</ion-button>
-    <ion-button (click)="showAgentDetails()">My manning agent</ion-button>
-    <ion-button (click)="goToHelp()">Trade Union / NGOs / Government</ion-button>
+    <p>{{ paymentsCommonText?.needHelpOrHaveAQuestion }}</p>
+    <ion-button (click)="goToLearningHubWages()">{{ paymentsCommonText?.readFAQOnWages }}</ion-button>
+    <p>{{ paymentsCommonText?.or }}</p>
+    <p>{{ paymentsCommonText?.showMeContactDetailsFor }}</p>
+    <ion-button (click)="goToContractDetails()">{{ paymentsCommonText?.myEmployer }}</ion-button>
+    <ion-button (click)="showAgentDetails()">{{ paymentsCommonText?.myManningAgent }}</ion-button>
+    <ion-button (click)="goToHelp()">{{ paymentsCommonText?.tradeUnionOrNGOsOrGovernment }}</ion-button>
   </div>
 
   <div class="skip-section">

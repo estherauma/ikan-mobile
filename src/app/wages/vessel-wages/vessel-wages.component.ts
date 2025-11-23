@@ -89,14 +89,6 @@ export class VesselWagesComponent  implements OnInit {
             const user = this.allUsers.find(
               (u) => u.onlineRef === wage.userId
             );
-            if (this.currentUser?.role === UserRole.vesselOwner) {
-              if (wage?.status === 'action_required' || wage?.status === 'issue_pending') {
-                wage.status = 'pending';
-              }
-              if (wage?.status === 'received') {
-                wage.status = 'confirmed';
-              }
-            }
             
             return {
               ...wage,
@@ -119,8 +111,7 @@ export class VesselWagesComponent  implements OnInit {
     this.currentLanguage = this.contentService?.currentLanguage;
     const paymentsPageData = this.contentService.getContentByPropertyName('payments-common-text');
     this.paymentsCommonText = this.sharedMethods.convertAdditionalTextToObj(paymentsPageData?.additionalText);
-    // TODO: translate
-    this.pageTitle = this.paymentsCommonText?.vesselWagePayments || 'Vessel wage payments';
+    this.pageTitle = this.paymentsCommonText?.vesselWagePayments;
 
     const analyticsEventParams = await this.sharedMethods.getAnalyticsEventParams();
     this.analyticsService.trackEvent(PageEventNames.viewVesselWages, analyticsEventParams);

@@ -13,6 +13,7 @@ import { SharedmethodsService } from 'src/app/shared/services/sharedmethods/shar
 export class WageTrackingHelpComponent  implements OnInit {
 
   commonText: any;
+  paymentsCommonText: any;
   wagesChapter = '3'; // This is from the learning hub content
   wagesSubchapterID = '3.5'; // This is from the learning hub content
   detailsClause: any; // clause to show employer details
@@ -36,6 +37,8 @@ export class WageTrackingHelpComponent  implements OnInit {
 
   async ngOnInit() {
     this.commonText = this.contentService?.commonText;
+    const paymentsPageData = this.contentService.getContentByPropertyName('payments-common-text');
+    this.paymentsCommonText = this.sharedMethods.convertAdditionalTextToObj(paymentsPageData?.additionalText);
   }
 
   onSkip() {
@@ -54,17 +57,15 @@ export class WageTrackingHelpComponent  implements OnInit {
     if (this.detailsClause) {
       this.router.navigate(['/contracts/clauses/viewclause/', this.detailsClause]);
     } else {
-      // TODO: translate
-      this.sharedMethods.showToast('Contract is missing clause details!. Please contact support if the issue persists.', 'long');
+      this.sharedMethods.showToast(this.paymentsCommonText?.contractMissingDetailsToast, 'long');
     }
   }
 
-  // TODO: translate
   async showAgentDetails() {
     const alert = await this.alertController.create({
       cssClass: 'tuna-alert wages-agent-details-alert',
-      header: this.commonText?.comingSoon + '!' || 'Coming Soon!',
-      message: this.commonText?.agentDetailsComingSoonMessage || "Coming Soon! For now, if possible, please ask your captain or employer for your manning agent's contact.",
+      header: this.commonText?.comingSoon + '!',
+      message: this.commonText?.agentDetailsComingSoonMessage,
       buttons: [
         {
           text: this.commonText?.ok,

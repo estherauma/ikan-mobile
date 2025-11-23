@@ -45,4 +45,17 @@ export class WageCardComponent  implements OnInit {
   onClickCard(e) {
     this.onClick.emit(e);
   }
+
+  getStatusText() {
+    switch (this.status) {
+      case 'action_required':
+        return this.isVesselOwner ? (this.paymentsCommonText?.pending || 'Pending') : (this.paymentsCommonText?.actionRequired || 'Action required');
+      case 'issue_pending':
+        return this.isVesselOwner ? (this.paymentsCommonText?.pending || 'Pending') : (this.paymentsCommonText?.issuePending || 'Issue pending');
+      case 'received':
+        return this.isVesselOwner ? (this.paymentsCommonText?.confirmed || 'Confirmed') : (this.paymentsCommonText?.received || 'Received');
+      default:
+        return this.status;
+    }
+  }
 }

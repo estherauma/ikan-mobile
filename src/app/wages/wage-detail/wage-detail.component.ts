@@ -42,6 +42,10 @@ export class WageDetailComponent  implements OnInit {
   whyTheDiscrepancyValues: string[] = [];
   whyTheDiscrepancyOptions = [];
   contractData: any;
+  issuePendingCrewReceivedIncorrectAmountMessage = '';
+  issuePendingBeneficiaryReceivedIncorrectAmountMessage = '';
+  showCrewIssuePendingMessage = false;
+  showBeneficiaryIssuePendingMessage = false;
 
   @ViewChild('pdfViewer') pdfViewer!: PdfJsViewerComponent;
   @ViewChild('wageTrackingSwiper', { static: false }) swiperRef: ElementRef | undefined;
@@ -82,21 +86,50 @@ export class WageDetailComponent  implements OnInit {
     this.whyTheDiscrepancyOptions = this.getWhyTheDiscrepancyOptions();
     this.contractData = await this.getContractData();
     this.prefillValues();
+    this.getIssuePendingMessages();
 
     const analyticsEventParams = this.sharedMethods.getAnalyticsEventParams();
     this.analyticsService.trackEvent(PageEventNames.viewWageDetails, analyticsEventParams);
   }
 
   async ionViewWillLeave() {
-    if (this.isWorker) {
-      await this.updateWageDetails();
-    }
+    await this.updateWageDetails();
   }
 
   prefillValues() {
     this.crewReceivedCorrectAmountValue = this.wageDetails?.crewReceivedRightAmount ?? '';
     this.beneficiaryReceivedCorrectAmountValue = this.wageDetails?.beneficiaryReceivedRightAmount ?? '';
     this.whyTheDiscrepancyValues = this.wageDetails?.whyTheDiscrepancy?.length ? this.wageDetails?.whyTheDiscrepancy : [];
+  }
+
+  getIssuePendingMessages() {
+    if (this.crewReceivedCorrectAmountValue && this.crewReceivedCorrectAmountValue !== 'yes') {
+      const crewIncorrectMessage = this.paymentsCommonText?.issuePendingCrewReceivedIncorrectAmountMessage || '';
+      const crewValueLabel = this.paymentsCommonText?.[this.crewReceivedCorrectAmountValue] || this.crewReceivedCorrectAmountValue;
+      const crewReceivedDate = this.wageDetails?.crewReceivedRightAmountDate
+        ? this.sharedMethods.formatLocalDate(this.wageDetails.crewReceivedRightAmountDate, this.currentLanguage)
+        : this.sharedMethods.formatLocalDate(this.wageDetails?.updatedAt, this.currentLanguage);
+
+      const crewMessage = crewIncorrectMessage
+        .replace('{{value}}', `<span class="issue-value">${crewValueLabel.toUpperCase()}</span>`)
+        .replace('{{receivedDate}}', `<span class="received-date">${crewReceivedDate}</span>`);
+      this.issuePendingCrewReceivedIncorrectAmountMessage = crewMessage;
+      this.showCrewIssuePendingMessage = crewMessage ? true : false;
+    }
+    if (this.beneficiaryReceivedCorrectAmountValue && this.beneficiaryReceivedCorrectAmountValue !== 'yes') {
+      const beneficiaryIncorrectMessage = this.paymentsCommonText?.issuePendingBeneficiaryReceivedIncorrectAmountMessage || '';
+      const beneficiaryValueLabel = this.paymentsCommonText?.[this.beneficiaryReceivedCorrectAmountValue] || this.beneficiaryReceivedCorrectAmountValue;
+      const beneficiaryReceivedDate = this.wageDetails?.beneficiaryReceivedRightAmountDate
+        ? this.sharedMethods.formatLocalDate(this.wageDetails.beneficiaryReceivedRightAmountDate, this.currentLanguage)
+        : this.sharedMethods.formatLocalDate(this.wageDetails?.updatedAt, this.currentLanguage);
+
+      const beneficiaryMessage = beneficiaryIncorrectMessage
+        .replace('{{value}}', `<span class="issue-value">${beneficiaryValueLabel.toUpperCase()}</span>`)
+        .replace('{{receivedDate}}', `<span class="received-date">${beneficiaryReceivedDate}</span>`);
+      this.issuePendingBeneficiaryReceivedIncorrectAmountMessage = beneficiaryMessage;
+      this.showBeneficiaryIssuePendingMessage = beneficiaryMessage ? true : false;
+    }
+    this.cdr.detectChanges();
   }
 
   onPdfLoaded(event: any) {
@@ -117,15 +150,13 @@ export class WageDetailComponent  implements OnInit {
     } else {
       await FileOpener.openFile({ path: file, mimeType: 'application/pdf' })
         .catch((e) => {
-          console.log('Error opening file', e);
-          // TODO: translate
-          this.sharedMethods.showToast(this.paymentsCommonText?.errorOpeningFile || 'Error opening file');
+          console.error('Error opening file', e);
+          this.sharedMethods.showToast(this.commonText?.errorOpeningFile);
         });
     }
   }
 
   async viewImage(file) {
-    // TODO: translate
     const imageFile = {
       fileUrl: file,
       // fileName: file
@@ -183,17 +214,24 @@ export class WageDetailComponent  implements OnInit {
     }
 
     if (hasUpdates) {
-      // TODO: add beneficiaryRelationship check
-      if (
-        (updatedWageDetails.crewReceivedRightAmount && updatedWageDetails.crewReceivedRightAmount !== 'yes') &&
-        (updatedWageDetails.beneficiaryReceivedRightAmount && updatedWageDetails.beneficiaryReceivedRightAmount !== 'yes')
-      ) {
-        updatedWageDetails.status = 'issue_pending';
-      } else if (
-        (updatedWageDetails.crewReceivedRightAmount && updatedWageDetails.crewReceivedRightAmount === 'yes') &&
-        (updatedWageDetails.beneficiaryReceivedRightAmount && updatedWageDetails.beneficiaryReceivedRightAmount === 'yes')
-      ) {
-        updatedWageDetails.status = 'received';
+      if (updatedWageDetails?.beneficiaryRelationship && updatedWageDetails.beneficiaryRelationship !== 'self' ) {
+        if (
+          (updatedWageDetails.crewReceivedRightAmount && updatedWageDetails.crewReceivedRightAmount !== 'yes') &&
+          (updatedWageDetails.beneficiaryReceivedRightAmount && updatedWageDetails.beneficiaryReceivedRightAmount !== 'yes')
+        ) {
+          updatedWageDetails.status = 'issue_pending';
+        } else if (
+          (updatedWageDetails.crewReceivedRightAmount && updatedWageDetails.crewReceivedRightAmount === 'yes') &&
+          (updatedWageDetails.beneficiaryReceivedRightAmount && updatedWageDetails.beneficiaryReceivedRightAmount === 'yes')
+        ) {
+          updatedWageDetails.status = 'received';
+        }
+      } else {
+        if (updatedWageDetails.crewReceivedRightAmount && updatedWageDetails.crewReceivedRightAmount !== 'yes') {
+          updatedWageDetails.status = 'issue_pending';
+        } else if (updatedWageDetails.crewReceivedRightAmount && updatedWageDetails.crewReceivedRightAmount === 'yes') {
+          updatedWageDetails.status = 'received';
+        }
       }
       
       updatedWageDetails.updatedAt = new Date().toISOString();
@@ -222,27 +260,26 @@ export class WageDetailComponent  implements OnInit {
     swiper.slideNext();
   }
 
-  // TODO: translate
   getWhyTheDiscrepancyOptions(){
     return [
       {
         value: 'toRepayMoneyOwedToCaptainOrEmployer',
-        label: this.paymentsCommonText?.toRepayMoneyOwedToCaptainOrEmployer || 'To repay money owed to captain / employer',
+        label: this.paymentsCommonText?.toRepayMoneyOwedToCaptainOrEmployer,
         selected: false
       },
       {
         value: 'toRepayMoneyOwedToManningAgent',
-        label: this.paymentsCommonText?.toRepayMoneyOwedToManningAgent || 'To repay money owed to manning agent',
+        label: this.paymentsCommonText?.toRepayMoneyOwedToManningAgent,
         selected: false
       },
       {
         value: 'toPayForUnionMembership',
-        label: this.paymentsCommonText?.toPayForUnionMembership || "To pay for union membership",
+        label: this.paymentsCommonText?.toPayForUnionMembership,
         selected: false
       },
       {
         value: 'amNotSure',
-        label: this.paymentsCommonText?.amNotSure || "I'm not sure",
+        label: this.paymentsCommonText?.amNotSure,
         selected: false
       },
     ];
@@ -330,6 +367,19 @@ export class WageDetailComponent  implements OnInit {
       }
     }
     return null;
+  }
+
+  getStatusLabel(status: string) {
+    switch (status) {
+      case 'action_required':
+        return this.isVesselOwner ? this.paymentsCommonText?.pending : this.paymentsCommonText?.actionRequired;
+      case 'issue_pending':
+        return this.isVesselOwner ? this.paymentsCommonText?.pending : this.paymentsCommonText?.issuePending;
+      case 'received':
+        return this.isVesselOwner ? this.paymentsCommonText?.confirmed : this.paymentsCommonText?.received;
+      default:
+        return status;
+    }
   }
 
 }

@@ -116,7 +116,6 @@ export class QuestionComponent  implements OnInit {
 
     // Uncomment code below to only submit if followup question is answered
     // if (this.hasFollowupQtn && !this.followupQtnData?.value && this.followupQtnData?.questionType !== 'helperText') {
-    //   // TODO: translate
     //   this.sharedMethods.showToast(this.commonText?.pleaseAnswerFollowupQtn);
     //   return;
     // }
