@@ -88,7 +88,7 @@ export class WageDetailComponent  implements OnInit {
     this.prefillValues();
     this.getIssuePendingMessages();
 
-    const analyticsEventParams = this.sharedMethods.getAnalyticsEventParams();
+    const analyticsEventParams = await this.sharedMethods.getAnalyticsEventParams();
     this.analyticsService.trackEvent(PageEventNames.viewWageDetails, analyticsEventParams);
   }
 
@@ -311,11 +311,11 @@ export class WageDetailComponent  implements OnInit {
     return this.whyTheDiscrepancyValues.indexOf(value) > -1;
   }
 
-  goToDiscrepancySection() {
+  async goToDiscrepancySection() {
     this.showActionQuestion = true;
     this.cdr.detectChanges();
     
-    const analyticsEventParams = this.sharedMethods.getAnalyticsEventParams();
+    const analyticsEventParams = await this.sharedMethods.getAnalyticsEventParams();
     this.analyticsService.trackEvent(AppEventNames.viewWageDiscrepancySection, analyticsEventParams);
   }
 
