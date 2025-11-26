@@ -153,7 +153,7 @@ export class ViewclausePage implements OnInit {
 
       // TODO: remove after all old records are synced/updated
       // This is a fix for old records that have different keys for crew details
-      let crewContent = partyBClauseDetails?.content ? await JSON.parse(partyBClauseDetails.content) : null;
+      let crewContent = partyBClauseDetails?.content ? JSON.parse(partyBClauseDetails.content) : null;
       if (crewContent && Object.keys(crewContent).length) {
         crewContent = {
           ...crewContent,
@@ -162,7 +162,7 @@ export class ViewclausePage implements OnInit {
         };
         partyBClauseDetails.content = JSON.stringify(crewContent);
       }
-      let crewData = partyBClauseDetails?.data ? await JSON.parse(partyBClauseDetails.data) : null;
+      let crewData = partyBClauseDetails?.data ? JSON.parse(partyBClauseDetails.data) : null;
       if (crewData && Object.keys(crewData).length) {
         crewData = {
           ...crewData,
