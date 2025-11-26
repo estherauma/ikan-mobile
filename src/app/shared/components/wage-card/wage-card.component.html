@@ -1,11 +1,11 @@
 <div
   class="wage-card"
   [ngClass]="{
-    'card-action-required': status === 'action_required',
-    'card-issue-pending': status === 'issue_pending',
-    'card-received': status === 'received',
-    'card-pending': status === 'pending',
-    'card-confirmed': status === 'confirmed',
+    'card-action-required': isWorker && (status === 'action_required'),
+    'card-issue-pending': isWorker && (status === 'issue_pending'),
+    'card-received': isWorker && (status === 'received'),
+    'card-pending': isVesselOwner && (status === 'action_required' || status === 'issue_pending'),
+    'card-confirmed': isVesselOwner && (status === 'received'),
   }"
 >
   <div class="card">
