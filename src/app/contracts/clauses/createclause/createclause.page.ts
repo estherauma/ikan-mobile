@@ -106,11 +106,10 @@ export class CreateclausePage extends BaseformPage implements OnInit {
       };
       return JSON.stringify(partyBDetails);
     } else if (clauseKind === 'contract-clauses-parties-requirement-vessel') {
-      const user =  await this.sharedMethods.getUserData();
       const clauses = await this.contractDataService.retrieveContractClausesByField('kind', clauseKind);
-      const clauseByUser = clauses.find((entry) => entry.createdBy === user.id);
-      if (clauseByUser) {
-        return clauseByUser.content;
+      const clause = clauses.find((entry) => entry.contractId === this.contractId);
+      if (clause) {
+        return clause.content;
       }
       return null;
     }
