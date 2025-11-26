@@ -96,6 +96,7 @@ export enum PageEventNames {
     viewWages = 'page_wages_home',
     viewVesselWages = 'page_vessel_wages',
     viewWageDetails = 'page_wage_details',
+    viewWageTrackingHelp = 'page_wage_tracking_help',
 
     // Welcome screens/ tutorials
     viewWelcomeScreens = 'page_welcome_screens',
@@ -119,4 +120,14 @@ export enum AppEventNames {
     skippedWelcomeScreens = 'skipped_welcome_screens',
     skippedAppTutorials = 'skipped_app_tutorials',
     seenAppTutorials = 'seen_app_tutorials',
+
+    // Wages
+    readFAQOnWages = 'read_faq_on_wages',
+    viewMyEmployerDetails = 'view_my_employer_details',
+    viewMyManningAgentDetails = 'view_my_manning_agent_details',
+    viewTradeUnionNGOsGovernmentDetails = 'view_trade_union_ngos_govt_details',
+    viewWageDiscrepancySection = 'view_wage_discrepancy_section',
+    skippedWageTrackingHelp = 'skipped_wage_tracking_help',
+    updatedWageDetails = 'updated_wage_details',
+    submittedWageResponses = 'submitted_wage_responses',
 }
