@@ -99,6 +99,7 @@ export class SyncService {
     await this.syncPassports();
     await this.syncLearningHubProgress();
     await this.syncWages();
+    await this.syncNotifications();
     await this.fetchCompanies();
     await this.fetchVessels();
     await this.fetchContracts(); // clauses are fetched after contracts have been fetched in the fetchContracts method
@@ -108,6 +109,7 @@ export class SyncService {
     await this.fetchPayments();
     await this.fetchLearningHubProgress();
     await this.fetchWages();
+    await this.fetchNotifications();
   }
 
   @HostListener('window:online', ['$event'])
@@ -1369,6 +1371,40 @@ export class SyncService {
         }
       }
     });
+  }
+
+  async syncNotifications() {
+    const isValid = await this.authService.checkAcessTokenValidity();
+    if (!isValid || !this.isDbInitialized || !navigator.onLine) {
+      return;
+    }
+
+    const notifications = this.notificationsDataService.notifications;
+    if (notifications.length > 0) {
+      for (const notification of notifications) {
+        const notificationToUpload = Object.assign({}, notification);
+        delete notificationToUpload.id;
+        delete notificationToUpload.userId;
+        delete notificationToUpload.onlineRef;
+        notificationToUpload.user = notification.userId;
+
+        if (!notification?.onlineRef) {
+          this.apiService.post('notifications', notificationToUpload).subscribe(async(response: any) => {
+            if (response?.status === 'OK') {
+              await this.notificationsDataService.updateNotificationField(notification.id, 'online_ref', response?.data?.id);
+            } else {
+              console.error(`Failed to sync notification for user ${notification.userId} to the api`, response);
+            }
+          });
+        } else {
+          this.apiService.put('notifications', notification.onlineRef, notificationToUpload).subscribe(async(response: any) => {
+            if (response?.status !== 'OK') {
+              console.error(`Failed to update notification for user ${notification.userId} to the api`, response);
+            }
+          });
+        }
+      }
+    }
   }
 
 }
