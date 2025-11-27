@@ -1,9 +1,12 @@
 import { Injectable } from '@angular/core';
 import { SQLiteObject } from '@awesome-cordova-plugins/sqlite/ngx';
 import { Platform } from '@ionic/angular';
-import { BehaviorSubject } from 'rxjs';
+import { BehaviorSubject, Subject } from 'rxjs';
+import { ContentService } from 'src/app/shared/services/content/content.service';
 import { DBService } from 'src/app/shared/services/database/db.service';
 import { SharedmethodsService } from 'src/app/shared/services/sharedmethods/sharedmethods.service';
+import { NotificationCategory } from 'src/app/shared/types/api-types';
+import { WagesDataService } from 'src/app/wages/data/wages-data.service';
 
 @Injectable({
   providedIn: 'root'
@@ -13,11 +16,15 @@ export class NotificationsDataService {
   db: SQLiteObject;
   notifications: any = [];
   notificationsObs = new BehaviorSubject([]);
+  undisplayedWageNotifications: any = [];
+  displayWageNotificationsObs = new Subject<boolean>();
   
   constructor(
     private platform: Platform,
     private dbService: DBService,
     private sharedMethods: SharedmethodsService,
+    private wagesDataService: WagesDataService,
+    private contentService: ContentService,
   ) {
     this.platform.ready().then(async() => {
       this.db = await this.dbService.configureDB();
@@ -29,8 +36,17 @@ export class NotificationsDataService {
       }
     });
 
-    this.getAll().subscribe((data) => {
+    this.getAll().subscribe(async(data) => {
       this.notifications = data;
+      
+      setTimeout(async() => {
+        this.undisplayedWageNotifications = await this.retrieveUndisplayedWageNotifications();
+        if (this.undisplayedWageNotifications.length > 0) {
+          this.displayWageNotificationsObs.next(true);
+        } else {
+          this.displayWageNotificationsObs.next(false);
+        }
+      }, 2000);
     });
   }
 
@@ -161,5 +177,40 @@ export class NotificationsDataService {
 
   async getNotificationsByField(fieldName: string, fieldValue: any) {
     return this.notifications.filter((notification: any) => notification[fieldName] === fieldValue);
+  }
+
+  async retrieveUndisplayedWageNotifications() {
+    const user = await this.sharedMethods.getUserData();
+    const notifs =  this.notifications.filter((notification: any) =>
+      notification.userId === user.id &&
+      notification.category === NotificationCategory.wagePayment &&
+      notification.isDisplayed === false &&
+      notification.isDeleted === false
+    );
+
+    for (const notif of notifs) {
+      // get title and message from content service
+      const commonText = this.contentService.commonText;
+      notif.title = commonText?.wagePaymentNotificationTitle || notif.title;
+      notif.message = commonText?.wagePaymentNotificationBody || notif.message;
+      
+      // add wageId and details from metadata
+      if (notif.metadata) {
+        try {
+          const metadataObj = JSON.parse(notif.metadata);
+          const wageOnlineRef = metadataObj.wage_id;
+          const wage = await this.wagesDataService.getWageByField('onlineRef', wageOnlineRef);
+          if (wage) {
+            notif.wageId = wage.id;
+            notif.wageDetails = wage;
+            notif.notificationDataId = notif.id;
+          }
+        } catch (error) {
+          console.error('Error parsing notification metadata', error);
+        }
+      }
+    }
+
+    return notifs;
   }
 }
