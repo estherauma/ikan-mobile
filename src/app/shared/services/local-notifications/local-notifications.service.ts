@@ -234,7 +234,7 @@ export class LocalNotificationsService {
     } catch (error) {
       this.globalErrorHandler.handleError(
         error,
-        'Error in local-notifications.service.ts at triggerWagePaymentNotification(). Failed to trigger wage payment notification'
+        'Error in local-notifications.service.ts at triggerWagePaymentNotifications(). Failed to trigger wage payment notification'
       );
     }
   }
