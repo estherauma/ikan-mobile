@@ -89,7 +89,7 @@ export class WageDetailComponent  implements OnInit {
     this.getIssuePendingMessages();
 
     const analyticsEventParams = await this.sharedMethods.getAnalyticsEventParams();
-    this.analyticsService.trackEvent(PageEventNames.viewWageDetails, analyticsEventParams);
+    await this.analyticsService.trackEvent(PageEventNames.viewWageDetails, analyticsEventParams);
   }
 
   async ionViewWillLeave() {
@@ -249,7 +249,7 @@ export class WageDetailComponent  implements OnInit {
         wageId: this.wageDetails.onlineRef || undefined,
         status: this.wageDetails.status,
       };
-      this.analyticsService.trackEvent(AppEventNames.updatedWageDetails, params);
+      await this.analyticsService.trackEvent(AppEventNames.updatedWageDetails, params);
     }
   }
 
@@ -316,7 +316,7 @@ export class WageDetailComponent  implements OnInit {
     this.cdr.detectChanges();
     
     const analyticsEventParams = await this.sharedMethods.getAnalyticsEventParams();
-    this.analyticsService.trackEvent(AppEventNames.viewWageDiscrepancySection, analyticsEventParams);
+    await this.analyticsService.trackEvent(AppEventNames.viewWageDiscrepancySection, analyticsEventParams);
   }
 
   goToWageTrackingHelp() {

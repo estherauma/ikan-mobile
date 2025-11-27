@@ -44,36 +44,36 @@ export class WageTrackingHelpComponent  implements OnInit {
     this.paymentsCommonText = this.sharedMethods.convertAdditionalTextToObj(paymentsPageData?.additionalText);
 
     const analyticsEventParams = await this.sharedMethods.getAnalyticsEventParams();
-    this.analyticsService.trackEvent(PageEventNames.viewWageTrackingHelp, analyticsEventParams);
+    await this.analyticsService.trackEvent(PageEventNames.viewWageTrackingHelp, analyticsEventParams);
   }
 
   async onSkip() {
-    this.router.navigate(['wages'], { replaceUrl: true });
-
     const analyticsEventParams = await this.sharedMethods.getAnalyticsEventParams();
-    this.analyticsService.trackEvent(AppEventNames.skippedWageTrackingHelp, analyticsEventParams);
+    await this.analyticsService.trackEvent(AppEventNames.skippedWageTrackingHelp, analyticsEventParams);
+    
+    this.router.navigate(['wages'], { replaceUrl: true });
   }
 
   async goToHelp() {
-    this.router.navigate(['help'], { replaceUrl: true });
-
     const analyticsEventParams = await this.sharedMethods.getAnalyticsEventParams();
-    this.analyticsService.trackEvent(AppEventNames.viewTradeUnionNGOsGovernmentDetails, analyticsEventParams);
+    await this.analyticsService.trackEvent(AppEventNames.viewTradeUnionNGOsGovernmentDetails, analyticsEventParams);
+    
+    this.router.navigate(['help'], { replaceUrl: true });
   }
 
   async goToLearningHubWages() {
-    this.router.navigate(['learninghub/chapters', this.wagesChapter, this.wagesSubchapterID], { replaceUrl: true });
-
     const analyticsEventParams = await this.sharedMethods.getAnalyticsEventParams();
-    this.analyticsService.trackEvent(AppEventNames.readFAQOnWages, analyticsEventParams);
+    await this.analyticsService.trackEvent(AppEventNames.readFAQOnWages, analyticsEventParams);
+
+    this.router.navigate(['learninghub/chapters', this.wagesChapter, this.wagesSubchapterID], { replaceUrl: true });
   }
 
   async goToContractDetails() {
     if (this.detailsClause) {
-      this.router.navigate(['/contracts/clauses/viewclause/', this.detailsClause]);
-
       const analyticsEventParams = await this.sharedMethods.getAnalyticsEventParams();
-      this.analyticsService.trackEvent(AppEventNames.viewMyEmployerDetails, analyticsEventParams);
+      await this.analyticsService.trackEvent(AppEventNames.viewMyEmployerDetails, analyticsEventParams);
+      
+      this.router.navigate(['/contracts/clauses/viewclause/', this.detailsClause]);
     } else {
       this.sharedMethods.showToast(this.paymentsCommonText?.contractMissingDetailsToast, 'long');
     }
@@ -97,6 +97,6 @@ export class WageTrackingHelpComponent  implements OnInit {
     await alert.present();
 
     const analyticsEventParams = await this.sharedMethods.getAnalyticsEventParams();
-    this.analyticsService.trackEvent(AppEventNames.viewMyManningAgentDetails, analyticsEventParams);
+    await this.analyticsService.trackEvent(AppEventNames.viewMyManningAgentDetails, analyticsEventParams);
   }
 }
