@@ -243,7 +243,20 @@ export class LocalNotificationsService {
     try {
       LocalNotifications.addListener(
         'localNotificationReceived',
-        (notification: LocalNotificationSchema) => {}
+        async(notification: LocalNotificationSchema) => {
+          await this.zone.run(async() => {
+            // Handle the received notification here
+
+            // Mark wage payment notification as displayed
+            if (notification?.actionTypeId === NotificationActionId.wagePayment) {
+              if (notification?.extra?.wageId) {
+                this.notificationsDataService.updateNotificationField(
+                  notification.extra.notificationDataId, 'is_displayed', 1
+                );
+              }
+            }
+          });
+        }
       );
 
       LocalNotifications.addListener(
