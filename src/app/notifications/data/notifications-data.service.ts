@@ -124,6 +124,25 @@ export class NotificationsDataService {
     });
   }
 
+  async update(notificationId, data) {
+    const query = `UPDATE notifications SET app_ref = ?, user_id = ?, category = ?, title = ?, \
+      message = ?, status = ?, is_displayed = ?, is_deleted = ?, metadata = ?, \
+      updated_at = ?, updated_by = ?, deleted_at = ?, deleted_by = ?, deleted = ? \
+      WHERE id = ?`;
+    const params = [
+      data.appRef, data.userId, data.category, data.title, data.message, data.status,
+      data.isDisplayed, data.isDeleted, data.metadata, data.updatedAt, data.updatedBy,
+      data.deletedAt, data.deletedBy, data.deleted, notificationId,
+    ];
+
+    return this.db.executeSql(query, params).then(async(res) => {
+      await this.retrieveNotifications();
+      return res;
+    }).catch((error) => {
+      console.error('Error in notifications-data.service.ts at update().', error);
+    });
+  }
+
   async updateNotificationField(notificationId, fieldName, fieldValue) {
     const query = `UPDATE notifications SET ${fieldName} = ? WHERE id = ?`;
     const params = [fieldValue, notificationId];
