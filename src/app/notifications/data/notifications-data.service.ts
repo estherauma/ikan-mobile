@@ -123,4 +123,16 @@ export class NotificationsDataService {
       console.error('Error in notifications-data.service.ts at saveOnlineNotification().', error);
     });
   }
+
+  async updateNotificationField(notificationId, fieldName, fieldValue) {
+    const query = `UPDATE notifications SET ${fieldName} = ? WHERE id = ?`;
+    const params = [fieldValue, notificationId];
+
+    return this.db.executeSql(query, params).then(async(res) => {
+      await this.retrieveNotifications();
+      return res;
+    }).catch((error) => {
+      console.error(`Error in notifications-data.service.ts at updateNotificationField(). Failed to update field ${fieldName}.`, error);
+    });
+  }
 }
