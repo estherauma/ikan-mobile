@@ -303,6 +303,7 @@ export class ContractDataService {
           clauses.push({
             id: data.rows.item(i).id,
             appRef: data.rows.item(i).app_ref,
+            contractId: data.rows.item(i).contract_id,
             name: data.rows.item(i).name,
             kind: data.rows.item(i).kind,
             onlineRef: data.rows.item(i).online_ref,
@@ -336,6 +337,7 @@ export class ContractDataService {
           clauses.push({
             id: data.rows.item(i).id,
             appRef: data.rows.item(i).app_ref,
+            contractId: data.rows.item(i).contract_id,
             name: data.rows.item(i).name,
             kind: data.rows.item(i).kind,
             onlineRef: data.rows.item(i).online_ref,
@@ -361,6 +363,7 @@ export class ContractDataService {
           result.push({
             id: data.rows.item(i).id,
             appRef: data.rows.item(i).app_ref,
+            contractId: data.rows.item(i).contract_id,
             name: data.rows.item(i).name,
             kind: data.rows.item(i).kind,
             onlineRef: data.rows.item(i).online_ref,
@@ -431,6 +434,7 @@ export class ContractDataService {
           result.push({
             id: data.rows.item(i).id,
             appRef: data.rows.item(i).app_ref,
+            contractId: data.rows.item(i).contract_id,
             name: data.rows.item(i).name,
             kind: data.rows.item(i).kind,
             onlineRef: data.rows.item(i).online_ref,
@@ -457,6 +461,7 @@ export class ContractDataService {
           result.push({
             id: data.rows.item(i).id,
             appRef: data.rows.item(i).app_ref,
+            contractId: data.rows.item(i).contract_id,
             name: data.rows.item(i).name,
             kind: data.rows.item(i).kind,
             onlineRef: data.rows.item(i).online_ref,
