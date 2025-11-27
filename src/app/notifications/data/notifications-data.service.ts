@@ -139,4 +139,8 @@ export class NotificationsDataService {
   async checkIfNotificationExists(onlineRef: string) {
     return await this.notifications.some((notification: any) => notification.onlineRef === onlineRef);
   }
+
+  async getNotificationsByField(fieldName: string, fieldValue: any) {
+    return this.notifications.filter((notification: any) => notification[fieldName] === fieldValue);
+  }
 }
