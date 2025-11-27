@@ -267,6 +267,14 @@ export class LocalNotificationsService {
                 else if (notification?.actionTypeId === NotificationActionId.test) {
                   this.router.navigate([ 'survey' ], { queryParams: { surveySource: SurveySources.notification }});
                 }
+                else if (notification?.actionTypeId === NotificationActionId.wagePayment) {
+                  if (notification?.extra?.wageId) {
+                    const queryParams = { wageDetails: JSON.stringify(notification.extra.wageDetails) };
+                    this.router.navigate([ 'wages/wage-details' ], { queryParams });
+                    break;
+                  }
+                  this.router.navigate([ 'wages' ]);
+                }
                 break;
               default:
                 break;
