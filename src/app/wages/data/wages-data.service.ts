@@ -148,4 +148,8 @@ export class WagesDataService {
       return null;
     });
   }
+
+  async getWageByField(field: string, value: any) {
+    return await this.wages.find((wage) => wage[field] === value);
+  }
 }
