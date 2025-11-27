@@ -85,5 +85,42 @@ export class NotificationsDataService {
     return this.notificationsObs.asObservable();
   }
 
-  
+  async create(data) {
+    const query = `INSERT INTO notifications (app_ref, user_id, category, title, \
+      message, status, is_displayed, is_deleted, metadata, created_at, created_by, \
+      updated_at, updated_by, deleted_at, deleted_by, deleted) \
+      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`;
+    const params = [
+      data.appRef, data.userId, data.category, data.title, data.message, data.status,
+      data.isDisplayed, data.isDeleted, data.metadata, data.createdAt, data.createdBy,
+      data.updatedAt, data.updatedBy, data.deletedAt, data.deletedBy, data.deleted,
+    ];
+
+    return this.db.executeSql(query, params).then(async(res) => {
+      await this.retrieveNotifications();
+      return res;
+    }).catch((error) => {
+      console.error('Error in notifications-data.service.ts at create().', error);
+    });
+  }
+
+  async saveOnlineNotification(data) {
+    const query = `INSERT INTO notifications (app_ref, online_ref, user_id, category, title, \
+      message, status, is_displayed, is_deleted, metadata, created_at, created_by, \
+      updated_at, updated_by, deleted_at, deleted_by, deleted) \
+      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`;
+    const params = [
+      data.appRef, data.onlineRef, data.userId, data.category, data.title, data.message,
+      data.status, data.isDisplayed, data.isDeleted, data.metadata, data.createdAt,
+      data.createdBy, data.updatedAt, data.updatedBy, data.deletedAt, data.deletedBy,
+      data.deleted,
+    ];
+
+    return this.db.executeSql(query, params).then(async(res) => {
+      await this.retrieveNotifications();
+      return res;
+    }).catch((error) => {
+      console.error('Error in notifications-data.service.ts at saveOnlineNotification().', error);
+    });
+  }
 }
