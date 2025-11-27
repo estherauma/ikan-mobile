@@ -8,6 +8,7 @@ import { AuthService } from '../auth/auth.service';
 import { Platform } from '@ionic/angular';
 import { App, AppState } from '@capacitor/app';
 import { ContentService } from '../content/content.service';
+import { NotificationsDataService } from 'src/app/notifications/data/notifications-data.service';
 
 @Injectable({
   providedIn: 'root'
@@ -23,6 +24,7 @@ export class LocalNotificationsService {
     public authService: AuthService,
     public contentService: ContentService,
     public zone: NgZone,
+    public notificationsDataService: NotificationsDataService,
   ) {
     this.platform.ready().then(() => {
       App.addListener('appStateChange', (state: AppState) => {
@@ -201,6 +203,38 @@ export class LocalNotificationsService {
       this.globalErrorHandler.handleError(
         error,
         'Error in local-notifications.service.ts at triggerNotification(). Failed to trigger local notifications'
+      );
+    }
+  }
+
+  async triggerWagePaymentNotifications(wageNotifications) {
+    try {
+      if (wageNotifications?.length) {
+        for (const wageNotif of wageNotifications) {
+          await LocalNotifications.schedule({
+            notifications: [
+              {
+                title: wageNotif?.title,
+                body: wageNotif?.message,
+                id: Number(wageNotif.id) + 100, // to avoid id clash with other notifications
+                schedule: {
+                  at: new Date(Date.now() + 1000),
+                },
+                actionTypeId: NotificationActionId.wagePayment,
+                extra: {
+                  wageId: wageNotif?.wageId ?? undefined,
+                  wageDetails: wageNotif?.wageDetails ?? undefined,
+                  notificationDataId: wageNotif?.notificationDataId ?? undefined,
+                },
+              },
+            ],
+          });
+        }
+      }
+    } catch (error) {
+      this.globalErrorHandler.handleError(
+        error,
+        'Error in local-notifications.service.ts at triggerWagePaymentNotification(). Failed to trigger wage payment notification'
       );
     }
   }
