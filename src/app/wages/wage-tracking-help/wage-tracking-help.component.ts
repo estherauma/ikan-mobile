@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AlertController } from '@ionic/angular';
+import { AnalyticsService } from 'src/app/shared/services/analytics/analytics.service';
+import { AppEventNames, PageEventNames } from 'src/app/shared/services/analytics/event-names';
 import { ContentService } from 'src/app/shared/services/content/content.service';
 import { SharedmethodsService } from 'src/app/shared/services/sharedmethods/sharedmethods.service';
 
@@ -24,6 +26,7 @@ export class WageTrackingHelpComponent  implements OnInit {
     public alertController: AlertController,
     public activatedRoute: ActivatedRoute,
     public sharedMethods: SharedmethodsService,
+    public analyticsService: AnalyticsService,
   ) {
     this.activatedRoute.queryParams.subscribe(async(params) => {
       if (params?.contractData) {
@@ -39,22 +42,37 @@ export class WageTrackingHelpComponent  implements OnInit {
     this.commonText = this.contentService?.commonText;
     const paymentsPageData = this.contentService.getContentByPropertyName('payments-common-text');
     this.paymentsCommonText = this.sharedMethods.convertAdditionalTextToObj(paymentsPageData?.additionalText);
+
+    const analyticsEventParams = await this.sharedMethods.getAnalyticsEventParams();
+    await this.analyticsService.trackEvent(PageEventNames.viewWageTrackingHelp, analyticsEventParams);
   }
 
-  onSkip() {
+  async onSkip() {
+    const analyticsEventParams = await this.sharedMethods.getAnalyticsEventParams();
+    await this.analyticsService.trackEvent(AppEventNames.skippedWageTrackingHelp, analyticsEventParams);
+    
     this.router.navigate(['wages'], { replaceUrl: true });
   }
 
-  goToHelp() {
+  async goToHelp() {
+    const analyticsEventParams = await this.sharedMethods.getAnalyticsEventParams();
+    await this.analyticsService.trackEvent(AppEventNames.viewTradeUnionNGOsGovernmentDetails, analyticsEventParams);
+    
     this.router.navigate(['help'], { replaceUrl: true });
   }
 
-  goToLearningHubWages() {
+  async goToLearningHubWages() {
+    const analyticsEventParams = await this.sharedMethods.getAnalyticsEventParams();
+    await this.analyticsService.trackEvent(AppEventNames.readFAQOnWages, analyticsEventParams);
+
     this.router.navigate(['learninghub/chapters', this.wagesChapter, this.wagesSubchapterID], { replaceUrl: true });
   }
 
-  goToContractDetails() {
+  async goToContractDetails() {
     if (this.detailsClause) {
+      const analyticsEventParams = await this.sharedMethods.getAnalyticsEventParams();
+      await this.analyticsService.trackEvent(AppEventNames.viewMyEmployerDetails, analyticsEventParams);
+      
       this.router.navigate(['/contracts/clauses/viewclause/', this.detailsClause]);
     } else {
       this.sharedMethods.showToast(this.paymentsCommonText?.contractMissingDetailsToast, 'long');
@@ -77,5 +95,8 @@ export class WageTrackingHelpComponent  implements OnInit {
     });
 
     await alert.present();
+
+    const analyticsEventParams = await this.sharedMethods.getAnalyticsEventParams();
+    await this.analyticsService.trackEvent(AppEventNames.viewMyManningAgentDetails, analyticsEventParams);
   }
 }

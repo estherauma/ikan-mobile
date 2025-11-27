@@ -46,7 +46,7 @@ export class WelcomeScreensComponent  implements OnInit {
   async ngOnInit() {
     await this.setup();
 
-    const eventParams = this.sharedMethods.getAnalyticsEventParams();
+    const eventParams = await this.sharedMethods.getAnalyticsEventParams();
     await this.analtyicsService.trackEvent(PageEventNames.viewWelcomeScreens, eventParams);
   }
 
@@ -87,7 +87,7 @@ export class WelcomeScreensComponent  implements OnInit {
 
     await this.sharedMethods.saveDataToStorage(StorageKeys.seenWelcomeScreens, true);
 
-    const eventParams = this.sharedMethods.getAnalyticsEventParams();
+    const eventParams = await this.sharedMethods.getAnalyticsEventParams();
     await this.analtyicsService.trackEvent(AppEventNames.seenWelcomeScreens, eventParams);
 
     this.router.navigate([this.authService.getCurrentUserBaseUrlFromRole(this.user?.role)], { replaceUrl: true });

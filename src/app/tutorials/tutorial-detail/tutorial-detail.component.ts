@@ -38,7 +38,7 @@ export class TutorialDetailComponent  implements OnInit {
     await this.pageSetup();
 
     if (this.analyticsEventName) {
-      const eventParams = this.sharedMethods.getAnalyticsEventParams();
+      const eventParams = await this.sharedMethods.getAnalyticsEventParams();
       await this.analyticsService.trackEvent(this.analyticsEventName, eventParams);
     }
   }
