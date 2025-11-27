@@ -1347,8 +1347,8 @@ export class SyncService {
           const dataToSave = {
             ...notification,
             userId: notification.user,
-            createdAt: notification.createdAt ??  now,
-            updatedAt: notification.updatedAt ??  now,
+            createdAt: notification.createdAt ?? now,
+            updatedAt: notification.updatedAt ?? now,
             createdBy: notification.createdBy ?? user?.id,
             updatedBy: notification.updatedBy ?? user?.id,
             onlineRef: notification.id,
