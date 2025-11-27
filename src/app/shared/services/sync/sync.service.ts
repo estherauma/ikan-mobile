@@ -35,6 +35,7 @@ import { StorageKeys, UserData, UserRole } from '../../types/api-types';
 import { UploadService } from '../upload/upload.service';
 import { DocumentsDataService } from 'src/app/mydocuments/data/documents-data.service';
 import { WagesDataService } from 'src/app/wages/data/wages-data.service';
+import { NotificationsDataService } from 'src/app/notifications/data/notifications-data.service';
 
 @Injectable({
   providedIn: 'root'
@@ -59,6 +60,7 @@ export class SyncService {
     private uploadService: UploadService,
     private documentsDataService: DocumentsDataService,
     private wagesDataService: WagesDataService,
+    private notificationsDataService: NotificationsDataService,
   ) {
     this.platform.ready().then(async() => {
       this.db = await this.dbService.configureDB();
@@ -97,6 +99,7 @@ export class SyncService {
     await this.syncPassports();
     await this.syncLearningHubProgress();
     await this.syncWages();
+    await this.syncNotifications();
     await this.fetchCompanies();
     await this.fetchVessels();
     await this.fetchContracts(); // clauses are fetched after contracts have been fetched in the fetchContracts method
@@ -106,6 +109,7 @@ export class SyncService {
     await this.fetchPayments();
     await this.fetchLearningHubProgress();
     await this.fetchWages();
+    await this.fetchNotifications();
   }
 
   @HostListener('window:online', ['$event'])
@@ -1333,4 +1337,74 @@ export class SyncService {
       }
     }
   }
+
+  async fetchNotifications() {
+    return await lastValueFrom(this.apiService.get('notifications')).then(async(response: any) => {
+      if (response?.status === 200 && response.body.data.length > 0) {
+        for (const notification of response.body.data) {
+          const user = await this.sharedMethods.getUserData();
+          const now = this.sharedMethods.getCurrentDateTime();
+          const dataToSave = {
+            ...notification,
+            userId: notification.user,
+            createdAt: notification.createdAt ?? now,
+            updatedAt: notification.updatedAt ?? now,
+            createdBy: notification.createdBy ?? user?.id,
+            updatedBy: notification.updatedBy ?? user?.id,
+            onlineRef: notification.id,
+          };
+          const notificationExists = await this.notificationsDataService.checkIfNotificationExists(notification.id);
+          if (!notificationExists) {
+            await this.notificationsDataService.saveOnlineNotification(dataToSave).then(() => {
+              console.log(`Notification for user ${dataToSave.userId} saved successfully.`);
+            });
+          } else {
+            const currentNotification = await this.notificationsDataService.notifications.find(n => n.onlineRef === notification.id);
+            const currentUpdateDate = new Date(currentNotification?.updatedAt);
+            const newUpdateDate = new Date(notification.updatedAt);
+            if (currentUpdateDate < newUpdateDate) {
+              await this.notificationsDataService.update(currentNotification.id, dataToSave).then(() => {
+                console.log(`Notification for user ${dataToSave.userId} updated successfully.`);
+              });
+            }
+          }
+        }
+      }
+    });
+  }
+
+  async syncNotifications() {
+    const isValid = await this.authService.checkAcessTokenValidity();
+    if (!isValid || !this.isDbInitialized || !navigator.onLine) {
+      return;
+    }
+
+    const notifications = this.notificationsDataService.notifications;
+    if (notifications.length > 0) {
+      for (const notification of notifications) {
+        const notificationToUpload = Object.assign({}, notification);
+        delete notificationToUpload.id;
+        delete notificationToUpload.userId;
+        delete notificationToUpload.onlineRef;
+        notificationToUpload.user = notification.userId;
+
+        if (!notification?.onlineRef) {
+          this.apiService.post('notifications', notificationToUpload).subscribe(async(response: any) => {
+            if (response?.status === 'OK') {
+              await this.notificationsDataService.updateNotificationField(notification.id, 'online_ref', response?.data?.id);
+            } else {
+              console.error(`Failed to sync notification for user ${notification.userId} to the api`, response);
+            }
+          });
+        } else {
+          this.apiService.put('notifications', notification.onlineRef, notificationToUpload).subscribe(async(response: any) => {
+            if (response?.status !== 'OK') {
+              console.error(`Failed to update notification for user ${notification.userId} to the api`, response);
+            }
+          });
+        }
+      }
+    }
+  }
+
 }

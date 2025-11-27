@@ -8,6 +8,7 @@ import { AuthService } from '../auth/auth.service';
 import { Platform } from '@ionic/angular';
 import { App, AppState } from '@capacitor/app';
 import { ContentService } from '../content/content.service';
+import { NotificationsDataService } from 'src/app/notifications/data/notifications-data.service';
 
 @Injectable({
   providedIn: 'root'
@@ -23,6 +24,7 @@ export class LocalNotificationsService {
     public authService: AuthService,
     public contentService: ContentService,
     public zone: NgZone,
+    public notificationsDataService: NotificationsDataService,
   ) {
     this.platform.ready().then(() => {
       App.addListener('appStateChange', (state: AppState) => {
@@ -205,11 +207,56 @@ export class LocalNotificationsService {
     }
   }
 
+  async triggerWagePaymentNotifications(wageNotifications) {
+    try {
+      if (wageNotifications?.length) {
+        for (const wageNotif of wageNotifications) {
+          await LocalNotifications.schedule({
+            notifications: [
+              {
+                title: wageNotif?.title,
+                body: wageNotif?.message,
+                id: Number(wageNotif.id) + 100, // to avoid id clash with other notifications
+                schedule: {
+                  at: new Date(Date.now() + 1000),
+                },
+                actionTypeId: NotificationActionId.wagePayment,
+                extra: {
+                  wageId: wageNotif?.wageId ?? undefined,
+                  wageDetails: wageNotif?.wageDetails ?? undefined,
+                  notificationDataId: wageNotif?.notificationDataId ?? undefined,
+                },
+              },
+            ],
+          });
+        }
+      }
+    } catch (error) {
+      this.globalErrorHandler.handleError(
+        error,
+        'Error in local-notifications.service.ts at triggerWagePaymentNotifications(). Failed to trigger wage payment notification'
+      );
+    }
+  }
+
   addListeners() {
     try {
       LocalNotifications.addListener(
         'localNotificationReceived',
-        (notification: LocalNotificationSchema) => {}
+        async(notification: LocalNotificationSchema) => {
+          await this.zone.run(async() => {
+            // Handle the received notification here
+
+            // Mark wage payment notification as displayed
+            if (notification?.actionTypeId === NotificationActionId.wagePayment) {
+              if (notification?.extra?.wageId && notification?.extra?.notificationDataId) {
+                this.notificationsDataService.updateNotificationField(
+                  notification.extra.notificationDataId, 'is_displayed', 1
+                );
+              }
+            }
+          });
+        }
       );
 
       LocalNotifications.addListener(
@@ -232,6 +279,14 @@ export class LocalNotificationsService {
                 // for testing purposes
                 else if (notification?.actionTypeId === NotificationActionId.test) {
                   this.router.navigate([ 'survey' ], { queryParams: { surveySource: SurveySources.notification }});
+                }
+                else if (notification?.actionTypeId === NotificationActionId.wagePayment) {
+                  if (notification?.extra?.wageDetails) {
+                    const queryParams = { wageDetails: JSON.stringify(notification.extra.wageDetails) };
+                    this.router.navigate([ 'wages/wage-details' ], { queryParams });
+                    break;
+                  }
+                  this.router.navigate([ 'wages' ]);
                 }
                 break;
               default:
