@@ -249,7 +249,7 @@ export class LocalNotificationsService {
 
             // Mark wage payment notification as displayed
             if (notification?.actionTypeId === NotificationActionId.wagePayment) {
-              if (notification?.extra?.wageId) {
+              if (notification?.extra?.wageId && notification?.extra?.notificationDataId) {
                 this.notificationsDataService.updateNotificationField(
                   notification.extra.notificationDataId, 'is_displayed', 1
                 );
@@ -281,7 +281,7 @@ export class LocalNotificationsService {
                   this.router.navigate([ 'survey' ], { queryParams: { surveySource: SurveySources.notification }});
                 }
                 else if (notification?.actionTypeId === NotificationActionId.wagePayment) {
-                  if (notification?.extra?.wageId) {
+                  if (notification?.extra?.wageDetails) {
                     const queryParams = { wageDetails: JSON.stringify(notification.extra.wageDetails) };
                     this.router.navigate([ 'wages/wage-details' ], { queryParams });
                     break;
