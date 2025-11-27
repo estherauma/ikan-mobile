@@ -52,7 +52,7 @@ export class TutorialsComponent  implements OnInit {
   async ngOnInit() {
     await this.setup();
 
-    const eventParams = this.sharedMethods.getAnalyticsEventParams();
+    const eventParams = await this.sharedMethods.getAnalyticsEventParams();
     const eventName = this.pageContent?.analyticsEventName || PageEventNames.viewAppTutorials;
     await this.analtyicsService.trackEvent(eventName, eventParams);
   }
@@ -129,7 +129,7 @@ export class TutorialsComponent  implements OnInit {
 
     await this.sharedMethods.saveDataToStorage(StorageKeys.seenAppTutorials, true);
 
-    const eventParams = this.sharedMethods.getAnalyticsEventParams();
+    const eventParams = await this.sharedMethods.getAnalyticsEventParams();
     await this.analtyicsService.trackEvent(AppEventNames.seenAppTutorials, eventParams);
 
     this.router.navigate([this.authService.getCurrentUserBaseUrlFromRole(this.user?.role)], { replaceUrl: true });

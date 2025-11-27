@@ -1,7 +1,7 @@
 import { ChangeDetectorRef, Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AnalyticsService } from 'src/app/shared/services/analytics/analytics.service';
-import { PageEventNames } from 'src/app/shared/services/analytics/event-names';
+import { AppEventNames, PageEventNames } from 'src/app/shared/services/analytics/event-names';
 import { ContentService } from 'src/app/shared/services/content/content.service';
 import { SharedmethodsService } from 'src/app/shared/services/sharedmethods/sharedmethods.service';
 import { FileOpener } from '@capawesome-team/capacitor-file-opener';
@@ -88,8 +88,8 @@ export class WageDetailComponent  implements OnInit {
     this.prefillValues();
     this.getIssuePendingMessages();
 
-    const analyticsEventParams = this.sharedMethods.getAnalyticsEventParams();
-    this.analyticsService.trackEvent(PageEventNames.viewWageDetails, analyticsEventParams);
+    const analyticsEventParams = await this.sharedMethods.getAnalyticsEventParams();
+    await this.analyticsService.trackEvent(PageEventNames.viewWageDetails, analyticsEventParams);
   }
 
   async ionViewWillLeave() {
@@ -238,6 +238,18 @@ export class WageDetailComponent  implements OnInit {
       updatedWageDetails.updatedBy = this.currentUser?.id;
       await this.wageDataService.update(updatedWageDetails, this.wageDetails.id);
       await this.syncService.syncWages();
+
+      this.wageDetails = { ...updatedWageDetails };
+      this.getIssuePendingMessages();
+      this.cdr.detectChanges();
+
+      const analyticsEventParams = await this.sharedMethods.getAnalyticsEventParams();
+      const params = {
+        ...analyticsEventParams,
+        wageId: this.wageDetails.onlineRef || undefined,
+        status: this.wageDetails.status,
+      };
+      await this.analyticsService.trackEvent(AppEventNames.updatedWageDetails, params);
     }
   }
 
@@ -299,9 +311,12 @@ export class WageDetailComponent  implements OnInit {
     return this.whyTheDiscrepancyValues.indexOf(value) > -1;
   }
 
-  goToDiscrepancySection() {
+  async goToDiscrepancySection() {
     this.showActionQuestion = true;
     this.cdr.detectChanges();
+    
+    const analyticsEventParams = await this.sharedMethods.getAnalyticsEventParams();
+    await this.analyticsService.trackEvent(AppEventNames.viewWageDiscrepancySection, analyticsEventParams);
   }
 
   goToWageTrackingHelp() {
