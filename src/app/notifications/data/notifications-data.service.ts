@@ -135,4 +135,8 @@ export class NotificationsDataService {
       console.error(`Error in notifications-data.service.ts at updateNotificationField(). Failed to update field ${fieldName}.`, error);
     });
   }
+
+  async checkIfNotificationExists(onlineRef: string) {
+    return await this.notifications.some((notification: any) => notification.onlineRef === onlineRef);
+  }
 }
