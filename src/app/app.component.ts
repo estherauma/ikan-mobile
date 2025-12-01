@@ -18,6 +18,7 @@ import { Location } from '@angular/common';
 import { LocalNotifications  } from '@capacitor/local-notifications';
 import { ApiService } from './shared/services/api/api.service';
 import { AnalyticsService } from './shared/services/analytics/analytics.service';
+import { NotificationsDataService } from './notifications/data/notifications-data.service';
 
 @Component({
     selector: 'app-root',
@@ -49,6 +50,7 @@ export class AppComponent implements OnInit, OnDestroy {
     public alertController: AlertController,
     public apiService: ApiService,
     public analyticsService: AnalyticsService,
+    public noticationsDataService: NotificationsDataService,
   ) {
     this.authService.setUpAuthData();
     this.checkLoginStatus();
@@ -71,6 +73,13 @@ export class AppComponent implements OnInit, OnDestroy {
     });
     this.setupDB();
     this.analyticsService.uploadOfflineEvents();
+    this.noticationsDataService.displayWageNotificationsObs.subscribe(async(showWageNotifs) => {
+      if (showWageNotifs) {
+        await this.localNotifications.triggerWagePaymentNotifications(
+          this.noticationsDataService.undisplayedWageNotifications
+        );
+      }
+    });
   }
 
   async ngOnInit() {

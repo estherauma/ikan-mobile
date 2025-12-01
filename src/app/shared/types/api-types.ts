@@ -185,6 +185,7 @@ export enum NotificationActionId {
   feeeback = 'feedback',
   survey = 'survey',
   test = 'test',
+  wagePayment = 'wage-payment',
 }
 
 export interface AnalyticsEventsData {
@@ -204,4 +205,9 @@ export enum HubQuestionStatus {
   answeredYes = 'answeredYes',
   answeredNo = 'answeredNo',
   answeredMaybe = 'answeredMaybe',
+}
+
+export enum NotificationCategory {
+  general = 'general',
+  wagePayment = 'wage-payment',
 }

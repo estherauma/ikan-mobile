@@ -1,0 +1,20 @@
+CREATE TABLE IF NOT EXISTS notifications (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  app_ref VARCHAR(255) NOT NULL UNIQUE,
+  online_ref VARCHAR(255),
+  user_id VARCHAR(255) NOT NULL,
+  category VARCHAR(255) DEFAULT 'general',
+  title VARCHAR(255) NOT NULL,
+  message TEXT NOT NULL,
+  status VARCHAR(255) DEFAULT 'unread',
+  is_displayed BOOLEAN DEFAULT 0,
+  is_deleted BOOLEAN DEFAULT 0,
+  metadata JSON,
+  created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  deleted_at TIMESTAMP DEFAULT NULL,
+  created_by VARCHAR(255) NOT NULL,
+  updated_by VARCHAR(255) NOT NULL,
+  deleted_by VARCHAR(255),
+  deleted BOOLEAN DEFAULT 0
+);
