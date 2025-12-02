@@ -77,10 +77,16 @@ export class WagesDataService {
         }
       }
 
-      // Sort by status
+      // Sort by status & by descending paymentDate
       const statusOrder = ['action_required', 'issue_pending', 'received'];
-      wages.sort((a, b) => statusOrder.indexOf(a.status) - statusOrder.indexOf(b.status));
-      
+      wages.sort((a, b) => {
+        const statusComparison = statusOrder.indexOf(a.status) - statusOrder.indexOf(b.status);
+        if (statusComparison !== 0) {
+          return statusComparison;
+        }
+        return new Date(b.paymentDate).getTime() - new Date(a.paymentDate).getTime();
+      });
+
       this.wagesObs.next(wages);
     });
   }

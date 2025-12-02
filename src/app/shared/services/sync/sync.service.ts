@@ -1234,18 +1234,23 @@ export class SyncService {
             updatedBy: wage.updatedBy ?? user?.id,
             whyTheDiscrepancy: wage?.whyTheDiscrepancy ? JSON.stringify(wage.whyTheDiscrepancy) : null,
           };
+          // files are handled separately below
+          delete wageToSave.payslip;
+          delete wageToSave.crewBankTransferReceipt;
+          delete wageToSave.beneficiaryBankTransferReceipt;
+          
           const wageExists = await this.wagesDataService.checkIfWageExists(wage.id);
           if (!wageExists) {
-            if (wageToSave?.payslip) {
-              const fileUri = await this.uploadService.fetchAndSaveFile(wageToSave.payslip);
+            if (wage?.payslip) {
+              const fileUri = await this.uploadService.fetchAndSaveFile(wage.payslip);
               wageToSave.payslip = fileUri ?? null;
             }
-            if (wageToSave?.crewBankTransferReceipt) {
-              const fileUri = await this.uploadService.fetchAndSaveFile(wageToSave.crewBankTransferReceipt);
+            if (wage?.crewBankTransferReceipt) {
+              const fileUri = await this.uploadService.fetchAndSaveFile(wage.crewBankTransferReceipt);
               wageToSave.crewBankTransferReceipt = fileUri ?? null;
             }
-            if (wageToSave?.beneficiaryBankTransferReceipt) {
-              const fileUri = await this.uploadService.fetchAndSaveFile(wageToSave.beneficiaryBankTransferReceipt);
+            if (wage?.beneficiaryBankTransferReceipt) {
+              const fileUri = await this.uploadService.fetchAndSaveFile(wage.beneficiaryBankTransferReceipt);
               wageToSave.beneficiaryBankTransferReceipt = fileUri ?? null;
             }
             
@@ -1259,20 +1264,20 @@ export class SyncService {
             if (currentUpdateDate < newUpdateDate) {
               const currentPayslipFilename = currentWage?.payslip ? currentWage.payslip.split('files/')[1] : null;
               const isOldPayslip = currentPayslipFilename && wage.payslip && wage.payslip.includes(currentPayslipFilename);
-              if (wageToSave?.payslip && !isOldPayslip) {
-                const fileUri = await this.uploadService.fetchAndSaveFile(wageToSave.payslip);
+              if (wage?.payslip && !isOldPayslip) {
+                const fileUri = await this.uploadService.fetchAndSaveFile(wage.payslip);
                 wageToSave.payslip = fileUri ?? null;
               }
               const currentCrewBankTransferReceiptFilename = currentWage?.crewBankTransferReceipt ? currentWage.crewBankTransferReceipt.split('files/')[1] : null;
               const isOldCrewBankTransferReceipt = currentCrewBankTransferReceiptFilename && wage.crewBankTransferReceipt && wage.crewBankTransferReceipt.includes(currentCrewBankTransferReceiptFilename);
-              if (wageToSave?.crewBankTransferReceipt && !isOldCrewBankTransferReceipt) {
-                const fileUri = await this.uploadService.fetchAndSaveFile(wageToSave.crewBankTransferReceipt);
+              if (wage?.crewBankTransferReceipt && !isOldCrewBankTransferReceipt) {
+                const fileUri = await this.uploadService.fetchAndSaveFile(wage.crewBankTransferReceipt);
                 wageToSave.crewBankTransferReceipt = fileUri ?? null;
               }
               const currentBeneficiaryBankTransferReceiptFilename = currentWage?.beneficiaryBankTransferReceipt ? currentWage.beneficiaryBankTransferReceipt.split('files/')[1] : null;
               const isOldBeneficiaryBankTransferReceipt = currentBeneficiaryBankTransferReceiptFilename && wage.beneficiaryBankTransferReceipt && wage.beneficiaryBankTransferReceipt.includes(currentBeneficiaryBankTransferReceiptFilename);
-              if (wageToSave?.beneficiaryBankTransferReceipt && !isOldBeneficiaryBankTransferReceipt) {
-                const fileUri = await this.uploadService.fetchAndSaveFile(wageToSave.beneficiaryBankTransferReceipt);
+              if (wage?.beneficiaryBankTransferReceipt && !isOldBeneficiaryBankTransferReceipt) {
+                const fileUri = await this.uploadService.fetchAndSaveFile(wage.beneficiaryBankTransferReceipt);
                 wageToSave.beneficiaryBankTransferReceipt = fileUri ?? null;
               }
 

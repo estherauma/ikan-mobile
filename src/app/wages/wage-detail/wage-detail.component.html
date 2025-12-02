@@ -10,11 +10,11 @@
   <div
     class="content-wrapper"
     [ngClass]="{
-      'content-action-required': wageDetails?.status === 'action_required',
-      'content-issue-pending': wageDetails?.status === 'issue_pending',
-      'content-confirmed': wageDetails?.status === 'confirmed',
-      'content-pending': wageDetails?.status === 'pending',
-      'content-received': wageDetails?.status === 'received'
+      'content-action-required': isWorker && (wageDetails?.status === 'action_required'),
+      'content-issue-pending': isWorker && (wageDetails?.status === 'issue_pending'),
+      'content-received': isWorker && (wageDetails?.status === 'received'),
+      'content-confirmed': isVesselOwner && (wageDetails?.status === 'received'),
+      'content-pending': isVesselOwner && (wageDetails?.status === 'action_required' || wageDetails?.status === 'issue_pending'),
     }"
   >
     <!-- Wage details summary -->

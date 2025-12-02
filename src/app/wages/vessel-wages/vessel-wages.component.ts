@@ -134,6 +134,17 @@ export class VesselWagesComponent  implements OnInit {
       isExpanded: false,
     }));
 
+    // sort by ascending name within each date group
+    vesselWages.forEach((group) => {
+      group.wages.sort((a, b) => {
+        const userA = a.user ? `${a.user.firstName} ${a.user.lastName}`.toLowerCase() : '';
+        const userB = b.user ? `${b.user.firstName} ${b.user.lastName}`.toLowerCase() : '';
+        if (userA < userB) return -1;
+        if (userA > userB) return 1;
+        return 0;
+      });
+    });
+
     return vesselWages;
   }
 

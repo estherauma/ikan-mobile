@@ -83,7 +83,7 @@ export class WageTrackingHelpComponent  implements OnInit {
     const alert = await this.alertController.create({
       cssClass: 'tuna-alert wages-agent-details-alert',
       header: this.commonText?.comingSoon + '!',
-      message: this.commonText?.agentDetailsComingSoonMessage,
+      message: this.paymentsCommonText?.agentDetailsComingSoonMessage,
       buttons: [
         {
           text: this.commonText?.ok,

@@ -40,7 +40,10 @@ export class NotificationsDataService {
       this.notifications = data;
       
       setTimeout(async() => {
-        this.undisplayedWageNotifications = await this.retrieveUndisplayedWageNotifications();
+        const paymentsPageData = this.contentService.getContentByPropertyName('payments-common-text');
+        const paymentsCommonText = this.sharedMethods.convertAdditionalTextToObj(paymentsPageData?.additionalText);
+        
+        this.undisplayedWageNotifications = await this.retrieveUndisplayedWageNotifications(paymentsCommonText);
         if (this.undisplayedWageNotifications.length > 0) {
           this.displayWageNotificationsObs.next(true);
         } else {
@@ -179,7 +182,7 @@ export class NotificationsDataService {
     return this.notifications.filter((notification: any) => notification[fieldName] === fieldValue);
   }
 
-  async retrieveUndisplayedWageNotifications() {
+  async retrieveUndisplayedWageNotifications(paymentsCommonText) {
     const user = await this.sharedMethods.getUserData();
     const notifs =  this.notifications.filter((notification: any) =>
       notification.userId === user.id &&
@@ -189,10 +192,8 @@ export class NotificationsDataService {
     );
 
     for (const notif of notifs) {
-      // get title and message from content service
-      const commonText = this.contentService.commonText;
-      notif.title = commonText?.wagePaymentNotificationTitle || notif.title;
-      notif.message = commonText?.wagePaymentNotificationBody || notif.message;
+      const pseudoTitle = paymentsCommonText?.wagePaymentNotificationTitle;
+      const pseudoMessage = paymentsCommonText?.wagePaymentNotificationBody;
       
       // add wageId and details from metadata
       if (notif.metadata) {
@@ -204,6 +205,16 @@ export class NotificationsDataService {
             notif.wageId = wage.id;
             notif.wageDetails = wage;
             notif.notificationDataId = notif.id;
+          }
+
+          // format title & message
+          if (pseudoTitle) {
+            notif.title = pseudoTitle;
+          }
+          if (pseudoMessage && metadataObj.amount && metadataObj.vessel_name) {
+            notif.message = pseudoMessage
+              .replace('{{wageUsdAmount}}', metadataObj.amount)
+              .replace('{{wageVesselName}}', metadataObj.vessel_name);
           }
         } catch (error) {
           console.error('Error parsing notification metadata', error);
