@@ -190,12 +190,10 @@ export class NotificationsDataService {
       notification.isDisplayed === false &&
       notification.isDeleted === false
     );
-    const pseudoTitle = paymentsCommonText?.wagePaymentNotificationTitle;
-    const pseudoMessage = paymentsCommonText?.wagePaymentNotificationBody;
 
     for (const notif of notifs) {
-      notif.title = paymentsCommonText?.wagePaymentNotificationTitle || notif.title;
-      notif.message = paymentsCommonText?.wagePaymentNotificationBody || notif.message;
+      const pseudoTitle = paymentsCommonText?.wagePaymentNotificationTitle;
+      const pseudoMessage = paymentsCommonText?.wagePaymentNotificationBody;
       
       // add wageId and details from metadata
       if (notif.metadata) {
