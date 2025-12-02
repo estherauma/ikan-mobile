@@ -254,7 +254,7 @@ export class SharedmethodsService {
       }
       return textDataObject;
     } else  {
-      return { };
+      return {};
     }
   }
 
