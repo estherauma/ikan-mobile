@@ -1263,29 +1263,29 @@ export class SyncService {
             const newUpdateDate = new Date(wage.updatedAt);
             if (currentUpdateDate < newUpdateDate) {
               const currentPayslipFilename = currentWage?.payslip ? currentWage.payslip.split('files/')[1] : null;
-              const isOldPayslip = currentPayslipFilename && wage.payslip && wage.payslip.includes(currentPayslipFilename);
-              if (wage?.payslip && !isOldPayslip) {
+              const isCurrentPayslip = currentPayslipFilename && wage.payslip && wage.payslip.includes(currentPayslipFilename);
+              if (wage?.payslip && !isCurrentPayslip) {
                 const fileUri = await this.uploadService.fetchAndSaveFile(wage.payslip);
                 wageToSave.payslip = fileUri ?? null;
-              } else if (wage?.payslip && isOldPayslip) {
+              } else if (wage?.payslip && isCurrentPayslip) {
                 wageToSave.payslip = currentWage.payslip;
               }
               
               const currentCrewBankTransferReceiptFilename = currentWage?.crewBankTransferReceipt ? currentWage.crewBankTransferReceipt.split('files/')[1] : null;
-              const isOldCrewBankTransferReceipt = currentCrewBankTransferReceiptFilename && wage.crewBankTransferReceipt && wage.crewBankTransferReceipt.includes(currentCrewBankTransferReceiptFilename);
-              if (wage?.crewBankTransferReceipt && !isOldCrewBankTransferReceipt) {
+              const isCurrentCrewBankTransferReceipt = currentCrewBankTransferReceiptFilename && wage.crewBankTransferReceipt && wage.crewBankTransferReceipt.includes(currentCrewBankTransferReceiptFilename);
+              if (wage?.crewBankTransferReceipt && !isCurrentCrewBankTransferReceipt) {
                 const fileUri = await this.uploadService.fetchAndSaveFile(wage.crewBankTransferReceipt);
                 wageToSave.crewBankTransferReceipt = fileUri ?? null;
-              } else if (wage?.crewBankTransferReceipt && isOldCrewBankTransferReceipt) {
+              } else if (wage?.crewBankTransferReceipt && isCurrentCrewBankTransferReceipt) {
                 wageToSave.crewBankTransferReceipt = currentWage.crewBankTransferReceipt;
               }
               
               const currentBeneficiaryBankTransferReceiptFilename = currentWage?.beneficiaryBankTransferReceipt ? currentWage.beneficiaryBankTransferReceipt.split('files/')[1] : null;
-              const isOldBeneficiaryBankTransferReceipt = currentBeneficiaryBankTransferReceiptFilename && wage.beneficiaryBankTransferReceipt && wage.beneficiaryBankTransferReceipt.includes(currentBeneficiaryBankTransferReceiptFilename);
-              if (wage?.beneficiaryBankTransferReceipt && !isOldBeneficiaryBankTransferReceipt) {
+              const isCurrentBeneficiaryBankTransferReceipt = currentBeneficiaryBankTransferReceiptFilename && wage.beneficiaryBankTransferReceipt && wage.beneficiaryBankTransferReceipt.includes(currentBeneficiaryBankTransferReceiptFilename);
+              if (wage?.beneficiaryBankTransferReceipt && !isCurrentBeneficiaryBankTransferReceipt) {
                 const fileUri = await this.uploadService.fetchAndSaveFile(wage.beneficiaryBankTransferReceipt);
                 wageToSave.beneficiaryBankTransferReceipt = fileUri ?? null;
-              } else if (wage?.beneficiaryBankTransferReceipt && isOldBeneficiaryBankTransferReceipt) {
+              } else if (wage?.beneficiaryBankTransferReceipt && isCurrentBeneficiaryBankTransferReceipt) {
                 wageToSave.beneficiaryBankTransferReceipt = currentWage.beneficiaryBankTransferReceipt;
               }
 
