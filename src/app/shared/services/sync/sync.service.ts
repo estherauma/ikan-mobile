@@ -1267,18 +1267,26 @@ export class SyncService {
               if (wage?.payslip && !isOldPayslip) {
                 const fileUri = await this.uploadService.fetchAndSaveFile(wage.payslip);
                 wageToSave.payslip = fileUri ?? null;
+              } else if (wage?.payslip && isOldPayslip) {
+                wageToSave.payslip = currentWage.payslip;
               }
+              
               const currentCrewBankTransferReceiptFilename = currentWage?.crewBankTransferReceipt ? currentWage.crewBankTransferReceipt.split('files/')[1] : null;
               const isOldCrewBankTransferReceipt = currentCrewBankTransferReceiptFilename && wage.crewBankTransferReceipt && wage.crewBankTransferReceipt.includes(currentCrewBankTransferReceiptFilename);
               if (wage?.crewBankTransferReceipt && !isOldCrewBankTransferReceipt) {
                 const fileUri = await this.uploadService.fetchAndSaveFile(wage.crewBankTransferReceipt);
                 wageToSave.crewBankTransferReceipt = fileUri ?? null;
+              } else if (wage?.crewBankTransferReceipt && isOldCrewBankTransferReceipt) {
+                wageToSave.crewBankTransferReceipt = currentWage.crewBankTransferReceipt;
               }
+              
               const currentBeneficiaryBankTransferReceiptFilename = currentWage?.beneficiaryBankTransferReceipt ? currentWage.beneficiaryBankTransferReceipt.split('files/')[1] : null;
               const isOldBeneficiaryBankTransferReceipt = currentBeneficiaryBankTransferReceiptFilename && wage.beneficiaryBankTransferReceipt && wage.beneficiaryBankTransferReceipt.includes(currentBeneficiaryBankTransferReceiptFilename);
               if (wage?.beneficiaryBankTransferReceipt && !isOldBeneficiaryBankTransferReceipt) {
                 const fileUri = await this.uploadService.fetchAndSaveFile(wage.beneficiaryBankTransferReceipt);
                 wageToSave.beneficiaryBankTransferReceipt = fileUri ?? null;
+              } else if (wage?.beneficiaryBankTransferReceipt && isOldBeneficiaryBankTransferReceipt) {
+                wageToSave.beneficiaryBankTransferReceipt = currentWage.beneficiaryBankTransferReceipt;
               }
 
               await this.wagesDataService.update(wageToSave, currentWage.id).then(() => {
