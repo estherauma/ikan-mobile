@@ -585,18 +585,16 @@
                     {{question?.label || question?.question}}
                   </ion-label>
                 </ion-col>
-                <ion-col size="12">
-                  <div>
-                    <ion-radio-group class="radio-group" formControlName="{{question.key}}">
-                      @for (item of question.options; track item) {
-                        <ion-item lines="none">
-                          <!-- refactor item(option) to value/label -->
-                          <ion-radio mode="md" value="{{item.value || item.option }}" class="custom-control-input"></ion-radio>
-                          <label class="custom-control-label">{{item.label || item.option }}</label>
-                        </ion-item>
-                      }
-                    </ion-radio-group>
-                  </div>
+                <ion-col size="12" class="radio-col">
+                  <ion-radio-group class="radio-group" formControlName="{{question.key}}">
+                    @for (item of question.options; track item) {
+                      <ion-item lines="none">
+                        <!-- refactor item(option) to value/label -->
+                        <ion-radio slot="start" mode="md" value="{{item.value || item.option }}" class="custom-control-input"></ion-radio>
+                        <label class="custom-control-label">{{item.label || item.option }}</label>
+                      </ion-item>
+                    }
+                  </ion-radio-group>
                 </ion-col>
               </ion-row>
             </ion-grid>
@@ -612,18 +610,16 @@
                     {{question?.label || question?.question}}
                   </ion-label>
                 </ion-col>
-                <ion-col size="12">
-                  <div>
-                    <ion-radio-group class="radio-group" formControlName="{{question.key}}">
-                      @for (item of question.options; track item) {
-                        <ion-item lines="none">
-                          <!-- refactor item(option) to value/label -->
-                          <ion-radio mode="md" value="{{item.value || item.option }}" class="custom-control-input"></ion-radio>
-                          <label class="custom-control-label">{{item.label || item.option }}</label>
-                        </ion-item>
-                      }
-                    </ion-radio-group>
-                  </div>
+                <ion-col size="12" class="radio-col">
+                  <ion-radio-group class="radio-group" formControlName="{{question.key}}">
+                    @for (item of question.options; track item) {
+                      <ion-item lines="none">
+                        <!-- refactor item(option) to value/label -->
+                        <ion-radio slot="start" mode="md" value="{{item.value || item.option }}" class="custom-control-input"></ion-radio>
+                        <label class="custom-control-label">{{item.label || item.option }}</label>
+                      </ion-item>
+                    }
+                  </ion-radio-group>
                 </ion-col>
               </ion-row>
             </ion-grid>
@@ -1084,18 +1080,16 @@
                           {{question.followUpQuestion.question}}
                         </ion-label>
                       </ion-col>
-                      <ion-col size="12">
-                        <div>
-                          <ion-radio-group class="radio-group" formControlName="{{question.followUpQuestion.key}}">
-                            @for (item of question.followUpQuestion.options; track item) {
-                              <ion-item lines="none">
-                                <!-- refactor item(option) to value/label -->
-                                <ion-radio mode="md" value="{{item.value || item.option }}" class="custom-control-input"></ion-radio>
-                                <label class="custom-control-label">{{item.label || item.option }}</label>
-                              </ion-item>
-                            }
-                          </ion-radio-group>
-                        </div>
+                      <ion-col size="12" class="radio-col">
+                        <ion-radio-group class="radio-group" formControlName="{{question.followUpQuestion.key}}">
+                          @for (item of question.followUpQuestion.options; track item) {
+                            <ion-item lines="none">
+                              <!-- refactor item(option) to value/label -->
+                              <ion-radio slot="start" mode="md" value="{{item.value || item.option }}" class="custom-control-input"></ion-radio>
+                              <label class="custom-control-label">{{item.label || item.option }}</label>
+                            </ion-item>
+                          }
+                        </ion-radio-group>
                       </ion-col>
                     </ion-row>
                   </ion-grid>
@@ -1111,18 +1105,16 @@
                           {{question.followUpQuestion.question}}
                         </ion-label>
                       </ion-col>
-                      <ion-col size="12">
-                        <div>
-                          <ion-radio-group class="radio-group" formControlName="{{question.followUpQuestion.key}}">
-                            @for (item of question.followUpQuestion.options; track item) {
-                              <ion-item lines="none">
-                                <!-- refactor item(option) to value/label -->
-                                <ion-radio mode="md" value="{{item.value || item.option }}" class="custom-control-input"></ion-radio>
-                                <label class="custom-control-label">{{item.label || item.option }}</label>
-                              </ion-item>
-                            }
-                          </ion-radio-group>
-                        </div>
+                      <ion-col size="12" class="radio-col">
+                        <ion-radio-group class="radio-group" formControlName="{{question.followUpQuestion.key}}">
+                          @for (item of question.followUpQuestion.options; track item) {
+                            <ion-item lines="none">
+                              <!-- refactor item(option) to value/label -->
+                              <ion-radio slot="start" mode="md" value="{{item.value || item.option }}" class="custom-control-input"></ion-radio>
+                              <label class="custom-control-label">{{item.label || item.option }}</label>
+                            </ion-item>
+                          }
+                        </ion-radio-group>
                       </ion-col>
                     </ion-row>
                   </ion-grid>
