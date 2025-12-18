@@ -23,10 +23,11 @@
   align-items: center;
   justify-content: center;
   z-index: 999;
+  padding-top: 10px;
   video {
     width: 70%;
     height: 100%;
-    object-fit: cover;
+    object-fit: contain;
     object-position: center;
     border-radius: 10px;
     position: relative;
