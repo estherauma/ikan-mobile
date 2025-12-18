@@ -61,10 +61,10 @@ ion-content {
           video {
             width: 100%;
             height: 100%;
-            object-fit: cover;
+            object-fit: contain;
             object-position: center;
             border-radius: 20px;
-            border: 2px solid #3565ff;
+            border: 1px solid #3565ff;
           }
           .play-icon {
             background: white;
@@ -101,6 +101,10 @@ ion-content {
               width: 60%;
               height: 120px;
               margin-bottom: 0;
+              video {
+                object-fit: fill;
+                border-radius: 10px;
+              }
             }
             .no-video-wrapper {
               border-radius: 20px;
