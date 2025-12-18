@@ -147,6 +147,10 @@ ion-label.asterisk::after {
   font-size: 15px !important;
 }
 
+.radio-col {
+  padding: 0 15px 15px 15px;
+}
+
 :host.create-contract,
 :host.create-clause,
 :host.create-clause-detail,
@@ -174,11 +178,6 @@ ion-label.asterisk::after {
     ion-radio-group {
       ion-item {
         --background: #eaedf6;
-
-        ion-radio {
-          width: unset;
-          margin-right: 20px;
-        }
       }
     }
   }
