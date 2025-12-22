@@ -16,7 +16,7 @@ module.exports.generateEnvironmentFiles = (buildType) => {
                 environment: 'staging',
                 pushNotificationApi: '${process.env.STAGING_PUSH_NOTIFICATION_URL}',
                 sentryDSN: '${process.env.SENTRY_DSN}',
-                gsBucketName: '${process.env.GS_BUCKET_NAME}',
+                gsBucketName: '${process.env.STAGING_GS_BUCKET_NAME}',
             };
             `;
             break;
@@ -29,7 +29,7 @@ module.exports.generateEnvironmentFiles = (buildType) => {
                 environment: 'production',
                 pushNotificationApi: '${process.env.PROD_PUSH_NOTIFICATION_URL}',
                 sentryDSN: '${process.env.SENTRY_DSN}',
-                gsBucketName: '${process.env.GS_BUCKET_NAME}',
+                gsBucketName: '${process.env.PRODUCTION_GS_BUCKET_NAME}',
             };
             `;
             break;
@@ -42,7 +42,7 @@ module.exports.generateEnvironmentFiles = (buildType) => {
                 environment: 'test',
                 pushNotificationApi: '${process.env.DEV_PUSH_NOTIFICATION_URL}',
                 sentryDSN: '${process.env.SENTRY_DSN}',
-                gsBucketName: '${process.env.GS_BUCKET_NAME}',
+                gsBucketName: '${process.env.DEV_GS_BUCKET_NAME}',
             };
             `;
             break;
@@ -55,7 +55,7 @@ module.exports.generateEnvironmentFiles = (buildType) => {
             environment: 'development',
             pushNotificationApi: '${process.env.DEV_PUSH_NOTIFICATION_URL}',
             sentryDSN: '${process.env.SENTRY_DSN}',
-            gsBucketName: '${process.env.GS_BUCKET_NAME}',
+            gsBucketName: '${process.env.DEV_GS_BUCKET_NAME}',
         };
         `;
             break;
