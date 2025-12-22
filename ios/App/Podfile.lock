@@ -233,29 +233,29 @@ EXTERNAL SOURCES:
     :path: "../capacitor-cordova-ios-plugins"
 
 SPEC CHECKSUMS:
-  Capacitor: b4741ca7affb32c1b70debd03df92cbf522d8a80
-  CapacitorApp: efc1e9748a8ea5d3e789cd82a4f451341cc7ac93
-  CapacitorCamera: 6e18d54c8ab30d7dc7b8cd93d96f9b4f57e9202a
-  CapacitorCommunityFcm: 8b6bd4c26c95643dd954aa886d18b0693280c29f
-  CapacitorCommunityFirebaseAnalytics: b70024dd8bee31e6e5bcc07d8a207454056e30c1
+  Capacitor: 28d6c01026a9a3f7156529498ec1f389a2a28dbc
+  CapacitorApp: 1f6922c9c5c8b1c538d7fbe92ebe44a81b34bed3
+  CapacitorCamera: f9e54db0a18bb218a8dc360907d63aaefe9209ff
+  CapacitorCommunityFcm: 7c1b4ee8f425f77f7380832eb1ba0aa12ba4dd75
+  CapacitorCommunityFirebaseAnalytics: d78673f52bc84e1138a9ce4f8208bd0f8c2b365c
   CapacitorCordova: 435121e81a2df4d0034f0fb11fcefab5104cfdb5
-  CapacitorDevice: a50a45f0d075e55e2392c7a4be5404d4f69515de
-  CapacitorFilesystem: ac0a386949ed6c295a3dffa129ecd26b881ae5be
-  CapacitorHaptics: 09d96bcb5a2b74ede8fd039b4cdf58fc43dcacf1
-  CapacitorKeyboard: 056bbe3711830ccb782f1705a8ad183b27b6c51e
-  CapacitorLocalNotifications: 0964df8c14ec51aadf2bb4fd6d55fdb1ccfd6721
-  CapacitorNativeSettings: f5511eb94cb5700ac4edf54f992d2c0dda1857d6
-  CapacitorNetwork: 9b9eaeb417ec0ffa22e2bc33a4c71df10e1d6f06
-  CapacitorPreferences: b583b5deb74e564c35968189d25d32c0fd41200d
-  CapacitorPushNotifications: 6ffcf5df95f17d71a1b02893549bc4727f80540c
-  CapacitorShare: 051c3ceee0ddf3bb54574851a622bbb317eed5bd
-  CapacitorSplashScreen: 8d6c8cb0542a8e81585c593815db8785ed8ce454
-  CapacitorStatusBar: 5526833b87fa9c96a2a90c1322bb1f663c04505f
-  CapacitorToast: e32c2b61a70d6fbd0633309c0807b4b9811768b4
-  CapacitorVoiceRecorder: b136a5989c9a306d57f0c9fc530be79a06ccf7b2
-  CapawesomeCapacitorFilePicker: 005c33082078c1dd528ba9204aa49e97d62b68b7
-  CapawesomeTeamCapacitorFileOpener: 695c9bc2e9fef125dda9491d9bd206cff1cc93c0
-  CordovaPlugins: a53d2acd7f554396124e4d126568fe5329c95c43
+  CapacitorDevice: 81ae78d5d1942707caad79276badd458bf6ec603
+  CapacitorFilesystem: f9bd850c41e048180e5dc0cbb90f2033ede9d2cc
+  CapacitorHaptics: b3fb2869e72c4466e18ce9ccbeb60a3d8723b3d4
+  CapacitorKeyboard: a86aa9e4741b6444a802df26440a92ae041b34a6
+  CapacitorLocalNotifications: 665188ae8accd40806129073896fb2b39322d858
+  CapacitorNativeSettings: 3cd2e2ef431fe471674f381609cfb29154ddfcfa
+  CapacitorNetwork: 695069886b3c5ed514db69aa3d026b8dc3c03a6b
+  CapacitorPreferences: 65107ed7437d96ee72583df5763985e3c0ff2bc2
+  CapacitorPushNotifications: 7c0659b349b149ee3936a682da31a9d269de9582
+  CapacitorShare: be166411fa995ead2d39b104aa0aae56d8615c66
+  CapacitorSplashScreen: 157947576b59d913792063a8d442a79e6d283ee5
+  CapacitorStatusBar: e04d05e121d5a5979c29eb4249186a4e4a84cacb
+  CapacitorToast: 166611aea815418fc08894b77a915773e3d059d5
+  CapacitorVoiceRecorder: 9158861be982f32d411769723a4d813d6ce46135
+  CapawesomeCapacitorFilePicker: 0f4a913a00e39dd77213449f0d917e92f35a5ca9
+  CapawesomeTeamCapacitorFileOpener: ae3340a148c8947dda81ed2a8a600988667909b3
+  CordovaPlugins: c337d31f2d2357acb3c9faa26181e37706faeabf
   FirebaseAnalytics: ec00fe8b93b41dc6fe4a28784b8e51da0647a248
   FirebaseCore: 7ec4d0484817f12c3373955bc87762d96842d483
   FirebaseCoreInternal: 910a81992c33715fec9263ca7381d59ab3a750b7
@@ -270,4 +270,4 @@ SPEC CHECKSUMS:
 
 PODFILE CHECKSUM: 77dd48cc1d6fc6741e08c72919d303ec4f981c71
 
-COCOAPODS: 1.15.2
+COCOAPODS: 1.16.2
