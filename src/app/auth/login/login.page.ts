@@ -103,7 +103,8 @@ export class LoginPage extends BaseformPage implements OnInit {
 
   setUpForm(): void {}
 
-  async onSubmit(formData) {
+  async onSubmit() {
+    let formData = this.pageFormGroup.value;
     this.sharedMethods.showLoader(this.contentService.commonText?.loadingText);
     // We are using the email key and not emailOrPhone for backward compatibility
     // with the old login page
