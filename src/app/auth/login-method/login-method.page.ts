@@ -16,12 +16,16 @@ import { StorageKeys } from 'src/app/shared/types/api-types';
     standalone: false
 })
 export class LoginMethodPage implements OnInit {
+  
+  commonText: any;
   pageText: any;
   pageTitle = 'Login Method';
-  // inviteCodeAuth and usernameAuth initialized with values for
+  // inviteCodeAuth, usernameAuth, login & register initialized with values for
   // the first few seconds before content is fetched from the api
-  inviteCodeAuth: string = 'I have an invite code'.toUpperCase();
-  loginWithEmailOrPhoneNumberText: string = 'Login with email or phone number'.toUpperCase();
+  inviteCodeAuth: string = 'I have an invite code';
+  loginWithEmailOrPhoneNumberText: string = 'Login with email or phone number';
+  loginText: string = 'Login';
+  registerText: string = 'Register';
   watchContent: Subscription;
   langModalPresented = false;
   modalDisplaying = false;
@@ -45,6 +49,12 @@ export class LoginMethodPage implements OnInit {
   }
 
   async ngOnInit() {
+    this.commonText = this.contentService.commonText;
+    if (this.commonText && Object.keys(this.commonText).length > 0) {
+      this.loginText = this.commonText?.login || this.loginText;
+      // TODO: translate; add to prismic
+      this.registerText = this.commonText?.register || this.registerText;
+    }
     const pageData = this.contentService.getContentByPropertyName('login-method');
     this.pageText = this.sharedMethods.convertAdditionalTextToObj(pageData?.additionalText);
     if (this.pageText && Object.keys(this.pageText).length > 0) {
@@ -66,12 +76,16 @@ export class LoginMethodPage implements OnInit {
     this.loginWithEmailOrPhoneNumberText = this.pageText?.loginWithEmailOrPhoneNumberText;
   }
 
-  toInviteCodeScreen() {
+  goToInviteCodeScreen() {
     this.router.navigate(['auth/invite-code']);
   }
 
-  loginWithEmailOrPhoneNumber() {
+  goToLoginScreen() {
     this.router.navigate(['login'], {replaceUrl: true});
+  }
+
+  goToSignupScreen() {
+    this.router.navigate(['auth/signup'], {replaceUrl: true});
   }
 
   async presentSelectLangModal() {
