@@ -102,6 +102,8 @@ export class LoginMethodPage implements OnInit {
         this.pageText = data.data?.loginMethodData;
         this.inviteCodeAuth = this.pageText?.inviteCodeAuth;
         this.loginWithEmailOrPhoneNumberText = this.pageText?.loginWithEmailOrPhoneNumberText;
+        this.loginText = this.commonText?.login || this.loginText;
+        this.registerText = this.commonText?.register || this.registerText;
       }
       this.modalDisplaying = false;
     });
