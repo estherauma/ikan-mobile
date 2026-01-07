@@ -647,9 +647,9 @@ export class SyncService {
     if (!isValid || !this.isDbInitialized || !navigator.onLine) {
       return;
     }
+    await this.syncProfiles();
     await this.fetchProfile();
     await this.fetchProfilesByRole();
-    await this.syncProfiles();
   }
 
   // fetches current user's profile only
