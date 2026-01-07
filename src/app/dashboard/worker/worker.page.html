@@ -19,42 +19,97 @@
         </div>
       }
       <div class="ion-padding cards-wrapper">
-        <div>
+        <div class="work-journey-wrapper">
           <ion-card
-            routerLink="/learninghub"
-            class="hub-content">
+            routerLink="/my-work-journey"
+            class="work-journey-card"
+          >
             <ion-card-content>
-              <ion-grid>
-                <ion-row>
-                  <ion-col size="12">
-                    <ion-card-title class="card-title">{{commonText?.learningHub}}</ion-card-title>
-                    <!-- <ion-card-subtitle>Sub text goes here.</ion-card-subtitle> -->
-                  </ion-col>
-                </ion-row>
-              </ion-grid>
+              <!-- TODO: translate, get title from menu content -->
+              <ion-card-title class="card-title">{{commonText?.myWorkJourney || 'My work journey' }}</ion-card-title>
+              <ion-icon name="book-outline" class="card-icon"></ion-icon>
             </ion-card-content>
           </ion-card>
+          <hr/>
         </div>
-        <div>
-          @for (sList of sLists; track sList) {
-            <ion-card>
-              <ion-card-content [routerLink]="sList?.url">
-                <ion-grid>
-                  <ion-row>
-                    <!-- <ion-col size="3">
-                    <ion-thumbnail>
-                      <img [src]="sList?.icon" width="10" height="10" />
-                    </ion-thumbnail>
-                  </ion-col> -->
-                  <ion-col size="12">
-                    <ion-card-title class="card-title">{{sList?.title}}</ion-card-title>
-                  </ion-col>
-                </ion-row>
-              </ion-grid>
-            </ion-card-content>
-          </ion-card>
-        }
-      </div>
+        
+        <div class="contract-wage-wrapper">
+          <ion-label class="section-label">
+            <!-- TODO: translate, get title from menu content -->
+            {{ commonText?.contractAndWagePayments || 'Contract & Wage Payments' }}
+          </ion-label>
+          <ion-row>
+            <ion-col size="6">
+              <ion-card
+                routerLink="/contracts/home"
+                class="contract-card"
+              >
+                <ion-card-content>
+                  <!-- TODO: translate, get title from menu content -->
+                  <ion-card-title class="card-title">{{ commonText?.contract || 'Contract' }}</ion-card-title>
+                  <ion-icon src="assets/icon/workorders_blue.svg" class="card-icon"></ion-icon>
+                </ion-card-content>
+              </ion-card>
+            </ion-col>
+            <ion-col size="6">
+              <ion-card
+                routerLink="/wages"
+                class="wage-payments-card"
+              >
+                <ion-card-content>
+                  <!-- TODO: translate, get title from menu content -->
+                  <ion-card-title class="card-title">{{ commonText?.wagePayments || 'Wage Payments' }}</ion-card-title>
+                  <ion-icon src="assets/icon/payments.svg" class="card-icon"></ion-icon>
+                </ion-card-content>
+              </ion-card>
+            </ion-col>
+          </ion-row>
+          <hr/>
+        </div>
+        <div class="learninghub-tfa-docs-wrapper">
+          <ion-label class="section-label">
+            <!-- TODO: translate, get title from menu content -->
+            {{ commonText?.learningAndDocuments || 'Learning & Documents' }}
+          </ion-label>
+          <ion-row>
+            <ion-col size="6">
+              <ion-card
+                routerLink="/learninghub"
+                class="learninghub-card"
+              >
+                <ion-card-content>
+                  <!-- TODO: translate, get title from menu content -->
+                  <ion-card-title class="card-title">{{ commonText?.learningHub || 'Learning Hub' }}</ion-card-title>
+                  <ion-icon src="assets/icon/training_blue.svg" class="card-icon"></ion-icon>
+                </ion-card-content>
+              </ion-card>
+            </ion-col>
+            <ion-col size="6">
+              <ion-card
+                (click)="showTrainingVideo()"
+                class="tfa-video-card"
+              >
+                <ion-card-content>
+                  <!-- TODO: translate, get title from menu content -->
+                  <ion-card-title class="card-title">{{ commonText?.knowYourRightsVideoAndQuiz || 'Know Your Rights Video & Quiz' }}</ion-card-title>
+                  <ion-icon name="play-circle-outline" class="card-icon"></ion-icon>
+                </ion-card-content>
+              </ion-card>
+            </ion-col>
+            <ion-col size="6">
+              <ion-card
+                routerLink="/mydocuments"
+                class="my-documents-card"
+              >
+                <ion-card-content>
+                  <!-- TODO: translate, get title from menu content -->
+                  <ion-card-title class="card-title">{{ commonText?.myDocuments || 'My Documents' }}</ion-card-title>
+                  <ion-icon src="assets/icon/documents.svg" class="card-icon"></ion-icon>
+                </ion-card-content>
+              </ion-card>
+            </ion-col>
+          </ion-row>
+        </div>
     </div>
   </div>
 </div>
