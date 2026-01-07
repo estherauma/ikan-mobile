@@ -52,7 +52,6 @@ export class LoginMethodPage implements OnInit {
     this.commonText = this.contentService.commonText;
     if (this.commonText && Object.keys(this.commonText).length > 0) {
       this.loginText = this.commonText?.login || this.loginText;
-      // TODO: translate; add to prismic
       this.registerText = this.commonText?.register || this.registerText;
     }
     const pageData = this.contentService.getContentByPropertyName('login-method');
