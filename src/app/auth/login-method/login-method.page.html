@@ -1,26 +1,44 @@
 
 <ion-content>
   <app-authbgpaper></app-authbgpaper>
-  <div class="ion-padding center-content">
-    <div>
-      <ion-row class="ion-justify-content-center">
-        <ion-img class="icon" src="/assets/imgs/logo_svg.svg"></ion-img>
-      </ion-row>
-    </div>
-    <div class="ion-padding-vertical">
-      <app-button
-        config="ikan-light-outline" 
-        [title]="inviteCodeAuth" 
-        (click)="toInviteCodeScreen()"
-        class="login-method"
-      ></app-button>
-    </div>
-    <app-button
-      config="ikan-light-outline" 
-      [title]="loginWithEmailOrPhoneNumberText" 
-      (click)="loginWithEmailOrPhoneNumber()"
-      class="login-method"
-    ></app-button>
-    <!-- <a class="ion-padding-vertical how-to-link" routerLink="/auth/how-to-signup">{{ pageText?.createAccount }}</a> -->
+  
+  <div class="ion-padding wrapper">
+    <ion-row class="ion-justify-content-center">
+      <ion-img class="logo" src="/assets/imgs/logo_svg.svg"></ion-img>
+    </ion-row>
+    
+    <ion-row class="ion-padding-vertical">
+      <ion-col size="12" class="ion-text-center">
+        <ion-button
+          rounded
+          expand="block"
+          class="login-button"
+          (click)="goToLoginScreen()"
+        >
+          {{ loginText }}
+        </ion-button>
+      </ion-col>
+      
+      <ion-col size="12" class="ion-text-center">
+        <ion-button
+          rounded
+          expand="block"
+          class="register-button"
+          (click)="goToSignupScreen()"
+        >
+          {{ registerText }}
+        </ion-button>
+      </ion-col>
+
+      <ion-col size="12" class="ion-text-center">
+        <a
+          class="invite-code-link"
+          routerLink="/auth/invite-code"
+          [replaceUrl]="true"
+        >
+          {{ inviteCodeAuth }}
+        </a>
+      </ion-col>
+    </ion-row>
   </div>
 </ion-content>

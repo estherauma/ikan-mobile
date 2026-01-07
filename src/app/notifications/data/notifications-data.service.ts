@@ -184,6 +184,10 @@ export class NotificationsDataService {
 
   async retrieveUndisplayedWageNotifications(paymentsCommonText) {
     const user = await this.sharedMethods.getUserData();
+    if (!user || !user.id || this.notifications.length === 0) {
+      return [];
+    }
+    
     const notifs =  this.notifications.filter((notification: any) =>
       notification.userId === user.id &&
       notification.category === NotificationCategory.wagePayment &&
