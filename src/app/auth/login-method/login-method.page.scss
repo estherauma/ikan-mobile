@@ -1,24 +1,40 @@
-.logo-container{
-    display: flex !important;
-    justify-content: center !important;
-    .logo{
-        height: 150px; 
-        width: 150px;
-        margin-bottom: 64px;
-        margin-top: 64px;
-    }
-}
+.wrapper {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  height: 100%;
 
-.center-content{
-    display: flex; 
-    flex-direction: column; 
-    justify-content: center; 
-    height: 100%;
-}
-.icon{
-    height:42.26px; width:175px; margin-bottom: 70px;
-}
+  .logo {
+    height: 42.26px;
+    width: 175px;
+    margin-bottom: 50px;
+  }
 
-.how-to-link {
-    color: #80D8FE;
+  ion-button {
+    --background: var(--ion-color-primary);
+    color: white;
+    --color: white;
+    --border-radius: 20px;
+    --border-color: white;
+    --border-width: 1px;
+    --border-style: solid;
+    --box-shadow: none;
+    --padding-start: 20px;
+    --padding-end: 20px;
+    --padding-top: 12px;
+    --padding-bottom: 12px;
+    text-transform: none;
+    font-weight: bold;
+    margin-bottom: 20px;
+  }
+  .login-button {
+    --background: white;
+    color: #3565ff;
+    margin-bottom: 12px;
+    font-size: 1.1rem;
+  }
+
+  .invite-code-link {
+    color: white;
+  }
 }
