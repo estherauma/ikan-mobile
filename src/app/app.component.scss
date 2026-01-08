@@ -1,83 +1,87 @@
-ion-menu ion-content {
-  --background: #3565ff;
+ion-menu {
+  ion-content {
+    --background: var(--ikan_gray_100);
+    --padding-start: 8px;
+    --padding-end: 8px;
+    --padding-top: 20px;
+    --padding-bottom: 20px;
+
+    ion-list {
+      padding: 20px 0;
+      background: var(--ikan_gray_100);
+
+      ion-note {
+        margin-bottom: 30px;
+        padding-left: 10px;
+        display: inline-block;
+        font-size: 1rem;
+        color: var(--ion-color-dark);
+        color: #191970;
+      }
+
+      ion-list-header {
+        padding-left: 10px;
+        font-size: 22px;
+        font-weight: 600;
+        min-height: 20px;
+        color: var(--ion-color-primary);
+      }
+
+      .section-title {
+        margin-top: 20px;
+        margin-bottom: 10px;
+        padding-left: 10px;
+        font-size: 1rem;
+        font-weight: bold;
+        color: var(--ion-color-dark);
+      }
+
+      ion-item {
+        --padding-start: 20px;
+        --padding-end: 20px;
+        border-radius: 4px;
+        --background: var(--ikan_gray_100);
+
+        ion-icon {
+          margin-right: 20px;
+          color: var(--ion-color-primary);
+        }
+
+        ion-label {
+          font-weight: 500;
+          color: var(--ion-color-dark);
+        }
+
+        // &.selected {
+        //   --background: rgba(var(--ion-color-primary-rgb), 0.05);
+        //   ion-icon {
+        //     color: var(--ion-color-primary);
+        //   }
+        //   ion-label {
+        //     color: var(--ion-color-primary);
+        //   }
+        // }
+
+        &.delete-acct-item {
+          ion-icon {
+            color: var(--ion-color-primary);
+            color: #e0b8bb;
+            color: rgba(240, 82, 92, 0.9);
+          }
+          ion-label {
+            color: var(--ion-color-primary);
+            color: #e0b8bb;
+            color: rgba(240, 82, 92, 0.9);
+          }
+        }
+      }
+    }
+  }
 }
-
-ion-menu ion-content {
-  --padding-start: 8px;
-  --padding-end: 8px;
-  --padding-top: 20px;
-  --padding-bottom: 20px;
-}
-
-ion-menu ion-list {
-  padding: 20px 0;
-  background: #3565ff;
-}
-
-ion-menu ion-note {
-  margin-bottom: 30px;
-}
-
-ion-menu ion-list-header,
-ion-menu ion-note {
-  padding-left: 10px;
-}
-
-ion-menu ion-list#inbox-list ion-list-header {
-  font-size: 22px;
-  font-weight: 600;
-  min-height: 20px;
-  color: white;
-}
-
-ion-menu ion-list#labels-list ion-list-header {
-  font-size: 16px;
-
-  margin-bottom: 18px;
-
-  color: #757575;
-
-  min-height: 26px;
-}
-
-ion-menu ion-item {
-  --padding-start: 10px;
-  --padding-end: 10px;
-  border-radius: 4px;
-  --background: #3565ff;
-}
-
-ion-menu ion-item.selected {
-  --background: rgba(var(--ion-color-primary-rgb), 0.14);
-}
-
-ion-menu ion-item.selected ion-icon {
-  color: var(--ion-color-primary);
-}
-
-ion-menu ion-item ion-icon {
-  color: white;
-}
-
-ion-menu ion-item ion-label {
-  font-weight: 500;
-  color: white;
-}
-
 ion-menu.ios ion-item {
   --padding-start: 16px;
   --padding-end: 16px;
   --min-height: 45px;
-}
-
-ion-note {
-  display: inline-block;
-  font-size: 16px;
-  color: white;
-}
-
-ion-item.selected {
-  --color: var(--ion-color-primary);
 }
 
 .logo-container {
@@ -116,7 +120,7 @@ ion-item.selected {
 hr {
   height: 2px;
   background-color: var(--ikan_blue_90);
-  width: 80%;
+  width: 95%;
 }
 
 ion-menu .delete-acct-item ion-icon,
