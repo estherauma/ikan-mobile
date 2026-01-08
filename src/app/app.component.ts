@@ -107,6 +107,15 @@ export class AppComponent implements OnInit, OnDestroy {
 
   setupMenu(menuData) {
     if (menuData && Object.keys(menuData).length > 0) {
+      // For vessel owners, move Help item to tools & resources section
+      if (this.userData?.role === UserRole.vesselOwner) {
+        const helpEl = menuData.find(el => el.key === 'help');
+        if (helpEl) {
+          helpEl.position = 695;
+        }
+      }
+
+      // Sort menu by position
       menuData?.sort((a, b) => a.position - b.position);
 
       menuData.forEach((el, index) => {
