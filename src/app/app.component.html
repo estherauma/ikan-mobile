@@ -2,11 +2,15 @@
   <ion-split-pane contentId="main-content">
     <ion-menu contentId="main-content" type="overlay">
       <ion-content>
-        <ion-list id="inbox-list">
+        <ion-list>
           <ion-list-header>IKAN</ion-list-header>
           <ion-note>{{ userEmail }}</ion-note>
 
           @for (p of appPages; track p; let i = $index) {
+            @if (p.first && p.sectionTitle) {
+              <h6 class="section-title">{{ p.sectionTitle }}</h6>
+            }
+
             <ion-menu-toggle auto-hide="false">
               @if (p.enabled) {
                 <ion-item
@@ -15,10 +19,11 @@
                   lines="none"
                   detail="false"
                   routerLinkActive="selected"
-              [ngClass]="{
-                'is-last': p.last,
-                'delete-acct-item': p?.isDeleteAccount
-              }"
+                  [ngClass]="{
+                    'is-last': p.last,
+                    'delete-acct-item': p?.isDeleteAccount,
+                    'selected': isActiveRoute(p.url)
+                  }"
                   >
                   <ion-icon slot="start" [name]="p.icon"></ion-icon>
                   <ion-label>{{ p.label }}</ion-label>

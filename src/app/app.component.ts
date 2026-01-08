@@ -256,6 +256,10 @@ export class AppComponent implements OnInit, OnDestroy {
     }
   }
 
+  isActiveRoute(route: string): boolean {
+    return this.location.isCurrentPathEqualTo(route);
+  }
+
   async showTrainingVideo() {
     const modal = await this.modalController.create({
       component: TrainingVideoComponent,
