@@ -3,7 +3,7 @@ import { Router } from '@angular/router';
 import { StatusBar } from '@capacitor/status-bar';
 import { ContentService } from './shared/services/content/content.service';
 import { SharedmethodsService } from './shared/services/sharedmethods/sharedmethods.service';
-import { StorageKeys, SurveySources, UserData } from './shared/types/api-types';
+import { StorageKeys, SurveySources, UserData, UserRole } from './shared/types/api-types';
 import { PluginListenerHandle } from '@capacitor/core';
 import { AuthService } from './shared/services/auth/auth.service';
 import { DBService } from './shared/services/database/db.service';
@@ -109,8 +109,22 @@ export class AppComponent implements OnInit, OnDestroy {
     if (menuData && Object.keys(menuData).length > 0) {
       menuData?.sort((a, b) => a.position - b.position);
 
-      // identify last item in a menu section
       menuData.forEach((el, index) => {
+        // Identify first item in section
+        if (index === 0) {
+          el.first = true;
+        } else {
+          const prevItem = menuData[index - 1];
+          const prevSection = prevItem?.position - prevItem?.position % 100;
+          const currentSection = el.position - el.position % 100;
+          if (currentSection !== prevSection) {
+            el.first = true;
+          } else {
+            el.first = false;
+          }
+        }
+        
+        // Identify last item in section
         if (index === menuData.length - 1 ) {
           el.last = false;
         } else {
