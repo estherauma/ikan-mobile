@@ -25,7 +25,11 @@
                     'selected': isActiveRoute(p.url)
                   }"
                   >
-                  <ion-icon slot="start" [name]="p.icon"></ion-icon>
+                  @if (p?.iconPath) {
+                    <ion-icon slot="start" [src]="p.iconPath"></ion-icon>
+                  } @else {
+                    <ion-icon slot="start" [name]="p.icon"></ion-icon>
+                  }
                   <ion-label>{{ p.label }}</ion-label>
                 </ion-item>
               }
