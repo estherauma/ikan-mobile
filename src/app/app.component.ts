@@ -141,6 +141,34 @@ export class AppComponent implements OnInit, OnDestroy {
         if (el.url === '/delete-account') {
           el.isDeleteAccount = true;
         }
+
+        // Add section titles
+        const section = el.position - el.position % 100;
+        switch (section) {
+          case 200:
+            el.sectionTitle = this.commonText?.vesselsAndManningAgencies || 'Vessels & Manning Agencies';
+            break;
+          case 400:
+            if (this.userData?.role === UserRole.worker) {
+              el.sectionTitle = this.commonText?.contractsAndWagePayments || 'Contracts & Wage Payments';
+            } else if (this.userData?.role === UserRole.vesselOwner) {
+              el.sectionTitle = this.commonText?.migrantFishers || 'Migrant Fishers';
+            } else {
+              el.sectionTitle = '';
+            }
+            break;
+          case 600:
+            if (this.userData?.role === UserRole.worker) {
+              el.sectionTitle = this.commonText?.learningAndDocuments || 'Learning & Documents';
+            } else if (this.userData?.role === UserRole.vesselOwner) {
+              el.sectionTitle = this.commonText?.toolsAndResourcesForMigrantFishers || 'Tools & Resources for Migrant Fishers';
+            } else {
+              el.sectionTitle = '';
+            }
+            break;
+          default:
+            el.sectionTitle = '';
+        }
       });
 
       this.appPages = this.authService.alterMenuBasedOnRole(menuData);
