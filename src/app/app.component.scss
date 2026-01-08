@@ -15,7 +15,6 @@ ion-menu {
         padding-left: 10px;
         display: inline-block;
         font-size: 1rem;
-        color: var(--ion-color-dark);
         color: #191970;
       }
 
@@ -65,13 +64,9 @@ ion-menu {
 
         &.delete-acct-item {
           ion-icon {
-            color: var(--ion-color-primary);
-            color: #e0b8bb;
             color: rgba(240, 82, 92, 0.9);
           }
           ion-label {
-            color: var(--ion-color-primary);
-            color: #e0b8bb;
             color: rgba(240, 82, 92, 0.9);
           }
         }

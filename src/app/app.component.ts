@@ -116,7 +116,7 @@ export class AppComponent implements OnInit, OnDestroy {
       }
 
       // Sort menu by position
-      menuData?.sort((a, b) => a.position - b.position);
+      menuData.sort((a, b) => a.position - b.position);
 
       menuData.forEach((el, index) => {
         // Identify first item in section
@@ -132,7 +132,7 @@ export class AppComponent implements OnInit, OnDestroy {
             el.first = false;
           }
         }
-        
+
         // Identify last item in section
         if (index === menuData.length - 1 ) {
           el.last = false;
