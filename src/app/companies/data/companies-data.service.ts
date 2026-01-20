@@ -127,7 +127,7 @@ export class CompaniesDataService {
       return this.db.executeSql(query, params).then(async(result) => {
         await this.retriveCompanies();
         return result.insertId;
-      }).catch((e) => console.log(e));   
+      }).catch((e) => console.error(e));   
   }
     
 

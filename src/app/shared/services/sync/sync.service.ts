@@ -148,18 +148,32 @@ export class SyncService {
   }
 
   async fetchCompanies() {
-    return this.apiService.get('companies').subscribe((response: GetCompaniesResponse) => {
+    return await lastValueFrom(this.apiService.get('companies')).then(async(response: GetCompaniesResponse) => {
       if (response.status === 200 && response.body.data.length > 0) {
-        response.body.data.forEach((company) => {
-          // if the company doesn't exist in the local db, add it
-          this.dbService.checkIfEntryExists('companies', company.appRef)
-          .then((exists) => {
-            if (!exists) {
-              this.companyServ.saveOnlineCompany(company)
+        for (const company of response.body.data) {
+          const companyExists = await this.dbService.checkIfEntryExists('companies', company.appRef);
+          if (!companyExists) {
+            await this.companyServ.saveOnlineCompany(company)
               .then((id) => { console.log ( `Company ${company.name} saved with id ${id}`);});
+          } else {
+            const currentCompany = await this.companyServ.companies.find(c => c.appRef === company.appRef);
+            const currentUpdateDate = new Date(currentCompany?.updatedAt);
+            const newUpdateDate = new Date(company.updatedAt);
+            if (currentUpdateDate < newUpdateDate) {
+              // TODO: update api...
+              const companyToUpdate = {};
+              for (const key of Object.keys(company)) {
+                const snakeCaseKey = this.sharedMethods.convertCamelToSnakeCase(key);
+                companyToUpdate[snakeCaseKey] = company[key];
+              }
+              // TODO: remove log
+              console.log('companyToUpdate...', companyToUpdate);
+              await this.companyServ.update(companyToUpdate, currentCompany.id).then(() => {
+                console.log ( `Company ${company.name} updated successfully.`);
+              });
             }
-          });
-        });
+          }
+        }
       }
     });
   }
