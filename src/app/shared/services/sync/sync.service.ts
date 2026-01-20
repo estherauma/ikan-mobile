@@ -84,7 +84,8 @@ export class SyncService {
 
   async syncData() {
     const isValid = await this.authService.checkAcessTokenValidity();
-    if (!isValid || !this.isDbInitialized || !navigator.onLine) {
+    if (!isValid || !this.isDbInitialized) {
+    // if (!isValid || !this.isDbInitialized || !navigator.onLine) {
       return;
     }
 
@@ -139,8 +140,10 @@ export class SyncService {
             }
           });
         } else {
-          this.apiService.put('companies', companyToUpload.onlineRef, companyToUpload).subscribe((response) => {
-            console.log(response);
+          this.apiService.put('companies', companyToUpload.onlineRef, companyToUpload).subscribe((response: any) => {
+            if (response?.status !== 'OK') {
+              console.error(`Failed to sync company ${company.name} to the api`, response);
+            }
           });
         }
       }
@@ -154,22 +157,19 @@ export class SyncService {
           const companyExists = await this.dbService.checkIfEntryExists('companies', company.appRef);
           if (!companyExists) {
             await this.companyServ.saveOnlineCompany(company)
-              .then((id) => { console.log ( `Company ${company.name} saved with id ${id}`);});
+              .then((id) => { console.log(`Company ${company.name} saved with id ${id}`);});
           } else {
             const currentCompany = await this.companyServ.companies.find(c => c.appRef === company.appRef);
             const currentUpdateDate = new Date(currentCompany?.updatedAt);
             const newUpdateDate = new Date(company.updatedAt);
             if (currentUpdateDate < newUpdateDate) {
-              // TODO: update api...
               const companyToUpdate = {};
               for (const key of Object.keys(company)) {
                 const snakeCaseKey = this.sharedMethods.convertCamelToSnakeCase(key);
                 companyToUpdate[snakeCaseKey] = company[key];
               }
-              // TODO: remove log
-              console.log('companyToUpdate...', companyToUpdate);
               await this.companyServ.update(companyToUpdate, currentCompany.id).then(() => {
-                console.log ( `Company ${company.name} updated successfully.`);
+                console.log(`Company ${company.name} updated successfully.`);
               });
             }
           }
@@ -200,7 +200,6 @@ export class SyncService {
             }
           });
         } else {
-
           this.apiService.put('vessels', vesselToUpload.onlineRef, vesselToUpload).subscribe(async(response: any) => {
             if (response?.status === 'OK') {
               await this.postVesselImage(vessel, vesselToUpload.onlineRef);
@@ -239,51 +238,38 @@ export class SyncService {
     }
   }
 
+  // TODO: to test, images
   async fetchVessels() {
-    return this.apiService.get('vessels').subscribe((response: GetVesselsResponse) => {
+    console.log('Fetching vessels from api...');
+    return await lastValueFrom(this.apiService.get('vessels')).then(async(response: GetVesselsResponse) => {
       if (response.status === 200 && response.body.data.length > 0) {
-        forkJoin(response.body.data.map(async(vessel) => {
-          this.dbService.checkIfEntryExists('vessels', vessel.appRef)
-          .then((exists) => {
-            if (!exists) {
-              this.vesselServ.saveOnlineVessel(vessel).then(async(id) => {
-                console.log ( `Vessel ${vessel.name} saved with id ${id}`);
+        for (const vessel of response.body.data) {
+          const vesselExists = await this.dbService.checkIfEntryExists('vessels', vessel.appRef);
+          if (!vesselExists) {
+            await this.vesselServ.saveOnlineVessel(vessel).then(async(id) => {
+              console.log ( `Vessel ${vessel.name} saved with id ${id}`);
+              if (vessel?.vesselImage) {
+                await this.saveOnlineVesselImage(vessel.vesselImage, id);
+              }
+            });
+          } else {
+            const currentVessel = await this.vesselServ.vessels.find(v => v.appRef === vessel.appRef);
+            const currentUpdateDate = new Date(currentVessel?.updatedAt);
+            const newUpdateDate = new Date(vessel.updatedAt);
+            if (currentUpdateDate <= newUpdateDate) {
+              const vesselToUpdate = {};
+              for (const key of Object.keys(vessel)) {
+                const snakeCaseKey = this.sharedMethods.convertCamelToSnakeCase(key);
+                vesselToUpdate[snakeCaseKey] = vessel[key];
+              }
+              vesselToUpdate['id'] = currentVessel.id;
+              await this.vesselServ.update(vesselToUpdate).then(() => {
+                console.log(`Vessel ${vessel.name} updated successfully.`);
               });
+              await this.saveOnlineVesselImage(vessel.vesselImage, currentVessel.id);
             }
-          });
-        })).subscribe(() => {
-          // fetch the vessel images after the vessels have been fetched
-          this.apiService.get('vessels-images').subscribe((resp: any) => {
-            if (resp?.status === 200 && resp.body.length > 0) {
-              resp.body.forEach(async(image) => {
-                const vessel = await this.vesselServ.getVesselByField('onlineRef', image.vessel);
-                if (vessel && !vessel.imageFile.webPath) {
-                  const vesselImage = await this.vesselServ.getVesselImageByVesselId(vessel.id);
-                  if (!vesselImage) {
-                    await this.uploadService.fetchAndSaveFile(image.imageUrl).then(async(fileUri) => {
-                      if (fileUri) {
-                        const user = await this.sharedMethods.getUserData();
-                        const now = this.sharedMethods.getCurrentDateTime();
-                        const saveObj = {
-                          vesselId: vessel.id,
-                          appRef: image.appRef || this.sharedMethods.generateAppRef(),
-                          description: image.description,
-                          imageUrl: fileUri,
-                          onlineRef: image.id,
-                          createdAt: image.createdAt ??  now,
-                          updatedAt: image.updatedAt ??  now,
-                          createdBy: image.createdBy ?? user?.id,
-                          updatedBy: image.updatedBy ?? user?.id,
-                        };
-                        await this.vesselServ.saveOnlineVesselImage(saveObj).then(() => {});
-                      }
-                    });
-                  }
-                }
-              });
-            }
-          });
-        });
+          }
+        }
       }
     });
   }
