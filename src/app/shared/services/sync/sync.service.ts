@@ -274,6 +274,49 @@ export class SyncService {
     });
   }
 
+  async saveOnlineVesselImage(data, localVesselId) {
+    const localVesselImage = await this.vesselServ.getVesselImageByVesselId(localVesselId);
+    if (!localVesselImage) {
+      await this.uploadService.fetchAndSaveFile(data?.imageUrl).then(async(fileUri) => {
+        if (fileUri) {
+          const user = await this.sharedMethods.getUserData();
+          const now = this.sharedMethods.getCurrentDateTime();
+          const saveObj = {
+            vesselId: localVesselId,
+            appRef: data?.appRef || this.sharedMethods.generateAppRef(),
+            description: data?.description,
+            imageUrl: fileUri,
+            onlineRef: data?.id,
+            createdAt: data?.createdAt ??  now,
+            updatedAt: data?.updatedAt ??  now,
+            createdBy: data?.createdBy ?? user?.id,
+            updatedBy: data?.updatedBy ?? user?.id,
+          };
+          await this.vesselServ.saveOnlineVesselImage(saveObj).then(() => {});
+        }
+      });
+    } else {
+      const currentVesselImage = (await this.vesselServ.getVesselImages()).find(v => v.onlineRef === data.id);
+      const currentUpdateDate = new Date(currentVesselImage?.updatedAt);
+      const newUpdateDate = new Date(data.updatedAt);
+      const currentImageName = currentVesselImage?.imageUrl ? currentVesselImage.imageUrl.split('files/')[1] : null;
+      const isCurrentImageSameAsNew = currentImageName && data.imageUrl && data.imageUrl.includes(currentImageName);
+      if (currentUpdateDate < newUpdateDate) {
+        const imageUrl = isCurrentImageSameAsNew ? currentVesselImage.imageUrl : await this.uploadService.fetchAndSaveFile(data.imageUrl);
+        const imageToUpdate = {
+          id: currentVesselImage.id,
+          description: data.description,
+          image_url: imageUrl,
+          updated_at: data.updatedAt,
+          updated_by: data.updatedBy,
+        };
+        await this.vesselServ.updateVesselImage(imageToUpdate).then(() => {
+          console.log(`Vessel image ${imageToUpdate.id} updated successfully.`);
+        });
+      }
+    }
+  }
+
   async syncContracts() {
     const isValid = await this.authService.checkAcessTokenValidity();
     if (!isValid || !this.isDbInitialized || !navigator.onLine) {
