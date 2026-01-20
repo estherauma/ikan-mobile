@@ -256,7 +256,7 @@ export class SyncService {
             const currentVessel = await this.vesselServ.vessels.find(v => v.appRef === vessel.appRef);
             const currentUpdateDate = new Date(currentVessel?.updatedAt);
             const newUpdateDate = new Date(vessel.updatedAt);
-            if (currentUpdateDate <= newUpdateDate) {
+            if (currentUpdateDate < newUpdateDate) {
               const vesselToUpdate = {};
               for (const key of Object.keys(vessel)) {
                 const snakeCaseKey = this.sharedMethods.convertCamelToSnakeCase(key);
