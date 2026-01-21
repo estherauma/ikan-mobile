@@ -940,7 +940,11 @@ export class SyncService {
           }
         });
       } else {
-        // update api record
+        this.apiService.put('accounts/bank-details', acctToUpload.onlineRef, acctToUpload).subscribe((response: any) => {
+          if (response?.status !== 'OK') {
+            console.error(`Failed to update bank account ${account.accountNumber} to the api`, response);
+          }
+        });
       }
     }
   }
