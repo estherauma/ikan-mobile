@@ -107,7 +107,6 @@ export class SyncService {
     await this.fetchMyDocuments();
     await this.fetchPassports();
     await this.fetchInlineQuestions();
-    await this.fetchPayments();
     await this.fetchLearningHubProgress();
     await this.fetchWages();
     await this.fetchNotifications();
@@ -1211,37 +1210,6 @@ export class SyncService {
             }
           }
         }
-      }
-    });
-  }
-
-  async fetchPayments() {
-    return this.apiService.get('payments').subscribe((response: any) => {
-      if (response?.status === 200 && response.body.length > 0) {
-        response.body.forEach(async(payment) => {
-          // const user = await this.sharedMethods.getUserData();
-          const now = this.sharedMethods.getCurrentDateTime();
-          const dataToSave = Object.assign({}, payment);
-          delete dataToSave.id;
-          dataToSave.userId = payment.user;
-          dataToSave.vesselId = payment.vessel;
-          dataToSave.onlineRef = payment.id;
-          dataToSave.deductions = payment.deductions ? JSON.stringify(payment.deductions) : '';
-          dataToSave.createdAt = payment.createdAt ??  now;
-          dataToSave.updatedAt = payment.updatedAt ??  now;
-
-          const paymentExists = await this.paymentsDataService.checkIfPaymentExists(payment.id);
-          if (paymentExists) {
-            const currentPayment = await this.paymentsDataService.payments.find(p => p.onlineRef === payment.id);
-            const currentUpdateDate = new Date(currentPayment?.updatedAt);
-            const newUpdateDate = new Date(payment.updatedAt);
-            if (currentUpdateDate < newUpdateDate) {
-              await this.paymentsDataService.update(dataToSave).then(() => {});
-            }
-          } else {
-            await this.paymentsDataService.saveOnlinePayment(dataToSave).then(() => {});
-          }
-        });
       }
     });
   }
