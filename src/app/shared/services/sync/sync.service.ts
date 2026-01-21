@@ -604,7 +604,7 @@ export class SyncService {
 
     const surveys = this.surveyDataService.surveys;
     if (surveys?.length) {
-      surveys.forEach((survey) => {
+      for (const survey of surveys) {
         // Survey responses are saved to the db then synced to the api
         // After sync the response is deleted from the local db
         // We never fetch them from the api so the onlineRef isn't neccessary
@@ -615,12 +615,12 @@ export class SyncService {
         if (surveyToUpload?.userId) {
           surveyToUpload.user = surveyToUpload.userId;
         }
-          this.apiService.post('surveys', surveyToUpload).subscribe(async(response: CreateSurveyResp) => {
+        await lastValueFrom(this.apiService.post('surveys', surveyToUpload)).then(async(response: CreateSurveyResp) => {
           if (response?.status === 'OK') {
             await this.surveyDataService.delete(surveyId);
           }
-        }, e => console.error(e));
-      });
+        }).catch(e => console.error(e));
+      }
     }
   }
 
@@ -657,28 +657,37 @@ export class SyncService {
   }
 
   async fetchInlineQuestions() {
-    return this.apiService.get('inline-questions').subscribe((response) => {
+    return await lastValueFrom(this.apiService.get('inline-questions')).then(async(response) => {
       if (response.status === 200 && response.body.data.length > 0) {
-        response.body.data.forEach((question) => {
-          this.dbService.checkIfEntryExists('inline_questions', question.appRef)
-          .then(async(exists) => {
-            if (!exists) {
-              const now = this.sharedMethods.getCurrentDateTime();
-              const user = await this.sharedMethods.getUserData();
-              const questionToSave = {
-                ...question,
-                userId: question.user,
-                onlineRef: question.id,
-                createdAt: question.createdAt ??  now,
-                updatedAt: question.updatedAt ??  now,
-                createdBy: question.createdBy ?? user?.id,
-                updatedBy: question.updatedBy ?? user?.id,
-              };
-              this.surveyDataService.saveOnlineInlineQuestion(questionToSave)
-              .then((id) => { console.log ( `Inline question ${question.questionText} saved with id ${id}`); });
+        for (const question of response.body.data) {
+          const now = this.sharedMethods.getCurrentDateTime();
+          const user = await this.sharedMethods.getUserData();
+          const questionToSave = {
+            ...question,
+            userId: question.user,
+            onlineRef: question.id,
+            createdAt: question.createdAt ??  now,
+            updatedAt: question.updatedAt ??  now,
+            createdBy: question.createdBy ?? user?.id,
+            updatedBy: question.updatedBy ?? user?.id,
+          };
+          delete questionToSave.id;
+          const exists = await this.dbService.checkIfEntryExists('inline_questions', question.appRef);
+          if (!exists) {
+            this.surveyDataService.saveOnlineInlineQuestion(questionToSave)
+            .then((id) => { console.log ( `Inline question ${question.questionText} saved with id ${id}`); });
+          } else {
+            const currentQtn = await this.surveyDataService.inlineQuestions.find(q => q.appRef === question.appRef);
+            const currentUpdateDate = new Date(currentQtn?.updatedAt);
+            const newUpdateDate = new Date(question.updatedAt);
+            if (currentUpdateDate < newUpdateDate) {
+              questionToSave['id'] = currentQtn.id;
+              await this.surveyDataService.updateInlineQuestion(questionToSave).then(() => {
+                console.log(`Inline question ${question.questionText} updated successfully.`);
+              });
             }
-          });
-        });
+          }
+        }
       }
     });
   }
