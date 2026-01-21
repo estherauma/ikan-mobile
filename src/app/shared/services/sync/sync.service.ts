@@ -898,27 +898,35 @@ export class SyncService {
   }
 
   async fetchBankAccounts(profileOnlineRef) {
-    return this.apiService.get(
+    return await lastValueFrom(this.apiService.get(
       'accounts/bank-details',
       false,
       {userId: profileOnlineRef}
-    ).subscribe((response: GetBankAccountsResponse) => {
+    )).then(async(response: GetBankAccountsResponse) => {
       if (response.status === 200 && response.body.data.length > 0) {
-        response.body.data.forEach((bankAccount) => {
-          this.dbService.checkIfEntryExists('user_bank_accounts', bankAccount.appRef).then(async(exists) => {
-            if (!exists) {
-              const profile = await this.profilesDataService.getProfileByOnlineRef(bankAccount.user);
-              if (profile?.id) {
-                bankAccount.createdBy = bankAccount.createdBy ?? profile.id;
-                bankAccount.updatedBy = bankAccount.updatedBy ?? profile.id;
-                const data = Object.assign({}, bankAccount);
-                delete data.id;
-                const dataToSave = {...data, userId: profile.id, onlineRef: bankAccount.id};
-                await this.paymentsDataService.createBankAccount(dataToSave).then(() => {});
+        for (const bankAccount of response.body.data) {
+          const profile = await this.profilesDataService.getProfileByOnlineRef(bankAccount.user);
+          if (profile?.id) {
+            bankAccount.createdBy = bankAccount.createdBy ?? profile.id;
+            bankAccount.updatedBy = bankAccount.updatedBy ?? profile.id;
+            const data = Object.assign({}, bankAccount);
+            delete data.id;
+            const dataToSave = {...data, userId: profile.id, onlineRef: bankAccount.id};
+
+            const accountExists = await this.dbService.checkIfEntryExists('user_bank_accounts', bankAccount.appRef);
+            if (!accountExists) {
+              await this.paymentsDataService.createBankAccount(dataToSave).then(() => {});
+            } else {
+              const currentAccount = await this.paymentsDataService.bankAccounts.find(b => b.appRef === bankAccount.appRef);
+              const currentDate = new Date(currentAccount?.updatedAt);
+              const newDate = new Date(bankAccount.updatedAt);
+              if (currentDate < newDate) {
+                dataToSave.id = currentAccount.id;
+                await this.paymentsDataService.updateBankAccount(dataToSave);
               }
             }
-          });
-        });
+          }
+        }
       }
     });
   }
