@@ -995,6 +995,12 @@ export class SyncService {
             console.error(`Failed to sync beneficiary ${beneficiary.fName} to the api`, response);
           }
         });
+      } else {
+        this.apiService.put('accounts/beneficiaries-bank-details', dataToUpload.onlineRef, dataToUpload).subscribe((response: any) => {
+          if (response?.status !== 'OK') {
+            console.error(`Failed to update beneficiary ${beneficiary.fName} to the api`, response);
+          }
+        });
       }
     }
   }
