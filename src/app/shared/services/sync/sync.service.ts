@@ -947,27 +947,34 @@ export class SyncService {
   }
 
   async fetchBeneficiaries(profileOnlineRef) {
-    return this.apiService.get(
+    return await lastValueFrom(this.apiService.get(
       'accounts/beneficiaries-bank-details',
       false,
       {userId: profileOnlineRef}
-    ).subscribe((response: GetBeneficiaryResponse) => {
+    )).then(async(response: GetBeneficiaryResponse) => {
       if (response.status === 200 && response.body.data.length > 0) {
-        response.body.data.forEach((beneficiary) => {
-          this.dbService.checkIfEntryExists('user_beneficiaries', beneficiary.appRef).then(async(exists) => {
-            if (!exists) {
-              const profile = await this.profilesDataService.getProfileByOnlineRef(beneficiary.user);
-              if (profile?.id) {
-                beneficiary.createdBy = beneficiary.createdBy ?? profile.id;
-                beneficiary.updatedBy = beneficiary.updatedBy ?? profile.id;
-                const data = Object.assign({}, beneficiary);
-                delete data.id;
-                const dataToSave = {...data, userId: profile.id, onlineRef: beneficiary.id};
-                await this.paymentsDataService.createBeneficiary(dataToSave).then(() => {});
+        for (const beneficiary of response.body.data) {
+          const profile = await this.profilesDataService.getProfileByOnlineRef(beneficiary.user);
+          if (profile?.id) {
+            beneficiary.createdBy = beneficiary.createdBy ?? profile.id;
+            beneficiary.updatedBy = beneficiary.updatedBy ?? profile.id;
+            const data = Object.assign({}, beneficiary);
+            delete data.id;
+            const beneficiaryExists = await this.dbService.checkIfEntryExists('user_beneficiaries', beneficiary.appRef);
+            if (!beneficiaryExists) {
+              const dataToSave = {...data, userId: profile.id, onlineRef: beneficiary.id};
+              await this.paymentsDataService.createBeneficiary(dataToSave).then(() => {});
+            } else {
+              const currentBeneficiary = await this.paymentsDataService.beneficiaries.find(b => b.appRef === beneficiary.appRef);
+              const currentDate = new Date(currentBeneficiary?.updatedAt);
+              const newDate = new Date(beneficiary.updatedAt);
+              if (currentDate < newDate) {
+                beneficiary.id = currentBeneficiary.id;
+                await this.paymentsDataService.updateBeneficiary(beneficiary);
               }
             }
-          });
-        });
+          }
+        }
       }
     });
   }
@@ -988,8 +995,6 @@ export class SyncService {
             console.error(`Failed to sync beneficiary ${beneficiary.fName} to the api`, response);
           }
         });
-      } else {
-        // update api record
       }
     }
   }
