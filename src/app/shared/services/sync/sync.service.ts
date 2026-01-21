@@ -1168,31 +1168,49 @@ export class SyncService {
   }
 
   async fetchPassports() {
-    return this.apiService.get('passports').subscribe((response: any) => {
+    return await lastValueFrom(this.apiService.get('passports')).then(async(response: any) => {
       if (response?.status === 200 && response.body.data.length > 0) {
-        response.body.data.forEach(async(passport) => {
-          await this.dbService.checkIfEntryExists('passports', passport.appRef).then(async(exists) => {
-            if (!exists) {
-              await this.uploadService.fetchAndSaveFile(passport.imageUrl).then(async(fileUri) => {
-                if (fileUri) {
-                  const user = await this.sharedMethods.getUserData();
-                  const now = this.sharedMethods.getCurrentDateTime();
-                  const dataToSave = {
-                    ...passport,
-                    userId: passport.user,
-                    imageUrl: fileUri,
-                    createdAt: passport.createdAt ??  now,
-                    updatedAt: passport.updatedAt ??  now,
-                    createdBy: passport.createdBy ?? user?.id,
-                    updatedBy: passport.updatedBy ?? user?.id,
-                    onlineRef: passport.id,
-                  };
-                  await this.documentsDataService.saveOnlinePassport(dataToSave).then(() => {});
-                }
-              });
+        for (const passport of response.body.data) {
+          const passportExists = await this.dbService.checkIfEntryExists('passports', passport.appRef);
+          if (!passportExists) {
+            const fileUri = await this.uploadService.fetchAndSaveFile(passport.imageUrl);
+            if (fileUri) {
+              const user = await this.sharedMethods.getUserData();
+              const now = this.sharedMethods.getCurrentDateTime();
+              const dataToSave = {
+                ...passport,
+                userId: passport.user,
+                imageUrl: fileUri,
+                createdAt: passport.createdAt ??  now,
+                updatedAt: passport.updatedAt ??  now,
+                createdBy: passport.createdBy ?? user?.id,
+                updatedBy: passport.updatedBy ?? user?.id,
+                onlineRef: passport.id,
+              };
+              delete dataToSave.id;
+              await this.documentsDataService.saveOnlinePassport(dataToSave).then(() => {});
             }
-          });
-        });
+          } else {
+            const currentPassport = await this.documentsDataService.passports.find(p => p.onlineRef === passport.id);
+            const currentDate = new Date(currentPassport?.updatedAt);
+            const newDate = new Date(passport.updatedAt);
+            if (currentDate < newDate) {
+              const currentFileName = currentPassport?.imageUrl ? currentPassport?.imageUrl.split('files/')[1] : null;
+              const isCurrentFileSameAsNew = currentFileName && passport.imageUrl && passport.imageUrl.includes(currentFileName);
+
+              if (isCurrentFileSameAsNew) {
+                passport.imageUrl = currentPassport?.imageUrl;
+              } else {
+                const fileUri = await this.uploadService.fetchAndSaveFile(passport.imageUrl);
+                if (fileUri) {
+                  passport.imageUrl = fileUri;
+                }
+              }
+              passport.id = currentPassport.id;
+              await this.documentsDataService.updatePassport(passport);
+            }
+          }
+        }
       }
     });
   }
