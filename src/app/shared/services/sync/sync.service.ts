@@ -240,7 +240,6 @@ export class SyncService {
 
   // TODO: to test, images
   async fetchVessels() {
-    console.log('Fetching vessels from api...');
     return await lastValueFrom(this.apiService.get('vessels')).then(async(response: GetVesselsResponse) => {
       if (response.status === 200 && response.body.data.length > 0) {
         for (const vessel of response.body.data) {
@@ -1220,7 +1219,7 @@ export class SyncService {
 
   async syncLearningHubProgress() {
     const isValid = await this.authService.checkAcessTokenValidity();
-    if (!isValid  || !navigator.onLine) {
+    if (!isValid) {
       return;
     }
 
@@ -1249,12 +1248,11 @@ export class SyncService {
         if (savedLearningHubProgress && savedLearningHubProgress?.updatedAt) {
           const currentUpdateDate = new Date(savedLearningHubProgress?.updatedAt);
           const newUpdateDate = new Date(onlineLearningHubProgress.updatedAt);
-          if (currentUpdateDate > newUpdateDate) {
+          if (currentUpdateDate >= newUpdateDate) {
             // Since online records are old don't update app records
             return;
           }
         }
-
         await this.sharedMethods.saveDataToStorage(StorageKeys.learningHubProgress, onlineLearningHubProgress);
       }
     });
