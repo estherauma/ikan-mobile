@@ -464,9 +464,9 @@ export class SyncService {
   }
 
   async fetchContractDocuments() {
-    return this.apiService.get('contracts-documents').subscribe((response) => {
+    return await lastValueFrom(this.apiService.get('contracts-documents')).then(async(response) => {
       if (response.status === 200 && response.body.length > 0) {
-        response.body.forEach(async(doc) => {
+        for (const doc of response.body) {
           const contract = await this.contractServ.getContractByField('onlineRef', doc.contract);
           if (contract) {
             const contractDocument = await this.contractServ.getContractDocumentByField('contract_id', contract.id);
@@ -489,9 +489,28 @@ export class SyncService {
                   await this.contractServ.saveOnlineContractDocument(saveObj).then(() => {});
                 }
               });
+            } else {
+              const currentUpdateDate = new Date(contractDocument?.updatedAt);
+              const newUpdateDate = new Date(doc.updatedAt);
+              if (currentUpdateDate < newUpdateDate) {
+                const currentDocName = contractDocument?.url ? contractDocument.url.split('files/')[1] : null;
+                const isCurrentDocSameAsNew = currentDocName && doc.url && doc.url.includes(currentDocName);
+                const url = isCurrentDocSameAsNew ? contractDocument.url : await this.uploadService.fetchAndSaveFile(doc.url);
+                const updateObj = {
+                  id: contractDocument.id,
+                  name: doc.name,
+                  url,
+                  status: doc.status,
+                  updatedAt: doc.updatedAt,
+                  updatedBy: doc.updatedBy,
+                };
+                await this.contractServ.updateContractDocument(contractDocument.id, updateObj).then(() => {
+                  console.log(`Contract document ${updateObj.name} updated successfully.`);
+                });
+              }
             }
           }
-        });
+        }
       }
     });
   }
