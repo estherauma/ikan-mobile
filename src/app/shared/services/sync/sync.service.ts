@@ -1086,31 +1086,49 @@ export class SyncService {
   }
 
   async fetchMyDocuments() {
-    return this.apiService.get('mydocuments').subscribe((response: any) => {
+    return await lastValueFrom(this.apiService.get('mydocuments')).then(async(response) => {
       if (response?.status === 200 && response.body.data.length > 0) {
-        response.body.data.forEach(async(doc) => {
-          this.dbService.checkIfEntryExists('documents', doc.appRef).then(async(exists) => {
-            if (!exists) {
-              await this.uploadService.fetchAndSaveFile(doc.fileUrl).then(async(fileUri) => {
-                if (fileUri) {
-                  const user = await this.sharedMethods.getUserData();
-                  const now = this.sharedMethods.getCurrentDateTime();
-                  const dataToSave = {
-                    ...doc,
-                    userId: doc.user,
-                    fileUrl: fileUri,
-                    createdAt: doc.createdAt ??  now,
-                    updatedAt: doc.updatedAt ??  now,
-                    createdBy: doc.createdBy ?? user?.id,
-                    updatedBy: doc.updatedBy ?? user?.id,
-                    onlineRef: doc.id,
-                  };
-                  await this.documentsDataService.saveOnlineDocument(dataToSave).then(() => {});
-                }
-              });
+        for (const doc of response.body.data) {
+          const docExists = await this.dbService.checkIfEntryExists('documents', doc.appRef);
+          if (!docExists) {
+            const fileUri = await this.uploadService.fetchAndSaveFile(doc.fileUrl);
+            if (fileUri) {
+              const user = await this.sharedMethods.getUserData();
+              const now = this.sharedMethods.getCurrentDateTime();
+              const dataToSave = {
+                ...doc,
+                userId: doc.user,
+                fileUrl: fileUri,
+                createdAt: doc.createdAt ??  now,
+                updatedAt: doc.updatedAt ??  now,
+                createdBy: doc.createdBy ?? user?.id,
+                updatedBy: doc.updatedBy ?? user?.id,
+                onlineRef: doc.id,
+              };
+              await this.documentsDataService.saveOnlineDocument(dataToSave).then(() => {});
             }
-          });
-        });
+          } else {
+            const currentDoc = await this.documentsDataService.allDocuments.find(d => d.onlineRef === doc.id);
+            const currentDate = new Date(currentDoc?.updatedAt);
+            const newDate = new Date(doc.updatedAt);
+            if (currentDate < newDate) {
+              const currentFileName = currentDoc?.fileUrl ? currentDoc?.fileUrl.split('files/')[1] : null;
+              const isCurrentFileSameAsNew = currentFileName && doc.fileUrl && doc.fileUrl.includes(currentFileName);
+              const docToUpdate = {...doc};
+
+              if (isCurrentFileSameAsNew) {
+                docToUpdate.fileUrl = currentDoc?.fileUrl;
+              } else {
+                const fileUri = await this.uploadService.fetchAndSaveFile(doc.fileUrl);
+                if (fileUri) {
+                  docToUpdate.fileUrl = fileUri;
+                }
+              }
+              docToUpdate.id = currentDoc.id;
+              await this.documentsDataService.update(docToUpdate);
+            }
+          }
+        }
       }
     });
   }
