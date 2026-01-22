@@ -437,7 +437,7 @@ export class SyncService {
           const contractExists = await this.dbService.checkIfEntryExists('contracts', contract.appRef);
           if (!contractExists) {
             await this.contractServ.saveOnlineContract(contractToSave).then((id) => {
-              console.log ( `Contract ${contract.name} saved with id ${id}`);
+              console.log(`Contract ${contract.name} saved with id ${id}`);
             });
           } else {
             const currentContract = await this.contractServ.contracts.find(c => c.appRef === contract.appRef);
@@ -446,7 +446,8 @@ export class SyncService {
             if (currentUpdateDate < newUpdateDate) {
               const contractToUpdate = {};
               for (const key of Object.keys(contractToSave)) {
-                contractToUpdate[key] = contractToSave[key];
+                const snakeCaseKey = this.sharedMethods.convertCamelToSnakeCase(key);
+                contractToUpdate[snakeCaseKey] = contractToSave[key];
               }
               contractToUpdate['id'] = currentContract.id;
               await this.contractServ.update(contractToUpdate).then(() => {
