@@ -424,21 +424,36 @@ export class SyncService {
         await this.sharedMethods.saveDataToStorage(StorageKeys.currentUserOnlineContractsAppRefs, userOnlineContracts);
 
         forkJoin(response.body.data.map(async(contract) => {
-          await this.dbService.checkIfEntryExists('contracts', contract.appRef)
-          .then(async(exists) => {
-            if (!exists) {
-              if (contract?.taiwaneseCompany) {
-                const taiwaneseCompany = await this.companyServ.getCompanyByField('onlineRef', contract.taiwaneseCompany);
-                contract.taiwaneseCompany = taiwaneseCompany?.id || null;
+          const contractToSave = { ...contract };
+          delete contractToSave.id;
+          if (contract?.taiwaneseCompany) {
+            const taiwaneseCompany = await this.companyServ.getCompanyByField('onlineRef', contract.taiwaneseCompany);
+            contractToSave.taiwaneseCompany = taiwaneseCompany?.id || null;
+          }
+          if (contract?.indonesianCompany) {
+            const indonesianCompany = await this.companyServ.getCompanyByField('onlineRef', contract.indonesianCompany);
+            contractToSave.indonesianCompany = indonesianCompany?.id || null;
+          }
+          const contractExists = await this.dbService.checkIfEntryExists('contracts', contract.appRef);
+          if (!contractExists) {
+            await this.contractServ.saveOnlineContract(contractToSave).then((id) => {
+              console.log ( `Contract ${contract.name} saved with id ${id}`);
+            });
+          } else {
+            const currentContract = await this.contractServ.contracts.find(c => c.appRef === contract.appRef);
+            const currentUpdateDate = new Date(currentContract?.updatedAt);
+            const newUpdateDate = new Date(contract.updatedAt);
+            if (currentUpdateDate < newUpdateDate) {
+              const contractToUpdate = {};
+              for (const key of Object.keys(contractToSave)) {
+                contractToUpdate[key] = contractToSave[key];
               }
-              if (contract?.indonesianCompany) {
-                const indonesianCompany = await this.companyServ.getCompanyByField('onlineRef', contract.indonesianCompany);
-                contract.indonesianCompany = indonesianCompany?.id || null;
-              }
-              await this.contractServ.saveOnlineContract(contract)
-              .then((id) => { console.log ( `Contract ${contract.name} saved with id ${id}`); });
+              contractToUpdate['id'] = currentContract.id;
+              await this.contractServ.update(contractToUpdate).then(() => {
+                console.log(`Contract ${contract.name} updated successfully.`);
+              });
             }
-          });
+          }
         })).subscribe(async() => {
           // fetch the contract clauses & documents after the contracts have been fetched
           await this.fetchContractDocuments();
