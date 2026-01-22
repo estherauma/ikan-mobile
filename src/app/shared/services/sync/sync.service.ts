@@ -522,7 +522,7 @@ export class SyncService {
     }
 
     const clauses = await this.contractServ.retrieveContractClauses(contractId);
-    clauses.forEach(async(clause) => {
+    for (const clause of clauses) {
       // The contract_id has to be the for the online record and not the local before sending to the api
       // replace the contract_id with the contract id online_ref
       clause.contract = contractOnlineRef;
@@ -535,8 +535,7 @@ export class SyncService {
             await this.syncContractClausesAttachments(clause);
           }
         }).catch((e) => {
-          console.log('error', e);
-          // TODO: save clause onlinref if no exists
+          console.error('error', e);
           // if (e?.error?.appRef && e.error.appRef[0] === 'contract clause with this app ref already exists.') {
           //   console.log('contract clause with this app ref already exists.');
           // }
@@ -550,7 +549,7 @@ export class SyncService {
           }
         });
       }
-    });
+    }
   }
 
   async syncContractClausesAttachments(clause) {
@@ -584,34 +583,33 @@ export class SyncService {
   }
 
   async fetchContractClauses() {
-    return this.apiService.get('contracts-clauses').subscribe((response: GetClausesResponse) => {
+    return await lastValueFrom(this.apiService.get('contracts-clauses')).then(async(response: GetClausesResponse) => {
       if (response.status === 200 && response.body.data.length > 0) {
-        response.body.data.forEach(async(clause) => {
-          await this.dbService.checkIfEntryExists('contract_clauses', clause.appRef)
-          .then(async(exists) => {
-            if (!exists) {
-              const contract = await this.contractServ.getContractByField('onlineRef', clause.contract);
-              if (contract) {
-                const data = JSON.parse(clause.content);
-                delete data.partyASignature;
-                delete data.partyBSignature;
-                const clauseToSave = {
-                  ...clause,
-                  content: JSON.stringify(data),
-                };
-                await this.contractServ.saveOnlineContractClause(contract?.id, clauseToSave).then(async(id) => {
-                  const content = JSON.parse(clause.content);
-                  if (Object.keys(content).length && (content.partyASignature || content.partyBSignature)) {
-                    for (const [key, value] of Object.entries(content)) {
-                      if (key === 'partyASignature' || key === 'partyBSignature') {
-                        await this.uploadService.fetchAndSaveFile(value).then(async(fileUri) => {
-                          if (fileUri) {
-                            content[key] = fileUri;
-                          }
-                        });
-                      }
+        for (const clause of response.body.data) {
+          const contract = await this.contractServ.getContractByField('onlineRef', clause.contract);
+          if (contract) {
+            const clauseExists = await this.dbService.checkIfEntryExists('contract_clauses', clause.appRef);
+            if (!clauseExists) {
+              const data = JSON.parse(clause.content);
+              delete data.partyASignature;
+              delete data.partyBSignature;
+              const clauseToSave = {
+                ...clause,
+                content: JSON.stringify(data),
+              };
+              await this.contractServ.saveOnlineContractClause(contract?.id, clauseToSave).then(async(id) => {
+                const content = JSON.parse(clause.content);
+                if (Object.keys(content).length && (content.partyASignature || content.partyBSignature)) {
+                  for (const [key, value] of Object.entries(content)) {
+                    if (key === 'partyASignature' || key === 'partyBSignature') {
+                      await this.uploadService.fetchAndSaveFile(value).then(async(fileUri) => {
+                        if (fileUri) {
+                          content[key] = fileUri;
+                        }
+                      });
                     }
                   }
+                  // Save party signatures
                   const dataToUpdate = {
                     ...clause,
                     content: JSON.stringify(content),
@@ -619,13 +617,63 @@ export class SyncService {
                     updated_by: clause.updatedBy,
                   };
                   await this.contractServ.updateContractClause(id, dataToUpdate);
-                });
-              }
+                }
+              });
             } else {
-              // TODO: update the clause if it exists
+              const currentClause = await this.contractServ.contractClauses.find(c => c.appRef === clause.appRef);
+              const currentUpdateDate = new Date(currentClause?.updatedAt);
+              const newUpdateDate = new Date(clause.updatedAt);
+              if (currentUpdateDate < newUpdateDate) {
+                const data = JSON.parse(clause.content);
+                delete data.partyASignature;
+                delete data.partyBSignature;
+                const clauseToUpdate = {
+                  ...clause,
+                  content: JSON.stringify(data),
+                  updated_at: clause.updatedAt,
+                  updated_by: clause.updatedBy,
+                };
+                clauseToUpdate['id'] = currentClause.id;
+                await this.contractServ.updateContractClause(currentClause.id, clauseToUpdate).then(() => {
+                  console.log(`Contract clause ${clause.name} for user ${contract.name} updated successfully.`);
+                });
+
+                const content = JSON.parse(clause.content);
+                if (Object.keys(content).length && (content.partyASignature || content.partyBSignature)) {
+                  let fileChanged = false;
+                  for (const [key, value] of Object.entries(content)) {
+                    if (key === 'partyASignature' || key === 'partyBSignature') {
+                      const currentSignature = currentClause ? JSON.parse(currentClause.content)[key] : null;
+                      const currentFileName = currentSignature ? currentSignature.split('files/')[1] : null;
+                      const isCurrentSignatureSameAsNew = currentFileName && value && typeof value === 'string' && value?.includes(currentFileName);
+                      if (isCurrentSignatureSameAsNew) {
+                        content[key] = currentSignature;
+                        continue;
+                      }
+                      await this.uploadService.fetchAndSaveFile(value).then(async(fileUri) => {
+                        if (fileUri) {
+                          content[key] = fileUri;
+                          fileChanged = true;
+                        }
+                      });
+                    }
+                  }
+
+                  if (fileChanged) {
+                    // Save party signatures
+                    const dataToUpdate = {
+                      ...clause,
+                      content: JSON.stringify(content),
+                      updated_at: clause.updatedAt,
+                      updated_by: clause.updatedBy,
+                    };
+                    await this.contractServ.updateContractClause(currentClause.id, dataToUpdate);
+                  }
+                }
+              }
             }
-          });
-        });
+          }
+        }
       }
     });
   }
