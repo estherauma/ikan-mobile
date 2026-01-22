@@ -261,7 +261,7 @@ export class ContractDataService {
       updated_at = ?, updated_by = ? WHERE contract_id = ?';
     const now = this.sharedMethods.getCurrentDateTime();
     const user = await this.sharedMethods.getUserData();
-    const params = [data.name, data.url, data.status, now, user?.id, contractId];
+    const params = [data.name, data.url, data.status, data?.updatedAt || now, data?.updatedBy || user?.id, contractId];
 
     return this.db.executeSql(query, params).then(async(result) => {
       await this.retrieveContractDocuments();
