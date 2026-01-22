@@ -166,8 +166,8 @@ export class ContractDataService {
     const query = 'UPDATE contracts SET name = ?, app_ref = ?, internal_ref = ?, start_date = ?, \
       end_date = ?, description = ?, taiwanese_company_id = ?, indonesian_company_id = ?, type = ?,\
       updated_at = ?, updated_by = ? WHERE id = ?';
-    const params = [data.name, data.app_ref, data.internal_ref, data.start_date, data.end_date,
-      data.description, data.taiwanese_company_id, data.indonesian_company_id, data.type,
+    const params = [data.name, data.app_ref, data.app_ref, data.start_date, data.end_date,
+      data.description, data.taiwanese_company_id, data.indonesian_company_id, data?.type || data.kind,
       data.updated_at, data.updated_by, data.id];
 
       return this.db.executeSql(query, params).then(async(result) => {
