@@ -71,7 +71,7 @@ export class AppComponent implements OnInit, OnDestroy {
         this.userEmail = data.email;
       }
     });
-    this.setupDB();
+    this.setupSyncing();
     this.analyticsService.uploadOfflineEvents();
     this.noticationsDataService.displayWageNotificationsObs.subscribe(async(showWageNotifs) => {
       if (showWageNotifs) {
@@ -297,7 +297,7 @@ export class AppComponent implements OnInit, OnDestroy {
     await this.sharedMethods.dismissLoader();
   }
 
-  async setupDB() {
+  async setupSyncing() {
     await this.dbService.checkDbPlatformAndRunMigration();
     await this.syncData();
   }
