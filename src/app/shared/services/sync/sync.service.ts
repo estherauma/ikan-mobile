@@ -36,6 +36,7 @@ import { UploadService } from '../upload/upload.service';
 import { DocumentsDataService } from 'src/app/mydocuments/data/documents-data.service';
 import { WagesDataService } from 'src/app/wages/data/wages-data.service';
 import { NotificationsDataService } from 'src/app/notifications/data/notifications-data.service';
+import { ContentService } from '../content/content.service';
 
 @Injectable({
   providedIn: 'root'
@@ -61,6 +62,7 @@ export class SyncService {
     private documentsDataService: DocumentsDataService,
     private wagesDataService: WagesDataService,
     private notificationsDataService: NotificationsDataService,
+    private contentService: ContentService,
   ) {
     this.platform.ready().then(async() => {
       this.db = await this.dbService.configureDB();
@@ -82,9 +84,12 @@ export class SyncService {
     });
   }
 
-  async syncData() {
+  async syncData(showToast = false) {
     // start timer
     const startTime = performance.now();
+    if (showToast) {
+      await this.sharedMethods.showToast(this.contentService.commonText?.syncingData || 'Syncing data...', 'long');
+    }
 
     const isValid = await this.authService.checkAcessTokenValidity();
     const hasInternetConnection = await this.sharedMethods.checkInternetConnectionStatus();
@@ -117,7 +122,10 @@ export class SyncService {
     // end timer
     const endTime = performance.now();
     const duration = endTime - startTime;
-    console.log(`Sync duration: ${(duration / 1000).toFixed(3)} seconds (${(duration / 60000).toFixed(3)} minutes)`); 
+    console.log(`Sync duration: ${(duration / 1000).toFixed(3)} seconds (${(duration / 60000).toFixed(3)} minutes)`);
+    if (showToast) {
+      await this.sharedMethods.showToast(this.contentService.commonText?.syncComplete || 'Sync complete');
+    }
   }
 
   @HostListener('window:online', ['$event'])
