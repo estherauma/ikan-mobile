@@ -253,7 +253,6 @@ export class SyncService {
     }
   }
 
-  // TODO: to test, images
   async fetchVessels() {
     return await lastValueFrom(this.apiService.get('vessels')).then(async(response: GetVesselsResponse) => {
       if (response.status === 200 && response.body.data.length > 0) {
@@ -281,7 +280,9 @@ export class SyncService {
                 console.log(`Vessel ${vessel.name} updated successfully.`);
               });
             }
-            await this.saveOnlineVesselImage(vessel.vesselImage, currentVessel.id);
+            if (vessel?.vesselImage) {
+              await this.saveOnlineVesselImage(vessel.vesselImage, currentVessel.id);
+            }
           }
         }
       }
