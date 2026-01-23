@@ -264,8 +264,8 @@ export class SyncService {
               await this.vesselServ.update(vesselToUpdate).then(() => {
                 console.log(`Vessel ${vessel.name} updated successfully.`);
               });
-              await this.saveOnlineVesselImage(vessel.vesselImage, currentVessel.id);
             }
+            await this.saveOnlineVesselImage(vessel.vesselImage, currentVessel.id);
           }
         }
       }
