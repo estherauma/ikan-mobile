@@ -13,7 +13,7 @@ import { Subscription } from 'rxjs';
 import { SyncService } from './shared/services/sync/sync.service';
 import { TrainingVideoComponent } from './learninghub/training-video/training-video.component';
 import { AlertController, IonicSafeString, ModalController, Platform } from '@ionic/angular';
-import { App } from '@capacitor/app';
+import { App, AppState } from '@capacitor/app';
 import { Location } from '@angular/common';
 import { LocalNotifications  } from '@capacitor/local-notifications';
 import { ApiService } from './shared/services/api/api.service';
@@ -300,5 +300,11 @@ export class AppComponent implements OnInit, OnDestroy {
   async setupSyncing() {
     await this.dbService.checkDbPlatformAndRunMigration();
     await this.syncData();
+
+    App.addListener('appStateChange', (state: AppState) => {
+      if (state.isActive) {
+        this.syncService.syncData(true);
+      }
+    });
   }
 }
