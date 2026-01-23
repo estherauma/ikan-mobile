@@ -83,9 +83,12 @@ export class SyncService {
   }
 
   async syncData() {
+    // start timer
+    const startTime = performance.now();
+
     const isValid = await this.authService.checkAcessTokenValidity();
-    if (!isValid || !this.isDbInitialized) {
-    // if (!isValid || !this.isDbInitialized || !navigator.onLine) {
+    const hasInternetConnection = await this.sharedMethods.checkInternetConnectionStatus();
+    if (!isValid || !this.isDbInitialized || !hasInternetConnection) {
       return;
     }
 
@@ -110,6 +113,11 @@ export class SyncService {
     await this.fetchLearningHubProgress();
     await this.fetchWages();
     await this.fetchNotifications();
+
+    // end timer
+    const endTime = performance.now();
+    const duration = endTime - startTime;
+    console.log(`Sync duration: ${(duration / 1000).toFixed(3)} seconds (${(duration / 60000).toFixed(3)} minutes)`); 
   }
 
   @HostListener('window:online', ['$event'])
