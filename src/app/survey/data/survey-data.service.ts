@@ -203,7 +203,7 @@ export class SurveyDataService {
     const now = this.sharedMethods.getCurrentDateTime();
     const user = await this.sharedMethods.getUserData();
     const params = [data.questionType, data.questionText, data.questionResponse, data.followUpQuestionKey,
-      data.followUpQuestionType, data.followUpQuestionText, data.followUpQuestionResponse, now, user.id, data.id];
+      data.followUpQuestionType, data.followUpQuestionText, data.followUpQuestionResponse, data?.updatedAt || now, data?.updatedBy || user.id, data.id];
 
     return this.db.executeSql(query, params).then(async(result) => {
       await this.retrieveInlineQuestions();
