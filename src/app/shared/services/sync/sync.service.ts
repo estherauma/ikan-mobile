@@ -1088,8 +1088,8 @@ export class SyncService {
               const currentDate = new Date(currentBeneficiary?.updatedAt);
               const newDate = new Date(beneficiary.updatedAt);
               if (currentDate < newDate) {
-                beneficiary.id = currentBeneficiary.id;
-                await this.paymentsDataService.updateBeneficiary(beneficiary);
+                const dataToUpdate = {...data, userId: profile.id, onlineRef: beneficiary.id, id: currentBeneficiary.id};
+                await this.paymentsDataService.updateBeneficiary(dataToUpdate);
               }
             }
           }
