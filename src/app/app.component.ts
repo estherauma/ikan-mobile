@@ -3,7 +3,7 @@ import { Router } from '@angular/router';
 import { StatusBar } from '@capacitor/status-bar';
 import { ContentService } from './shared/services/content/content.service';
 import { SharedmethodsService } from './shared/services/sharedmethods/sharedmethods.service';
-import { StorageKeys, SurveySources, UserData } from './shared/types/api-types';
+import { StorageKeys, SurveySources, UserData, UserRole } from './shared/types/api-types';
 import { PluginListenerHandle } from '@capacitor/core';
 import { AuthService } from './shared/services/auth/auth.service';
 import { DBService } from './shared/services/database/db.service';
@@ -107,10 +107,33 @@ export class AppComponent implements OnInit, OnDestroy {
 
   setupMenu(menuData) {
     if (menuData && Object.keys(menuData).length > 0) {
-      menuData?.sort((a, b) => a.position - b.position);
+      // For vessel owners, move Help item to tools & resources section
+      if (this.userData?.role === UserRole.vesselOwner) {
+        const helpEl = menuData.find(el => el.key === 'help');
+        if (helpEl) {
+          helpEl.position = 695;
+        }
+      }
 
-      // identify last item in a menu section
+      // Sort menu by position
+      menuData.sort((a, b) => a.position - b.position);
+
       menuData.forEach((el, index) => {
+        // Identify first item in section
+        if (index === 0) {
+          el.first = true;
+        } else {
+          const prevItem = menuData[index - 1];
+          const prevSection = prevItem?.position - prevItem?.position % 100;
+          const currentSection = el.position - el.position % 100;
+          if (currentSection !== prevSection) {
+            el.first = true;
+          } else {
+            el.first = false;
+          }
+        }
+
+        // Identify last item in section
         if (index === menuData.length - 1 ) {
           el.last = false;
         } else {
@@ -126,6 +149,34 @@ export class AppComponent implements OnInit, OnDestroy {
 
         if (el.url === '/delete-account') {
           el.isDeleteAccount = true;
+        }
+
+        // Add section titles
+        const section = el.position - el.position % 100;
+        switch (section) {
+          case 200:
+            el.sectionTitle = this.commonText?.vesselsAndManningAgencies || 'Vessels & Manning Agencies';
+            break;
+          case 400:
+            if (this.userData?.role === UserRole.worker) {
+              el.sectionTitle = this.commonText?.contractsAndWagePayments || 'Contracts & Wage Payments';
+            } else if (this.userData?.role === UserRole.vesselOwner) {
+              el.sectionTitle = this.commonText?.migrantFishers || 'Migrant Fishers';
+            } else {
+              el.sectionTitle = '';
+            }
+            break;
+          case 600:
+            if (this.userData?.role === UserRole.worker) {
+              el.sectionTitle = this.commonText?.learningAndDocuments || 'Learning & Documents';
+            } else if (this.userData?.role === UserRole.vesselOwner) {
+              el.sectionTitle = this.commonText?.toolsAndResourcesForMigrantFishers || 'Tools & Resources for Migrant Fishers';
+            } else {
+              el.sectionTitle = '';
+            }
+            break;
+          default:
+            el.sectionTitle = '';
         }
       });
 
@@ -212,6 +263,10 @@ export class AppComponent implements OnInit, OnDestroy {
     } else {
       this.router.navigate([this.appPages[index].url]);
     }
+  }
+
+  isActiveRoute(route: string): boolean {
+    return this.location.isCurrentPathEqualTo(route);
   }
 
   async showTrainingVideo() {
