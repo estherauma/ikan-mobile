@@ -83,6 +83,7 @@ export class VesselsDataService {
   async create(data) {
     const query = 'INSERT INTO vessels (name, reg_no, type, status, \
       capacity, commissioning_date, created_at, updated_at, created_by, updated_by, app_ref) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)';
+    if (!data?.type) { data.type = data.vesselType || data.vessel_type; }
     const params = [data.name, data.reg_no, data.type, data.status, data.capacity,
       data.commissioning_date, data.created_at, data.updated_at, data.created_by, data.updated_by, data.app_ref];
     return this.db.executeSql(query, params).then((result) => {
@@ -108,6 +109,7 @@ export class VesselsDataService {
     const query = 'UPDATE vessels SET name = ?, reg_no = ?, type = ?, status = ?, \
       capacity = ?, commissioning_date = ?, updated_at = ?, updated_by = ? \
       WHERE id = ?';
+    if (!data?.type) { data.type = data.vesselType || data.vessel_type; }
     const params = [data.name, data.reg_no, data.type, data.status, data.capacity,
       data.commissioning_date, data.updated_at, data.updated_by, data.id];
 
@@ -198,7 +200,7 @@ export class VesselsDataService {
       updated_at = ?, updated_by = ? WHERE id = ?';
     const now = this.sharedMethods.getCurrentDateTime();
     const user = await this.sharedMethods.getUserData();
-    const params = [data?.image_url, data?.description, now, user?.id, data?.id];
+    const params = [data?.image_url, data?.description, data?.updated_at || now, data?.updated_by || user?.id, data?.id];
     return this.db.executeSql(query, params).then(async(result) => {
       await this.retriveVessels();
       const image = await this.getVesselImageByVesselId(data.vessel_id);

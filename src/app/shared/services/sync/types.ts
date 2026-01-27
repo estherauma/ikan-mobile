@@ -221,6 +221,7 @@ export interface VesselsBody {
   status:            string;
   capacity:          string;
   commissioningDate: string;
+  vesselImage?:      any;
 }
 
 export interface GetUsersResponse {

@@ -152,6 +152,21 @@ export class DocumentsDataService {
     });
   }
 
+  async update(data) {
+    const query = 'UPDATE documents SET file_name = ?, file_url = ?, file_size = ?, \
+      doc_type = ?, is_essential = ?, updated_at = ?, updated_by = ? WHERE id = ?';
+    const params = [data.fileName, data.fileUrl, data.fileSize, data.docType,
+      data.isEssential, data.updatedAt, data.updatedBy, data.id];
+    return this.db.executeSql(query, params).then(async(result) => {
+      await this.retriveDocuments();
+      await this.retriveAllDocuments();
+      return result.rowsAffected;
+    }).catch((e) => {
+      console.log(e);
+      return null;
+    });
+  }
+
   async saveOnlineDocument(data) {
     const query = 'INSERT INTO documents (online_ref, app_ref, user_id, file_name, file_url, \
       file_size, doc_type, is_essential, created_at, updated_at, created_by, updated_by) \
