@@ -270,11 +270,6 @@ ion-content {
               color: white;
               background: #1b57ed;
             }
-            &.completed {
-              content: "✓";
-              color: #1b57ed;
-              background: #eaedf6;
-            }
           }
         }
         .step:after {
