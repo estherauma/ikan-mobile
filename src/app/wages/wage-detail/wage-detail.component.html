@@ -216,10 +216,18 @@
           
           <swiper-slide class="slide">
             <div class="steps-container">
-              <ul class="progress-bar">
-                <li><span [ngClass]="{'active': swiper?.activeIndex === 1}"></span></li>
-                <li><span [ngClass]="{'completed': beneficiaryReceivedCorrectAmountValue}"></span></li>
-              </ul>
+              <div class="step">
+                <div class="step-label" [ngClass]="{'active': swiper?.activeIndex === 1}">1</div>
+              </div>
+              <div class="step">
+                <div class="step-label" [ngClass]="{'completed': beneficiaryReceivedCorrectAmountValue}">
+                  @if (beneficiaryReceivedCorrectAmountValue) {
+                    ✓
+                  } @else {
+                    2
+                  }
+                </div>
+              </div>
             </div>
             <div class="qtn-wrapper">
               <p class="qtn-label">{{ paymentsCommonText?.crewReceivedCorrectAmountQuestion }}</p>
@@ -233,10 +241,18 @@
           
           <swiper-slide class="slide">
             <div class="steps-container">
-              <ul class="progress-bar">
-                <li><span [ngClass]="{'completed': crewReceivedCorrectAmountValue}"></span></li>
-                <li><span [ngClass]="{'active': swiper?.activeIndex === 2}"></span></li>
-              </ul>
+              <div class="step">
+                <div class="step-label" [ngClass]="{'completed': crewReceivedCorrectAmountValue}">
+                  @if (crewReceivedCorrectAmountValue) {
+                    ✓
+                  } @else {
+                    1
+                  }
+                </div>
+              </div>
+              <div class="step">
+                <div class="step-label" [ngClass]="{'active': swiper?.activeIndex === 2}">2</div>
+              </div>
             </div>
             <div class="qtn-wrapper">
               <p class="qtn-label">{{ paymentsCommonText?.beneficiaryReceivedCorrectAmountQuestion }}</p>
