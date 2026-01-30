@@ -1,15 +1,22 @@
 // style="text-align: center; padding: 20px; margin: 20%; background: #ffffff;"
-ion-content{
+ion-content {
   --color: var(--ikan_blue_100) !important;
   --padding-top: 56px;
-}
 
-.logo-container{
-  display: flex !important;
-  justify-content: center !important;
-  margin-bottom: 16px;
-}
+  .back-icon-wrapper {
+    ion-icon {
+      color: #3565ff;
+      font-size: 1.2rem;
+    }
+  }
 
-.text-center{
-  text-align: center;
+  .logo-container {
+    display: flex !important;
+    justify-content: center !important;
+    margin-bottom: 16px;
+  }
+
+  .text-center {
+    text-align: center;
+  }
 }
