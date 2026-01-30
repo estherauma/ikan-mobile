@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { AnalyticsService } from 'src/app/shared/services/analytics/analytics.service';
 import { PageEventNames } from 'src/app/shared/services/analytics/event-names';
 import { ContentService } from 'src/app/shared/services/content/content.service';
@@ -16,7 +17,8 @@ export class RegisterSuccessComponent  implements OnInit {
   constructor(
     public contentService: ContentService,
     public sharedMethods: SharedmethodsService,
-    public analyitics: AnalyticsService
+    public analyitics: AnalyticsService,
+    public router: Router,
   ) { }
 
   ngOnInit() {
@@ -25,4 +27,8 @@ export class RegisterSuccessComponent  implements OnInit {
     this.analyitics.trackEvent(PageEventNames.registerSuccess, this.sharedMethods.analyticsEventParams)
   }
 
+
+  goBack() {
+    this.router.navigate(['auth/login-method'], { replaceUrl: true });
+  }
 }
