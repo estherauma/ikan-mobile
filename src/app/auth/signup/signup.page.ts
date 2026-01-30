@@ -62,9 +62,13 @@ export class SignupPage extends BaseformPage implements OnInit {
       return;
     }
   
-    delete data.confirmPassword;
     this.sharedMethods?.showLoader(this.commonText?.submittingYourData);
-    this.apiService.post('accounts/register', data, true).subscribe(
+    const dataToSubmit = { ...data };
+    delete dataToSubmit.confirmPassword;
+    if (!dataToSubmit?.role && !dataToSubmit?.userRole) {
+      dataToSubmit.userRole = 'public';
+    }
+    this.apiService.post('accounts/register', dataToSubmit, true).subscribe(
       res => {
         this.sharedMethods.showToast(this.commonText?.accountCreatedSuccessfully);
         this.isLoading = false;

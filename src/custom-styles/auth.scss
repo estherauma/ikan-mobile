@@ -7,3 +7,13 @@ app-invite-code {
     }
   }
 }
+
+app-signup {
+  app-form {
+    .submit-btn-col {
+      display: flex;
+      justify-content: center;
+      padding-top: 20px;
+    }
+  }
+}

@@ -7,12 +7,10 @@
     <div class="logo-container">
       <app-badge imageUrl="/assets/icon/ikan_monogram.svg"></app-badge>
     </div>
-    <ion-text>
-      <app-title class="title" [isBlue]="true" [title]="title"></app-title>
-    </ion-text>
-    <ion-text>
-      <p>{{description}}</p>
-    </ion-text>
+    
+    <h1 class="title">{{ title }}</h1>
+    <p>{{ description }}</p>
+    
     <app-form
       btnConfig="default"
       btnFill="solid"
@@ -21,7 +19,8 @@
       [submitButtonText]="submitButtonText"
       [fieldErrors]="fieldErrors"
       [isSubmitting]="isLoading"
-      (formValue)="onSubmit($event)">
+      (formValue)="onSubmit($event)"
+    >
     </app-form>
   </div>
 </ion-content>
