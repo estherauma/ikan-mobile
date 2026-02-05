@@ -2,10 +2,9 @@
 
 <ion-content class="content-skyblue-bg">
   <ion-grid>
-    <!-- TODO: add urls -->
     <app-audio-video-buttons
-      [audioUrl]=""
-      [videoUrl]=""
+      [audioUrl]="paymentsPageData?.pageMedia?.vesselWagesPageAudio?.url"
+      [videoUrl]="paymentsPageData?.pageMedia?.vesselWagesPageVideo?.url"
     ></app-audio-video-buttons>
     
     <div class="title-filter">
