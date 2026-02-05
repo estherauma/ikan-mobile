@@ -1,9 +1,8 @@
 <app-header></app-header>
 <ion-content class="content-skyblue-bg">
-  <!-- TODO: add urls -->
   <app-audio-video-buttons
-    [audioUrl]=""
-    [videoUrl]=""
+    [audioUrl]="paymentsPageData?.pageMedia?.wagesPageAudio?.url"
+    [videoUrl]="paymentsPageData?.pageMedia?.wagesPageVideo?.url"
   ></app-audio-video-buttons>
 
   <!-- Create functionality disabled for now -->
