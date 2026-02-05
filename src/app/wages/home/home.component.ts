@@ -19,6 +19,7 @@ import { PageEventNames } from 'src/app/shared/services/analytics/event-names';
 export class HomeComponent implements OnInit {
   
   commonText: any;
+  paymentsPageData: any;
   paymentsCommonText: any;
   pageTitle = 'Wage payments';
   unFilteredData = [];
@@ -131,8 +132,9 @@ export class HomeComponent implements OnInit {
   async ngOnInit() {
     await this.getCurrentUser();
     this.commonText = await this.contentService?.commonText;
-    const paymentsPageData = this.contentService.getContentByPropertyName('payments-common-text');
-    this.paymentsCommonText = this.sharedMethods.convertAdditionalTextToObj(paymentsPageData?.additionalText);
+    this.paymentsPageData = this.contentService.getContentByPropertyName('payments-common-text');
+    console.log('paymentsPageData.........', this.paymentsPageData);
+    this.paymentsCommonText = this.sharedMethods.convertAdditionalTextToObj(this.paymentsPageData?.additionalText);
     this.pageTitle = this.paymentsCommonText?.wagePayments;
     this.filterOptions = [
       { title: this.commonText?.closed, value: 'closed' },
