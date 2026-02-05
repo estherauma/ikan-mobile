@@ -26,6 +26,7 @@ export type ReceivedCorrectAmountValue = 'yes' | 'no' | 'unsure' | '';
 export class WageDetailComponent  implements OnInit {
 
   commonText: any;
+  paymentsPageData: any;
   paymentsCommonText: any;
   wageDetails: any;
   currentLanguage = 'en-us';
@@ -71,8 +72,8 @@ export class WageDetailComponent  implements OnInit {
 
   async ngOnInit() {
     this.commonText = this.contentService?.commonText;
-    const paymentsPageData = this.contentService.getContentByPropertyName('payments-common-text');
-    this.paymentsCommonText = this.sharedMethods.convertAdditionalTextToObj(paymentsPageData?.additionalText);
+    this.paymentsPageData = this.contentService.getContentByPropertyName('payments-common-text');
+    this.paymentsCommonText = this.sharedMethods.convertAdditionalTextToObj(this.paymentsPageData?.additionalText);
     this.currentLanguage = this.contentService?.currentLanguage;
     this.currentUser = await this.sharedMethods.getUserData();
     this.isWorker = this.currentUser?.role === UserRole.worker;

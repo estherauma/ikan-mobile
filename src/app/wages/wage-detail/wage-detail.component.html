@@ -1,10 +1,9 @@
 <app-header></app-header>
 
 <ion-content [fullscreen]="true">
-  <!-- TODO: add urls -->
   <app-audio-video-buttons
-    [audioUrl]=""
-    [videoUrl]=""
+    [audioUrl]="paymentsPageData?.pageMedia?.wageDetailPageAudio?.url"
+    [videoUrl]="paymentsPageData?.pageMedia?.wageDetailPageVideo?.url"
   ></app-audio-video-buttons>
   
   <div
