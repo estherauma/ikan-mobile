@@ -133,7 +133,6 @@ export class HomeComponent implements OnInit {
     await this.getCurrentUser();
     this.commonText = await this.contentService?.commonText;
     this.paymentsPageData = this.contentService.getContentByPropertyName('payments-common-text');
-    console.log('paymentsPageData.........', this.paymentsPageData);
     this.paymentsCommonText = this.sharedMethods.convertAdditionalTextToObj(this.paymentsPageData?.additionalText);
     this.pageTitle = this.paymentsCommonText?.wagePayments;
     this.filterOptions = [
