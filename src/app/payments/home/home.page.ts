@@ -92,7 +92,7 @@ export class HomePage implements OnInit {
       // TODO: filter data based on user role
       // filtering by createdBy because the vessels are only displayed for VOs
       this.vessels = this.unFilteredData = data?.filter(
-        (vessel) => vessel.createdBy === this.currentUser.id
+        (vessel) => vessel.createdBy === this.currentUser?.id
       );
     });
     this.paymentsDataService.getAll().subscribe(async(data) => {
@@ -102,11 +102,11 @@ export class HomePage implements OnInit {
 
       if (this.currentUser?.role === UserRole.worker) {
         this.userPayments = data?.filter(
-          (payment) => payment.userId === this.currentUser.id
+          (payment) => payment.userId === this.currentUser?.id
         );
       } else if (this.currentUser?.role === UserRole.vesselOwner) {
         this.userPayments = data?.filter(
-          (payment) => payment.createdBy === this.currentUser.id
+          (payment) => payment.createdBy === this.currentUser?.id
         );
       }
 

@@ -81,7 +81,7 @@ export class VesselWagesComponent  implements OnInit {
           this.vesselWages = data?.filter(
             (wage) =>
               wage.vesselId === this.vessel.onlineRef &&
-              wage.createdBy === this.currentUser.id
+              wage.createdBy === this.currentUser?.id
           );
 
           // Add user & vessel details to each wage

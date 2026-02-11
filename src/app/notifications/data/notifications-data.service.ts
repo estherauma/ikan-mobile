@@ -189,7 +189,7 @@ export class NotificationsDataService {
     }
     
     const notifs =  this.notifications.filter((notification: any) =>
-      notification.userId === user.id &&
+      notification.userId === user?.id &&
       notification.category === NotificationCategory.wagePayment &&
       notification.isDisplayed === false &&
       notification.isDeleted === false

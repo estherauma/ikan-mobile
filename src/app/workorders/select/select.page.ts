@@ -44,7 +44,7 @@ export class SelectPage implements OnInit {
     if (e.detail.checked) {
         this.selectedWorkOrders.push(e.detail.value);
     } else {
-      this.selectedWorkOrders = this.selectedWorkOrders.filter( item => item.internalRef !== e.detail.value.internalRef);
+      this.selectedWorkOrders = this.selectedWorkOrders.filter( item => item.internalRef !== e?.detail?.value?.internalRef);
     }
   }
 
