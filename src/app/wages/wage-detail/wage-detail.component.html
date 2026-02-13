@@ -214,54 +214,60 @@
           </swiper-slide>
           
           <swiper-slide class="slide">
-            <div class="steps-container">
-              <div class="step">
-                <div class="step-label" [ngClass]="{'active': swiper?.activeIndex === 1}">1</div>
-              </div>
-              <div class="step">
-                <div class="step-label" [ngClass]="{'completed': beneficiaryReceivedCorrectAmountValue}">
-                  @if (beneficiaryReceivedCorrectAmountValue) {
-                    ✓
-                  } @else {
-                    2
-                  }
+            @if (wageDetails?.beneficiaryRelationship !== 'self') {
+              <div class="steps-container">
+                <div class="step">
+                  <div class="step-label" [ngClass]="{'active': swiper?.activeIndex === 1}">1</div>
+                </div>
+                <div class="step">
+                  <div class="step-label" [ngClass]="{'completed': beneficiaryReceivedCorrectAmountValue}">
+                    @if (beneficiaryReceivedCorrectAmountValue) {
+                      ✓
+                    } @else {
+                      2
+                    }
+                  </div>
                 </div>
               </div>
-            </div>
+            }
             <div class="qtn-wrapper">
               <p class="qtn-label">{{ paymentsCommonText?.crewReceivedCorrectAmountQuestion }}</p>
               <ion-radio-group (ionChange)="changeCrewReceivedCorrectAmountValue($event)" [value]="crewReceivedCorrectAmountValue" mode="ios">
                 <ion-radio value="yes" class="yes">{{ paymentsCommonText?.yes }}</ion-radio>
                 <ion-radio value="no" class="no">{{ paymentsCommonText?.no }}</ion-radio>
-                <ion-radio value="unsure" class="unsure">{{ paymentsCommonText?.unsure }}</ion-radio>
+                <!-- Temporarily disabled the unsure option -->
+                <!-- <ion-radio value="unsure" class="unsure">{{ paymentsCommonText?.unsure }}</ion-radio> -->
               </ion-radio-group>
             </div>
           </swiper-slide>
           
-          <swiper-slide class="slide">
-            <div class="steps-container">
-              <div class="step">
-                <div class="step-label" [ngClass]="{'completed': crewReceivedCorrectAmountValue}">
-                  @if (crewReceivedCorrectAmountValue) {
-                    ✓
-                  } @else {
-                    1
-                  }
+          @if (wageDetails?.beneficiaryRelationship !== 'self') {
+            <swiper-slide class="slide">
+              <div class="steps-container">
+                <div class="step">
+                  <div class="step-label" [ngClass]="{'completed': crewReceivedCorrectAmountValue}">
+                    @if (crewReceivedCorrectAmountValue) {
+                      ✓
+                    } @else {
+                      1
+                    }
+                  </div>
+                </div>
+                <div class="step">
+                  <div class="step-label" [ngClass]="{'active': swiper?.activeIndex === 2}">2</div>
                 </div>
               </div>
-              <div class="step">
-                <div class="step-label" [ngClass]="{'active': swiper?.activeIndex === 2}">2</div>
+              <div class="qtn-wrapper">
+                <p class="qtn-label">{{ paymentsCommonText?.beneficiaryReceivedCorrectAmountQuestion }}</p>
+                <ion-radio-group (ionChange)="changeBeneficiaryReceivedCorrectAmountValue($event)" [value]="beneficiaryReceivedCorrectAmountValue" mode="ios">
+                  <ion-radio value="yes" class="yes">{{ paymentsCommonText?.yes }}</ion-radio>
+                  <ion-radio value="no" class="no">{{ paymentsCommonText?.no }}</ion-radio>
+                  <ion-radio value="unsure" class="unsure">{{ paymentsCommonText?.unsure }}</ion-radio>
+                </ion-radio-group>
               </div>
-            </div>
-            <div class="qtn-wrapper">
-              <p class="qtn-label">{{ paymentsCommonText?.beneficiaryReceivedCorrectAmountQuestion }}</p>
-              <ion-radio-group (ionChange)="changeBeneficiaryReceivedCorrectAmountValue($event)" [value]="beneficiaryReceivedCorrectAmountValue" mode="ios">
-                <ion-radio value="yes" class="yes">{{ paymentsCommonText?.yes }}</ion-radio>
-                <ion-radio value="no" class="no">{{ paymentsCommonText?.no }}</ion-radio>
-                <ion-radio value="unsure" class="unsure">{{ paymentsCommonText?.unsure }}</ion-radio>
-              </ion-radio-group>
-            </div>
-          </swiper-slide>
+            </swiper-slide>
+          }
+          
           <swiper-slide class="slide submit-slide">
             <ion-button class="submit-btn" shape="round" (click)="onSubmit()">
               <!-- {{ commonText?.submit }} -->

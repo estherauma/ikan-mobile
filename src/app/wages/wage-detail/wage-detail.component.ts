@@ -217,20 +217,20 @@ export class WageDetailComponent  implements OnInit {
     if (hasUpdates) {
       if (updatedWageDetails?.beneficiaryRelationship && updatedWageDetails.beneficiaryRelationship !== 'self' ) {
         if (
-          (updatedWageDetails.crewReceivedRightAmount && updatedWageDetails.crewReceivedRightAmount !== 'yes') &&
-          (updatedWageDetails.beneficiaryReceivedRightAmount && updatedWageDetails.beneficiaryReceivedRightAmount !== 'yes')
+          (updatedWageDetails?.crewReceivedRightAmount && updatedWageDetails?.crewReceivedRightAmount !== 'yes') &&
+          (updatedWageDetails?.beneficiaryReceivedRightAmount && updatedWageDetails?.beneficiaryReceivedRightAmount !== 'yes')
         ) {
           updatedWageDetails.status = 'issue_pending';
         } else if (
-          (updatedWageDetails.crewReceivedRightAmount && updatedWageDetails.crewReceivedRightAmount === 'yes') &&
-          (updatedWageDetails.beneficiaryReceivedRightAmount && updatedWageDetails.beneficiaryReceivedRightAmount === 'yes')
+          (updatedWageDetails?.crewReceivedRightAmount && updatedWageDetails?.crewReceivedRightAmount === 'yes') &&
+          (updatedWageDetails?.beneficiaryReceivedRightAmount && updatedWageDetails?.beneficiaryReceivedRightAmount === 'yes')
         ) {
           updatedWageDetails.status = 'received';
         }
       } else {
-        if (updatedWageDetails.crewReceivedRightAmount && updatedWageDetails.crewReceivedRightAmount !== 'yes') {
+        if (updatedWageDetails?.crewReceivedRightAmount && updatedWageDetails?.crewReceivedRightAmount !== 'yes') {
           updatedWageDetails.status = 'issue_pending';
-        } else if (updatedWageDetails.crewReceivedRightAmount && updatedWageDetails.crewReceivedRightAmount === 'yes') {
+        } else if (updatedWageDetails?.crewReceivedRightAmount && updatedWageDetails?.crewReceivedRightAmount === 'yes') {
           updatedWageDetails.status = 'received';
         }
       }
