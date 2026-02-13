@@ -173,10 +173,8 @@ export class ProfilesDataService {
   }
 
   async updateProfileOnlineRef(email: string, onlineRef: string) {
-    const query = 'UPDATE profiles SET updated_at = ?, updated_by = ?, online_ref = ? WHERE email = ?';
-    const now = this.sharedMethods.getCurrentDateTime();
-    const user = await this.sharedMethods.getUserData();
-    const params = [now, user?.id, onlineRef, email];
+    const query = 'UPDATE profiles SET online_ref = ? WHERE email = ?';
+    const params = [onlineRef, email];
     return await this.db.executeSql(query, params).then(async(result) => {
       await this.retrieveProfiles();
       return result;
@@ -205,10 +203,8 @@ export class ProfilesDataService {
   }
 
   async updateProfilesField(email: string, field: string, value: any) {
-    const query = `UPDATE profiles SET updated_at = ?, updated_by = ?, ${field} = ? WHERE email = ?`;
-    const now = this.sharedMethods.getCurrentDateTime();
-    const user = await this.sharedMethods.getUserData();
-    const params = [now, user?.id, value, email];
+    const query = `UPDATE profiles SET ${field} = ? WHERE email = ?`;
+    const params = [value, email];
     return await this.db.executeSql(query, params).then(async(result) => {
       await this.retrieveProfiles();
       return result;
