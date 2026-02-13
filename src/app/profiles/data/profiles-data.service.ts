@@ -3,6 +3,7 @@ import { SQLite, SQLiteObject } from '@awesome-cordova-plugins/sqlite/ngx';
 import { Platform } from '@ionic/angular';
 import { BehaviorSubject } from 'rxjs';
 import { DBService } from 'src/app/shared/services/database/db.service';
+import { SharedmethodsService } from 'src/app/shared/services/sharedmethods/sharedmethods.service';
 
 @Injectable({
   providedIn: 'root'
@@ -16,6 +17,7 @@ export class ProfilesDataService {
     private platform: Platform,
     private sqlite: SQLite,
     private dbService: DBService,
+    private sharedMethods: SharedmethodsService,
   ) {
     this.platform.ready().then(async() => {
       this.db = await this.dbService.configureDB();
@@ -173,7 +175,7 @@ export class ProfilesDataService {
   async updateProfileOnlineRef(email: string, onlineRef: string) {
     const query = 'UPDATE profiles SET online_ref = ? WHERE email = ?';
     const params = [onlineRef, email];
-    return this.db.executeSql(query, params).then(async(result) => {
+    return await this.db.executeSql(query, params).then(async(result) => {
       await this.retrieveProfiles();
       return result;
     }).catch((e) => {
@@ -191,7 +193,7 @@ export class ProfilesDataService {
     const query = 'UPDATE profiles SET registration_number = ?, passport_number = ?, updated_at = ?, updated_by = ? \
       WHERE email = ?';
     const params = [data.registrationNumber, data.passportNumber, data.updatedAt, data.updatedBy, data.email];
-    return this.db.executeSql(query, params).then(async(result) => {
+    return await this.db.executeSql(query, params).then(async(result) => {
       await this.retrieveProfiles();
       return result;
     }).catch((e) => {
@@ -203,7 +205,7 @@ export class ProfilesDataService {
   async updateProfilesField(email: string, field: string, value: any) {
     const query = `UPDATE profiles SET ${field} = ? WHERE email = ?`;
     const params = [value, email];
-    return this.db.executeSql(query, params).then(async(result) => {
+    return await this.db.executeSql(query, params).then(async(result) => {
       await this.retrieveProfiles();
       return result;
     }).catch((e) => {
