@@ -277,8 +277,10 @@ export class ContractDataService {
   }
 
   async updateContractDocumentFieldByContractId(contractId, field, value) {
-    const query = `UPDATE contract_documents SET ${field} = ? WHERE contract_id = ?`;
-    const params = [value, contractId];
+    const query = `UPDATE contract_documents SET updated_at = ?, updated_by = ?, ${field} = ? WHERE contract_id = ?`;
+    const now = this.sharedMethods.getCurrentDateTime();
+    const user = await this.sharedMethods.getUserData();
+    const params = [now, user?.id, value, contractId];
     return this.db.executeSql(query, params).then(async(res) => {
       await this.retrieveContractDocuments();
       await this.retrieveContracts();

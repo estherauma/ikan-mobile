@@ -79,7 +79,7 @@ export class VesselPaymentsPage implements OnInit {
           this.vesselPayments = data?.filter(
             (payment) =>
               payment.vesselId === this.vessel.onlineRef &&
-              payment.createdBy === this.currentUser.id
+              payment.createdBy === this.currentUser?.id
           );
 
           // Add user & vessel details to each payment

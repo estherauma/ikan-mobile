@@ -92,7 +92,7 @@ export class PushNotificationsService {
     });
 
     if (user?.role === UserRole.vesselOwner) {
-      const voVessels = allVessels?.filter((vessel) => vessel.createdBy === user.id);
+      const voVessels = allVessels?.filter((vessel) => vessel.createdBy === user?.id);
       userVessels.push(...voVessels.map((vessel) => vessel.appRef));
     } else if (user?.role === UserRole.worker) {
       const workerVessel = await this.vesselsDataService.getWorkerVessel();

@@ -39,7 +39,7 @@ export class HomePage implements OnInit {
       // remove current user from workers; applies to user with multiple roles
 
       this.workers = this.unFilteredData = data?.filter((worker) => worker?.createdBy === currentUser?.id &&
-        (worker.userRole?.includes('worker')) && 
+        (worker?.userRole?.includes('worker')) && 
           (worker?.email !== currentUser?.email));
     });
   }

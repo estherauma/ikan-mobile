@@ -9,6 +9,7 @@ import { Platform } from '@ionic/angular';
 import { App, AppState } from '@capacitor/app';
 import { ContentService } from '../content/content.service';
 import { NotificationsDataService } from 'src/app/notifications/data/notifications-data.service';
+import { SyncService } from '../sync/sync.service';
 
 @Injectable({
   providedIn: 'root'
@@ -25,6 +26,7 @@ export class LocalNotificationsService {
     public contentService: ContentService,
     public zone: NgZone,
     public notificationsDataService: NotificationsDataService,
+    public syncService: SyncService,
   ) {
     this.platform.ready().then(() => {
       App.addListener('appStateChange', (state: AppState) => {
@@ -250,9 +252,10 @@ export class LocalNotificationsService {
             // Mark wage payment notification as displayed
             if (notification?.actionTypeId === NotificationActionId.wagePayment) {
               if (notification?.extra?.wageId && notification?.extra?.notificationDataId) {
-                this.notificationsDataService.updateNotificationField(
+                await this.notificationsDataService.updateNotificationField(
                   notification.extra.notificationDataId, 'is_displayed', 1
                 );
+                await this.syncService.syncNotifications();
               }
             }
           });
