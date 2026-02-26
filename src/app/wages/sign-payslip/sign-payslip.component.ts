@@ -66,4 +66,31 @@ export class SignPayslipComponent  implements AfterViewInit {
     }
     return hasSignature;
   }
+
+  async saveSignedPayslip() {
+    try {
+      this.loading = true;
+      const pdfArrayBuffer = await this.instance.exportPDF();
+      const blob = new Blob([pdfArrayBuffer], { type: 'application/pdf' });
+      const result = await this.uploadService.convertBlobToBase64(blob);
+      const newFileName = this.fileUrl.split('/').pop().replace('.pdf', '__signed.pdf');
+      const writtenFile = await Filesystem.writeFile({
+        path: newFileName,
+        data: result as string,
+        directory: Directory.Data,
+      });
+      const pdfFile = writtenFile.uri;
+
+      // Dismiss modal
+      await this.modalController.dismiss({ signedPayslipUrl: pdfFile });
+
+    } catch (error) {
+      console.error('Error saving signed PDF payslip:', error);
+      this.globalErrorHandler.handleError(error, 'Error saving signed PDF payslip');
+      // TODO: translate
+      this.sharedMethods.showToast('Error saving signed PDF payslip. Please try again.', 'long');
+    } finally {
+      this.loading = false;
+    }
+  }
 }
