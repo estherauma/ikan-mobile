@@ -267,7 +267,6 @@
           <swiper-slide class="slide submit-slide">
             @if (wageDetails.payslip.endsWith('.pdf') && !isPayslipSigned) {
               <ion-button class="submit-btn" shape="round" (click)="openSigningModal()">
-                <!-- TODO: translate -->
                 {{ paymentsCommonText?.signPayslip || 'Sign Payslip' }}
               </ion-button>
             }

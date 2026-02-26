@@ -87,8 +87,7 @@ export class SignPayslipComponent  implements AfterViewInit {
     } catch (error) {
       console.error('Error saving signed PDF payslip:', error);
       this.globalErrorHandler.handleError(error, 'Error saving signed PDF payslip');
-      // TODO: translate
-      this.sharedMethods.showToast('Error saving signed PDF payslip. Please try again.', 'long');
+      this.sharedMethods.showToast(this.paymentsCommonText?.errorSavingSignedFile || 'Error saving signed file. Please try again.', 'long');
     } finally {
       this.loading = false;
     }
