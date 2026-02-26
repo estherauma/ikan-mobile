@@ -15,7 +15,7 @@ import { StorageKeys } from '../../types/api-types';
 export class UploadService {
   constructor(
     private sharedMethods: SharedmethodsService,
-  ) { }
+  ) {}
 
 
   async chooseFile(types: UploadType[] = ['application/pdf']) {
@@ -206,4 +206,35 @@ export class UploadService {
     };
     reader.readAsDataURL(blob);
   });
+
+  convertBlobToArrayBuffer = (blob: Blob) => new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onerror = reject;
+    reader.onload = () => {
+      resolve(reader.result);
+    };
+    reader.readAsArrayBuffer(blob);
+  });
+
+  retrieveAndReturnArrayBuffer(fileUrl) {
+    return new Promise(async (resolve, reject) => {
+      try {
+        if (!fileUrl) {resolve(null);}
+
+        const fileName = fileUrl.split('files/')[1];
+        const file = await Filesystem.getUri({
+          path: fileName,
+          directory: Directory.Data,
+        });
+        const fileUri = Capacitor.convertFileSrc(file.uri);
+        const fileData = await fetch(fileUri);
+        const blob = await fileData.blob();
+        const arrayBuffer = await this.convertBlobToArrayBuffer(blob);
+        resolve(arrayBuffer);
+      } catch (error) {
+        console.log(error);
+        reject(error);
+      }
+    });
+  }
 }
