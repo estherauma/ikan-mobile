@@ -52,6 +52,7 @@ import { ProgressCircleComponent } from './components/progress-circle/progress-c
 import { AudioVideoButtonsComponent } from './components/audio-video-buttons/audio-video-buttons.component';
 import { WageCardComponent } from './components/wage-card/wage-card.component';
 import { SafepdfPipe } from './pipes/safepdf/safepdf.pipe';
+import { SignPayslipComponent } from '../wages/sign-payslip/sign-payslip.component';
 
 
 @NgModule({
@@ -112,6 +113,7 @@ import { SafepdfPipe } from './pipes/safepdf/safepdf.pipe';
     ProgressCircleComponent,
     AudioVideoButtonsComponent,
     WageCardComponent,
+    SignPayslipComponent,
   ],
   exports: [
     SafeurlPipe,
@@ -163,6 +165,7 @@ import { SafepdfPipe } from './pipes/safepdf/safepdf.pipe';
     ProgressCircleComponent,
     AudioVideoButtonsComponent,
     WageCardComponent,
+    SignPayslipComponent
   ]
 })
 
