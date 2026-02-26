@@ -1360,7 +1360,6 @@ export class SyncService {
     }
 
     const savedLearningHubProgress = await this.sharedMethods.readDataFromStorage(StorageKeys.learningHubProgress);
-    console.log('savedLearningHubProgress', savedLearningHubProgress);
     if (!savedLearningHubProgress) {
       return;
     }
@@ -1439,8 +1438,6 @@ export class SyncService {
             const currentWage = await this.wagesDataService.wages.find(w => w.onlineRef === wage.id);
             const currentUpdateDate = new Date(currentWage?.updatedAt);
             const newUpdateDate = new Date(wage.updatedAt);
-            console.log('currentUpdateDate', currentUpdateDate);
-            console.log('newUpdateDate', newUpdateDate);
             if (currentUpdateDate < newUpdateDate) {
               const currentPayslipFilename = currentWage?.payslip ? currentWage.payslip.split('files/')[1] : null;
               const isCurrentPayslip = currentPayslipFilename && wage.payslip && wage.payslip.includes(currentPayslipFilename);
