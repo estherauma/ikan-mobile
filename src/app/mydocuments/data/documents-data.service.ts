@@ -3,6 +3,7 @@ import { SQLiteObject } from '@awesome-cordova-plugins/sqlite/ngx';
 import { Platform } from '@ionic/angular';
 import { BehaviorSubject } from 'rxjs';
 import { DBService } from 'src/app/shared/services/database/db.service';
+import { SharedmethodsService } from 'src/app/shared/services/sharedmethods/sharedmethods.service';
 import { DocumentType } from 'src/app/shared/types/types';
 
 @Injectable({
@@ -21,6 +22,7 @@ export class DocumentsDataService {
   constructor(
     public platform: Platform,
     public dbService: DBService,
+    public sharedMethods: SharedmethodsService,
   ) {
     this.platform.ready().then(async() => {
       this.db = await this.dbService.configureDB();
@@ -185,8 +187,10 @@ export class DocumentsDataService {
   }
 
   async updateDocumentField(id, field, value) {
-    const query = `UPDATE documents SET ${field} = ? WHERE id = ?`;
-    const params = [value, id];
+    const now = new Date().toISOString();
+    const user = await this.sharedMethods.getUserData();
+    const query = `UPDATE documents SET updated_at = ?, updated_by = ?, ${field} = ? WHERE id = ?`;
+    const params = [now, user?.id, value, id];
     return this.db.executeSql(query, params).then(async(result) => {
       await this.retriveDocuments();
       await this.retriveAllDocuments();
@@ -314,8 +318,10 @@ export class DocumentsDataService {
   }
 
   async updatePassportField(id, field, value) {
-    const query = `UPDATE passports SET ${field} = ? WHERE id = ?`;
-    const params = [value, id];
+    const query = `UPDATE passports SET updated_at = ?, updated_by = ?, ${field} = ? WHERE id = ?`;
+    const now = new Date().toISOString();
+    const user = await this.sharedMethods.getUserData();
+    const params = [now, user?.id, value, id];
     return this.db.executeSql(query, params).then(async(result) => {
       await this.retrievePassports();
       return result.rowsAffected;

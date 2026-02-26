@@ -87,7 +87,7 @@ export class SurveyDataService {
       follow_up_question_key, follow_up_question_type, follow_up_question_text, follow_up_question_response, \
       created_at, updated_at, created_by, updated_by) \
       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`;
-    const now = this.sharedMethods.getCurrentDateTime();
+    const now = new Date().toISOString();
     const user = await this.sharedMethods.getUserData();
     const params = [data.appRef, data.userId, data.surveyDate, data.questionKey, data.questionType,
       data.questionText, data.questionResponse, data.followUpQuestionKey, data.followUpQuestionType,
@@ -162,7 +162,7 @@ export class SurveyDataService {
       follow_up_question_key, follow_up_question_type, follow_up_question_text, follow_up_question_response, \
       created_at, updated_at, created_by, updated_by) \
       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`;
-    const now = this.sharedMethods.getCurrentDateTime();
+    const now = new Date().toISOString();
     const user = await this.sharedMethods.getUserData();
     const params = [data.appRef, data.userId, data.subChapter, data.questionKey, data.questionType,
       data.questionText, data.questionResponse, data.followUpQuestionKey, data.followUpQuestionType,
@@ -200,7 +200,7 @@ export class SurveyDataService {
     const query = `UPDATE inline_questions SET question_type = ?, question_text = ?, question_response = ?, \
       follow_up_question_key = ?, follow_up_question_type = ?, follow_up_question_text = ?, \
       follow_up_question_response = ?, updated_at = ?, updated_by = ? WHERE id = ?`;
-    const now = this.sharedMethods.getCurrentDateTime();
+    const now = new Date().toISOString();
     const user = await this.sharedMethods.getUserData();
     const params = [data.questionType, data.questionText, data.questionResponse, data.followUpQuestionKey,
       data.followUpQuestionType, data.followUpQuestionText, data.followUpQuestionResponse, data?.updatedAt || now, data?.updatedBy || user.id, data.id];

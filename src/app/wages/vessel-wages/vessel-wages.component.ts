@@ -25,6 +25,7 @@ type GroupedVesselWages = {
 export class VesselWagesComponent  implements OnInit {
 
   commonText: any;
+  paymentsPageData: any;
   paymentsCommonText: any;
   currentUser: UserData;
   currentLanguage = 'en-us';
@@ -67,7 +68,6 @@ export class VesselWagesComponent  implements OnInit {
     public profileDataService: ProfilesDataService,
     public wagesDataService: WagesDataService,
   ) {
-
     this.activatedRoute.queryParams.subscribe(async(params) => {
       if (params?.vessel) {
         this.vessel = JSON.parse(params.vessel);
@@ -81,7 +81,7 @@ export class VesselWagesComponent  implements OnInit {
           this.vesselWages = data?.filter(
             (wage) =>
               wage.vesselId === this.vessel.onlineRef &&
-              wage.createdBy === this.currentUser.id
+              wage.createdBy === this.currentUser?.id
           );
 
           // Add user & vessel details to each wage
@@ -109,8 +109,8 @@ export class VesselWagesComponent  implements OnInit {
   async ngOnInit() {
     this.commonText = await this.contentService?.commonText;
     this.currentLanguage = this.contentService?.currentLanguage;
-    const paymentsPageData = this.contentService.getContentByPropertyName('payments-common-text');
-    this.paymentsCommonText = this.sharedMethods.convertAdditionalTextToObj(paymentsPageData?.additionalText);
+    this.paymentsPageData = this.contentService.getContentByPropertyName('payments-common-text');
+    this.paymentsCommonText = this.sharedMethods.convertAdditionalTextToObj(this.paymentsPageData?.additionalText);
     this.pageTitle = this.paymentsCommonText?.vesselWagePayments;
 
     const analyticsEventParams = await this.sharedMethods.getAnalyticsEventParams();

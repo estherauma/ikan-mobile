@@ -74,7 +74,7 @@ export class SteptwoPage extends BaseformPage implements OnInit {
 
   async onSubmit(formData) {
     this.sharedMethods.showLoader(this.pageText?.savingVessel);
-    const now = this.sharedMethods.getCurrentDateTime();
+    const now = new Date().toISOString();
     const userData = await this.sharedMethods.getUserData();
     formData.updated_at = now;
     formData.updated_by = userData.id;

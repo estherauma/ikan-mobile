@@ -19,6 +19,7 @@ import { PageEventNames } from 'src/app/shared/services/analytics/event-names';
 export class HomeComponent implements OnInit {
   
   commonText: any;
+  paymentsPageData: any;
   paymentsCommonText: any;
   pageTitle = 'Wage payments';
   unFilteredData = [];
@@ -86,7 +87,7 @@ export class HomeComponent implements OnInit {
       // TODO: filter data based on user role
       // filtering by createdBy because the vessels are only displayed for VOs
       this.vessels = this.unFilteredData = data?.filter(
-        (vessel) => vessel.createdBy === this.currentUser.id
+        (vessel) => vessel.createdBy === this.currentUser?.id
       );
     });
     this.wagesDataService.getAll().subscribe(async(data) => {
@@ -96,11 +97,11 @@ export class HomeComponent implements OnInit {
 
       if (this.currentUser?.role === UserRole.worker) {
         this.userWages = data?.filter(
-          (wage) => wage.userId === this.currentUser.id
+          (wage) => wage.userId === this.currentUser?.id
         );
       } else if (this.currentUser?.role === UserRole.vesselOwner) {
         this.userWages = data?.filter(
-          (wage) => wage.createdBy === this.currentUser.id
+          (wage) => wage.createdBy === this.currentUser?.id
         );
       }
 
@@ -131,8 +132,8 @@ export class HomeComponent implements OnInit {
   async ngOnInit() {
     await this.getCurrentUser();
     this.commonText = await this.contentService?.commonText;
-    const paymentsPageData = this.contentService.getContentByPropertyName('payments-common-text');
-    this.paymentsCommonText = this.sharedMethods.convertAdditionalTextToObj(paymentsPageData?.additionalText);
+    this.paymentsPageData = this.contentService.getContentByPropertyName('payments-common-text');
+    this.paymentsCommonText = this.sharedMethods.convertAdditionalTextToObj(this.paymentsPageData?.additionalText);
     this.pageTitle = this.paymentsCommonText?.wagePayments;
     this.filterOptions = [
       { title: this.commonText?.closed, value: 'closed' },

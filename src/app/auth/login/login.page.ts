@@ -165,11 +165,6 @@ export class LoginPage extends BaseformPage implements OnInit {
           this.localNotifications.addListeners();
           this.localNotifications.scheduleNotifications(this.contentService.commonText);
 
-          // sync data
-          await this.sharedMethods.showWaitLoader(this.contentService.commonText?.syncingData || 'Syncing data...');
-          await this.syncService.syncData();
-          await this.sharedMethods.dismissLoader();
-
           // enable menu
           this.menuCtrl.enable(true);
           if (this.testEmails.includes(res.data.userData?.email)) {
@@ -180,7 +175,19 @@ export class LoginPage extends BaseformPage implements OnInit {
             return this.router.navigate(['select-role'], { replaceUrl: true });
           }
 
+          // set role-set flag
           await this.sharedMethods.saveDataToStorage(StorageKeys.isRoleSet, true);
+
+          // generate learning hub progress data
+          await this.contentService.generateLearningHubProgressData();
+
+          // sync data
+          await this.sharedMethods.showWaitLoader(this.contentService.commonText?.syncingData || 'Syncing data...');
+          await this.syncService.syncData();
+          await this.sharedMethods.dismissLoader();
+          
+          // redirect to dashboard based on role
+          // this is the last step. All other logic should be executed before this
           this.handleRedirection(res.data.userData?.role);
         }
       }, async(err: HttpErrorResponse) => {

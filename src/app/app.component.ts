@@ -56,6 +56,7 @@ export class AppComponent implements OnInit, OnDestroy {
     this.checkLoginStatus();
     this.pushNotifications.setup();
     this.contentService.menuContent.subscribe((data) => {
+      this.commonText = this.contentService.commonText;
       this.setupMenu(data);
     });
     this.contentService.watchContent().subscribe(async(resp) => {
@@ -159,7 +160,7 @@ export class AppComponent implements OnInit, OnDestroy {
             break;
           case 400:
             if (this.userData?.role === UserRole.worker) {
-              el.sectionTitle = this.commonText?.contractsAndWagePayments || 'Contracts & Wage Payments';
+              el.sectionTitle = this.commonText?.contractAndWagePayments || 'Contract & Wage Payments';
             } else if (this.userData?.role === UserRole.vesselOwner) {
               el.sectionTitle = this.commonText?.migrantFishers || 'Migrant Fishers';
             } else {

@@ -27,6 +27,7 @@ export type ReceivedCorrectAmountValue = 'yes' | 'no' | 'unsure' | '';
 export class WageDetailComponent  implements OnInit {
 
   commonText: any;
+  paymentsPageData: any;
   paymentsCommonText: any;
   wageDetails: any;
   currentLanguage = 'en-us';
@@ -77,8 +78,8 @@ export class WageDetailComponent  implements OnInit {
 
   async ngOnInit() {
     this.commonText = this.contentService?.commonText;
-    const paymentsPageData = this.contentService.getContentByPropertyName('payments-common-text');
-    this.paymentsCommonText = this.sharedMethods.convertAdditionalTextToObj(paymentsPageData?.additionalText);
+    this.paymentsPageData = this.contentService.getContentByPropertyName('payments-common-text');
+    this.paymentsCommonText = this.sharedMethods.convertAdditionalTextToObj(this.paymentsPageData?.additionalText);
     this.currentLanguage = this.contentService?.currentLanguage;
     this.currentUser = await this.sharedMethods.getUserData();
     this.isWorker = this.currentUser?.role === UserRole.worker;
@@ -202,7 +203,7 @@ export class WageDetailComponent  implements OnInit {
 
   async updateWageDetails() {
     const updatedWageDetails = { ...this.wageDetails};
-    const now = this.sharedMethods.getCurrentDateTime('date');
+    const now = new Date().toISOString();
     let hasUpdates = false;
     
     if (this.crewReceivedCorrectAmountValue !== this.wageDetails.crewReceivedRightAmount) {
@@ -232,20 +233,20 @@ export class WageDetailComponent  implements OnInit {
         // Update status based on received amount values and beneficiary relationship
         if (updatedWageDetails?.beneficiaryRelationship && updatedWageDetails.beneficiaryRelationship !== 'self' ) {
           if (
-            (updatedWageDetails.crewReceivedRightAmount && updatedWageDetails.crewReceivedRightAmount !== 'yes') &&
-            (updatedWageDetails.beneficiaryReceivedRightAmount && updatedWageDetails.beneficiaryReceivedRightAmount !== 'yes')
+            (updatedWageDetails?.crewReceivedRightAmount && updatedWageDetails.crewReceivedRightAmount !== 'yes') &&
+            (updatedWageDetails?.beneficiaryReceivedRightAmount && updatedWageDetails.beneficiaryReceivedRightAmount !== 'yes')
           ) {
             updatedWageDetails.status = 'issue_pending';
           } else if (
-            (updatedWageDetails.crewReceivedRightAmount && updatedWageDetails.crewReceivedRightAmount === 'yes') &&
-            (updatedWageDetails.beneficiaryReceivedRightAmount && updatedWageDetails.beneficiaryReceivedRightAmount === 'yes')
+            (updatedWageDetails?.crewReceivedRightAmount && updatedWageDetails.crewReceivedRightAmount === 'yes') &&
+            (updatedWageDetails?.beneficiaryReceivedRightAmount && updatedWageDetails.beneficiaryReceivedRightAmount === 'yes')
           ) {
             updatedWageDetails.status = 'received';
           }
         } else {
-          if (updatedWageDetails.crewReceivedRightAmount && updatedWageDetails.crewReceivedRightAmount !== 'yes') {
+          if (updatedWageDetails?.crewReceivedRightAmount && updatedWageDetails.crewReceivedRightAmount !== 'yes') {
             updatedWageDetails.status = 'issue_pending';
-          } else if (updatedWageDetails.crewReceivedRightAmount && updatedWageDetails.crewReceivedRightAmount === 'yes') {
+          } else if (updatedWageDetails?.crewReceivedRightAmount && updatedWageDetails.crewReceivedRightAmount === 'yes') {
             updatedWageDetails.status = 'received';
           }
         }

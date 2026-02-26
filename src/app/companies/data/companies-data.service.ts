@@ -3,6 +3,7 @@ import { SQLiteObject } from '@awesome-cordova-plugins/sqlite/ngx';
 import { Platform } from '@ionic/angular';
 import { BehaviorSubject } from 'rxjs';
 import { DBService } from 'src/app/shared/services/database/db.service';
+import { SharedmethodsService } from 'src/app/shared/services/sharedmethods/sharedmethods.service';
 
 @Injectable({
   providedIn: 'root'
@@ -15,6 +16,7 @@ export class CompaniesDataService {
   constructor(
     public platform: Platform,
     private dbService: DBService,
+    private sharedMethods: SharedmethodsService,
   ) {
     this.platform.ready().then(async() => {
       this.db = await this.dbService.configureDB();
@@ -142,10 +144,12 @@ export class CompaniesDataService {
     }).catch((e) => console.log(e));
   }
 
-  setAppRef(id, appRef) {
-    const query = 'UPDATE companies SET app_ref = ? WHERE id = ?';
-    const params = [appRef, id];
-    return this.db.executeSql(query, params).then(async(result) => {
+  async setAppRef(id, appRef) {
+    const query = 'UPDATE companies SET updated_at = ?, updated_by = ?, app_ref = ? WHERE id = ?';
+    const now = new Date().toISOString();
+    const user = await this.sharedMethods.getUserData();
+    const params = [now, user?.id, appRef, id];
+    return await this.db.executeSql(query, params).then(async(result) => {
       // await this.retriveCompanies();
     }).catch((e) => console.log(e));
   }

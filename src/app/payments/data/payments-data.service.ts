@@ -3,6 +3,7 @@ import { SQLiteObject } from '@awesome-cordova-plugins/sqlite/ngx';
 import { Platform } from '@ionic/angular';
 import { BehaviorSubject } from 'rxjs';
 import { DBService } from 'src/app/shared/services/database/db.service';
+import { SharedmethodsService } from 'src/app/shared/services/sharedmethods/sharedmethods.service';
 
 @Injectable({
   providedIn: 'root',
@@ -19,6 +20,7 @@ export class PaymentsDataService {
   constructor(
     public platform: Platform,
     public dbService: DBService,
+    public sharedMethods: SharedmethodsService,
   ) {
     this.platform.ready().then(async() => {
       this.db = await this.dbService.configureDB();
@@ -556,10 +558,12 @@ export class PaymentsDataService {
     );
   }
 
-  deactivateOldAccounts(accountNumber: string, userId: string, table: string) {
-    const params = [userId, accountNumber];
-    const query = `UPDATE ${table} SET is_active = 0 WHERE user_id = ? and account_number != ?`;
-    return this.db
+  async deactivateOldAccounts(accountNumber: string, userId: string, table: string) {
+    const now = new Date().toISOString();
+    const user = await this.sharedMethods.getUserData();
+    const params = [now, user?.id, userId, accountNumber];
+    const query = `UPDATE ${table} SET updated_at = ?, updated_by = ?, is_active = 0 WHERE user_id = ? and account_number != ?`;
+    return await this.db
       .executeSql(query, params)
       .then(() => {})
       .catch((error) => {

@@ -46,7 +46,7 @@ export class CreateDetailsPage extends BaseformPage implements OnInit {
   async onSubmit(formData) {
     this.sharedMethods.showLoader(this.contentService.commonText?.saving);
     const userData = await this.sharedMethods.getUserData();
-    const now = this.sharedMethods.getCurrentDateTime();
+    const now = new Date().toISOString();
     formData.created_by = userData.id;
     formData.updated_by = userData.id;
     formData.created_at = formData.updated_at = now;

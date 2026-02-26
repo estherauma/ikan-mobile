@@ -45,7 +45,7 @@ export class CreatePage extends BaseformPage implements OnInit  {
   async onSubmit(formData) {
     this.sharedMethods.showLoader(this.contentServ.commonText?.saving|| 'Saving payment' );
     const userData = await this.sharedMethods.getUserData();
-    const now = this.sharedMethods.getCurrentDateTime();
+    const now = new Date().toISOString();
     formData.created_at = formData.updated_at = now;
     formData.created_by = formData.updated_by = userData.id;
     // TODO: Remove this line when company_id is added to the userdata from the backend

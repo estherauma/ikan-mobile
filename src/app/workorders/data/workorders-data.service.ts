@@ -7,6 +7,7 @@ import { SQLite, SQLiteObject } from '@awesome-cordova-plugins/sqlite/ngx';
 import { Platform } from '@ionic/angular';
 import { BehaviorSubject } from 'rxjs';
 import { DBService } from 'src/app/shared/services/database/db.service';
+import { SharedmethodsService } from 'src/app/shared/services/sharedmethods/sharedmethods.service';
 
 @Injectable({
   providedIn: 'root'
@@ -18,6 +19,7 @@ export class WorkordersDataService {
   constructor(
     public platform: Platform,
     public dbService: DBService,
+    public sharedmethods: SharedmethodsService,
   ) {
     this.platform.ready().then(async() => {
       this.db = await this.dbService.configureDB();
@@ -98,11 +100,13 @@ export class WorkordersDataService {
       .catch(e => console.log(e));
   }
 
-  saveWorkderClauseDetails(data) {
-    const query = 'UPDATE workorder_clauses SET explainer_text = ?, condition_title = ?,\
+  async saveWorkderClauseDetails(data) {
+    const query = 'UPDATE workorder_clauses SET updated_at = ?, updated_by = ?, explainer_text = ?, condition_title = ?,\
       condition_details = ? WHERE id = ?';
-    const params = [data.explainer, data.title, data.detail, data.clause_id];
-    return this.db.executeSql(query, params).then((result) => result.insertId)
+    const now = new Date().toISOString();
+    const user = await this.sharedmethods.getUserData();
+    const params = [now, user?.id, data.explainer, data.title, data.detail, data.clause_id];
+    return await this.db.executeSql(query, params).then((result) => result.insertId)
     .catch(e => console.log(e));
   }
 

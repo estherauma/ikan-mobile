@@ -163,8 +163,10 @@ export class NotificationsDataService {
   }
 
   async updateNotificationField(notificationId, fieldName, fieldValue) {
-    const query = `UPDATE notifications SET ${fieldName} = ? WHERE id = ?`;
-    const params = [fieldValue, notificationId];
+    const query = `UPDATE notifications SET updated_at = ?, updated_by = ?, ${fieldName} = ? WHERE id = ?`;
+    const now = new Date().toISOString();
+    const user = await this.sharedMethods.getUserData();
+    const params = [now, user?.id, fieldValue, notificationId];
 
     return this.db.executeSql(query, params).then(async(res) => {
       await this.retrieveNotifications();
@@ -189,7 +191,7 @@ export class NotificationsDataService {
     }
     
     const notifs =  this.notifications.filter((notification: any) =>
-      notification.userId === user.id &&
+      notification.userId === user?.id &&
       notification.category === NotificationCategory.wagePayment &&
       notification.isDisplayed === false &&
       notification.isDeleted === false

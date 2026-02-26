@@ -113,7 +113,7 @@ export class ProfilePage extends BaseformPage implements OnInit {
   async onSubmit(data) {
     this.sharedMethods.showLoader(this.pageText?.savingProfile, 2000);
     const userData = await this.sharedMethods.getUserData();
-    const now = this.sharedMethods.getCurrentDateTime();
+    const now = new Date().toISOString();
     data.userRole = userData.role;
     data.updatedBy = userData.id;
     data.updatedAt = now;
@@ -147,7 +147,7 @@ export class ProfilePage extends BaseformPage implements OnInit {
   async onSubmitRegDetails(data) {
     this.sharedMethods.showLoader(this.regPageText?.savingRegDetails, 2000);
     const userData = await this.sharedMethods.getUserData();
-    const now = this.sharedMethods.getCurrentDateTime();
+    const now = new Date().toISOString();
     data.email = this.profileData?.email;
     data.updatedBy = userData.id;
     data.updatedAt = now;
