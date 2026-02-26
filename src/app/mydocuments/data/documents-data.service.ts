@@ -187,7 +187,7 @@ export class DocumentsDataService {
   }
 
   async updateDocumentField(id, field, value) {
-    const now = this.sharedMethods.getCurrentDateTime();
+    const now = new Date().toISOString();
     const user = await this.sharedMethods.getUserData();
     const query = `UPDATE documents SET updated_at = ?, updated_by = ?, ${field} = ? WHERE id = ?`;
     const params = [now, user?.id, value, id];
@@ -319,7 +319,7 @@ export class DocumentsDataService {
 
   async updatePassportField(id, field, value) {
     const query = `UPDATE passports SET updated_at = ?, updated_by = ?, ${field} = ? WHERE id = ?`;
-    const now = this.sharedMethods.getCurrentDateTime();
+    const now = new Date().toISOString();
     const user = await this.sharedMethods.getUserData();
     const params = [now, user?.id, value, id];
     return this.db.executeSql(query, params).then(async(result) => {

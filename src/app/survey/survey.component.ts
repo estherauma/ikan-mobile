@@ -116,7 +116,7 @@ export class SurveyComponent extends BaseformPage  implements OnInit, OnDestroy 
 
   async onSubmit(formData) {
     this.sharedMethods.showLoader(this.commonText?.submittingYourData);
-    const date = this.sharedMethods.getCurrentDateTime('date');
+    const date = new Date().toISOString();
     const user = await this.sharedMethods.readDataFromStorage(StorageKeys.userData);
     const surveyData = [];
     this.formQuestions.forEach((qtn) => {

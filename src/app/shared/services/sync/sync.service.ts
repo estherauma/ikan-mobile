@@ -295,7 +295,7 @@ export class SyncService {
       await this.uploadService.fetchAndSaveFile(data?.imageUrl).then(async(fileUri) => {
         if (fileUri) {
           const user = await this.sharedMethods.getUserData();
-          const now = this.sharedMethods.getCurrentDateTime();
+          const now = new Date().toISOString();
           const saveObj = {
             vesselId: localVesselId,
             appRef: data?.appRef || this.sharedMethods.generateAppRef(),
@@ -492,7 +492,7 @@ export class SyncService {
               await this.uploadService.fetchAndSaveFile(doc.url).then(async(fileUri) => {
                 if (fileUri) {
                   const user = await this.sharedMethods.getUserData();
-                  const now = this.sharedMethods.getCurrentDateTime();
+                  const now = new Date().toISOString();
                   const saveObj = {
                     contractId: contract.id,
                     name: doc.name,
@@ -760,7 +760,7 @@ export class SyncService {
     return await lastValueFrom(this.apiService.get('inline-questions')).then(async(response) => {
       if (response.status === 200 && response.body.data.length > 0) {
         for (const question of response.body.data) {
-          const now = this.sharedMethods.getCurrentDateTime();
+          const now = new Date().toISOString();
           const user = await this.sharedMethods.getUserData();
           const questionToSave = {
             ...question,
@@ -807,7 +807,7 @@ export class SyncService {
     const response: GetProfileResponse = await lastValueFrom(this.apiService.get('accounts/profile'));
     if (response.status === 200 && response.body.data) {
       const user = await this.sharedMethods.getUserData();
-      const now = this.sharedMethods.getCurrentDateTime();
+      const now = new Date().toISOString();
       const role = response.body.data?.roles?.length ? response.body.data?.roles.join(',') : '';
       const dataToSave = {...response.body.data, userRole: role};
       dataToSave.createdAt = dataToSave.createdAt ??  now;
@@ -862,7 +862,7 @@ export class SyncService {
           if (response.status === 200 && response.body.data.length > 0) {
             response.body.data.forEach(async(profile) => {
               const user: UserData = await this.sharedMethods.getUserData();
-              const now = this.sharedMethods.getCurrentDateTime();
+              const now = new Date().toISOString();
               const rolesToSave = profile?.roles?.length ? profile?.roles.join(',') : '';
               const dataToSave = {...profile, userRole: rolesToSave};
               dataToSave.createdAt = dataToSave.createdAt ??  now;
@@ -1194,7 +1194,7 @@ export class SyncService {
             const fileUri = await this.uploadService.fetchAndSaveFile(doc.fileUrl);
             if (fileUri) {
               const user = await this.sharedMethods.getUserData();
-              const now = this.sharedMethods.getCurrentDateTime();
+              const now = new Date().toISOString();
               const dataToSave = {
                 ...doc,
                 userId: doc.user,
@@ -1314,7 +1314,7 @@ export class SyncService {
             const fileUri = await this.uploadService.fetchAndSaveFile(passport.imageUrl);
             if (fileUri) {
               const user = await this.sharedMethods.getUserData();
-              const now = this.sharedMethods.getCurrentDateTime();
+              const now = new Date().toISOString();
               const dataToSave = {
                 ...passport,
                 userId: passport.user,
@@ -1360,6 +1360,7 @@ export class SyncService {
     }
 
     const savedLearningHubProgress = await this.sharedMethods.readDataFromStorage(StorageKeys.learningHubProgress);
+    console.log('savedLearningHubProgress', savedLearningHubProgress);
     if (!savedLearningHubProgress) {
       return;
     }
@@ -1399,7 +1400,7 @@ export class SyncService {
       if (response?.status === 200 && response.body.length > 0) {
         for (const wage of response.body) {
           const user = await this.sharedMethods.getUserData();
-          const now = this.sharedMethods.getCurrentDateTime();
+          const now = new Date().toISOString();
           const wageToSave = {
             ...wage,
             onlineRef: wage.id,
@@ -1438,6 +1439,8 @@ export class SyncService {
             const currentWage = await this.wagesDataService.wages.find(w => w.onlineRef === wage.id);
             const currentUpdateDate = new Date(currentWage?.updatedAt);
             const newUpdateDate = new Date(wage.updatedAt);
+            console.log('currentUpdateDate', currentUpdateDate);
+            console.log('newUpdateDate', newUpdateDate);
             if (currentUpdateDate < newUpdateDate) {
               const currentPayslipFilename = currentWage?.payslip ? currentWage.payslip.split('files/')[1] : null;
               const isCurrentPayslip = currentPayslipFilename && wage.payslip && wage.payslip.includes(currentPayslipFilename);
@@ -1533,7 +1536,7 @@ export class SyncService {
       if (response?.status === 200 && response.body.data.length > 0) {
         for (const notification of response.body.data) {
           const user = await this.sharedMethods.getUserData();
-          const now = this.sharedMethods.getCurrentDateTime();
+          const now = new Date().toISOString();
           const dataToSave = {
             ...notification,
             userId: notification.user,

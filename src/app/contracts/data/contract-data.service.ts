@@ -194,7 +194,7 @@ export class ContractDataService {
   async createContractDocument(data) {
     const query = 'INSERT INTO contract_documents (contract_id, name, url, status, \
       created_at, updated_at, created_by, updated_by) VALUES (?, ?, ?, ?, ?, ?, ?, ?)';
-    const now = this.sharedMethods.getCurrentDateTime();
+    const now = new Date().toISOString();
     const user = await this.sharedMethods.getUserData();
     const params = [ data.contract_id, data.name, data.url, data.status,
       now, now, user?.id, user?.id ];
@@ -259,7 +259,7 @@ export class ContractDataService {
   async updateContractDocument(contractId, data) {
     const query = 'UPDATE contract_documents SET name = ?, url = ?, status = ?, \
       updated_at = ?, updated_by = ? WHERE contract_id = ?';
-    const now = this.sharedMethods.getCurrentDateTime();
+    const now = new Date().toISOString();
     const user = await this.sharedMethods.getUserData();
     const params = [data.name, data.url, data.status, data?.updatedAt || now, data?.updatedBy || user?.id, contractId];
 
@@ -278,7 +278,7 @@ export class ContractDataService {
 
   async updateContractDocumentFieldByContractId(contractId, field, value) {
     const query = `UPDATE contract_documents SET updated_at = ?, updated_by = ?, ${field} = ? WHERE contract_id = ?`;
-    const now = this.sharedMethods.getCurrentDateTime();
+    const now = new Date().toISOString();
     const user = await this.sharedMethods.getUserData();
     const params = [now, user?.id, value, contractId];
     return this.db.executeSql(query, params).then(async(res) => {

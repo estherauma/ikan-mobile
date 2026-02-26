@@ -146,7 +146,7 @@ export class CompaniesDataService {
 
   async setAppRef(id, appRef) {
     const query = 'UPDATE companies SET updated_at = ?, updated_by = ?, app_ref = ? WHERE id = ?';
-    const now = this.sharedMethods.getCurrentDateTime();
+    const now = new Date().toISOString();
     const user = await this.sharedMethods.getUserData();
     const params = [now, user?.id, appRef, id];
     return await this.db.executeSql(query, params).then(async(result) => {

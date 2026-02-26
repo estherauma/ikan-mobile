@@ -559,7 +559,7 @@ export class PaymentsDataService {
   }
 
   async deactivateOldAccounts(accountNumber: string, userId: string, table: string) {
-    const now = this.sharedMethods.getCurrentDateTime();
+    const now = new Date().toISOString();
     const user = await this.sharedMethods.getUserData();
     const params = [now, user?.id, userId, accountNumber];
     const query = `UPDATE ${table} SET updated_at = ?, updated_by = ?, is_active = 0 WHERE user_id = ? and account_number != ?`;

@@ -117,7 +117,7 @@ export class ConsentFormsComponent  implements OnInit {
   async submitForm() {
     try {
       const key = 'i-have-read-and-understood-all-of-the-information-above-and-consent-to-have-my-de-identified-data-from-ikan-used-as-part-of-the-research-study';
-      const date = this.sharedMethods.getCurrentDateTime('date');
+      const date = new Date().toISOString();
       const user = await this.sharedMethods.readDataFromStorage(StorageKeys.userData);
       const consentQtn = this.formQuestions.find((qtn) => qtn.key === key);
       const untranslatedQtn = this.contentService.getUntranslatedInlineQuestion('worker-consent-form-two', key);

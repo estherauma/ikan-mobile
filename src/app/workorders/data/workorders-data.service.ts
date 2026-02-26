@@ -103,7 +103,7 @@ export class WorkordersDataService {
   async saveWorkderClauseDetails(data) {
     const query = 'UPDATE workorder_clauses SET updated_at = ?, updated_by = ?, explainer_text = ?, condition_title = ?,\
       condition_details = ? WHERE id = ?';
-    const now = this.sharedmethods.getCurrentDateTime();
+    const now = new Date().toISOString();
     const user = await this.sharedmethods.getUserData();
     const params = [now, user?.id, data.explainer, data.title, data.detail, data.clause_id];
     return await this.db.executeSql(query, params).then((result) => result.insertId)

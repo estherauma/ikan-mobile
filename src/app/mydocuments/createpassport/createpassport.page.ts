@@ -56,7 +56,7 @@ export class CreatepassportPage extends BaseformPage implements OnInit {
 
   async onSubmit(formData) {
     const userData = await this.sharedMethods.getUserData();
-    const now = this.sharedMethods.getCurrentDateTime();
+    const now = new Date().toISOString();
 
     if (!this.isEditing) {
         const passportData = {

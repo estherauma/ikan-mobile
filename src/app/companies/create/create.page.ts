@@ -60,7 +60,7 @@ export class CreatePage extends BaseformPage implements OnInit {
     const submittingText = this.isEditing ? this.pageText?.updatingCompanyDetails : this.pageText?.SavingCompanyDetails;
     this.sharedMethods.showLoader(submittingText || 'Submitting...');
     const userData = await this.sharedMethods.getUserData();
-    const now = this.sharedMethods.getCurrentDateTime();
+    const now = new Date().toISOString();
     formData.updated_by = userData.id;
     formData.updated_at = now;
     formData.logo_url = ''; // Not yet implemented

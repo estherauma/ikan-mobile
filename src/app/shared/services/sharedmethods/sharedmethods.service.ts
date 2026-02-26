@@ -130,6 +130,7 @@ export class SharedmethodsService {
     if (listener) {listener.remove();}
   }
 
+  // USE new Date().toISOString() instead to match the backend format
   // Output: 'date' or 'datetime' or 'datetime-no-seconds'
   getCurrentDateTime(output='datetime') {
     const today = new Date();
