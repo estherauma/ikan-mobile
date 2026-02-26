@@ -263,9 +263,16 @@
               </ion-radio-group>
             </div>
           </swiper-slide>
+          
           <swiper-slide class="slide submit-slide">
+            @if (wageDetails.payslip.endsWith('.pdf')) {
+              <ion-button class="submit-btn" shape="round" (click)="openSigningModal()">
+                <!-- TODO: translate -->
+                {{ paymentsCommonText?.signPayslip || 'Sign Payslip' }}
+              </ion-button>
+            }
+            <!-- TODO: gray out submit button if not signed -->
             <ion-button class="submit-btn" shape="round" (click)="onSubmit()">
-              <!-- {{ commonText?.submit }} -->
               {{ paymentsCommonText?.submitResponses }}
             </ion-button>
           </swiper-slide>
