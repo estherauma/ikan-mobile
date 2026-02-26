@@ -47,6 +47,9 @@ export class WageDetailComponent  implements OnInit {
   issuePendingBeneficiaryReceivedIncorrectAmountMessage = '';
   showCrewIssuePendingMessage = false;
   showBeneficiaryIssuePendingMessage = false;
+  isPayslipPdf = false;
+  isPayslipSigned = false;
+  signedPayslipUrl: string;
 
   @ViewChild('pdfViewer') pdfViewer!: PdfJsViewerComponent;
   @ViewChild('wageTrackingSwiper', { static: false }) swiperRef: ElementRef | undefined;
@@ -84,6 +87,8 @@ export class WageDetailComponent  implements OnInit {
     if (this.wageDetails?.payslip && this.wageDetails.payslip.endsWith('.pdf')) {
       const converted = Capacitor.convertFileSrc(this.wageDetails.payslip);
       this.payslipPdfUrl = converted ?? null;
+      this.isPayslipPdf = true;
+      this.isPayslipSigned = this.wageDetails?.payslip?.includes('__signed.pdf') || false;
     }
     this.swiper = this.swiperRef?.nativeElement?.swiper;
     this.whyTheDiscrepancyOptions = this.getWhyTheDiscrepancyOptions();
@@ -210,6 +215,10 @@ export class WageDetailComponent  implements OnInit {
       updatedWageDetails.beneficiaryReceivedRightAmountDate = now;
       hasUpdates = true;
     }
+    if (this.signedPayslipUrl && this.signedPayslipUrl !== this.wageDetails.payslip) {
+      updatedWageDetails.payslip = this.signedPayslipUrl;
+      hasUpdates = true;
+    }
     if (!this.arraysEqual(this.whyTheDiscrepancyValues, this.wageDetails.whyTheDiscrepancy)) {
       const json_value = this.whyTheDiscrepancyValues.length ? JSON.stringify(this.whyTheDiscrepancyValues) : null;
       updatedWageDetails.whyTheDiscrepancy = json_value;
@@ -217,23 +226,28 @@ export class WageDetailComponent  implements OnInit {
     }
 
     if (hasUpdates) {
-      if (updatedWageDetails?.beneficiaryRelationship && updatedWageDetails.beneficiaryRelationship !== 'self' ) {
-        if (
-          (updatedWageDetails.crewReceivedRightAmount && updatedWageDetails.crewReceivedRightAmount !== 'yes') &&
-          (updatedWageDetails.beneficiaryReceivedRightAmount && updatedWageDetails.beneficiaryReceivedRightAmount !== 'yes')
-        ) {
-          updatedWageDetails.status = 'issue_pending';
-        } else if (
-          (updatedWageDetails.crewReceivedRightAmount && updatedWageDetails.crewReceivedRightAmount === 'yes') &&
-          (updatedWageDetails.beneficiaryReceivedRightAmount && updatedWageDetails.beneficiaryReceivedRightAmount === 'yes')
-        ) {
-          updatedWageDetails.status = 'received';
-        }
-      } else {
-        if (updatedWageDetails.crewReceivedRightAmount && updatedWageDetails.crewReceivedRightAmount !== 'yes') {
-          updatedWageDetails.status = 'issue_pending';
-        } else if (updatedWageDetails.crewReceivedRightAmount && updatedWageDetails.crewReceivedRightAmount === 'yes') {
-          updatedWageDetails.status = 'received';
+      // Update status if payslip is not a pdf; and if it is, only when it has been signed
+      // This is to avoid updating to issue pending/ received status before worker has signed the payslip
+      if (!this.isPayslipPdf || (this.isPayslipPdf && this.isPayslipSigned)) {
+        // Update status based on received amount values and beneficiary relationship
+        if (updatedWageDetails?.beneficiaryRelationship && updatedWageDetails.beneficiaryRelationship !== 'self' ) {
+          if (
+            (updatedWageDetails.crewReceivedRightAmount && updatedWageDetails.crewReceivedRightAmount !== 'yes') &&
+            (updatedWageDetails.beneficiaryReceivedRightAmount && updatedWageDetails.beneficiaryReceivedRightAmount !== 'yes')
+          ) {
+            updatedWageDetails.status = 'issue_pending';
+          } else if (
+            (updatedWageDetails.crewReceivedRightAmount && updatedWageDetails.crewReceivedRightAmount === 'yes') &&
+            (updatedWageDetails.beneficiaryReceivedRightAmount && updatedWageDetails.beneficiaryReceivedRightAmount === 'yes')
+          ) {
+            updatedWageDetails.status = 'received';
+          }
+        } else {
+          if (updatedWageDetails.crewReceivedRightAmount && updatedWageDetails.crewReceivedRightAmount !== 'yes') {
+            updatedWageDetails.status = 'issue_pending';
+          } else if (updatedWageDetails.crewReceivedRightAmount && updatedWageDetails.crewReceivedRightAmount === 'yes') {
+            updatedWageDetails.status = 'received';
+          }
         }
       }
       
@@ -418,7 +432,8 @@ export class WageDetailComponent  implements OnInit {
     await modal.present();
     await modal.onDidDismiss().then(async (result) => {
       if (result.data?.signedPayslipUrl) {
-        this.wageDetails.payslip = result.data.signedPayslipUrl;
+        this.signedPayslipUrl = result.data.signedPayslipUrl;
+        this.isPayslipSigned = true;
       }
     });
   }
