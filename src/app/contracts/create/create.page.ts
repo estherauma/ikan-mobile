@@ -101,7 +101,7 @@ export class CreatePage extends BaseformPage implements OnInit {
     const submittingText = this.isEditing ? this.pageText?.updatingContract : this.pageText?.savingContract;
     this.sharedMethods.showLoader(submittingText);
     const userData = await this.sharedMethods.getUserData();
-    const now = this.sharedMethods.getCurrentDateTime();
+    const now = new Date().toISOString();
     formData.internal_ref = formData.app_ref = this.sharedMethods.generateAppRef();
     formData.updated_by = userData.id;
     formData.updated_at = now;
@@ -221,7 +221,7 @@ export class CreatePage extends BaseformPage implements OnInit {
     };
     const userData = await this.sharedMethods.getUserData();
     for (const [key, value] of Object.entries(clauseMapping)) {
-      const now = this.sharedMethods.getCurrentDateTime();
+      const now = new Date().toISOString();
       const clauseData = this.contentService.getContentByPropertyName(`${value}-content`);
       const contractClauseData: any = {};
       contractClauseData.content = JSON.stringify({});

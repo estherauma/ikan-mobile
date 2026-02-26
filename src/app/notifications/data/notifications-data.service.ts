@@ -164,7 +164,7 @@ export class NotificationsDataService {
 
   async updateNotificationField(notificationId, fieldName, fieldValue) {
     const query = `UPDATE notifications SET updated_at = ?, updated_by = ?, ${fieldName} = ? WHERE id = ?`;
-    const now = this.sharedMethods.getCurrentDateTime();
+    const now = new Date().toISOString();
     const user = await this.sharedMethods.getUserData();
     const params = [now, user?.id, fieldValue, notificationId];
 

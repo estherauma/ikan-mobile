@@ -123,7 +123,7 @@ export class PaymentsPage extends BaseformPage implements OnInit {
   async onSubmitAccount(data) {
     this.sharedMethods.showLoader(this.acctPageText?.savingAccountInfo, 2000);
     const userData = await this.sharedMethods.getUserData();
-    const now = this.sharedMethods.getCurrentDateTime();
+    const now = new Date().toISOString();
     data.updatedBy = userData.id;
     data.updatedAt = now;
     data.userId = this.profileId;
@@ -187,7 +187,7 @@ export class PaymentsPage extends BaseformPage implements OnInit {
   async onSubmitBeneficiary(data) {
     this.sharedMethods.showLoader(this.benficiaryPageText?.savingBeneficiary, 2000);
     const userData = await this.sharedMethods.getUserData();
-    const now = this.sharedMethods.getCurrentDateTime();
+    const now = new Date().toISOString();
     data.updatedBy = userData.id;
     data.updatedAt = now;
     data.userId = this.profileId;

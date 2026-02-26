@@ -121,7 +121,7 @@ export class SubchapterComponent  implements OnInit {
     subChapterData.completed = true;
 
     // Update learningHubProgress
-    const now = this.sharedmethods.getCurrentDateTime();
+    const now = new Date().toISOString();
     const learningHubProgress = {
       createdAt: now, // This will be overridden if alreadys exists
       createdBy: this.user?.id, // This will be overridden if alreadys exists

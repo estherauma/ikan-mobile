@@ -97,7 +97,7 @@ export class EssentialsComponent  implements OnInit {
     await alert.onDidDismiss().then(async (data) => {
       if (data.role !== 'cancel' && data.data?.fileData && Object.keys(data?.data?.fileData).length) {
         const { fileData } = data?.data;
-        const now = this.sharedMethods.getCurrentDateTime();
+        const now = new Date().toISOString();
         const visaSaveObj = {
           appRef: this.sharedMethods.generateAppRef(),
           userId: this.userData.id,
@@ -142,7 +142,7 @@ export class EssentialsComponent  implements OnInit {
     await alert.onDidDismiss().then(async (data) => {
       if (data.role !== 'cancel' && data.data?.fileData && Object.keys(data?.data?.fileData).length) {
         const { fileData } = data?.data;
-        const now = this.sharedMethods.getCurrentDateTime();
+        const now = new Date().toISOString();
         const saveObj = {
           appRef: this.sharedMethods.generateAppRef(),
           userId: this.userData.id,
@@ -173,7 +173,7 @@ export class EssentialsComponent  implements OnInit {
     await alert.onDidDismiss().then(async (data) => {
       if (data.role !== 'cancel' && data.data?.fileData && Object.keys(data?.data?.fileData).length) {
         const { fileData } = data?.data;
-        const now = this.sharedMethods.getCurrentDateTime();
+        const now = new Date().toISOString();
         const saveObj = {
           appRef: this.sharedMethods.generateAppRef(),
           userId: this.userData.id,

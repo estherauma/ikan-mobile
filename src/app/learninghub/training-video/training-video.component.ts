@@ -82,7 +82,7 @@ export class TrainingVideoComponent extends BaseformPage  implements OnInit {
 
   async onSubmit(formData) {
     this.sharedMethods.showLoader(this.commonText?.submittingYourData);
-    const date = this.sharedMethods.getCurrentDateTime('date');
+    const date = new Date().toISOString();
     const user = await this.sharedMethods.getUserData();
     const videoResponses = [];
     this.formQuestions.forEach((item) => {
