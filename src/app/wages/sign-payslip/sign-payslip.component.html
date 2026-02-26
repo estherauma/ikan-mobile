@@ -1,0 +1,22 @@
+<div class="sign-payslip">
+  <ion-toolbar>
+    <ion-title>
+      {{ paymentsCommonText?.signPayslip || 'Sign Payslip' }}
+    </ion-title>
+    <ion-buttons slot="end">
+      <ion-icon name="close" (click)="close()"></ion-icon>
+    </ion-buttons>
+  </ion-toolbar>
+  
+  <div id="psPdfContainer" class="viewer"></div>
+  
+  <div class="btn-wrapper">
+    <ion-button
+      (click)="saveSignedPayslip()"
+      [disabled]="!isSigned || loading"
+    >
+      {{ commonText?.save || 'Save' }}
+    </ion-button>
+  </div>
+  
+</div>

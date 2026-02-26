@@ -5,7 +5,7 @@
     [audioUrl]="paymentsPageData?.pageMedia?.wageDetailPageAudio?.url"
     [videoUrl]="paymentsPageData?.pageMedia?.wageDetailPageVideo?.url"
   ></app-audio-video-buttons>
-  
+
   <div
     class="content-wrapper"
     [ngClass]="{
@@ -269,8 +269,13 @@
           }
           
           <swiper-slide class="slide submit-slide">
+            @if (wageDetails.payslip.endsWith('.pdf') && !isPayslipSigned) {
+              <ion-button class="submit-btn" shape="round" (click)="openSigningModal()">
+                {{ paymentsCommonText?.signPayslip || 'Sign Payslip' }}
+              </ion-button>
+            }
+            <!-- TODO: gray out submit button if not signed -->
             <ion-button class="submit-btn" shape="round" (click)="onSubmit()">
-              <!-- {{ commonText?.submit }} -->
               {{ paymentsCommonText?.submitResponses }}
             </ion-button>
           </swiper-slide>

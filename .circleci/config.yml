@@ -26,9 +26,12 @@ jobs:
       - run:
           name: Ionic Build
           command: |
+            export NODE_OPTIONS=--max_old_space_size=4096
             if [ "$CIRCLE_BRANCH" = "refs/heads/main" ]; then
               ionic build --configuration=production
             elif [ "$CIRCLE_BRANCH" = "refs/heads/staging" ]; then
+              ionic build --configuration=staging
+            elif [ "$CIRCLE_BRANCH" = "refs/heads/POC-signoff" ]; then
               ionic build --configuration=staging
             else
               ionic build
@@ -124,3 +127,4 @@ workflows:
                 - dev
                 - staging
                 - main
+                - PoC-signoff
