@@ -5,7 +5,7 @@ import { AppEventNames, PageEventNames } from 'src/app/shared/services/analytics
 import { ContentService } from 'src/app/shared/services/content/content.service';
 import { SharedmethodsService } from 'src/app/shared/services/sharedmethods/sharedmethods.service';
 import { FileOpener } from '@capawesome-team/capacitor-file-opener';
-import { ModalController } from '@ionic/angular';
+import { ModalController, Platform } from '@ionic/angular';
 import { ViewImageComponent } from 'src/app/mydocuments/view-image/view-image.component';
 import { Capacitor } from '@capacitor/core';
 import { PdfJsViewerComponent } from 'ng2-pdfjs-viewer';
@@ -13,7 +13,8 @@ import { StorageKeys, UserRole } from 'src/app/shared/types/api-types';
 import { ContractDataService } from 'src/app/contracts/data/contract-data.service';
 import { WagesDataService } from '../data/wages-data.service';
 import { SyncService } from 'src/app/shared/services/sync/sync.service';
-
+import { UploadService } from 'src/app/shared/services/upload/upload.service';
+import { SignPayslipComponent } from '../sign-payslip/sign-payslip.component';
 
 export type ReceivedCorrectAmountValue = 'yes' | 'no' | 'unsure' | '';
 
@@ -61,6 +62,8 @@ export class WageDetailComponent  implements OnInit {
     public contractDataService: ContractDataService,
     public wageDataService: WagesDataService,
     public syncService: SyncService,
+    public uploadService: UploadService,
+    public platform: Platform,
   ) {
     this.activatedRoute.queryParams.subscribe(async(params) => {
       if (params?.wageDetails) {
@@ -397,4 +400,26 @@ export class WageDetailComponent  implements OnInit {
     }
   }
 
+  async openSigningModal() {
+    await this.platform.ready();
+    const file: any = await this.uploadService.retrieveAndReturnArrayBuffer(this.wageDetails.payslip);
+    
+    const modal = await this.modalController.create({
+      component: SignPayslipComponent,
+      cssClass: 'ikan-modal sign-payslip-modal',
+      backdropDismiss: false,
+      componentProps: {
+        file,
+        fileUrl: this.wageDetails.payslip,
+        commonText: this.commonText,
+        paymentsCommonText: this.paymentsCommonText,
+      }
+    });
+    await modal.present();
+    await modal.onDidDismiss().then(async (result) => {
+      if (result.data?.signedPayslipUrl) {
+        this.wageDetails.payslip = result.data.signedPayslipUrl;
+      }
+    });
+  }
 }
