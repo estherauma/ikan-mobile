@@ -25,6 +25,9 @@ export class SignPayslipComponent  implements AfterViewInit {
   
   constructor(
     private modalController: ModalController,
+    private uploadService: UploadService,
+    private globalErrorHandler: GlobalErrorHandlerService,
+    private sharedMethods: SharedmethodsService,
   ) { }
 
   async close() {
@@ -43,5 +46,24 @@ export class SignPayslipComponent  implements AfterViewInit {
         return [{ type: 'delete', }, { type: 'stroke-color' }];
       },
     });
+
+    // Listen for signature events
+    this.instance.addEventListener('annotations.change', async() => {
+      this.isSigned = await this.checkIfFileIsSigned();
+    });
+  }
+
+  async checkIfFileIsSigned(): Promise<boolean> {
+    let hasSignature = false;
+    // the getAnnotations method works for a specified page index (0 based).
+    // So we need to loop through all pages to check for signature annotations.
+    for (let pageIndex = 0; pageIndex < this.instance.totalPageCount; pageIndex++) {
+      const annotations = await this.instance.getAnnotations(pageIndex);
+      if (annotations.some((annotation) => annotation.isSignature)) {
+        hasSignature = true;
+        break;
+      }
+    }
+    return hasSignature;
   }
 }
