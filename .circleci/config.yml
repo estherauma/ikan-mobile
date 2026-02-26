@@ -31,7 +31,7 @@ jobs:
               ionic build --configuration=production
             elif [ "$CIRCLE_BRANCH" = "refs/heads/staging" ]; then
               ionic build --configuration=staging
-            elif [ "$CIRCLE_BRANCH" = "refs/heads/POC-signoff" ]; then
+            elif [ "$CIRCLE_BRANCH" = "refs/heads/PoC-signoff" ]; then
               ionic build --configuration=staging
             else
               ionic build
