@@ -219,7 +219,10 @@ export class UploadService {
   retrieveAndReturnArrayBuffer(fileUrl) {
     return new Promise(async (resolve, reject) => {
       try {
-        if (!fileUrl) {resolve(null);}
+        if (!fileUrl) {
+          resolve(null);
+          return;
+        }
 
         const fileName = fileUrl.split('files/')[1];
         const file = await Filesystem.getUri({
