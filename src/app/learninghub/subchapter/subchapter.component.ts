@@ -38,6 +38,7 @@ export class SubchapterComponent  implements OnInit {
   user: UserData;
   isWorker = false;
   isVesselOwner = false;
+  commonText: any;
 
   constructor(
     public activatedRoute: ActivatedRoute,
@@ -70,6 +71,7 @@ export class SubchapterComponent  implements OnInit {
   }
 
   async pageSetup() {
+    this.commonText = await this.contentService.commonText;
     await this.getContent();
     await this.getQuestionValues();
     await this.getQuestionStatus();
@@ -82,7 +84,7 @@ export class SubchapterComponent  implements OnInit {
       const chapterId = this.subChapterId?.split('.')[0];
       this.imgUrl = this.caseStudyImgUrl || this.sharedmethods?.getChapterBackground(chapterId, 'subchapter');
     } else {
-      this.allPageData = this.contentService.getContentByPropertyName(this.subChapterId);
+      this.allPageData = this.contentService.getContentByPropertyName(`subchapter-${this.subChapterId}`);
       await this.contentService.replaceVesselPlaceholderText();
       this.pageContent = this.allPageData?.pageContent;
       const chapterId = this.subChapterId?.split('.')[0];
@@ -185,29 +187,34 @@ export class SubchapterComponent  implements OnInit {
 
   goToNextChapter() {
     const chapterId = this.subChapterId.split('.')[0];
-    this.router.navigate([ 'learninghub/chapters', this.nextChapterId, this.upNextContent?.page?.uid ]);
+    const upNextSubchapterId = this.upNextContent?.page?.uid?.split('-')?.[1];
+    this.router.navigate([ 'learninghub/chapters', this.nextChapterId, upNextSubchapterId ]);
   }
 
   getNextChapterContent() {
     let nextSubChapterContent: any;
     // current chapter
-    const chapterContent = this.contentService.getContentByPropertyName(this.subChapterId.split('.')[0]);
+    const chapterId = this.subChapterId.split('.')[0];
+    const chapterContent = this.contentService.getContentByPropertyName(`chapter-${chapterId}`);
     const chapterList = (chapterContent?.pageContent?.find((e) => e.type === 'clickable_list'))?.list;
     chapterList.sort((a, b) => a.page.uid.split('.')[1] - b.page.uid.split('.')[1]);
 
-    if (chapterList[chapterList.length - 1]?.page?.uid !== this.subChapterId) {
-      const currentIndex = chapterList.findIndex((el) => el?.page?.uid === this.subChapterId);
+    const lastSubchapterContent = chapterList[chapterList.length - 1];
+    const lastSubchapterId = lastSubchapterContent?.page?.uid?.split('-')?.[1];
+    if (this.subChapterId !== lastSubchapterId) {
+      const currentIndex = chapterList.findIndex((el) => el?.page?.uid?.split('-')[1] === this.subChapterId.split('.')[1]);
       nextSubChapterContent = chapterList[currentIndex + 1];
-      this.nextChapterId = this.subChapterId.split('.')[0];
+      this.nextChapterId = chapterId;
     } else {
       // next chapter
-      const nextChapterContent = this.contentService.getContentByPropertyName(`${Number(this.subChapterId.split('.')[0]) + 1}`);
+      const nextChapterId = `${Number(chapterId) + 1}`;
+      const nextChapterContent = this.contentService.getContentByPropertyName(`chapter-${nextChapterId}`);
       const clickableList = nextChapterContent?.pageContent?.find((e) => e.type === 'clickable_list') || [];
       const nextChapterList = clickableList?.list || [];
       nextChapterList.sort((a, b) => a.page.uid.split('.')[1] - b.page.uid.split('.')[1]);
 
       nextSubChapterContent = nextChapterList[0];
-      this.nextChapterId = `${Number(this.subChapterId.split('.')[0]) + 1}`;
+      this.nextChapterId = nextChapterId;
     }
 
     const url = this.sharedmethods?.getChapterBackground(this.nextChapterId, 'chapter');
@@ -237,4 +244,6 @@ export class SubchapterComponent  implements OnInit {
   }
 
   onPlay(e) {}
+
+  goToSubtopic(subTopic) {}
 }
