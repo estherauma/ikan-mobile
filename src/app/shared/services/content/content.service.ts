@@ -68,10 +68,12 @@ export class ContentService {
   async fetchContent() {
     const response = this.apiService.get('content/aggregated', true);
     response?.subscribe((res: HttpResponse<any>) => {
-      const content = res.body;
-      if (content?.status === 'OK') {
-        this.writeLocalContent(StorageKeys.appContent, content.data[0]);
-        this.appContent = content.data[0].content;
+      const result = res.body;
+      if (result?.status === 'OK') {
+        // filter out old learning hub content
+        const formattedContent = this.formatContent(result.data[0]);
+        this.writeLocalContent(StorageKeys.appContent, formattedContent);
+        this.appContent = formattedContent.content;
 
         this.contentObs.next(true);
       }
@@ -87,16 +89,47 @@ export class ContentService {
       const finalEndpoint = endPoint + encodeURIComponent(currentContentCreateAt);
       const response = this.apiService.get(finalEndpoint, true);
       response.subscribe((res: HttpResponse<any>) => {
-        const content = res.body;
-        if (content?.status === 'OK' && content.new) {
-          this.writeLocalContent(StorageKeys.appContent, content.data[0]);
-          this.appContent = content.data[0].content;
+        const result = res.body;
+        if (result?.status === 'OK' && result.new) {
+          // filter out old learning hub content
+          const formattedContent = this.formatContent(result.data[0]);
+          this.writeLocalContent(StorageKeys.appContent, formattedContent);
+          this.appContent = formattedContent.content;
           this.updateSideMenu();
           this.contentObs.next(true);
           return this.appContent;
         }
       });
     }
+  }
+
+  formatContent(item: any) {
+    const formattedContent: any = {};
+    Object.entries(item.content).forEach(([lang, docsObj]: [string, any]) => {
+      const docsList = Object.values(docsObj);
+      // Filter out old learning hub docs as they aren't used anymore
+      const filteredDocsList = docsList.filter((doc: any) => (
+        !(doc?.type === 'create_content_area' && !isNaN(parseFloat(doc?.pageName))) &&
+        !(doc?.type === 'sub_chapter_list' && !isNaN(parseFloat(doc?.pageName)))
+      ));
+      const formattedDocsObj = {};
+      filteredDocsList.forEach((doc: any) => {
+        if (doc?.type === 'learning_hub_subchapter' || doc?.type === 'learning_hub_subchapter_list') {
+          // We are changing the pageName to the chapter/subchapter so to be able to use existing logic
+          // So in the filtering above we are removing the old docs and replacing them here
+          const pageId = doc?.pageName?.split('-')?.length > 1 ? doc?.pageName?.split('-')?.[1] : doc?.pageName;
+          formattedDocsObj[pageId] = { ...doc, pageName: pageId };
+        } else {
+          doc.pageName ? formattedDocsObj[doc.pageName] = doc : formattedDocsObj[doc.uid] = doc;
+        }
+      });
+      formattedContent[lang] = formattedDocsObj;
+    });
+
+    return {
+      content: formattedContent,
+      createdAt: item.createdAt,
+    };
   }
 
   // TODO: update when worker has multiple contracts
