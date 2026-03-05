@@ -235,9 +235,9 @@ export class ContentService {
 
     const allDocs: Array<any> = Object.values(content);
     const contentDocs = allDocs?.filter((doc) => (
-      (doc?.type === 'create_content_area' &&
-        (!isNaN(parseFloat(doc?.pageName)) || doc?.pageName.includes('ikan-feedback')))
-      ));
+      (doc?.type === 'create_content_area' && doc?.pageName.includes('ikan-feedback')) ||
+      doc?.type === 'learning_hub_subchapter'
+    ));
 
     const result = {};
     contentDocs?.forEach(async(item) => {
@@ -332,7 +332,7 @@ export class ContentService {
     const allEnglishDocs: Array<any> = Object.values(englishContent);
 
     allDocs?.forEach((doc) => {
-      if (doc?.type === 'create_content_area' && (!isNaN(parseFloat(doc?.pageName)) || doc?.pageName.includes('ikan-feedback'))) {
+      if ((doc?.type === 'create_content_area' && doc?.pageName.includes('ikan-feedback')) || doc?.type === 'learning_hub_subchapter') {
         const englishDoc = allEnglishDocs.find(x => x?.pageName === doc?.pageName);
         if (!englishDoc) {return;}
 
@@ -356,14 +356,14 @@ export class ContentService {
   /**
    * returns untranslated inline question (english version)
    *
-   * @param subChapterId
+   * @param subChapterPageName
    * @param questionKey
    */
-  getUntranslatedInlineQuestion(subChapterId: string, questionKey: string) {
+  getUntranslatedInlineQuestion(subChapterPageName: string, questionKey: string) {
     const englishContent = this.appContent?.['en-us'];
     if (!englishContent) {return null;}
 
-    const englishDoc = englishContent?.[subChapterId];
+    const englishDoc = englishContent?.[subChapterPageName];
     if (!englishDoc) {return null;}
 
     const qtn = englishDoc?.pageContent?.find(x => x?.type === 'questions' && x?.key === questionKey);
@@ -399,20 +399,20 @@ export class ContentService {
       return;
     }
 
-    const chapterListPageData =  this.getContentByPropertyName('chapters-list');
+    const chapterListPageData =  this.getContentByPropertyName('learning-hub-chapters-list');
     const clickableList = chapterListPageData?.pageContent?.find((e) => e.type === 'clickable_list');
     const chapters = clickableList?.list;
     const progressData = await Promise.all(chapters?.map(async(chapter) => {
-      const chapterId = chapter?.page?.uid;
-      const chapterContent = this.getContentByPropertyName(chapterId);
+      const chapterId = chapter?.page?.uid?.split('-')?.[1];
+      const chapterContent = this.getContentByPropertyName(`chapter-${chapterId}`);
       const subChapterList = chapterContent?.pageContent?.[0]?.list;
       const subChapters = subChapterList?.map((sc) => ({
-        id: sc?.page?.uid,
+        id: sc?.page?.uid?.split('-')?.[1],
         completed: false,
       }));
 
       return {
-        id: chapter?.page?.uid,
+        id: chapterId,
         subChapters
       };
     }));
