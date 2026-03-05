@@ -114,7 +114,10 @@ export class ContentService {
       ));
       const formattedDocsObj = {};
       filteredDocsList.forEach((doc: any) => {
-        if (doc?.type === 'learning_hub_subchapter' || doc?.type === 'learning_hub_subchapter_list') {
+        if (
+          doc?.type === 'learning_hub_subchapter' ||
+          (doc?.type === 'learning_hub_subchapter_list' && doc?.pageName !== 'learning-hub-chapters-list')
+        ) {
           // We are changing the pageName to the chapter/subchapter so to be able to use existing logic
           // So in the filtering above we are removing the old docs and replacing them here
           const pageId = doc?.pageName?.split('-')?.length > 1 ? doc?.pageName?.split('-')?.[1] : doc?.pageName;
