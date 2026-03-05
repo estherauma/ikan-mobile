@@ -39,7 +39,7 @@ export class QuizComponent  implements OnInit {
 
   async getQuizContent() {
     await this.contentService.replaceVesselPlaceholderText();
-    const chaptersData =  this.contentService.getContentByPropertyName('chapters-list');
+    const chaptersData =  this.contentService.getContentByPropertyName('learning-hub-chapters-list');
     const chaptersClickableList = chaptersData?.pageContent?.find((e) => e.type === 'clickable_list');
     const chapters = chaptersClickableList?.list;
     const chaptersResult = await Promise.all(chapters?.map(async(chapter) => {
