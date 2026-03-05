@@ -58,13 +58,13 @@ export class ChapterComponent  implements OnInit {
     this.isVesselOwner = this.user?.role === UserRole.vesselOwner;
     this.isWorker = this.user?.role === UserRole.worker;
     this.commonText = await this.contentService.commonText;
-    this.pageData =  await this.contentService.getContentByPropertyName(this.chapterId);
+    this.pageData =  await this.contentService.getContentByPropertyName(`chapter-${this.chapterId}`);
     const clickableList = (this.pageData?.pageContent?.find((e) => e.type === 'clickable_list'));
     const subChapters = clickableList?.list;
     this.bgImgUrl = this.sharedmethods.getChapterBackground(this.chapterId);
     this.savedLearningHubProgress = await this.sharedmethods.readDataFromStorage(StorageKeys.learningHubProgress);
     this.learningHubSubChapters = await Promise.all(subChapters?.map(async(subChapter) => {
-      const subChapterId = subChapter?.page?.uid;
+      const subChapterId = subChapter?.page?.uid?.split('-')?.[1];
       const subChapterTitle = subChapter?.label?.substring(subChapter?.label?.indexOf(' ') + 1) || '';
       const quizDetails = await this.getQuizDetails(subChapterId);
       return {
@@ -86,7 +86,8 @@ export class ChapterComponent  implements OnInit {
   }
 
   viewDetails(item) {
-    this.router.navigate([ 'learninghub/chapters', this.chapterId, item?.page?.uid ]);
+    const subChapterId = item?.page?.uid?.split('-')?.[1];
+    this.router.navigate([ 'learninghub/chapters', this.chapterId, subChapterId ]);
   }
 
   /**
@@ -98,7 +99,7 @@ export class ChapterComponent  implements OnInit {
       quizCompleted: false,
     };
     if (this.isWorker) {
-      const subChapterPageData = this.contentService.getContentByPropertyName(subChapterId);
+      const subChapterPageData = this.contentService.getContentByPropertyName(`subchapter-${subChapterId}`);
       const subChapterPageContent = subChapterPageData?.pageContent;
       const qtnsToDisplay = subChapterPageContent?.filter((item) => item?.type === 'questions' && item?.displayquestion);
 
