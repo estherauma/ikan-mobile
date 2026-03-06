@@ -58,7 +58,7 @@ export class ChapterComponent  implements OnInit {
     this.isVesselOwner = this.user?.role === UserRole.vesselOwner;
     this.isWorker = this.user?.role === UserRole.worker;
     this.commonText = await this.contentService.commonText;
-    this.pageData =  await this.contentService.getContentByPropertyName(`chapter-${this.chapterId}`);
+    this.pageData =  await this.contentService.getContentByPropertyName(this.chapterId);
     const clickableList = (this.pageData?.pageContent?.find((e) => e.type === 'clickable_list'));
     const subChapters = clickableList?.list;
     this.bgImgUrl = this.sharedmethods.getChapterBackground(this.chapterId);
@@ -99,7 +99,7 @@ export class ChapterComponent  implements OnInit {
       quizCompleted: false,
     };
     if (this.isWorker) {
-      const subChapterPageData = this.contentService.getContentByPropertyName(`subchapter-${subChapterId}`);
+      const subChapterPageData = this.contentService.getContentByPropertyName(subChapterId);
       const subChapterPageContent = subChapterPageData?.pageContent;
       const qtnsToDisplay = subChapterPageContent?.filter((item) => item?.type === 'questions' && item?.displayquestion);
 

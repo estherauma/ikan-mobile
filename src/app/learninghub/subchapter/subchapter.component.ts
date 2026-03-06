@@ -84,7 +84,7 @@ export class SubchapterComponent  implements OnInit {
       const chapterId = this.subChapterId?.split('.')[0];
       this.imgUrl = this.caseStudyImgUrl || this.sharedmethods?.getChapterBackground(chapterId, 'subchapter');
     } else {
-      this.allPageData = this.contentService.getContentByPropertyName(`subchapter-${this.subChapterId}`);
+      this.allPageData = this.contentService.getContentByPropertyName(this.subChapterId);
       await this.contentService.replaceVesselPlaceholderText();
       this.pageContent = this.allPageData?.pageContent;
       const chapterId = this.subChapterId?.split('.')[0];
@@ -186,7 +186,6 @@ export class SubchapterComponent  implements OnInit {
   }
 
   goToNextChapter() {
-    const chapterId = this.subChapterId.split('.')[0];
     const upNextSubchapterId = this.upNextContent?.page?.uid?.split('-')?.[1];
     this.router.navigate([ 'learninghub/chapters', this.nextChapterId, upNextSubchapterId ]);
   }
@@ -195,7 +194,7 @@ export class SubchapterComponent  implements OnInit {
     let nextSubChapterContent: any;
     // current chapter
     const chapterId = this.subChapterId.split('.')[0];
-    const chapterContent = this.contentService.getContentByPropertyName(`chapter-${chapterId}`);
+    const chapterContent = this.contentService.getContentByPropertyName(chapterId);
     const chapterList = (chapterContent?.pageContent?.find((e) => e.type === 'clickable_list'))?.list;
     chapterList.sort((a, b) => a.page.uid.split('.')[1] - b.page.uid.split('.')[1]);
 
@@ -208,7 +207,7 @@ export class SubchapterComponent  implements OnInit {
     } else {
       // next chapter
       const nextChapterId = `${Number(chapterId) + 1}`;
-      const nextChapterContent = this.contentService.getContentByPropertyName(`chapter-${nextChapterId}`);
+      const nextChapterContent = this.contentService.getContentByPropertyName(nextChapterId);
       const clickableList = nextChapterContent?.pageContent?.find((e) => e.type === 'clickable_list') || [];
       const nextChapterList = clickableList?.list || [];
       nextChapterList.sort((a, b) => a.page.uid.split('.')[1] - b.page.uid.split('.')[1]);
