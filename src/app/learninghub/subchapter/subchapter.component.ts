@@ -244,5 +244,10 @@ export class SubchapterComponent  implements OnInit {
 
   onPlay(e) {}
 
-  goToSubtopic(subTopic) {}
+  goToSubtopic(subTopic) {
+    const subTopicContent = this.pageContent?.filter((item) => item?.subtopicId === subTopic.id);
+    subTopic.pageContent = subTopicContent;
+    subTopic.bgImgUrl = this.imgUrl;
+    this.router.navigate(['learninghub/subtopics', subTopic.id , { subTopicData: JSON.stringify(subTopic) }]);
+  }
 }
