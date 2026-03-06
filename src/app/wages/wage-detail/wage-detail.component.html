@@ -269,8 +269,16 @@
           }
           
           <swiper-slide class="slide submit-slide">
-            <ion-button class="submit-btn" shape="round" (click)="onSubmit()">
-              <!-- {{ commonText?.submit }} -->
+            <ion-button
+              class="submit-btn"
+              shape="round"
+              (click)="onSubmit()"
+              [disabled]="
+                !crewReceivedCorrectAmountValue ||
+                (hasBeneficiary && !beneficiaryReceivedCorrectAmountValue)
+
+              "
+            >
               {{ paymentsCommonText?.submitResponses }}
             </ion-button>
           </swiper-slide>

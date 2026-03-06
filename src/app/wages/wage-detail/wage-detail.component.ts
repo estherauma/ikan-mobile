@@ -47,6 +47,7 @@ export class WageDetailComponent  implements OnInit {
   issuePendingBeneficiaryReceivedIncorrectAmountMessage = '';
   showCrewIssuePendingMessage = false;
   showBeneficiaryIssuePendingMessage = false;
+  hasBeneficiary = false;
 
   @ViewChild('pdfViewer') pdfViewer!: PdfJsViewerComponent;
   @ViewChild('wageTrackingSwiper', { static: false }) swiperRef: ElementRef | undefined;
@@ -83,6 +84,7 @@ export class WageDetailComponent  implements OnInit {
       const converted = Capacitor.convertFileSrc(this.wageDetails.payslip);
       this.payslipPdfUrl = converted ?? null;
     }
+    this.hasBeneficiary = this.wageDetails?.beneficiaryRelationship && this.wageDetails.beneficiaryRelationship !== 'self';
     this.swiper = this.swiperRef?.nativeElement?.swiper;
     this.whyTheDiscrepancyOptions = this.getWhyTheDiscrepancyOptions();
     this.contractData = await this.getContractData();
