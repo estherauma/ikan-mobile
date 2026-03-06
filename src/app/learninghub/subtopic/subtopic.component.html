@@ -1,3 +1,75 @@
-<p>
-  subtopic works!
-</p>
+<app-header></app-header>
+<ion-content>
+  <div class="content-wrapper">
+    <div
+      class="bg-img-section"
+      [ngStyle]="{'background': 'url(' + bgImgUrl +') no-repeat fixed center / cover'}"
+      >
+    </div>
+    
+    <div class="content-section">
+      @for (section of pageContent; track section) {
+        <div>
+          <!-- text area type -->
+          @if (section?.type === 'text_area') {
+            <shared-text-area
+              [data]="section"
+              styles="textarea"
+              [theme]="section?.identifier === 'note_or_tip' ? 'note-or-tip' : ''"
+            ></shared-text-area>
+          }
+          
+          <!-- audio type -->
+          @if (section?.type === 'audio') {
+            <app-audio-player
+              [title]="section?.title || ''"
+              [audioSrc]="section?.mediaData?.url || ''"
+              variant="white-bg-title"
+            ></app-audio-player>
+          }
+          
+          <!-- case study link -->
+          @if (section?.type === 'case_study') {
+            <shared-case-study
+              [data]="section"
+              [icons]="caseStudyInputs?.icons"
+              [styles]="caseStudyInputs?.styles || ''"
+              (onCaseStudyClick)="handleCaseStudyClick(section)"
+              >
+            </shared-case-study>
+          }
+          
+          <!-- warning box type -->
+          @if (section?.type === 'warning_box') {
+            <shared-warning-box
+              [data]="section"
+              defaultIcon="assets/icon/warning-2.svg"
+              styles="warning-box"
+              >
+            </shared-warning-box>
+          }
+          
+          <!-- image type -->
+          @if (section?.type === 'image') {
+            <shared-image
+              [data]="section"
+              >
+            </shared-image>
+          }
+          
+          <!-- video type-->
+          @if (section?.type === 'video') {
+            <shared-video
+              [data]="section"
+              [networkStatus]="networkStatus"
+              defaultThumbnail="assets/icon/default-thumbnail.jpg"
+              playIcon="assets/icon/play.svg"
+              (onPlay)="onPlay($event)"
+              >
+            </shared-video>
+          }
+        </div>
+      }
+    </div>
+  </div>
+</ion-content>

@@ -5,6 +5,7 @@ import { IonicModule } from "@ionic/angular";
 import { SharedModule } from "src/app/shared/shared.modules";
 import { SubtopicComponent } from "./subtopic.component";
 import { SubtopicRoutingModule } from "./subtopic-routing.module";
+import { SharedComponentsModule } from '@fiftyeight/shared-components';
 
 @NgModule({
   declarations: [SubtopicComponent],
@@ -14,6 +15,7 @@ import { SubtopicRoutingModule } from "./subtopic-routing.module";
     IonicModule,
     SharedModule,
     SubtopicRoutingModule,
+    SharedComponentsModule,
   ],
 })
 export class SubtopicModule {}
