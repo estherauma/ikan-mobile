@@ -16,31 +16,90 @@
         <h1>{{ allPageData?.pageTitle }}</h1>
       </div>
       
-      <div class="summary">
-        <app-rich-text
-          [textContent]="allPageData?.subchapterSummary"
-          class="lb-subchapter-summary"
-        ></app-rich-text>
-      </div>
+      @if (!isCaseStudy) {
+        <div class="summary">
+          <app-rich-text
+            [textContent]="allPageData?.subchapterSummary"
+            class="lb-subchapter-summary"
+          ></app-rich-text>
+        </div>
 
-      <div class="subchapter-subtopics">
-        <!-- TODO: translate -->
-        <p class="read-more">{{ commonText?.readMore || 'Read More....' }}:</p>
-        
-        @for (subTopic of allPageData?.subchapterSubtopics; track subTopic.id) {
-          <div
-            class="subtopic-wrapper"
-            (click)="goToSubtopic(subTopic)"
-            [ngClass]="{'first-subtopic-wrapper': allPageData?.subchapterSubtopics?.[0]?.id === subTopic.id}"
-          >
-            <h3 class="subtopic">{{ subTopic?.title }}</h3>
-            <app-rich-text
-              [textContent]="subTopic?.content"
-              class="lb-chapter-subtopic-content"
-            ></app-rich-text>
+        <div class="subchapter-subtopics">
+          <p class="read-more">{{ commonText?.readMore || 'Read More' }}:</p>
+          
+          @for (subTopic of allPageData?.subchapterSubtopics; track subTopic.id) {
+            <div
+              class="subtopic-wrapper"
+              (click)="goToSubtopic(subTopic)"
+              [ngClass]="{'first-subtopic-wrapper': allPageData?.subchapterSubtopics?.[0]?.id === subTopic.id}"
+            >
+              <h3 class="subtopic">{{ subTopic?.title }}</h3>
+              <app-rich-text
+                [textContent]="subTopic?.content"
+                class="lb-chapter-subtopic-content"
+              ></app-rich-text>
+            </div>
+          }
+        </div>
+      } @else {
+        @for (section of pageContent; track section) {
+          <div>
+            <!-- text area type -->
+            @if (section?.type === 'text_area') {
+              <shared-text-area
+                [data]="section"
+                styles="textarea"
+                [theme]="section?.identifier === 'note_or_tip' ? 'note-or-tip' : ''"
+              ></shared-text-area>
+            }
+            <!-- audio type -->
+            @if (section?.type === 'audio') {
+              <app-audio-player
+                [title]="section?.title || ''"
+                [audioSrc]="section?.mediaData?.url || ''"
+                variant="white-bg-title"
+              ></app-audio-player>
+            }
+            <!-- case study link -->
+            @if (section?.type === 'case_study') {
+              <shared-case-study
+                [data]="section"
+                [icons]="caseStudyInputs?.icons"
+                [styles]="caseStudyInputs?.styles || ''"
+                (onCaseStudyClick)="handleCaseStudyClick(section)"
+                >
+              </shared-case-study>
+            }
+            <!-- warning box type -->
+            @if (section?.type === 'warning_box') {
+              <shared-warning-box
+                [data]="section"
+                defaultIcon="assets/icon/warning-2.svg"
+                styles="warning-box"
+                >
+              </shared-warning-box>
+            }
+            <!-- image type -->
+            @if (section?.type === 'image') {
+              <shared-image
+                [data]="section"
+                >
+              </shared-image>
+            }
+            <!-- video type-->
+            @if (section?.type === 'video') {
+              <shared-video
+                [data]="section"
+                [networkStatus]="networkStatus"
+                defaultThumbnail="assets/icon/default-thumbnail.jpg"
+                playIcon="assets/icon/play.svg"
+                (onPlay)="onPlay($event)"
+                >
+              </shared-video>
+            }
           </div>
         }
-      </div>
+      }
     </div>
   </div>
   
