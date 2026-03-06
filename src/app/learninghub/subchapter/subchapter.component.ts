@@ -201,7 +201,7 @@ export class SubchapterComponent  implements OnInit {
     const lastSubchapterContent = chapterList[chapterList.length - 1];
     const lastSubchapterId = lastSubchapterContent?.page?.uid?.split('-')?.[1];
     if (this.subChapterId !== lastSubchapterId) {
-      const currentIndex = chapterList.findIndex((el) => el?.page?.uid?.split('-')[1] === this.subChapterId.split('.')[1]);
+      const currentIndex = chapterList.findIndex((el) => el?.page?.uid?.split('-')[1] === this.subChapterId);
       nextSubChapterContent = chapterList[currentIndex + 1];
       this.nextChapterId = chapterId;
     } else {

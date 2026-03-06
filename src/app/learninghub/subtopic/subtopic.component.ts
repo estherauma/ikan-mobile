@@ -10,7 +10,7 @@ import { SharedmethodsService } from 'src/app/shared/services/sharedmethods/shar
 })
 export class SubtopicComponent  implements OnInit {
 
-  pageContent: any[];
+  pageContent: any[] = [];
   networkStatus = false;
   bgImgUrl = '';
   caseStudyInputs = {

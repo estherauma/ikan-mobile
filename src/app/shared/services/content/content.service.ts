@@ -440,7 +440,7 @@ export class ContentService {
     const chapters = clickableList?.list;
     const progressData = await Promise.all(chapters?.map(async(chapter) => {
       const chapterId = chapter?.page?.uid?.split('-')?.[1];
-      const chapterContent = this.getContentByPropertyName(`chapter-${chapterId}`);
+      const chapterContent = this.getContentByPropertyName(chapterId);
       const subChapterList = chapterContent?.pageContent?.[0]?.list;
       const subChapters = subChapterList?.map((sc) => ({
         id: sc?.page?.uid?.split('-')?.[1],
