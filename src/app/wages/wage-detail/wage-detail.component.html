@@ -275,7 +275,7 @@
               (click)="onSubmit()"
               [disabled]="
                 !crewReceivedCorrectAmountValue ||
-                (wageDetails?.beneficiaryRelationship !== 'self' && !beneficiaryReceivedCorrectAmountValue)
+                (hasBeneficiary && !beneficiaryReceivedCorrectAmountValue)
 
               "
             >
