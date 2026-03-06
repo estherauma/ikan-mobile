@@ -18,6 +18,13 @@ img {
   }
 }
 
+:host.lb-subchapter-summary {
+  p {
+    text-align: unset;
+    font-size: 1rem;
+  }
+}
+
 :host.tutorials-intro-text {
   color: #191970;
   font-weight: bold;

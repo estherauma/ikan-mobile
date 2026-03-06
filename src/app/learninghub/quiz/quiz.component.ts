@@ -39,11 +39,11 @@ export class QuizComponent  implements OnInit {
 
   async getQuizContent() {
     await this.contentService.replaceVesselPlaceholderText();
-    const chaptersData =  this.contentService.getContentByPropertyName('chapters-list');
+    const chaptersData =  this.contentService.getContentByPropertyName('learning-hub-chapters-list');
     const chaptersClickableList = chaptersData?.pageContent?.find((e) => e.type === 'clickable_list');
     const chapters = chaptersClickableList?.list;
     const chaptersResult = await Promise.all(chapters?.map(async(chapter) => {
-      const chapterId = chapter?.page?.uid;
+      const chapterId = chapter?.page?.uid?.split('-')?.[1];
       const chapterData = this.contentService.getContentByPropertyName(chapterId);
       const chapterClickableList = (chapterData?.pageContent?.find((e) => e.type === 'clickable_list'));
       const subChapters = chapterClickableList?.list;
@@ -52,7 +52,7 @@ export class QuizComponent  implements OnInit {
       await subChapters.forEach(async(item) => {
         const subChapter: any = {};
 
-        const subChapterId = item?.page?.uid;
+        const subChapterId = item?.page?.uid?.split('-')?.[1];
         const subChapterTitle = item?.label?.substring(item?.label?.indexOf(' ') + 1) || '';
         const subChapterData = this.contentService.getContentByPropertyName(subChapterId);
         const subChapterPageContent = subChapterData?.pageContent;

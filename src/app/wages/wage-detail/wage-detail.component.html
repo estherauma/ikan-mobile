@@ -274,8 +274,17 @@
                 {{ paymentsCommonText?.signPayslip || 'Sign Payslip' }}
               </ion-button>
             }
-            <!-- TODO: gray out submit button if not signed -->
-            <ion-button class="submit-btn" shape="round" (click)="onSubmit()">
+            
+            <ion-button
+              class="submit-btn"
+              shape="round"
+              (click)="onSubmit()"
+              [disabled]="
+                !crewReceivedCorrectAmountValue ||
+                (hasBeneficiary && !beneficiaryReceivedCorrectAmountValue) ||
+                (wageDetails.payslip.endsWith('.pdf') && !isPayslipSigned)
+              "
+            >
               {{ paymentsCommonText?.submitResponses }}
             </ion-button>
           </swiper-slide>

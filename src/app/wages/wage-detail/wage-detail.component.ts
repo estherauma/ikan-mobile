@@ -51,6 +51,7 @@ export class WageDetailComponent  implements OnInit {
   isPayslipPdf = false;
   isPayslipSigned = false;
   signedPayslipUrl: string;
+  hasBeneficiary = false;
 
   @ViewChild('pdfViewer') pdfViewer!: PdfJsViewerComponent;
   @ViewChild('wageTrackingSwiper', { static: false }) swiperRef: ElementRef | undefined;
@@ -91,6 +92,7 @@ export class WageDetailComponent  implements OnInit {
       this.isPayslipPdf = true;
       this.isPayslipSigned = this.wageDetails?.payslip?.includes('__signed.pdf') || false;
     }
+    this.hasBeneficiary = this.wageDetails?.beneficiaryRelationship && this.wageDetails.beneficiaryRelationship !== 'self';
     this.swiper = this.swiperRef?.nativeElement?.swiper;
     this.whyTheDiscrepancyOptions = this.getWhyTheDiscrepancyOptions();
     this.contractData = await this.getContractData();
