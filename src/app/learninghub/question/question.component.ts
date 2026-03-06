@@ -137,7 +137,7 @@ export class QuestionComponent  implements OnInit {
       const dataToSave = {
         appRef: this.sharedMethods.generateAppRef(),
         userId: user.id,
-        subChapter: this.questionData?.subChapter,
+        subChapter: this.questionData?.subChapter?.split('-')?.[1] || this.questionData?.subChapter,
         questionKey: this.questionData?.key,
         questionType: this.questionData?.questionType,
         questionText: this.unTranslatedQtn?.question || this.questionData?.question,
