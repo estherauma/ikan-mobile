@@ -46,17 +46,17 @@ export class HomePage implements OnInit {
   }
 
   async pageSetup() {
-    this.pageData =  this.contentService.getContentByPropertyName('chapters-list');
+    this.pageData = this.contentService.getContentByPropertyName('learning-hub-chapters-list');
     this.title = this.pageData?.pageTitle;
     const clickableList = this.pageData?.pageContent?.find((e) => e.type === 'clickable_list');
     const chapters = clickableList?.list;
     this.savedLearningHubProgress = await this.sharedMethods.readDataFromStorage(StorageKeys.learningHubProgress);
     this.learningHubChapters = await Promise.all(chapters?.map(async(chapter) => {
-      const chapterId = chapter?.page?.uid;
+      const chapterId = chapter?.page?.uid?.split('-')?.[1];
       const chapterContent = this.contentService.getContentByPropertyName(chapterId);
       const subChapterList = chapterContent?.pageContent?.[0]?.list;
       return {
-        chapterId: chapter?.page?.uid,
+        chapterId,
         title: chapter?.label,
         description : chapter?.description || '',
         progress: await this.getChapterProgress(chapterId, subChapterList) || 0,
@@ -78,7 +78,8 @@ export class HomePage implements OnInit {
   }
 
   onClick(item) {
-    this.router.navigate(['learninghub/chapters', item?.page?.uid]);
+    const chapterId = item?.page?.uid?.split('-')?.[1];
+    this.router.navigate(['learninghub/chapters', chapterId]);
   }
 
   async showTrainingVideo() {

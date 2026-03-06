@@ -64,7 +64,7 @@ export class ChapterComponent  implements OnInit {
     this.bgImgUrl = this.sharedmethods.getChapterBackground(this.chapterId);
     this.savedLearningHubProgress = await this.sharedmethods.readDataFromStorage(StorageKeys.learningHubProgress);
     this.learningHubSubChapters = await Promise.all(subChapters?.map(async(subChapter) => {
-      const subChapterId = subChapter?.page?.uid;
+      const subChapterId = subChapter?.page?.uid?.split('-')?.[1];
       const subChapterTitle = subChapter?.label?.substring(subChapter?.label?.indexOf(' ') + 1) || '';
       const quizDetails = await this.getQuizDetails(subChapterId);
       return {
@@ -86,7 +86,8 @@ export class ChapterComponent  implements OnInit {
   }
 
   viewDetails(item) {
-    this.router.navigate([ 'learninghub/chapters', this.chapterId, item?.page?.uid ]);
+    const subChapterId = item?.page?.uid?.split('-')?.[1];
+    this.router.navigate([ 'learninghub/chapters', this.chapterId, subChapterId ]);
   }
 
   /**
