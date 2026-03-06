@@ -1,0 +1,20 @@
+ion-content {
+  --background: var(--ikan_skyblue_100);
+  .content-wrapper {
+    .bg-img-section {
+      min-height: 150px;
+      background: var(--ikan_darkblue_100);
+      backdrop-filter: blur(5px);
+      padding: 15px;
+
+      .audio-video-section {
+        display: flex;
+        justify-content: end;
+      }
+    }
+
+    .content-section {
+      margin: 30px 20px;
+    }
+  }
+}
