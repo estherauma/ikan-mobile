@@ -90,14 +90,14 @@
     @if (wageDetails?.payslip) {
       <div class="payslip-section" [ngClass]="{'with-status-messages': isWorker && wageDetails?.status === 'issue_pending'}">
         <div class="payslip-wrapper">
-          @if (wageDetails.payslip.endsWith('.pdf')) {
+          @if (wageDetails?.payslip?.endsWith('.pdf')) {
             @if (hasInternet && payslipPdfUrl) {
               <ion-row class="label-row">
                 <ion-col size="10">
                   <h4 class="payslip-label">{{ paymentsCommonText?.yourPayslip }}</h4>
                 </ion-col>
                 <ion-col size="2" class="icon-col">
-                  <ion-icon name="expand-outline" class="expand-icon" (click)="viewPdf(wageDetails.payslip)"></ion-icon>
+                  <ion-icon name="expand-outline" class="expand-icon" (click)="viewPdf(wageDetails?.payslip)"></ion-icon>
                 </ion-col>
               </ion-row>
               <div class="pdf-viewer-wrapper">
@@ -116,13 +116,13 @@
                 ></ng2-pdfjs-viewer>
               </div>
             } @else {
-              <div class="link-wrapper" (click)="viewPdf(wageDetails.payslip)">
+              <div class="link-wrapper" (click)="viewPdf(wageDetails?.payslip)">
                 <img src="assets/icon/pdf.svg" />
                 <p>{{ paymentsCommonText?.viewPayslip }}</p>
               </div>
             }
           } @else {
-            <div class="link-wrapper" (click)="viewImage(wageDetails.payslip)">
+            <div class="link-wrapper" (click)="viewImage(wageDetails?.payslip)">
               <ion-icon name="image-outline"></ion-icon>
               <p>{{ paymentsCommonText?.viewPayslip }}</p>
             </div>
@@ -159,13 +159,13 @@
     <!-- Crew bank transfer receipt -->
     @if (wageDetails?.crewBankTransferReceipt) {
       <div class="crew-receipt-section">
-        @if (wageDetails.crewBankTransferReceipt.endsWith('.pdf')) {
-          <div class="link-wrapper" (click)="viewPdf(wageDetails.crewBankTransferReceipt)">
+        @if (wageDetails?.crewBankTransferReceipt?.endsWith('.pdf')) {
+          <div class="link-wrapper" (click)="viewPdf(wageDetails?.crewBankTransferReceipt)">
             <img src="assets/icon/pdf.svg" />
             <p>{{ paymentsCommonText?.viewCrewBankTransferReceipt }}</p>
           </div>
         } @else {
-          <div class="link-wrapper" (click)="viewImage(wageDetails.crewBankTransferReceipt)">
+          <div class="link-wrapper" (click)="viewImage(wageDetails?.crewBankTransferReceipt)">
             <ion-icon name="image-outline"></ion-icon>
             <p>{{ paymentsCommonText?.viewCrewBankTransferReceipt }}</p>
           </div>
@@ -176,13 +176,13 @@
     <!-- Beneficiary bank transfer receipt -->
     @if (wageDetails?.beneficiaryBankTransferReceipt) {
       <div class="beneficiary-receipt-section">
-        @if (wageDetails.beneficiaryBankTransferReceipt.endsWith('.pdf')) {
-          <div class="link-wrapper" (click)="viewPdf(wageDetails.beneficiaryBankTransferReceipt)">
+        @if (wageDetails?.beneficiaryBankTransferReceipt?.endsWith('.pdf')) {
+          <div class="link-wrapper" (click)="viewPdf(wageDetails?.beneficiaryBankTransferReceipt)">
             <img src="assets/icon/pdf.svg" />
             <p>{{ paymentsCommonText?.viewBeneficiaryBankTransferReceipt }}</p>
           </div>
         } @else {
-          <div class="link-wrapper" (click)="viewImage(wageDetails.beneficiaryBankTransferReceipt)">
+          <div class="link-wrapper" (click)="viewImage(wageDetails?.beneficiaryBankTransferReceipt)">
             <ion-icon name="image-outline"></ion-icon>
             <p>{{ paymentsCommonText?.viewBeneficiaryBankTransferReceipt }}</p>
           </div>
@@ -355,12 +355,12 @@
                     <ion-checkbox
                       mode="ios"
                       slot="start"
-                      [value]="option.value"
+                      [value]="option?.value"
                       (ionChange)="changeWhyTheDiscrepancyValue($event)"
-                      [checked]="isWhyTheDiscrepancyOptionSelected(option.value)"
+                      [checked]="isWhyTheDiscrepancyOptionSelected(option?.value)"
                     ></ion-checkbox>
                     <ion-label>
-                      {{ option.label }}
+                      {{ option?.label }}
                     </ion-label>
                   </ion-item>
                 }
