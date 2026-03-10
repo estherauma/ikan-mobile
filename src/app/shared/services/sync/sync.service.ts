@@ -453,6 +453,7 @@ export class SyncService {
           }
           const contractExists = await this.dbService.checkIfEntryExists('contracts', contract.appRef);
           if (!contractExists) {
+            contractToSave.id = contract.id;
             await this.contractServ.saveOnlineContract(contractToSave).then((id) => {
               console.log(`Contract ${contract.name} saved with id ${id}`);
             });
