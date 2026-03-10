@@ -1,5 +1,9 @@
-<div class="video-button-component" (click)="isPlaying ? closeVideo(): playVideo()">
-  <div class="btn-wrapper" [ngClass]="{'no-url': !url}">
+<div class="video-button-component">
+  <div
+    class="btn-wrapper"
+    [ngClass]="{'no-url': !url}"
+    (click)="isPlaying ? closeVideo(): playVideo()"
+  >
     @if (!customIcon) {
       <ion-icon
         [name]="isPlaying ? 'close' : iconName"
