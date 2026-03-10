@@ -197,7 +197,7 @@ export class WageDetailComponent  implements OnInit {
 
   async updateWageDetails() {
     const updatedWageDetails = { ...this.wageDetails};
-    const now = new Date().toISOString();
+    const now = this.sharedMethods.getCurrentDateTime('date');
     let hasUpdates = false;
     
     if (this.crewReceivedCorrectAmountValue !== this.wageDetails?.crewReceivedRightAmount) {
