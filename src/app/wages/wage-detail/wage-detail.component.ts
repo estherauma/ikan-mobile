@@ -80,11 +80,11 @@ export class WageDetailComponent  implements OnInit {
     this.isWorker = this.currentUser?.role === UserRole.worker;
     this.isVesselOwner = this.currentUser?.role === UserRole.vesselOwner;
     this.hasInternet = await this.sharedMethods.checkInternetConnectionStatus();
-    if (this.wageDetails?.payslip && this.wageDetails.payslip.endsWith('.pdf')) {
-      const converted = Capacitor.convertFileSrc(this.wageDetails.payslip);
+    if (this.wageDetails?.payslip && this.wageDetails?.payslip?.endsWith('.pdf')) {
+      const converted = Capacitor.convertFileSrc(this.wageDetails?.payslip);
       this.payslipPdfUrl = converted ?? null;
     }
-    this.hasBeneficiary = this.wageDetails?.beneficiaryRelationship && this.wageDetails.beneficiaryRelationship !== 'self';
+    this.hasBeneficiary = this.wageDetails?.beneficiaryRelationship && this.wageDetails?.beneficiaryRelationship !== 'self';
     this.swiper = this.swiperRef?.nativeElement?.swiper;
     this.whyTheDiscrepancyOptions = this.getWhyTheDiscrepancyOptions();
     this.contractData = await this.getContractData();
@@ -110,7 +110,7 @@ export class WageDetailComponent  implements OnInit {
       const crewIncorrectMessage = this.paymentsCommonText?.issuePendingCrewReceivedIncorrectAmountMessage || '';
       const crewValueLabel = this.paymentsCommonText?.[this.crewReceivedCorrectAmountValue] || this.crewReceivedCorrectAmountValue;
       const crewReceivedDate = this.wageDetails?.crewReceivedRightAmountDate
-        ? this.sharedMethods.formatLocalDate(this.wageDetails.crewReceivedRightAmountDate, this.currentLanguage)
+        ? this.sharedMethods.formatLocalDate(this.wageDetails?.crewReceivedRightAmountDate, this.currentLanguage)
         : this.sharedMethods.formatLocalDate(this.wageDetails?.updatedAt, this.currentLanguage);
 
       const crewMessage = crewIncorrectMessage
@@ -123,7 +123,7 @@ export class WageDetailComponent  implements OnInit {
       const beneficiaryIncorrectMessage = this.paymentsCommonText?.issuePendingBeneficiaryReceivedIncorrectAmountMessage || '';
       const beneficiaryValueLabel = this.paymentsCommonText?.[this.beneficiaryReceivedCorrectAmountValue] || this.beneficiaryReceivedCorrectAmountValue;
       const beneficiaryReceivedDate = this.wageDetails?.beneficiaryReceivedRightAmountDate
-        ? this.sharedMethods.formatLocalDate(this.wageDetails.beneficiaryReceivedRightAmountDate, this.currentLanguage)
+        ? this.sharedMethods.formatLocalDate(this.wageDetails?.beneficiaryReceivedRightAmountDate, this.currentLanguage)
         : this.sharedMethods.formatLocalDate(this.wageDetails?.updatedAt, this.currentLanguage);
 
       const beneficiaryMessage = beneficiaryIncorrectMessage
@@ -197,27 +197,27 @@ export class WageDetailComponent  implements OnInit {
 
   async updateWageDetails() {
     const updatedWageDetails = { ...this.wageDetails};
-    const now = new Date().toISOString();
+    const now = this.sharedMethods.getCurrentDateTime('date');
     let hasUpdates = false;
     
-    if (this.crewReceivedCorrectAmountValue !== this.wageDetails.crewReceivedRightAmount) {
+    if (this.crewReceivedCorrectAmountValue !== this.wageDetails?.crewReceivedRightAmount) {
       updatedWageDetails.crewReceivedRightAmount = this.crewReceivedCorrectAmountValue;
       updatedWageDetails.crewReceivedRightAmountDate = now;
       hasUpdates = true;
     }
-    if (this.beneficiaryReceivedCorrectAmountValue !== this.wageDetails.beneficiaryReceivedRightAmount) {
+    if (this.beneficiaryReceivedCorrectAmountValue !== this.wageDetails?.beneficiaryReceivedRightAmount) {
       updatedWageDetails.beneficiaryReceivedRightAmount = this.beneficiaryReceivedCorrectAmountValue;
       updatedWageDetails.beneficiaryReceivedRightAmountDate = now;
       hasUpdates = true;
     }
-    if (!this.arraysEqual(this.whyTheDiscrepancyValues, this.wageDetails.whyTheDiscrepancy)) {
+    if (!this.arraysEqual(this.whyTheDiscrepancyValues, this.wageDetails?.whyTheDiscrepancy)) {
       const json_value = this.whyTheDiscrepancyValues.length ? JSON.stringify(this.whyTheDiscrepancyValues) : null;
       updatedWageDetails.whyTheDiscrepancy = json_value;
       hasUpdates = true;
     }
 
     if (hasUpdates) {
-      if (updatedWageDetails?.beneficiaryRelationship && updatedWageDetails.beneficiaryRelationship !== 'self' ) {
+      if (updatedWageDetails?.beneficiaryRelationship && updatedWageDetails?.beneficiaryRelationship !== 'self' ) {
         if (
           (updatedWageDetails?.crewReceivedRightAmount && updatedWageDetails?.crewReceivedRightAmount !== 'yes') &&
           (updatedWageDetails?.beneficiaryReceivedRightAmount && updatedWageDetails?.beneficiaryReceivedRightAmount !== 'yes')
