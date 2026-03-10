@@ -1,5 +1,5 @@
-<div class="video-button-component">
-  <div (click)="isPlaying ?closeVideo(): playVideo()" class="btn-wrapper" [ngClass]="{'no-url': !url}">
+<div class="video-button-component" (click)="isPlaying ? closeVideo(): playVideo()">
+  <div class="btn-wrapper" [ngClass]="{'no-url': !url}">
     @if (!customIcon) {
       <ion-icon
         [name]="isPlaying ? 'close' : iconName"
@@ -42,8 +42,13 @@
   <!-- View video -->
   @if (showVideo) {
     <div class="video-wrapper">
-      <video #videoPlayer controls autoplay (ended)="closeVideo()">
-        <source [src]="url" type="video/mp4" />
+      <video
+        #videoPlayer
+        [src]="url"
+        controls
+        autoplay
+        (ended)="closeVideo()"
+      >
         {{ commonText?.browserDoesnotSupportVideoTag }}
       </video>
     </div>
