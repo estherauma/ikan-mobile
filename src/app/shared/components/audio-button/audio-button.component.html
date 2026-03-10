@@ -4,10 +4,11 @@
     #audioPlayer
     [src]="url"
     (ended)="isPlaying = false"
+    preload="auto"
     hidden
   ></audio>
 
-  <div (click)="toggleAudio()" class="btn-wrapper" [ngClass]="{'no-url': !url}">
+  <div class="btn-wrapper" [ngClass]="{'no-url': !url}" (click)="toggleAudio()">
     @if (!customIcon) {
       <ion-icon
         [name]="isPlaying ? 'pause-outline' : iconName"
