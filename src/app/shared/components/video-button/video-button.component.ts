@@ -41,6 +41,13 @@ export class VideoButtonComponent  implements OnInit {
     this.commonText = await this.contentService.commonText;
   }
 
+  ngAfterViewInit() {
+    const video = this.videoPlayerRef?.nativeElement;
+    if (video) {
+      video.load();
+    }
+  }
+
   ngOnDestroy() {
     this.routeSub.unsubscribe();
     this.closeVideo();

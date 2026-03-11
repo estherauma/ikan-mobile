@@ -36,6 +36,13 @@ export class AudioButtonComponent  implements OnInit {
 
   ngOnInit() {}
 
+  ngAfterViewInit() {
+    this.audio = this.audioPlayerRef?.nativeElement;
+    if (this.audio) {
+      this.audio.load();
+    }
+  }
+
   ngOnDestroy() {
     this.routeSub.unsubscribe();
     this.stopAudio();
