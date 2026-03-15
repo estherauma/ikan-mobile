@@ -146,15 +146,36 @@ export class UploadService {
   async fetchAndSaveFile(fileUrl) {
     try {
       if (!fileUrl) {return null;}
+      console.log('Original fileUrl', fileUrl);
+      console.log(`Bucket name: -----${env.gsBucketName}/------`);
       
       const pathWithoutParams = fileUrl?.split('?')[0];
+      console.log('pathWithoutParams', pathWithoutParams);
       const parts = pathWithoutParams?.split(`${env.gsBucketName}/`);
+      console.log('parts', parts);
       const filePath = parts?.length > 1 ? parts[1] : parts[0];
+      console.log('filePath', filePath);
+      console.log('............................')
       
       // _ikan_ matches the file name prefix on the api
       const filePathParts = filePath?.split('_ikan_');
       const fileName = filePathParts?.length > 1 ? filePathParts[1] : filePathParts[0];
       const isPdf = fileName?.endsWith('.pdf');
+
+      // const list = ['https://storage.googleapis.com/ikan-dev/train.jpg',
+      // 'https://storage.googleapis.com/ikan-dev/profiles/-Nj748NSgdNa6i4-_l_N_ikan_1000475758.1767758280520.jpeg',
+      // 'https://storage.googleapis.com/ikan-dev/wages/-Nj748NSgdNa6i4-_l_N_ikan_sample-pdf-file.pdf']
+
+      // for (const url of list) {
+      //   console.log('Original fileUrl', url);
+      //   const pathWithoutParams = url?.split('?')[0];
+      //   console.log('pathWithoutParams', pathWithoutParams);
+      //   const parts = pathWithoutParams?.split(`${env.gsBucketName}/`);
+      //   console.log('parts', parts);
+      //   const filePath = parts?.length > 1 ? parts[1] : parts[0];
+      //   console.log('filePath', filePath);
+      //   console.log('............................')
+      // }
 
       const readResult = await Filesystem.readdir({
         directory: Directory.Data,
