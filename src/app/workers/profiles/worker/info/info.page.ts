@@ -45,6 +45,7 @@ export class InfoPage extends BaseformPage implements OnInit {
     const profData = await this.profilesDataService.getSingleProfile(this.userData?.email);
     if (profData?.id) {
       this.profileData = profData;
+      console.log('Profile data found for user', this.profileData);
     }
     // This ensures that the profile view happens when some of the fields have values otherwise the view would be blank
     this.isViewInfo = (this.profileData?.id && this.profileData?.addressLine1 && this.profileData?.firstName && this.profileData?.email && this.profileData?.mobile) ? true : false;
@@ -68,6 +69,18 @@ export class InfoPage extends BaseformPage implements OnInit {
       this.group[entry.key] = new FormControl(value, validators);
     });
     this.pageFormGroup = new FormGroup(this.group);
+
+    // on phone number change, reset the verification status of both mobile and telephone
+    if (this.profileData?.mobile || this.profileData?.telephone) {
+      this.pageFormGroup.valueChanges.subscribe((data) => {
+        if (this.profileData?.mobile && ( this.profileData?.mobile !== data.mobile)) {
+          this.profileData.isMobileVerified = false;
+        }
+        if (this.profileData?.telephone && ( this.profileData?.telephone !== data.telephone)) {
+          this.profileData.isTelephoneVerified = false;
+        }
+      });
+    }
   }
 
   async onSubmit(data) {
