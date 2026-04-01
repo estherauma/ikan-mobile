@@ -33,6 +33,9 @@
 			"icon": "icon_notify",
       "iconColor": "#3565FF",
       "sound": "beep.wav"
-    }
+    },
+		"Keyboard": {
+			"resize": "body"
+		}
 	}
 }
