@@ -35,7 +35,7 @@
       "sound": "beep.wav"
     },
 		"Keyboard": {
-			"resize": "body"
+			"resize": "ionic"
 		}
 	}
 }
