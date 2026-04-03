@@ -31,6 +31,8 @@ export class ProfilePage extends BaseformPage implements OnInit {
   isViewProfile = false;
   viewData: any = {};
   docsCommonText: any;
+  mobileCtrlSubscription: any;
+  telephoneCtrlSubscription: any;
 
   constructor(
     public contentService: ContentService,
@@ -53,6 +55,11 @@ export class ProfilePage extends BaseformPage implements OnInit {
         this.imageUrl = userProfile?.profileImage;
       }
     });
+  }
+
+  ngOnDestroy() {
+    this.mobileCtrlSubscription?.unsubscribe();
+    this.telephoneCtrlSubscription?.unsubscribe();
   }
 
   async pageSetup() {
@@ -90,6 +97,19 @@ export class ProfilePage extends BaseformPage implements OnInit {
       this.group[entry.key] = new FormControl(value, validators);
     });
     this.pageFormGroup = new FormGroup(this.group);
+    // on phone number change, reset the verification status of both mobile and telephone
+    if (this.profileData?.mobile || this.profileData?.telephone) {
+      this.mobileCtrlSubscription =this.pageFormGroup.controls['mobile']?.valueChanges.subscribe((mobile) => {
+        if (this.profileData?.mobile && (this.profileData?.mobile !== mobile)) {
+          this.profileData.isMobileVerified = false;
+        }
+      });
+      this.telephoneCtrlSubscription = this.pageFormGroup.controls['telephone']?.valueChanges.subscribe((telephone) => {
+        if (this.profileData?.telephone && (this.profileData?.telephone !== telephone)) {
+          this.profileData.isTelephoneVerified = false;
+        }
+      });
+    }
 
     // Registration Details form
     const regPageData = this.contentService.getContentByPropertyName('registration-details-form');

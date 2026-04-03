@@ -90,6 +90,7 @@ export class VerifyCodeComponent  implements OnInit {
       phoneNumber: this.params?.phoneNumber,
       userId: this.params?.userId,
       type: this.params?.type,
+      locale: this.params?.locale || 'en',
       regenerate: true,
     };
     const res: any = await lastValueFrom(this.apiService.post('accounts/generate-otp/', data, true));

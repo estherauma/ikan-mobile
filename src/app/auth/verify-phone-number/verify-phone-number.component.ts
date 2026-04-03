@@ -30,6 +30,7 @@ export class VerifyPhoneNumberComponent  implements OnInit {
   previousUrl = null;
   numberType = null;
   phoneNumber: any;
+  locale = 'en';
 
   constructor(
     public router: Router,
@@ -62,6 +63,7 @@ export class VerifyPhoneNumberComponent  implements OnInit {
     this.submitButtonText = this.pageText?.getCode;
     this.pageTitle = pageData?.pageTitle;
     this.countryOptions = await this.getCountryOptions();
+    this.locale = this.getLocale();
 
     // const group: any = {};
     // // add country code to the form group
@@ -83,6 +85,20 @@ export class VerifyPhoneNumberComponent  implements OnInit {
       console.error('Error fetching country options', error);
       return [];
     }
+  }
+  
+  getLocale() {
+    const language = this.contentService.currentLanguage || 'en-us';
+    if (language === 'en-us') {
+      return 'en';
+    }
+    if (language === 'id-id') {
+      return 'ms';
+    }
+    if (language === 'qm-zh') {
+      return 'zh';
+    }
+    return 'en';
   }
 
   goBack() {
@@ -107,6 +123,7 @@ export class VerifyPhoneNumberComponent  implements OnInit {
         userId: userId ?? null,
         type: this.numberType,
         previousUrl: this.previousUrl,
+        locale: this.locale,
       };
 
       const response: any = await lastValueFrom(this.apiService.post('accounts/generate-otp/', data, true));
