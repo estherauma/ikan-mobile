@@ -30,7 +30,6 @@ export class VerifyPhoneNumberComponent  implements OnInit {
   previousUrl = null;
   numberType = null;
   phoneNumber: any;
-  currentLanguage = 'en-us';
   locale = 'en';
 
   constructor(
@@ -64,7 +63,6 @@ export class VerifyPhoneNumberComponent  implements OnInit {
     this.submitButtonText = this.pageText?.getCode;
     this.pageTitle = pageData?.pageTitle;
     this.countryOptions = await this.getCountryOptions();
-    this.currentLanguage = this.contentService.currentLanguage;
     this.locale = this.getLocale();
 
     // const group: any = {};
