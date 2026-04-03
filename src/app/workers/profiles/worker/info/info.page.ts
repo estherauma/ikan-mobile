@@ -45,7 +45,6 @@ export class InfoPage extends BaseformPage implements OnInit {
     const profData = await this.profilesDataService.getSingleProfile(this.userData?.email);
     if (profData?.id) {
       this.profileData = profData;
-      console.log('Profile data found for user', this.profileData);
     }
     // This ensures that the profile view happens when some of the fields have values otherwise the view would be blank
     this.isViewInfo = (this.profileData?.id && this.profileData?.addressLine1 && this.profileData?.firstName && this.profileData?.email && this.profileData?.mobile) ? true : false;
