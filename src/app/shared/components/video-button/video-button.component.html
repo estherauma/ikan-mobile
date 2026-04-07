@@ -48,7 +48,7 @@
     <div class="video-wrapper">
       <video
         #videoPlayer
-        [src]="url"
+        [src]="url + (url ? '#t=0.001' : '')"
         controls
         autoplay
         preload="auto"
