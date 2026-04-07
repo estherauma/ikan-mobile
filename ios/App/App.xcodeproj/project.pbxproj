@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		27702CB52F84CA0300A0BA3B /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 27702CB32F84CA0300A0BA3B /* InfoPlist.strings */; };
 		2FAD9763203C412B000D30F8 /* config.xml in Resources */ = {isa = PBXBuildFile; fileRef = 2FAD9762203C412B000D30F8 /* config.xml */; };
 		50379B232058CBB4000EE86E /* capacitor.config.json in Resources */ = {isa = PBXBuildFile; fileRef = 50379B222058CBB4000EE86E /* capacitor.config.json */; };
 		504EC3081FED79650016851F /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 504EC3071FED79650016851F /* AppDelegate.swift */; };
@@ -30,6 +31,10 @@
 		27702CA82F84B23800A0BA3B /* id */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = id; path = id.lproj/LaunchScreen.strings; sourceTree = "<group>"; };
 		27702CA92F84B26D00A0BA3B /* ms */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ms; path = ms.lproj/Main.strings; sourceTree = "<group>"; };
 		27702CAA2F84B26D00A0BA3B /* ms */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ms; path = ms.lproj/LaunchScreen.strings; sourceTree = "<group>"; };
+		27702CB42F84CA0300A0BA3B /* id */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = id; path = App/id.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		27702CB62F84CA3300A0BA3B /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "App/zh-Hans.lproj/InfoPlist.strings"; sourceTree = "<group>"; };
+		27702CB72F84CA9600A0BA3B /* zh-Hant */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hant"; path = "App/zh-Hant.lproj/InfoPlist.strings"; sourceTree = "<group>"; };
+		27702CB82F84CB1200A0BA3B /* ms */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ms; path = App/ms.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		2FAD9762203C412B000D30F8 /* config.xml */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = config.xml; sourceTree = "<group>"; };
 		50379B222058CBB4000EE86E /* capacitor.config.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = capacitor.config.json; sourceTree = "<group>"; };
 		504EC3041FED79650016851F /* App.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = App.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -59,6 +64,7 @@
 		504EC2FB1FED79650016851F = {
 			isa = PBXGroup;
 			children = (
+				27702CB32F84CA0300A0BA3B /* InfoPlist.strings */,
 				B5B7CAF52C173E9300F54D48 /* GoogleService-Info.plist */,
 				504EC3061FED79650016851F /* App */,
 				504EC3051FED79650016851F /* Products */,
@@ -175,6 +181,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				27702CB52F84CA0300A0BA3B /* InfoPlist.strings in Resources */,
 				504EC3121FED79650016851F /* LaunchScreen.storyboard in Resources */,
 				50B271D11FEDC1A000F3C39B /* public in Resources */,
 				504EC30F1FED79650016851F /* Assets.xcassets in Resources */,
@@ -239,6 +246,17 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXVariantGroup section */
+		27702CB32F84CA0300A0BA3B /* InfoPlist.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				27702CB42F84CA0300A0BA3B /* id */,
+				27702CB62F84CA3300A0BA3B /* zh-Hans */,
+				27702CB72F84CA9600A0BA3B /* zh-Hant */,
+				27702CB82F84CB1200A0BA3B /* ms */,
+			);
+			name = InfoPlist.strings;
+			sourceTree = "<group>";
+		};
 		504EC30B1FED79650016851F /* Main.storyboard */ = {
 			isa = PBXVariantGroup;
 			children = (
