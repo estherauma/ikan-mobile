@@ -15,7 +15,7 @@
     <!-- For other video types -->
     <!-- <video controls>
     <source
-      [src]="video?.mediaData?.url"
+      [src]="video?.mediaData?.url + (video?.mediaData?.url ? '#t=0.001' : '')"
       [type]="getVideoType(video?.mediaData?.url)"
       >
     Your browser does not support the video tag.
