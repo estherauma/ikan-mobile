@@ -79,12 +79,12 @@ export class SubchapterComponent  implements OnInit {
 
   async getContent() {
     if (this.isCaseStudy) {
-      this.allPageData = this.contentService.getContentByPropertyName(this.caseStudyUid);
+      this.allPageData = await this.contentService.getContentByPropertyName(this.caseStudyUid);
       this.pageContent = this.allPageData?.pageContent;
       const chapterId = this.subChapterId?.split('.')[0];
       this.imgUrl = this.caseStudyImgUrl || this.sharedmethods?.getChapterBackground(chapterId, 'subchapter');
     } else {
-      this.allPageData = this.contentService.getContentByPropertyName(this.subChapterId);
+      this.allPageData = await this.contentService.getContentByPropertyName(this.subChapterId);
       await this.contentService.replaceVesselPlaceholderText();
       this.pageContent = this.allPageData?.pageContent;
       const chapterId = this.subChapterId?.split('.')[0];
@@ -245,6 +245,20 @@ export class SubchapterComponent  implements OnInit {
   onPlay(e) {}
 
   goToSubtopic(subTopic) {
+    const caseStudyData =  this.pageContent?.find((item) => item?.subtopicId === subTopic.id && item?.type === 'case_study');
+    const isTopicCaseStudy = caseStudyData ? true : false;
+    if (isTopicCaseStudy) {
+      const params = {
+        subChapterId: this.subChapterId,
+        caseStudyUid: caseStudyData?.uid,
+        isCaseStudy: true,
+        imgUrl: caseStudyData?.image?.url || '',
+        ...caseStudyData
+      };
+      this.router.navigate([ 'learninghub/case-studies', caseStudyData?.uid, params ]);
+      return;
+    }
+    
     const subTopicContent = this.pageContent?.filter((item) => item?.subtopicId === subTopic.id);
     subTopic.pageContent = subTopicContent;
     subTopic.bgImgUrl = this.imgUrl;
