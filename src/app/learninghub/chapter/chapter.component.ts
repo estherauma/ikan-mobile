@@ -68,7 +68,7 @@ export class ChapterComponent  implements OnInit {
       const subChapterTitle = subChapter?.label?.substring(subChapter?.label?.indexOf(' ') + 1) || '';
       const quizDetails = await this.getQuizDetails(subChapterId);
       return {
-        name: subChapterTitle,
+        name: subChapter?.label, // subChapterTitle,
         description: subChapter?.description || '',
         icon: subChapter?.icon || this.bgImgUrl, // TODO: use tuna icon as default
         page: subChapter?.page,
