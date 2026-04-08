@@ -141,10 +141,12 @@ export class ContentService {
       const userVessel = await this.vesselsDataService.getWorkerVessel();
       if (userVessel && userVessel?.name) {
         Object.entries(this.appContent).forEach(([lang, data]) => {
-          const vesselDoc = data['1.9'];
+          const vesselDoc = data['1.4'];
           if (vesselDoc) {
             const vesselQtn = vesselDoc?.pageContent?.find(
-              (item) => item?.type === 'questions' && item.key === 'is_this_the_vessel_you_are_working_on_the_one_you_were_assigned_to'
+              // This is the old key from the old learning hub content, keeping it here for reference.
+              // (item) => item?.type === 'questions' && item.key === 'is_this_the_vessel_you_are_working_on_the_one_you_were_assigned_to'
+              (item) => item?.type === 'questions' && item.key === 'vessel_assigned_working_on'
             );
 
             if (vesselQtn) {

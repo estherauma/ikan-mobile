@@ -17,11 +17,14 @@ import { UserData } from 'src/app/shared/types/api-types';
     standalone: false
 })
 export class InfoPage extends BaseformPage implements OnInit {
+  
   submitButtonText = 'Save';
   userData: UserData;
   profileData: ProfileData;
   isViewInfo = false;
   viewInfo: any = {};
+  mobileCtrlSubscription: any;
+  telephoneCtrlSubscription: any;
 
   constructor(
     public contentService: ContentService,
@@ -36,6 +39,11 @@ export class InfoPage extends BaseformPage implements OnInit {
   async ngOnInit() {
     await this.pageSetup();
     this.analytics.trackEvent(PageEventNames.workerProfileinfo, this.sharedMethods.analyticsEventParams)
+  }
+
+  ngOnDestroy() {
+    this.mobileCtrlSubscription?.unsubscribe();
+    this.telephoneCtrlSubscription?.unsubscribe();
   }
 
   async pageSetup() {
@@ -68,6 +76,20 @@ export class InfoPage extends BaseformPage implements OnInit {
       this.group[entry.key] = new FormControl(value, validators);
     });
     this.pageFormGroup = new FormGroup(this.group);
+
+    // on phone number change, reset the verification status of both mobile and telephone
+    if (this.profileData?.mobile || this.profileData?.telephone) {
+      this.mobileCtrlSubscription = this.pageFormGroup.controls['mobile']?.valueChanges.subscribe((mobile) => {
+        if (this.profileData?.mobile && (this.profileData?.mobile !== mobile)) {
+          this.profileData.isMobileVerified = false;
+        }
+      });
+      this.telephoneCtrlSubscription = this.pageFormGroup.controls['telephone']?.valueChanges.subscribe((telephone) => {
+        if (this.profileData?.telephone && (this.profileData?.telephone !== telephone)) {
+          this.profileData.isTelephoneVerified = false;
+        }
+      });
+    }
   }
 
   async onSubmit(data) {

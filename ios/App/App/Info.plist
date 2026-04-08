@@ -12,6 +12,14 @@
 	<string>$(PRODUCT_BUNDLE_IDENTIFIER)</string>
 	<key>CFBundleInfoDictionaryVersion</key>
 	<string>6.0</string>
+	<key>CFBundleLocalizations</key>
+	<array>
+		<string>en</string>
+		<string>id</string>
+		<string>ms</string>
+		<string>zh-Hans</string>
+		<string>zh-Hant</string>
+	</array>
 	<key>CFBundleName</key>
 	<string>$(PRODUCT_NAME)</string>
 	<key>CFBundlePackageType</key>
@@ -20,14 +28,16 @@
 	<string>$(MARKETING_VERSION)</string>
 	<key>CFBundleVersion</key>
 	<string>$(CURRENT_PROJECT_VERSION)</string>
+	<key>ITSAppUsesNonExemptEncryption</key>
+	<false/>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
-	<key>NSMicrophoneUsageDescription</key>
-	<string>We need access to your microphone to enable audio features within the app. Your audio data is processed locally, never shared, and only used for the app’s intended functionality.</string>
 	<key>NSCameraUsageDescription</key>
 	<string>We need access to the camera to allow you to take photos or videos of your passport, visa and related required documents in the app.</string>
+	<key>NSMicrophoneUsageDescription</key>
+	<string>We need access to your microphone to enable audio features within the app. Your audio data is processed locally, never shared, and only used for the app’s intended functionality.</string>
 	<key>NSPhotoLibraryAddUsageDescription</key>
-	<string>We need access to your photo library to save photos of your passport, visa nd related documents in theapp to your photo library after capturing or editing media.</string>
+	<string>We need access to your photo library to save photos of your passport, visa and related documents in the app to your photo library after capturing or editing media.</string>
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>We need access to your photo library so you can select and upload images of your passport, visa and related required documents in the app. </string>
 	<key>UILaunchStoryboardName</key>
@@ -53,7 +63,5 @@
 	</array>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<true/>
-	<key>ITSAppUsesNonExemptEncryption</key>
-	<false/>
 </dict>
 </plist>

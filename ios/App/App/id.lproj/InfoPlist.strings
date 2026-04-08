@@ -1,0 +1,4 @@
+"NSCameraUsageDescription" = "Kami memerlukan akses ke kamera agar Anda dapat mengambil foto atau video paspor, visa, dan dokumen-dokumen terkait yang diperlukan di dalam aplikasi.";
+"NSMicrophoneUsageDescription" = "Kami memerlukan akses ke mikrofon Anda untuk mengaktifkan fitur audio di dalam aplikasi. Data audio Anda diproses secara lokal, tidak pernah dibagikan, dan hanya digunakan untuk fungsi yang dimaksudkan oleh aplikasi.";
+"NSPhotoLibraryAddUsageDescription" = "Kami memerlukan akses ke perpustakaan foto Anda untuk menyimpan foto paspor, visa, dan dokumen terkait lainnya ke perpustakaan foto Anda di aplikasi setelah mengambil atau mengedit media.";
+"NSPhotoLibraryUsageDescription" = "Kami memerlukan akses ke perpustakaan foto Anda agar Anda dapat memilih dan mengunggah gambar paspor, visa, dan dokumen terkait yang diperlukan di aplikasi ini.";

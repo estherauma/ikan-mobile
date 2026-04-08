@@ -41,8 +41,9 @@
           @if (pageContent?.welcomeVideo?.url) {
             <video
               #videoPlayer
+              preload="metadata"
               class="welcome-video"
-              [src]="pageContent?.welcomeVideo?.url"
+              [src]="pageContent?.welcomeVideo?.url + (pageContent?.welcomeVideo?.url ? '#t=0.001' : '')"
               (play)="isVideoPlaying = true"
               (pause)="isVideoPlaying = false"
               (ended)="isVideoPlaying = false"
@@ -110,7 +111,8 @@
                   <video
                     #videoPlayer
                     class="tutorial-video"
-                    [src]="tutorial?.itemVideo?.url"
+                    [src]="tutorial?.itemVideo?.url + (tutorial?.itemVideo?.url ? '#t=0.001' : '')"
+                    preload="metadata"
                   ></video>
                 }
                 <ion-icon name="play" class="play-icon"></ion-icon>
