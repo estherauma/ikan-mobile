@@ -1,0 +1,4 @@
+"NSCameraUsageDescription" = "我們需要存取您的攝影機，以便您在應用程式中拍攝護照、簽證和相關所需文件的照片或影片。";
+"NSMicrophoneUsageDescription" = "請允許啟用此功能以使用平台中的音訊功能。上述目的除外，我們不會將您的麥克風用於其他用途。";
+"NSPhotoLibraryAddUsageDescription" = "我們需要存取您的照片庫，以便在拍攝或編輯媒體後，將您護照、簽證和相關文件的照片儲存到應用程式中您的照片庫中。";
+"NSPhotoLibraryUsageDescription" = "我們需要存取您的照片庫，以便您可以在應用程式中選擇並上傳您的護照、簽證和相關所需文件的圖片。";
