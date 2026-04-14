@@ -17,11 +17,17 @@
     min-height: 55px;
   }
   .followup-qtn-section {
-    .text-container {
-      p {
+    .text-container,
+    .conditional-text-container {
+      p,
+      em {
         color: #191970;
         text-align: center;
       }
+    }
+
+    .conditional-text-container {
+      margin: 20px 15px 0 15px;
     }
   }
   .btn-row {

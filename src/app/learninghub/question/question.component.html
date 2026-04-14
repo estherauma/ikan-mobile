@@ -208,6 +208,13 @@
           </ion-radio-group>
         </div>
       }
+
+      @if (followupQtnData?.questionType === 'conditional-text') {
+        <div class="conditional-text-container">
+          <em>{{ followupQtnData?.question }}</em>
+        </div>
+      }
+      
       <ion-row class="btn-row">
         <ion-col size="12">
           <ion-button color="primary" expand="block" (click)="submitAnswer()">{{ commonText?.submit }}</ion-button>
