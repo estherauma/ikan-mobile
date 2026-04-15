@@ -19,6 +19,8 @@ export class QuestionComponent  implements OnInit {
   hasFollowupQtn = false;
   followupQtnData: any;
   unTranslatedQtn: any;
+  hasSecondFollowupQtn = false;
+  secondFollowupQtnData: any;
 
   constructor(
     public contentService: ContentService,
@@ -55,27 +57,31 @@ export class QuestionComponent  implements OnInit {
     }
 
     this.getFollowupQtn();
+    this.getSecondFollowupQtn();
   }
 
   selectOption(value: string) {
     this.questionData.value = value;
     this.getFollowupQtn();
+    this.getSecondFollowupQtn();
   }
 
   handleInputChange(e) {
     this.questionData.value = e.detail.value;
     this.getFollowupQtn();
+    this.getSecondFollowupQtn();
   }
 
   handleSelectChange(e) {
     this.questionData.value = e.detail.value;
     this.getFollowupQtn();
+    this.getSecondFollowupQtn();
   }
 
   getFollowupQtn() {
     // todo: clear followup value if value
-    if (this.questionData?.options) {
-      const selectedOption = this.questionData.options.find((opt) => opt.value === this.questionData.value);
+    // if (this.questionData?.options) {
+      const selectedOption = this.questionData?.options.find((opt) => opt.value === this.questionData.value);
       if (selectedOption?.followUpQuestion) {
         this.hasFollowupQtn = true;
         this.followupQtnData = selectedOption.followUpQuestion;
@@ -95,15 +101,39 @@ export class QuestionComponent  implements OnInit {
         this.hasFollowupQtn = false;
         this.followupQtnData = null;
       }
-    }
+    // }
+    this.getSecondFollowupQtn();
   }
 
   handleFollowUpInputChange(e) {
     this.followupQtnData.value = e.detail.value;
+    this.getSecondFollowupQtn();
   }
 
   handleFollowUpSelectChange(e) {
     this.followupQtnData.value = e.detail.value;
+    this.getSecondFollowupQtn();
+  }
+
+  async getSecondFollowupQtn() {
+    if (this.followupQtnData?.options) {
+      const selectedOption = await this.followupQtnData?.options.find((opt) => opt.value === this.followupQtnData.value);
+      if (selectedOption?.secondFollowUpQuestion) {
+        this.hasSecondFollowupQtn = true;
+        this.secondFollowupQtnData = selectedOption.secondFollowUpQuestion;
+      } else {
+        this.hasSecondFollowupQtn = false;
+        this.secondFollowupQtnData = null;
+      }
+    }
+  }
+
+  handleSecondFollowUpInputChange(e) {
+    this.secondFollowupQtnData.value = e.detail.value;
+  }
+
+  handleSecondFollowUpSelectChange(e) {
+    this.secondFollowupQtnData.value = e.detail.value;
   }
 
   // Question responses are saved even if followup question is not answered
