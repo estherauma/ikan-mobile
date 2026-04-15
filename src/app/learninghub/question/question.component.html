@@ -84,6 +84,23 @@
               }
             </ion-radio-group>
           </div>
+
+          <!-- other value -->
+          @if (questionData?.value.toLowerCase().trim().includes('other') && (questionData?.questionType === 'radio' || questionData?.questionType === 'select')) {
+            <div
+              class="other-value-container"
+              >
+              <p>{{ commonText?.otherPleaseSpecify || 'Please specify' }}</p>
+              <ion-input
+                class="input"
+                [placeholder]="commonText?.typeYourAnswerHere"
+                autofocus
+                [value]="unTranslatedQtn?.otherValue || ''"
+                (ionChange)="handleOtherInputChange($event)"
+                (ionInput)="handleOtherInputChange($event)"
+              ></ion-input>
+            </div>
+          }
         }
 
         @if (isYesNoValue && (questionData?.questionType === 'radio' || questionData?.questionType === 'select')) {
@@ -218,6 +235,23 @@
       @if (followupQtnData?.questionType === 'link' && followupQtnData?.questionLink) {
         <div class="conditional-text-container">
           <a href="{{ followupQtnData?.questionLink }}">{{ followupQtnData?.question }}</a>
+        </div>
+      }
+
+      <!-- other value -->
+      @if (followupQtnData?.value.toLowerCase().trim().includes('other') && (followupQtnData?.questionType === 'radio' || followupQtnData?.questionType === 'select')) {
+        <div
+          class="other-value-container"
+          >
+          <p>{{ commonText?.otherPleaseSpecify || 'Please specify' }}</p>
+          <ion-input
+            class="input"
+            [placeholder]="commonText?.typeYourAnswerHere"
+            autofocus
+            [value]="unTranslatedQtn?.otherValue || ''"
+            (ionChange)="handleOtherInputChange($event)"
+            (ionInput)="handleOtherInputChange($event)"
+          ></ion-input>
         </div>
       }
       

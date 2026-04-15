@@ -192,4 +192,8 @@ export class QuestionComponent  implements OnInit {
       }
     }
   }
+
+  handleOtherInputChange(e) {
+    // this.questionData.value = e.detail.value;
+  }
 }
