@@ -86,7 +86,7 @@
           </div>
 
           <!-- other value -->
-          @if (questionData?.value.toLowerCase().trim().includes('other') && (questionData?.questionType === 'radio' || questionData?.questionType === 'select')) {
+          @if (questionData?.value?.toLowerCase().trim().includes('other') && (questionData?.questionType === 'radio' || questionData?.questionType === 'select')) {
             <div
               class="other-value-container"
               >
@@ -239,7 +239,7 @@
       }
 
       <!-- other value -->
-      @if (followupQtnData?.value.toLowerCase().trim().includes('other') && (followupQtnData?.questionType === 'radio' || followupQtnData?.questionType === 'select')) {
+      @if (followupQtnData?.value?.toLowerCase().trim().includes('other') && (followupQtnData?.questionType === 'radio' || followupQtnData?.questionType === 'select')) {
         <div
           class="other-value-container"
           >
