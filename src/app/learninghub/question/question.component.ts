@@ -85,29 +85,30 @@ export class QuestionComponent  implements OnInit {
   }
 
   getFollowupQtn() {
-    // todo: clear followup value if value
-    // if (this.questionData?.options) {
-      const selectedOption = this.questionData?.options.find((opt) => opt.value === this.questionData.value);
-      if (selectedOption?.followUpQuestion) {
-        this.hasFollowupQtn = true;
-        this.followupQtnData = selectedOption.followUpQuestion;
-        if (this.followupQtnData?.key === 'See the Get Help section to find a workers union you can consult with') {
-          this.followupQtnData.questionType = 'helperText';
-        }
-        if (this.questionData?.savedQtn?.followUpQuestionResponse) {
-          if (this.followupQtnData.questionType === 'multi-select') {
-            const values = this.questionData?.savedQtn?.followUpQuestionResponse.split(',');
-            const optValues = values.map((val) => val.trim());
-            this.followupQtnData.value = optValues;
-          } else {
-            this.followupQtnData.value = this.questionData?.savedQtn?.followUpQuestionResponse;
-          }
-        }
-      } else {
-        this.hasFollowupQtn = false;
-        this.followupQtnData = null;
+    
+    const selectedOption = this.questionData?.options?.find((opt) => opt.value === this.questionData.value);
+    if (selectedOption?.followUpQuestion) {
+      this.hasFollowupQtn = true;
+      this.followupQtnData = selectedOption.followUpQuestion;
+      if (this.followupQtnData?.key === 'See the Get Help section to find a workers union you can consult with') {
+        this.followupQtnData.questionType = 'helperText';
       }
-    // }
+      // Intialize followup question response if user has already answered before
+      if (this.questionData?.savedQtn?.followUpQuestionResponse) {
+        if (this.followupQtnData.questionType === 'multi-select') {
+          const values = this.questionData?.savedQtn?.followUpQuestionResponse.split(',');
+          const optValues = values.map((val) => val.trim());
+          this.followupQtnData.value = optValues;
+        } else {
+          this.followupQtnData.value = this.questionData?.savedQtn?.followUpQuestionResponse;
+          this.followupQtnData.followupQuestionOtherInput = this.questionData?.savedQtn?.followUpQuestionOtherInput;
+        }
+      }
+    } else {
+      this.hasFollowupQtn = false;
+      this.followupQtnData = null;
+    }
+    
     this.getSecondFollowupQtn();
   }
 
@@ -127,15 +128,25 @@ export class QuestionComponent  implements OnInit {
   }
 
   async getSecondFollowupQtn() {
-    if (this.followupQtnData?.options) {
-      const selectedOption = await this.followupQtnData?.options.find((opt) => opt.value === this.followupQtnData.value);
-      if (selectedOption?.secondFollowUpQuestion) {
-        this.hasSecondFollowupQtn = true;
-        this.secondFollowupQtnData = selectedOption.secondFollowUpQuestion;
-      } else {
-        this.hasSecondFollowupQtn = false;
-        this.secondFollowupQtnData = null;
+    
+    const selectedOption = await this.followupQtnData?.options?.find((opt) => opt.value === this.followupQtnData.value);
+    if (selectedOption?.secondFollowUpQuestion) {
+      this.hasSecondFollowupQtn = true;
+      this.secondFollowupQtnData = selectedOption.secondFollowUpQuestion;
+      // Intialize second followup question response if user has already answered before
+      if (this.questionData?.savedQtn?.secondFollowUpQuestionResponse) {
+        if (this.secondFollowupQtnData.questionType === 'multi-select') {
+          const values = this.questionData?.savedQtn?.secondFollowUpQuestionResponse.split(',');
+          const optValues = values.map((val) => val.trim());
+          this.secondFollowupQtnData.value = optValues;
+        } else {
+          this.secondFollowupQtnData.value = this.questionData?.savedQtn?.secondFollowUpQuestionResponse;
+          this.secondFollowupQtnData.secondFollowupQuestionOtherInput = this.questionData?.savedQtn?.secondFollowUpQuestionOtherInput;
+        }
       }
+    } else {
+      this.hasSecondFollowupQtn = false;
+      this.secondFollowupQtnData = null;
     }
   }
 
