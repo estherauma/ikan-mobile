@@ -55,6 +55,18 @@ export class QuestionComponent  implements OnInit {
         });
       }
     }
+    
+    // Intialize question response if user has already answered before
+     if (this.questionData?.savedQtn?.questionResponse) {
+      if (this.questionData?.questionType === 'multi-select') {
+        const values = this.questionData?.savedQtn?.questionResponse.split(',');
+        const optValues = values.map((val) => val.trim());
+        this.questionData.value = optValues;
+      } else {
+        this.questionData.value = this.questionData?.savedQtn?.questionResponse;
+        this.questionData.otherInput = this.questionData?.savedQtn?.otherInput;
+      }
+    }
 
     this.getFollowupQtn();
     this.getSecondFollowupQtn();
