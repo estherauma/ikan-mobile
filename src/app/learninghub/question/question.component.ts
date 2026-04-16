@@ -57,33 +57,16 @@ export class QuestionComponent  implements OnInit {
     }
 
     this.getFollowupQtn();
+    this.initializeFollowupResponses();
+    
     this.getSecondFollowupQtn();
-    this.initializeResponses();
+    this.initializeSecondFollowupResponses();
   }
   
-  initializeResponses() {
-    this.questionData.value = null;
-    this.questionData.otherInput = null;
-    this.hasFollowupQtn = false;
-    this.followupQtnData = null;
-    this.hasSecondFollowupQtn = false;
-    this.secondFollowupQtnData = null;
-    
-    // Intialize question response if user has already answered before
-    if (this.questionData?.savedQtn?.questionResponse) {
-      if (this.questionData?.questionType === 'multi-select') {
-        const values = this.questionData?.savedQtn?.questionResponse.split(',');
-        const optValues = values.map((val) => val.trim());
-        this.questionData.value = optValues;
-      } else {
-        this.questionData.value = this.questionData?.savedQtn?.questionResponse;
-        this.questionData.otherInput = this.questionData?.savedQtn?.otherInput;
-      }
-    }
-    
+  initializeFollowupResponses() {
     // Intialize followup question response if user has already answered before
-    if (this.questionData?.savedQtn?.followUpQuestionResponse) {
-      if (this.followupQtnData.questionType === 'multi-select') {
+    if (this.hasFollowupQtn && this.questionData?.savedQtn?.followUpQuestionResponse) {
+      if (this.followupQtnData?.questionType === 'multi-select') {
         const values = this.questionData?.savedQtn?.followUpQuestionResponse.split(',');
         const optValues = values.map((val) => val.trim());
         this.followupQtnData.value = optValues;
@@ -92,10 +75,12 @@ export class QuestionComponent  implements OnInit {
         this.followupQtnData.followupQuestionOtherInput = this.questionData?.savedQtn?.followUpQuestionOtherInput;
       }
     }
-    
-    // Intialize second followup question response if user has already answered before
-    if (this.questionData?.savedQtn?.secondFollowUpQuestionResponse) {
-      if (this.secondFollowupQtnData.questionType === 'multi-select') {
+  }
+
+  initializeSecondFollowupResponses () {
+    // Initialize second followup question response if user has already answered before
+    if (this.hasSecondFollowupQtn && this.questionData?.savedQtn?.secondFollowUpQuestionResponse) {
+      if (this.secondFollowupQtnData?.questionType === 'multi-select') {
         const values = this.questionData?.savedQtn?.secondFollowUpQuestionResponse.split(',');
         const optValues = values.map((val) => val.trim());
         this.secondFollowupQtnData.value = optValues;
@@ -148,7 +133,6 @@ export class QuestionComponent  implements OnInit {
       this.hasFollowupQtn = false;
       this.followupQtnData = null;
     }
-    
     this.getSecondFollowupQtn();
   }
 
@@ -167,14 +151,13 @@ export class QuestionComponent  implements OnInit {
     this.getSecondFollowupQtn();
   }
 
-  async getSecondFollowupQtn() {
+  getSecondFollowupQtn() {
     if (!this.followupQtnData?.options) {
       this.hasSecondFollowupQtn = false;
       this.secondFollowupQtnData = null;
       return;
     }
-    
-    const selectedOption = await this.followupQtnData?.options?.find((opt) => opt.value === this.followupQtnData.value);
+    const selectedOption = this.followupQtnData?.options?.find((opt) => opt.value === this.followupQtnData.value);
     if (selectedOption?.secondFollowUpQuestion) {
       this.hasSecondFollowupQtn = true;
       this.secondFollowupQtnData = selectedOption.secondFollowUpQuestion;
