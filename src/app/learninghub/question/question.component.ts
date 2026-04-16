@@ -301,6 +301,9 @@ export class QuestionComponent  implements OnInit {
   }
 
   isOther(value: any): boolean {
-    return String(value).toLowerCase().trim().includes('other');
+    if (!value || typeof value !== 'string') {
+      return false;
+    }
+    return value.toLowerCase().trim().includes('other');
   }
 }
