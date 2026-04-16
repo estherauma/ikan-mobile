@@ -6,7 +6,7 @@
     <shared-video
       [data]="video"
       [networkStatus]="networkStatus"
-      [defaultThumbnail]="defaultThumbnail"
+      [defaultThumbnail]="getVideoThumbnail(video?.mediaData?.url)"
       playIcon="assets/icon/play.svg"
       (onPlay)="onPlay($event)"
       >
