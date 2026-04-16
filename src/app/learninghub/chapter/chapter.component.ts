@@ -130,6 +130,7 @@ export class ChapterComponent  implements OnInit {
               item.value = optValues;
             } else {
               item.value = savedQtn.questionResponse;
+              item.otherInput = savedQtn.otherInput;
             }
           }
         }
