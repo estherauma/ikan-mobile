@@ -55,9 +55,22 @@ export class QuestionComponent  implements OnInit {
         });
       }
     }
+
+    this.getFollowupQtn();
+    this.getSecondFollowupQtn();
+    this.initializeResponses();
+  }
+  
+  initializeResponses() {
+    this.questionData.value = null;
+    this.questionData.otherInput = null;
+    this.hasFollowupQtn = false;
+    this.followupQtnData = null;
+    this.hasSecondFollowupQtn = false;
+    this.secondFollowupQtnData = null;
     
     // Intialize question response if user has already answered before
-     if (this.questionData?.savedQtn?.questionResponse) {
+    if (this.questionData?.savedQtn?.questionResponse) {
       if (this.questionData?.questionType === 'multi-select') {
         const values = this.questionData?.savedQtn?.questionResponse.split(',');
         const optValues = values.map((val) => val.trim());
@@ -67,9 +80,30 @@ export class QuestionComponent  implements OnInit {
         this.questionData.otherInput = this.questionData?.savedQtn?.otherInput;
       }
     }
-
-    this.getFollowupQtn();
-    this.getSecondFollowupQtn();
+    
+    // Intialize followup question response if user has already answered before
+    if (this.questionData?.savedQtn?.followUpQuestionResponse) {
+      if (this.followupQtnData.questionType === 'multi-select') {
+        const values = this.questionData?.savedQtn?.followUpQuestionResponse.split(',');
+        const optValues = values.map((val) => val.trim());
+        this.followupQtnData.value = optValues;
+      } else {
+        this.followupQtnData.value = this.questionData?.savedQtn?.followUpQuestionResponse;
+        this.followupQtnData.followupQuestionOtherInput = this.questionData?.savedQtn?.followUpQuestionOtherInput;
+      }
+    }
+    
+    // Intialize second followup question response if user has already answered before
+    if (this.questionData?.savedQtn?.secondFollowUpQuestionResponse) {
+      if (this.secondFollowupQtnData.questionType === 'multi-select') {
+        const values = this.questionData?.savedQtn?.secondFollowUpQuestionResponse.split(',');
+        const optValues = values.map((val) => val.trim());
+        this.secondFollowupQtnData.value = optValues;
+      } else {
+        this.secondFollowupQtnData.value = this.questionData?.savedQtn?.secondFollowUpQuestionResponse;
+        this.secondFollowupQtnData.secondFollowupQuestionOtherInput = this.questionData?.savedQtn?.secondFollowUpQuestionOtherInput;
+      }
+    }
   }
 
   selectOption(value: string) {
@@ -110,17 +144,6 @@ export class QuestionComponent  implements OnInit {
       if (this.followupQtnData?.key === 'See the Get Help section to find a workers union you can consult with') {
         this.followupQtnData.questionType = 'helperText';
       }
-      // Intialize followup question response if user has already answered before
-      if (this.questionData?.savedQtn?.followUpQuestionResponse) {
-        if (this.followupQtnData.questionType === 'multi-select') {
-          const values = this.questionData?.savedQtn?.followUpQuestionResponse.split(',');
-          const optValues = values.map((val) => val.trim());
-          this.followupQtnData.value = optValues;
-        } else {
-          this.followupQtnData.value = this.questionData?.savedQtn?.followUpQuestionResponse;
-          this.followupQtnData.followupQuestionOtherInput = this.questionData?.savedQtn?.followUpQuestionOtherInput;
-        }
-      }
     } else {
       this.hasFollowupQtn = false;
       this.followupQtnData = null;
@@ -155,17 +178,6 @@ export class QuestionComponent  implements OnInit {
     if (selectedOption?.secondFollowUpQuestion) {
       this.hasSecondFollowupQtn = true;
       this.secondFollowupQtnData = selectedOption.secondFollowUpQuestion;
-      // Intialize second followup question response if user has already answered before
-      if (this.questionData?.savedQtn?.secondFollowUpQuestionResponse) {
-        if (this.secondFollowupQtnData.questionType === 'multi-select') {
-          const values = this.questionData?.savedQtn?.secondFollowUpQuestionResponse.split(',');
-          const optValues = values.map((val) => val.trim());
-          this.secondFollowupQtnData.value = optValues;
-        } else {
-          this.secondFollowupQtnData.value = this.questionData?.savedQtn?.secondFollowUpQuestionResponse;
-          this.secondFollowupQtnData.secondFollowupQuestionOtherInput = this.questionData?.savedQtn?.secondFollowUpQuestionOtherInput;
-        }
-      }
     } else {
       this.hasSecondFollowupQtn = false;
       this.secondFollowupQtnData = null;
