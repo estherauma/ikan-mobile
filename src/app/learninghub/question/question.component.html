@@ -95,7 +95,7 @@
                 class="input"
                 [placeholder]="commonText?.typeYourAnswerHere"
                 autofocus
-                [value]="unTranslatedQtn?.otherValue || ''"
+                [value]="questionData?.otherInput || ''"
                 (ionChange)="handleOtherInputChange($event)"
                 (ionInput)="handleOtherInputChange($event)"
               ></ion-input>
@@ -249,9 +249,9 @@
             class="input"
             [placeholder]="commonText?.typeYourAnswerHere"
             autofocus
-            [value]="unTranslatedQtn?.otherValue || ''"
-            (ionChange)="handleOtherInputChange($event)"
-            (ionInput)="handleOtherInputChange($event)"
+            [value]="followupQtnData?.followupQuestionOtherInput || ''"
+            (ionChange)="handleFollowUpQtnOtherInputChange($event)"
+            (ionInput)="handleFollowUpQtnOtherInputChange($event)"
           ></ion-input>
         </div>
       }
@@ -371,9 +371,9 @@
               class="input"
               [placeholder]="commonText?.typeYourAnswerHere"
               autofocus
-              [value]="unTranslatedQtn?.otherValue || ''"
-              (ionChange)="handleOtherInputChange($event)"
-              (ionInput)="handleOtherInputChange($event)"
+              [value]="secondFollowupQtnData?.secondFollowupQuestionOtherInput || ''"
+              (ionChange)="handleSecondFollowUpQtnOtherInputChange($event)"
+              (ionInput)="handleSecondFollowUpQtnOtherInputChange($event)"
             ></ion-input>
           </div>
         }
