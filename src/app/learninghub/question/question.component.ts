@@ -85,6 +85,11 @@ export class QuestionComponent  implements OnInit {
   }
 
   getFollowupQtn() {
+    if (!this.questionData?.options) {
+      this.hasFollowupQtn = false;
+      this.followupQtnData = null;
+      return;
+    }
     
     const selectedOption = this.questionData?.options?.find((opt) => opt.value === this.questionData.value);
     if (selectedOption?.followUpQuestion) {
@@ -128,6 +133,11 @@ export class QuestionComponent  implements OnInit {
   }
 
   async getSecondFollowupQtn() {
+    if (!this.followupQtnData?.options) {
+      this.hasSecondFollowupQtn = false;
+      this.secondFollowupQtnData = null;
+      return;
+    }
     
     const selectedOption = await this.followupQtnData?.options?.find((opt) => opt.value === this.followupQtnData.value);
     if (selectedOption?.secondFollowUpQuestion) {
