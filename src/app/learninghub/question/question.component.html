@@ -79,7 +79,7 @@
               >
               @for (option of questionData?.options; track option) {
                 <ion-item  lines="none">
-                  <ion-radio [value]="option?.value" labelPlacement="end" mode="md">{{ option?.option }}</ion-radio>
+                  <ion-radio [value]="option?.value" labelPlacement="end" justify="start" mode="md">{{ option?.option }}</ion-radio>
                 </ion-item>
               }
             </ion-radio-group>
@@ -90,7 +90,7 @@
             <div
               class="other-value-container"
               >
-              <p>{{ commonText?.otherPleaseSpecify || 'Please specify' }}</p>
+              <p>{{ commonText?.otherPleaseSpecify || 'Please specify---' }}</p>
               <ion-input
                 class="input"
                 [placeholder]="commonText?.typeYourAnswerHere"
@@ -116,7 +116,7 @@
                       (click)="selectOption(option?.value)"
                       [ngClass]="{ 'option-has-value': questionData?.value === option?.value }"
                       >
-                      <ion-radio slot="start" value="{{ option?.value }}" mode="md"></ion-radio>
+                      <ion-radio slot="start" value="{{ option?.value }}" justify="start" mode="md"></ion-radio>
                       <ion-icon [name]="option?.icon"></ion-icon>
                     </div>
                   </ion-col>
@@ -219,7 +219,7 @@
             >
             @for (option of followupQtnData?.options; track option) {
               <ion-item lines="none">
-                <ion-radio [value]="option?.value" labelPlacement="end" mode="md">{{ option?.option }}</ion-radio>
+                <ion-radio [value]="option?.value" labelPlacement="end" justify="start" mode="md">{{ option?.option }}</ion-radio>
               </ion-item>
             }
           </ion-radio-group>
@@ -341,7 +341,7 @@
               >
               @for (option of secondFollowupQtnData?.options; track option) {
                 <ion-item lines="none">
-                  <ion-radio [value]="option?.value" labelPlacement="end" mode="md">{{ option?.option }}</ion-radio>
+                  <ion-radio [value]="option?.value" labelPlacement="end" justify="start" mode="md">{{ option?.option }}</ion-radio>
                 </ion-item>
               }
             </ion-radio-group>
