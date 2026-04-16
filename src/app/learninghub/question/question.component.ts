@@ -64,7 +64,7 @@ export class QuestionComponent  implements OnInit {
   }
   
   initializeFollowupResponses() {
-    // Intialize followup question response if user has already answered before
+    // Initialize followup question response if user has already answered before
     if (this.hasFollowupQtn && this.questionData?.savedQtn?.followUpQuestionResponse) {
       if (this.followupQtnData?.questionType === 'multi-select') {
         const values = this.questionData?.savedQtn?.followUpQuestionResponse.split(',');
