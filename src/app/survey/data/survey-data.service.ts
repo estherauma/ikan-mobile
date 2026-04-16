@@ -133,10 +133,17 @@ export class SurveyDataService {
             questionType: data.rows.item(i).question_type,
             questionText: data.rows.item(i).question_text,
             questionResponse: data.rows.item(i).question_response,
+            otherInput: data.rows.item(i).other_input,
             followUpQuestionKey: data.rows.item(i).follow_up_question_key,
             followUpQuestionType: data.rows.item(i).follow_up_question_type,
             followUpQuestionText: data.rows.item(i).follow_up_question_text,
             followUpQuestionResponse: data.rows.item(i).follow_up_question_response,
+            followUpQuestionOtherInput: data.rows.item(i).follow_up_question_other_input,
+            secondFollowUpQuestionKey: data.rows.item(i).second_follow_up_question_key,
+            secondFollowUpQuestionType: data.rows.item(i).second_follow_up_question_type,
+            secondFollowUpQuestionText: data.rows.item(i).second_follow_up_question_text,
+            secondFollowUpQuestionResponse: data.rows.item(i).second_follow_up_question_response,
+            secondFollowUpQuestionOtherInput: data.rows.item(i).second_follow_up_question_other_input,
             createdAt: data.rows.item(i).created_at,
             updatedAt: data.rows.item(i).updated_at,
             createdBy: data.rows.item(i).created_by,
@@ -158,15 +165,17 @@ export class SurveyDataService {
 
   async createInlineQuestion(data) {
     const query = `INSERT INTO inline_questions (app_ref, user_id, sub_chapter, \
-      question_key, question_type, question_text, question_response, \
-      follow_up_question_key, follow_up_question_type, follow_up_question_text, follow_up_question_response, \
+      question_key, question_type, question_text, question_response, other_input, \
+      follow_up_question_key, follow_up_question_type, follow_up_question_text, follow_up_question_response, follow_up_question_other_input, \
+      second_follow_up_question_key, second_follow_up_question_type, second_follow_up_question_text, second_follow_up_question_response, second_follow_up_question_other_input, \
       created_at, updated_at, created_by, updated_by) \
-      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`;
+      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`;
     const now = new Date().toISOString();
     const user = await this.sharedMethods.getUserData();
     const params = [data.appRef, data.userId, data.subChapter, data.questionKey, data.questionType,
-      data.questionText, data.questionResponse, data.followUpQuestionKey, data.followUpQuestionType,
-      data.followUpQuestionText, data.followUpQuestionResponse, now, now, user.id, user.id];
+      data.questionText, data.questionResponse, data.otherInput, data.followUpQuestionKey, data.followUpQuestionType,
+      data.followUpQuestionText, data.followUpQuestionResponse, data.followUpQuestionOtherInput, data.secondFollowUpQuestionKey, data.secondFollowUpQuestionType,
+      data.secondFollowUpQuestionText, data.secondFollowUpQuestionResponse, data.secondFollowUpQuestionOtherInput, now, now, user.id, user.id];
 
     return this.db.executeSql(query, params).then(async(result) => {
       await this.retrieveInlineQuestions();
@@ -179,13 +188,15 @@ export class SurveyDataService {
 
   async saveOnlineInlineQuestion(data) {
     const query = `INSERT INTO inline_questions (app_ref, online_ref, user_id, sub_chapter, \
-      question_key, question_type, question_text, question_response, \
-      follow_up_question_key, follow_up_question_type, follow_up_question_text, follow_up_question_response, \
+      question_key, question_type, question_text, question_response, other_input, \
+      follow_up_question_key, follow_up_question_type, follow_up_question_text, follow_up_question_response, follow_up_question_other_input, \
+      second_follow_up_question_key, second_follow_up_question_type, second_follow_up_question_text, second_follow_up_question_response, second_follow_up_question_other_input, \
       created_at, updated_at, created_by, updated_by) \
-      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`;
+      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,)`;
     const params = [data.appRef, data.onlineRef, data.userId, data.subChapter, data.questionKey, data.questionType,
-      data.questionText, data.questionResponse, data.followUpQuestionKey, data.followUpQuestionType,
-      data.followUpQuestionText, data.followUpQuestionResponse, data.createdAt, data.updatedAt, data.createdBy, data.updatedBy];
+      data.questionText, data.questionResponse, data.otherInput, data.followUpQuestionKey, data.followUpQuestionType,
+      data.followUpQuestionText, data.followUpQuestionResponse, data.followUpQuestionOtherInput, data.secondFollowUpQuestionKey, data.secondFollowUpQuestionType,
+      data.secondFollowUpQuestionText, data.secondFollowUpQuestionResponse, data.secondFollowUpQuestionOtherInput, data.createdAt, data.updatedAt, data.createdBy, data.updatedBy];
 
     return this.db.executeSql(query, params).then(async(result) => {
       await this.retrieveInlineQuestions();
@@ -197,13 +208,15 @@ export class SurveyDataService {
   }
 
   async updateInlineQuestion(data) {
-    const query = `UPDATE inline_questions SET question_type = ?, question_text = ?, question_response = ?, \
-      follow_up_question_key = ?, follow_up_question_type = ?, follow_up_question_text = ?, \
-      follow_up_question_response = ?, updated_at = ?, updated_by = ? WHERE id = ?`;
+    const query = `UPDATE inline_questions SET question_type = ?, question_text = ?, question_response = ?, other_input = ?, \
+      follow_up_question_key = ?, follow_up_question_type = ?, follow_up_question_text = ?, follow_up_question_response = ?, follow_up_question_other_input = ?, \
+      second_follow_up_question_key = ?, second_follow_up_question_type = ?, second_follow_up_question_text = ?, second_follow_up_question_response = ?, second_follow_up_question_other_input = ?, \
+      updated_at = ?, updated_by = ? WHERE id = ?`;
     const now = new Date().toISOString();
     const user = await this.sharedMethods.getUserData();
-    const params = [data.questionType, data.questionText, data.questionResponse, data.followUpQuestionKey,
-      data.followUpQuestionType, data.followUpQuestionText, data.followUpQuestionResponse, data?.updatedAt || now, data?.updatedBy || user.id, data.id];
+    const params = [data.questionType, data.questionText, data.questionResponse, data.otherInput, data.followUpQuestionKey,
+      data.followUpQuestionType, data.followUpQuestionText, data.followUpQuestionResponse, data.followUpQuestionOtherInput, data.secondFollowUpQuestionKey, data.secondFollowUpQuestionType,
+      data.secondFollowUpQuestionText, data.secondFollowUpQuestionResponse, data.secondFollowUpQuestionOtherInput, data?.updatedAt || now, data?.updatedBy || user.id, data.id];
 
     return this.db.executeSql(query, params).then(async(result) => {
       await this.retrieveInlineQuestions();
