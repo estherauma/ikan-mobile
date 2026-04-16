@@ -25,3 +25,4 @@
 1760623224898_addWagesTable.sql
 1762887839206_alterWagesAddFields.sql
 1764233915611_createNotificationsTable.sql
+1776325109248_alterInlineQuestions.sql
