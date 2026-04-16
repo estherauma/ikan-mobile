@@ -192,7 +192,7 @@ export class SurveyDataService {
       follow_up_question_key, follow_up_question_type, follow_up_question_text, follow_up_question_response, follow_up_question_other_input, \
       second_follow_up_question_key, second_follow_up_question_type, second_follow_up_question_text, second_follow_up_question_response, second_follow_up_question_other_input, \
       created_at, updated_at, created_by, updated_by) \
-      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,)`;
+      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`;
     const params = [data.appRef, data.onlineRef, data.userId, data.subChapter, data.questionKey, data.questionType,
       data.questionText, data.questionResponse, data.otherInput, data.followUpQuestionKey, data.followUpQuestionType,
       data.followUpQuestionText, data.followUpQuestionResponse, data.followUpQuestionOtherInput, data.secondFollowUpQuestionKey, data.secondFollowUpQuestionType,
