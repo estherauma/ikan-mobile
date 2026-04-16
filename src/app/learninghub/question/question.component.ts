@@ -237,7 +237,7 @@ export class QuestionComponent  implements OnInit {
       const user = await this.sharedMethods.getUserData();
       const dataToSave = {
         appRef: this.sharedMethods.generateAppRef(),
-        userId: user?.id,
+        userId: user.id,
         subChapter: this.questionData?.subChapter?.split('-')?.[1] || this.questionData?.subChapter,
         questionKey: this.questionData?.key,
         questionType: this.questionData?.questionType,
@@ -315,5 +315,9 @@ export class QuestionComponent  implements OnInit {
         this.sharedMethods.showToast(this.commonText?.errSavingResponses);
       }
     }
+  }
+
+  isOther(value: any): boolean {
+    return String(value).toLowerCase().trim().includes('other');
   }
 }
