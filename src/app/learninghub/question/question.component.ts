@@ -78,6 +78,12 @@ export class QuestionComponent  implements OnInit {
     this.getSecondFollowupQtn();
   }
 
+  handleOtherInputChange(e) {
+    this.questionData.otherInput = e.detail.value;
+    this.getFollowupQtn();
+    this.getSecondFollowupQtn();
+  }
+
   getFollowupQtn() {
     // todo: clear followup value if value
     // if (this.questionData?.options) {
@@ -115,6 +121,11 @@ export class QuestionComponent  implements OnInit {
     this.getSecondFollowupQtn();
   }
 
+  handleFollowUpQtnOtherInputChange(e) {
+    this.followupQtnData.followupQuestionOtherInput = e.detail.value;
+    this.getSecondFollowupQtn();
+  }
+
   async getSecondFollowupQtn() {
     if (this.followupQtnData?.options) {
       const selectedOption = await this.followupQtnData?.options.find((opt) => opt.value === this.followupQtnData.value);
@@ -136,6 +147,10 @@ export class QuestionComponent  implements OnInit {
     this.secondFollowupQtnData.value = e.detail.value;
   }
 
+  handleSecondFollowUpQtnOtherInputChange(e) {
+    this.secondFollowupQtnData.secondFollowupQuestionOtherInput = e.detail.value;
+  }
+
   // Question responses are saved even if followup question is not answered
   // Uncomment code below to only submit if followup question is also answered
   async submitAnswer() {
@@ -150,9 +165,11 @@ export class QuestionComponent  implements OnInit {
     //   return;
     // }
 
+    // QUESTION
     if (this.questionData && this.questionData?.value && Array.isArray(this.questionData?.value)) {
       this.questionData.value = this.questionData.value.length ? this.questionData.value.join(', ') : null;
     }
+    // FOLLOWUP QUESTION
     if (this.followupQtnData) {
       const unTranslatedFollowupQtnText = this.unTranslatedQtn?.options?.find(
         (opt) => opt?.followUpQuestion?.key === this.followupQtnData?.key)?.followUpQuestion;
@@ -161,22 +178,39 @@ export class QuestionComponent  implements OnInit {
     if (this.followupQtnData && this.followupQtnData?.value && Array.isArray(this.followupQtnData?.value)) {
       this.followupQtnData.value = this.followupQtnData.value.length ? this.followupQtnData.value.join(', ') : null;
     }
+    // SECOND FOLLOWUP QUESTION
+    if (this.secondFollowupQtnData) {
+      const unTranslatedSecondFollowupQtnText = this.followupQtnData?.options?.find(
+        (opt) => opt?.secondFollowUpQuestion?.key === this.secondFollowupQtnData?.key)?.secondFollowUpQuestion;
+      this.secondFollowupQtnData.unTranslatedQuestionText = unTranslatedSecondFollowupQtnText?.question;
+    }
+    if (this.secondFollowupQtnData && this.secondFollowupQtnData?.value && Array.isArray(this.secondFollowupQtnData?.value)) {
+      this.secondFollowupQtnData.value = this.secondFollowupQtnData.value.length ? this.secondFollowupQtnData.value.join(', ') : null;
+    }
 
     if (!this.questionData?.savedQtn) {
       const user = await this.sharedMethods.getUserData();
       const dataToSave = {
         appRef: this.sharedMethods.generateAppRef(),
-        userId: user.id,
+        userId: user?.id,
         subChapter: this.questionData?.subChapter?.split('-')?.[1] || this.questionData?.subChapter,
         questionKey: this.questionData?.key,
         questionType: this.questionData?.questionType,
         questionText: this.unTranslatedQtn?.question || this.questionData?.question,
         questionResponse: this.questionData?.value,
+        otherInput: this.questionData?.otherInput,
         followUpQuestionKey: this.followupQtnData ? this.followupQtnData?.key : null,
         followUpQuestionType: this.followupQtnData ? this.followupQtnData?.questionType : null,
         followUpQuestionText: this.followupQtnData ?
           (this.followupQtnData?.unTranslatedQuestionText || this.followupQtnData?.question) : null,
         followUpQuestionResponse: this.followupQtnData ? this.followupQtnData?.value : null,
+        followUpQuestionOtherInput: this.followupQtnData ? this.followupQtnData?.followupQuestionOtherInput : null,
+        secondFollowUpQuestionKey: this.secondFollowupQtnData ? this.secondFollowupQtnData?.key : null,
+        secondFollowUpQuestionType: this.secondFollowupQtnData ? this.secondFollowupQtnData?.questionType : null,
+        secondFollowUpQuestionText: this.secondFollowupQtnData ?
+          (this.secondFollowupQtnData?.unTranslatedQuestionText || this.secondFollowupQtnData?.question) : null,
+        secondFollowUpQuestionResponse: this.secondFollowupQtnData ? this.secondFollowupQtnData?.value : null,
+        secondFollowUpQuestionOtherInput: this.secondFollowupQtnData ? this.secondFollowupQtnData?.secondFollowupQuestionOtherInput : null,
       };
 
       const insertId = await this.surveyDataService.createInlineQuestion(dataToSave);
@@ -192,10 +226,17 @@ export class QuestionComponent  implements OnInit {
         savedQtn?.questionResponse === this.questionData?.value &&
         savedQtn?.questionType === this.questionData?.questionType &&
         savedQtn?.questionText === this.unTranslatedQtn?.question &&
+        savedQtn?.otherInput === this.questionData?.otherInput &&
         savedQtn?.followUpQuestionResponse === this.followupQtnData?.value &&
         savedQtn?.followUpQuestionKey === this.followupQtnData?.key &&
         savedQtn?.followUpQuestionType === this.followupQtnData?.questionType &&
-        savedQtn?.followUpQuestionText === this.followupQtnData?.unTranslatedQuestionText
+        savedQtn?.followUpQuestionText === this.followupQtnData?.unTranslatedQuestionText &&
+        savedQtn?.followUpQuestionOtherInput === this.followupQtnData?.followupQuestionOtherInput &&
+        savedQtn?.secondFollowUpQuestionResponse === this.secondFollowupQtnData?.value &&
+        savedQtn?.secondFollowUpQuestionKey === this.secondFollowupQtnData?.key &&
+        savedQtn?.secondFollowUpQuestionType === this.secondFollowupQtnData?.questionType &&
+        savedQtn?.secondFollowUpQuestionText === this.secondFollowupQtnData?.unTranslatedQuestionText &&
+        savedQtn?.secondFollowUpQuestionOtherInput === this.secondFollowupQtnData?.secondFollowupQuestionOtherInput
       ) {
         await this.modalCtrl?.dismiss();
         return;
@@ -206,11 +247,19 @@ export class QuestionComponent  implements OnInit {
         questionResponse: this.questionData?.value,
         questionType: this.questionData?.questionType,
         questionText: this.unTranslatedQtn?.question || this.questionData?.question,
+        otherInput: this.questionData?.otherInput,
         followUpQuestionKey: this.followupQtnData ? this.followupQtnData?.key : null,
         followUpQuestionType: this.followupQtnData ? this.followupQtnData?.questionType : null,
         followUpQuestionText: this.followupQtnData ?
           (this.followupQtnData?.unTranslatedQuestionText || this.followupQtnData?.question) : null,
         followUpQuestionResponse: this.followupQtnData ? this.followupQtnData?.value : null,
+        followUpQuestionOtherInput: this.followupQtnData ? this.followupQtnData?.followupQuestionOtherInput : null,
+        secondFollowUpQuestionKey: this.secondFollowupQtnData ? this.secondFollowupQtnData?.key : null,
+        secondFollowUpQuestionType: this.secondFollowupQtnData ? this.secondFollowupQtnData?.questionType : null,
+        secondFollowUpQuestionText: this.secondFollowupQtnData ?
+          (this.secondFollowupQtnData?.unTranslatedQuestionText || this.secondFollowupQtnData?.question) : null,
+        secondFollowUpQuestionResponse: this.secondFollowupQtnData ? this.secondFollowupQtnData?.value : null,
+        secondFollowUpQuestionOtherInput: this.secondFollowupQtnData ? this.secondFollowupQtnData?.secondFollowupQuestionOtherInput : null,
       };
 
       const updateId = await this.surveyDataService.updateInlineQuestion(dataToUpdate);
@@ -221,9 +270,5 @@ export class QuestionComponent  implements OnInit {
         this.sharedMethods.showToast(this.commonText?.errSavingResponses);
       }
     }
-  }
-
-  handleOtherInputChange(e) {
-    // this.questionData.value = e.detail.value;
   }
 }
