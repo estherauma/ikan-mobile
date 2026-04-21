@@ -74,7 +74,7 @@ export class WorkerPage implements OnInit {
     await this.contentService.setUpAppData();
     this.commonText = this.contentService?.commonText;
     this.user = await this.sharedmethods.readDataFromStorage(StorageKeys.userData);
-    this.name = `${this.commonText?.hi || ''} ${this.user?.firstName || ''}`;
+    this.name = `${this.commonText?.hi || ''} ${this.user?.firstName || this.user?.lastName || ''}`;
     await this.contentService.updateCurrentLanguage();
     const menuContent = await this.contentService.getMenuContent();
 
