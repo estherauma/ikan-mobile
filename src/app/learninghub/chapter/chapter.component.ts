@@ -22,6 +22,7 @@ export class ChapterComponent  implements OnInit {
   commonText: any;
   user: UserData;
   isWorker = false;
+  isPublicUser = false;
   isVesselOwner = false;
   savedLearningHubProgress: any;
 
@@ -57,6 +58,7 @@ export class ChapterComponent  implements OnInit {
     this.user = await this.sharedmethods.getUserData();
     this.isVesselOwner = this.user?.role === UserRole.vesselOwner;
     this.isWorker = this.user?.role === UserRole.worker;
+    this.isPublicUser = this.user?.role === UserRole.public;
     this.commonText = await this.contentService.commonText;
     this.pageData =  await this.contentService.getContentByPropertyName(this.chapterId);
     const clickableList = (this.pageData?.pageContent?.find((e) => e.type === 'clickable_list'));
@@ -91,14 +93,14 @@ export class ChapterComponent  implements OnInit {
   }
 
   /**
-   * Take quiz option is only displayed for the worker role
+   * Take quiz option is only displayed for the worker and public roles
    */
   async getQuizDetails(subChapterId) {
     const details = {
       displayQuiz: false,
       quizCompleted: false,
     };
-    if (this.isWorker) {
+    if (this.isWorker || this.isPublicUser) {
       const subChapterPageData = this.contentService.getContentByPropertyName(subChapterId);
       const subChapterPageContent = subChapterPageData?.pageContent;
       const qtnsToDisplay = subChapterPageContent?.filter((item) => item?.type === 'questions' && item?.displayquestion);
@@ -130,6 +132,7 @@ export class ChapterComponent  implements OnInit {
               item.value = optValues;
             } else {
               item.value = savedQtn.questionResponse;
+              item.otherInput = savedQtn.otherInput;
             }
           }
         }

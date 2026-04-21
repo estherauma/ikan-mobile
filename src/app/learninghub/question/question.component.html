@@ -79,11 +79,28 @@
               >
               @for (option of questionData?.options; track option) {
                 <ion-item  lines="none">
-                  <ion-radio [value]="option?.value" labelPlacement="end" mode="md">{{ option?.option }}</ion-radio>
+                  <ion-radio [value]="option?.value" labelPlacement="end" justify="start" mode="md">{{ option?.option }}</ion-radio>
                 </ion-item>
               }
             </ion-radio-group>
           </div>
+
+          <!-- other value -->
+          @if (isOther(questionData?.value) && (questionData?.questionType === 'radio' || questionData?.questionType === 'select')) {
+            <div
+              class="other-value-container"
+              >
+              <p>{{ commonText?.pleaseSpecifyOther || 'Please specify other:' }}</p>
+              <ion-input
+                class="input"
+                [placeholder]="commonText?.typeYourAnswerHere"
+                autofocus
+                [value]="questionData?.otherInput || ''"
+                (ionChange)="handleOtherInputChange($event)"
+                (ionInput)="handleOtherInputChange($event)"
+              ></ion-input>
+            </div>
+          }
         }
 
         @if (isYesNoValue && (questionData?.questionType === 'radio' || questionData?.questionType === 'select')) {
@@ -99,7 +116,7 @@
                       (click)="selectOption(option?.value)"
                       [ngClass]="{ 'option-has-value': questionData?.value === option?.value }"
                       >
-                      <ion-radio slot="start" value="{{ option?.value }}" mode="md"></ion-radio>
+                      <ion-radio slot="start" value="{{ option?.value }}" justify="start" mode="md"></ion-radio>
                       <ion-icon [name]="option?.icon"></ion-icon>
                     </div>
                   </ion-col>
@@ -202,17 +219,169 @@
             >
             @for (option of followupQtnData?.options; track option) {
               <ion-item lines="none">
-                <ion-radio [value]="option?.value" labelPlacement="end" mode="md">{{ option?.option }}</ion-radio>
+                <ion-radio [value]="option?.value" labelPlacement="end" justify="start" mode="md">{{ option?.option }}</ion-radio>
               </ion-item>
             }
           </ion-radio-group>
         </div>
       }
-      <ion-row class="btn-row">
-        <ion-col size="12">
-          <ion-button color="primary" expand="block" (click)="submitAnswer()">{{ commonText?.submit }}</ion-button>
-        </ion-col>
-      </ion-row>
+
+      @if (followupQtnData?.questionType === 'conditional-text') {
+        <div class="conditional-text-container">
+          <em>{{ followupQtnData?.question }}</em>
+        </div>
+      }
+
+      @if (followupQtnData?.questionType === 'link' && followupQtnData?.questionLink) {
+        <div class="conditional-text-container">
+          <a href="{{ followupQtnData?.questionLink }}">{{ followupQtnData?.question }}</a>
+        </div>
+      }
+
+      <!-- other value -->
+      @if (isOther(followupQtnData?.value) && (followupQtnData?.questionType === 'radio' || followupQtnData?.questionType === 'select')) {
+        <div
+          class="other-value-container"
+          >
+          <p>{{ commonText?.pleaseSpecifyOther || 'Please specify other:' }}</p>
+          <ion-input
+            class="input"
+            [placeholder]="commonText?.typeYourAnswerHere"
+            autofocus
+            [value]="followupQtnData?.followupQuestionOtherInput || ''"
+            (ionChange)="handleFollowUpQtnOtherInputChange($event)"
+            (ionInput)="handleFollowUpQtnOtherInputChange($event)"
+          ></ion-input>
+        </div>
+      }
+      
+      @if (!hasSecondFollowupQtn) {
+        <ion-row class="btn-row">
+          <ion-col size="12">
+            <ion-button color="primary" expand="block" (click)="submitAnswer()">{{ commonText?.submit }}</ion-button>
+          </ion-col>
+        </ion-row>
+      }
     </div>
+
+    <!-- Second followup question -->
+    @if (hasSecondFollowupQtn) {
+      <div
+        class="second-followup-qtn-section"
+        >
+        @if (secondFollowupQtnData?.questionType === 'helperText') {
+          <div class="helper-text-container">
+            <p>{{ secondFollowupQtnData?.question }}</p>
+          </div>
+        }
+        @if (secondFollowupQtnData?.questionType === 'text') {
+          <div
+            class="text-container"
+            >
+            <p>{{ secondFollowupQtnData?.question }}</p>
+            <ion-input
+              class="input"
+              [placeholder]="commonText?.typeYourAnswerHere"
+              autofocus
+              [value]="secondFollowupQtnData?.value || ''"
+              (ionChange)="handleSecondFollowUpInputChange($event)"
+              (ionInput)="handleSecondFollowUpInputChange($event)"
+            ></ion-input>
+          </div>
+        }
+        @if (secondFollowupQtnData?.questionType === 'select') {
+          <div
+            class="select-container"
+            >
+            <p>{{ secondFollowupQtnData?.question }}</p>
+            <ion-select
+              class="input"
+              label-placement="stacked"
+              [placeholder]="commonText?.pleaseSelect"
+              [okText]="commonText?.ok"
+              [cancelText]="commonText?.cancel"
+              [value]="secondFollowupQtnData?.value ? secondFollowupQtnData?.value : ''"
+              (ionChange)="handleSecondFollowUpSelectChange($event)"
+              >
+              @for (option of secondFollowupQtnData?.options; track option) {
+                <ion-select-option value="{{ option?.value }}">{{ option?.option }}</ion-select-option>
+              }
+            </ion-select>
+          </div>
+        }
+        @if (secondFollowupQtnData?.questionType === 'multi-select') {
+          <div
+            class="select-container"
+            >
+            <p>{{ secondFollowupQtnData?.question }}</p>
+            <ion-select
+              class="input"
+              label-placement="stacked"
+              [placeholder]="commonText?.pleaseSelect"
+              [okText]="commonText?.ok"
+              [cancelText]="commonText?.cancel"
+              multiple
+              [value]="secondFollowupQtnData?.value || []"
+              (ionChange)="handleSecondFollowUpSelectChange($event)"
+              >
+              @for (option of secondFollowupQtnData?.options; track option) {
+                <ion-select-option value="{{ option?.value }}">{{ option?.option }}</ion-select-option>
+              }
+            </ion-select>
+          </div>
+        }
+        @if (secondFollowupQtnData?.questionType === 'radio') {
+          <div
+            >
+            <p>{{ secondFollowupQtnData?.question }}</p>
+            <ion-radio-group
+              [value]="secondFollowupQtnData?.value || ''"
+              (ionChange)="handleSecondFollowUpSelectChange($event)"
+              >
+              @for (option of secondFollowupQtnData?.options; track option) {
+                <ion-item lines="none">
+                  <ion-radio [value]="option?.value" labelPlacement="end" justify="start" mode="md">{{ option?.option }}</ion-radio>
+                </ion-item>
+              }
+            </ion-radio-group>
+          </div>
+        }
+
+        @if (secondFollowupQtnData?.questionType === 'conditional-text') {
+          <div class="conditional-text-container">
+            <em>{{ secondFollowupQtnData?.question }}</em>
+          </div>
+        }
+
+        @if (secondFollowupQtnData?.questionType === 'link' && secondFollowupQtnData?.questionLink) {
+          <div class="conditional-text-container">
+            <a href="{{ secondFollowupQtnData?.questionLink }}">{{ secondFollowupQtnData?.question }}</a>
+          </div>
+        }
+
+        <!-- other value -->
+        @if (isOther(secondFollowupQtnData?.value) && (secondFollowupQtnData?.questionType === 'radio' || secondFollowupQtnData?.questionType === 'select')) {
+          <div
+            class="other-value-container"
+          >
+            <p>{{ commonText?.pleaseSpecifyOther || 'Please specify other:' }}</p>
+            <ion-input
+              class="input"
+              [placeholder]="commonText?.typeYourAnswerHere"
+              autofocus
+              [value]="secondFollowupQtnData?.secondFollowupQuestionOtherInput || ''"
+              (ionChange)="handleSecondFollowUpQtnOtherInputChange($event)"
+              (ionInput)="handleSecondFollowUpQtnOtherInputChange($event)"
+            ></ion-input>
+          </div>
+        }
+        
+        <ion-row class="btn-row">
+          <ion-col size="12">
+            <ion-button color="primary" expand="block" (click)="submitAnswer()">{{ commonText?.submit }}</ion-button>
+          </ion-col>
+        </ion-row>
+      </div>
+    }
   }
 </div>

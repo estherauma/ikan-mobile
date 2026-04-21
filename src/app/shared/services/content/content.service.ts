@@ -382,6 +382,11 @@ export class ContentService {
               if (opt?.followUpQuestion) {
                 opt?.followUpQuestion?.options?.forEach((fOpt, j) => {
                   fOpt.value = englishOptions[i]?.followUpQuestion?.options[j]?.option;
+                  if (fOpt?.secondFollowUpQuestion) {
+                    fOpt?.secondFollowUpQuestion?.options?.forEach((sOpt, k) => {
+                      sOpt.value = englishOptions[i]?.followUpQuestion?.options[j]?.secondFollowUpQuestion?.options[k]?.option;
+                    });
+                  }
                 });
               }
             });
