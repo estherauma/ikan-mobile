@@ -178,12 +178,15 @@ export class LoginPage extends BaseformPage implements OnInit {
           // set role-set flag
           await this.sharedMethods.saveDataToStorage(StorageKeys.isRoleSet, true);
 
-          // generate learning hub progress data
-          await this.contentService.generateLearningHubProgressData();
-
           // sync data
           await this.sharedMethods.showWaitLoader(this.contentService.commonText?.syncingData || 'Syncing data...');
           await this.syncService.syncData();
+
+          // generate learning hub progress data
+          // This should be after the sync to ensure that we have the latest progress data from the server.
+          // This will only generate data if it doesn't already exist.
+          await this.contentService.generateLearningHubProgressData();
+          
           await this.sharedMethods.dismissLoader();
           
           // redirect to dashboard based on role
