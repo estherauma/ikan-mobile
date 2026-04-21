@@ -4,7 +4,8 @@ ion-content {
   .page-content {
     flex: auto;
     background: url("./../../../assets/imgs/auth_background.png"), #f5f5f5;
-    background-repeat: round;
+    background-repeat: no-repeat;
+    background-size: cover;
     padding-top: 5px;
     padding-bottom: 50px;
 

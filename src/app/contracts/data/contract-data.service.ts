@@ -76,7 +76,8 @@ export class ContractDataService {
           });
         }
       }
-      contracts.reverse();
+      // order by createdAt in descending order
+      contracts.sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
       this.contractsObs.next(contracts);
     }).catch((e) => console.log(e));
   }
