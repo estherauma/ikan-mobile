@@ -269,7 +269,7 @@
           }
           
           <swiper-slide class="slide submit-slide">
-            @if (wageDetails.payslip.endsWith('.pdf') && !isPayslipSigned) {
+            @if (wageDetails?.payslip?.endsWith('.pdf') && !isPayslipSigned) {
               <ion-button class="submit-btn" shape="round" (click)="openSigningModal()">
                 {{ paymentsCommonText?.signPayslip || 'Sign Payslip' }}
               </ion-button>
@@ -282,7 +282,7 @@
               [disabled]="
                 !crewReceivedCorrectAmountValue ||
                 (hasBeneficiary && !beneficiaryReceivedCorrectAmountValue) ||
-                (wageDetails.payslip.endsWith('.pdf') && !isPayslipSigned)
+                (wageDetails?.payslip?.endsWith('.pdf') && !isPayslipSigned)
               "
             >
               {{ paymentsCommonText?.submitResponses }}
