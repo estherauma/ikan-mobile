@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { ModalController } from '@ionic/angular';
+import { TrainingVideoComponent } from 'src/app/learninghub/training-video/training-video.component';
 import { AnalyticsService } from 'src/app/shared/services/analytics/analytics.service';
 import { PageEventNames } from 'src/app/shared/services/analytics/event-names';
 import { ContentService } from 'src/app/shared/services/content/content.service';
@@ -33,7 +35,8 @@ export class PublicComponent  implements OnInit {
     public sharedmethods: SharedmethodsService,
     public router: Router,
     public localNotifications: LocalNotificationsService,
-    public analytics: AnalyticsService
+    public analytics: AnalyticsService,
+    public modalController: ModalController,
   ) {
     this.contentService.watchContent().subscribe(async(resp) => {
       if (resp) {
@@ -71,5 +74,14 @@ export class PublicComponent  implements OnInit {
 
   goToProfile() {
     this.router.navigate(['profile']);
+  }
+    
+  async showTrainingVideo() {
+    const modal = await this.modalController.create({
+      component: TrainingVideoComponent,
+      cssClass: 'tfa-training-video',
+      backdropDismiss: true,
+    });
+    modal.present();
   }
 }
