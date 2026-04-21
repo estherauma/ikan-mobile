@@ -60,7 +60,31 @@ export class TrainingVideoComponent extends BaseformPage  implements OnInit {
   }
 
   formatVideoUrl(url: string) {
-    return url?.replace('watch?v=', 'embed/');
+    if (!url) { return ''; }
+    
+    // For youtube links, convert to embed format
+    if (url.includes('youtube.com') || url.includes('youtu.be')) {
+      return url?.replace('watch?v=', 'embed/');
+    }
+    
+    return url; // + (url ? '#t=0.001' : ''); // Append a timestamp to force thumbnail generation
+  }
+
+  getVideoThumbnail(url: string) {
+    if (!url) { return this.defaultThumbnail; }
+    
+    if (url.includes('youtube.com') || url.includes('youtu.be')) {
+      const videoId = this.extractYouTubeVideoId(url);
+      return `https://img.youtube.com/vi/${videoId}/0.jpg`;
+    }
+    
+    return 'assets/icon/default-thumbnail.jpg';
+  }
+
+  extractYouTubeVideoId(url: string): string {
+    const regex = /(?:youtube\.com\/(?:[^\/\n\s]+\/\S+\/|(?:v|e(?:mbed)?)\/|.*[?&]v=)|youtu\.be\/)([a-zA-Z0-9_-]{11})/;
+    const match = url.match(regex);
+    return match ? match[1] : null;
   }
 
   onPlay(data) {}

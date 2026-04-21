@@ -3,7 +3,10 @@ ion-content {
   .page-content {
     flex: auto;
     background: url("./../../../assets/imgs/auth_background.png"), #f5f5f5;
+    background-repeat: no-repeat;
+    background-size: cover;
     padding-top: 5px;
+    padding-bottom: 50px;
 
     .notif-btn-wrapper {
       display: flex;
@@ -12,31 +15,76 @@ ion-content {
     }
 
     .cards-wrapper {
-      margin-top: 50px;
-      .hub-content {
-        border-radius: 20px;
-        min-height: 150px;
+      ion-label {
+        font-size: 1rem;
+        font-weight: bold;
+        margin: 10px;
+        color: white;
+        font-family: 'GatwickBold';
       }
 
       ion-card {
+        position: relative;
         border-radius: 20px;
         margin: 10px;
 
-        .card-title {
-          color: #3565ff;
-          font-family: "GatwickBold";
-          font-weight: 700;
-          font-size: 1rem;
-        }
-
-        ion-thumbnail {
-          width: 40px;
-          height: 40px;
-          img {
-            width: 100%;
-            height: 100%;
-            object-fit: contain;
+        ion-card-content {
+          min-height: 100px;
+          .card-title {
+            color: #3565ff;
+            font-weight: bold;
+            font-size: 1rem;
+            font-family: 'GatwickBold';
           }
+          .card-icon {
+            font-size: 1.6rem;
+            color: #3565ff;
+            position: absolute;
+            bottom: 10px;
+            right: 10px;
+          }
+        }
+      }
+      .work-journey-card {
+        ion-card-content {
+          .card-title {
+            font-size: 1.2rem;
+          }
+          .card-icon {
+            font-size: 2rem;
+          }
+          .card-image {
+            width: 56px;
+            height: 56px;
+            position: absolute;
+            bottom: 10px;
+            right: 10px;
+          }
+        }
+      }
+      .contract-card,
+      .learninghub-card,
+      .my-documents-card {
+        margin-right: 5px;
+      }
+      .wage-payments-card,
+      .tfa-video-card {
+        margin-left: 5px;
+      }
+      .my-documents-card {
+        margin-top: 5px;
+      }
+
+      hr {
+        margin: 15px 0;
+        border: none;
+        border-top: 2px solid var(--ikan_lightblue_100);
+      }
+
+      ion-row {
+        margin-top: 10px;
+        ion-col {
+          padding: 0;
         }
       }
     }

@@ -16,12 +16,23 @@
     --padding-end: 10px;
     min-height: 55px;
   }
-  .followup-qtn-section {
-    .text-container {
+  .followup-qtn-section,
+  .second-followup-qtn-section {
+    .text-container,
+    .select-container {
+      margin-top: 10px;
       p {
         color: #191970;
         text-align: center;
       }
+    }
+  }
+  .conditional-text-container {
+    margin: 20px 15px 0 15px;
+    p,
+    em {
+      color: #191970;
+      text-align: center;
     }
   }
   .btn-row {
