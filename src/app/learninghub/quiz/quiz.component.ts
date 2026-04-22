@@ -109,7 +109,8 @@ export class QuizComponent  implements OnInit {
       cssClass: 'tuna-modal quiz-qtn-modal',
       component: QuestionComponent,
       componentProps: {
-        questionData
+        questionData,
+        userRole: this.userRole,
       }
     });
     await modal.present();
