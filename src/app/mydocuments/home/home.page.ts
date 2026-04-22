@@ -17,6 +17,7 @@ export class HomePage implements OnInit {
   docsCommonText: any;
   pageTitle: string = 'Documents';
   activeSegment: Segment = 'essentials';
+  progressPercentage = 0;
 
   constructor(
     public router: Router,

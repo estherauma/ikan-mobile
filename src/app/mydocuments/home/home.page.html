@@ -9,6 +9,17 @@
     </ion-row>
   </div>
 
+  <div class="progress-wrapper">
+    <app-progress-circle
+      class="my-docs-progress"
+      [percentage]="progressPercentage"
+      outerBorderColor="unset"
+      innerBorderColor="unset"
+      outerProgressBackground="var(--ikan_light_gray)"
+    ></app-progress-circle>
+    <p>{{ commonText?.complete }}</p>
+  </div>
+
   <div class="segments-wrapper">
     <div class="segments">
       <ion-segment (ionChange)="onSegmentChange($event)" [value]="activeSegment">
