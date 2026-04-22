@@ -18,6 +18,7 @@ export class QuizComponent  implements OnInit {
   commonText: any;
   quizData = [];
   user: UserData;
+  userRole: any;
 
   constructor(
     public contentService: ContentService,
@@ -32,6 +33,7 @@ export class QuizComponent  implements OnInit {
 
   async pageSetup() {
     this.user = await this.sharedmethods.getUserData();
+    this.userRole = this.user?.role;
     this.commonText = await this.contentService.commonText;
     // this.pageData =  await this.contentService.getContentByPropertyName('quiz');
     this.quizData = await this.getQuizContent();
@@ -56,7 +58,7 @@ export class QuizComponent  implements OnInit {
         const subChapterTitle = item?.label?.substring(item?.label?.indexOf(' ') + 1) || '';
         const subChapterData = this.contentService.getContentByPropertyName(subChapterId);
         const subChapterPageContent = subChapterData?.pageContent;
-        const qtnsToDisplay = subChapterPageContent?.filter((x) => x?.type === 'questions' && x?.displayquestion);
+        const qtnsToDisplay = subChapterPageContent?.filter((x) => x?.type === 'questions' && x?.displayquestion && (!this.userRole || !x?.roles || x?.roles?.includes(this.userRole)));
 
         if (qtnsToDisplay?.length) {
           // get question values
@@ -107,7 +109,8 @@ export class QuizComponent  implements OnInit {
       cssClass: 'tuna-modal quiz-qtn-modal',
       component: QuestionComponent,
       componentProps: {
-        questionData
+        questionData,
+        userRole: this.userRole,
       }
     });
     await modal.present();

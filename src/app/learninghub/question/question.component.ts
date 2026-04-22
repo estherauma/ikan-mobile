@@ -21,6 +21,7 @@ export class QuestionComponent  implements OnInit {
   unTranslatedQtn: any;
   hasSecondFollowupQtn = false;
   secondFollowupQtnData: any;
+  userRole: any;
 
   constructor(
     public contentService: ContentService,
@@ -35,6 +36,7 @@ export class QuestionComponent  implements OnInit {
   ngOnInit() {
     if (this.navParams) {
       this.questionData = this.navParams.get('questionData');
+      this.userRole = this.navParams.get('userRole');
     }
 
     this.commonText = this.contentService?.commonText;
@@ -123,7 +125,8 @@ export class QuestionComponent  implements OnInit {
     }
     
     const selectedOption = this.questionData?.options?.find((opt) => opt.value === this.questionData.value);
-    if (selectedOption?.followUpQuestion) {
+    console.log('selectedOption.....', selectedOption);
+    if (selectedOption?.followUpQuestion && (!this.userRole || !selectedOption?.followUpQuestion?.roles || selectedOption?.followUpQuestion?.roles?.includes(this.userRole))) {
       this.hasFollowupQtn = true;
       this.followupQtnData = selectedOption.followUpQuestion;
       if (this.followupQtnData?.key === 'See the Get Help section to find a workers union you can consult with') {
@@ -158,7 +161,7 @@ export class QuestionComponent  implements OnInit {
       return;
     }
     const selectedOption = this.followupQtnData?.options?.find((opt) => opt.value === this.followupQtnData.value);
-    if (selectedOption?.secondFollowUpQuestion) {
+    if (selectedOption?.secondFollowUpQuestion && (!this.userRole || !selectedOption?.secondFollowUpQuestion?.roles || selectedOption?.secondFollowUpQuestion?.roles?.includes(this.userRole))) {
       this.hasSecondFollowupQtn = true;
       this.secondFollowupQtnData = selectedOption.secondFollowUpQuestion;
     } else {
