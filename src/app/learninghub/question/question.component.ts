@@ -311,7 +311,14 @@ export class QuestionComponent  implements OnInit {
   }
 
   async goToLink(link) {
-    this.router.navigate([link]);
+    // check if link is external or internal
+    const isExternal = link.startsWith('http://') || link.startsWith('https://');
+    if (isExternal) {
+      window.open(link, '_blank');
+      return;
+    } else {
+      this.router.navigate([link]);
+    }
     await this.modalCtrl?.dismiss();
     // submit answers
     await this.submitAnswer();
