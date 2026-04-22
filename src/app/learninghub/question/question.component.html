@@ -234,7 +234,7 @@
 
       @if (followupQtnData?.questionType === 'link' && followupQtnData?.questionLink) {
         <div class="conditional-text-container">
-          <a href="{{ followupQtnData?.questionLink }}">{{ followupQtnData?.question }}</a>
+          <a (click)="goToLink(followupQtnData?.questionLink)">{{ followupQtnData?.question }}</a>
         </div>
       }
 
@@ -355,7 +355,7 @@
 
         @if (secondFollowupQtnData?.questionType === 'link' && secondFollowupQtnData?.questionLink) {
           <div class="conditional-text-container">
-            <a href="{{ secondFollowupQtnData?.questionLink }}">{{ secondFollowupQtnData?.question }}</a>
+            <a (click)="goToLink(secondFollowupQtnData?.questionLink)">{{ secondFollowupQtnData?.question }}</a>
           </div>
         }
 

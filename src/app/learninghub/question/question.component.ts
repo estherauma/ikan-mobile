@@ -309,4 +309,11 @@ export class QuestionComponent  implements OnInit {
     }
     return value.toLowerCase().trim().includes('other');
   }
+
+  async goToLink(link) {
+    this.router.navigate([link]);
+    await this.modalCtrl?.dismiss();
+    // submit answers
+    await this.submitAnswer();
+  }
 }
