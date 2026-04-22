@@ -64,7 +64,7 @@ export class QuizComponent  implements OnInit {
           // Add subchapter to each qtn. It's used when submitting data
           const quizSubChapterQtns = qtnsToDisplayWithValues.map((x) => ({...x, subChapter: subChapterId}));
 
-          subChapter.title = subChapterTitle;
+          subChapter.title = item?.label;  // subChapterTitle;
           subChapter.questions = quizSubChapterQtns;
           subChaptersResult.push(subChapter);
         }
