@@ -86,7 +86,11 @@
           </div>
 
           <!-- other value -->
-          @if (isOther(questionData?.value) && (questionData?.questionType === 'radio' || questionData?.questionType === 'select')) {
+          @if (isOther(questionData?.value, questionData?.questionType) &&
+            (questionData?.questionType === 'radio' ||
+              questionData?.questionType === 'select' ||
+              questionData?.questionType === 'multi-select'
+          )) {
             <div
               class="other-value-container"
               >
@@ -239,7 +243,11 @@
       }
 
       <!-- other value -->
-      @if (isOther(followupQtnData?.value) && (followupQtnData?.questionType === 'radio' || followupQtnData?.questionType === 'select')) {
+      @if (isOther(followupQtnData?.value, followupQtnData?.questionType) &&
+        (followupQtnData?.questionType === 'radio' ||
+        followupQtnData?.questionType === 'select' ||
+        followupQtnData?.questionType === 'multi-select'
+      )) {
         <div
           class="other-value-container"
           >
@@ -360,7 +368,12 @@
         }
 
         <!-- other value -->
-        @if (isOther(secondFollowupQtnData?.value) && (secondFollowupQtnData?.questionType === 'radio' || secondFollowupQtnData?.questionType === 'select')) {
+        @if (isOther(secondFollowupQtnData?.value, secondFollowupQtnData?.questionType) &&
+          (
+            secondFollowupQtnData?.questionType === 'radio' ||
+            secondFollowupQtnData?.questionType === 'select' ||
+            secondFollowupQtnData?.questionType === 'multi-select'
+        )) {
           <div
             class="other-value-container"
           >
