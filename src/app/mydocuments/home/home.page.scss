@@ -13,6 +13,19 @@ ion-content{
     }
   }
 
+  .progress-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background: var(--ikan_skyblue_100);
+
+    p {
+      font-size: 16px;
+      color: var(--ikan_deep_gray);
+      margin: 7px 0 25px 0;
+    }
+  }
+
   .segments-wrapper {
     width: 100%;
     

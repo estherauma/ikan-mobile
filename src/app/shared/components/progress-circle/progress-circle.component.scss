@@ -27,3 +27,12 @@
     }
   }
 }
+
+:host.my-docs-progress {
+  .inner-progress-wrapper {
+    background: var(--ikan_skyblue_100) !important;
+    p {
+      font-size: 1.05rem !important;
+    }
+  }
+}

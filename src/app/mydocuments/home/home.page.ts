@@ -17,6 +17,7 @@ export class HomePage implements OnInit {
   docsCommonText: any;
   pageTitle: string = 'Documents';
   activeSegment: Segment = 'essentials';
+  progressPercentage = 0;
 
   constructor(
     public router: Router,
@@ -37,5 +38,9 @@ export class HomePage implements OnInit {
 
   onSegmentChange(e) {
     this.activeSegment = e?.detail?.value;
+  }
+
+  onProgressDataChange(event) {
+    this.progressPercentage = event.progress;
   }
 }
