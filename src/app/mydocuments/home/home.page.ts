@@ -39,4 +39,8 @@ export class HomePage implements OnInit {
   onSegmentChange(e) {
     this.activeSegment = e?.detail?.value;
   }
+
+  onProgressDataChange(event) {
+    this.progressPercentage = event.progress;
+  }
 }

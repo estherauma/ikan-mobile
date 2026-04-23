@@ -42,13 +42,14 @@
       @if (activeSegment === 'essentials') {
         <app-essentials
           class="segement-essentials"
-          >
+          (progressDataChange)="onProgressDataChange($event)"
+        >
         </app-essentials>
       }
       @if (activeSegment === 'myfiles') {
         <app-files
           class="segment-files"
-          >
+        >
         </app-files>
       }
     </div>
