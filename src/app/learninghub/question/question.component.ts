@@ -303,9 +303,16 @@ export class QuestionComponent  implements OnInit {
     }
   }
 
-  isOther(value: any): boolean {
-    if (!value || typeof value !== 'string') {
-      return false;
+  isOther(value: any, questionType: string): boolean {
+    if (
+      !value ||
+      (questionType !== 'multi-select' && typeof value !== 'string') ||
+      (questionType === 'multi-select' && !Array.isArray(value))
+    ) {
+      return false
+    }
+    if (questionType === 'multi-select') {
+      return value.some((v: string) => v.toLowerCase().trim().includes('other'));
     }
     return value.toLowerCase().trim().includes('other');
   }
