@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { Router } from '@angular/router';
 import { AlertController, ModalController } from '@ionic/angular';
 import { CreatepassportPage } from '../createpassport/createpassport.page';
@@ -37,6 +37,8 @@ export class EssentialsComponent  implements OnInit {
   currentLanguage = 'en-us';
   insuranceDocDetails: any;
   insuranceDocImageUrl: string = '';
+
+  @Output() progressDataChange = new EventEmitter<any>();
 
   constructor(
     public router: Router,
@@ -78,6 +80,31 @@ export class EssentialsComponent  implements OnInit {
     this.seamansBookImageUrl = this.userSeamansBookDetails?.fileUrl || '';
     this.insuranceDocDetails = this.allEssentialDocuments.find((doc) => doc.fileName === 'ikan-insurance-document');
     this.insuranceDocImageUrl = this.insuranceDocDetails?.fileUrl || '';
+
+    const progressData = this.getProgressData();
+    this.progressDataChange.emit(progressData);
+  }
+
+  getProgressData() {
+    const totalEssentialDocs = 4; // passport, visa, seamans book, insurance doc
+    let uploadedDocsCount = 0;
+    if (this.userPassportDetails) {
+      uploadedDocsCount++;
+    }
+    if (this.userVisaDetails) {
+      uploadedDocsCount++;
+    }
+    if (this.userSeamansBookDetails) {
+      uploadedDocsCount++;
+    }
+    if (this.insuranceDocDetails) {
+      uploadedDocsCount++;
+    }
+    return {
+      total: totalEssentialDocs,
+      uploaded: uploadedDocsCount,
+      progress: (uploadedDocsCount / totalEssentialDocs) * 100
+    };
   }
 
   async addPassport() {
