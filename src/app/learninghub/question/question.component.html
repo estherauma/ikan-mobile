@@ -84,27 +84,6 @@
               }
             </ion-radio-group>
           </div>
-
-          <!-- other value -->
-          @if (isOther(questionData?.value, questionData?.questionType) &&
-            (questionData?.questionType === 'radio' ||
-              questionData?.questionType === 'select' ||
-              questionData?.questionType === 'multi-select'
-          )) {
-            <div
-              class="other-value-container"
-              >
-              <p>{{ commonText?.pleaseSpecifyOther || 'Please specify other:' }}</p>
-              <ion-input
-                class="input"
-                [placeholder]="commonText?.typeYourAnswerHere"
-                autofocus
-                [value]="questionData?.otherInput || ''"
-                (ionChange)="handleOtherInputChange($event)"
-                (ionInput)="handleOtherInputChange($event)"
-              ></ion-input>
-            </div>
-          }
         }
 
         @if (isYesNoValue && (questionData?.questionType === 'radio' || questionData?.questionType === 'select')) {
@@ -127,6 +106,27 @@
                 }
               </ion-row>
             </ion-radio-group>
+          </div>
+        }
+
+        <!-- other value -->
+        @if (isOther(questionData?.value, questionData?.questionType) &&
+          (questionData?.questionType === 'radio' ||
+            questionData?.questionType === 'select' ||
+            questionData?.questionType === 'multi-select'
+        )) {
+          <div
+            class="other-value-container"
+            >
+            <p>{{ commonText?.pleaseSpecifyOther || 'Please specify other:' }}</p>
+            <ion-input
+              class="input"
+              [placeholder]="commonText?.typeYourAnswerHere"
+              autofocus
+              [value]="questionData?.otherInput || ''"
+              (ionChange)="handleOtherInputChange($event)"
+              (ionInput)="handleOtherInputChange($event)"
+            ></ion-input>
           </div>
         }
       </ion-col>
