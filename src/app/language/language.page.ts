@@ -17,8 +17,8 @@ import { Platform } from '@ionic/angular';
 })
 export class LanguagePage implements OnInit {
   currentLanguage = 'en-us';
-  availableLanguages = [];
-  pageTitle: string;
+  availableLanguages: any[] = [];
+  pageTitle: string = '';
   isLanguageSelected = false;
   commonText: any;
 
@@ -53,7 +53,7 @@ export class LanguagePage implements OnInit {
     this.contentServ.compareContent();
   }
 
-  changeLanguage(e) {
+  changeLanguage(e: any) {
     this.currentLanguage = e?.detail?.value;
     this.isLanguageSelected = true;
   }
