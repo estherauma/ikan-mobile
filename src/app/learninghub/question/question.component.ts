@@ -42,11 +42,11 @@ export class QuestionComponent  implements OnInit {
     this.commonText = this.contentService?.commonText;
     this.unTranslatedQtn = this.contentService.getUntranslatedInlineQuestion(this.questionData?.subChapter, this.questionData?.key);
     if (this.questionData?.questionType === 'radio' || this.questionData?.questionType === 'select') {
-      const values = this.questionData.options.map(obj => obj?.value?.toLowerCase());
+      const values = this.questionData.options.map((obj: any) => obj?.value?.toLowerCase());
       const containsYesNo = values.includes('yes') && values.includes('no');
       if (containsYesNo) {
         this.isYesNoValue = true;
-        this.questionData.options.forEach((opt) => {
+        this.questionData.options.forEach((opt: any) => {
           if (opt?.value?.toLowerCase() === 'yes') {
             opt.icon = 'checkmark';
           } else if (opt.value?.toLowerCase() === 'no') {
@@ -70,7 +70,7 @@ export class QuestionComponent  implements OnInit {
     if (this.hasFollowupQtn && this.questionData?.savedQtn?.followUpQuestionResponse) {
       if (this.followupQtnData?.questionType === 'multi-select') {
         const values = this.questionData?.savedQtn?.followUpQuestionResponse.split(',');
-        const optValues = values.map((val) => val.trim());
+        const optValues = values.map((val: any) => val.trim());
         this.followupQtnData.value = optValues;
       } else {
         this.followupQtnData.value = this.questionData?.savedQtn?.followUpQuestionResponse;
@@ -84,7 +84,7 @@ export class QuestionComponent  implements OnInit {
     if (this.hasSecondFollowupQtn && this.questionData?.savedQtn?.secondFollowUpQuestionResponse) {
       if (this.secondFollowupQtnData?.questionType === 'multi-select') {
         const values = this.questionData?.savedQtn?.secondFollowUpQuestionResponse.split(',');
-        const optValues = values.map((val) => val.trim());
+        const optValues = values.map((val: any) => val.trim());
         this.secondFollowupQtnData.value = optValues;
       } else {
         this.secondFollowupQtnData.value = this.questionData?.savedQtn?.secondFollowUpQuestionResponse;
@@ -99,19 +99,19 @@ export class QuestionComponent  implements OnInit {
     this.getSecondFollowupQtn();
   }
 
-  handleInputChange(e) {
+  handleInputChange(e: any) {
     this.questionData.value = e.detail.value;
     this.getFollowupQtn();
     this.getSecondFollowupQtn();
   }
 
-  handleSelectChange(e) {
+  handleSelectChange(e: any) {
     this.questionData.value = e.detail.value;
     this.getFollowupQtn();
     this.getSecondFollowupQtn();
   }
 
-  handleOtherInputChange(e) {
+  handleOtherInputChange(e: any) {
     this.questionData.otherInput = e.detail.value;
     this.getFollowupQtn();
     this.getSecondFollowupQtn();
@@ -124,7 +124,7 @@ export class QuestionComponent  implements OnInit {
       return;
     }
     
-    const selectedOption = this.questionData?.options?.find((opt) => opt.value === this.questionData.value);
+    const selectedOption = this.questionData?.options?.find((opt: any) => opt.value === this.questionData.value);
     console.log('selectedOption.....', selectedOption);
     if (selectedOption?.followUpQuestion && (!this.userRole || !selectedOption?.followUpQuestion?.roles || selectedOption?.followUpQuestion?.roles?.includes(this.userRole))) {
       this.hasFollowupQtn = true;
@@ -139,17 +139,17 @@ export class QuestionComponent  implements OnInit {
     this.getSecondFollowupQtn();
   }
 
-  handleFollowUpInputChange(e) {
+  handleFollowUpInputChange(e: any) {
     this.followupQtnData.value = e.detail.value;
     this.getSecondFollowupQtn();
   }
 
-  handleFollowUpSelectChange(e) {
+  handleFollowUpSelectChange(e: any) {
     this.followupQtnData.value = e.detail.value;
     this.getSecondFollowupQtn();
   }
 
-  handleFollowUpQtnOtherInputChange(e) {
+  handleFollowUpQtnOtherInputChange(e: any) {
     this.followupQtnData.followupQuestionOtherInput = e.detail.value;
     this.getSecondFollowupQtn();
   }
@@ -160,7 +160,7 @@ export class QuestionComponent  implements OnInit {
       this.secondFollowupQtnData = null;
       return;
     }
-    const selectedOption = this.followupQtnData?.options?.find((opt) => opt.value === this.followupQtnData.value);
+    const selectedOption = this.followupQtnData?.options?.find((opt: any) => opt.value === this.followupQtnData.value);
     if (selectedOption?.secondFollowUpQuestion && (!this.userRole || !selectedOption?.secondFollowUpQuestion?.roles || selectedOption?.secondFollowUpQuestion?.roles?.includes(this.userRole))) {
       this.hasSecondFollowupQtn = true;
       this.secondFollowupQtnData = selectedOption.secondFollowUpQuestion;
@@ -170,15 +170,15 @@ export class QuestionComponent  implements OnInit {
     }
   }
 
-  handleSecondFollowUpInputChange(e) {
+  handleSecondFollowUpInputChange(e: any) {
     this.secondFollowupQtnData.value = e.detail.value;
   }
 
-  handleSecondFollowUpSelectChange(e) {
+  handleSecondFollowUpSelectChange(e: any) {
     this.secondFollowupQtnData.value = e.detail.value;
   }
 
-  handleSecondFollowUpQtnOtherInputChange(e) {
+  handleSecondFollowUpQtnOtherInputChange(e: any) {
     this.secondFollowupQtnData.secondFollowupQuestionOtherInput = e.detail.value;
   }
 
@@ -203,7 +203,7 @@ export class QuestionComponent  implements OnInit {
     // FOLLOWUP QUESTION
     if (this.followupQtnData) {
       const unTranslatedFollowupQtnText = this.unTranslatedQtn?.options?.find(
-        (opt) => opt?.followUpQuestion?.key === this.followupQtnData?.key)?.followUpQuestion;
+        (opt: any) => opt?.followUpQuestion?.key === this.followupQtnData?.key)?.followUpQuestion;
       this.followupQtnData.unTranslatedQuestionText = unTranslatedFollowupQtnText?.question;
     }
     if (this.followupQtnData && this.followupQtnData?.value && Array.isArray(this.followupQtnData?.value)) {
@@ -211,8 +211,8 @@ export class QuestionComponent  implements OnInit {
     }
     // SECOND FOLLOWUP QUESTION
     if (this.secondFollowupQtnData) {
-      const unTranslatedSecondFollowupQtnText = this.followupQtnData?.options?.find(
-        (opt) => opt?.secondFollowUpQuestion?.key === this.secondFollowupQtnData?.key)?.secondFollowUpQuestion;
+      const unTranslatedSecondFollowupQtnText = this.followupQtnData?.options?.find((opt: any) =>
+        opt?.secondFollowUpQuestion?.key === this.secondFollowupQtnData?.key)?.secondFollowUpQuestion;
       this.secondFollowupQtnData.unTranslatedQuestionText = unTranslatedSecondFollowupQtnText?.question;
     }
     if (this.secondFollowupQtnData && this.secondFollowupQtnData?.value && Array.isArray(this.secondFollowupQtnData?.value)) {
@@ -317,7 +317,7 @@ export class QuestionComponent  implements OnInit {
     return value.toLowerCase().trim().includes('other');
   }
 
-  async goToLink(link) {
+  async goToLink(link: string) {
     // check if link is external or internal
     const isExternal = link.startsWith('http://') || link.startsWith('https://');
     if (isExternal) {
