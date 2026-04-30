@@ -11,9 +11,9 @@
 
     <div class="page-content">
       <div class="ion-padding cards-wrapper">
-        <div class="learninghub-tfa-docs-wrapper">
+        <div class="learninghub-tfa-wrapper">
           <ion-label class="section-label">
-            {{ commonText?.learningAndDocuments || 'Learning & Documents' }}
+            {{ commonText?.learning || 'Learning' }}
           </ion-label>
           <ion-row>
             <ion-col size="6">
@@ -38,6 +38,14 @@
                 </ion-card-content>
               </ion-card>
             </ion-col>
+          </ion-row>
+          <hr/>
+        </div>
+        <div class="docs-wrapper">
+          <ion-label class="section-label">
+            {{ commonText?.documents || 'Documents' }}
+          </ion-label>
+          <ion-row>
             <ion-col size="6">
               <ion-card
                 routerLink="/mydocuments"
