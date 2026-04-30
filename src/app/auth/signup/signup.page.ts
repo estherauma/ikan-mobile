@@ -64,6 +64,7 @@ export class SignupPage extends BaseformPage implements OnInit {
   
     this.sharedMethods?.showLoader(this.commonText?.submittingYourData);
     const dataToSubmit = { ...data };
+    dataToSubmit.language = this.contentService?.currentLanguage || 'en-us';
     delete dataToSubmit.confirmPassword;
     if (!dataToSubmit?.role && !dataToSubmit?.userRole) {
       dataToSubmit.userRole = 'public';
