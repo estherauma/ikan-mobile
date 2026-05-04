@@ -168,7 +168,7 @@ export class AppComponent implements OnInit, OnDestroy {
             }
             break;
           case 600:
-            if (this.userData?.role === UserRole.worker) {
+            if (this.userData?.role === UserRole.worker || this.userData?.role === UserRole.public) {
               el.sectionTitle = this.commonText?.learningAndDocuments || 'Learning & Documents';
             } else if (this.userData?.role === UserRole.vesselOwner) {
               el.sectionTitle = this.commonText?.toolsAndResourcesForMigrantFishers || 'Tools & Resources for Migrant Fishers';
