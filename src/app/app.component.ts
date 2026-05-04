@@ -29,7 +29,7 @@ import { NotificationsDataService } from './notifications/data/notifications-dat
 export class AppComponent implements OnInit, OnDestroy {
   public appPages: any = [];
   networkListener: PluginListenerHandle;
-  userData: UserData = {};
+  userData: UserData;
   userEmail: string = '';
   appSetupComplete = false;
   watchContent: Subscription;
