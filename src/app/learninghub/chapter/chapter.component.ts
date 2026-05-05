@@ -79,6 +79,7 @@ export class ChapterComponent  implements OnInit {
         displayQuiz: quizDetails?.displayQuiz,
         quizCompleted: quizDetails?.quizCompleted,
         isCompleted: await this.isSubChapterCompleted(subChapterId),
+        subChapterId,
       };
     }));
   }
@@ -142,8 +143,11 @@ export class ChapterComponent  implements OnInit {
     }
   }
 
-  goToQuiz(e: MouseEvent) {
+  goToQuiz(e: MouseEvent, subChapter) {
     e.stopPropagation();
-    this.router.navigate([ 'learninghub/quiz' ]);
+    const queryParams = {
+      targetSubChapter: subChapter.subChapterId
+    };
+    this.router.navigate([ 'learninghub/quiz' ], { queryParams });
   }
 }
