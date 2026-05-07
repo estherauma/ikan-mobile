@@ -26,6 +26,12 @@
               <hr />
             }
           }
+          @if (section?.type === 'drop_down_content') {
+            <shared-drop-down
+              [data]="section"
+              styles="drop-down"
+            ></shared-drop-down>
+          }
         </div>
       }
     </div>
