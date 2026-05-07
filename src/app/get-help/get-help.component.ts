@@ -26,8 +26,20 @@ export class GetHelpComponent  implements OnInit {
     this.analytics.trackEvent('viewGetHelp', this.sharedMethods.analyticsEventParams);
   }
 
+  ionViewDidEnter() {
+    this.changeDropDownIcons();
+  }
+
   isLastTextAreaSection(index: number): boolean {
     const lastTextAreaIndex = this.pageContent?.map((section: any, i: number) => section?.type === 'text_area' ? i : -1).filter((i: number) => i !== -1).pop() || null;
     return index === lastTextAreaIndex;
+  }
+
+  changeDropDownIcons() {
+    const allButtonItems = document.querySelectorAll('ion-item[button]');
+
+    allButtonItems.forEach((item: any) => {
+      item.detailIcon = 'caret-forward-outline';
+    });
   }
 }
