@@ -36,7 +36,7 @@
           </ion-col>
           <ion-col [size]="subChapter?.displayQuiz ? 4 : 2.5" class="quiz-status-col">
             @if (subChapter?.displayQuiz) {
-              <div class="quiz-wrapper" (click)="goToQuiz($event)">
+              <div class="quiz-wrapper" (click)="goToQuiz($event, subChapter)">
                 <div class="icon-wrapper">
                   @if (!subChapter?.quizCompleted) {
                     <ion-icon name="help-outline" class="help"></ion-icon>

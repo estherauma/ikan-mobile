@@ -5,6 +5,7 @@ import { SharedmethodsService } from 'src/app/shared/services/sharedmethods/shar
 import { UserData } from 'src/app/shared/types/api-types';
 import { SurveyDataService } from 'src/app/survey/data/survey-data.service';
 import { QuestionComponent } from '../question/question.component';
+import { ActivatedRoute, Params } from '@angular/router';
 
 @Component({
     selector: 'app-quiz',
@@ -19,16 +20,38 @@ export class QuizComponent  implements OnInit {
   quizData = [];
   user: UserData;
   userRole: any;
+  targetSubChapter: string = '';
 
   constructor(
     public contentService: ContentService,
     public surveyDataService: SurveyDataService,
     public sharedmethods: SharedmethodsService,
     public modalCtrl: ModalController,
+    public activatedRoute: ActivatedRoute,
   ) { }
 
   async ngOnInit() {
+    this.activatedRoute.queryParams.subscribe((queryParams: Params) => {
+      if (queryParams && Object.keys(queryParams).length) {
+        if (queryParams?.targetSubChapter) {
+          this.targetSubChapter = queryParams.targetSubChapter
+        }
+      }
+    });
     await this.pageSetup();
+  }
+
+  ionViewDidEnter() {
+    if (this.targetSubChapter) {
+      this.executeScroll(this.targetSubChapter);
+    }
+  }
+
+  executeScroll(targetSubChapter: string) {
+    const el = document.getElementById(`subchapter-${targetSubChapter}`);
+    if (el) {
+      el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
   }
 
   async pageSetup() {
@@ -68,6 +91,7 @@ export class QuizComponent  implements OnInit {
 
           subChapter.title = item?.label;  // subChapterTitle;
           subChapter.questions = quizSubChapterQtns;
+          subChapter.subChapterId = subChapterId
           subChaptersResult.push(subChapter);
         }
       });
