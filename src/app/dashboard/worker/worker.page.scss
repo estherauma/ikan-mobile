@@ -16,6 +16,7 @@ ion-content {
     }
 
     .cards-wrapper {
+      padding: 16px 10px;
       ion-label {
         font-size: 1rem;
         font-weight: bold;
@@ -31,11 +32,13 @@ ion-content {
 
         ion-card-content {
           min-height: 100px;
+          padding: 16px 12px;
           .card-title {
             color: #3565ff;
             font-weight: bold;
             font-size: 1rem;
             font-family: 'GatwickBold';
+            font-size: 0.98rem;
           }
           .card-icon {
             font-size: 1.6rem;
