@@ -26,4 +26,8 @@ export class GetHelpComponent  implements OnInit {
     this.analytics.trackEvent('viewGetHelp', this.sharedMethods.analyticsEventParams);
   }
 
+  isLastTextAreaSection(index: number): boolean {
+    const lastTextAreaIndex = this.pageContent?.map((section: any, i: number) => section?.type === 'text_area' ? i : -1).filter((i: number) => i !== -1).pop() || null;
+    return index === lastTextAreaIndex;
+  }
 }

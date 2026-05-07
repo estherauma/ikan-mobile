@@ -32,5 +32,11 @@ ion-content {
     width: 100%;
     min-height: 80%;
     padding: 20px 16px 16px;
+
+    hr {
+      margin: 20px 0;
+      border: none;
+      border-top: 1px solid #ccc;
+    }
   }
 }

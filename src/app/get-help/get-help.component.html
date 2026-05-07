@@ -20,6 +20,11 @@
               [data]="section"
               styles="textarea"
             ></shared-text-area>
+            
+            <!-- check if this is not the last text_area in pagecontent -->
+            @if (!isLastTextAreaSection(pageContent?.indexOf(section))) {
+              <hr />
+            }
           }
         </div>
       }
