@@ -35,6 +35,7 @@
           (pause)="isVideoPlaying = false"
           (ended)="isVideoPlaying = false"
           [controls]="isVideoPlaying"
+          poster="none"
         ></video>
         @if (!isVideoPlaying) {
           <ion-icon name="play" class="play-icon" (click)="playVideo()"></ion-icon>
