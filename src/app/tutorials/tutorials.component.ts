@@ -60,6 +60,9 @@ export class TutorialsComponent  implements OnInit {
   async setup() {
     this.commonText = await this.contentService?.commonText;
     this.pageContent = await this.contentService?.getContentByPropertyName('app-tutorials');
+    if (this.user?.role === UserRole.public) {
+      this.pageContent.welcomeVideo = this.pageContent?.welcomeVideoForPublic;
+    }
     this.audioUrl = this.pageContent?.welcomeAudio?.url || '';
     this.user = await this.sharedMethods.getUserData();
     this.pageText = this.sharedMethods.convertAdditionalTextToObj(this.pageContent?.additionalText);
