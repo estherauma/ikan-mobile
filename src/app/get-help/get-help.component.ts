@@ -12,7 +12,7 @@ import { SharedmethodsService } from '../shared/services/sharedmethods/sharedmet
 export class GetHelpComponent  implements OnInit {
   commonText: any;
   allContent: any;
-  pageContent = [];
+  pageContent: any = [];
 
   constructor(
     public contentService: ContentService,
@@ -23,6 +23,8 @@ export class GetHelpComponent  implements OnInit {
   ngOnInit() {
     this.allContent = this.contentService.getContentByPropertyName('get-help');
     this.pageContent = this.allContent?.pageContent;
+    this.addSectionSeparator();
+    
     this.analytics.trackEvent('viewGetHelp', this.sharedMethods.analyticsEventParams);
   }
 
@@ -30,9 +32,16 @@ export class GetHelpComponent  implements OnInit {
     this.changeDropDownIcons();
   }
 
-  isLastTextAreaSection(index: number): boolean {
-    const lastTextAreaIndex = this.pageContent?.map((section: any, i: number) => section?.type === 'text_area' ? i : -1).filter((i: number) => i !== -1).pop() || null;
-    return index === lastTextAreaIndex;
+  addSectionSeparator() {
+    this.pageContent = this.pageContent.map((section: any, index: number) => {
+      if (
+        ((section?.type === 'text_area' && section?.description) || (section?.type !== 'text_area')) &&
+        index !== this.pageContent.length - 1
+      ) {
+        return { ...section, hasSeparator: true };
+      }
+      return section;
+    });
   }
 
   changeDropDownIcons() {
