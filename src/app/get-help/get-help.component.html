@@ -20,17 +20,17 @@
               [data]="section"
               styles="textarea"
             ></shared-text-area>
-            
-            <!-- check if this is not the last text_area in pagecontent -->
-            @if (!isLastTextAreaSection(pageContent?.indexOf(section))) {
-              <hr />
-            }
           }
+          
           @if (section?.type === 'drop_down_content') {
             <shared-drop-down
               [data]="section"
               styles="drop-down"
             ></shared-drop-down>
+          }
+            
+          @if (section?.hasSeparator) {
+            <hr />
           }
         </div>
       }
