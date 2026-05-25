@@ -21,6 +21,7 @@ export class ChapterComponent  implements OnInit {
   bgImgUrl = '';
   commonText: any;
   user: UserData;
+  userRole: any;
   isWorker = false;
   isPublicUser = false;
   isVesselOwner = false;
@@ -56,9 +57,10 @@ export class ChapterComponent  implements OnInit {
 
   async pageSetup() {
     this.user = await this.sharedmethods.getUserData();
-    this.isVesselOwner = this.user?.role === UserRole.vesselOwner;
-    this.isWorker = this.user?.role === UserRole.worker;
-    this.isPublicUser = this.user?.role === UserRole.public;
+    this.userRole = this.user?.role;
+    this.isVesselOwner = this.userRole === UserRole.vesselOwner;
+    this.isWorker = this.userRole === UserRole.worker;
+    this.isPublicUser = this.userRole === UserRole.public;
     this.commonText = await this.contentService.commonText;
     this.pageData =  await this.contentService.getContentByPropertyName(this.chapterId);
     const clickableList = (this.pageData?.pageContent?.find((e) => e.type === 'clickable_list'));
@@ -77,6 +79,7 @@ export class ChapterComponent  implements OnInit {
         displayQuiz: quizDetails?.displayQuiz,
         quizCompleted: quizDetails?.quizCompleted,
         isCompleted: await this.isSubChapterCompleted(subChapterId),
+        subChapterId,
       };
     }));
   }
@@ -103,7 +106,7 @@ export class ChapterComponent  implements OnInit {
     if (this.isWorker || this.isPublicUser) {
       const subChapterPageData = this.contentService.getContentByPropertyName(subChapterId);
       const subChapterPageContent = subChapterPageData?.pageContent;
-      const qtnsToDisplay = subChapterPageContent?.filter((item) => item?.type === 'questions' && item?.displayquestion);
+      const qtnsToDisplay = subChapterPageContent?.filter((item) => item?.type === 'questions' && item?.displayquestion && (!this.userRole || !item?.roles || item?.roles?.includes(this.userRole)));
 
       if (qtnsToDisplay?.length) {
         // get question values
@@ -140,8 +143,11 @@ export class ChapterComponent  implements OnInit {
     }
   }
 
-  goToQuiz(e: MouseEvent) {
+  goToQuiz(e: MouseEvent, subChapter) {
     e.stopPropagation();
-    this.router.navigate([ 'learninghub/quiz' ]);
+    const queryParams = {
+      targetSubChapter: subChapter.subChapterId
+    };
+    this.router.navigate([ 'learninghub/quiz' ], { queryParams });
   }
 }

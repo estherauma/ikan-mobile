@@ -27,10 +27,10 @@ import { NotificationsDataService } from './notifications/data/notifications-dat
     standalone: false
 })
 export class AppComponent implements OnInit, OnDestroy {
-  public appPages = [];
+  public appPages: any = [];
   networkListener: PluginListenerHandle;
   userData: UserData;
-  userEmail: string;
+  userEmail: string = '';
   appSetupComplete = false;
   watchContent: Subscription;
   commonText: any;
@@ -106,20 +106,20 @@ export class AppComponent implements OnInit, OnDestroy {
     await this.contentService.generateLearningHubProgressData();
   }
 
-  setupMenu(menuData) {
+  setupMenu(menuData: any) {
     if (menuData && Object.keys(menuData).length > 0) {
       // For vessel owners, move Help item to tools & resources section
       if (this.userData?.role === UserRole.vesselOwner) {
-        const helpEl = menuData.find(el => el.key === 'help');
+        const helpEl = menuData.find((el: any) => el.key === 'help');
         if (helpEl) {
           helpEl.position = 695;
         }
       }
 
       // Sort menu by position
-      menuData.sort((a, b) => a.position - b.position);
+      menuData.sort((a: any, b: any) => a.position - b.position);
 
-      menuData.forEach((el, index) => {
+      menuData.forEach((el: any, index: number) => {
         // Identify first item in section
         if (index === 0) {
           el.first = true;
@@ -168,7 +168,7 @@ export class AppComponent implements OnInit, OnDestroy {
             }
             break;
           case 600:
-            if (this.userData?.role === UserRole.worker) {
+            if (this.userData?.role === UserRole.worker || this.userData?.role === UserRole.public) {
               el.sectionTitle = this.commonText?.learningAndDocuments || 'Learning & Documents';
             } else if (this.userData?.role === UserRole.vesselOwner) {
               el.sectionTitle = this.commonText?.toolsAndResourcesForMigrantFishers || 'Tools & Resources for Migrant Fishers';
@@ -209,7 +209,7 @@ export class AppComponent implements OnInit, OnDestroy {
             // Ensure auth service returns role immediately
 
             const isRoleSet = await this.sharedMethods.readDataFromStorage(StorageKeys.isRoleSet);
-            if (user?.roles?.length > 1 && !isRoleSet) {
+            if (user?.roles && user?.roles?.length > 1 && !isRoleSet) {
               return this.router.navigate(['/select-role']);
             }
 
@@ -226,7 +226,7 @@ export class AppComponent implements OnInit, OnDestroy {
     this.router.navigate(['/login']);
   }
 
-  async logOutWithExpiredToken(tokenExpiryDateInUTCSeconds) {
+  async logOutWithExpiredToken(tokenExpiryDateInUTCSeconds: any) {
     const now = new Date().toUTCString();
     const tokenExpiryDateTime = new Date(0);
     tokenExpiryDateTime.setUTCSeconds(tokenExpiryDateInUTCSeconds);
@@ -236,7 +236,7 @@ export class AppComponent implements OnInit, OnDestroy {
     }
   }
 
-  async onClick(index) {
+  async onClick(index: any) {
     if (this.appPages[index].url === '/logout') {
       await LocalNotifications.removeAllListeners();
       await this.syncData();

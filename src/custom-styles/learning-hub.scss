@@ -182,6 +182,34 @@ app-subtopic {
           --background: #eaedf6;
         }
       }
+
+      .drop-down {
+        margin: 20px;
+        --background: #eaedf6;
+        #content_wrapper {
+          ion-item {
+            --background: #eaedf6;
+            h5 {
+              font-family: "interRegular" !important;
+              font-size: 1rem !important;
+              color: #191970;
+            }
+          }
+          ion-item::part(detail-icon) {
+            color: #191970 !important;
+          }
+        }
+        .arrowUp {
+          ion-item::part(detail-icon) {
+            transform: rotate(90deg) !important;
+          }
+        }
+        .arrowdown {
+          ion-item::part(detail-icon) {
+            transform: none !important;
+          }
+        }
+      }
     }
   }
 }
@@ -206,9 +234,13 @@ app-get-help {
         }
 
         h2 {
-          margin-top: 70px;
+          margin-top: 30px;
+          margin-bottom: 10px !important;
           font-size: 20px;
         }
+      }
+      .drop-down {
+        margin-top: 0px;
       }
     }
   }

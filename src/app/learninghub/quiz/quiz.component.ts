@@ -5,6 +5,7 @@ import { SharedmethodsService } from 'src/app/shared/services/sharedmethods/shar
 import { UserData } from 'src/app/shared/types/api-types';
 import { SurveyDataService } from 'src/app/survey/data/survey-data.service';
 import { QuestionComponent } from '../question/question.component';
+import { ActivatedRoute, Params } from '@angular/router';
 
 @Component({
     selector: 'app-quiz',
@@ -18,20 +19,44 @@ export class QuizComponent  implements OnInit {
   commonText: any;
   quizData = [];
   user: UserData;
+  userRole: any;
+  targetSubChapter: string = '';
 
   constructor(
     public contentService: ContentService,
     public surveyDataService: SurveyDataService,
     public sharedmethods: SharedmethodsService,
     public modalCtrl: ModalController,
+    public activatedRoute: ActivatedRoute,
   ) { }
 
   async ngOnInit() {
+    this.activatedRoute.queryParams.subscribe((queryParams: Params) => {
+      if (queryParams && Object.keys(queryParams).length) {
+        if (queryParams?.targetSubChapter) {
+          this.targetSubChapter = queryParams.targetSubChapter
+        }
+      }
+    });
     await this.pageSetup();
+  }
+
+  ionViewDidEnter() {
+    if (this.targetSubChapter) {
+      this.executeScroll(this.targetSubChapter);
+    }
+  }
+
+  executeScroll(targetSubChapter: string) {
+    const el = document.getElementById(`subchapter-${targetSubChapter}`);
+    if (el) {
+      el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
   }
 
   async pageSetup() {
     this.user = await this.sharedmethods.getUserData();
+    this.userRole = this.user?.role;
     this.commonText = await this.contentService.commonText;
     // this.pageData =  await this.contentService.getContentByPropertyName('quiz');
     this.quizData = await this.getQuizContent();
@@ -56,7 +81,7 @@ export class QuizComponent  implements OnInit {
         const subChapterTitle = item?.label?.substring(item?.label?.indexOf(' ') + 1) || '';
         const subChapterData = this.contentService.getContentByPropertyName(subChapterId);
         const subChapterPageContent = subChapterData?.pageContent;
-        const qtnsToDisplay = subChapterPageContent?.filter((x) => x?.type === 'questions' && x?.displayquestion);
+        const qtnsToDisplay = subChapterPageContent?.filter((x) => x?.type === 'questions' && x?.displayquestion && (!this.userRole || !x?.roles || x?.roles?.includes(this.userRole)));
 
         if (qtnsToDisplay?.length) {
           // get question values
@@ -64,8 +89,9 @@ export class QuizComponent  implements OnInit {
           // Add subchapter to each qtn. It's used when submitting data
           const quizSubChapterQtns = qtnsToDisplayWithValues.map((x) => ({...x, subChapter: subChapterId}));
 
-          subChapter.title = subChapterTitle;
+          subChapter.title = item?.label;  // subChapterTitle;
           subChapter.questions = quizSubChapterQtns;
+          subChapter.subChapterId = subChapterId
           subChaptersResult.push(subChapter);
         }
       });
@@ -107,7 +133,8 @@ export class QuizComponent  implements OnInit {
       cssClass: 'tuna-modal quiz-qtn-modal',
       component: QuestionComponent,
       componentProps: {
-        questionData
+        questionData,
+        userRole: this.userRole,
       }
     });
     await modal.present();

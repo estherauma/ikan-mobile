@@ -47,14 +47,14 @@ export class SignupPage extends BaseformPage implements OnInit {
     this.title = this.pageText?.signupTitle;
     this.description = this.pageText?.signupDescription;
     this.submitButtonText = this.pageText?.submitButtonText;
-    this.formQuestions.forEach((entry) => {
+    this.formQuestions.forEach((entry: any) => {
       const validators = this.sharedMethods.getFormValidators(entry);
       this.group[entry.key] = new FormControl('', validators);
     });
     this.pageFormGroup = new FormGroup(this.group);
   }
 
-  async onSubmit(data) {
+  async onSubmit(data: any) {
     this.isLoading = true;
     if (data?.password?.trim() !== data?.confirmPassword?.trim()) {
       this.sharedMethods.showToast(this.commonText?.passwordsDoNotMatch);
@@ -64,6 +64,7 @@ export class SignupPage extends BaseformPage implements OnInit {
   
     this.sharedMethods?.showLoader(this.commonText?.submittingYourData);
     const dataToSubmit = { ...data };
+    dataToSubmit.language = this.contentService?.currentLanguage || 'en-us';
     delete dataToSubmit.confirmPassword;
     if (!dataToSubmit?.role && !dataToSubmit?.userRole) {
       dataToSubmit.userRole = 'public';

@@ -47,15 +47,16 @@ export class RequestPasswordResetComponent extends BaseformPage implements OnIni
     this.pageText = this.sharedMethods.convertAdditionalTextToObj(pageData?.additionalText);
     this.description = this.pageText?.resetPasswordDescription;
     this.submitButtonText = this.pageText?.submitButtonText;
-    this.formQuestions.forEach((entry) => {
+    this.formQuestions.forEach((entry: any) => {
       this.group[entry.key] = new FormControl('', [Validators.required, Validators.email]);
     });
     this.pageFormGroup = new FormGroup(this.group);
   }
 
-  async onSubmit(data) {
+  async onSubmit(data: any) {
     this.isLoading = true;
     this.sharedMethods?.showLoader(this.commonText?.submittingYourData);
+    data.language = this.contentService?.currentLanguage || 'en-us';
     this.apiService.post('accounts/reset-password-request', data, true).subscribe(
       res => {
         this.sharedMethods.showToast(this.pageText?.resetRequestSent);

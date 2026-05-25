@@ -12,7 +12,7 @@ import { SharedmethodsService } from '../shared/services/sharedmethods/sharedmet
 export class GetHelpComponent  implements OnInit {
   commonText: any;
   allContent: any;
-  pageContent = [];
+  pageContent: any = [];
 
   constructor(
     public contentService: ContentService,
@@ -23,7 +23,32 @@ export class GetHelpComponent  implements OnInit {
   ngOnInit() {
     this.allContent = this.contentService.getContentByPropertyName('get-help');
     this.pageContent = this.allContent?.pageContent;
+    this.addSectionSeparator();
+    
     this.analytics.trackEvent('viewGetHelp', this.sharedMethods.analyticsEventParams);
   }
 
+  ionViewDidEnter() {
+    this.changeDropDownIcons();
+  }
+
+  addSectionSeparator() {
+    this.pageContent = this.pageContent.map((section: any, index: number) => {
+      if (
+        ((section?.type === 'text_area' && section?.description) || (section?.type !== 'text_area')) &&
+        index !== this.pageContent.length - 1
+      ) {
+        return { ...section, hasSeparator: true };
+      }
+      return section;
+    });
+  }
+
+  changeDropDownIcons() {
+    const allButtonItems = document.querySelectorAll('ion-item[button]');
+
+    allButtonItems.forEach((item: any) => {
+      item.detailIcon = 'caret-forward-outline';
+    });
+  }
 }

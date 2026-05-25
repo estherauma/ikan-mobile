@@ -48,6 +48,7 @@
               (pause)="isVideoPlaying = false"
               (ended)="isVideoPlaying = false"
               [controls]="isVideoPlaying"
+              poster="none"
             ></video>
             @if (!isVideoPlaying) {
               <ion-icon name="play" class="play-icon" (click)="playVideo()"></ion-icon>
@@ -113,6 +114,7 @@
                     class="tutorial-video"
                     [src]="tutorial?.itemVideo?.url + (tutorial?.itemVideo?.url ? '#t=0.001' : '')"
                     preload="metadata"
+                    poster="none"
                   ></video>
                 }
                 <ion-icon name="play" class="play-icon"></ion-icon>

@@ -11,11 +11,11 @@ import { ContentService } from '../../services/content/content.service';
 export class BaseformPage implements OnInit {
   commonText: any;
   pageCommonText: any;
-  pageFormGroup: FormGroup;
+  pageFormGroup: FormGroup = new FormGroup({});
   formQuestions = [ ];
-  group =  { };
-  pageTitle: string;
-  submitButtonText: string;
+  group: any =  {};
+  pageTitle: string = '';
+  submitButtonText: string = '';
   pageText: any;
 
   constructor(
@@ -27,8 +27,5 @@ export class BaseformPage implements OnInit {
     this.pageFormGroup = new FormGroup(this.group);
     this.submitButtonText = this.contentService.commonText?.create;
   }
-
-  //TODO: Set the pageTitle using this function for the different pages
-  getPageTitle(pageData) { }
 
 }

@@ -18,7 +18,7 @@
       <div class="chapter">
         <h4 class="chapter-title">{{ chapter.title }}</h4>
         @for (subChapter of chapter?.subChapters; track subChapter) {
-          <div class="subchpater-list">
+          <div [id]="'subchapter-' + subChapter.subChapterId" class="subchpater-list">
             <h5 class="subchapter-title">{{ subChapter.title }}</h5>
             <div class="question-list">
               @for (item of subChapter?.questions; track item) {

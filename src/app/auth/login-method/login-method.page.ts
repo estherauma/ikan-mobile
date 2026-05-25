@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit, SimpleChanges } from '@angular/core';
 import { Router } from '@angular/router';
 import { ModalController } from '@ionic/angular';
 import { Subscription } from 'rxjs';
@@ -35,7 +35,8 @@ export class LoginMethodPage implements OnInit {
     public contentService: ContentService,
     public modalController: ModalController,
     public sharedMethods: SharedmethodsService,
-    public analytics: AnalyticsService
+    public analytics: AnalyticsService,
+    public cdr: ChangeDetectorRef,
   ) {
     this.watchContent = this.contentService.watchContent().subscribe(async(resp) => {
       if (resp) {
@@ -98,11 +99,13 @@ export class LoginMethodPage implements OnInit {
 
     modal.onDidDismiss().then((data) => {
       if (data.data) {
-        this.pageText = data.data?.loginMethodData;
-        this.inviteCodeAuth = this.pageText?.inviteCodeAuth;
-        this.loginWithEmailOrPhoneNumberText = this.pageText?.loginWithEmailOrPhoneNumberText;
-        this.loginText = this.commonText?.login || this.loginText;
-        this.registerText = this.commonText?.register || this.registerText;
+        const pageText = data.data?.loginMethodData;
+        const commonText = data.data?.commonText;
+        this.inviteCodeAuth = pageText?.inviteCodeAuth;
+        this.loginWithEmailOrPhoneNumberText = pageText?.loginWithEmailOrPhoneNumberText;
+        this.loginText = commonText?.login || this.loginText;
+        this.registerText = commonText?.register || this.registerText;
+        this.cdr.detectChanges();
       }
       this.modalDisplaying = false;
     });

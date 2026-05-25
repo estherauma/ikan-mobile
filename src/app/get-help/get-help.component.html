@@ -21,6 +21,17 @@
               styles="textarea"
             ></shared-text-area>
           }
+          
+          @if (section?.type === 'drop_down_content') {
+            <shared-drop-down
+              [data]="section"
+              styles="drop-down"
+            ></shared-drop-down>
+          }
+            
+          @if (section?.hasSeparator) {
+            <hr />
+          }
         </div>
       }
     </div>

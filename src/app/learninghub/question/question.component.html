@@ -84,23 +84,6 @@
               }
             </ion-radio-group>
           </div>
-
-          <!-- other value -->
-          @if (isOther(questionData?.value) && (questionData?.questionType === 'radio' || questionData?.questionType === 'select')) {
-            <div
-              class="other-value-container"
-              >
-              <p>{{ commonText?.pleaseSpecifyOther || 'Please specify other:' }}</p>
-              <ion-input
-                class="input"
-                [placeholder]="commonText?.typeYourAnswerHere"
-                autofocus
-                [value]="questionData?.otherInput || ''"
-                (ionChange)="handleOtherInputChange($event)"
-                (ionInput)="handleOtherInputChange($event)"
-              ></ion-input>
-            </div>
-          }
         }
 
         @if (isYesNoValue && (questionData?.questionType === 'radio' || questionData?.questionType === 'select')) {
@@ -123,6 +106,27 @@
                 }
               </ion-row>
             </ion-radio-group>
+          </div>
+        }
+
+        <!-- other value -->
+        @if (isOther(questionData?.value, questionData?.questionType) &&
+          (questionData?.questionType === 'radio' ||
+            questionData?.questionType === 'select' ||
+            questionData?.questionType === 'multi-select'
+        )) {
+          <div
+            class="other-value-container"
+            >
+            <p>{{ commonText?.pleaseSpecifyOther || 'Please specify other:' }}</p>
+            <ion-input
+              class="input"
+              [placeholder]="commonText?.typeYourAnswerHere"
+              autofocus
+              [value]="questionData?.otherInput || ''"
+              (ionChange)="handleOtherInputChange($event)"
+              (ionInput)="handleOtherInputChange($event)"
+            ></ion-input>
           </div>
         }
       </ion-col>
@@ -234,12 +238,16 @@
 
       @if (followupQtnData?.questionType === 'link' && followupQtnData?.questionLink) {
         <div class="conditional-text-container">
-          <a href="{{ followupQtnData?.questionLink }}">{{ followupQtnData?.question }}</a>
+          <a (click)="goToLink(followupQtnData?.questionLink)">{{ followupQtnData?.question }}</a>
         </div>
       }
 
       <!-- other value -->
-      @if (isOther(followupQtnData?.value) && (followupQtnData?.questionType === 'radio' || followupQtnData?.questionType === 'select')) {
+      @if (isOther(followupQtnData?.value, followupQtnData?.questionType) &&
+        (followupQtnData?.questionType === 'radio' ||
+        followupQtnData?.questionType === 'select' ||
+        followupQtnData?.questionType === 'multi-select'
+      )) {
         <div
           class="other-value-container"
           >
@@ -355,12 +363,17 @@
 
         @if (secondFollowupQtnData?.questionType === 'link' && secondFollowupQtnData?.questionLink) {
           <div class="conditional-text-container">
-            <a href="{{ secondFollowupQtnData?.questionLink }}">{{ secondFollowupQtnData?.question }}</a>
+            <a (click)="goToLink(secondFollowupQtnData?.questionLink)">{{ secondFollowupQtnData?.question }}</a>
           </div>
         }
 
         <!-- other value -->
-        @if (isOther(secondFollowupQtnData?.value) && (secondFollowupQtnData?.questionType === 'radio' || secondFollowupQtnData?.questionType === 'select')) {
+        @if (isOther(secondFollowupQtnData?.value, secondFollowupQtnData?.questionType) &&
+          (
+            secondFollowupQtnData?.questionType === 'radio' ||
+            secondFollowupQtnData?.questionType === 'select' ||
+            secondFollowupQtnData?.questionType === 'multi-select'
+        )) {
           <div
             class="other-value-container"
           >
