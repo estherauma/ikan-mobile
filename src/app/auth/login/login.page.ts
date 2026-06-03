@@ -27,7 +27,7 @@ export class LoginPage extends BaseformPage implements OnInit {
   
   passwordFieldType = FieldType.password;
   passwordEyeIcon = Icons.iconEyeClosed;
-  testEmails;
+  testEmails: string[] = [];
   pageText: any;
   authCommonText: any;
 
@@ -63,7 +63,7 @@ export class LoginPage extends BaseformPage implements OnInit {
     this.pageTitle = pageData?.pageTitle;
     this.pageText = this.sharedMethods?.convertAdditionalTextToObj(pageData?.additionalText);
     this.submitButtonText = this.pageText?.submitButtonText;
-    this.formQuestions.forEach((entry) => {
+    this.formQuestions.forEach((entry: any) => {
       this.group[entry.key] = new FormControl('', [Validators.required]);
       if (entry.key === 'password') {
         this.group[entry.key] = new FormControl('', [Validators.required]);
@@ -127,7 +127,7 @@ export class LoginPage extends BaseformPage implements OnInit {
             this.dbService.checkDbPlatformAndRunMigration(true);
           }
           // select role if user has multiple roles
-          if (res.data.userData?.roles?.length > 1) {
+          if (res.data.userData?.roles && res.data.userData?.roles?.length > 1) {
             return this.router.navigate(['select-role'], { replaceUrl: true });
           }
 
@@ -161,7 +161,7 @@ export class LoginPage extends BaseformPage implements OnInit {
     );
   }
 
-  async handleRedirection(role) {
+  async handleRedirection(role: any) {
     const helpScreens = await this.sharedMethods.readDataFromStorage(StorageKeys.isFirstLogin);
     if (!helpScreens) {
       this.router.navigate([this.authService.getCurrentUserBaseUrlFromRole(role)], { replaceUrl: true });
