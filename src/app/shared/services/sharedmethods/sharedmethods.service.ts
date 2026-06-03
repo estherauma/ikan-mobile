@@ -342,6 +342,19 @@ export class SharedmethodsService {
     return isEmail || isPhone ? null : { email: true };
   }
 
+  trimFormValues(formGroup: FormGroup) {
+    formGroup.valueChanges.subscribe(values => {
+      for (const key in values) {
+        if (typeof values[key] === 'string') {
+          const trimmedValue = values[key].trim();
+          if (values[key] !== trimmedValue) {
+            formGroup.get(key)?.setValue(trimmedValue, { emitEvent: false });
+          }
+        }
+      }
+    });
+  }
+
   convertCamelToSnakeCase(text: string) {
     return text.replace(/(?:^|\.?)([A-Z0-9])/g,  (x, y) => '_' + y.toLowerCase()).replace(/^_/, '');
   }
