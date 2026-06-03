@@ -8,7 +8,7 @@ import { StorageKeys, AnalyticsEventsData } from '../../types/api-types';
 import { Device } from '@capacitor/device';
 import {v4 as uuidv4} from 'uuid';
 import { UserRole } from '../../types/api-types';
-import { Validators } from '@angular/forms';
+import { AbstractControl, FormGroup, ValidationErrors, Validators } from '@angular/forms';
 import { CameraSource } from '@capacitor/camera';
 import { formatDate } from '@angular/common';
 
@@ -324,6 +324,22 @@ export class SharedmethodsService {
       validators.push(Validators.pattern(this.phoneNumberPattern));
     }
     return validators;
+  }
+
+  emailOrPhoneValidator(control: AbstractControl): ValidationErrors | null {
+    const value = control.value;
+    if (!value) { return null; }
+
+    const emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+    const phonePattern = /^([+]?[\s0-9 ]+)?(\d{3}|[ (]?[0-9]+[) ])?([- ]?[\s]?[0-9])+$/;
+    // const phonePattern = /^\+?\d{9,15}$/;
+
+    const isEmail = value.match(emailPattern);
+    const isPhone = value.match(phonePattern);
+
+    // We are using the email key and not emailOrPhone for backward compatibility
+    // with the old login page
+    return isEmail || isPhone ? null : { email: true };
   }
 
   convertCamelToSnakeCase(text: string) {
