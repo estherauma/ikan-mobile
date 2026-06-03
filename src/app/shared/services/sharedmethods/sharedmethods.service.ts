@@ -355,6 +355,44 @@ export class SharedmethodsService {
     });
   }
 
+  aggregateEmailOrPhoneValue(formValues: any, authCommonText: any) {
+    // We are using the email key and not emailOrPhone for backward compatibility
+    // with the old login page
+    const isEmail = formValues.email.trim().match(this.emailPattern);
+    const isPhone = formValues.email.trim().match(this.phoneNumberPattern);
+    if (!isEmail && !isPhone) {
+      this.hideLoader();
+      // TODO: add translation here
+      this.showToast(authCommonText?.noEmailOrPhoneError || 'Please enter a valid email or phone number');
+      return;
+    }
+
+    // Extract email or phone number from formData
+    let email = null;
+    let phoneNumber = null;
+    if (isEmail) {
+      email = formValues.email.trim();
+    }
+    if (isPhone) {
+      phoneNumber = formValues.email.trim();
+    }
+
+    formValues = {
+      ...formValues,
+      email,
+      phoneNumber,
+      password: formValues.password.trim()
+    };
+    
+    // Remove fields with null values
+    Object.keys(formValues).forEach(key => {
+      if (formValues[key] === null) {
+        delete formValues[key];
+      }
+    });
+    return formValues;
+  }
+
   convertCamelToSnakeCase(text: string) {
     return text.replace(/(?:^|\.?)([A-Z0-9])/g,  (x, y) => '_' + y.toLowerCase()).replace(/^_/, '');
   }
