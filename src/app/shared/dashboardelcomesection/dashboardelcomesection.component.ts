@@ -18,9 +18,9 @@ export class DashboardelcomesectionComponent implements OnInit {
   userProfile: any;
   commonText: any;
 
-  @Input() name: string;
-  @Input() greeting: string;
-  @Input() profileImageUrl = '';
+  @Input() name: string = '';
+  @Input() greeting: string = '';
+  @Input() profileImageUrl: string = '';
   @Input() workerVessel: any; // Worker's vessel details
 
   @Output() onProfileClick = new EventEmitter<any>();
@@ -45,7 +45,7 @@ export class DashboardelcomesectionComponent implements OnInit {
     this.user = await this.sharedMethods.getUserData();
     this.commonText = await this.contentService.commonText;
     this.profileDataService.getAll().subscribe(async(data) => {
-      this.userProfile = await data.find((profile) => profile.email === this.user?.email);
+      this.userProfile = this.profileDataService.getSingleProfile(this.user?.email, this.user?.mobile);
       if (this.userProfile?.profileImage) {
         this.profileImageUrl = this.userProfile?.profileImage;
       }

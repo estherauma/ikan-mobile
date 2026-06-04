@@ -94,19 +94,28 @@ export class ProfilesDataService {
   }
 
   async getProfilesByRole(userRole: string) {
-    return this.profiles?.filter((prof) => prof.userRole === userRole);
+    if (!userRole) {
+      return [];
+    }
+    return this.profiles?.filter((prof: any) => prof.userRole === userRole);
   }
 
   async getProfileByOnlineRef(onlineRef: string) {
-    return this.profiles?.find((p) => p.onlineRef === onlineRef);
+    if (!onlineRef) {
+      return null;
+    }
+    return this.profiles?.find((p:any) => p.onlineRef === onlineRef);
   }
 
-  async getSingleProfile(email: string) {
-    const profile = await this.profiles.find((p) => p.email === email);
+  async getSingleProfile(email: string, mobile: string) {
+    if (!email && !mobile) {
+      return null;
+    }
+    const profile = await this.profiles.find((p:any) => p.email === email || p.mobile === mobile);
     return profile;
   }
 
-  async create(data) {
+  async create(data: any) {
     const query = 'INSERT OR IGNORE INTO profiles (email, first_name, last_name, telephone, is_telephone_verified, mobile, \
       is_mobile_verified, address_line_1, address_line_2, address_line_3, city, country, postal_code, profile_image, \
       registration_number, passport_number, position, is_active, is_verified, last_login, user_role, \
@@ -129,7 +138,7 @@ export class ProfilesDataService {
       return null;
     });
   }
-  async saveOnlineProfile(data) {
+  async saveOnlineProfile(data: any) {
     const query = 'INSERT OR IGNORE INTO profiles (email, first_name, last_name, telephone, is_telephone_verified, \
       mobile, is_mobile_verified, address_line_1, address_line_2, address_line_3, city, country, postal_code, \
       registration_number, passport_number, position, is_active, is_verified, last_login, user_role, \
@@ -151,30 +160,29 @@ export class ProfilesDataService {
     });
   }
 
-  update(data) {
-    const query = 'UPDATE profiles SET first_name = ?, last_name = ?, telephone = ?, is_telephone_verified = ?, mobile = ?, \
+  async update(data: any) {
+    if (!data.email && !data.mobile) {
+      return null;
+    }
+    
+    let query = 'UPDATE profiles SET email = ?, first_name = ?, last_name = ?, telephone = ?, is_telephone_verified = ?, mobile = ?, \
       is_mobile_verified = ?, address_line_1 = ?, address_line_2 = ?, address_line_3 = ?, city = ?, country = ?, postal_code = ?, \
       profile_image = ?, registration_number = ?, passport_number = ?, position = ?, is_active = ?, is_verified = ?, \
-      last_login = ?, user_role = ?, updated_at = ?, updated_by = ? \
-      WHERE email = ?';
-    const params = [data.firstName, data.lastName, data.telephone, data.isTelephoneVerified, data.mobile, data.isMobileVerified,
+      last_login = ?, user_role = ?, updated_at = ?, updated_by = ?';
+    let params = [data.email, data.firstName, data.lastName, data.telephone, data.isTelephoneVerified, data.mobile, data.isMobileVerified,
       data.addressLine1, data.addressLine2, data.addressLine3, data.city, data.country,
       data.postalCode, data.profileImage, data.registrationNumber, data.passportNumber,
       data.position, data.isActive, data.isVerified, data.lastLogin, data.userRole,
-      data.updatedAt, data.updatedBy, data.email];
+      data.updatedAt, data.updatedBy];
+    if (data.email) {
+      query += ' WHERE email = ?';
+      params.push(data.email);
+    }
+    if (data.mobile) {
+      query += ' WHERE mobile = ?';
+      params.push(data.mobile);
+    }
 
-    return this.db.executeSql(query, params).then(async(result) => {
-      await this.retrieveProfiles();
-      return result;
-    }).catch((e) => {
-      console.error(e);
-      return null;
-    });
-  }
-
-  async updateProfileOnlineRef(email: string, onlineRef: string) {
-    const query = 'UPDATE profiles SET online_ref = ? WHERE email = ?';
-    const params = [onlineRef, email];
     return await this.db.executeSql(query, params).then(async(result) => {
       await this.retrieveProfiles();
       return result;
@@ -184,15 +192,53 @@ export class ProfilesDataService {
     });
   }
 
-  async checkIfProfileExists(email: string) {
-    const profileExists = this.profiles.some((prof) => prof.email === email);
+  async updateProfileOnlineRef(email: string, mobile: string, onlineRef: string) {
+    let query = '';
+    let params: any = [];
+    if (!email && !mobile) {
+      return null;
+    }
+    if (email) {
+      query = 'UPDATE profiles SET online_ref = ? WHERE email = ?';
+      params = [onlineRef, email];
+    }
+    if (mobile) {
+      query = 'UPDATE profiles SET online_ref = ? WHERE mobile = ?';
+      params = [onlineRef, mobile];
+    }
+    return await this.db.executeSql(query, params).then(async(result) => {
+      await this.retrieveProfiles();
+      return result;
+    }).catch((e) => {
+      console.error(e);
+      return null;
+    });
+  }
+
+  async checkIfProfileExists(email: string, mobile: string) {
+    if (!email && !mobile) {
+      return false;
+    }
+    const profileExists = this.profiles.some((prof: any) => prof.email === email || prof.mobile === mobile);
     return profileExists;
   }
 
-  async updateProfileRegistrationDetails(data) {
-    const query = 'UPDATE profiles SET registration_number = ?, passport_number = ?, updated_at = ?, updated_by = ? \
-      WHERE email = ?';
-    const params = [data.registrationNumber, data.passportNumber, data.updatedAt, data.updatedBy, data.email];
+  async updateProfileRegistrationDetails(data: any) {
+    let query = '';
+    let params: any = [];
+    if (!data.email && !data.mobile) {
+      return null;
+    }
+    if (data.email) {
+      query = 'UPDATE profiles SET registration_number = ?, passport_number = ?, updated_at = ?, updated_by = ? \
+        WHERE email = ?';
+      params = [data.registrationNumber, data.passportNumber, data.updatedAt, data.updatedBy, data.email];
+    }
+    if (data.mobile) {
+      query = 'UPDATE profiles SET registration_number = ?, passport_number = ?, updated_at = ?, updated_by = ? \
+        WHERE mobile = ?';
+      params = [data.registrationNumber, data.passportNumber, data.updatedAt, data.updatedBy, data.mobile];
+    }
     return await this.db.executeSql(query, params).then(async(result) => {
       await this.retrieveProfiles();
       return result;
@@ -202,9 +248,20 @@ export class ProfilesDataService {
     });
   }
 
-  async updateProfilesField(email: string, field: string, value: any) {
-    const query = `UPDATE profiles SET ${field} = ? WHERE email = ?`;
-    const params = [value, email];
+  async updateProfilesField(email: string, mobile: string, field: string, value: any) {
+    if (!email && !mobile) {
+      return null;
+    }
+    let query = '';
+    let params: any = [];
+    if (email) {
+      query = `UPDATE profiles SET ${field} = ? WHERE email = ?`;
+      params = [value, email];
+    }
+    if (mobile) {
+      query = `UPDATE profiles SET ${field} = ? WHERE mobile = ?`;
+      params = [value, mobile];
+    }
     return await this.db.executeSql(query, params).then(async(result) => {
       await this.retrieveProfiles();
       return result;
@@ -214,9 +271,20 @@ export class ProfilesDataService {
     });
   }
 
-  async delete(email: string) {
-    const query = 'DELETE FROM profiles WHERE email = ?';
-    const params = [email];
+  async delete(email: string, mobile: string) {
+    if (!email && !mobile) {
+      return null;
+    }
+    let query = '';
+    let params: any = [];
+    if (email) {
+      query = 'DELETE FROM profiles WHERE email = ?';
+      params = [email];
+    }
+    if (mobile) {
+      query = 'DELETE FROM profiles WHERE mobile = ?';
+      params = [mobile];
+    }
     return this.db.executeSql(query, params).then(async(result) => {
       await this.retrieveProfiles();
       return result;

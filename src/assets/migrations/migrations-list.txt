@@ -26,3 +26,4 @@
 1762887839206_alterWagesAddFields.sql
 1764233915611_createNotificationsTable.sql
 1776325109248_alterInlineQuestions.sql
+1780574372206_alterProfilesEmailAndMobileFields.sql

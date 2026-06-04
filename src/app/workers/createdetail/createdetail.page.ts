@@ -18,9 +18,8 @@ import { PageEventNames } from 'src/app/shared/services/analytics/event-names';
 })
 export class CreateDetailPage extends BaseformPage implements OnInit {
   submitButtonText='Save&Close';
-  createWorkerFormGroup;
-  prevQuestions;
-  prevData;
+  prevQuestions: any;
+  prevData: any;
   isEditing: boolean = false;
 
   constructor(
@@ -47,7 +46,7 @@ export class CreateDetailPage extends BaseformPage implements OnInit {
       this.pageTitle = this.pageText?.editWorker;
     }
     this.formQuestions = this.prevQuestions.concat(pageData?.formQuestions);
-    this.formQuestions.forEach((entry) => {
+    this.formQuestions.forEach((entry: any) => {
       const validators = this.sharedMethods.getFormValidators(entry);
       if (entry.key in this.prevData) {
         this.group[entry.key] = new FormControl(this.prevData[entry.key], validators);
@@ -73,8 +72,14 @@ export class CreateDetailPage extends BaseformPage implements OnInit {
     });
   }
 
-  async onSubmit(formData) {
+  async onSubmit(formData: any) {
     this.sharedMethods.showLoader(this.contentService.commonText?.saving);
+    if (!formData.email && !formData.mobile) {
+      // TODO: add translation here
+      this.sharedMethods.showToast(this.contentService.commonText?.emailOrPhoneNumberRequired, 'long');
+      return;
+    }
+    
     const now = new Date().toISOString();
     const userData = await this.sharedMethods.getUserData();
     formData.createdAt = formData.updatedAt = now;
@@ -82,7 +87,7 @@ export class CreateDetailPage extends BaseformPage implements OnInit {
     formData.userRole = UserRole.worker;
     formData.profileImage = formData.profileImage?.webPath || '';
 
-    const profileExists = await this.profilesDataService.checkIfProfileExists(formData.email);
+    const profileExists = await this.profilesDataService.checkIfProfileExists(formData.email, formData.mobile);
     if (!profileExists) {
       formData.createdAt = now;
       formData.createdBy = userData?.id;
@@ -98,7 +103,7 @@ export class CreateDetailPage extends BaseformPage implements OnInit {
         this.sharedMethods.showLoader(this.contentService.commonText?.error);
       }
     } else {
-      const currentProfileData = await this.profilesDataService.getSingleProfile(formData.email);
+      const currentProfileData = await this.profilesDataService.getSingleProfile(formData.email, formData.mobile);
       formData = { ...currentProfileData, ...formData };
       const result = await this.profilesDataService.update(formData);
       if (result?.rowsAffected > 0) {
@@ -111,7 +116,7 @@ export class CreateDetailPage extends BaseformPage implements OnInit {
     }
   }
 
-  async showInviteSentAlert(formData) {
+  async showInviteSentAlert(formData: any) {
     // TODO: Add message to prismic
     const message = `A new invitation has been sent to ${formData.firstName} ${formData.lastName} to join IKAN. \
       Once they have accepted, you will see them in the workers' area of the app`;

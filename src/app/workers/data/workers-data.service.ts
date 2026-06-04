@@ -98,7 +98,7 @@ export class WorkersDataService {
     }).catch((e) => console.log(e));
   }
 
-  create(data) {
+  create(data: any) {
     const query = 'INSERT INTO workers (f_name, l_name, profile_img_url, email, phone, \
       status, address_line_1, address_line_2, address_line_3, city, country, zip_code, created_at, updated_at, created_by, \
       updated_by) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)';

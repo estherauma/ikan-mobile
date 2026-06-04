@@ -4,7 +4,7 @@
       <ion-content>
         <ion-list>
           <ion-list-header>IKAN</ion-list-header>
-          <ion-note>{{ userEmail }}</ion-note>
+          <ion-note>{{ userEmail || userMobile }}</ion-note>
 
           @for (p of appPages; track p; let i = $index) {
             @if (p.first && p.sectionTitle) {

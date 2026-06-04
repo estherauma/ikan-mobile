@@ -50,7 +50,7 @@ export class InfoPage extends BaseformPage implements OnInit {
     this.commonText = this.contentService.commonText;
     this.submitButtonText = this.commonText?.save;
     this.userData = await this.sharedMethods.getUserData();
-    const profData = await this.profilesDataService.getSingleProfile(this.userData?.email);
+    const profData = await this.profilesDataService.getSingleProfile(this.userData?.email, this.userData?.mobile);
     if (profData?.id) {
       this.profileData = profData;
     }
@@ -63,7 +63,7 @@ export class InfoPage extends BaseformPage implements OnInit {
     const pageData = this.contentService.getContentByPropertyName('workerbudiinfo');
     this.pageText = this.sharedMethods.convertAdditionalTextToObj(pageData?.additionalText);
     this.formQuestions = pageData?.formQuestions;
-    this.formQuestions?.forEach((entry) => {
+    this.formQuestions?.forEach((entry: any) => {
       this.viewInfo[entry.key] = entry?.label;
 
       // this field will not be displayed
@@ -92,14 +92,14 @@ export class InfoPage extends BaseformPage implements OnInit {
     }
   }
 
-  async onSubmit(data) {
+  async onSubmit(data: any) {
     this.sharedMethods.showLoader(this.pageText?.savingProfile, 2000);
     const userData = await this.sharedMethods.getUserData();
     const now = new Date().toISOString();
     data.userRole = userData.role;
     data.updatedBy = userData.id;
     data.updatedAt = now;
-    const profileExists = await this.profilesDataService.checkIfProfileExists(data.email);
+    const profileExists = await this.profilesDataService.checkIfProfileExists(data.email, data.mobile);
     if (profileExists) {
       data = { ...this.profileData, ...data};
       const result = await this.profilesDataService.update(data);

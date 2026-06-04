@@ -178,7 +178,7 @@ export class SyncService {
             const currentUpdateDate = new Date(currentCompany?.updatedAt);
             const newUpdateDate = new Date(company.updatedAt);
             if (currentUpdateDate < newUpdateDate) {
-              const companyToUpdate = {};
+              const companyToUpdate: any = {};
               for (const key of Object.keys(company)) {
                 const snakeCaseKey = this.sharedMethods.convertCamelToSnakeCase(key);
                 companyToUpdate[snakeCaseKey] = company[key];
@@ -205,7 +205,7 @@ export class SyncService {
       for (const vessel of vessels) {
         if (user?.id !== vessel?.createdBy) { continue; }
 
-        const vesselToUpload = Object.assign({}, vessel);
+        const vesselToUpload: any = Object.assign({}, vessel);
         delete vesselToUpload.id;
         if (!vesselToUpload.onlineRef) {
           this.apiService.post('vessels', vesselToUpload).subscribe(async(response: CreateVesselResp) => {
@@ -225,11 +225,11 @@ export class SyncService {
     }
   }
 
-  async postVesselImage(vessel, vesselOnlineRef) {
+  async postVesselImage(vessel: any, vesselOnlineRef: any) {
     if (vessel?.imageFile?.webPath) {
       const imageFile = await this.uploadService.retrieveAndReturnBlob(vessel.imageFile.webPath);
       if (imageFile) {
-        const vesselImage = await this.vesselServ.getVesselImageByVesselId(vessel.id);
+        const vesselImage: any = await this.vesselServ.getVesselImageByVesselId(vessel.id);
         const imageData = new FormData();
         imageData.append('fileContent', imageFile);
         imageData.append('entityType', 'vessel_image');
@@ -266,13 +266,13 @@ export class SyncService {
               }
             });
           } else {
-            const currentVessel = await this.vesselServ.vessels.find(v => v.appRef === vessel.appRef);
+            const currentVessel: any = await this.vesselServ.vessels.find((v: any) => v.appRef === vessel.appRef);
             const currentUpdateDate = new Date(currentVessel?.updatedAt);
             const newUpdateDate = new Date(vessel.updatedAt);
             if (currentUpdateDate < newUpdateDate) {
-              const vesselToUpdate = {};
+              const vesselToUpdate: any = {};
               for (const key of Object.keys(vessel)) {
-                const snakeCaseKey = this.sharedMethods.convertCamelToSnakeCase(key);
+                const snakeCaseKey: any = this.sharedMethods.convertCamelToSnakeCase(key);
                 vesselToUpdate[snakeCaseKey] = vessel[key];
               }
               vesselToUpdate['id'] = currentVessel.id;
@@ -289,7 +289,7 @@ export class SyncService {
     });
   }
 
-  async saveOnlineVesselImage(data, localVesselId) {
+  async saveOnlineVesselImage(data: any, localVesselId: any) {
     const localVesselImage = await this.vesselServ.getVesselImageByVesselId(localVesselId);
     if (!localVesselImage) {
       await this.uploadService.fetchAndSaveFile(data?.imageUrl).then(async(fileUri) => {
@@ -311,14 +311,14 @@ export class SyncService {
         }
       });
     } else {
-      const currentVesselImage = (await this.vesselServ.getVesselImages()).find(v => v.onlineRef === data.id);
+      const currentVesselImage: any = (await this.vesselServ.getVesselImages()).find((v: any) => v.onlineRef === data.id);
       const currentUpdateDate = new Date(currentVesselImage?.updatedAt);
       const newUpdateDate = new Date(data.updatedAt);
       const currentImageName = currentVesselImage?.imageUrl ? currentVesselImage.imageUrl.split('files/')[1] : null;
       const isCurrentImageSameAsNew = currentImageName && data.imageUrl && data.imageUrl.includes(currentImageName);
       if (currentUpdateDate < newUpdateDate) {
         const imageUrl = isCurrentImageSameAsNew ? currentVesselImage.imageUrl : await this.uploadService.fetchAndSaveFile(data.imageUrl);
-        const imageToUpdate = {
+        const imageToUpdate: any = {
           id: currentVesselImage.id,
           description: data.description,
           image_url: imageUrl,
@@ -338,7 +338,7 @@ export class SyncService {
       return;
     }
 
-    const contracts  = this.contractServ.contracts;
+    const contracts: any = this.contractServ.contracts;
     if (contracts.length > 0) {
       const user = await this.sharedMethods.getUserData();
       for (const contract of contracts) {
@@ -399,11 +399,11 @@ export class SyncService {
     }
   }
 
-  async postContractDocument(contract) {
+  async postContractDocument(contract: any) {
     if (contract?.file?.fileUrl) {
       const docFile = await this.uploadService.retrieveAndReturnBlob(contract.file.fileUrl);
       if (docFile) {
-        const contractDocument = await this.contractServ.getContractDocumentByField('contract_id', contract.id);
+        const contractDocument: any = await this.contractServ.getContractDocumentByField('contract_id', contract.id);
         const docData = new FormData();
         docData.append('fileContent', docFile);
         docData.append('entityType', 'contract');
@@ -441,7 +441,7 @@ export class SyncService {
         await this.sharedMethods.saveDataToStorage(StorageKeys.currentUserOnlineContractsAppRefs, userOnlineContracts);
 
         forkJoin(response.body.data.map(async(contract) => {
-          const contractToSave = { ...contract };
+          const contractToSave: any = { ...contract };
           delete contractToSave.id;
           if (contract?.taiwaneseCompany) {
             const taiwaneseCompany = await this.companyServ.getCompanyByField('onlineRef', contract.taiwaneseCompany);
@@ -458,13 +458,13 @@ export class SyncService {
               console.log(`Contract ${contract.name} saved with id ${id}`);
             });
           } else {
-            const currentContract = await this.contractServ.contracts.find(c => c.appRef === contract.appRef);
+            const currentContract: any = await this.contractServ.contracts.find((c: any) => c.appRef === contract.appRef);
             const currentUpdateDate = new Date(currentContract?.updatedAt);
             const newUpdateDate = new Date(contract.updatedAt);
             if (currentUpdateDate < newUpdateDate) {
-              const contractToUpdate = {};
+              const contractToUpdate: any = {};
               for (const key of Object.keys(contractToSave)) {
-                const snakeCaseKey = this.sharedMethods.convertCamelToSnakeCase(key);
+                const snakeCaseKey: any = this.sharedMethods.convertCamelToSnakeCase(key);
                 contractToUpdate[snakeCaseKey] = contractToSave[key];
               }
               contractToUpdate['id'] = currentContract.id;
@@ -486,9 +486,9 @@ export class SyncService {
     return await lastValueFrom(this.apiService.get('contracts-documents')).then(async(response) => {
       if (response.status === 200 && response.body.length > 0) {
         for (const doc of response.body) {
-          const contract = await this.contractServ.getContractByField('onlineRef', doc.contract);
+          const contract: any = await this.contractServ.getContractByField('onlineRef', doc.contract);
           if (contract) {
-            const contractDocument = await this.contractServ.getContractDocumentByField('contract_id', contract.id);
+            const contractDocument: any = await this.contractServ.getContractDocumentByField('contract_id', contract.id);
             if (!contractDocument) {
               await this.uploadService.fetchAndSaveFile(doc.url).then(async(fileUri) => {
                 if (fileUri) {
@@ -534,18 +534,18 @@ export class SyncService {
     });
   }
 
-  async syncContractClauses(contractId, contractOnlineRef) {
+  async syncContractClauses(contractId: any, contractOnlineRef: string) {
     const isValid = await this.authService.checkAcessTokenValidity();
     if (!isValid || !this.isDbInitialized || !navigator.onLine) {
       return;
     }
 
-    const clauses = await this.contractServ.retrieveContractClauses(contractId);
+    const clauses: any = await this.contractServ.retrieveContractClauses(contractId);
     for (const clause of clauses) {
       // The contract_id has to be the for the online record and not the local before sending to the api
       // replace the contract_id with the contract id online_ref
       clause.contract = contractOnlineRef;
-      const clauseToUpload = Object.assign({}, clause);
+      const clauseToUpload: any = Object.assign({}, clause);
       delete clauseToUpload.id;
       if (!clause.onlineRef) {
         await lastValueFrom(this.apiService.post('contracts-clauses', clauseToUpload)).then(async(response: CreateContractClauseResp) => {
@@ -571,7 +571,7 @@ export class SyncService {
     }
   }
 
-  async syncContractClausesAttachments(clause) {
+  async syncContractClausesAttachments(clause: any) {
     const isValid = await this.authService.checkAcessTokenValidity();
     if (!isValid || !this.isDbInitialized || !navigator.onLine) {
       return;
@@ -605,7 +605,7 @@ export class SyncService {
     return await lastValueFrom(this.apiService.get('contracts-clauses')).then(async(response: GetClausesResponse) => {
       if (response.status === 200 && response.body.data.length > 0) {
         for (const clause of response.body.data) {
-          const contract = await this.contractServ.getContractByField('onlineRef', clause.contract);
+          const contract: any = await this.contractServ.getContractByField('onlineRef', clause.contract);
           if (contract) {
             const clauseExists = await this.dbService.checkIfEntryExists('contract_clauses', clause.appRef);
             if (!clauseExists) {
@@ -639,7 +639,7 @@ export class SyncService {
                 }
               });
             } else {
-              const currentClause = await this.contractServ.contractClauses.find(c => c.appRef === clause.appRef);
+              const currentClause: any = await this.contractServ.contractClauses.find((c: any) => c.appRef === clause.appRef);
               const currentUpdateDate = new Date(currentClause?.updatedAt);
               const newUpdateDate = new Date(clause.updatedAt);
               if (currentUpdateDate < newUpdateDate) {
@@ -703,7 +703,7 @@ export class SyncService {
       return;
     }
 
-    const surveys = this.surveyDataService.surveys;
+    const surveys: any = this.surveyDataService.surveys;
     if (surveys?.length) {
       for (const survey of surveys) {
         // Survey responses are saved to the db then synced to the api
@@ -731,13 +731,13 @@ export class SyncService {
       return;
     }
 
-    const questions = this.surveyDataService.inlineQuestions;
+    const questions: any = this.surveyDataService.inlineQuestions;
     if (questions?.length) {
       const user = await this.sharedMethods.getUserData();
       for (const question of questions) {
         if (user?.id !== question?.createdBy) { continue; }
 
-        const questionToUpload = Object.assign({}, question);
+        const questionToUpload: any = Object.assign({}, question);
         delete questionToUpload.id;
         questionToUpload.user = questionToUpload.userId;
         if (!questionToUpload.onlineRef) {
@@ -778,7 +778,7 @@ export class SyncService {
             this.surveyDataService.saveOnlineInlineQuestion(questionToSave)
             .then((id) => { console.log ( `Inline question ${question.questionText} saved with id ${id}`); });
           } else {
-            const currentQtn = await this.surveyDataService.inlineQuestions.find(q => q.appRef === question.appRef);
+            const currentQtn: any = await this.surveyDataService.inlineQuestions.find((q: any) => q.appRef === question.appRef);
             const currentUpdateDate = new Date(currentQtn?.updatedAt);
             const newUpdateDate = new Date(question.updatedAt);
             if (currentUpdateDate < newUpdateDate) {
@@ -815,13 +815,18 @@ export class SyncService {
       dataToSave.updatedAt = dataToSave.updatedAt ??  now;
       dataToSave.createdBy = dataToSave.createdBy ?? user?.id;
       dataToSave.updatedBy = dataToSave.updatedBy ?? user?.id;
-      const profileExists = await this.profilesDataService.checkIfProfileExists(dataToSave.email);
+      const profileExists = await this.profilesDataService.checkIfProfileExists(dataToSave.email || '', dataToSave.mobile || '');
       if (!profileExists) {
         await this.profilesDataService.saveOnlineProfile(dataToSave).then(async() => {
           if (dataToSave?.profileImage) {
             await this.uploadService.fetchAndSaveFile(dataToSave.profileImage).then(async(fileUri) => {
               if (fileUri) {
-                await this.profilesDataService.updateProfilesField(dataToSave.email, 'profile_image', fileUri);
+                const result = await this.profilesDataService.updateProfilesField(dataToSave.email || '', dataToSave.mobile || '', 'profile_image', fileUri);
+                if (!result) {
+                  console.error(`Failed to update profile image for ${dataToSave.email || dataToSave.mobile}`);
+                  // TODO: add translation here
+                  this.sharedMethods.showToast('Failed to update profile image');
+                }
               }
             });
           }
@@ -829,20 +834,25 @@ export class SyncService {
           await this.fetchBeneficiaries(dataToSave.id);
         }).catch((e) => console.error(e));
       } else {
-        const currentProfile = await this.profilesDataService.getSingleProfile(dataToSave.email);
+        const currentProfile = await this.profilesDataService.getSingleProfile(dataToSave.email || '', dataToSave.mobile || '');
         const currentDate = new Date(currentProfile?.updatedAt);
         const newDate = new Date(dataToSave?.updatedAt);
 
         if (!currentProfile?.onlineRef) {
           // update onlineref if not exists
-          await this.profilesDataService.updateProfileOnlineRef(dataToSave.email, dataToSave.id);
+          await this.profilesDataService.updateProfileOnlineRef(dataToSave.email || '', dataToSave.mobile || '', dataToSave.id);
         }
         if (currentDate < newDate) {
           await this.profilesDataService.update(dataToSave).then(async() => {
             if (dataToSave?.profileImage) {
               await this.uploadService.fetchAndSaveFile(dataToSave.profileImage).then(async(fileUri) => {
                 if (fileUri) {
-                  await this.profilesDataService.updateProfilesField(dataToSave.email, 'profile_image', fileUri);
+                  const result = await this.profilesDataService.updateProfilesField(dataToSave.email || '', dataToSave.mobile || '', 'profile_image', fileUri);
+                  if (!result) {
+                    console.error(`Failed to update profile image for ${dataToSave.email || dataToSave.mobile}`);
+                    // TODO: add translation here
+                    this.sharedMethods.showToast('Failed to update profile image');
+                  }
                 }
               });
             }
@@ -870,13 +880,16 @@ export class SyncService {
               dataToSave.updatedAt = dataToSave.updatedAt ??  now;
               dataToSave.createdBy = dataToSave.createdBy ?? user?.id;
               dataToSave.updatedBy = dataToSave.updatedBy ?? user?.id;
-              const profileExists = await this.profilesDataService.checkIfProfileExists(dataToSave.email);
+              const profileExists = await this.profilesDataService.checkIfProfileExists(dataToSave.email || '', dataToSave.mobile || '');
               if (!profileExists) {
                 await this.profilesDataService.saveOnlineProfile(dataToSave).then(async() => {
                   if (dataToSave?.profileImage) {
                     await this.uploadService.fetchAndSaveFile(dataToSave.profileImage).then(async(fileUri) => {
                       if (fileUri) {
-                        await this.profilesDataService.updateProfilesField(dataToSave.email, 'profile_image', fileUri);
+                        const result = await this.profilesDataService.updateProfilesField(dataToSave.email || '', dataToSave.mobile || '', 'profile_image', fileUri);
+                        if (!result) {
+                          console.error(`Failed to update profile image for ${dataToSave.email || dataToSave.mobile}`);
+                        }
                       }
                     });
                   }
@@ -884,19 +897,22 @@ export class SyncService {
                   await this.fetchBeneficiaries(dataToSave.id);
                 }).catch((e) => console.error(e));
               } else {
-                const currentProfile = await this.profilesDataService.getSingleProfile(dataToSave.email);
+                const currentProfile = await this.profilesDataService.getSingleProfile(dataToSave.email || '', dataToSave.mobile || '');
                 const currentDate = new Date(currentProfile?.updatedAt);
                 const newDate = new Date(dataToSave?.updatedAt);
                 if (!currentProfile?.onlineRef) {
                   // update onlineref if not exists
-                  await this.profilesDataService.updateProfileOnlineRef(dataToSave.email, dataToSave.id);
+                  await this.profilesDataService.updateProfileOnlineRef(dataToSave.email || '', dataToSave.mobile || '', dataToSave.id);
                 }
                 if (currentDate < newDate) {
                   await this.profilesDataService.update(dataToSave).then(async() => {
                     if (dataToSave?.profileImage) {
                       await this.uploadService.fetchAndSaveFile(dataToSave.profileImage).then(async(fileUri) => {
                         if (fileUri) {
-                          await this.profilesDataService.updateProfilesField(dataToSave.email, 'profile_image', fileUri);
+                          const result = await this.profilesDataService.updateProfilesField(dataToSave.email || '', dataToSave.mobile || '', 'profile_image', fileUri);
+                          if (!result) {
+                            console.error(`Failed to update profile image for ${dataToSave.email || dataToSave.mobile}`);
+                          }
                         }
                       });
                     }
@@ -931,7 +947,7 @@ export class SyncService {
   // Syncs all local profiles to the API
   async syncProfiles() {
     const profiles = await this.profilesDataService.retrieveProfiles();
-    return profiles?.forEach(async(profile) => {
+    return profiles?.forEach(async(profile: any) => {
       const profileId = profile.id;
       let hasProfileImage = false;
       if (profile.onlineRef) {
@@ -960,7 +976,7 @@ export class SyncService {
             await this.syncBankAccounts(profileId, response?.data?.id);
             await this.syncBeneficiaries(profileId, response?.data?.id);
           } else {
-            console.error(`Failed to sync profile ${profile.email} to the api`, response);
+            console.error(`Failed to sync profile ${profile.email || profile.mobile} to the api`, response);
           }
         });
       } else {
@@ -978,21 +994,21 @@ export class SyncService {
           {register: 'register'}
         ).subscribe(async(response: CreateProfileResponse) => {
           if (response?.status === 'OK') {
-            await this.profilesDataService.updateProfileOnlineRef(profile.email, response?.data?.id);
+            await this.profilesDataService.updateProfileOnlineRef(profile.email, profile.mobile, response?.data?.id);
             if (hasProfileImage) {
               await this.postProfileImage(profile, response?.data?.id);
             }
             await this.syncBankAccounts(profileId, response?.data?.id);
             await this.syncBeneficiaries(profileId, response?.data?.id);
           } else {
-            console.error(`Failed to sync/register profile ${profile.email} to the api`, response);
+            console.error(`Failed to sync/register profile ${profile.email || profile.mobile} to the api`, response);
           }
         });
       }
     });
   }
 
-  async postProfileImage(profile, profileOnlineRef) {
+  async postProfileImage(profile: any, profileOnlineRef: string) {
     const imageFile = await this.uploadService.retrieveAndReturnBlob(profile.profileImage);
     if (imageFile) {
       const imageData = new FormData();
@@ -1001,13 +1017,13 @@ export class SyncService {
       imageData.append('userId', profileOnlineRef);
       this.apiService.post('file-upload', imageData).subscribe((res: any) => {
         if (res?.status !== 'OK') {
-          console.error(`Failed to sync profile image for user ${profile.email} to the api`, res);
+          console.error(`Failed to sync profile image for user ${profile.email || profile.mobile} to the api`, res);
         }
       });
     }
   }
 
-  async fetchBankAccounts(profileOnlineRef) {
+  async fetchBankAccounts(profileOnlineRef: string) {
     return await lastValueFrom(this.apiService.get(
       'accounts/bank-details',
       false,
@@ -1019,7 +1035,7 @@ export class SyncService {
           if (profile?.id) {
             bankAccount.createdBy = bankAccount.createdBy ?? profile.id;
             bankAccount.updatedBy = bankAccount.updatedBy ?? profile.id;
-            const data = Object.assign({}, bankAccount);
+            const data: any = Object.assign({}, bankAccount);
             delete data.id;
             const dataToSave = {...data, userId: profile.id, onlineRef: bankAccount.id};
 
@@ -1027,7 +1043,7 @@ export class SyncService {
             if (!accountExists) {
               await this.paymentsDataService.createBankAccount(dataToSave).then(() => {});
             } else {
-              const currentAccount = await this.paymentsDataService.bankAccounts.find(b => b.appRef === bankAccount.appRef);
+              const currentAccount: any = await this.paymentsDataService.bankAccounts.find((b: any) => b.appRef === bankAccount.appRef);
               const currentDate = new Date(currentAccount?.updatedAt);
               const newDate = new Date(bankAccount.updatedAt);
               if (currentDate < newDate) {
@@ -1041,7 +1057,7 @@ export class SyncService {
     });
   }
 
-  async syncBankAccounts(profileId, userOnlineRef ) {
+  async syncBankAccounts(profileId: any, userOnlineRef: string) {
     const accounts = await this.paymentsDataService.getUserBankAccounts(profileId);
     for (const account of accounts) {
       if (userOnlineRef !== account?.createdBy) { continue; }
@@ -1067,7 +1083,7 @@ export class SyncService {
     }
   }
 
-  async fetchBeneficiaries(profileOnlineRef) {
+  async fetchBeneficiaries(profileOnlineRef: string) {
     return await lastValueFrom(this.apiService.get(
       'accounts/beneficiaries-bank-details',
       false,
@@ -1079,14 +1095,14 @@ export class SyncService {
           if (profile?.id) {
             beneficiary.createdBy = beneficiary.createdBy ?? profile.id;
             beneficiary.updatedBy = beneficiary.updatedBy ?? profile.id;
-            const data = Object.assign({}, beneficiary);
+            const data: any = Object.assign({}, beneficiary);
             delete data.id;
             const beneficiaryExists = await this.dbService.checkIfEntryExists('user_beneficiaries', beneficiary.appRef);
             if (!beneficiaryExists) {
               const dataToSave = {...data, userId: profile.id, onlineRef: beneficiary.id};
               await this.paymentsDataService.createBeneficiary(dataToSave).then(() => {});
             } else {
-              const currentBeneficiary = await this.paymentsDataService.beneficiaries.find(b => b.appRef === beneficiary.appRef);
+              const currentBeneficiary: any = await this.paymentsDataService.beneficiaries.find((b: any) => b.appRef === beneficiary.appRef);
               const currentDate = new Date(currentBeneficiary?.updatedAt);
               const newDate = new Date(beneficiary.updatedAt);
               if (currentDate < newDate) {
@@ -1100,7 +1116,7 @@ export class SyncService {
     });
   }
 
-  async syncBeneficiaries(profileId, userOnlineRef) {
+  async syncBeneficiaries(profileId: any, userOnlineRef: string) {
     const beneficiaries = await this.paymentsDataService.getUserBeneficiaries(profileId);
     for (const beneficiary of beneficiaries) {
       if (userOnlineRef !== beneficiary?.createdBy) { continue; }
@@ -1149,7 +1165,7 @@ export class SyncService {
             }
           });
         } else {
-          const documentToUpload = Object.assign({}, document);
+          const documentToUpload: any = Object.assign({}, document);
           delete documentToUpload.id;
           delete documentToUpload.fileUrl;
           
@@ -1209,7 +1225,7 @@ export class SyncService {
               await this.documentsDataService.saveOnlineDocument(dataToSave).then(() => {});
             }
           } else {
-            const currentDoc = await this.documentsDataService.allDocuments.find(d => d.onlineRef === doc.id);
+            const currentDoc: any = await this.documentsDataService.allDocuments.find((d: any) => d.onlineRef === doc.id);
             const currentDate = new Date(currentDoc?.updatedAt);
             const newDate = new Date(doc.updatedAt);
             if (currentDate < newDate) {
@@ -1436,7 +1452,7 @@ export class SyncService {
               console.log(`Wage for user ${wageToSave.userId} saved successfully.`);
             });
           } else {
-            const currentWage = await this.wagesDataService.wages.find(w => w.onlineRef === wage.id);
+            const currentWage = await this.wagesDataService.wages.find((w: any) => w.onlineRef === wage.id);
             const currentUpdateDate = new Date(currentWage?.updatedAt);
             const newUpdateDate = new Date(wage.updatedAt);
             if (currentUpdateDate < newUpdateDate) {
@@ -1550,7 +1566,7 @@ export class SyncService {
               console.log(`Notification for user ${dataToSave.userId} saved successfully.`);
             });
           } else {
-            const currentNotification = await this.notificationsDataService.notifications.find(n => n.onlineRef === notification.id);
+            const currentNotification = await this.notificationsDataService.notifications.find((n: any) => n.onlineRef === notification.id);
             const currentUpdateDate = new Date(currentNotification?.updatedAt);
             const newUpdateDate = new Date(notification.updatedAt);
             if (currentUpdateDate < newUpdateDate) {
