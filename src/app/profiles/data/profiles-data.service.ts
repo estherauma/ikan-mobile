@@ -237,9 +237,20 @@ export class ProfilesDataService {
     });
   }
 
-  async updateProfilesField(email: string, field: string, value: any) {
-    const query = `UPDATE profiles SET ${field} = ? WHERE email = ?`;
-    const params = [value, email];
+  async updateProfilesField(email: string, mobile: string, field: string, value: any) {
+    if (!email && !mobile) {
+      return null;
+    }
+    let query = '';
+    let params: any = [];
+    if (email) {
+      query = `UPDATE profiles SET ${field} = ? WHERE email = ?`;
+      params = [value, email];
+    }
+    if (mobile) {
+      query = `UPDATE profiles SET ${field} = ? WHERE mobile = ?`;
+      params = [value, mobile];
+    }
     return await this.db.executeSql(query, params).then(async(result) => {
       await this.retrieveProfiles();
       return result;
