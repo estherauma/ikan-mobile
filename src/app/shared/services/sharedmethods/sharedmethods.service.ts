@@ -8,7 +8,7 @@ import { StorageKeys, AnalyticsEventsData } from '../../types/api-types';
 import { Device } from '@capacitor/device';
 import {v4 as uuidv4} from 'uuid';
 import { UserRole } from '../../types/api-types';
-import { Validators } from '@angular/forms';
+import { AbstractControl, FormGroup, ValidationErrors, Validators } from '@angular/forms';
 import { CameraSource } from '@capacitor/camera';
 import { formatDate } from '@angular/common';
 
@@ -324,6 +324,73 @@ export class SharedmethodsService {
       validators.push(Validators.pattern(this.phoneNumberPattern));
     }
     return validators;
+  }
+
+  emailOrPhoneValidator(control: AbstractControl): ValidationErrors | null {
+    const value = control.value;
+    if (!value) { return null; }
+
+    const emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+    const phonePattern = /^([+]?[\s0-9 ]+)?(\d{3}|[ (]?[0-9]+[) ])?([- ]?[\s]?[0-9])+$/;
+    // const phonePattern = /^\+?\d{9,15}$/;
+
+    const isEmail = value.match(emailPattern);
+    const isPhone = value.match(phonePattern);
+
+    // We are using the email key and not emailOrPhone for backward compatibility
+    // with the old login page
+    return isEmail || isPhone ? null : { email: true };
+  }
+
+  trimFormValues(formGroup: FormGroup) {
+    formGroup.valueChanges.subscribe(values => {
+      for (const key in values) {
+        if (typeof values[key] === 'string') {
+          const trimmedValue = values[key].trim();
+          if (values[key] !== trimmedValue) {
+            formGroup.get(key)?.setValue(trimmedValue, { emitEvent: false });
+          }
+        }
+      }
+    });
+  }
+
+  aggregateEmailOrPhoneValue(formValues: any, authCommonText: any) {
+    // We are using the email key and not emailOrPhone for backward compatibility
+    // with the old login page
+    const isEmail = formValues.email.trim().match(this.emailPattern);
+    const isPhone = formValues.email.trim().match(this.phoneNumberPattern);
+    if (!isEmail && !isPhone) {
+      this.hideLoader();
+      // TODO: add translation here
+      this.showToast(authCommonText?.noEmailOrPhoneError || 'Please enter a valid email or phone number');
+      return;
+    }
+
+    // Extract email or phone number from formData
+    let email = null;
+    let phoneNumber = null;
+    if (isEmail) {
+      email = formValues.email.trim();
+    }
+    if (isPhone) {
+      phoneNumber = formValues.email.trim();
+    }
+
+    formValues = {
+      ...formValues,
+      email,
+      phoneNumber,
+      password: formValues.password.trim()
+    };
+    
+    // Remove fields with null values
+    Object.keys(formValues).forEach(key => {
+      if (formValues[key] === null) {
+        delete formValues[key];
+      }
+    });
+    return formValues;
   }
 
   convertCamelToSnakeCase(text: string) {
