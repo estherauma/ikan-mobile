@@ -51,7 +51,7 @@ export class RequestPasswordResetComponent extends BaseformPage implements OnIni
     this.description = this.pageText?.resetPasswordDescription;
     this.submitButtonText = this.pageText?.submitButtonText;
     this.formQuestions.forEach((entry: any) => {
-      // this.group[entry.key] = new FormControl('', [Validators.required, Validators.email]);
+      this.group[entry.key] = new FormControl('', [Validators.required]);
       
       // We are using the email key and not emailOrPhone for backward compatibility
       // with the old login page
