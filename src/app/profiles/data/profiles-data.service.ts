@@ -94,10 +94,16 @@ export class ProfilesDataService {
   }
 
   async getProfilesByRole(userRole: string) {
+    if (!userRole) {
+      return [];
+    }
     return this.profiles?.filter((prof) => prof.userRole === userRole);
   }
 
   async getProfileByOnlineRef(onlineRef: string) {
+    if (!onlineRef) {
+      return null;
+    }
     return this.profiles?.find((p:any) => p.onlineRef === onlineRef);
   }
 
