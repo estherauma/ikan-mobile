@@ -86,7 +86,16 @@ export class SignupPage extends BaseformPage implements OnInit {
         this.sharedMethods.showToast(this.commonText?.accountCreatedSuccessfully);
         this.isLoading = false;
         this.sharedMethods?.hideLoader();
-        this.router.navigate(['/auth/register-success']);
+        if (dataToSubmit?.phoneNumber) {
+          const queryParams = {
+            phoneNumber: dataToSubmit.phoneNumber,
+            numberType: 'mobile',
+            previousUrl: this.router.url,
+          };
+          this.router.navigate(['/auth/verify-phone-number'], { queryParams });
+        } else {
+          this.router.navigate(['/auth/register-success']);
+        }
       },
       error => {
         this.isLoading = false;

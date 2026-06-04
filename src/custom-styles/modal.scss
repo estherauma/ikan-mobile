@@ -362,6 +362,14 @@ ion-modal.workers-create-modal {
     background: var(--ion-color-primary);
     color: white !important;
   }
+  .verify-btn {
+    background: #263CB1;
+    color: white !important;
+  }
+
+  .alert-button-group {
+    justify-content: space-around;
+  }
 }
 
 ion-modal.tutorial-detail-modal {

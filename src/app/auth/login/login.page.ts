@@ -182,12 +182,23 @@ export class LoginPage extends BaseformPage implements OnInit {
   async showUnverifiedNumberAlert() {
     const alert = await this.alertController.create({
       header: this.pageText?.unverifiedNumber,
+      // TODO: add translation here or & ClickVerifyButton
       message:  new IonicSafeString(`
         <p style="text-align: center;">${ this.pageText?.unverifiedNumberMessage }</p>
         <p style="text-align: center;"><strong>${ this.pageText?.unverifiedNumberSubText }</strong></p>
+        <p style="text-align: center; margin: 10px 0;">${ this.commonText?.or || 'OR' }</p>
+        <p style="text-align: center;">${ this.authCommonText?.ClickVerifyButton || 'Click the verify button to verify your phone number' }</p>
       `),
       cssClass: 'tuna-alert unverified-phone-number-alert',
       buttons: [
+        {
+          // TODO: add translation here
+          text: this.authCommonText?.verify || 'Verify',
+          cssClass: 'verify-btn',
+          handler: () => {
+            this.router.navigate(['/auth/verify-phone-number'], { queryParams: { previousUrl: this.router.url } });
+          }
+        },
         {
           text: this.contentService.commonText?.ok,
           role: 'cancel',
