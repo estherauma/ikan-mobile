@@ -84,7 +84,7 @@ export class ProfilePage extends BaseformPage implements OnInit {
     const pageData = this.contentService.getContentByPropertyName('vo-agent-buyer-profile-form');
     this.pageText = this.sharedMethods.convertAdditionalTextToObj(pageData?.additionalText);
     this.formQuestions = pageData?.formQuestions;
-    this.formQuestions?.forEach((entry) => {
+    this.formQuestions?.forEach((entry: any) => {
       this.viewData[entry.key] = entry?.label;
 
       // this field will not be displayed
@@ -130,7 +130,7 @@ export class ProfilePage extends BaseformPage implements OnInit {
     this.regFormGroup = new FormGroup(this.regGroup);
   }
 
-  async onSubmit(data) {
+  async onSubmit(data: any) {
     this.sharedMethods.showLoader(this.pageText?.savingProfile, 2000);
     const userData = await this.sharedMethods.getUserData();
     const now = new Date().toISOString();
@@ -164,7 +164,7 @@ export class ProfilePage extends BaseformPage implements OnInit {
     }
   }
 
-  async onSubmitRegDetails(data) {
+  async onSubmitRegDetails(data: any) {
     this.sharedMethods.showLoader(this.regPageText?.savingRegDetails, 2000);
     const userData = await this.sharedMethods.getUserData();
     const now = new Date().toISOString();
@@ -193,7 +193,7 @@ export class ProfilePage extends BaseformPage implements OnInit {
     this.isViewProfile = false;
   }
 
-  getCountryValueTranslation(value) {
+  getCountryValueTranslation(value: any) {
     if (!value) {
       return '';
     }

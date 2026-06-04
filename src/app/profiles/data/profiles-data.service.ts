@@ -97,7 +97,7 @@ export class ProfilesDataService {
     if (!userRole) {
       return [];
     }
-    return this.profiles?.filter((prof) => prof.userRole === userRole);
+    return this.profiles?.filter((prof: any) => prof.userRole === userRole);
   }
 
   async getProfileByOnlineRef(onlineRef: string) {
@@ -115,7 +115,7 @@ export class ProfilesDataService {
     return profile;
   }
 
-  async create(data) {
+  async create(data: any) {
     const query = 'INSERT OR IGNORE INTO profiles (email, first_name, last_name, telephone, is_telephone_verified, mobile, \
       is_mobile_verified, address_line_1, address_line_2, address_line_3, city, country, postal_code, profile_image, \
       registration_number, passport_number, position, is_active, is_verified, last_login, user_role, \
@@ -138,7 +138,7 @@ export class ProfilesDataService {
       return null;
     });
   }
-  async saveOnlineProfile(data) {
+  async saveOnlineProfile(data: any) {
     const query = 'INSERT OR IGNORE INTO profiles (email, first_name, last_name, telephone, is_telephone_verified, \
       mobile, is_mobile_verified, address_line_1, address_line_2, address_line_3, city, country, postal_code, \
       registration_number, passport_number, position, is_active, is_verified, last_login, user_role, \

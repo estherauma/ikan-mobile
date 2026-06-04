@@ -18,9 +18,9 @@ export class DashboardelcomesectionComponent implements OnInit {
   userProfile: any;
   commonText: any;
 
-  @Input() name: string;
-  @Input() greeting: string;
-  @Input() profileImageUrl = '';
+  @Input() name: string = '';
+  @Input() greeting: string = '';
+  @Input() profileImageUrl: string = '';
   @Input() workerVessel: any; // Worker's vessel details
 
   @Output() onProfileClick = new EventEmitter<any>();

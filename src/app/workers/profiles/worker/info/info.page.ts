@@ -63,7 +63,7 @@ export class InfoPage extends BaseformPage implements OnInit {
     const pageData = this.contentService.getContentByPropertyName('workerbudiinfo');
     this.pageText = this.sharedMethods.convertAdditionalTextToObj(pageData?.additionalText);
     this.formQuestions = pageData?.formQuestions;
-    this.formQuestions?.forEach((entry) => {
+    this.formQuestions?.forEach((entry: any) => {
       this.viewInfo[entry.key] = entry?.label;
 
       // this field will not be displayed
@@ -92,7 +92,7 @@ export class InfoPage extends BaseformPage implements OnInit {
     }
   }
 
-  async onSubmit(data) {
+  async onSubmit(data: any) {
     this.sharedMethods.showLoader(this.pageText?.savingProfile, 2000);
     const userData = await this.sharedMethods.getUserData();
     const now = new Date().toISOString();

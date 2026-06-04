@@ -68,7 +68,7 @@ export class HomePage implements OnInit {
     ];
   }
 
-  viewDetails(worker) {
+  viewDetails(worker: any) {
     const workerRole = worker.role;
     const queryParams = worker;
     switch (workerRole) {
@@ -93,11 +93,11 @@ export class HomePage implements OnInit {
     modal.onDidDismiss().then((data) => {});
   }
 
-  searchResult(result) {
+  searchResult(result: any) {
     this.workers = result;
   }
 
-  filterResult(result) {
+  filterResult(result: any) {
     this.workers = result;
   }
 

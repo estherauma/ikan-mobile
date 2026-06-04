@@ -18,9 +18,8 @@ import { PageEventNames } from 'src/app/shared/services/analytics/event-names';
 })
 export class CreateDetailPage extends BaseformPage implements OnInit {
   submitButtonText='Save&Close';
-  createWorkerFormGroup;
-  prevQuestions;
-  prevData;
+  prevQuestions: any;
+  prevData: any;
   isEditing: boolean = false;
 
   constructor(
@@ -47,7 +46,7 @@ export class CreateDetailPage extends BaseformPage implements OnInit {
       this.pageTitle = this.pageText?.editWorker;
     }
     this.formQuestions = this.prevQuestions.concat(pageData?.formQuestions);
-    this.formQuestions.forEach((entry) => {
+    this.formQuestions.forEach((entry: any) => {
       const validators = this.sharedMethods.getFormValidators(entry);
       if (entry.key in this.prevData) {
         this.group[entry.key] = new FormControl(this.prevData[entry.key], validators);
@@ -117,7 +116,7 @@ export class CreateDetailPage extends BaseformPage implements OnInit {
     }
   }
 
-  async showInviteSentAlert(formData) {
+  async showInviteSentAlert(formData: any) {
     // TODO: Add message to prismic
     const message = `A new invitation has been sent to ${formData.firstName} ${formData.lastName} to join IKAN. \
       Once they have accepted, you will see them in the workers' area of the app`;
