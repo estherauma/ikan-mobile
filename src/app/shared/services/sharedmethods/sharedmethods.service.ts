@@ -330,12 +330,8 @@ export class SharedmethodsService {
     const value = control.value;
     if (!value) { return null; }
 
-    const emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
-    const phonePattern = /^([+]?[\s0-9 ]+)?(\d{3}|[ (]?[0-9]+[) ])?([- ]?[\s]?[0-9])+$/;
-    // const phonePattern = /^\+?\d{9,15}$/;
-
-    const isEmail = value.match(emailPattern);
-    const isPhone = value.match(phonePattern);
+    const isEmail = value.match(this.emailPattern);
+    const isPhone = value.match(this.phoneNumberPattern);
 
     // We are using the email key and not emailOrPhone for backward compatibility
     // with the old login page
@@ -381,7 +377,6 @@ export class SharedmethodsService {
       ...formValues,
       email,
       phoneNumber,
-      password: formValues.password.trim()
     };
     
     // Remove fields with null values
