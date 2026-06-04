@@ -212,10 +212,22 @@ export class ProfilesDataService {
     return profileExists;
   }
 
-  async updateProfileRegistrationDetails(data) {
-    const query = 'UPDATE profiles SET registration_number = ?, passport_number = ?, updated_at = ?, updated_by = ? \
-      WHERE email = ?';
-    const params = [data.registrationNumber, data.passportNumber, data.updatedAt, data.updatedBy, data.email];
+  async updateProfileRegistrationDetails(data: any) {
+    let query = '';
+    let params: any = [];
+    if (!data.email && !data.mobile) {
+      return null;
+    }
+    if (data.email) {
+      query = 'UPDATE profiles SET registration_number = ?, passport_number = ?, updated_at = ?, updated_by = ? \
+        WHERE email = ?';
+      params = [data.registrationNumber, data.passportNumber, data.updatedAt, data.updatedBy, data.email];
+    }
+    if (data.mobile) {
+      query = 'UPDATE profiles SET registration_number = ?, passport_number = ?, updated_at = ?, updated_by = ? \
+        WHERE mobile = ?';
+      params = [data.registrationNumber, data.passportNumber, data.updatedAt, data.updatedBy, data.mobile];
+    }
     return await this.db.executeSql(query, params).then(async(result) => {
       await this.retrieveProfiles();
       return result;
