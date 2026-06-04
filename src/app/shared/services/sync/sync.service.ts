@@ -835,7 +835,7 @@ export class SyncService {
 
         if (!currentProfile?.onlineRef) {
           // update onlineref if not exists
-          await this.profilesDataService.updateProfileOnlineRef(dataToSave.email, dataToSave.id);
+          await this.profilesDataService.updateProfileOnlineRef(dataToSave.email || '', dataToSave.mobile || '', dataToSave.id);
         }
         if (currentDate < newDate) {
           await this.profilesDataService.update(dataToSave).then(async() => {
@@ -889,7 +889,7 @@ export class SyncService {
                 const newDate = new Date(dataToSave?.updatedAt);
                 if (!currentProfile?.onlineRef) {
                   // update onlineref if not exists
-                  await this.profilesDataService.updateProfileOnlineRef(dataToSave.email, dataToSave.id);
+                  await this.profilesDataService.updateProfileOnlineRef(dataToSave.email || '', dataToSave.mobile || '', dataToSave.id);
                 }
                 if (currentDate < newDate) {
                   await this.profilesDataService.update(dataToSave).then(async() => {
@@ -978,7 +978,7 @@ export class SyncService {
           {register: 'register'}
         ).subscribe(async(response: CreateProfileResponse) => {
           if (response?.status === 'OK') {
-            await this.profilesDataService.updateProfileOnlineRef(profile.email, response?.data?.id);
+            await this.profilesDataService.updateProfileOnlineRef(profile.email, profile.mobile, response?.data?.id);
             if (hasProfileImage) {
               await this.postProfileImage(profile, response?.data?.id);
             }

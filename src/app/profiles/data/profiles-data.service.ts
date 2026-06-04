@@ -181,9 +181,20 @@ export class ProfilesDataService {
     });
   }
 
-  async updateProfileOnlineRef(email: string, onlineRef: string) {
-    const query = 'UPDATE profiles SET online_ref = ? WHERE email = ?';
-    const params = [onlineRef, email];
+  async updateProfileOnlineRef(email: string, mobile: string, onlineRef: string) {
+    let query = '';
+    let params: any = [];
+    if (!email && !mobile) {
+      return null;
+    }
+    if (email) {
+      query = 'UPDATE profiles SET online_ref = ? WHERE email = ?';
+      params = [onlineRef, email];
+    }
+    if (mobile) {
+      query = 'UPDATE profiles SET online_ref = ? WHERE mobile = ?';
+      params = [onlineRef, mobile];
+    }
     return await this.db.executeSql(query, params).then(async(result) => {
       await this.retrieveProfiles();
       return result;
