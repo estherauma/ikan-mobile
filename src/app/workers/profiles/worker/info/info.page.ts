@@ -99,7 +99,7 @@ export class InfoPage extends BaseformPage implements OnInit {
     data.userRole = userData.role;
     data.updatedBy = userData.id;
     data.updatedAt = now;
-    const profileExists = await this.profilesDataService.checkIfProfileExists(data.email);
+    const profileExists = await this.profilesDataService.checkIfProfileExists(data.email, data.mobile);
     if (profileExists) {
       data = { ...this.profileData, ...data};
       const result = await this.profilesDataService.update(data);

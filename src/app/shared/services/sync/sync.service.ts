@@ -815,7 +815,7 @@ export class SyncService {
       dataToSave.updatedAt = dataToSave.updatedAt ??  now;
       dataToSave.createdBy = dataToSave.createdBy ?? user?.id;
       dataToSave.updatedBy = dataToSave.updatedBy ?? user?.id;
-      const profileExists = await this.profilesDataService.checkIfProfileExists(dataToSave.email);
+      const profileExists = await this.profilesDataService.checkIfProfileExists(dataToSave.email || '', dataToSave.mobile || '');
       if (!profileExists) {
         await this.profilesDataService.saveOnlineProfile(dataToSave).then(async() => {
           if (dataToSave?.profileImage) {
@@ -870,7 +870,7 @@ export class SyncService {
               dataToSave.updatedAt = dataToSave.updatedAt ??  now;
               dataToSave.createdBy = dataToSave.createdBy ?? user?.id;
               dataToSave.updatedBy = dataToSave.updatedBy ?? user?.id;
-              const profileExists = await this.profilesDataService.checkIfProfileExists(dataToSave.email);
+              const profileExists = await this.profilesDataService.checkIfProfileExists(dataToSave.email || '', dataToSave.mobile || '');
               if (!profileExists) {
                 await this.profilesDataService.saveOnlineProfile(dataToSave).then(async() => {
                   if (dataToSave?.profileImage) {

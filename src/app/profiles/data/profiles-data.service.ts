@@ -193,8 +193,11 @@ export class ProfilesDataService {
     });
   }
 
-  async checkIfProfileExists(email: string) {
-    const profileExists = this.profiles.some((prof) => prof.email === email);
+  async checkIfProfileExists(email: string, mobile: string) {
+    if (!email && !mobile) {
+      return false;
+    }
+    const profileExists = this.profiles.some((prof: any) => prof.email === email || prof.mobile === mobile);
     return profileExists;
   }
 

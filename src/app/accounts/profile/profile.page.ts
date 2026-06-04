@@ -70,12 +70,12 @@ export class ProfilePage extends BaseformPage implements OnInit {
     this.submitButtonText = this.commonText?.save;
     this.userData = await this.sharedMethods.getUserData();
     this.isAgent = this.userData?.role === UserRole.indonesianAgent || this.userData?.role === UserRole.taiwaneseAgent;
-    const profData = await this.profilesDataService.getSingleProfile(this.userData?.email);
+    const profData = await this.profilesDataService.getSingleProfile(this.userData?.email, this.userData?.mobile);
     if (profData?.id) {
       this.profileData = profData;
     }
     // This ensures that the profile view happens when some of the fields have values otherwise the view would be blank
-    this.isViewProfile = (this.profileData?.id && this.profileData?.addressLine1 && this.profileData?.firstName && this.profileData?.email && this.profileData?.telephone) ? true : false;
+    this.isViewProfile = (this.profileData?.id && this.profileData?.addressLine1 && this.profileData?.firstName && this.profileData?.email && this.profileData?.mobile && this.profileData?.telephone) ? true : false;
     this.initializeForm();
   }
 
@@ -137,7 +137,7 @@ export class ProfilePage extends BaseformPage implements OnInit {
     data.userRole = userData.role;
     data.updatedBy = userData.id;
     data.updatedAt = now;
-    const profileExists = await this.profilesDataService.checkIfProfileExists(data.email);
+    const profileExists = await this.profilesDataService.checkIfProfileExists(data.email, data.mobile);
     if (profileExists) {
       data = { ...this.profileData, ...data};
       const result = await this.profilesDataService.update(data);
@@ -169,9 +169,10 @@ export class ProfilePage extends BaseformPage implements OnInit {
     const userData = await this.sharedMethods.getUserData();
     const now = new Date().toISOString();
     data.email = this.profileData?.email;
+    data.mobile = this.profileData?.mobile;
     data.updatedBy = userData.id;
     data.updatedAt = now;
-    const profileExists = await this.profilesDataService.checkIfProfileExists(data.email);
+    const profileExists = await this.profilesDataService.checkIfProfileExists(data.email, data.mobile);
     if (profileExists) {
       const result = await this.profilesDataService.updateProfileRegistrationDetails(data);
       if (result?.rowsAffected > 0) {

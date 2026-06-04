@@ -82,7 +82,7 @@ export class CreateDetailPage extends BaseformPage implements OnInit {
     formData.userRole = UserRole.worker;
     formData.profileImage = formData.profileImage?.webPath || '';
 
-    const profileExists = await this.profilesDataService.checkIfProfileExists(formData.email);
+    const profileExists = await this.profilesDataService.checkIfProfileExists(formData.email, formData.mobile);
     if (!profileExists) {
       formData.createdAt = now;
       formData.createdBy = userData?.id;
