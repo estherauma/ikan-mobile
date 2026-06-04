@@ -108,6 +108,7 @@ export interface UserData {
   firstName: string;
   lastName: string;
   email: string;
+  mobile: string;
   role: UserRole;
   roles?: UserRole[];
 }
