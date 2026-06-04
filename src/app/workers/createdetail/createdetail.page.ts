@@ -73,8 +73,14 @@ export class CreateDetailPage extends BaseformPage implements OnInit {
     });
   }
 
-  async onSubmit(formData) {
+  async onSubmit(formData: any) {
     this.sharedMethods.showLoader(this.contentService.commonText?.saving);
+    if (!formData.email && !formData.mobile) {
+      // TODO: add translation here
+      this.sharedMethods.showToast(this.contentService.commonText?.emailOrPhoneNumberRequired, 'long');
+      return;
+    }
+    
     const now = new Date().toISOString();
     const userData = await this.sharedMethods.getUserData();
     formData.createdAt = formData.updatedAt = now;
