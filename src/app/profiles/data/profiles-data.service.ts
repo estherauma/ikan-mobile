@@ -260,9 +260,20 @@ export class ProfilesDataService {
     });
   }
 
-  async delete(email: string) {
-    const query = 'DELETE FROM profiles WHERE email = ?';
-    const params = [email];
+  async delete(email: string, mobile: string) {
+    if (!email && !mobile) {
+      return null;
+    }
+    let query = '';
+    let params: any = [];
+    if (email) {
+      query = 'DELETE FROM profiles WHERE email = ?';
+      params = [email];
+    }
+    if (mobile) {
+      query = 'DELETE FROM profiles WHERE mobile = ?';
+      params = [mobile];
+    }
     return this.db.executeSql(query, params).then(async(result) => {
       await this.retrieveProfiles();
       return result;
