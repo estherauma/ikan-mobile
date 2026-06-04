@@ -50,7 +50,7 @@ export class ProfilePage extends BaseformPage implements OnInit {
     this.analytics.trackEvent(PageEventNames.profile, this.sharedMethods.analyticsEventParams);
     this.profilesDataService.getAll().subscribe(async(data) => {
       const user = await this.sharedMethods.getUserData();
-      const userProfile = data.find((profile) => profile.email === user?.email);
+      const userProfile: any = this.profilesDataService.getSingleProfile(user?.email, user?.mobile);
       if (userProfile?.profileImage) {
         this.imageUrl = userProfile?.profileImage;
       }

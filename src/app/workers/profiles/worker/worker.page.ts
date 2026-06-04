@@ -32,14 +32,14 @@ export class WorkerPage implements OnInit {
     this.pageTitle = this.commonText?.myProfile || this.pageTitle;
     this.profileDataService.getAll().subscribe(async(data) => {
       const user = await this.sharedMethods.getUserData();
-      const userProfile = data.find((profile) => profile.email === user?.email);
+      const userProfile: any = this.profileDataService.getSingleProfile(user?.email, user?.mobile);
       if (userProfile?.profileImage) {
         this.imageUrl = userProfile?.profileImage;
       }
     });
   }
 
-  onSegmentChange(e) {
+  onSegmentChange(e: any) {
     this.activeSegment = e?.detail?.value;
   }
 
