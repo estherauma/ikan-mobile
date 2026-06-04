@@ -210,7 +210,11 @@ export class ProfilePage extends BaseformPage implements OnInit {
       if (data?.data?.imageData && data?.data?.imageData.webPath) {
         this.imageUrl = data?.data?.imageData.webPath;
         const user = await this.sharedMethods.getUserData();
-        this.profilesDataService.updateProfilesField(user?.email, 'profile_image', this.imageUrl);
+        const result = await this.profilesDataService.updateProfilesField(user?.email, user?.mobile, 'profile_image', this.imageUrl);
+        if (!result) {
+          console.error(`Failed to update profile image for ${user?.email || user?.mobile}`);
+          this.sharedMethods.showToast(this.docsCommonText?.profilePictureUpdateFailure);
+        }
       } else if (data?.role !== 'backdrop') {
         this.sharedMethods.showToast(this.docsCommonText?.profilePictureUpdateFailure);
       }

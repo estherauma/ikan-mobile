@@ -24,7 +24,7 @@ export class PageprofilecontainerComponent implements OnInit {
   @Input() title = '';
   @Input() isResendInviteBtn = false;
   @Input() withinNav = true;
-  @Input() worker;
+  @Input() worker: any;
 
   @Output() clickedMenuItem = new EventEmitter<any>();
 
@@ -42,11 +42,11 @@ export class PageprofilecontainerComponent implements OnInit {
     this.reSendInviteBtnTitle = this.commonText?.resendInvite;
   }
 
-  onClickedMenu(data) {
+  onClickedMenu(data: any) {
     this.clickedMenuItem.emit(data);
   }
 
-  async changePhoto(worker) {
+  async changePhoto(worker: any) {
     const modal = await this.modalController.create({
       component: ImageselectComponent,
       cssClass: 'notification-modal',
@@ -55,7 +55,11 @@ export class PageprofilecontainerComponent implements OnInit {
     await modal.onDidDismiss().then(async(data) => {
       if (data?.data?.imageData && data?.data?.imageData.webPath) {
         this.imageUrl = data?.data?.imageData.webPath;
-        this.profilesDataService.updateProfilesField(worker?.email, 'profile_image', this.imageUrl);
+        const result = await this.profilesDataService.updateProfilesField(worker?.email, worker?.mobile, 'profile_image', this.imageUrl);
+        if (!result) {
+          console.error(`Failed to update profile image for ${worker?.email || worker?.mobile}`);
+          this.sharedMethods.showToast(this.docsCommonText?.profilePictureUpdateFailure);
+        }
       } else if (data?.role !== 'backdrop') {
         this.sharedMethods.showToast(this.docsCommonText?.profilePictureUpdateFailure);
       }

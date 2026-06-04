@@ -821,7 +821,12 @@ export class SyncService {
           if (dataToSave?.profileImage) {
             await this.uploadService.fetchAndSaveFile(dataToSave.profileImage).then(async(fileUri) => {
               if (fileUri) {
-                await this.profilesDataService.updateProfilesField(dataToSave.email, 'profile_image', fileUri);
+                const result = await this.profilesDataService.updateProfilesField(dataToSave.email || '', dataToSave.mobile || '', 'profile_image', fileUri);
+                if (!result) {
+                  console.error(`Failed to update profile image for ${dataToSave.email || dataToSave.mobile}`);
+                  // TODO: add translation here
+                  this.sharedMethods.showToast('Failed to update profile image');
+                }
               }
             });
           }
@@ -842,7 +847,12 @@ export class SyncService {
             if (dataToSave?.profileImage) {
               await this.uploadService.fetchAndSaveFile(dataToSave.profileImage).then(async(fileUri) => {
                 if (fileUri) {
-                  await this.profilesDataService.updateProfilesField(dataToSave.email, 'profile_image', fileUri);
+                  const result = await this.profilesDataService.updateProfilesField(dataToSave.email || '', dataToSave.mobile || '', 'profile_image', fileUri);
+                  if (!result) {
+                    console.error(`Failed to update profile image for ${dataToSave.email || dataToSave.mobile}`);
+                    // TODO: add translation here
+                    this.sharedMethods.showToast('Failed to update profile image');
+                  }
                 }
               });
             }
@@ -876,7 +886,10 @@ export class SyncService {
                   if (dataToSave?.profileImage) {
                     await this.uploadService.fetchAndSaveFile(dataToSave.profileImage).then(async(fileUri) => {
                       if (fileUri) {
-                        await this.profilesDataService.updateProfilesField(dataToSave.email, 'profile_image', fileUri);
+                        const result = await this.profilesDataService.updateProfilesField(dataToSave.email || '', dataToSave.mobile || '', 'profile_image', fileUri);
+                        if (!result) {
+                          console.error(`Failed to update profile image for ${dataToSave.email || dataToSave.mobile}`);
+                        }
                       }
                     });
                   }
@@ -896,7 +909,10 @@ export class SyncService {
                     if (dataToSave?.profileImage) {
                       await this.uploadService.fetchAndSaveFile(dataToSave.profileImage).then(async(fileUri) => {
                         if (fileUri) {
-                          await this.profilesDataService.updateProfilesField(dataToSave.email, 'profile_image', fileUri);
+                          const result = await this.profilesDataService.updateProfilesField(dataToSave.email || '', dataToSave.mobile || '', 'profile_image', fileUri);
+                          if (!result) {
+                            console.error(`Failed to update profile image for ${dataToSave.email || dataToSave.mobile}`);
+                          }
                         }
                       });
                     }

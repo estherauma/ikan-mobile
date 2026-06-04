@@ -53,7 +53,7 @@ export class WorkerPage implements OnInit {
       if (data?.data?.imageData && data?.data?.imageData.webPath) {
         this.imageUrl = data?.data?.imageData.webPath;
         const user = await this.sharedMethods.getUserData();
-        this.profileDataService.updateProfilesField(user?.email, 'profile_image', this.imageUrl);
+        this.profileDataService.updateProfilesField(user?.email, user?.mobile, 'profile_image', this.imageUrl);
       } else if (data.role !== 'backdrop') {
         this.sharedMethods.showToast(this.docsCommonText?.profilePictureUpdateFailure);
       }
