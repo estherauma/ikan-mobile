@@ -98,11 +98,14 @@ export class ProfilesDataService {
   }
 
   async getProfileByOnlineRef(onlineRef: string) {
-    return this.profiles?.find((p) => p.onlineRef === onlineRef);
+    return this.profiles?.find((p:any) => p.onlineRef === onlineRef);
   }
 
-  async getSingleProfile(email: string) {
-    const profile = await this.profiles.find((p) => p.email === email);
+  async getSingleProfile(email: string, mobile: string) {
+    if (!email && !mobile) {
+      return null;
+    }
+    const profile = await this.profiles.find((p:any) => p.email === email || p.mobile === mobile);
     return profile;
   }
 

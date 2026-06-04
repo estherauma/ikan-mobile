@@ -61,7 +61,7 @@ export class PaymentsPage extends BaseformPage implements OnInit {
     this.submitButtonText = (this.isEditingAcct || this.isEditingBeneficiary) ? this.commonText?.update : this.commonText?.save;
     const userData = await this.sharedMethods.getUserData();
 
-    let profData: ProfileData = await this.profilesDataService.getSingleProfile(userData?.email);
+    let profData: ProfileData = await this.profilesDataService.getSingleProfile(userData?.email, userData?.mobile);
     if (this.page === 'vo-workers-payments') {
       profData = this.workerInfo;
     }

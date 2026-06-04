@@ -829,7 +829,7 @@ export class SyncService {
           await this.fetchBeneficiaries(dataToSave.id);
         }).catch((e) => console.error(e));
       } else {
-        const currentProfile = await this.profilesDataService.getSingleProfile(dataToSave.email);
+        const currentProfile = await this.profilesDataService.getSingleProfile(dataToSave.email || '', dataToSave.mobile || '');
         const currentDate = new Date(currentProfile?.updatedAt);
         const newDate = new Date(dataToSave?.updatedAt);
 
@@ -884,7 +884,7 @@ export class SyncService {
                   await this.fetchBeneficiaries(dataToSave.id);
                 }).catch((e) => console.error(e));
               } else {
-                const currentProfile = await this.profilesDataService.getSingleProfile(dataToSave.email);
+                const currentProfile = await this.profilesDataService.getSingleProfile(dataToSave.email || '', dataToSave.mobile || '');
                 const currentDate = new Date(currentProfile?.updatedAt);
                 const newDate = new Date(dataToSave?.updatedAt);
                 if (!currentProfile?.onlineRef) {
@@ -960,7 +960,7 @@ export class SyncService {
             await this.syncBankAccounts(profileId, response?.data?.id);
             await this.syncBeneficiaries(profileId, response?.data?.id);
           } else {
-            console.error(`Failed to sync profile ${profile.email} to the api`, response);
+            console.error(`Failed to sync profile ${profile.email || profile.mobile} to the api`, response);
           }
         });
       } else {
@@ -985,7 +985,7 @@ export class SyncService {
             await this.syncBankAccounts(profileId, response?.data?.id);
             await this.syncBeneficiaries(profileId, response?.data?.id);
           } else {
-            console.error(`Failed to sync/register profile ${profile.email} to the api`, response);
+            console.error(`Failed to sync/register profile ${profile.email || profile.mobile} to the api`, response);
           }
         });
       }
@@ -1001,7 +1001,7 @@ export class SyncService {
       imageData.append('userId', profileOnlineRef);
       this.apiService.post('file-upload', imageData).subscribe((res: any) => {
         if (res?.status !== 'OK') {
-          console.error(`Failed to sync profile image for user ${profile.email} to the api`, res);
+          console.error(`Failed to sync profile image for user ${profile.email || profile.mobile} to the api`, res);
         }
       });
     }

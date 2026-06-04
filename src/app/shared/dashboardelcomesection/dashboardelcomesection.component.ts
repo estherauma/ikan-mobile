@@ -45,7 +45,7 @@ export class DashboardelcomesectionComponent implements OnInit {
     this.user = await this.sharedMethods.getUserData();
     this.commonText = await this.contentService.commonText;
     this.profileDataService.getAll().subscribe(async(data) => {
-      this.userProfile = await data.find((profile) => profile.email === this.user?.email);
+      this.userProfile = data.find((profile: any) => profile?.email === this.user?.email || profile?.mobile === this.user?.mobile);
       if (this.userProfile?.profileImage) {
         this.profileImageUrl = this.userProfile?.profileImage;
       }

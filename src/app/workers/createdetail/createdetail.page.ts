@@ -98,7 +98,7 @@ export class CreateDetailPage extends BaseformPage implements OnInit {
         this.sharedMethods.showLoader(this.contentService.commonText?.error);
       }
     } else {
-      const currentProfileData = await this.profilesDataService.getSingleProfile(formData.email);
+      const currentProfileData = await this.profilesDataService.getSingleProfile(formData.email, formData.mobile);
       formData = { ...currentProfileData, ...formData };
       const result = await this.profilesDataService.update(formData);
       if (result?.rowsAffected > 0) {

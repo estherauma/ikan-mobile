@@ -50,7 +50,7 @@ export class InfoPage extends BaseformPage implements OnInit {
     this.commonText = this.contentService.commonText;
     this.submitButtonText = this.commonText?.save;
     this.userData = await this.sharedMethods.getUserData();
-    const profData = await this.profilesDataService.getSingleProfile(this.userData?.email);
+    const profData = await this.profilesDataService.getSingleProfile(this.userData?.email, this.userData?.mobile);
     if (profData?.id) {
       this.profileData = profData;
     }
