@@ -65,9 +65,6 @@ export class LoginPage extends BaseformPage implements OnInit {
     this.submitButtonText = this.pageText?.submitButtonText;
     this.formQuestions.forEach((entry: any) => {
       this.group[entry.key] = new FormControl('', [Validators.required]);
-      if (entry.key === 'password') {
-        this.group[entry.key] = new FormControl('', [Validators.required]);
-      }
 
       // We are using the email key and not emailOrPhone for backward compatibility
       // with the old login page
