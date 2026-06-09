@@ -71,8 +71,9 @@ export class VerifyPhoneNumberComponent  implements OnInit {
     // // add phone number to the form group
     // group.phoneNumber = new FormControl('', [Validators.required, Validators.pattern(this.phoneNumberRegex)]);
 
+    const phoneNumberPattern = /^\+[1-9]\d{1,14}$/;
     const group: any = {
-      phoneNumber: new FormControl(this.phoneNumber, [Validators.required, Validators.pattern(this.sharedMethods.phoneNumberPattern)]),
+      phoneNumber: new FormControl(this.phoneNumber, [Validators.required, Validators.pattern(phoneNumberPattern)]),
     };
     this.pageFormGroup = new FormGroup(group);
   }

@@ -25,9 +25,9 @@ export class SharedmethodsService {
   currentPlatform = '';
   loader: any;
   // Temporarily disabling phone pattern to allow all formats
-  // phonePattern = /^([+]?[\s0-9 ]+)?(\d{3}|[ (]?[0-9]+[) ])?([- ]?[\s]?[0-9])+$/;
-  phoneNumberPattern = /^\+[1-9]\d{1,14}$/;
-  emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+  // old // phonePattern = /^([+]?[\s0-9 ]+)?(\d{3}|[ (]?[0-9]+[) ])?([- ]?[\s]?[0-9])+$/;
+  // new // phoneNumberPattern = /^\+[1-9]\d{1,14}$/;
+  // emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
 
   constructor(
     public loadingCtrl: LoadingController,
@@ -313,6 +313,7 @@ export class SharedmethodsService {
   }
 
   getFormValidators(entry: any) {
+    const phoneNumberPattern = /^\+[1-9]\d{1,14}$/;
     const validators = [];
     if (entry.isRequired) {
       validators.push(Validators.required);
@@ -321,7 +322,7 @@ export class SharedmethodsService {
       validators.push(Validators.email);
     }
     if (entry.questionType === 'tel' || entry.questionType === 'telephone') {
-      validators.push(Validators.pattern(this.phoneNumberPattern));
+      validators.push(Validators.pattern(phoneNumberPattern));
     }
     return validators;
   }
@@ -354,8 +355,10 @@ export class SharedmethodsService {
   aggregateEmailOrPhoneValue(formValues: any, authCommonText: any) {
     // We are using the email key and not emailOrPhone for backward compatibility
     // with the old login page
-    const isEmail = formValues.email.trim().match(this.emailPattern);
-    const isPhone = formValues.email.trim().match(this.phoneNumberPattern);
+    const phoneNumberPattern = /^\+[1-9]\d{1,14}$/;
+    const emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+    const isEmail = formValues.email.trim().match(emailPattern);
+    const isPhone = formValues.email.trim().match(phoneNumberPattern);
     if (!isEmail && !isPhone) {
       this.hideLoader();
       this.showToast(authCommonText?.invalidEmailOrPhoneNumberError || 'Please enter a valid email or phone number', 'long');
