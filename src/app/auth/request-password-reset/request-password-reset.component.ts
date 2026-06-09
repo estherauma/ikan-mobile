@@ -56,9 +56,7 @@ export class RequestPasswordResetComponent extends BaseformPage implements OnIni
       // We are using the email key and not emailOrPhone for backward compatibility
       // with the old login page
       if (entry.key === 'email') {
-        // TODO: add translation here
         entry.label = this.authCommonText?.emailOrPhoneLabel ?? entry.label;
-        // TODO: add translation here
         entry.placeholder = this.authCommonText?.enterYourEmailOrPhoneNumber ?? entry.placeholder;
         this.group[entry.key] = new FormControl('', [Validators.required, this.sharedMethods.emailOrPhoneValidator]);
       }

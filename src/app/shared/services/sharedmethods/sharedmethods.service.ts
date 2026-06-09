@@ -358,8 +358,7 @@ export class SharedmethodsService {
     const isPhone = formValues.email.trim().match(this.phoneNumberPattern);
     if (!isEmail && !isPhone) {
       this.hideLoader();
-      // TODO: add translation here
-      this.showToast(authCommonText?.noEmailOrPhoneError || 'Please enter a valid email or phone number');
+      this.showToast(authCommonText?.invalidEmailOrPhoneNumberError || 'Please enter a valid email or phone number', 'long');
       return;
     }
 

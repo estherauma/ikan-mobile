@@ -59,7 +59,6 @@ export class PasswordResetPage extends BaseformPage implements OnInit {
       // We are using the email key and not emailOrPhone for backward compatibility
       // with the old login page
       if (entry.key === 'email') {
-        // TODO: add translation here
         entry.label = this.authCommonText?.emailOrPhoneLabel ?? entry.label;
         this.group[entry.key] = new FormControl('', [Validators.required, this.sharedMethods.emailOrPhoneValidator]);
       }
@@ -86,6 +85,8 @@ export class PasswordResetPage extends BaseformPage implements OnInit {
   
     const dataToSubmit = this.sharedMethods.aggregateEmailOrPhoneValue(data, this.authCommonText);
     delete dataToSubmit.confirm_password;
+    dataToSubmit.language = this.contentService.currentLanguage || 'en-us';
+    
     this.sharedMethods?.showLoader(this.commonText?.submittingYourData);
     this.apiService.post('accounts/reset-password', dataToSubmit, true).subscribe(
       res => {
