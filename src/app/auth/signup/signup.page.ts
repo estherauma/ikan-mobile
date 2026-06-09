@@ -57,7 +57,6 @@ export class SignupPage extends BaseformPage implements OnInit {
       // We are using the email key and not emailOrPhone for backward compatibility
       // with the old login page
       if (entry.key === 'email') {
-        // TODO: add translation here
         entry.label = this.authCommonText?.emailOrPhoneLabel ?? entry.label;
         this.group[entry.key] = new FormControl('', [Validators.required, this.sharedMethods.emailOrPhoneValidator]);
       }

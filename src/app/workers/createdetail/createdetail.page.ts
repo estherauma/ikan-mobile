@@ -21,6 +21,7 @@ export class CreateDetailPage extends BaseformPage implements OnInit {
   prevQuestions: any;
   prevData: any;
   isEditing: boolean = false;
+  authCommonText: any;
 
   constructor(
     public contentService: ContentService,
@@ -41,6 +42,7 @@ export class CreateDetailPage extends BaseformPage implements OnInit {
     const pageData = this.contentService.getContentByPropertyName('createworkers');
     this.pageText = this.sharedMethods.convertAdditionalTextToObj(pageData?.additionalText);
     this.pageTitle = pageData?.pageTitle;
+    this.authCommonText = await this.contentService.getAuthCommonText();
     if (this.isEditing) {
       this.submitButtonText = this.commonText.edit;
       this.pageTitle = this.pageText?.editWorker;
@@ -75,7 +77,6 @@ export class CreateDetailPage extends BaseformPage implements OnInit {
   async onSubmit(formData: any) {
     this.sharedMethods.showLoader(this.contentService.commonText?.saving);
     if (!formData.email && !formData.mobile) {
-      // TODO: add translation here
       this.sharedMethods.showToast(this.contentService.commonText?.emailOrPhoneNumberRequired, 'long');
       return;
     }

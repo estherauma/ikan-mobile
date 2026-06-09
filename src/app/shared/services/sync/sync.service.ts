@@ -824,8 +824,8 @@ export class SyncService {
                 const result = await this.profilesDataService.updateProfilesField(dataToSave.email || '', dataToSave.mobile || '', 'profile_image', fileUri);
                 if (!result) {
                   console.error(`Failed to update profile image for ${dataToSave.email || dataToSave.mobile}`);
-                  // TODO: add translation here
-                  this.sharedMethods.showToast('Failed to update profile image');
+                  const authCommonText = await this.contentService.getAuthCommonText();
+                  this.sharedMethods.showToast(authCommonText?.failedToUpdateProfileImage || 'Failed to update profile image');
                 }
               }
             });
@@ -850,8 +850,8 @@ export class SyncService {
                   const result = await this.profilesDataService.updateProfilesField(dataToSave.email || '', dataToSave.mobile || '', 'profile_image', fileUri);
                   if (!result) {
                     console.error(`Failed to update profile image for ${dataToSave.email || dataToSave.mobile}`);
-                    // TODO: add translation here
-                    this.sharedMethods.showToast('Failed to update profile image');
+                    const authCommonText = await this.contentService.getAuthCommonText();
+                    this.sharedMethods.showToast(authCommonText?.failedToUpdateProfileImage || 'Failed to update profile image');
                   }
                 }
               });
@@ -889,6 +889,8 @@ export class SyncService {
                         const result = await this.profilesDataService.updateProfilesField(dataToSave.email || '', dataToSave.mobile || '', 'profile_image', fileUri);
                         if (!result) {
                           console.error(`Failed to update profile image for ${dataToSave.email || dataToSave.mobile}`);
+                          const authCommonText = await this.contentService.getAuthCommonText();
+                          this.sharedMethods.showToast(authCommonText?.failedToUpdateProfileImage || 'Failed to update profile image');
                         }
                       }
                     });
@@ -912,6 +914,8 @@ export class SyncService {
                           const result = await this.profilesDataService.updateProfilesField(dataToSave.email || '', dataToSave.mobile || '', 'profile_image', fileUri);
                           if (!result) {
                             console.error(`Failed to update profile image for ${dataToSave.email || dataToSave.mobile}`);
+                            const authCommonText = await this.contentService.getAuthCommonText();
+                            this.sharedMethods.showToast(authCommonText?.failedToUpdateProfileImage || 'Failed to update profile image');
                           }
                         }
                       });

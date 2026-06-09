@@ -467,4 +467,10 @@ export class ContentService {
     };
     await this.sharedMethods.saveDataToStorage(StorageKeys.learningHubProgress, learningHubProgress);
   }
+
+  async getAuthCommonText() {
+    const authPageData = this.getContentByPropertyName('auth-common-text');
+    const res = this.sharedMethods.convertAdditionalTextToObj(authPageData?.additionalText);
+    return res;
+  }
 }
