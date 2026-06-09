@@ -85,6 +85,8 @@ export class PasswordResetPage extends BaseformPage implements OnInit {
   
     const dataToSubmit = this.sharedMethods.aggregateEmailOrPhoneValue(data, this.authCommonText);
     delete dataToSubmit.confirm_password;
+    dataToSubmit.language = this.contentService.currentLanguage || 'en-us';
+    
     this.sharedMethods?.showLoader(this.commonText?.submittingYourData);
     this.apiService.post('accounts/reset-password', dataToSubmit, true).subscribe(
       res => {
