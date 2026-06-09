@@ -329,9 +329,12 @@ export class SharedmethodsService {
   emailOrPhoneValidator(control: AbstractControl): ValidationErrors | null {
     const value = control.value;
     if (!value) { return null; }
+    
+    const phoneNumberPattern = /^\+[1-9]\d{1,14}$/;
+    const emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
 
-    const isEmail = value.match(this.emailPattern);
-    const isPhone = value.match(this.phoneNumberPattern);
+    const isEmail = value.match(emailPattern);
+    const isPhone = value.match(phoneNumberPattern);
 
     // We are using the email key and not emailOrPhone for backward compatibility
     // with the old login page
