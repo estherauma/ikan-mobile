@@ -35,7 +35,8 @@
       "sound": "beep.wav"
     },
 		"Keyboard": {
-			"resize": "ionic"
+			"resize": "ionic",
+			"resizeOnFullScreen": true
 		}
 	}
 }
