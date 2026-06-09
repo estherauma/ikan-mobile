@@ -23,6 +23,7 @@ export class PasswordResetPage extends BaseformPage implements OnInit {
   fieldErrors = {};
   nonFieldErrors = [];
   email = '';
+  authCommonText: any;
 
   constructor(
     public contentService: ContentService,
@@ -44,19 +45,26 @@ export class PasswordResetPage extends BaseformPage implements OnInit {
   }
 
   pageSetup() {
+    const authPageData = this.contentService.getContentByPropertyName('auth-common-text');
+    this.authCommonText = this.sharedMethods.convertAdditionalTextToObj(authPageData?.additionalText);
     const pageData = this.contentService.getContentByPropertyName('resetpasswordform');
     this.formQuestions = pageData.formQuestions;
     this.title = pageData?.pageTitle;
     this.pageText = this.sharedMethods.convertAdditionalTextToObj(pageData?.additionalText);
     this.submitButtonText = this.pageText?.submitButtonText;
     this.description = this.pageText?.description;
-    this.formQuestions.forEach((entry) => {
+    this.formQuestions.forEach((entry: any) => {
       this.group[entry.key] = new FormControl('', [Validators.required]);
-      if (entry.key == 'email') {
-        this.group[entry.key] = new FormControl(this.email, [Validators.required, Validators.email]);
+
+      // We are using the email key and not emailOrPhone for backward compatibility
+      // with the old login page
+      if (entry.key === 'email') {
+        entry.label = this.authCommonText?.emailOrPhoneLabel ?? entry.label;
+        this.group[entry.key] = new FormControl('', [Validators.required, this.sharedMethods.emailOrPhoneValidator]);
       }
     });
     this.pageFormGroup = new FormGroup(this.group);
+    this.sharedMethods.trimFormValues(this.pageFormGroup);
   }
 
   getEmail() {
@@ -67,7 +75,7 @@ export class PasswordResetPage extends BaseformPage implements OnInit {
     });
   }
 
-  onSubmit(data) {
+  onSubmit(data: any) {
     this.isLoading = true;
     if (data?.password?.trim() !== data?.confirm_password?.trim()) {
       this.sharedMethods.showToast(this.commonText?.passwordsDoNotMatch);
@@ -75,9 +83,12 @@ export class PasswordResetPage extends BaseformPage implements OnInit {
       return;
     }
   
-    delete data.confirm_password;
+    const dataToSubmit = this.sharedMethods.aggregateEmailOrPhoneValue(data, this.authCommonText);
+    delete dataToSubmit.confirm_password;
+    dataToSubmit.language = this.contentService.currentLanguage || 'en-us';
+    
     this.sharedMethods?.showLoader(this.commonText?.submittingYourData);
-    this.apiService.post('accounts/reset-password', data, true).subscribe(
+    this.apiService.post('accounts/reset-password', dataToSubmit, true).subscribe(
       res => {
         this.sharedMethods.showToast(this.pageText?.passwordResetProceedToLogin || 'Password was reset successfully. Please proceede to login');
         this.isLoading = false;

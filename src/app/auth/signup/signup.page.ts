@@ -21,6 +21,7 @@ export class SignupPage extends BaseformPage implements OnInit {
   submitButtonText = '';
   isLoading = false;
   fieldErrors = {}
+  authCommonText: any;
 
   constructor(
     public contentService: ContentService,
@@ -40,6 +41,8 @@ export class SignupPage extends BaseformPage implements OnInit {
   }
 
   pageSetup() {
+    const authPageData = this.contentService.getContentByPropertyName('auth-common-text');
+    this.authCommonText = this.sharedMethods.convertAdditionalTextToObj(authPageData?.additionalText);
     const pageData = this.contentService.getContentByPropertyName('signup');
     this.formQuestions = pageData.formQuestions;
     this.pageTitle = pageData?.pageTitle;
@@ -50,8 +53,16 @@ export class SignupPage extends BaseformPage implements OnInit {
     this.formQuestions.forEach((entry: any) => {
       const validators = this.sharedMethods.getFormValidators(entry);
       this.group[entry.key] = new FormControl('', validators);
+
+      // We are using the email key and not emailOrPhone for backward compatibility
+      // with the old login page
+      if (entry.key === 'email') {
+        entry.label = this.authCommonText?.emailOrPhoneLabel ?? entry.label;
+        this.group[entry.key] = new FormControl('', [Validators.required, this.sharedMethods.emailOrPhoneValidator]);
+      }
     });
     this.pageFormGroup = new FormGroup(this.group);
+    this.sharedMethods.trimFormValues(this.pageFormGroup);
   }
 
   async onSubmit(data: any) {
@@ -63,7 +74,7 @@ export class SignupPage extends BaseformPage implements OnInit {
     }
   
     this.sharedMethods?.showLoader(this.commonText?.submittingYourData);
-    const dataToSubmit = { ...data };
+    const dataToSubmit = this.sharedMethods.aggregateEmailOrPhoneValue(data, this.authCommonText);
     dataToSubmit.language = this.contentService?.currentLanguage || 'en-us';
     delete dataToSubmit.confirmPassword;
     if (!dataToSubmit?.role && !dataToSubmit?.userRole) {
@@ -74,7 +85,16 @@ export class SignupPage extends BaseformPage implements OnInit {
         this.sharedMethods.showToast(this.commonText?.accountCreatedSuccessfully);
         this.isLoading = false;
         this.sharedMethods?.hideLoader();
-        this.router.navigate(['/auth/register-success']);
+        if (dataToSubmit?.phoneNumber) {
+          const queryParams = {
+            phoneNumber: dataToSubmit.phoneNumber,
+            numberType: 'mobile',
+            previousUrl: this.router.url,
+          };
+          this.router.navigate(['/auth/verify-phone-number'], { queryParams });
+        } else {
+          this.router.navigate(['/auth/register-success']);
+        }
       },
       error => {
         this.isLoading = false;

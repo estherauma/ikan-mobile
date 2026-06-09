@@ -22,6 +22,7 @@ export class RequestPasswordResetComponent extends BaseformPage implements OnIni
   isLoading = false;
   fieldErrors = {};
   nonFieldErrors = [];
+  authCommonText: any;
 
   constructor(
     public contentService: ContentService,
@@ -41,6 +42,8 @@ export class RequestPasswordResetComponent extends BaseformPage implements OnIni
   }
 
   pageSetup() {
+    const authPageData = this.contentService.getContentByPropertyName('auth-common-text');
+    this.authCommonText = this.sharedMethods.convertAdditionalTextToObj(authPageData?.additionalText);
     const pageData = this.contentService.getContentByPropertyName('requestpasswordresetform');
     this.formQuestions = pageData?.formQuestions;
     this.title = pageData?.pageTitle;
@@ -48,14 +51,24 @@ export class RequestPasswordResetComponent extends BaseformPage implements OnIni
     this.description = this.pageText?.resetPasswordDescription;
     this.submitButtonText = this.pageText?.submitButtonText;
     this.formQuestions.forEach((entry: any) => {
-      this.group[entry.key] = new FormControl('', [Validators.required, Validators.email]);
+      this.group[entry.key] = new FormControl('', [Validators.required]);
+      
+      // We are using the email key and not emailOrPhone for backward compatibility
+      // with the old login page
+      if (entry.key === 'email') {
+        entry.label = this.authCommonText?.emailOrPhoneLabel ?? entry.label;
+        entry.placeholder = this.authCommonText?.enterYourEmailOrPhoneNumber ?? entry.placeholder;
+        this.group[entry.key] = new FormControl('', [Validators.required, this.sharedMethods.emailOrPhoneValidator]);
+      }
     });
     this.pageFormGroup = new FormGroup(this.group);
+    this.sharedMethods.trimFormValues(this.pageFormGroup);
   }
 
   async onSubmit(data: any) {
     this.isLoading = true;
     this.sharedMethods?.showLoader(this.commonText?.submittingYourData);
+    data = this.sharedMethods.aggregateEmailOrPhoneValue(data, this.authCommonText);
     data.language = this.contentService?.currentLanguage || 'en-us';
     this.apiService.post('accounts/reset-password-request', data, true).subscribe(
       res => {

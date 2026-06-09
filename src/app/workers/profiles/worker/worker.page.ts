@@ -32,14 +32,14 @@ export class WorkerPage implements OnInit {
     this.pageTitle = this.commonText?.myProfile || this.pageTitle;
     this.profileDataService.getAll().subscribe(async(data) => {
       const user = await this.sharedMethods.getUserData();
-      const userProfile = data.find((profile) => profile.email === user?.email);
+      const userProfile: any = this.profileDataService.getSingleProfile(user?.email, user?.mobile);
       if (userProfile?.profileImage) {
         this.imageUrl = userProfile?.profileImage;
       }
     });
   }
 
-  onSegmentChange(e) {
+  onSegmentChange(e: any) {
     this.activeSegment = e?.detail?.value;
   }
 
@@ -53,7 +53,7 @@ export class WorkerPage implements OnInit {
       if (data?.data?.imageData && data?.data?.imageData.webPath) {
         this.imageUrl = data?.data?.imageData.webPath;
         const user = await this.sharedMethods.getUserData();
-        this.profileDataService.updateProfilesField(user?.email, 'profile_image', this.imageUrl);
+        this.profileDataService.updateProfilesField(user?.email, user?.mobile, 'profile_image', this.imageUrl);
       } else if (data.role !== 'backdrop') {
         this.sharedMethods.showToast(this.docsCommonText?.profilePictureUpdateFailure);
       }
