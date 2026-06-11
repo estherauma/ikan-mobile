@@ -434,11 +434,13 @@ export class ContentService {
   }
 
   async generateLearningHubProgressData() {
-    const savedLearningHubProgress = await this.sharedMethods.readDataFromStorage(StorageKeys.learningHubProgress);
-    if (savedLearningHubProgress) { return; }
-
     const user = this.authService.userData;
     if (!user || !(await this.authService.checkAcessTokenValidity())) {
+      return;
+    }
+    
+    const savedLearningHubProgress = await this.sharedMethods.readDataFromStorage(StorageKeys.learningHubProgress);
+    if (savedLearningHubProgress && savedLearningHubProgress?.version === 'v2.0') {
       return;
     }
 
@@ -464,6 +466,7 @@ export class ContentService {
     const learningHubProgress = {
       user: user?.id,
       progressData,
+      version: 'v2.0',
     };
     await this.sharedMethods.saveDataToStorage(StorageKeys.learningHubProgress, learningHubProgress);
   }
