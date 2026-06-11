@@ -20,7 +20,7 @@ import { UserData } from 'src/app/shared/types/api-types';
 export class VerifyPhoneNumberComponent  implements OnInit {
 
   submitButtonText = 'Get Code';
-  countryOptions;
+  countryOptions: any[] = [];
   btnDisabled = true;
   pageFormGroup: FormGroup;
   pageTitle: any;
@@ -71,8 +71,9 @@ export class VerifyPhoneNumberComponent  implements OnInit {
     // // add phone number to the form group
     // group.phoneNumber = new FormControl('', [Validators.required, Validators.pattern(this.phoneNumberRegex)]);
 
+    const phoneNumberPattern = /^\+[1-9]\d{1,14}$/;
     const group: any = {
-      phoneNumber: new FormControl(this.phoneNumber, [Validators.required, Validators.pattern(this.sharedMethods.phoneNumberPattern)]),
+      phoneNumber: new FormControl(this.phoneNumber, [Validators.required, Validators.pattern(phoneNumberPattern)]),
     };
     this.pageFormGroup = new FormGroup(group);
   }
@@ -105,11 +106,11 @@ export class VerifyPhoneNumberComponent  implements OnInit {
     this.router.navigate([this.previousUrl], { replaceUrl: true });
   }
 
-  onCountryCodeChange(event) {
-    this.selectedCode = this.countryOptions.find((country) => country?.dial_code === event.detail.value)?.dial_code;
+  onCountryCodeChange(event: any) {
+    this.selectedCode = this.countryOptions.find((country: any) => country?.dial_code === event.detail.value)?.dial_code;
   }
 
-  async onSubmit(formData) {
+  async onSubmit(formData: any) {
     await this.sharedMethods.showWaitLoader(this.commonText?.submittingYourData);
     try {
       // const countryCode = formData.countryCode;
