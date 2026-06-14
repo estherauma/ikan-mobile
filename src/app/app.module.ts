@@ -45,8 +45,8 @@ import { GlobalHttpInterceptor } from './shared/services/error-handler/global-ht
     },
     { provide: Sentry.TraceService, deps: [Router] },
     provideAppInitializer(() => {
-        inject(Sentry.TraceService);
-      }),
+      inject(Sentry.TraceService);
+    }),
     {
       provide: HTTP_INTERCEPTORS,
       useClass: GlobalHttpInterceptor,
