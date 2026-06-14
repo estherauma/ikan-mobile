@@ -50,6 +50,7 @@ export class LoginMethodPage implements OnInit {
   }
 
   async ngOnInit() {
+    await this.contentService.updateCurrentLanguage();
     this.commonText = this.contentService.commonText;
     if (this.commonText && Object.keys(this.commonText).length > 0) {
       this.loginText = this.commonText?.login || this.loginText;
