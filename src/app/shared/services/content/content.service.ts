@@ -48,9 +48,7 @@ export class ContentService {
     if (appContent == null || appContent === undefined) {
       await this.fetchContent();
     }
-    await this.setAppContent();
-    await this.updateCommonText();
-    await this.updateSideMenu();
+    await this.updateAllContent();
   }
 
   async setAppContent() {
