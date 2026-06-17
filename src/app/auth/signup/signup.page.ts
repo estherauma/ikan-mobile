@@ -101,6 +101,11 @@ export class SignupPage extends BaseformPage implements OnInit {
         this.sharedMethods?.hideLoader();
         if (error.status === 400) {
           const validationErrors = error.error || error.message;
+          if (error.error?.phoneNumber) {
+            // We are using the email key and not emailOrPhone for backward compatibility
+            // with the old login/register page
+            validationErrors.email = error.error?.phoneNumber;
+          }
           this.fieldErrors = validationErrors;
           this.cdr.detectChanges();
         } else {
