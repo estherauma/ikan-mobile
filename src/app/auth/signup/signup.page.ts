@@ -68,7 +68,10 @@ export class SignupPage extends BaseformPage implements OnInit {
   async onSubmit(data: any) {
     this.isLoading = true;
     if (data?.password?.trim() !== data?.confirmPassword?.trim()) {
-      this.sharedMethods.showToast(this.commonText?.passwordsDoNotMatch);
+      this.fieldErrors = {
+        confirmPassword: this.commonText?.passwordsDoNotMatch,
+      };
+      // this.sharedMethods.showToast(this.commonText?.passwordsDoNotMatch);
       this.isLoading = false;
       return;
     }
