@@ -68,7 +68,10 @@ export class SignupPage extends BaseformPage implements OnInit {
   async onSubmit(data: any) {
     this.isLoading = true;
     if (data?.password?.trim() !== data?.confirmPassword?.trim()) {
-      this.sharedMethods.showToast(this.commonText?.passwordsDoNotMatch);
+      this.fieldErrors = {
+        confirmPassword: this.commonText?.passwordsDoNotMatch,
+      };
+      // this.sharedMethods.showToast(this.commonText?.passwordsDoNotMatch);
       this.isLoading = false;
       return;
     }
@@ -101,6 +104,11 @@ export class SignupPage extends BaseformPage implements OnInit {
         this.sharedMethods?.hideLoader();
         if (error.status === 400) {
           const validationErrors = error.error || error.message;
+          if (error.error?.phoneNumber) {
+            // We are using the email key and not emailOrPhone for backward compatibility
+            // with the old login/register page
+            validationErrors.email = error.error?.phoneNumber;
+          }
           this.fieldErrors = validationErrors;
           this.cdr.detectChanges();
         } else {
