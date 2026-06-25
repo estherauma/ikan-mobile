@@ -390,6 +390,16 @@ export class SharedmethodsService {
     return formValues;
   }
 
+  async removeNullValuesFromObject(obj: any) {
+    const cleanedObj: any = {};
+    for (const key in obj) {
+      if (obj[key] !== null && obj[key] !== undefined) {
+        cleanedObj[key] = obj[key];
+      }
+    }
+    return cleanedObj;
+  }
+
   convertCamelToSnakeCase(text: string) {
     return text.replace(/(?:^|\.?)([A-Z0-9])/g,  (x, y) => '_' + y.toLowerCase()).replace(/^_/, '');
   }
