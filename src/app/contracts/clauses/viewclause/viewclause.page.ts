@@ -18,7 +18,7 @@ import { UserRole } from 'src/app/shared/types/api-types';
 })
 export class ViewclausePage implements OnInit {
   // maps to prismic content page keys
-  clauseContentObjectMapping = {
+  clauseContentObjectMapping: any = {
     'contract-clauses-parties-requirement-vessel': 'contract-clauses-parties-to-this-contract-content',
     'contract-clauses-contract-validity':'contract-clauses-contract-validity-content',
     'contract-clauses-wage-benefits': 'contract-clauses-wage-benefits-content',
@@ -94,7 +94,7 @@ export class ViewclausePage implements OnInit {
     const pageTextArray = pageContent?.[0]?.description;
     let textHtml = '';
 
-    pageTextArray.forEach((element, idx) => {
+    pageTextArray.forEach((element: any, idx: any) => {
       if (idx === 0) {
         textHtml += element?.paragraph;
       } else if (element?.paragraph.startsWith('{{') &&  element?.paragraph.endsWith('}}')) {
@@ -109,7 +109,7 @@ export class ViewclausePage implements OnInit {
     this.htmlContent = this.fillPlaceHolders(textHtml, formValues);
   }
 
-  fillPlaceHolders(inputString, placeholderValues) {
+  fillPlaceHolders(inputString: string, placeholderValues: any) {
     let result = inputString;
     for (const key in placeholderValues) {
       if (Object.prototype.hasOwnProperty.call(placeholderValues, key)) {
@@ -120,7 +120,7 @@ export class ViewclausePage implements OnInit {
     return result;
   }
 
-  async orderDataForClause(clauseType, data) {
+  async orderDataForClause(clauseType: string, data: string) {
     const parsedObject = JSON.parse(data);
     switch (clauseType) {
       case 'contract-clauses-parties-requirement-vessel':
@@ -130,7 +130,7 @@ export class ViewclausePage implements OnInit {
     }
   }
 
-  async orderClauseOneData(data) {
+  async orderClauseOneData(data: any) {
     const result: any = {};
 
     // TODO: remove after all old records are synced
@@ -149,7 +149,7 @@ export class ViewclausePage implements OnInit {
     }
     // clause one has two entries, so we need to add the second entry
     if  (this.clauseDetails?.partyB !== undefined || this.clauseDetails?.partyB !== null) {
-      const partyBClauseDetails = await this.contractDataService.retrieveClauseDetails(this.clauseDetails?.partyB);
+      const partyBClauseDetails: any = await this.contractDataService.retrieveClauseDetails(this.clauseDetails?.partyB);
 
       // TODO: remove after all old records are synced/updated
       // This is a fix for old records that have different keys for crew details
@@ -185,13 +185,13 @@ export class ViewclausePage implements OnInit {
   }
 
   // TODO: log data, sync fetch clause documents, attachments clause
-  async orderOtherClauses(data) {
+  async orderOtherClauses(data: any) {
     // TODO: refactor payments & benefits data display
     if (!data?.paymentFrequencyDetails) {
       delete data.paymentFrequencyDetails;
     }
 
-    const result = {};
+    const result: any = {};
     for (const [key, value] of Object.entries(data)) {
       const formattedValue  = this.formatClauseValues(key, value);
       result[key] = formattedValue;
@@ -209,7 +209,7 @@ export class ViewclausePage implements OnInit {
     } else if (key === 'partyASignature' || key === 'partyBSignature') {
       return `<img class="image" src="${value}" alt="image">`;
     } else if (this.pageName === 'contract-clauses-parties-to-this-contract-content' && key === 'vessel') {
-      const vessel = this.allVessels.find((v) => v.appRef === value);
+      const vessel = this.allVessels.find((v: any) => v.appRef === value);
       this.vesselDetails = vessel;
       return vessel?.name;
     } else if (this.pageName === 'contract-clauses-parties-to-this-contract-content' && key === 'crewMemberRole') {
@@ -264,7 +264,7 @@ export class ViewclausePage implements OnInit {
           text: this.commonText?.editPartyBDetails,
           cssClass: 'edit-btn',
           handler: async() => {
-            const partyBClause = await this.contractDataService.retrieveClauseDetails(this.clauseDetails?.partyB);
+            const partyBClause: any = await this.contractDataService.retrieveClauseDetails(this.clauseDetails?.partyB);
             partyBClause.data = partyBClause.content;
             partyBClause.partyAId = this.clauseDetails?.id;
             const partyBClauseDetails = JSON.stringify(partyBClause);

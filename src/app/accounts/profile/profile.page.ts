@@ -50,7 +50,7 @@ export class ProfilePage extends BaseformPage implements OnInit {
     this.analytics.trackEvent(PageEventNames.profile, this.sharedMethods.analyticsEventParams);
     this.profilesDataService.getAll().subscribe(async(data) => {
       const user = await this.sharedMethods.getUserData();
-      const userProfile = data.find((profile) => profile.email === user?.email);
+      const userProfile: any = this.profilesDataService.getSingleProfile(user?.email, user?.mobile);
       if (userProfile?.profileImage) {
         this.imageUrl = userProfile?.profileImage;
       }
@@ -70,12 +70,12 @@ export class ProfilePage extends BaseformPage implements OnInit {
     this.submitButtonText = this.commonText?.save;
     this.userData = await this.sharedMethods.getUserData();
     this.isAgent = this.userData?.role === UserRole.indonesianAgent || this.userData?.role === UserRole.taiwaneseAgent;
-    const profData = await this.profilesDataService.getSingleProfile(this.userData?.email);
+    const profData = await this.profilesDataService.getSingleProfile(this.userData?.email, this.userData?.mobile);
     if (profData?.id) {
       this.profileData = profData;
     }
     // This ensures that the profile view happens when some of the fields have values otherwise the view would be blank
-    this.isViewProfile = (this.profileData?.id && this.profileData?.addressLine1 && this.profileData?.firstName && this.profileData?.email && this.profileData?.telephone) ? true : false;
+    this.isViewProfile = (this.profileData?.id && this.profileData?.addressLine1 && this.profileData?.firstName && this.profileData?.email && this.profileData?.mobile && this.profileData?.telephone) ? true : false;
     this.initializeForm();
   }
 
@@ -84,7 +84,7 @@ export class ProfilePage extends BaseformPage implements OnInit {
     const pageData = this.contentService.getContentByPropertyName('vo-agent-buyer-profile-form');
     this.pageText = this.sharedMethods.convertAdditionalTextToObj(pageData?.additionalText);
     this.formQuestions = pageData?.formQuestions;
-    this.formQuestions?.forEach((entry) => {
+    this.formQuestions?.forEach((entry: any) => {
       this.viewData[entry.key] = entry?.label;
 
       // this field will not be displayed
@@ -130,14 +130,14 @@ export class ProfilePage extends BaseformPage implements OnInit {
     this.regFormGroup = new FormGroup(this.regGroup);
   }
 
-  async onSubmit(data) {
+  async onSubmit(data: any) {
     this.sharedMethods.showLoader(this.pageText?.savingProfile, 2000);
     const userData = await this.sharedMethods.getUserData();
     const now = new Date().toISOString();
     data.userRole = userData.role;
     data.updatedBy = userData.id;
     data.updatedAt = now;
-    const profileExists = await this.profilesDataService.checkIfProfileExists(data.email);
+    const profileExists = await this.profilesDataService.checkIfProfileExists(data.email, data.mobile);
     if (profileExists) {
       data = { ...this.profileData, ...data};
       const result = await this.profilesDataService.update(data);
@@ -164,14 +164,15 @@ export class ProfilePage extends BaseformPage implements OnInit {
     }
   }
 
-  async onSubmitRegDetails(data) {
+  async onSubmitRegDetails(data: any) {
     this.sharedMethods.showLoader(this.regPageText?.savingRegDetails, 2000);
     const userData = await this.sharedMethods.getUserData();
     const now = new Date().toISOString();
     data.email = this.profileData?.email;
+    data.mobile = this.profileData?.mobile;
     data.updatedBy = userData.id;
     data.updatedAt = now;
-    const profileExists = await this.profilesDataService.checkIfProfileExists(data.email);
+    const profileExists = await this.profilesDataService.checkIfProfileExists(data.email, data.mobile);
     if (profileExists) {
       const result = await this.profilesDataService.updateProfileRegistrationDetails(data);
       if (result?.rowsAffected > 0) {
@@ -192,7 +193,7 @@ export class ProfilePage extends BaseformPage implements OnInit {
     this.isViewProfile = false;
   }
 
-  getCountryValueTranslation(value) {
+  getCountryValueTranslation(value: any) {
     if (!value) {
       return '';
     }
@@ -209,7 +210,11 @@ export class ProfilePage extends BaseformPage implements OnInit {
       if (data?.data?.imageData && data?.data?.imageData.webPath) {
         this.imageUrl = data?.data?.imageData.webPath;
         const user = await this.sharedMethods.getUserData();
-        this.profilesDataService.updateProfilesField(user?.email, 'profile_image', this.imageUrl);
+        const result = await this.profilesDataService.updateProfilesField(user?.email, user?.mobile, 'profile_image', this.imageUrl);
+        if (!result) {
+          console.error(`Failed to update profile image for ${user?.email || user?.mobile}`);
+          this.sharedMethods.showToast(this.docsCommonText?.profilePictureUpdateFailure);
+        }
       } else if (data?.role !== 'backdrop') {
         this.sharedMethods.showToast(this.docsCommonText?.profilePictureUpdateFailure);
       }

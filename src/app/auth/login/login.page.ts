@@ -24,10 +24,12 @@ import { PushNotificationsService } from 'src/app/shared/services/push-notificat
     standalone: false
 })
 export class LoginPage extends BaseformPage implements OnInit {
+  
   passwordFieldType = FieldType.password;
   passwordEyeIcon = Icons.iconEyeClosed;
-  testEmails;
+  testEmails: string[] = [];
   pageText: any;
+  authCommonText: any;
 
   constructor(
     public contentService: ContentService,
@@ -54,47 +56,27 @@ export class LoginPage extends BaseformPage implements OnInit {
 
   pageSetup() {
     this.commonText = this.contentService.commonText;
+    const authPageData = this.contentService.getContentByPropertyName('auth-common-text');
+    this.authCommonText = this.sharedMethods.convertAdditionalTextToObj(authPageData?.additionalText);
     const pageData = this.contentService.getLoginPageData();
     this.formQuestions = pageData.formQuestions;
     this.pageTitle = pageData?.pageTitle;
     this.pageText = this.sharedMethods?.convertAdditionalTextToObj(pageData?.additionalText);
     this.submitButtonText = this.pageText?.submitButtonText;
-    this.formQuestions.forEach((entry) => {
+    this.formQuestions.forEach((entry: any) => {
       this.group[entry.key] = new FormControl('', [Validators.required]);
-      if (entry.key === 'password') {
-        this.group[entry.key] = new FormControl('', [Validators.required]);
-      }
 
       // We are using the email key and not emailOrPhone for backward compatibility
       // with the old login page
       if (entry.key === 'email') {
-        entry.label = this.pageText?.emailOrPhoneLabel ?? entry.label;
-        this.group[entry.key] = new FormControl('', [Validators.required, this.emailOrPhoneValidator]);
+        entry.label = this.authCommonText?.emailOrPhoneLabel ?? entry.label;
+        this.group[entry.key] = new FormControl('', [Validators.required, this.sharedMethods.emailOrPhoneValidator]);
       }
     });
     this.pageFormGroup = new FormGroup(this.group);
+    this.sharedMethods.trimFormValues(this.pageFormGroup);
+
     this.testEmails = this.dbService.testEmails;
-
-    this.pageFormGroup.valueChanges.subscribe((data) => {
-      if (data.email) {
-        this.pageFormGroup.controls.email.setValue(data.email.trim(), { emitEvent: false });
-      }
-    });
-  }
-
-  emailOrPhoneValidator(control: AbstractControl): ValidationErrors | null {
-    const value = control.value;
-    if (!value) { return null; }
-
-    const emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
-    const phonePattern = /^([+]?[\s0-9 ]+)?(\d{3}|[ (]?[0-9]+[) ])?([- ]?[\s]?[0-9])+$/;
-
-    const isEmail = value.match(emailPattern);
-    const isPhone = value.match(phonePattern);
-
-    // We are using the email key and not emailOrPhone for backward compatibility
-    // with the old login page
-    return isEmail || isPhone ? null : { email: true };
   }
 
   ionViewWillEnter() {
@@ -106,39 +88,10 @@ export class LoginPage extends BaseformPage implements OnInit {
   async onSubmit() {
     let formData = this.pageFormGroup.value;
     this.sharedMethods.showLoader(this.contentService.commonText?.loadingText);
-    // We are using the email key and not emailOrPhone for backward compatibility
-    // with the old login page
-    const isEmail = formData.email.trim().match(this.sharedMethods.emailPattern);
-    const isPhone = formData.email.trim().match(this.sharedMethods.phoneNumberPattern);
-    if (!isEmail && !isPhone) {
-      this.sharedMethods.hideLoader();
-      this.sharedMethods.showToast(this.pageText?.noEmailOrPhoneError || 'Please enter a valid email or phone number');
-      return;
-    }
-
-    // Extract email or phone number from formData
-    let email = null;
-    let phoneNumber = null;
-    if (isEmail) {
-      email = formData.email.trim();
-    }
-    if (isPhone) {
-      phoneNumber = formData.email.trim();
-    }
-
-    formData = {
-      ...formData,
-      email,
-      phoneNumber,
-      password: formData.password.trim()
-    };
     
-    // Remove fields with null values
-    Object.keys(formData).forEach(key => {
-      if (formData[key] === null) {
-        delete formData[key];
-      }
-    });
+    // TODO: change to authcommon text
+    formData = this.sharedMethods.aggregateEmailOrPhoneValue(formData, this.authCommonText);
+    formData.language = this.contentService?.currentLanguage || 'en-us';
 
     const response = await this.apiServices.post('accounts/login', formData, true);
     response.subscribe(
@@ -171,7 +124,7 @@ export class LoginPage extends BaseformPage implements OnInit {
             this.dbService.checkDbPlatformAndRunMigration(true);
           }
           // select role if user has multiple roles
-          if (res.data.userData?.roles?.length > 1) {
+          if (res.data.userData?.roles && res.data.userData?.roles?.length > 1) {
             return this.router.navigate(['select-role'], { replaceUrl: true });
           }
 
@@ -205,7 +158,7 @@ export class LoginPage extends BaseformPage implements OnInit {
     );
   }
 
-  async handleRedirection(role) {
+  async handleRedirection(role: any) {
     const helpScreens = await this.sharedMethods.readDataFromStorage(StorageKeys.isFirstLogin);
     if (!helpScreens) {
       this.router.navigate([this.authService.getCurrentUserBaseUrlFromRole(role)], { replaceUrl: true });
@@ -229,9 +182,18 @@ export class LoginPage extends BaseformPage implements OnInit {
       message:  new IonicSafeString(`
         <p style="text-align: center;">${ this.pageText?.unverifiedNumberMessage }</p>
         <p style="text-align: center;"><strong>${ this.pageText?.unverifiedNumberSubText }</strong></p>
+        <p style="text-align: center; text-transform: uppercase; margin: 10px 0;">${ this.commonText?.or || 'OR' }</p>
+        <p style="text-align: center;">${ this.authCommonText?.clickVerifyButtonText }</p>
       `),
       cssClass: 'tuna-alert unverified-phone-number-alert',
       buttons: [
+        {
+          text: this.commonText?.verify,
+          cssClass: 'verify-btn',
+          handler: () => {
+            this.router.navigate(['/auth/verify-phone-number'], { queryParams: { previousUrl: this.router.url } });
+          }
+        },
         {
           text: this.contentService.commonText?.ok,
           role: 'cancel',

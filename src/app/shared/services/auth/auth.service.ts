@@ -64,7 +64,7 @@ export class AuthService {
     }
   }
 
-  decodeAccessToken(accessToken) {
+  decodeAccessToken(accessToken: any) {
     return JSON.parse(window.atob(accessToken?.split('.')?.[1]));
   }
 
@@ -82,16 +82,16 @@ export class AuthService {
   }
 
   alterMenuBasedOnRole(menuItems: Array<any>) {
-    const finalMenu = [];
+    const finalMenu: any[] = [];
     menuItems.forEach((menuItem) => {
       // show change role based on number of user roles
-      if (this.userData?.roles?.length > 1 && menuItem.url === '/select-role') {
+      if ((this.userData?.roles && this.userData?.roles?.length > 1) && menuItem.url === '/select-role') {
         menuItem.enabled = true;
       }
       if (menuItem?.roles == null) {
         return;
       }
-      const allowedRoles = menuItem.roles.split(',').map((role) => role.trim());
+      const allowedRoles = menuItem.roles.split(',').map((role: any) => role.trim());
       if (menuItem?.enabled && (allowedRoles.includes(this.userRole) || allowedRoles.includes('all'))) {
        finalMenu.push(menuItem);
       }

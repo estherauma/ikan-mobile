@@ -31,6 +31,7 @@ export class AppComponent implements OnInit, OnDestroy {
   networkListener: PluginListenerHandle;
   userData: UserData;
   userEmail: string = '';
+  userMobile: string = '';
   appSetupComplete = false;
   watchContent: Subscription;
   commonText: any;
@@ -69,7 +70,8 @@ export class AppComponent implements OnInit, OnDestroy {
     this.authService.currentUser.subscribe((data) => {
       if (data && Object.keys(data).length > 0) {
         this.userData = data;
-        this.userEmail = data.email;
+        this.userEmail = data?.email || '';
+        this.userMobile = data?.mobile || '';
       }
     });
     this.setupSyncing();
@@ -101,7 +103,8 @@ export class AppComponent implements OnInit, OnDestroy {
       this.localNotifications.scheduleNotifications(this.commonText);
     });
     this.userData = this.authService.userData;
-    this.userEmail = this.authService.userData?.email;
+    this.userEmail = this.authService.userData?.email || '';
+    this.userMobile = this.authService.userData?.mobile || '';
     await this.contentService.saveSurveyCategories();
     await this.contentService.generateLearningHubProgressData();
   }

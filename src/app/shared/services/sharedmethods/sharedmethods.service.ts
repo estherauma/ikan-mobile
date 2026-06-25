@@ -8,7 +8,7 @@ import { StorageKeys, AnalyticsEventsData } from '../../types/api-types';
 import { Device } from '@capacitor/device';
 import {v4 as uuidv4} from 'uuid';
 import { UserRole } from '../../types/api-types';
-import { Validators } from '@angular/forms';
+import { AbstractControl, FormGroup, ValidationErrors, Validators } from '@angular/forms';
 import { CameraSource } from '@capacitor/camera';
 import { formatDate } from '@angular/common';
 
@@ -25,9 +25,9 @@ export class SharedmethodsService {
   currentPlatform = '';
   loader: any;
   // Temporarily disabling phone pattern to allow all formats
-  // phonePattern = /^([+]?[\s0-9 ]+)?(\d{3}|[ (]?[0-9]+[) ])?([- ]?[\s]?[0-9])+$/;
-  phoneNumberPattern = /^\+[1-9]\d{1,14}$/;
-  emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+  // old // phonePattern = /^([+]?[\s0-9 ]+)?(\d{3}|[ (]?[0-9]+[) ])?([- ]?[\s]?[0-9])+$/;
+  // new // phoneNumberPattern = /^\+[1-9]\d{1,14}$/;
+  // emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
 
   constructor(
     public loadingCtrl: LoadingController,
@@ -76,14 +76,14 @@ export class SharedmethodsService {
     });
   }
 
-  async saveDataToStorage(key, data) {
+  async saveDataToStorage(key: string, data: any) {
     Preferences.set({
       key,
       value: typeof data === 'string' ? data : JSON.stringify(data)
     });
   }
 
-  async readDataFromStorage(key) {
+  async readDataFromStorage(key: string) {
     if (!key) { return null; }
     const { value } = await Preferences.get({ key });
     if (typeof value === 'string' && value.length > 0) {
@@ -156,7 +156,7 @@ export class SharedmethodsService {
     }
   }
 
-   formatLocalDate(date, currentLanguage) {
+   formatLocalDate(date: any, currentLanguage: string) {
     if (!date) {
       return date;
     }
@@ -178,11 +178,11 @@ export class SharedmethodsService {
     return this.readDataFromStorage(StorageKeys.userData);
   }
 
-  async generateOptions(entry) {
+  async generateOptions(entry: any) {
     // generate key value pairs for select options from array
     if (entry.options) {
-      const options = [];
-      entry.options.forEach((option) => {
+      const options: any[] = [];
+      entry.options.forEach((option: any) => {
         // TODO: Change to label:value implementation
         options.push(option.name );
       });
@@ -232,7 +232,7 @@ export class SharedmethodsService {
   }
 
   // TODO: refactor fn
-  getChapterBackground(id, type ='chapter') {
+  getChapterBackground(id: string, type: string ='chapter') {
     if (id === '1') {
       // if (type === 'subchapter') {return 'assets/imgs/bg-pre-departure-tinted.svg';}
       return 'assets/imgs/bg-pre-departure.svg';
@@ -250,9 +250,9 @@ export class SharedmethodsService {
   }
 
   // Change page additional text array of objects into an object
-  convertAdditionalTextToObj(additionalText) {
+  convertAdditionalTextToObj(additionalText: any) {
     if (additionalText != null || additionalText !== undefined) {
-      const textDataObject = {};
+      const textDataObject: any = {};
       for (const item of additionalText) {
         textDataObject[item.label] = item.value;
       }
@@ -271,7 +271,7 @@ export class SharedmethodsService {
       '';
   }
 
-  generateWorkerStatus(commonText, isActive=false, isVerified=false) {
+  generateWorkerStatus(commonText: any, isActive = false, isVerified = false) {
     let status = 'active';
     if (!isVerified) {
       status = 'pending';
@@ -312,7 +312,8 @@ export class SharedmethodsService {
     return dateToCheck >= startDate && dateToCheck <= endDate;
   }
 
-  getFormValidators(entry) {
+  getFormValidators(entry: any) {
+    const phoneNumberPattern = /^\+[1-9]\d{1,14}$/;
     const validators = [];
     if (entry.isRequired) {
       validators.push(Validators.required);
@@ -321,9 +322,82 @@ export class SharedmethodsService {
       validators.push(Validators.email);
     }
     if (entry.questionType === 'tel' || entry.questionType === 'telephone') {
-      validators.push(Validators.pattern(this.phoneNumberPattern));
+      validators.push(Validators.pattern(phoneNumberPattern));
     }
     return validators;
+  }
+
+  emailOrPhoneValidator(control: AbstractControl): ValidationErrors | null {
+    const value = control.value;
+    if (!value) { return null; }
+    
+    const phoneNumberPattern = /^\+[1-9]\d{1,14}$/;
+    const emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+
+    const isEmail = value.match(emailPattern);
+    const isPhone = value.match(phoneNumberPattern);
+
+    // We are using the email key and not emailOrPhone for backward compatibility
+    // with the old login page
+    return isEmail || isPhone ? null : { email: true };
+  }
+
+  trimFormValues(formGroup: FormGroup) {
+    formGroup.valueChanges.subscribe(values => {
+      for (const key in values) {
+        if (values[key] && typeof values[key] === 'string') {
+          formGroup.controls[key].setValue(values[key].trim(), { emitEvent: false });
+        }
+      }
+    });
+  }
+
+  aggregateEmailOrPhoneValue(formValues: any, authCommonText: any) {
+    // We are using the email key and not emailOrPhone for backward compatibility
+    // with the old login page
+    const phoneNumberPattern = /^\+[1-9]\d{1,14}$/;
+    const emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+    const isEmail = formValues.email.trim().match(emailPattern);
+    const isPhone = formValues.email.trim().match(phoneNumberPattern);
+    if (!isEmail && !isPhone) {
+      this.hideLoader();
+      this.showToast(authCommonText?.invalidEmailOrPhoneNumberError || 'Please enter a valid email or phone number', 'long');
+      return;
+    }
+
+    // Extract email or phone number from formData
+    let email = null;
+    let phoneNumber = null;
+    if (isEmail) {
+      email = formValues.email.trim();
+    }
+    if (isPhone) {
+      phoneNumber = formValues.email.trim();
+    }
+
+    formValues = {
+      ...formValues,
+      email,
+      phoneNumber,
+    };
+    
+    // Remove fields with null values
+    Object.keys(formValues).forEach(key => {
+      if (formValues[key] === null) {
+        delete formValues[key];
+      }
+    });
+    return formValues;
+  }
+
+  async removeNullValuesFromObject(obj: any) {
+    const cleanedObj: any = {};
+    for (const key in obj) {
+      if (obj[key] !== null && obj[key] !== undefined) {
+        cleanedObj[key] = obj[key];
+      }
+    }
+    return cleanedObj;
   }
 
   convertCamelToSnakeCase(text: string) {
@@ -373,7 +447,7 @@ export class SharedmethodsService {
     }
   }
 
-  async getSelectImageOrPdfAlert(commonText, alertController, uploadService, docsCommonText) {
+  async getSelectImageOrPdfAlert(commonText: any, alertController: any, uploadService: any, docsCommonText: any) {
     const alert = await alertController.create({
       cssClass: 'add-file-alert',
       buttons: [
@@ -411,7 +485,7 @@ export class SharedmethodsService {
     return alert;
   }
 
-  async getFileNameAlert(commonText, alertController, docsCommonText) {
+  async getFileNameAlert(commonText: any, alertController: any, docsCommonText: any) {
     const alert = await alertController.create({
       cssClass: 'add-file-name-alert',
       backdropDismiss: false,
@@ -434,7 +508,7 @@ export class SharedmethodsService {
         {
           text: commonText?.save,
           cssClass: 'save-btn',
-          handler: (data) => ({ fileName: data.fileName})
+          handler: (data: any) => ({ fileName: data.fileName})
         }
       ],
     });
@@ -442,17 +516,17 @@ export class SharedmethodsService {
   }
 
   async addDocument(
-    commonText,
-    alertController,
-    uploadService,
-    documentsDataService,
-    docsCommonText,
+    commonText: any,
+    alertController: any,
+    uploadService: any,
+    documentsDataService: any,
+    docsCommonText: any,
     isEssential: boolean = false,
   ) {
     let newDoc = null;
     const alert = await this.getSelectImageOrPdfAlert(commonText, alertController, uploadService, docsCommonText);
     await alert.present();
-    await alert.onDidDismiss().then(async(data) => {
+    await alert.onDidDismiss().then(async(data: any) => {
       if ( data.role !== 'cancel' && data?.data?.fileData && Object.keys(data?.data?.fileData).length) {
         const addFileNameAlert = await this.getFileNameAlert(commonText, alertController, docsCommonText);
         await addFileNameAlert.present().then(() => {
@@ -460,7 +534,7 @@ export class SharedmethodsService {
           firstInput.focus();
           return;
         });
-        await addFileNameAlert.onDidDismiss().then(async(fileNameData) => {
+        await addFileNameAlert.onDidDismiss().then(async(fileNameData: any) => {
           const { fileData } = data?.data;
           let fileName = fileData.fileName;
           if (fileNameData.role !== 'cancel' && fileNameData?.data.fileName) {
@@ -504,7 +578,7 @@ export class SharedmethodsService {
     return newDoc;
   }
 
-  checkIf2ObjectsAreEqual(object1, object2) {
+  checkIf2ObjectsAreEqual(object1: any, object2: any) {
     if (!object1 || !object2) {return false;}
 
     const keys1 = Object.keys(object1);
@@ -523,7 +597,7 @@ export class SharedmethodsService {
     return true;
   }
 
-  generatePdfFileName(pdfName) {
+  generatePdfFileName(pdfName: any) {
     let name = pdfName?.split('.pdf')[0];
     name = name?.replace(/\s+/g, '--'); // remove spaces from name
     return name + '.pdf';

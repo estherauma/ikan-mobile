@@ -61,7 +61,7 @@ export class PaymentsPage extends BaseformPage implements OnInit {
     this.submitButtonText = (this.isEditingAcct || this.isEditingBeneficiary) ? this.commonText?.update : this.commonText?.save;
     const userData = await this.sharedMethods.getUserData();
 
-    let profData: ProfileData = await this.profilesDataService.getSingleProfile(userData?.email);
+    let profData: ProfileData = await this.profilesDataService.getSingleProfile(userData?.email, userData?.mobile);
     if (this.page === 'vo-workers-payments') {
       profData = this.workerInfo;
     }
@@ -89,7 +89,7 @@ export class PaymentsPage extends BaseformPage implements OnInit {
     this.acctPageTitle = acctInfoPageData?.pageTitle;
     this.acctPageText = this.sharedMethods.convertAdditionalTextToObj(acctInfoPageData?.additionalText);
     this.acctFormQtns = acctInfoPageData?.formQuestions;
-    this.acctFormQtns.forEach((entry) => {
+    this.acctFormQtns.forEach((entry: any) => {
       // this field will not be displayed
       if (entry.key === 'accountInformation') {
         return;
@@ -107,7 +107,7 @@ export class PaymentsPage extends BaseformPage implements OnInit {
     this.beneficiaryPageTitle = beneficiaryPageData?.pageTitle;
     this.benficiaryPageText = this.sharedMethods.convertAdditionalTextToObj(beneficiaryPageData?.additionalText);
     this.beneficiaryFormQtns = beneficiaryPageData?.formQuestions;
-    this.beneficiaryFormQtns?.forEach((entry) => {
+    this.beneficiaryFormQtns?.forEach((entry: any) => {
       // this field will not be displayed
       if (entry.key === 'beneficiaryAccountInformation') {
         return;
@@ -120,7 +120,7 @@ export class PaymentsPage extends BaseformPage implements OnInit {
     this.beneficiaryFormGroup = new FormGroup(this.beneficiaryGroup);
   }
 
-  async onSubmitAccount(data) {
+  async onSubmitAccount(data: any) {
     this.sharedMethods.showLoader(this.acctPageText?.savingAccountInfo, 2000);
     const userData = await this.sharedMethods.getUserData();
     const now = new Date().toISOString();
@@ -184,7 +184,7 @@ export class PaymentsPage extends BaseformPage implements OnInit {
     await this.pageSetup();
   }
 
-  async onSubmitBeneficiary(data) {
+  async onSubmitBeneficiary(data: any) {
     this.sharedMethods.showLoader(this.benficiaryPageText?.savingBeneficiary, 2000);
     const userData = await this.sharedMethods.getUserData();
     const now = new Date().toISOString();

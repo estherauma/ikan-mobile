@@ -20,7 +20,7 @@ import { UserData } from 'src/app/shared/types/api-types';
 export class VerifyPhoneNumberComponent  implements OnInit {
 
   submitButtonText = 'Get Code';
-  countryOptions;
+  countryOptions: any[] = [];
   btnDisabled = true;
   pageFormGroup: FormGroup;
   pageTitle: any;
@@ -31,6 +31,7 @@ export class VerifyPhoneNumberComponent  implements OnInit {
   numberType = null;
   phoneNumber: any;
   locale = 'en';
+  authCommonText: any;
 
   constructor(
     public router: Router,
@@ -60,6 +61,7 @@ export class VerifyPhoneNumberComponent  implements OnInit {
     this.commonText = this.contentService.getCommonText();
     const pageData = this.contentService.getContentByPropertyName('verify-phone-number');
     this.pageText = this.sharedMethods.convertAdditionalTextToObj(pageData?.additionalText);
+    this.authCommonText = await this.contentService.getAuthCommonText();
     this.submitButtonText = this.pageText?.getCode;
     this.pageTitle = pageData?.pageTitle;
     this.countryOptions = await this.getCountryOptions();
@@ -71,8 +73,9 @@ export class VerifyPhoneNumberComponent  implements OnInit {
     // // add phone number to the form group
     // group.phoneNumber = new FormControl('', [Validators.required, Validators.pattern(this.phoneNumberRegex)]);
 
+    const phoneNumberPattern = /^\+[1-9]\d{1,14}$/;
     const group: any = {
-      phoneNumber: new FormControl(this.phoneNumber, [Validators.required, Validators.pattern(this.sharedMethods.phoneNumberPattern)]),
+      phoneNumber: new FormControl(this.phoneNumber, [Validators.required, Validators.pattern(phoneNumberPattern)]),
     };
     this.pageFormGroup = new FormGroup(group);
   }
@@ -105,11 +108,11 @@ export class VerifyPhoneNumberComponent  implements OnInit {
     this.router.navigate([this.previousUrl], { replaceUrl: true });
   }
 
-  onCountryCodeChange(event) {
-    this.selectedCode = this.countryOptions.find((country) => country?.dial_code === event.detail.value)?.dial_code;
+  onCountryCodeChange(event: any) {
+    this.selectedCode = this.countryOptions.find((country: any) => country?.dial_code === event.detail.value)?.dial_code;
   }
 
-  async onSubmit(formData) {
+  async onSubmit(formData: any) {
     await this.sharedMethods.showWaitLoader(this.commonText?.submittingYourData);
     try {
       // const countryCode = formData.countryCode;
@@ -125,23 +128,28 @@ export class VerifyPhoneNumberComponent  implements OnInit {
         previousUrl: this.previousUrl,
         locale: this.locale,
       };
+      const objData = await this.sharedMethods.removeNullValuesFromObject(data);
 
-      const response: any = await lastValueFrom(this.apiService.post('accounts/generate-otp/', data, true));
+      const response: any = await lastValueFrom(this.apiService.post('accounts/generate-otp/', objData, true));
       if (response?.status && response?.status !== 'error') {
         await this.sharedMethods.dismissLoader();
-        this.router.navigate(['auth/verify-code'], {replaceUrl: true, queryParams: data });
+        this.router.navigate(['auth/verify-code'], {replaceUrl: true, queryParams: objData });
       } else {
         await this.sharedMethods.dismissLoader();
         this.sharedMethods.showToast(this.pageText?.errorGeneratingCode);
       }
-    } catch (error) {
-      console.error('Error in onSubmit', error);
+    } catch (e: any) {
+      console.error('Error in onSubmit......', e);
       this.globalErrorHandler.handleError(
-        error,
+        e,
         'Error generating OTP code.'
       );
       await this.sharedMethods.dismissLoader();
-      this.sharedMethods.showToast(this.pageText?.errorGeneratingCode);
+      if (e?.error?.errorKey && this.authCommonText?.[e?.error?.errorKey]) {
+        this.sharedMethods.showToast(this.authCommonText?.[e?.error?.errorKey]);
+      } else {
+        this.sharedMethods.showToast(this.pageText?.errorGeneratingCode);
+      }
     }
   }
 }

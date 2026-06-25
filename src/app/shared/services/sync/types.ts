@@ -261,7 +261,7 @@ export interface ProfileData {
   createdBy:            string | null;
   updatedBy:            string | null;
   deletedBy?:           string | null;
-  email:                string;
+  email:                string | null;
   firstName:            string | null;
   lastName:             string | null;
   telephone:            string | null;

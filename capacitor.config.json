@@ -11,7 +11,7 @@
 		  "launchAutoHide": true,
 		  "backgroundColor": "#ffffffff",
 		  "androidSplashResourceName": "splash",
-		  "androidScaleType": "FIT_XY",
+		  "androidScaleType": "CENTER_CROP",
 		  "showSpinner": false,
 		  "androidSpinnerStyle": "large",
 		  "iosSpinnerStyle": "small",
@@ -35,7 +35,8 @@
       "sound": "beep.wav"
     },
 		"Keyboard": {
-			"resize": "ionic"
+			"resize": "ionic",
+			"resizeOnFullScreen": true
 		}
 	}
 }

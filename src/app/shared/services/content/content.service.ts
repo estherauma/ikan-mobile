@@ -48,9 +48,7 @@ export class ContentService {
     if (appContent == null || appContent === undefined) {
       await this.fetchContent();
     }
-    await this.setAppContent();
-    await this.updateCommonText();
-    await this.updateSideMenu();
+    await this.updateAllContent();
   }
 
   async setAppContent() {
@@ -434,11 +432,13 @@ export class ContentService {
   }
 
   async generateLearningHubProgressData() {
-    const savedLearningHubProgress = await this.sharedMethods.readDataFromStorage(StorageKeys.learningHubProgress);
-    if (savedLearningHubProgress) { return; }
-
     const user = this.authService.userData;
     if (!user || !(await this.authService.checkAcessTokenValidity())) {
+      return;
+    }
+    
+    const savedLearningHubProgress = await this.sharedMethods.readDataFromStorage(StorageKeys.learningHubProgress);
+    if (savedLearningHubProgress && savedLearningHubProgress?.version === 'v2.0') {
       return;
     }
 
@@ -464,7 +464,14 @@ export class ContentService {
     const learningHubProgress = {
       user: user?.id,
       progressData,
+      version: 'v2.0',
     };
     await this.sharedMethods.saveDataToStorage(StorageKeys.learningHubProgress, learningHubProgress);
+  }
+
+  async getAuthCommonText() {
+    const authPageData = this.getContentByPropertyName('auth-common-text');
+    const res = this.sharedMethods.convertAdditionalTextToObj(authPageData?.additionalText);
+    return res;
   }
 }
