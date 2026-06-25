@@ -31,6 +31,7 @@ export class VerifyPhoneNumberComponent  implements OnInit {
   numberType = null;
   phoneNumber: any;
   locale = 'en';
+  authCommonText: any;
 
   constructor(
     public router: Router,
@@ -60,6 +61,7 @@ export class VerifyPhoneNumberComponent  implements OnInit {
     this.commonText = this.contentService.getCommonText();
     const pageData = this.contentService.getContentByPropertyName('verify-phone-number');
     this.pageText = this.sharedMethods.convertAdditionalTextToObj(pageData?.additionalText);
+    this.authCommonText = await this.contentService.getAuthCommonText();
     this.submitButtonText = this.pageText?.getCode;
     this.pageTitle = pageData?.pageTitle;
     this.countryOptions = await this.getCountryOptions();
@@ -136,14 +138,18 @@ export class VerifyPhoneNumberComponent  implements OnInit {
         await this.sharedMethods.dismissLoader();
         this.sharedMethods.showToast(this.pageText?.errorGeneratingCode);
       }
-    } catch (error) {
-      console.error('Error in onSubmit', error);
+    } catch (e: any) {
+      console.error('Error in onSubmit......', e);
       this.globalErrorHandler.handleError(
-        error,
+        e,
         'Error generating OTP code.'
       );
       await this.sharedMethods.dismissLoader();
-      this.sharedMethods.showToast(this.pageText?.errorGeneratingCode);
+      if (e?.error?.errorKey && this.authCommonText?.[e?.error?.errorKey]) {
+        this.sharedMethods.showToast(this.authCommonText?.[e?.error?.errorKey]);
+      } else {
+        this.sharedMethods.showToast(this.pageText?.errorGeneratingCode);
+      }
     }
   }
 }
