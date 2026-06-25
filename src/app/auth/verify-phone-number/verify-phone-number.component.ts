@@ -126,11 +126,12 @@ export class VerifyPhoneNumberComponent  implements OnInit {
         previousUrl: this.previousUrl,
         locale: this.locale,
       };
+      const objData = await this.sharedMethods.removeNullValuesFromObject(data);
 
-      const response: any = await lastValueFrom(this.apiService.post('accounts/generate-otp/', data, true));
+      const response: any = await lastValueFrom(this.apiService.post('accounts/generate-otp/', objData, true));
       if (response?.status && response?.status !== 'error') {
         await this.sharedMethods.dismissLoader();
-        this.router.navigate(['auth/verify-code'], {replaceUrl: true, queryParams: data });
+        this.router.navigate(['auth/verify-code'], {replaceUrl: true, queryParams: objData });
       } else {
         await this.sharedMethods.dismissLoader();
         this.sharedMethods.showToast(this.pageText?.errorGeneratingCode);
