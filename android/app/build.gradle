@@ -36,7 +36,8 @@ android {
           namespace "com.fiftyeight.tuna.dev"
           firebaseAppDistribution {
             releaseNotes="Fix generate-otp error display"
-            groups="scrum,staging-testers"
+            // groups="scrum,staging-testers"
+            testers="justinenakitto@fiftyeight.io"
             serviceCredentialsFile=file("google-services-credentials.json")
             appId="1:712142417730:android:e72fd0aa6261e389d2a2db"
           }

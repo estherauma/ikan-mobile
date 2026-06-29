@@ -5,6 +5,7 @@ import NutrientViewer from "@nutrient-sdk/viewer";
 import { GlobalErrorHandlerService } from 'src/app/shared/services/error-handler/global-error-handler.service';
 import { SharedmethodsService } from 'src/app/shared/services/sharedmethods/sharedmethods.service';
 import { UploadService } from 'src/app/shared/services/upload/upload.service';
+import { env } from 'src/environments/environment';
 
 
 @Component({
@@ -16,7 +17,7 @@ import { UploadService } from 'src/app/shared/services/upload/upload.service';
 export class SignPayslipComponent  implements AfterViewInit {
 
   file: any;
-  fileUrl: string;
+  fileUrl: string = '';
   commonText: any;
   paymentsCommonText: any;
   instance: any;
@@ -39,7 +40,7 @@ export class SignPayslipComponent  implements AfterViewInit {
       document: this.file,
       container: '#psPdfContainer',
       useCDN: true,
-      // licenseKey: ADD_LICENSE_KEY_HERE, // Optional license key.
+      licenseKey: env.nutrientLicenseKey,
 
       toolbarItems: [ { type: "signature" } ],
       annotationToolbarItems: (annotation, { defaultAnnotationToolbarItems }) => {
@@ -59,7 +60,7 @@ export class SignPayslipComponent  implements AfterViewInit {
     // So we need to loop through all pages to check for signature annotations.
     for (let pageIndex = 0; pageIndex < this.instance.totalPageCount; pageIndex++) {
       const annotations = await this.instance.getAnnotations(pageIndex);
-      if (annotations.some((annotation) => annotation.isSignature)) {
+      if (annotations.some((annotation: any) => annotation.isSignature)) {
         hasSignature = true;
         break;
       }
