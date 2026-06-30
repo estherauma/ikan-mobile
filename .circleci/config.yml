@@ -31,8 +31,6 @@ jobs:
               ionic build --configuration=production
             elif [ "$CIRCLE_BRANCH" = "refs/heads/staging" ]; then
               ionic build --configuration=staging
-            elif [ "$CIRCLE_BRANCH" = "refs/heads/PoC-signoff" ]; then
-              ionic build --configuration=staging
             else
               ionic build
             fi
@@ -128,5 +126,3 @@ workflows:
                 - dev
                 - staging
                 - main
-                - PoC-signoff
-                - justine/58-6565-enable-wage-tracking-e-signing
