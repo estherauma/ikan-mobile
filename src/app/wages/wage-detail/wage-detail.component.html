@@ -5,7 +5,7 @@
     [audioUrl]="paymentsPageData?.pageMedia?.wageDetailPageAudio?.url"
     [videoUrl]="paymentsPageData?.pageMedia?.wageDetailPageVideo?.url"
   ></app-audio-video-buttons>
-  
+
   <div
     class="content-wrapper"
     [ngClass]="{
@@ -269,14 +269,20 @@
           }
           
           <swiper-slide class="slide submit-slide">
+            @if (wageDetails?.payslip?.endsWith('.pdf') && !isPayslipSigned) {
+              <ion-button class="submit-btn" shape="round" (click)="openSigningModal()">
+                {{ paymentsCommonText?.signPayslip || 'Sign Payslip' }}
+              </ion-button>
+            }
+            
             <ion-button
               class="submit-btn"
               shape="round"
               (click)="onSubmit()"
               [disabled]="
                 !crewReceivedCorrectAmountValue ||
-                (hasBeneficiary && !beneficiaryReceivedCorrectAmountValue)
-
+                (hasBeneficiary && !beneficiaryReceivedCorrectAmountValue) ||
+                (wageDetails?.payslip?.endsWith('.pdf') && !isPayslipSigned)
               "
             >
               {{ paymentsCommonText?.submitResponses }}

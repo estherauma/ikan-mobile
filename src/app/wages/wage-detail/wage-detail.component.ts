@@ -5,7 +5,7 @@ import { AppEventNames, PageEventNames } from 'src/app/shared/services/analytics
 import { ContentService } from 'src/app/shared/services/content/content.service';
 import { SharedmethodsService } from 'src/app/shared/services/sharedmethods/sharedmethods.service';
 import { FileOpener } from '@capawesome-team/capacitor-file-opener';
-import { ModalController } from '@ionic/angular';
+import { ModalController, Platform } from '@ionic/angular';
 import { ViewImageComponent } from 'src/app/mydocuments/view-image/view-image.component';
 import { Capacitor } from '@capacitor/core';
 import { PdfJsViewerComponent } from 'ng2-pdfjs-viewer';
@@ -13,7 +13,8 @@ import { StorageKeys, UserRole } from 'src/app/shared/types/api-types';
 import { ContractDataService } from 'src/app/contracts/data/contract-data.service';
 import { WagesDataService } from '../data/wages-data.service';
 import { SyncService } from 'src/app/shared/services/sync/sync.service';
-
+import { UploadService } from 'src/app/shared/services/upload/upload.service';
+import { SignPayslipComponent } from '../sign-payslip/sign-payslip.component';
 
 export type ReceivedCorrectAmountValue = 'yes' | 'no' | 'unsure' | '';
 
@@ -47,6 +48,9 @@ export class WageDetailComponent  implements OnInit {
   issuePendingBeneficiaryReceivedIncorrectAmountMessage = '';
   showCrewIssuePendingMessage = false;
   showBeneficiaryIssuePendingMessage = false;
+  isPayslipPdf = false;
+  isPayslipSigned = false;
+  signedPayslipUrl: string;
   hasBeneficiary = false;
 
   @ViewChild('pdfViewer') pdfViewer!: PdfJsViewerComponent;
@@ -63,6 +67,8 @@ export class WageDetailComponent  implements OnInit {
     public contractDataService: ContractDataService,
     public wageDataService: WagesDataService,
     public syncService: SyncService,
+    public uploadService: UploadService,
+    public platform: Platform,
   ) {
     this.activatedRoute.queryParams.subscribe(async(params) => {
       if (params?.wageDetails) {
@@ -83,6 +89,8 @@ export class WageDetailComponent  implements OnInit {
     if (this.wageDetails?.payslip && this.wageDetails?.payslip?.endsWith('.pdf')) {
       const converted = Capacitor.convertFileSrc(this.wageDetails?.payslip);
       this.payslipPdfUrl = converted ?? null;
+      this.isPayslipPdf = true;
+      this.isPayslipSigned = this.wageDetails?.payslip?.includes('__signed.pdf') || false;
     }
     this.hasBeneficiary = this.wageDetails?.beneficiaryRelationship && this.wageDetails?.beneficiaryRelationship !== 'self';
     this.swiper = this.swiperRef?.nativeElement?.swiper;
@@ -210,6 +218,10 @@ export class WageDetailComponent  implements OnInit {
       updatedWageDetails.beneficiaryReceivedRightAmountDate = now;
       hasUpdates = true;
     }
+    if (this.signedPayslipUrl && this.signedPayslipUrl !== this.wageDetails.payslip) {
+      updatedWageDetails.payslip = this.signedPayslipUrl;
+      hasUpdates = true;
+    }
     if (!this.arraysEqual(this.whyTheDiscrepancyValues, this.wageDetails?.whyTheDiscrepancy)) {
       const json_value = this.whyTheDiscrepancyValues.length ? JSON.stringify(this.whyTheDiscrepancyValues) : null;
       updatedWageDetails.whyTheDiscrepancy = json_value;
@@ -217,23 +229,28 @@ export class WageDetailComponent  implements OnInit {
     }
 
     if (hasUpdates) {
-      if (updatedWageDetails?.beneficiaryRelationship && updatedWageDetails?.beneficiaryRelationship !== 'self' ) {
-        if (
-          (updatedWageDetails?.crewReceivedRightAmount && updatedWageDetails?.crewReceivedRightAmount !== 'yes') &&
-          (updatedWageDetails?.beneficiaryReceivedRightAmount && updatedWageDetails?.beneficiaryReceivedRightAmount !== 'yes')
-        ) {
-          updatedWageDetails.status = 'issue_pending';
-        } else if (
-          (updatedWageDetails?.crewReceivedRightAmount && updatedWageDetails?.crewReceivedRightAmount === 'yes') &&
-          (updatedWageDetails?.beneficiaryReceivedRightAmount && updatedWageDetails?.beneficiaryReceivedRightAmount === 'yes')
-        ) {
-          updatedWageDetails.status = 'received';
-        }
-      } else {
-        if (updatedWageDetails?.crewReceivedRightAmount && updatedWageDetails?.crewReceivedRightAmount !== 'yes') {
-          updatedWageDetails.status = 'issue_pending';
-        } else if (updatedWageDetails?.crewReceivedRightAmount && updatedWageDetails?.crewReceivedRightAmount === 'yes') {
-          updatedWageDetails.status = 'received';
+      // Update status if payslip is not a pdf; and if it is, only when it has been signed
+      // This is to avoid updating to issue pending/ received status before worker has signed the payslip
+      if (!this.isPayslipPdf || (this.isPayslipPdf && this.isPayslipSigned)) {
+        // Update status based on received amount values and beneficiary relationship
+        if (updatedWageDetails?.beneficiaryRelationship && updatedWageDetails?.beneficiaryRelationship !== 'self' ) {
+          if (
+            (updatedWageDetails?.crewReceivedRightAmount && updatedWageDetails?.crewReceivedRightAmount !== 'yes') &&
+            (updatedWageDetails?.beneficiaryReceivedRightAmount && updatedWageDetails?.beneficiaryReceivedRightAmount !== 'yes')
+          ) {
+            updatedWageDetails.status = 'issue_pending';
+          } else if (
+            (updatedWageDetails?.crewReceivedRightAmount && updatedWageDetails?.crewReceivedRightAmount === 'yes') &&
+            (updatedWageDetails?.beneficiaryReceivedRightAmount && updatedWageDetails?.beneficiaryReceivedRightAmount === 'yes')
+          ) {
+            updatedWageDetails.status = 'received';
+          }
+        } else {
+          if (updatedWageDetails?.crewReceivedRightAmount && updatedWageDetails?.crewReceivedRightAmount !== 'yes') {
+            updatedWageDetails.status = 'issue_pending';
+          } else if (updatedWageDetails?.crewReceivedRightAmount && updatedWageDetails?.crewReceivedRightAmount === 'yes') {
+            updatedWageDetails.status = 'received';
+          }
         }
       }
       
@@ -400,4 +417,27 @@ export class WageDetailComponent  implements OnInit {
     }
   }
 
+  async openSigningModal() {
+    await this.platform.ready();
+    const file: any = await this.uploadService.retrieveAndReturnArrayBuffer(this.wageDetails.payslip);
+    
+    const modal = await this.modalController.create({
+      component: SignPayslipComponent,
+      cssClass: 'ikan-modal sign-payslip-modal',
+      backdropDismiss: false,
+      componentProps: {
+        file,
+        fileUrl: this.wageDetails.payslip,
+        commonText: this.commonText,
+        paymentsCommonText: this.paymentsCommonText,
+      }
+    });
+    await modal.present();
+    await modal.onDidDismiss().then(async (result) => {
+      if (result.data?.signedPayslipUrl) {
+        this.signedPayslipUrl = result.data.signedPayslipUrl;
+        this.isPayslipSigned = true;
+      }
+    });
+  }
 }

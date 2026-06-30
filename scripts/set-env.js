@@ -17,6 +17,7 @@ module.exports.generateEnvironmentFiles = (buildType) => {
                 pushNotificationApi: '${process.env.STAGING_PUSH_NOTIFICATION_URL}',
                 sentryDSN: '${process.env.SENTRY_DSN}',
                 gsBucketName: '${process.env.STAGING_GS_BUCKET_NAME}',
+                nutrientLicenseKey: '${process.env.NUTRIENT_LICENSE_KEY}',
             };
             `;
             break;
@@ -30,6 +31,7 @@ module.exports.generateEnvironmentFiles = (buildType) => {
                 pushNotificationApi: '${process.env.PROD_PUSH_NOTIFICATION_URL}',
                 sentryDSN: '${process.env.SENTRY_DSN}',
                 gsBucketName: '${process.env.PRODUCTION_GS_BUCKET_NAME}',
+                nutrientLicenseKey: '${process.env.NUTRIENT_LICENSE_KEY}',
             };
             `;
             break;
@@ -43,6 +45,7 @@ module.exports.generateEnvironmentFiles = (buildType) => {
                 pushNotificationApi: '${process.env.DEV_PUSH_NOTIFICATION_URL}',
                 sentryDSN: '${process.env.SENTRY_DSN}',
                 gsBucketName: '${process.env.DEV_GS_BUCKET_NAME}',
+                nutrientLicenseKey: '${process.env.NUTRIENT_LICENSE_KEY}',
             };
             `;
             break;
@@ -56,6 +59,7 @@ module.exports.generateEnvironmentFiles = (buildType) => {
             pushNotificationApi: '${process.env.DEV_PUSH_NOTIFICATION_URL}',
             sentryDSN: '${process.env.SENTRY_DSN}',
             gsBucketName: '${process.env.DEV_GS_BUCKET_NAME}',
+            nutrientLicenseKey: '${process.env.NUTRIENT_LICENSE_KEY}',
         };
         `;
             break;
