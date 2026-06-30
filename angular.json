@@ -34,6 +34,11 @@
                 "glob": "**/*",
                 "input": "node_modules/ng2-pdfjs-viewer/pdfjs",
                 "output": "/assets/pdfjs"
+              },
+              {
+                "glob": "**/*",
+                "input": "./node_modules/@nutrient-sdk/viewer/dist/nutrient-viewer-lib/",
+                "output": "./assets/nutrient-viewer-lib/"
               }
             ],
             "styles": [
