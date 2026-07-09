@@ -12,7 +12,6 @@ import { ConfirmmodalComponent } from './components/confirmmodal/confirmmodal.co
 import { ConfirmedmodalComponent } from './components/confirmedmodal/confirmedmodal.component';
 import { RecordoptionmodalComponent } from './components/recordoptionmodal/recordoptionmodal.component';
 import { TitleComponent } from './components/title/title.component';
-import { AuthbgpaperComponent } from './components/authbgpaper/authbgpaper.component';
 import { ButtonComponent } from './components/button/button.component';
 import { WorkordercardComponent } from './components/workordercard/workordercard.component';
 import { AgentcardComponent } from './components/agentcard/agentcard.component';
@@ -76,7 +75,6 @@ import { SignPayslipComponent } from '../wages/sign-payslip/sign-payslip.compone
     RecordoptionmodalComponent,
     TitleComponent,
     ButtonComponent,
-    AuthbgpaperComponent,
     WorkordercardComponent,
     AgentcardComponent,
     ProgressbarComponent,
@@ -129,7 +127,6 @@ import { SignPayslipComponent } from '../wages/sign-payslip/sign-payslip.compone
     RecordoptionmodalComponent,
     TitleComponent,
     ButtonComponent,
-    AuthbgpaperComponent,
     WorkordercardComponent,
     AgentcardComponent,
     ProgressbarComponent,
