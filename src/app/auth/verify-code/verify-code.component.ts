@@ -31,6 +31,7 @@ export class VerifyCodeComponent  implements OnInit {
   pageTitle: any;
   pageText: any;
   commonText: any;
+  authCommonText: any;
   params: any;
   userData: UserData;
 
@@ -60,6 +61,7 @@ export class VerifyCodeComponent  implements OnInit {
 
   async pageSetup() {
     this.commonText = this.contentService.getCommonText();
+    this.authCommonText = await this.contentService.getAuthCommonText();
     const pageData = this.contentService.getContentByPropertyName('verify-phone-number');
     this.pageTitle = pageData?.pageTitle;
     this.pageText = this.sharedMethods?.convertAdditionalTextToObj(pageData?.additionalText);
@@ -144,18 +146,26 @@ export class VerifyCodeComponent  implements OnInit {
           const url = this.authService.getCurrentUserBaseUrlFromRole(userData?.role);
           this.router.navigate([url], { replaceUrl: true });
         }
+      } else if (res?.status && res?.status == 'error' && res?.errorKey && this.authCommonText?.[res?.errorKey]) {
+        await this.sharedMethods.dismissLoader();
+        this.sharedMethods.showToast(this.authCommonText?.[res?.errorKey]);
       } else {
         await this.sharedMethods.dismissLoader();
         this.sharedMethods.showToast(this.pageText?.verificationErrorMessage);
       }
-    } catch (error) {
-      console.error('Error verifying phone number', error);
+    } catch (err: any) {
       this.globalErrorHandler.handleError(
-        error,
-        'Error verifying phone number.'
+        err,
+        'Error verifying OTP code.'
       );
-      await this.sharedMethods.dismissLoader();
-      this.sharedMethods.showToast(this.pageText?.verificationErrorMessage);
+
+      if (err?.error?.errorKey && this.authCommonText?.[err?.error?.errorKey]) {
+        await this.sharedMethods.dismissLoader();
+        this.sharedMethods.showToast(this.authCommonText?.[err?.error?.errorKey]);
+      } else {
+        await this.sharedMethods.dismissLoader();
+        this.sharedMethods.showToast(this.pageText?.verificationErrorMessage);
+      }
     }
   }
 }

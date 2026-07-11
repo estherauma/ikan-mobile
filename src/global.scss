@@ -91,3 +91,8 @@ ion-tab-bar {
   height: 100%;
   width: 100%;
 }
+
+// Pass this class to ion-content to set the waves bg
+.bg-waves {
+  --background: url('./assets/imgs/auth_background.png') no-repeat left 0px top 100px / 100% 100%, #4b74f7;
+}
