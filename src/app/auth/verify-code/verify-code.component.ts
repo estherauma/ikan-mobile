@@ -148,10 +148,10 @@ export class VerifyCodeComponent  implements OnInit {
         }
       } else if (res?.status && res?.status == 'error' && res?.errorKey && this.authCommonText?.[res?.errorKey]) {
         await this.sharedMethods.dismissLoader();
-        this.sharedMethods.showToast(this.authCommonText?.[res?.errorKey]);
+        this.sharedMethods.showToast(this.authCommonText?.[res?.errorKey], 'long');
       } else {
         await this.sharedMethods.dismissLoader();
-        this.sharedMethods.showToast(this.pageText?.verificationErrorMessage);
+        this.sharedMethods.showToast(this.pageText?.verificationErrorMessage, 'long');
       }
     } catch (err: any) {
       this.globalErrorHandler.handleError(
@@ -161,10 +161,10 @@ export class VerifyCodeComponent  implements OnInit {
 
       if (err?.error?.errorKey && this.authCommonText?.[err?.error?.errorKey]) {
         await this.sharedMethods.dismissLoader();
-        this.sharedMethods.showToast(this.authCommonText?.[err?.error?.errorKey]);
+        this.sharedMethods.showToast(this.authCommonText?.[err?.error?.errorKey], 'long');
       } else {
         await this.sharedMethods.dismissLoader();
-        this.sharedMethods.showToast(this.pageText?.verificationErrorMessage);
+        this.sharedMethods.showToast(this.pageText?.verificationErrorMessage, 'long');
       }
     }
   }

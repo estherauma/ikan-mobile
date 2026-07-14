@@ -146,7 +146,7 @@ export class VerifyPhoneNumberComponent  implements OnInit {
       );
       await this.sharedMethods.dismissLoader();
       if (e?.error?.errorKey && this.authCommonText?.[e?.error?.errorKey]) {
-        this.sharedMethods.showToast(this.authCommonText?.[e?.error?.errorKey]);
+        this.sharedMethods.showToast(this.authCommonText?.[e?.error?.errorKey], 'long');
       } else {
         this.sharedMethods.showToast(this.pageText?.errorGeneratingCode);
       }
