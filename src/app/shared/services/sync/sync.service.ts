@@ -805,6 +805,11 @@ export class SyncService {
 
   // fetches current user's profile only
   async fetchProfile() {
+    const isValid = await this.authService.checkAcessTokenValidity();
+    if (!isValid || !this.isDbInitialized || !navigator.onLine) {
+      return;
+    }
+    
     const response: GetProfileResponse = await lastValueFrom(this.apiService.get('accounts/profile'));
     if (response.status === 200 && response.body.data) {
       const user = await this.sharedMethods.getUserData();
