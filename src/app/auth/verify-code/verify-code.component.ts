@@ -139,7 +139,7 @@ export class VerifyCodeComponent  implements OnInit {
         
         await this.sharedMethods.dismissLoader();
         this.sharedMethods.showToast(this.pageText?.verificationSuccessMessage);
-        if (this.params?.previousUrl) {
+        if (this.params?.previousUrl && !this.params?.previousUrl.includes('auth/signup')) {
           this.router.navigate([this.params?.previousUrl], { replaceUrl: true });
         } else {
           const userData: UserData = await this.sharedMethods.getUserData();
