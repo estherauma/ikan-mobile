@@ -269,7 +269,15 @@
           }
           
           <swiper-slide class="slide submit-slide">
-            @if (wageDetails?.payslip?.endsWith('.pdf') && !isPayslipSigned) {
+            @if (
+              wageDetails?.payslip?.endsWith('.pdf') && !isPayslipSigned && (
+                (!hasBeneficiary && crewReceivedCorrectAmountValue && crewReceivedCorrectAmountValue === 'yes') ||
+                (hasBeneficiary && (
+                  (crewReceivedCorrectAmountValue && crewReceivedCorrectAmountValue === 'yes') &&
+                  (beneficiaryReceivedCorrectAmountValue && beneficiaryReceivedCorrectAmountValue === 'yes')
+                ))
+              )
+            ) {
               <ion-button class="submit-btn" shape="round" (click)="openSigningModal()">
                 {{ paymentsCommonText?.signPayslip || 'Sign Payslip' }}
               </ion-button>
