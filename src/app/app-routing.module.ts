@@ -384,6 +384,10 @@ const routes: Routes = [
     path: 'wages',
     loadChildren: () => import('./wages/home/home.module').then( m => m.HomeModule),
   },
+  {
+    path: 'testing-tts',
+    loadChildren: () => import('./tts/tts.module').then( m => m.TtsModule),
+  },
 
   // should be last item in the routes
   // add routes above this
