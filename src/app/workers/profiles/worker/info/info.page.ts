@@ -25,6 +25,7 @@ export class InfoPage extends BaseformPage implements OnInit {
   viewInfo: any = {};
   mobileCtrlSubscription: any;
   telephoneCtrlSubscription: any;
+  authCommonText: any;
 
   constructor(
     public contentService: ContentService,
@@ -48,6 +49,7 @@ export class InfoPage extends BaseformPage implements OnInit {
 
   async pageSetup() {
     this.commonText = this.contentService.commonText;
+    this.authCommonText = await this.contentService.getAuthCommonText();
     this.submitButtonText = this.commonText?.save;
     this.userData = await this.sharedMethods.getUserData();
     const profData = await this.profilesDataService.getSingleProfile(this.userData?.email, this.userData?.mobile);
@@ -93,6 +95,10 @@ export class InfoPage extends BaseformPage implements OnInit {
   }
 
   async onSubmit(data: any) {
+    if(!data.email && !data.mobile) {
+      return this.sharedMethods.showToast(this.authCommonText?.emailOrPhoneNumberRequired, 'long');
+    }
+    
     this.sharedMethods.showLoader(this.pageText?.savingProfile, 2000);
     const userData = await this.sharedMethods.getUserData();
     const now = new Date().toISOString();

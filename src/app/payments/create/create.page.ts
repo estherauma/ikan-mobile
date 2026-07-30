@@ -43,7 +43,7 @@ export class CreatePage extends BaseformPage implements OnInit  {
   }
 
   async onSubmit(formData) {
-    this.sharedMethods.showLoader(this.contentServ.commonText?.saving|| 'Saving payment' );
+    this.sharedMethods.showLoader(this.contentServ.commonText?.submittingYourData|| 'Saving payment' );
     const userData = await this.sharedMethods.getUserData();
     const now = new Date().toISOString();
     formData.created_at = formData.updated_at = now;

@@ -36,7 +36,7 @@ export class CreatePage extends BaseformPage implements OnInit {
   }
 
   async onSubmit(formData) {
-    this.sharedMethods.showLoader(this.contentService.commonText.saving);
+    this.sharedMethods.showLoader(this.contentService.commonText.submittingYourData);
     const now = new Date().toISOString();
     const userData = await this.sharedMethods.getUserData();
     formData.created_by = formData.updated_by = userData.id;

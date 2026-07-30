@@ -33,6 +33,7 @@ export class ProfilePage extends BaseformPage implements OnInit {
   docsCommonText: any;
   mobileCtrlSubscription: any;
   telephoneCtrlSubscription: any;
+  authCommonText: any;
 
   constructor(
     public contentService: ContentService,
@@ -64,6 +65,7 @@ export class ProfilePage extends BaseformPage implements OnInit {
 
   async pageSetup() {
     this.commonText = await this.contentService?.commonText;
+    this.authCommonText = await this.contentService.getAuthCommonText();
     const docsPageData = this.contentService.getContentByPropertyName('my-documents-common-text');
     this.docsCommonText = this.sharedMethods.convertAdditionalTextToObj(docsPageData?.additionalText);
     this.pageTitle = this.commonText?.myProfile || this.pageTitle;
@@ -131,6 +133,10 @@ export class ProfilePage extends BaseformPage implements OnInit {
   }
 
   async onSubmit(data: any) {
+    if(!data.email && !data.mobile) {
+      return this.sharedMethods.showToast(this.authCommonText?.emailOrPhoneNumberRequired, 'long');
+    }
+    
     this.sharedMethods.showLoader(this.pageText?.savingProfile, 2000);
     const userData = await this.sharedMethods.getUserData();
     const now = new Date().toISOString();
