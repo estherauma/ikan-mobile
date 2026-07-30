@@ -119,7 +119,6 @@ export class AppComponent implements OnInit, OnDestroy {
           helpEl.position = 695;
         }
       }
-      console.log('menudata', menuData);
 
       if (!env.production) {
         menuData.push({
@@ -361,14 +360,14 @@ export class AppComponent implements OnInit, OnDestroy {
   }
 
   async syncData() {
-    // const hasInternet = await this.sharedMethods.checkInternetConnectionStatus();
-    // if (!hasInternet) { return; }
-    // await this.sharedMethods.showWaitLoader(this.commonText?.syncingData || 'Syncing data...');
-    // const user: UserData = await this.sharedMethods.readDataFromStorage(StorageKeys.userData);
-    // if (user) {
-    //  await this.syncService.syncData();
-    // }
-    // await this.sharedMethods.dismissLoader();
+    const hasInternet = await this.sharedMethods.checkInternetConnectionStatus();
+    if (!hasInternet) { return; }
+    await this.sharedMethods.showWaitLoader(this.commonText?.syncingData || 'Syncing data...');
+    const user: UserData = await this.sharedMethods.readDataFromStorage(StorageKeys.userData);
+    if (user) {
+      await this.syncService.syncData();
+    }
+    await this.sharedMethods.dismissLoader();
   }
 
   async setupSyncing() {
