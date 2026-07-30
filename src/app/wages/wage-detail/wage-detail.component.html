@@ -270,7 +270,7 @@
           
           <swiper-slide class="slide submit-slide">
             @if (
-              wageDetails?.payslip?.endsWith('.pdf') && !isPayslipSigned && (
+              isPayslipPdf && !isPayslipSigned && (
                 (!hasBeneficiary && crewReceivedCorrectAmountValue && crewReceivedCorrectAmountValue === 'yes') ||
                 (hasBeneficiary && (
                   (crewReceivedCorrectAmountValue && crewReceivedCorrectAmountValue === 'yes') &&
@@ -290,7 +290,13 @@
               [disabled]="
                 !crewReceivedCorrectAmountValue ||
                 (hasBeneficiary && !beneficiaryReceivedCorrectAmountValue) ||
-                (wageDetails?.payslip?.endsWith('.pdf') && !isPayslipSigned)
+                (isPayslipPdf && !isPayslipSigned && (
+                  (!hasBeneficiary && crewReceivedCorrectAmountValue && crewReceivedCorrectAmountValue === 'yes') ||
+                  (hasBeneficiary && (
+                    (crewReceivedCorrectAmountValue && crewReceivedCorrectAmountValue === 'yes') &&
+                    (beneficiaryReceivedCorrectAmountValue && beneficiaryReceivedCorrectAmountValue === 'yes')
+                  ))
+                ))
               "
             >
               {{ paymentsCommonText?.submitResponses }}
