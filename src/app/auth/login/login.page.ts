@@ -86,10 +86,14 @@ export class LoginPage extends BaseformPage implements OnInit {
   setUpForm(): void {}
 
   async onSubmit() {
+    const hasInternet = await this.sharedMethods.checkInternetConnectionStatus();
+    if (!hasInternet) {
+      return this.sharedMethods.showToast(this.contentService.commonText?.noInternetConnection, 'long');
+    }
+    
     let formData = this.pageFormGroup.value;
     this.sharedMethods.showLoader(this.contentService.commonText?.loadingText);
     
-    // TODO: change to authcommon text
     formData = this.sharedMethods.aggregateEmailOrPhoneValue(formData, this.authCommonText);
     formData.language = this.contentService?.currentLanguage || 'en-us';
 
