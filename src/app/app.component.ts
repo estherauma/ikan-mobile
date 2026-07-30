@@ -19,6 +19,7 @@ import { LocalNotifications  } from '@capacitor/local-notifications';
 import { ApiService } from './shared/services/api/api.service';
 import { AnalyticsService } from './shared/services/analytics/analytics.service';
 import { NotificationsDataService } from './notifications/data/notifications-data.service';
+import { env } from 'src/environments/environment';
 
 @Component({
     selector: 'app-root',
@@ -117,6 +118,19 @@ export class AppComponent implements OnInit, OnDestroy {
         if (helpEl) {
           helpEl.position = 695;
         }
+      }
+
+      if (!env.production) {
+        menuData.push({
+          title: 'Testing TTS',
+          url: '/testing-tts',
+          icon: 'mic-outline',
+          position: 999,
+          enabled: true,
+          key: 'testing-tts',
+          label: 'Testing TTS',
+          roles: 'all',
+        });
       }
 
       // Sort menu by position
@@ -351,7 +365,7 @@ export class AppComponent implements OnInit, OnDestroy {
     await this.sharedMethods.showWaitLoader(this.commonText?.syncingData || 'Syncing data...');
     const user: UserData = await this.sharedMethods.readDataFromStorage(StorageKeys.userData);
     if (user) {
-     await this.syncService.syncData();
+      await this.syncService.syncData();
     }
     await this.sharedMethods.dismissLoader();
   }

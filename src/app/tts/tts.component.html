@@ -1,0 +1,39 @@
+
+<app-header></app-header>
+<ion-content class="ion-padding">
+  <ion-accordion-group expand="inset">
+    
+    <ion-accordion *ngFor="let group of languageSamples" [value]="group.label">
+      <ion-item slot="header" color="light">
+        <ion-label class="language-title">
+         {{ group.label }}
+        </ion-label>
+        <ion-note slot="end" color="medium">
+          {{ group.challenges.length }} samples
+        </ion-note>
+      </ion-item>
+
+      <div class="ion-padding accordion-content" slot="content">
+        <div *ngFor="let sample of group.challenges" class="sample-card">
+          <ion-row>
+            <ion-col size="10">
+              <h3>{{ sample.title }}</h3>
+            </ion-col>
+            <ion-col size="2" (click)="speakText(sample.text, group.code)">
+              <ion-icon name="volume-high-outline" class="audio-icon"></ion-icon>
+            </ion-col>
+            <ion-col size="12">
+              <i class="focus">{{ sample.focus }}</i>
+            </ion-col>
+          </ion-row>
+
+          <p class="sample-text">{{ sample.text }}</p>
+
+        </div>
+
+      </div>
+
+    </ion-accordion>
+
+  </ion-accordion-group>
+</ion-content>
