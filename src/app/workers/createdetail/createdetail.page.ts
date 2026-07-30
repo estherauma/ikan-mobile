@@ -75,9 +75,9 @@ export class CreateDetailPage extends BaseformPage implements OnInit {
   }
 
   async onSubmit(formData: any) {
-    this.sharedMethods.showLoader(this.contentService.commonText?.saving);
+    this.sharedMethods.showLoader(this.contentService.commonText?.submittingYourData);
     if (!formData.email && !formData.mobile) {
-      this.sharedMethods.showToast(this.contentService.commonText?.emailOrPhoneNumberRequired, 'long');
+      this.sharedMethods.showToast(this.authCommonText?.emailOrPhoneNumberRequired, 'long');
       return;
     }
     
